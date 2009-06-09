@@ -1,0 +1,244 @@
+/**
+ * JHOVE2 - Next-generation architecture for format-aware characterization
+ *
+ * Copyright (c) 2009 by The Regents of the University of California,
+ * Ithaka Harbors, Inc., and The Board of Trustees of the Leland Stanford
+ * Junior University.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * o Redistributions of source code must retain the above copyright notice,
+ *   this list of conditions and the following disclaimer.
+ *
+ * o Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * o Neither the name of the University of California/California Digital
+ *   Library, Ithaka Harbors/Portico, or Stanford University, nor the names of
+ *   its contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
+
+package org.jhove2.core;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.jhove2.annotation.ReportableProperty;
+
+/** A JHOVE2 document.
+ * 
+ * @author mstrong, slabrams
+ */
+public class Document
+	extends AbstractReporter
+{
+	/** Document intentions. */
+	public enum Intention {
+		Authoritative,
+		Informative,
+		Speculative,
+		Other,
+		Unknown
+	}
+		                            
+	/** Document types. */
+	public enum Type {
+		Article,
+		Codebook,
+		Correspondance,
+		DataDictionary,
+		Dissertation,
+		Manual,
+		Memorandum,
+		Note,
+		Paper,
+		Presentation,
+		Recommendation,
+		Report,
+		Specification,
+		Standard,
+		Thesis,
+		WebSite,
+		Other,
+		Unknown
+	}
+	/** Document identifiers. */
+	protected List<Identifier> identifiers;
+	
+	/** Document author(s). */
+	protected String author;
+	
+	/** Document publication date. */
+	protected String date;
+	
+	/** Document edition. */
+	protected String edition;
+	
+	/** Document intention. */
+	protected Intention intention;
+	
+	/** Document informative note. */
+	protected String note;
+	
+	/** Document publisher(s). */
+	protected String publisher;
+	
+	/** Document title. */
+	protected String title;
+	
+	/** Document type. */
+	protected Type type;
+	
+	/** Instantiate a new <code>Document</code> object.
+	 * @param title     Document title
+	 * @param type      Document type
+	 * @param intention Document intention
+	 */
+	public Document(String title, Type type, Intention intention) {
+		super();
+		
+		this.title     = title;
+		this.type      = type;
+		this.intention = intention;
+		
+		this.identifiers = new ArrayList<Identifier>();
+	}
+	
+	/** Get document author(s).
+	 * @return Document author(s)
+	 */
+	@ReportableProperty(value=1, desc="Document author or authors.")
+	public String getAuthor() {
+		return this.author;
+	}
+
+	/** Get document publication date.
+	 * @return Document publication date
+	 */
+	@ReportableProperty(value=4, desc="Document publication date.")
+	public String getDate() {
+		return this.date;
+	}
+
+	/** Get document edition.
+	 * @return Document edition
+	 */
+	@ReportableProperty(value=3, desc="Document edition or version.")
+	public String getEdition() {
+		return this.edition;
+	}
+
+	/** Get document identifiers.
+	 * @return List of document identifiers
+	 */
+	@ReportableProperty(value=6, desc="List of document identifiers.")
+	public List<Identifier> getIdentifiers() {
+		return this.identifiers;
+	}
+
+	/** Get document intention
+	 * @return Document intention
+	 */
+	@ReportableProperty(value=8, desc="Document intention.")
+	public Intention getIntention() {
+		return this.intention;
+	}
+	
+	/** Get document informative note.
+	 * @return Document informative note
+	 */
+	@ReportableProperty(value=9, desc="Document informative note.")
+	public String getNote() {
+		return this.note;
+	}
+	
+	/** Get document publisher(s).
+	 * @return Document publisher(s)
+	 */
+	@ReportableProperty(value=5, desc="Document publisher or publishers.")
+	public String getPublisher() {
+		return this.publisher;
+	}
+
+	/** Get document title.
+	 * @return Document title
+	 */
+	@ReportableProperty(value=2, desc="Document title.")
+	public String getTitle() {
+		return this.title;
+	}
+
+	/** Get document type.
+	 * @return document type
+	 */
+	@ReportableProperty(value=7, desc="Document type.")
+	public Type getType() {
+		return this.type;
+	}
+
+	/** Set document author(s).
+	 * @param author Document author(2)
+	 */
+	public void setAuthor(String author) {
+		this.author = author;
+	}
+
+	/** Set document publication date.
+	 * @param date Document publication date
+	 */
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	/** Set document edition.
+	 * @param edition Document edition
+	 */
+	public void setEdition(String edition) {
+		this.edition = edition;
+	}
+	
+	/** Add document identifier.
+	 * @param identifier Document identifier
+	 */
+	public void setIdentifier(Identifier identifier) {
+		this.identifiers.add(identifier);
+	}
+
+	/** Add document identifiers.
+	 * @param identifiers List of Document identifiers
+	 */
+	public void setIdentifiers(List<Identifier> identifiers) {
+		this.identifiers.addAll(identifiers);
+	}
+	
+	/** Set document informative note.
+	 * @param note Document informative note
+	 */
+	public void setNote(String note) {
+		this.note = note;
+	}
+	
+	/** Set document publisher(s).
+	 * @param publisher Document publisher(s)
+	 * @see org.jhove2.core.Documentable#setPublisher(java.lang.String)
+	 */
+	public void setPublisher(String publisher) {
+		this.publisher = publisher;
+	}
+}
