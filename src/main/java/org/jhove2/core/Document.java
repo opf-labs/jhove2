@@ -39,14 +39,16 @@ package org.jhove2.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jhove2.annotation.Reportable;
 import org.jhove2.annotation.ReportableProperty;
 
-/** A JHOVE2 document.
+/** A JHOVE2 specification document.
  * 
  * @author mstrong, slabrams
  */
+@Reportable("A specification document.")
 public class Document
-	extends AbstractReporter
+	implements Reporter
 {
 	/** Document intentions. */
 	public enum Intention {
@@ -79,7 +81,7 @@ public class Document
 		Unknown
 	}
 	/** Document identifiers. */
-	protected List<Identifier> identifiers;
+	protected List<I8R> identifiers;
 	
 	/** Document author(s). */
 	protected String author;
@@ -117,13 +119,13 @@ public class Document
 		this.type      = type;
 		this.intention = intention;
 		
-		this.identifiers = new ArrayList<Identifier>();
+		this.identifiers = new ArrayList<I8R>();
 	}
 	
 	/** Get document author(s).
 	 * @return Document author(s)
 	 */
-	@ReportableProperty(value=1, desc="Document author or authors.")
+	@ReportableProperty(order=1, value="Document author or authors.")
 	public String getAuthor() {
 		return this.author;
 	}
@@ -131,7 +133,7 @@ public class Document
 	/** Get document publication date.
 	 * @return Document publication date
 	 */
-	@ReportableProperty(value=4, desc="Document publication date.")
+	@ReportableProperty(order=4, value="Document publication date.")
 	public String getDate() {
 		return this.date;
 	}
@@ -139,7 +141,7 @@ public class Document
 	/** Get document edition.
 	 * @return Document edition
 	 */
-	@ReportableProperty(value=3, desc="Document edition or version.")
+	@ReportableProperty(order=3, value="Document edition or version.")
 	public String getEdition() {
 		return this.edition;
 	}
@@ -147,15 +149,15 @@ public class Document
 	/** Get document identifiers.
 	 * @return List of document identifiers
 	 */
-	@ReportableProperty(value=6, desc="List of document identifiers.")
-	public List<Identifier> getIdentifiers() {
+	@ReportableProperty(order=6, value="List of document identifiers.")
+	public List<I8R> getIdentifiers() {
 		return this.identifiers;
 	}
 
 	/** Get document intention
 	 * @return Document intention
 	 */
-	@ReportableProperty(value=8, desc="Document intention.")
+	@ReportableProperty(order=8, value="Document intention.")
 	public Intention getIntention() {
 		return this.intention;
 	}
@@ -163,7 +165,7 @@ public class Document
 	/** Get document informative note.
 	 * @return Document informative note
 	 */
-	@ReportableProperty(value=9, desc="Document informative note.")
+	@ReportableProperty(order=9, value="Document informative note.")
 	public String getNote() {
 		return this.note;
 	}
@@ -171,7 +173,7 @@ public class Document
 	/** Get document publisher(s).
 	 * @return Document publisher(s)
 	 */
-	@ReportableProperty(value=5, desc="Document publisher or publishers.")
+	@ReportableProperty(order=5, value="Document publisher or publishers.")
 	public String getPublisher() {
 		return this.publisher;
 	}
@@ -179,7 +181,7 @@ public class Document
 	/** Get document title.
 	 * @return Document title
 	 */
-	@ReportableProperty(value=2, desc="Document title.")
+	@ReportableProperty(order=2, value="Document title.")
 	public String getTitle() {
 		return this.title;
 	}
@@ -187,7 +189,7 @@ public class Document
 	/** Get document type.
 	 * @return document type
 	 */
-	@ReportableProperty(value=7, desc="Document type.")
+	@ReportableProperty(order=7, value="Document type.")
 	public Type getType() {
 		return this.type;
 	}
@@ -216,14 +218,14 @@ public class Document
 	/** Add document identifier.
 	 * @param identifier Document identifier
 	 */
-	public void setIdentifier(Identifier identifier) {
+	public void setIdentifier(I8R identifier) {
 		this.identifiers.add(identifier);
 	}
 
 	/** Add document identifiers.
 	 * @param identifiers List of Document identifiers
 	 */
-	public void setIdentifiers(List<Identifier> identifiers) {
+	public void setIdentifiers(List<I8R> identifiers) {
 		this.identifiers.addAll(identifiers);
 	}
 	

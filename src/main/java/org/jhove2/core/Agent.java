@@ -36,14 +36,16 @@
 
 package org.jhove2.core;
 
+import org.jhove2.annotation.Reportable;
 import org.jhove2.annotation.ReportableProperty;
 
 /** A JHOVE2 human or corporate agent.
  * 
  * @author mstrong, slabrams
  */
+@Reportable("A human or corporate agent.")
 public class Agent
-	extends AbstractReporter
+	implements Reporter
 {
 	/** Agent types. */
 	public enum Type {
@@ -92,7 +94,7 @@ public class Agent
 	/** Get agent postal address.
 	 * @return Agent postal address
 	 */
-	@ReportableProperty(value=4, desc="Agent postal address.")
+	@ReportableProperty(order=4, value="Agent postal address.")
 	public String getAddress() {
 		return this.address;
 	}
@@ -100,7 +102,7 @@ public class Agent
 	/** Get personal agent corporate affiliation.
 	 * @return Agent corporate affiliation
 	 */
-	@ReportableProperty(value=3, desc="Personal agent corporate affiliation.")
+	@ReportableProperty(order=3, value="Personal agent corporate affiliation.")
 	public Agent getAffiliation() {
 		return this.affiliation;
 	}
@@ -108,7 +110,7 @@ public class Agent
 	/** Get agent email address.
 	 * @return Agent email address
 	 */
-	@ReportableProperty(value=7, desc="Agent email address.")
+	@ReportableProperty(order=7, value="Agent email address.")
 	public String getEmail() {
 		return this.email;
 	}
@@ -116,7 +118,7 @@ public class Agent
 	/** Get agent fax number.
 	 * @return Agent fax number
 	 */
-	@ReportableProperty(value=6, desc="Agent fax number.")
+	@ReportableProperty(order=6, value="Agent fax number.")
 	public String getFax() {
 		return this.fax;
 	}
@@ -124,7 +126,7 @@ public class Agent
 	/** Get agent name.
 	 * @return Agent name
 	 */
-	@ReportableProperty(value=1, desc="Agent name.")
+	@ReportableProperty(order=1, value="Agent name.")
 	public String getName() {
 		return this.name;
 	}
@@ -132,7 +134,7 @@ public class Agent
 	/** Get agent informative note.
 	 * @return Agent informative note
 	 */
-	@ReportableProperty(value=9, desc="Agent informative note.")
+	@ReportableProperty(order=9, value="Agent informative note.")
 	public String getNote() {
 		return this.note;
 	}
@@ -140,7 +142,7 @@ public class Agent
 	/** Get agent telephone number.
 	 * @return Agent telephone number
 	 */
-	@ReportableProperty(value=5, desc="Agent telephone number.")
+	@ReportableProperty(order=5, value="Agent telephone number.")
 	public String getTelephone() {
 		return this.telephone;
 	}
@@ -148,7 +150,7 @@ public class Agent
 	/** Get agent type.
 	 * @return Agent type
 	 */
-	@ReportableProperty(value=2, desc="Agent type.")
+	@ReportableProperty(order=2, value="Agent type.")
 	public Type getType() {
 		return this.type;
 	}
@@ -156,7 +158,7 @@ public class Agent
 	/** Get agent URI.
 	 * @return Agent URI
 	 */
-	@ReportableProperty(value=8, desc="Agent URI.")
+	@ReportableProperty(order=8, value="Agent URI.")
 	public String getURI() {
 		return this.uri;
 	}

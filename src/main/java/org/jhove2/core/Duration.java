@@ -36,12 +36,14 @@
 
 package org.jhove2.core;
 
-/** A JHOVE2 duration.  Internally this is represented as a number of elapsed
- * milliseconds.
+/** A JHOVE2 duration.
  * 
  * @author mstrong, slabrams
  */
 public class Duration {
+	/** Indicator of an uninitialized time. */
+	public static final long UNINITIALIZED = -1L;
+	
 	/** Duration, in milliseconds. */
 	protected long duration;
 	

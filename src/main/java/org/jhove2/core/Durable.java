@@ -38,30 +38,25 @@ package org.jhove2.core;
 
 import org.jhove2.annotation.ReportableProperty;
 
-/** Interface for JHOVE2 {@link org.jhove2.core.Reporter}s with reportable
- * durations.
+/** Interface for JHOVE2 {@link reportables that keep track of elapsed time.
  * 
  * @author mstrong, slabrams
  */
 public interface Durable {
-	/** Marked of uninitialized time. */
-	public static final Long UNINITIALIZED = -1L;
-	
-	/** Get reporter elapsed time, in milliseconds.  The shortest reportable
+	/** Get elapsed time, in milliseconds.  The shortest reportable
 	 * elapsed time is 1 milliscond.
-	 * @return Reporter elapsed time, in milliseconds
+	 * @return Elapsed time, in milliseconds
 	 */
-	@ReportableProperty(value=1, desc="Reportable elapsed time, in " +
-			"milliseconds.")
+	@ReportableProperty("Elapsed time.")
 	public Duration getElapsedTime();
-
-	/** Set reporter initial time.  Defaults to the time of reporter
-	 * instantiation;
+	
+	/** Set the initial time of the elapsed duration.  Defaults to the time of
+	 * reporter instantiation.
 	 */
 	public void setInitialTime();
-
-	/** Set reporter final time.  Defaults to the time of invocation of the
-	 * {@link org.core2.core.Durable.getElapsedTime} method.
+	
+	/** Set the final time of the elapsed duration.  Defaults to the time of
+	 * invocation of the {@link org.core2.core.Durable.getElapsedTime} method.
 	 */
 	public void setFinalTime();
 }

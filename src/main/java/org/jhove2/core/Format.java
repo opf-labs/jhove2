@@ -41,14 +41,16 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.jhove2.annotation.Reportable;
 import org.jhove2.annotation.ReportableProperty;
 
 /** A JHOVE2 format.
  * 
  * @author mstrong, slabrams
  */
+@Reportable("A format.")
 public class Format
-	extends AbstractReporter
+	implements Reporter
 {
 	/** Format ambiguities. Ambiguous formats should report their caveats. */
 	public enum Ambiguity {
@@ -62,7 +64,7 @@ public class Format
 		Format
 	}
 	/** Format alias identifiers. */
-	protected Set<Identifier> aliasIdentifiers;
+	protected Set<I8R> aliasIdentifiers;
 	
 	/** Format alias names. */
 	protected Set<String> aliasNames;
@@ -74,7 +76,7 @@ public class Format
 	protected String caveats;
 	
 	/** Format canonical identifier, in the JHOVE2 namespace. */
-	protected Identifier identifier;
+	protected I8R identifier;
 	
 	/** Format canonical name. */
 	protected String name;
@@ -95,7 +97,7 @@ public class Format
 	 * @param name       Format canonical name
 	 * @param identifier Format canonical identifier
 	 */
-	public Format(String name, Identifier identifier, Type type,
+	public Format(String name, I8R identifier, Type type,
 			      Ambiguity ambiguity) {
 		super();
 		
@@ -104,7 +106,7 @@ public class Format
 		this.type       = type;
 		this.ambiguity  = ambiguity;
 		
-		this.aliasIdentifiers = new TreeSet<Identifier>();
+		this.aliasIdentifiers = new TreeSet<I8R>();
 		this.aliasNames       = new TreeSet<String>();
 		this.specifications = new ArrayList<Document>();
 	}
@@ -112,14 +114,14 @@ public class Format
 	/** Add format alias identifier.
 	 * @param identifier Format alias identifier
 	 */
-	public void setAliasIdentifier(Identifier identifier) {
+	public void setAliasIdentifier(I8R identifier) {
 		this.aliasIdentifiers.add(identifier);
 	}
 	
 	/** Add a Set of format alias identifiers.
 	 * @param identifiers Format alias identifiers
 	 */
-	public void setAliasIdentifiers(Set<Identifier> identifiers) {
+	public void setAliasIdentifiers(Set<I8R> identifiers) {
 		this.aliasIdentifiers.addAll(identifiers);
 	}
 	
@@ -154,15 +156,15 @@ public class Format
 	/** Get format alias identifiers.
 	 * @return Format alias identifiers
 	 */
-	@ReportableProperty(value=5, desc="Format alias identifiers.")
-	public Set<Identifier> getAliasIdentifiers() {
+	@ReportableProperty(order=5, value="Format alias identifiers.")
+	public Set<I8R> getAliasIdentifiers() {
 		return this.aliasIdentifiers;
 	}
 
 	/** Get format alias names.
 	 * @return Format alias names
 	 */
-	@ReportableProperty(value=6, desc="Format alias names.")
+	@ReportableProperty(order=6, value="Format alias names.")
 	public Set<String> getAliasNames() {
 		return this.aliasNames;
 	}
@@ -170,7 +172,7 @@ public class Format
 	/** Get format ambiguity.
 	 * @return Format ambiguity
 	 */
-	@ReportableProperty(value=8, desc="Format ambiguity.")
+	@ReportableProperty(order=8, value="Format ambiguity.")
 	public Ambiguity getAmbiguity() {
 		return this.ambiguity;
 	}
@@ -178,7 +180,7 @@ public class Format
 	/** Get format caveats.
 	 * @return Format caveats
 	 */
-	@ReportableProperty(value=9, desc="Format caveats.")
+	@ReportableProperty(order=9, value="Format caveats.")
 	public String getCaveats() {
 		return this.caveats;
 	}
@@ -186,15 +188,16 @@ public class Format
 	/** Get format canonical identifier, in the JHOVE2 namespace.
 	 * @return Format canonical identifier
 	 */
-	@ReportableProperty(value=2, desc="Format canonical identifier, in the JHOVE2 namespace.")
-	public Identifier getIdentifier() {
+	@ReportableProperty(order=2, value="Format canonical identifier, in the " +
+			"JHOVE2 namespace.")
+	public I8R getIdentifier() {
 		return this.identifier;
 	}
 	
 	/** Get format canonical name.
 	 * @return Format canonical name
 	 */
-	@ReportableProperty(value=1, desc="Format canonical name.")
+	@ReportableProperty(order=1, value="Format canonical name.")
 	public String getName() {
 		return this.name;
 	}
@@ -202,7 +205,7 @@ public class Format
 	/** Format informative note.
 	 * @return Format informative note
 	 */
-	@ReportableProperty(value=10, desc="Format informative note.")
+	@ReportableProperty(order=10, value="Format informative note.")
 	public String getNote() {
 		return this.note;
 	}
@@ -210,7 +213,7 @@ public class Format
 	/** Get format specifications.
 	 * @return Format specifications
 	 */
-	@ReportableProperty(value=7, desc="Format specifications.")
+	@ReportableProperty(order=7, value="Format specifications.")
 	public List<Document> getSpecifications() {
 		return this.specifications;
 	}
@@ -218,7 +221,7 @@ public class Format
 	/** Get format type.
 	 * @return Format type
 	 */
-	@ReportableProperty(value=4, desc="Format type.")
+	@ReportableProperty(order=4, value="Format type.")
 	public Type getType() {
 		return this.type;
 	}
@@ -226,7 +229,7 @@ public class Format
 	/** Get format version.
 	 * @return Format version
 	 */
-	@ReportableProperty(value=3, desc="Format version.")
+	@ReportableProperty(order=3, value="Format version.")
 	public String getVersion() {
 		return this.version;
 	}

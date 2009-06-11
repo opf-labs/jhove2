@@ -41,7 +41,7 @@ package org.jhove2.core;
  * @author mstrong, slabrams
  */
 public class Digest
-implements Comparable<Digest>
+	implements Comparable<Digest>
 {
 	/** Message digest algorithms. */
 	public enum Algorithm {
