@@ -1,7 +1,9 @@
 /**
  * JHOVE2 - Next-generation architecture for format-aware characterization
  *
- * Copyright (c) 2009 by The Regents of the University of California.
+ * Copyright (c) 2009 by The Regents of the University of California,
+ * Ithaka Harbors, Inc., and The Board of Trustees of the Leland Stanford
+ * Junior University.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,48 +34,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.module.format.utf8.message;
+package org.jhove2.module.common.unicode;
 
-import org.jhove2.annotation.ReportableMessage;
-import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.message.AbstractMessage;
-
-/** UTF-8 Byte Order Mark (BOM) message [UNicode, 16.8].  A BOM is generally
- * not used in UTF-8 character streams, although it can act as a signature.
+/** Interface for common JHOVE2 Unicode properties.
  * 
  * @author mstrong, slabrams
  */
-@ReportableMessage(desc="Byte Order Mark (BOM) found.",
-	ref="[Unicode, 16.8]")
-public class ByteOrderMark
-	extends AbstractMessage
-{
-	/** Byte offset of the Byte Order Mark. */
-	protected long offset;
-	
-	/** Instantiate a new <code>ByteOrderMark</code>.
-	 * @param offset Byte offset of the Byte Order Mark
-	 */
-	public ByteOrderMark(long offset) {
-		super(Context.Object, Severity.Info, "Byte Order Mark (BOM) found");
-		
-		this.offset = offset;
+public interface Unicode {
+	/** End-of-line (EOL) characters. */
+	public enum EOL {
+		CR,
+		CRLF,
+		LF
 	}
 	
-	/** Get byte offset of the Byte Order Mark (BOM).
-	 * @return Byte offset of the Byte Order Mark
-	 */
-	@ReportableProperty(value=1, desc="Byte offset of the Byte Order Mark (BOM).")
-	public long getOffset() {
-		return this.offset;
-	}
+	/** Carriage return (CR) code point. */
+	public static final int CR = 0x0D;
 	
-	/** Get {@link java.lang.String} representation of the message.
-	 * @return String representation of the message
-	 * @see org.jhove2.core.message.Message#toString()
-	 */
-	@Override
-	public String toString() {
-		return super.toString() + ": Offset=" + this.offset;
-	}
+	/** Line feed (LF) code point. */
+	public static final int LF = 0x0A;
 }
