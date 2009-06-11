@@ -36,16 +36,14 @@
 
 package org.jhove2.core;
 
-import org.jhove2.annotation.Reportable;
 import org.jhove2.annotation.ReportableProperty;
 
 /** A JHOVE2 human or corporate agent.
  * 
  * @author mstrong, slabrams
  */
-@Reportable("A human or corporate agent.")
 public class Agent
-	implements Reporter
+	implements Reportable
 {
 	/** Agent types. */
 	public enum Type {

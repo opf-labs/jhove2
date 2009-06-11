@@ -41,16 +41,14 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.jhove2.annotation.Reportable;
 import org.jhove2.annotation.ReportableProperty;
 
 /** A JHOVE2 format.
  * 
  * @author mstrong, slabrams
  */
-@Reportable("A format.")
 public class Format
-	implements Reporter
+	implements Reportable
 {
 	/** Format ambiguities. Ambiguous formats should report their caveats. */
 	public enum Ambiguity {

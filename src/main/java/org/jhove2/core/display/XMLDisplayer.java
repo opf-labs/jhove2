@@ -41,39 +41,86 @@ import java.io.PrintStream;
 import org.jhove2.core.AbstractModule;
 import org.jhove2.core.I8R;
 
-/** JHOVE2 text displayer.
+/** JHOVE2 XML displayer.
  * 
  * @author mstrong, slabrams
  */
-public class TextDisplayer
+public class XMLDisplayer
 	extends AbstractModule
 	implements Displayable
 {
-	/** Text displayer version identifier. */
+	/** XML displayer version identifier. */
 	public static final String VERSION = "1.0.0";
 
-	/** Text displayer release date. */
+	/** XML displayer release date. */
 	public static final String DATE = "2009-06-11";
 	
-	/** Text displayer rights statement. */
+	/** XML displayer rights statement. */
 	public static final String RIGHTS =
 		"Copyright 2009 by The Regents of the University of California, " +
 		"Ithaka Harbors, Inc., and The Board of Trustees of the Leland " +
 		"Stanford Junior University. " +
 		"Available under the terms of the BSD license.";
 	
-	/** Display identifiers flag; if true display identifiers. */
-	protected boolean displayIdentifiers;
+	/** Collection element. */
+	public static final String COLLECTION = "collection";
 	
-	/** Instantiate a new <code>TextDisplayer</code>.
-	 * @param version
-	 * @param date
-	 * @param rights
+	/** Identifier element. */
+	public static final String IDENTIFIER = "identifier";
+	
+	/** Name element. */
+	public static final String NAME = "name";
+	
+	/** Namespace attribute. */
+	public static final String NAMESPACE = "namespace";
+	
+	/** Properties element. */
+	public static final String PROPERTIES = "properties";
+	
+	/** Property element. */
+	public static final String PROPERTY = "property";
+	
+	/** Reportable element. */
+	public static final String REPORTABLE = "reportable";
+	
+	/** Root element. */
+	public static final String ROOT = "jhove2";
+	
+	/** Schema location attribute. */
+	public static final String SCHEMA_LOCATION = ":schemaLocation";
+	
+	/** Size attribute. */
+	public static final String SIZE = "size";
+	
+	/** Value element. */
+	public static final String VALUE = "value";
+	
+	/** xmlns attribute. */
+	public static final String XMLNS = "xmlns:";
+	
+	/** XSI attribute. */
+	public static final String XSI = "xsi";
+	
+	/** XSI URI. */
+	public static final String XSI_URI = "http://www.w3.org/2001/XMLSchema-instance";
+	
+	/** JHOVE2 namespace prefix. */
+	protected String prefix;
+	
+	/** JHOVE2 schema. */
+	protected String schema;
+	
+	/** JHOVE2 namespace URI. */
+	protected String uri;
+
+	/** Instantiate a new <code>XMLDisplayer</code>.
 	 */
-	public TextDisplayer() {
+	public XMLDisplayer() {
 		super(VERSION, DATE, RIGHTS);
 		
-		this.displayIdentifiers = false;
+		this.prefix = "j2:";
+		this.uri    = "http://jhove2.org/ns/display/1.0.0";
+		this.schema = "http://jhove2.org/xsd/display/1.0.0/jhove2.xsd";
 	}
 
 	/** Start display.
@@ -83,6 +130,10 @@ public class TextDisplayer
 	 */
 	@Override
 	public void startDisplay(PrintStream out, int level) {
+		declaration(out);
+		startTag(out, level, ROOT, XMLNS+this.prefix, this.uri,
+				                   XMLNS+XSI, XSI_URI,
+				                   XSI+SCHEMA_LOCATION, this.uri+" "+this.schema);
 	}
 	
 	/** Start display of a {@link org.jhove2.core.Reportable}.
@@ -98,14 +149,11 @@ public class TextDisplayer
 	@Override
 	public void startReportable(PrintStream out, int level, String name,
 			                    I8R identifier, int order) {
-		StringBuffer buffer = new StringBuffer(Displayer.getIndent(level));
-		
-		buffer.append(name);
-		if (this.displayIdentifiers) {
-			buffer.append(" [" + identifier + "]");
-		}
-		buffer.append(":");
-		out.println(buffer);
+		startTag(out, level, REPORTABLE);
+		tag     (out, level+1, NAME, name);
+		tag     (out, level+1, IDENTIFIER, identifier.getValue(), NAMESPACE,
+				                           identifier.getNamespace().toString());
+		startTag(out, level+1, PROPERTIES);
 	}
 	
 	/** Start display of a property collection.
@@ -122,14 +170,11 @@ public class TextDisplayer
 	@Override
 	public void startCollection(PrintStream out, int level, String name,
 			                    I8R identifier, int size, int order) {
-		StringBuffer buffer = new StringBuffer(Displayer.getIndent(level));
-		
-		buffer.append(name);
-		if (this.displayIdentifiers) {
-			buffer.append(" [" + identifier + "]");
-		}
-		buffer.append(":");
-		out.println(buffer);
+		startTag(out, level, COLLECTION, SIZE, Integer.toString(size));
+		tag     (out, level+1, NAME, name);
+		tag     (out, level+1, IDENTIFIER, identifier.getValue(), NAMESPACE,
+				                           identifier.getNamespace().toString());
+		startTag(out, level+1, PROPERTIES);
 	}
 	
 	/** Display property.
@@ -146,14 +191,12 @@ public class TextDisplayer
 	@Override
 	public void displayProperty(PrintStream out, int level, String name,
 			                    I8R identifier, Object value, int order) {
-		StringBuffer buffer = new StringBuffer(Displayer.getIndent(level));
-		
-		buffer.append(name);
-		if (this.displayIdentifiers) {
-			buffer.append(" [" + identifier + "]");
-		}
-		buffer.append(": " + value);
-		out.println(buffer);
+		startTag(out, level,   PROPERTY);
+		tag     (out, level+1, NAME, name);
+		tag     (out, level+1, IDENTIFIER, identifier.getValue(), NAMESPACE,
+				                           identifier.getNamespace().toString());
+		tag     (out, level+1, VALUE, value.toString());
+		endTag  (out, level,   PROPERTY);
 	}
 
 	/** End display of a property collection.
@@ -167,6 +210,7 @@ public class TextDisplayer
 	@Override
 	public void endCollection(PrintStream out, int level, String name,
 			                  I8R identifier, int size) {
+		endTag(out, level, COLLECTION);
 	}
 
 	/** End display of a {@link org.jhove2.core.Reportable}.
@@ -179,6 +223,7 @@ public class TextDisplayer
 	@Override
 	public void endReportable(PrintStream out, int level, String name,
 			                  I8R identifier) {
+		endTag(out, level, REPORTABLE);
 	}
 	
 	/** End display.
@@ -188,12 +233,82 @@ public class TextDisplayer
 	 */
 	@Override
 	public void endDisplay(PrintStream out, int level) {
+		endTag(out, level, ROOT);
 	}
 	
-	/** Set display identifiers flag.
-	 * @param flag If true, display identifiers
+	/** Display XML declaration.
+	 * @param out
 	 */
-	public void setDisplayIdentifiers(boolean flag) {
-		this.displayIdentifiers = flag;
+	public void declaration(PrintStream out) {
+		out.println("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>");
+	}
+	
+	/** Display start tag.
+	 * @param out   Print stream
+	 * @param level Nesting level
+	 * @param name  Tag name
+	 */
+	public void startTag(PrintStream out, int level, String name) {
+		String indent = Displayer.getIndent(level);
+		
+		out.println(indent + "<" + this.prefix + name + ">");
+	}
+	
+	/** Display start tag.
+	 * @param out   Print stream
+	 * @param level Nesting level
+	 * @param name  Tag name
+	 * @param attrs Tag attributes
+	 */
+	public void startTag(PrintStream out, int level, String name,
+			             String... attrs) {
+		String indent = Displayer.getIndent(level);
+		
+		out.print(indent + "<" + this.prefix + name);
+		for (int i=0; i<attrs.length; i+=2) {
+			out.print(" " + attrs[i] + "=\"" + attrs[i+1] + "\"");
+		}
+		out.println(">");
+	}
+	
+	/** Display tag.
+	 * @param out     Print stream
+	 * @param level   Nesting level
+	 * @param name    Tag name
+	 * @param content Tag content
+	 */
+	public void tag(PrintStream out, int level, String name, String content) {
+		String indent = Displayer.getIndent(level);
+		
+		out.println(indent + "<"  + this.prefix + name + ">" + content +
+				             "</" + this.prefix + name + ">");
+	}
+	/** Display tag.
+	 * @param out     Print stream
+	 * @param level   Nesting level
+	 * @param name    Tag name
+	 * @param content Tag content
+	 * @param attrs   Tag attributes
+	 */
+	public void tag(PrintStream out, int level, String name, String content,
+			        String... attrs) {
+		String indent = Displayer.getIndent(level);
+		
+		out.print(indent + "<"  + this.prefix + name);
+		for (int i=0; i<attrs.length; i+=2) {
+			out.print(" " + attrs[i] + "=\"" + attrs[i] + "\"");
+		}
+		out.println(">" + content + "</" + this.prefix + name + ">");
+	}
+	
+	/** Display end tag.
+	 * @param out   Print stream
+	 * @param level Nesting level
+	 * @param name  Tag name
+	 */
+	public void endTag(PrintStream out, int level, String name) {
+		String indent = Displayer.getIndent(level);
+		
+		out.println(indent + "</" + this.prefix + name + ">");
 	}
 }

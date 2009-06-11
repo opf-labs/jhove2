@@ -39,14 +39,11 @@ package org.jhove2.core;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jhove2.annotation.Reportable;
-
 /** An abstract JHOVE2 module.  A module is an independently-distributable
  * {@link org.jhove2.annotation.Reportable}.
  * 
  * @author mstrong, slabrams
  */
-@Reportable("An independently-distributable reporter.")
 public class AbstractModule
 	implements Module, Durable
 {

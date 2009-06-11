@@ -55,6 +55,9 @@ public class JHOVE2CommandLineParser {
 	/** File system path names. */
 	protected List<String> names;
 	
+	/** Temporary directory. */
+	protected String tempDirectory;
+	
 	/** Instantiate a new <code>JHOVE2CommandLineParser</code>.
 	 */
 	
@@ -95,6 +98,11 @@ public class JHOVE2CommandLineParser {
 							this.failFastLimit = Integer.valueOf(args[++i]);
 						}
 					}
+					else if (opt == 't') {
+						if (i+1 < args.length) {
+							this.tempDirectory = args[++i];
+						}
+					}
 				}
 			}
 			else {
@@ -124,5 +132,12 @@ public class JHOVE2CommandLineParser {
 	 */
 	public List<String> getPathNames() {
 		return this.names;
+	}
+	
+	/** Get temporary directory.
+	 * @return Temporary directory
+	 */
+	public String getTempDirectory() {
+		return this.tempDirectory;
 	}
 }

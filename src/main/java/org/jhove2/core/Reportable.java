@@ -34,57 +34,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2;
+package org.jhove2.core;
 
-import java.util.List;
 
-import org.jhove2.core.JHOVE2;
-import org.jhove2.core.display.Displayer;
-import org.jhove2.core.display.DisplayerFactory;
-/** The JHOVE2 command line application.
+/** Marker interface for JHOVE2 reportables.
  * 
  * @author mstrong, slabrams
  */
-public class JHOVE2CommandLine
-{
-	/** Usage syntax. */
-	public static final String USAGE =
-		"usage: java " + JHOVE2CommandLine.class.getName() +
-		" [-b <bufferSize>] [-d JSON|Text|XML] [-f <failFastLimit>]" +
-		" <file> ...";
-	
-	/** Return code for usage statement. */
-	public static final int EUSAGE = 1;
-	
-	/** JHOVE2 command line application main entry.
-	 * @param args Application command line arguments
-	 */
-	public static void main(String [] args) {
-		/* If no command line arguments, print the application usage statement
-		 * to standard output.
-		 */
-		if (args.length < 1) {
-			System.out.println(USAGE);
-			System.exit(EUSAGE);
-		}
-		
-		/* Process command line arguments and retrieve list of file system
-		 * object names (files, directories).
-		 */
-		JHOVE2CommandLineParser parser = new JHOVE2CommandLineParser();
-		List<String> names = parser.parse(args);
-		
-		/* Initialize the JHOVE2 framework and process all file system
-		 * names.
-		 */
-		JHOVE2 jhove2 = new JHOVE2();
-		jhove2.setBufferSize(parser.getBufferSize());
-		jhove2.setFailFastLimit(parser.getFailFastLimit());
-		
-		jhove2.characterize(names);
-		
-		/* Initialize a JHOVE2 displayer and display results. */
-		Displayer display = DisplayerFactory.getDisplayer(parser.getDisplayFormat());
-		display.print(jhove2);
-	}
+public interface Reportable {
+
 }

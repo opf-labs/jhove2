@@ -59,7 +59,7 @@ public class I8R
 	/** JHOVE2 namespace identifier
 	 * {@link org.jhove2.annotation.Reportable} infix.
 	 */
-	public static final String JHOVE2_REPORTER_INFIX = "reporter/";
+	public static final String JHOVE2_REPORTABLE_INFIX = "reportable/";
 	
 	/** Identifier types, or namespaces. */
 	public enum Namespace {

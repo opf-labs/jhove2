@@ -41,40 +41,34 @@ import java.io.PrintStream;
 import org.jhove2.core.AbstractModule;
 import org.jhove2.core.I8R;
 
-/** JHOVE2 text displayer.
+/** JSON displayer.  The JSON format is defined by RFC 4627.
  * 
  * @author mstrong, slabrams
  */
-public class TextDisplayer
+public class JSONDisplayer
 	extends AbstractModule
 	implements Displayable
 {
-	/** Text displayer version identifier. */
+	/** JSON displayer version identifier. */
 	public static final String VERSION = "1.0.0";
 
-	/** Text displayer release date. */
+	/** JSON displayer release date. */
 	public static final String DATE = "2009-06-11";
 	
-	/** Text displayer rights statement. */
+	/** JSON displayer rights statement. */
 	public static final String RIGHTS =
 		"Copyright 2009 by The Regents of the University of California, " +
 		"Ithaka Harbors, Inc., and The Board of Trustees of the Leland " +
 		"Stanford Junior University. " +
 		"Available under the terms of the BSD license.";
 	
-	/** Display identifiers flag; if true display identifiers. */
-	protected boolean displayIdentifiers;
-	
-	/** Instantiate a new <code>TextDisplayer</code>.
-	 * @param version
-	 * @param date
-	 * @param rights
+
+	/** Instantiate a new <code>JSON</code> displayer.
 	 */
-	public TextDisplayer() {
+	public JSONDisplayer() {
 		super(VERSION, DATE, RIGHTS);
-		
-		this.displayIdentifiers = false;
 	}
+
 
 	/** Start display.
 	 * @param out   Print stream
@@ -83,6 +77,9 @@ public class TextDisplayer
 	 */
 	@Override
 	public void startDisplay(PrintStream out, int level) {
+		String indent = Displayer.getIndent(level);
+		
+		out.println(indent + "{");
 	}
 	
 	/** Start display of a {@link org.jhove2.core.Reportable}.
@@ -100,11 +97,13 @@ public class TextDisplayer
 			                    I8R identifier, int order) {
 		StringBuffer buffer = new StringBuffer(Displayer.getIndent(level));
 		
-		buffer.append(name);
-		if (this.displayIdentifiers) {
-			buffer.append(" [" + identifier + "]");
+		if (order == 0) {
+			buffer.append(" ");
 		}
-		buffer.append(":");
+		else {
+			buffer.append(",");
+		}
+		buffer.append("\"" + name + "\": {");
 		out.println(buffer);
 	}
 	
@@ -114,7 +113,7 @@ public class TextDisplayer
 	 * @param name       Property collection name
 	 * @param identifier Property collection identifier in the JHOVE2 namespace
 	 * @param size       Property collection size
-	 * @param order      Ordinal position of this reportable with respect to
+	 * @param iorder      Ordinal position of this reportable with respect to
 	 *                   enclosing {@link org.jhove2.core.Reportable} or
 	 *                   collection
 	 * @see org.jhove2.core.display.Displayable#startCollection(java.io.PrintStream, int, java.lang.String, org.jhove2.core.I8R, int, boolean)
@@ -124,11 +123,13 @@ public class TextDisplayer
 			                    I8R identifier, int size, int order) {
 		StringBuffer buffer = new StringBuffer(Displayer.getIndent(level));
 		
-		buffer.append(name);
-		if (this.displayIdentifiers) {
-			buffer.append(" [" + identifier + "]");
+		if (order == 0) {
+			buffer.append(" ");
 		}
-		buffer.append(":");
+		else {
+			buffer.append(",");
+		}
+		buffer.append("\"" + name + "\": {");
 		out.println(buffer);
 	}
 	
@@ -148,11 +149,13 @@ public class TextDisplayer
 			                    I8R identifier, Object value, int order) {
 		StringBuffer buffer = new StringBuffer(Displayer.getIndent(level));
 		
-		buffer.append(name);
-		if (this.displayIdentifiers) {
-			buffer.append(" [" + identifier + "]");
+		if (order == 0) {
+			buffer.append(" ");
 		}
-		buffer.append(": " + value);
+		else {
+			buffer.append(",");
+		}
+		buffer.append("\"" + name + "\": " + value);
 		out.println(buffer);
 	}
 
@@ -167,6 +170,9 @@ public class TextDisplayer
 	@Override
 	public void endCollection(PrintStream out, int level, String name,
 			                  I8R identifier, int size) {
+		String indent = Displayer.getIndent(level+1);
+		
+		out.println(indent + "}");
 	}
 
 	/** End display of a {@link org.jhove2.core.Reportable}.
@@ -179,6 +185,9 @@ public class TextDisplayer
 	@Override
 	public void endReportable(PrintStream out, int level, String name,
 			                  I8R identifier) {
+		String indent = Displayer.getIndent(level+1);
+		
+		out.println(indent + "}");
 	}
 	
 	/** End display.
@@ -188,12 +197,8 @@ public class TextDisplayer
 	 */
 	@Override
 	public void endDisplay(PrintStream out, int level) {
-	}
-	
-	/** Set display identifiers flag.
-	 * @param flag If true, display identifiers
-	 */
-	public void setDisplayIdentifiers(boolean flag) {
-		this.displayIdentifiers = flag;
+		String indent = Displayer.getIndent(level);
+		
+		out.println(indent + "}");
 	}
 }

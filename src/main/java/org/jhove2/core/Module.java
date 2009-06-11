@@ -38,18 +38,15 @@ package org.jhove2.core;
 
 import java.util.List;
 
-import org.jhove2.annotation.Reportable;
 import org.jhove2.annotation.ReportableProperty;
 
 /** Interface for JHOVE2 modules.  A module is an independently-distributable
- * {@link org.jhove2.core.Reporter}.  A reporter is a named aggregation of
- * reportable properties.
+ * {@link org.jhove2.core.Reportable}.
  * 
  * @author mstrong, slabrams
  */
-@Reportable("An independently-distributable reporter.")
 public interface Module
-	extends Reporter
+	extends Reportable
 {
 	/** Get module developer.
 	 * @return Module developer

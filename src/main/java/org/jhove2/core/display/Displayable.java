@@ -38,75 +38,30 @@ package org.jhove2.core.display;
 
 import java.io.PrintStream;
 
-import org.jhove2.core.AbstractModule;
 import org.jhove2.core.I8R;
 
-/** JHOVE2 text displayer.
+/** Interface for JHOVE2 displayers.
  * 
  * @author mstrong, slabrams
  */
-public class TextDisplayer
-	extends AbstractModule
-	implements Displayable
-{
-	/** Text displayer version identifier. */
-	public static final String VERSION = "1.0.0";
-
-	/** Text displayer release date. */
-	public static final String DATE = "2009-06-11";
-	
-	/** Text displayer rights statement. */
-	public static final String RIGHTS =
-		"Copyright 2009 by The Regents of the University of California, " +
-		"Ithaka Harbors, Inc., and The Board of Trustees of the Leland " +
-		"Stanford Junior University. " +
-		"Available under the terms of the BSD license.";
-	
-	/** Display identifiers flag; if true display identifiers. */
-	protected boolean displayIdentifiers;
-	
-	/** Instantiate a new <code>TextDisplayer</code>.
-	 * @param version
-	 * @param date
-	 * @param rights
-	 */
-	public TextDisplayer() {
-		super(VERSION, DATE, RIGHTS);
-		
-		this.displayIdentifiers = false;
-	}
-
+public interface Displayable {
 	/** Start display.
 	 * @param out   Print stream
 	 * @param level Nesting level
-	 * @see org.jhove2.core.display.Displayable#startDisplay(java.io.PrintStream, int)
 	 */
-	@Override
-	public void startDisplay(PrintStream out, int level) {
-	}
+	public void startDisplay(PrintStream out, int level);
 	
-	/** Start display of a {@link org.jhove2.core.Reportable}.
+	/** Start the display of a {@link org.jhove2.Reportable}.
 	 * @param out        Print stream
 	 * @param level      Nesting level
 	 * @param name       Reportable name
-	 * @param identifier Reportable identifier in the JHOVE2 namespace
+	 * @param identifier Property collection identifier in the JHOVE2 namespace
 	 * @param order      Ordinal position of this reportable with respect to
-	 *                   enclosing {@link org.jhove2.core.Reportable} or
+	 *                   its enclosing {@link org.jhove2.core.Reportable} or
 	 *                   collection
-	 * @see org.jhove2.core.display.Displayable#startReportable(java.io.PrintStream, java.lang.String, org.jhove2.core.I8R, int, boolean)
 	 */
-	@Override
 	public void startReportable(PrintStream out, int level, String name,
-			                    I8R identifier, int order) {
-		StringBuffer buffer = new StringBuffer(Displayer.getIndent(level));
-		
-		buffer.append(name);
-		if (this.displayIdentifiers) {
-			buffer.append(" [" + identifier + "]");
-		}
-		buffer.append(":");
-		out.println(buffer);
-	}
+			                    I8R identifier, int order);
 	
 	/** Start display of a property collection.
 	 * @param out        Print stream
@@ -114,23 +69,12 @@ public class TextDisplayer
 	 * @param name       Property collection name
 	 * @param identifier Property collection identifier in the JHOVE2 namespace
 	 * @param size       Property collection size
-	 * @param order      Ordinal position of this reportable with respect to
-	 *                   enclosing {@link org.jhove2.core.Reportable} or
-	 *                   collection
-	 * @see org.jhove2.core.display.Displayable#startCollection(java.io.PrintStream, int, java.lang.String, org.jhove2.core.I8R, int, boolean)
+	 * @param order      Ordinal position of this property collection with
+	 *                   respect to its enclosing {@link org.jhove2.core.Reportable)
+	 *                   or collection
 	 */
-	@Override
 	public void startCollection(PrintStream out, int level, String name,
-			                    I8R identifier, int size, int order) {
-		StringBuffer buffer = new StringBuffer(Displayer.getIndent(level));
-		
-		buffer.append(name);
-		if (this.displayIdentifiers) {
-			buffer.append(" [" + identifier + "]");
-		}
-		buffer.append(":");
-		out.println(buffer);
-	}
+			                    I8R identifier, int size, int order);
 	
 	/** Display property.
 	 * @param out        Print stream
@@ -138,62 +82,35 @@ public class TextDisplayer
 	 * @param name       Property name
 	 * @param identifier Property identifier in the JHOVE2 namespace
 	 * @param value      Property value
-	 * @param order      Ordinal position of this reportable with respect to
-	 *                   enclosing {@link org.jhove2.core.Reportable} or
+	 * @param order      Ordinal position of this property with respect to
+	 *                   its enclosing {@link org.jhove2.core.Reportable} or
 	 *                   collection
-	 * @see org.jhove2.core.display.Displayable#displayProperty(java.io.PrintStream, int, java.lang.String, org.jhove2.core.I8R, java.lang.Object, boolean)
 	 */
-	@Override
 	public void displayProperty(PrintStream out, int level, String name,
-			                    I8R identifier, Object value, int order) {
-		StringBuffer buffer = new StringBuffer(Displayer.getIndent(level));
-		
-		buffer.append(name);
-		if (this.displayIdentifiers) {
-			buffer.append(" [" + identifier + "]");
-		}
-		buffer.append(": " + value);
-		out.println(buffer);
-	}
-
+			                    I8R identifier, Object value, int order);
+	
 	/** End display of a property collection.
 	 * @param out        Print stream
 	 * @param level      Nesting level
 	 * @param name       Property collection name
 	 * @param identifier Property identifier in the JHOVE2 namespace
 	 * @param size       Property collection size
-	 * @see org.jhove2.core.display.Displayable#endCollection(java.io.PrintStream, java.lang.String, org.jhove2.core.I8R, int)
 	 */
-	@Override
 	public void endCollection(PrintStream out, int level, String name,
-			                  I8R identifier, int size) {
-	}
-
+			                  I8R identifier, int size);
+	
 	/** End display of a {@link org.jhove2.core.Reportable}.
 	 * @param out        Print stream
 	 * @param level      Nesting level
 	 * @param name       Reportable name
-	 * @param identifier Reportable in the JHOVE2 namespace
-	 * @see org.jhove2.core.display.Displayable#endReportable(java.io.PrintStream, java.lang.String, org.jhove2.core.I8R)
+	 * @param identifier Reportable identifier in the JHOVE2 namespace
 	 */
-	@Override
 	public void endReportable(PrintStream out, int level, String name,
-			                  I8R identifier) {
-	}
+			                  I8R identifier);
 	
 	/** End display.
 	 * @param out   Print stream
 	 * @param level Nesting level
-	 * @see org.jhove2.core.display.Displayable#endDisplay(java.io.PrintStream, int)
 	 */
-	@Override
-	public void endDisplay(PrintStream out, int level) {
-	}
-	
-	/** Set display identifiers flag.
-	 * @param flag If true, display identifiers
-	 */
-	public void setDisplayIdentifiers(boolean flag) {
-		this.displayIdentifiers = flag;
-	}
+	public void endDisplay(PrintStream out, int level);
 }

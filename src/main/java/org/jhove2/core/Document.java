@@ -39,16 +39,14 @@ package org.jhove2.core;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jhove2.annotation.Reportable;
 import org.jhove2.annotation.ReportableProperty;
 
 /** A JHOVE2 specification document.
  * 
  * @author mstrong, slabrams
  */
-@Reportable("A specification document.")
 public class Document
-	implements Reporter
+	implements Reportable
 {
 	/** Document intentions. */
 	public enum Intention {

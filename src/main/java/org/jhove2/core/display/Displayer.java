@@ -36,27 +36,58 @@
 
 package org.jhove2.core.display;
 
-import java.io.PrintStream;
+import org.jhove2.core.I8R;
 
-import org.jhove2.annotation.Reportable;
-import org.jhove2.core.Reporter;
-
-/** Interface for JHOVE2 displayers.
+/** JHOVE2 displayer utility.
  * 
  * @author mstrong, slabrams
  */
-@Reportable("A displayer.")
-public interface Displayer
-	extends Reporter
-{
-	/** Display a {@link org.jhove2.core.Reporter} to the standard output
-	 * stream.
-	 * @param reporter Reporter
+public class Displayer {
+	/** Get indentation appropriate for a nesting level.
+	 * @param level Nesting level
 	 */
-	public void display(Reporter reporter);
-	
-	/** Display a {@link org.jhove2.core.Reporter}.
-	 * @param reporter Reporter
+	public static synchronized String getIndent(int level) {
+		StringBuffer indent = new StringBuffer();
+		for (int i=0; i<level; i++) {
+			indent.append(" ");
+		}
+		
+		return indent.toString();
+	}
+
+	/** Get the singular form of a plural property identifier.
+	 * @param identifier Property identifier
+	 * @return Singular form of a property identifier
 	 */
-	public void display(PrintStream out, Reporter reporter);
+	public static synchronized I8R singularIdentifier(I8R identifier) {
+		I8R singular = null;
+		String value = identifier.getValue();
+		int in  = value.lastIndexOf('/') + 1;
+		int len = value.length();
+		if (value.substring(len-3).equals("ies")) {
+			singular = new I8R(value + "/" + value.substring(in, len-3) + "y");
+		}
+		else {
+			singular = new I8R(value + "/" + value.substring(in, len-1));
+		}
+		
+		return singular;
+	}
+
+	/** Get the singular form of a plural property name.
+	 * @param name Property name
+	 * @return Singular form of a property name
+	 */
+	public static synchronized String singularName(String name) {
+		String singular = null;
+		int len = name.length();
+		if (name.substring(len-3).equals("ies")) {
+			singular = name.substring(0, len-3) + "y";
+		}
+		else {
+			singular = name.substring(0, len-1);
+		}
+		
+		return singular;
+	}
 }

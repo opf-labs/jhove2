@@ -43,49 +43,53 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.annotation.ReportablePropertyComparator;
 import org.jhove2.core.I8R;
-import org.jhove2.core.Reporter;
+import org.jhove2.core.Reportable;
 
 /** JHOVE2 introspection utility.
  * 
  * @author mstrong, slabrams
  */
 public class Info {	
-	/** Reporter identifier. */
+	/** Reportable identifier. */
 	protected I8R identifier;
 	
-	/** Reporter simple name. */
+	/** Reportable simple name. */
 	protected String name;
 	
-	/** Reporter properties defined for the reportable. */
-	protected List<Set<Method>> properties;
+	/** Reportable properties defined for the reportable. */
+	protected List<Set<InfoProperty>> properties;
 	
-	/** Reporter qualified name. */
+	/** Reportable qualified name. */
 	protected String qName;
 	
 	/** Instantiate a new <code>Info</code> utility.
-	 * @param reporter Reporter
+	 * @param reportable Reportable
 	 */
-	public Info(Reporter reporter)
+	public Info(Reportable reportable)
 	{
-		Class<?> cl = reporter.getClass();
+		Class<?> cl = reportable.getClass();
 		this.name  = cl.getSimpleName();
 		this.qName = cl.getName();
-		this.identifier = new I8R(I8R.JHOVE2_PREFIX + I8R.JHOVE2_REPORTER_INFIX +
+		this.identifier = new I8R(I8R.JHOVE2_PREFIX +
+				                  I8R.JHOVE2_REPORTABLE_INFIX +
 				                  this.qName.replace('.', '/'));
-		this.properties = new ArrayList<Set<Method>>();
+		this.properties = new ArrayList<Set<InfoProperty>>();
 		do {
 			/* Introspect on the class's methods to retrieve reportable
 			 * properties.
 			 */
 			ReportablePropertyComparator comparator =
 				new ReportablePropertyComparator();
-			Set<Method> set = new TreeSet<Method>(comparator);
+			Set<InfoProperty> set = new TreeSet<InfoProperty>(comparator);
 			Method [] methods = cl.getDeclaredMethods();
 			for (int j=0; j<methods.length; j++) {
 				if (methods[j].getAnnotation(ReportableProperty.class) != null) {
-					set.add(methods[j]);
+					I8R id = new I8R(I8R.JHOVE2_PREFIX +
+							         I8R.JHOVE2_REPORTABLE_INFIX +
+							         cl.getName().replace('.', '/'));
+					InfoProperty prop = new InfoProperty(id, methods[j]);
+					set.add(prop);
 				}
 			}
 			if (set.size() > 0) {
@@ -95,11 +99,15 @@ public class Info {
 			/* Introspect on the class's interfaces. */
 			Class<?> [] ifs = cl.getInterfaces();
 			for (int i=0; i<ifs.length; i++) {
-				set = new TreeSet<Method>(comparator);
+				set = new TreeSet<InfoProperty>(comparator);
 				methods = ifs[i].getDeclaredMethods();
 				for (int j=0; j<methods.length; j++) {
 					if (methods[j].getAnnotation(ReportableProperty.class) != null) {
-						set.add(methods[j]);
+						I8R id = new I8R(I8R.JHOVE2_PREFIX +
+								         I8R.JHOVE2_REPORTABLE_INFIX +
+								         ifs[i].getName().replace('.', '/'));
+						InfoProperty prop = new InfoProperty(id, methods[j]);
+						set.add(prop);
 					}
 				}
 				if (set.size() > 0) {
@@ -109,25 +117,25 @@ public class Info {
 		} while ((cl = (Class<?>) cl.getSuperclass()) != null);
 	}
 	
-	/** Get {@link org.jhove2.core.Reporter} formal identifier in
+	/** Get {@link org.jhove2.core.Reportable} formal identifier in
 	 * the JHOVE2 namespace.  This identifier is quaranteed to be unique.
-	 * @return Reporter identifier in the JHOVE2 namespace
+	 * @return Reportable identifier in the JHOVE2 namespace
 	 */
 	public I8R getIdentifier() {
 		return this.identifier;
 	}
 	
-	/** Get {@link org.jhove2.core.Reporter} simple name.
+	/** Get {@link org.jhove2.core.Reportable} simple name.
 	 * @return Simple name of the reportable
 	 */
 	public String getName() {
 		return this.name;
 	}
 	
-	/** Get reportable properties of the {@link org.jhove2.core.Reporter}.
-	 * @return Reporter properties of the reportable
+	/** Get reportable properties of the {@link org.jhove2.core.Reportable}.
+	 * @return Reportable properties of the reportable
 	 */
-	public List<Set<Method>> getProperties() {
+	public List<Set<InfoProperty>> getProperties() {
 		return this.properties;
 	}
 	

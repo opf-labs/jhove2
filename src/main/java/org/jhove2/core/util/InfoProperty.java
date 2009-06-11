@@ -34,10 +34,43 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-/**
- * @author slabrams
- *
- */
-public class JHOVE2CommandLineParser {
+package org.jhove2.core.util;
 
+import java.lang.reflect.Method;
+
+import org.jhove2.core.I8R;
+
+/** A reportable property discovered by introspection.
+ * 
+ * @author mstrong, slabrams
+ */
+public class InfoProperty {
+	/** Property identifier in the JHOVE2 namespace. */
+	protected I8R identifier;
+	
+	/** Method defining the property. */
+	protected Method method;
+	
+	/** Instantiate a new <code>InfoProperty</code>.
+	 * @param identifier Property identifier in the JHOVE2 namespace
+	 * @param method     Method defining the property
+	 */
+	public InfoProperty(I8R identifier, Method method) {
+		this.identifier = identifier;
+		this.method     = method;
+	}
+	
+	/** Get property identifier in the JHOVE2 namespace.
+	 * @return Property identifier in the JHOVE2 namespace
+	 */
+	public I8R getIdentifier() {
+		return this.identifier;
+	}
+	
+	/** Get method defining the property.
+	 * @param Method defining the property
+	 */
+	public Method getMethod() {
+		return this.method;
+	}
 }

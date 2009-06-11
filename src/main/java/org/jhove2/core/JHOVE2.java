@@ -36,17 +36,25 @@
 
 package org.jhove2.core;
 
+import java.io.PrintStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
-import org.jhove2.annotation.Reportable;
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.display.Displayable;
+import org.jhove2.core.display.Displayer;
+import org.jhove2.core.util.Info;
+import org.jhove2.core.util.InfoProperty;
 
 /** The JHOVE2 core processing framework.
  * 
  * @author mstrong, slabrams
  */
-@Reportable("JHOVE2 core processing framework.")
 public class JHOVE2
 	extends AbstractModule
 {
@@ -54,7 +62,7 @@ public class JHOVE2
 	public static final String VERSION = "2.0.0";
 
 	/** Framework release date. */
-	public static final String DATE = "2009-06-04";
+	public static final String DATE = "2009-06-11";
 	
 	/** Framework rights statement. */
 	public static final String RIGHTS =
@@ -132,6 +140,9 @@ public class JHOVE2
 	/** Operating system version. */
 	protected String osVersion;
 	
+	/** Temporary directory. */
+	protected String tempDirectory;
+	
 	/** Used memory, in bytes. */
 	protected long useMemory;
 	
@@ -185,14 +196,136 @@ public class JHOVE2
 	 */
 	protected void initInvocation() {
 		Properties prop = System.getProperties();
+		this.tempDirectory    = prop.getProperty("java.io.tmpdir");
 		this.userName         = prop.getProperty("user.name");
 		this.workingDirectory = prop.getProperty("user.dir");
 	}
 	
+	/** Display the framework to the standard output stream.
+	 * @param displayer Displayer
+	 */
+	public void display(Displayable displayer) {
+		display(displayer, System.out);
+	}
+	
+	/** Display the framework.
+	 * @param out       Print stream
+	 * @param displayer Displayer
+	 */
+	public void display(Displayable displayer, PrintStream out) {
+		displayer.startDisplay(out, 0);
+		display(displayer, out, this, 0, 0);
+		displayer.endDisplay(out, 0);
+	}
+	
+	/** Display a {@link org.jhove2.core.Reportable}.
+	 * @param displayer  Displayer
+	 * @param out        Print stream
+	 * @param reportable Reportable
+	 * @param level      Nesting level
+	 * @param order      Ordinal position of this reportable with respect to
+	 *                   its enclosing reportable or collection
+	 */
+	protected void display(Displayable displayer, PrintStream out,
+			               Reportable reportable, int level, int order) {
+		Info   info       = new Info(reportable);
+		String name       = info.getName();
+		I8R    identifier = info.getIdentifier();
+		displayer.startReportable(out, level, name, identifier, order);
+
+		int or = 0;
+		List<Set<InfoProperty>> list = info.getProperties();
+		Iterator<Set<InfoProperty>> iter = list.iterator();
+		while (iter.hasNext()) {
+			Set<InfoProperty> methods = iter.next();
+			Iterator<InfoProperty> it2 = methods.iterator();
+			while (it2.hasNext()) {
+				InfoProperty prop = it2.next();
+				I8R    id     = prop.getIdentifier();
+				Method method = prop.getMethod();
+				String nm     = method.getName();
+				if (nm.indexOf("get") == 0) {
+					nm = nm.substring(3);
+				}
+				
+				try {
+					Object value = method.invoke(reportable);
+					if (value != null) {
+						display(displayer, out, level+1, nm, id, value, or++);
+					}
+				} catch (IllegalArgumentException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}	
+		displayer.endReportable(out, level, name, identifier);
+	}
+	
+	/** Display a {@link org.jhove2.core.Reportable}.
+	 * @param displayer  Displayer
+	 * @param out        Print stream
+	 * @param reportable Reportable
+	 * @param level      Nesting level
+	 * @param order      Ordinal position of this reportable with respect to
+	 *                   its enclosing reportable or collection
+	 * @param prop       Reportable property
+	 */
+	protected void display(Displayable displayer, PrintStream out, int level,
+			               String name, I8R identifier, Object value,
+			               int order) {
+		if (value instanceof List) {
+			List ls = (List) value;
+			int size = ls.size();
+			if (size > 0) {
+				displayer.startCollection(out, level, name, identifier,
+						                  size, order);
+				String nm = Displayer.singularName(name);
+				I8R    id = Displayer.singularIdentifier(identifier);
+				Iterator it3 = ls.iterator();
+				for (int i=0; it3.hasNext(); i++) {
+					Object prop = it3.next();
+					display(displayer, out, level+1, nm, id, prop, i);
+				}
+				displayer.endCollection(out, level, name, identifier, size);
+			}
+		}
+		else if (value instanceof Set) {
+			Set set = (Set) value;
+			int size = set.size();
+			if (size > 0) {
+				displayer.startCollection(out, level, name,
+						                  identifier, size, order);
+				String nm = Displayer.singularName(name);
+				I8R    id = Displayer.singularIdentifier(identifier);
+				Iterator it3 = set.iterator();
+				for (int i=0; it3.hasNext(); i++) {
+					Object prop = it3.next();
+					display(displayer, out, level+1, nm, id, prop, i);
+				}
+				displayer.endCollection(out, level, name, identifier,
+						                size);
+			}
+		}
+		else if (value instanceof Reportable) {
+			display(displayer, out, (Reportable) value, level+1, order);
+		}
+		else {
+			displayer.displayProperty(out, level+1, name, identifier,
+				                      value, order);
+		}
+	}
+
 	/** Get platform architecture.
 	 * @return Platform architecture
 	 */
-	@ReportableProperty(order=5, value="Platform architecture.")
+	@ReportableProperty(order=6, value="Platform architecture.")
 	public String getArchitecture() {
 		return this.architecture;
 	}
@@ -200,7 +333,7 @@ public class JHOVE2
 	/** Get {@link org.jhove2.core.io.Input} buffer size.
 	 * @return Input buffer size
 	 */
-	@ReportableProperty(order=18, value="Input buffer size.")
+	@ReportableProperty(order=19, value="Input buffer size.")
 	public int getBufferSize() {
 		return this.bufferSize;
 	}
@@ -208,7 +341,7 @@ public class JHOVE2
 	/** Get Java classpath.
 	 * @return Java classpath
 	 */
-	@ReportableProperty(order=16, value="Java classpath.")
+	@ReportableProperty(order=17, value="Java classpath.")
 	public String getClasspath() {
 		return this.classpath;
 	}
@@ -216,7 +349,7 @@ public class JHOVE2
 	/** Get application invocation date/timestamp.
 	 * @return Application invocation date/timestamp
 	 */
-	@ReportableProperty(order=3, value="Application invocation " +
+	@ReportableProperty(order=4, value="Application invocation " +
 			"date/timestatmp.")
 	public Date getDateTime() {
 		return new Date(this.timeInitial);
@@ -227,7 +360,7 @@ public class JHOVE2
 	 * indicates no fail fast, i.e., process and report all errors. 
 	 * @return Fail fast limit
 	 */
-	@ReportableProperty(order=19, value="Fail fast limit.")
+	@ReportableProperty(order=20, value="Fail fast limit.")
 	public int getFailFastLimit() {
 		return this.failFastLimit;
 	}
@@ -235,7 +368,7 @@ public class JHOVE2
 	/** Get JRE home.
 	 * @return JRE home
 	 */
-	@ReportableProperty(order=12, value="JRE home.")
+	@ReportableProperty(order=13, value="JRE home.")
 	public String getJREHome() {
 		return this.jreHome;
 	}
@@ -243,7 +376,7 @@ public class JHOVE2
 	/** Get JRE vendor.
 	 * @return JRE vendor
 	 */
-	@ReportableProperty(order=10, value="JRE vendor.")
+	@ReportableProperty(order=11, value="JRE vendor.")
 	public String getJREVendor() {
 		return this.jreVendor;
 	}
@@ -251,14 +384,14 @@ public class JHOVE2
 	/** Get JRE version.
 	 * @return JRE version
 	 */
-	@ReportableProperty(order=11, value="JRE version.")
+	@ReportableProperty(order=12, value="JRE version.")
 	public String getJREVersion() {
 		return this.jreVersion;
 	}
 	/** Get JVM name.
 	 * @return JVM name
 	 */
-	@ReportableProperty(order=14, value="JVM name.")
+	@ReportableProperty(order=15, value="JVM name.")
 	public String getJVMName() {
 		return this.jvmName;
 	}
@@ -266,7 +399,7 @@ public class JHOVE2
 	/** Get JVM vendor.
 	 * @return JVM vendor
 	 */
-	@ReportableProperty(order=13, value="JVM vendor.")
+	@ReportableProperty(order=14, value="JVM vendor.")
 	public String getJVMVendor() {
 		return this.jvmVendor;
 	}
@@ -274,7 +407,7 @@ public class JHOVE2
 	/** Get JVM version.
 	 * @return JVM version
 	 */
-	@ReportableProperty(order=15, value="JVM version.")
+	@ReportableProperty(order=16, value="JVM version.")
 	public String getJVMVersion() {
 		return this.jvmVersion;
 	}
@@ -282,7 +415,7 @@ public class JHOVE2
 	/** Get Java library path.
 	 * @return Java library path
 	 */
-	@ReportableProperty(order=17, value="Java library path.")
+	@ReportableProperty(order=18, value="Java library path.")
 	public String getLibraryPath() {
 		return this.libraryPath;
 	}
@@ -290,7 +423,7 @@ public class JHOVE2
 	/** Get maximum memory available to the JVM, in bytes.
 	 * @return maximum memory available to the JVM, in bytes
 	 */
-	@ReportableProperty(order=7, value="Maximum memory available to the " +
+	@ReportableProperty(order=8, value="Maximum memory available to the " +
 			"JVM, in bytes.")
 	public long getMaxMemory() {
 		return this.maxMemory;
@@ -301,7 +434,7 @@ public class JHOVE2
 	 * of method invocation.
 	 * @return Memory usage, in bytes
 	 */
-	@ReportableProperty(order=28, value="Application memory usage, in bytes.")
+	@ReportableProperty(order=29, value="Application memory usage, in bytes.")
 	public long getMemoryUsage() {
 		Runtime rt = Runtime.getRuntime();
 		long use = rt.totalMemory() - rt.freeMemory();
@@ -312,7 +445,7 @@ public class JHOVE2
 	/** Get number of aggregate source units processed.
 	 * @return Number of aggregate source units processed
 	 */
-	@ReportableProperty(order=25, value="Number of bytestream source units " +
+	@ReportableProperty(order=26, value="Number of bytestream source units " +
 			"processed.")
 	public int getNumBytestreamSources() {
 		return this.numBytestreams;
@@ -321,7 +454,7 @@ public class JHOVE2
 	/** Get number of clump source units processed.
 	 * @return Number of clump source units processed
 	 */
-	@ReportableProperty(order=27, value="Number of clump source units " +
+	@ReportableProperty(order=28, value="Number of clump source units " +
 			"processed.")
 	public int getNumClumpSources() {
 		return this.numClumps;
@@ -330,7 +463,7 @@ public class JHOVE2
 	/** Get number of container source units processed.
 	 * @return Number of container source units processed
 	 */
-	@ReportableProperty(order=26, value="Number of bytestream source units " +
+	@ReportableProperty(order=27, value="Number of bytestream source units " +
 			"processed.")
 	public int getNumContainerSources() {
 		return this.numContainers;
@@ -339,7 +472,7 @@ public class JHOVE2
 	/** Get number of directory source units processed.
 	 * @return Number of directory source units processed
 	 */
-	@ReportableProperty(order=23, value="Number of directory source units " +
+	@ReportableProperty(order=24, value="Number of directory source units " +
 			"processed.")
 	public int getNumDirectorySources() {
 		return this.numDirectories;
@@ -348,7 +481,7 @@ public class JHOVE2
 	/** Get number of file source units processed.
 	 * @return Number of file source units processed
 	 */
-	@ReportableProperty(order=24, value="Number of file source units " +
+	@ReportableProperty(order=25, value="Number of file source units " +
 			"processed.")
 	public int getNumFileSources() {
 		return this.numFiles;
@@ -357,7 +490,7 @@ public class JHOVE2
 	/** Get number of processors available to the JVM.
 	 * @return Number of processors.
 	 */
-	@ReportableProperty(order=6, value="Number of processors available to " +
+	@ReportableProperty(order=7, value="Number of processors available to " +
 	"the JVM.")
 	public int getNumProcessors() {
 		return this.numProcessors;
@@ -366,7 +499,7 @@ public class JHOVE2
 	/** Get number of source units processed.
 	 * @return Number of source units processed
 	 */
-	@ReportableProperty(order=22, value="Number of source units processed.")
+	@ReportableProperty(order=23, value="Number of source units processed.")
 	public int getNumSources() {
 		return this.numDirectories + this.numFiles + this.numBytestreams + 
 		       this.numContainers  + this.numClumps;
@@ -375,7 +508,7 @@ public class JHOVE2
 	/** Get operating system name.
 	 * @return Operating system name
 	 */
-	@ReportableProperty(order=8, value="Operating system name.")
+	@ReportableProperty(order=9, value="Operating system name.")
 	public String getOSName() {
 		return this.osName;
 	}
@@ -383,9 +516,17 @@ public class JHOVE2
 	/** Get operating system version.
 	 * @return Operating system version
 	 */
-	@ReportableProperty(order=9, value="Operating system version.")
+	@ReportableProperty(order=10, value="Operating system version.")
 	public String getOSVersion() {
 		return  this.osVersion;
+	}
+	
+	/** Get temporary directory.
+	 * @return Temporary directory
+	 */
+	@ReportableProperty(order=3, value="Temporary directory.")
+	public String getTempDirectory() {
+		return this.tempDirectory;
 	}
 	
 	/** Get application user name.
@@ -418,5 +559,12 @@ public class JHOVE2
 	 */
 	public void setFailFastLimit(int limit) {
 		this.failFastLimit = limit;
+	}
+	
+	/** Set temporary directory.
+	 * @param directory Temporary directory
+	 */
+	public void setTempDirectory(String directory) {
+		this.tempDirectory = directory;
 	}
 }

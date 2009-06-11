@@ -39,8 +39,7 @@ package org.jhove2.app;
 import java.util.List;
 
 import org.jhove2.core.JHOVE2;
-import org.jhove2.core.display.Displayer;
-import org.jhove2.core.display.TextDisplayer;
+import org.jhove2.core.display.Displayable;
 
 /** JHOVE2 command line application.
  * 
@@ -70,7 +69,7 @@ public class JHOVE2CommandLine {
 		jhove2.setBufferSize(parser.getBufferSize());
 		jhove2.setFailFastLimit(parser.getFailFastLimit());
 		
-		Displayer displayer = new TextDisplayer();
-		displayer.display(jhove2);
+		Displayable displayer = new org.jhove2.core.display.TextDisplayer();
+		jhove2.display(displayer);
 	}
 }
