@@ -40,23 +40,23 @@ import java.lang.reflect.Method;
 import java.util.Comparator;
 
 /** {@link java.util.Comparator} for ordering reportable properties by their
- * ordinal values.
+ * ordinal values.  A reportable property is a named, typed value.
  * 
  * @author mstrong, slabrams
  */
 public class ReportablePropertyComparator
 	implements Comparator<Method>
 {
-	/** Compare two reportable property accessor methods for relative ordering.
-	 * @param m1 First method
-	 * @param m2 Second method
+	/** Compare two reportable properties for relative ordering.
+	 * @param m1 First property ordinal value method
+	 * @param m2 Second property ordinal value method
 	 */
 	@Override
     public int compare(Method m1, Method m2) {
     	int ret = 1;
     	
-    	int v1 = m1.getAnnotation(ReportableProperty.class).value();
-    	int v2 = m2.getAnnotation(ReportableProperty.class).value();
+    	int v1 = m1.getAnnotation(ReportableProperty.class).order();
+    	int v2 = m2.getAnnotation(ReportableProperty.class).order();
         if      (v1 < v2) {
             return -1;
         }

@@ -43,25 +43,16 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/** JHOVE2 annotation marking {@link org.jhove2.core.Reporter} messages.
- * Messages are defined by marking the message class with the
- * <code>ReportableMessage</code> annotation and specifying the
- * <code>desc</code> and, optionally, the <code>ref</code> arguments.
- * 
- * Reportables assert the messages that they can generate by marking
- * a local variable with the <code>ReportableMessage</code> annotation
- * with no arguments.
+/** Annotation for marking JHOVE2 reporters.  A reporter is a named
+ * aggregation of {@link org.jhove2.annotation.ReportableProperties}.
  * 
  * @author mstrong, slabrams
  */
 @Documented
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE, ElementType.LOCAL_VARIABLE})
-public @interface ReportableMessage {
-	/** AbstractMessage description. */
-	public String desc() default "No description available.";
-	
-	/** AbstractMessage reference. */
-	public String ref() default "No reference available.";
+@Target({ElementType.TYPE})
+public @interface Reportable {
+	/** Property description.*/
+	public String value() default "No description available.";
 }

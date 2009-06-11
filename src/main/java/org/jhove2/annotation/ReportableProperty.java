@@ -43,7 +43,15 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/** JHOVE2 annotation marking {@link org.jhove2.core.Reporter} properties.
+/** JHOVE2 annotation marking reportable properties.  A reportable property is
+ * a named, typed value.  Properties have two names: a short descriptive name,
+ * not necessarily unique; and a formal name guaranteed unique.  The
+ * descriptive name is implied by the accessor method that returns it.  For
+ * example, the method <code>String getName()</code> defines a scalar
+ * string-valued property named "Name".  the formal name is an identifier in
+ * JHOVE2 namespace based on the name of the
+ * {@link org.jhove2.core.Reporter} containing the property
+ * concatenated with the property's descriptive name.
  * 
  * @author mstrong, slabrams
  */
@@ -52,14 +60,15 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})
 public @interface ReportableProperty {
-	/** Property description. */
-	public String desc() default "No description available.";
+	/** Property description.*/
+	public String value() default "No description available.";
 	
-	/** Property reference. */
+	/** Property reference, a citation to an external source document that
+	 * defines the property. */
 	public String ref() default "No reference available.";
 	
-	/** Ordinal position of this property relative to all properties defined
-	 * by a container.
+	/** Ordinal position of this property relative to all properties directly
+	 * defined in a class.
 	 */
-	public int value() default 1;
+	public int order() default 1;
 }
