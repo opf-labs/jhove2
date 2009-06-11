@@ -37,56 +37,26 @@
 package org.jhove2.core.display;
 
 import java.io.PrintStream;
-import java.text.SimpleDateFormat;
 
-import org.jhove2.core.Component;
+import org.jhove2.annotation.Reportable;
 import org.jhove2.core.Reporter;
 
-/** Interface for a JHOVE2 displayer.
+/** Interface for JHOVE2 displayers.
  * 
  * @author mstrong, slabrams
  */
+@Reportable("A displayer.")
 public interface Displayer
-	extends Component
+	extends Reporter
 {
-	/** ISO 8601 date format. */
-	public static final SimpleDateFormat ISO8601 =
-		            new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZ");
-	
-	/** Display visibility. */
-	public enum Visibility {
-		Always,
-		IfFalse,
-		IfNegative,
-		IfNonNegative,
-		IfNonPositive,
-		IfPositive,
-		IfTrue,
-		IfNonZero,
-		IfZero,
-		Never;
-	}
-	
-	/** Display formats. */
-	public enum Format {
-		JSON,
-		Text,
-		XML
-	}	
-
-	/** Print the reportable properties and messages of a
-	 * {@link org.jhove2.core.Reporter} to the standard output unit.  If
-	 * the Reporter has children they are also printed recursively.
-	 * @param reporter Reporter
-	 * @see org.jhove2.core.display.Displayer#print(java.io.PrintStream, org.jhove2.core.Reporter)
-	 */
-	public void print(Reporter reporter);
-	
-	/** Print the reportable properties and messages of a
-	 * {@link org.jhove2.core.Reporter}.  If the Reporter has children
-	 * they are also printed recursively.
-	 * @param out      Output print stream
+	/** Display a {@link org.jhove2.core.Reporter} to the standard output
+	 * stream.
 	 * @param reporter Reporter
 	 */
-	public void print(PrintStream out, Reporter reporter);
+	public void display(Reporter reporter);
+	
+	/** Display a {@link org.jhove2.core.Reporter}.
+	 * @param reporter Reporter
+	 */
+	public void display(PrintStream out, Reporter reporter);
 }
