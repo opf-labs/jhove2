@@ -34,7 +34,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.module.common.unicode;
+package org.jhove2.module.format.unicode;
 
 /** Interface for common JHOVE2 Unicode properties.
  * 
