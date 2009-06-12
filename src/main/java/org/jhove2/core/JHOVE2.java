@@ -39,6 +39,7 @@ package org.jhove2.core;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -46,8 +47,13 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.display.Displayable;
 import org.jhove2.core.display.Displayer;
+import org.jhove2.core.source.AggregateSource;
+import org.jhove2.core.source.ClumpSource;
+import org.jhove2.core.source.DirectorySource;
+import org.jhove2.core.source.FileSource;
+import org.jhove2.core.source.Source;
+import org.jhove2.core.source.SourceFactory;
 import org.jhove2.core.util.Info;
 import org.jhove2.core.util.InfoProperty;
 
@@ -71,6 +77,10 @@ public class JHOVE2
 		"Stanford Junior University. " +
 		"Available under the terms of the BSD license.";
 	
+	/** ISO 8601 date/time format. */
+	public static final SimpleDateFormat ISO8601 =
+		            new SimpleDateFormat("yyyy-MM-ss'T'hh:mm:ssZ");
+	
 	/** Default buffer size. */
 	public static final int DEFAULT_BUFFER_SIZE = 131072;
 	
@@ -85,10 +95,13 @@ public class JHOVE2
 	
 	/** Java classpath. */
 	protected String classpath;
+	
+	/** Displayer. */
+	protected Displayable displayer;
 
-	/** Fail fast limit.  Processing of a given source unit is terminated once
-	 * the number of detected errors exceeds the limit.  A limit of 0
-	 * indicates no fail fast, i.e., process and report all errors. 
+	/** Framework fail fast limit.  Processing of a given source unit is
+	 * terminated once the number of detected errors exceeds the limit.  A
+	 * limit of 0 indicates no fail fast, i.e., process and report all errors. 
 	 */
 	protected int failFastLimit;
 	
@@ -140,7 +153,10 @@ public class JHOVE2
 	/** Operating system version. */
 	protected String osVersion;
 	
-	/** Temporary directory. */
+	/** Framework source unit. */
+	protected Source source;
+	
+	/** Framework temporary directory. */
 	protected String tempDirectory;
 	
 	/** Used memory, in bytes. */
@@ -149,7 +165,7 @@ public class JHOVE2
 	/** User name. */
 	protected String userName;
 	
-	/** Current working directory. */
+	/** Framework current working directory. */
 	protected String workingDirectory;
 
 	/** Instantiate a new <code>JHOVE2</code> core framework.
@@ -201,6 +217,72 @@ public class JHOVE2
 		this.workingDirectory = prop.getProperty("user.dir");
 	}
 	
+	/** Characterize file system objects (files and directories).
+	 * @param pathName  First path name
+	 * @param pathNames Remaining path names
+	 */
+	public void characterize(String pathName, String... pathNames) {
+		if (pathNames == null) {
+			this.source = SourceFactory.getSource(pathName);
+			characterize(this.source);
+		}
+		else if (pathNames.length > 0) {
+			this.source = new ClumpSource();
+			for (int i=0; i<pathNames.length; i++) {
+				Source src = SourceFactory.getSource(pathNames[i]);
+				((ClumpSource) this.source).addChildSource(src);
+			}
+			characterize(this.source);
+		}
+	}
+	
+	/** Characterize file system objects (files and directories).
+	 * @param pathNames File system path names
+	 */
+	public void characterize(List<String> pathNames) {
+		Iterator<String> iter = pathNames.iterator();
+		if (pathNames.size() == 1) {
+			String pathName = iter.next();
+			this.source = SourceFactory.getSource(pathName);
+			characterize(this.source);
+		}
+		else {
+			this.source = new ClumpSource();
+			while (iter.hasNext()) {
+				String pathName = iter.next();
+				Source src = SourceFactory.getSource(pathName);
+				((ClumpSource) this.source).addChildSource(src);
+			}
+			characterize(this.source);
+		}
+	}
+	
+	/** Characterize a source unit.
+	 * @param sourcc Source unit
+	 */
+	protected void characterize(Source source) {
+		if      (source instanceof ClumpSource) {
+			this.numClumps++;
+		}
+		else if (source instanceof DirectorySource) {
+			this.numDirectories++;
+		}
+		else if (source instanceof FileSource) {
+			this.numFiles++;
+		}
+		
+		if (source instanceof AggregateSource) {
+			List<Source> list = ((AggregateSource) source).getChildSources();
+			Iterator<Source> iter = list.iterator();
+			while (iter.hasNext()) {
+				characterize(iter.next());
+			}
+		}
+		else {
+			;
+		}
+	}
+	
 	/** Display the framework to the standard output stream.
 	 * @param displayer Displayer
 	 */
@@ -213,25 +295,26 @@ public class JHOVE2
 	 * @param displayer Displayer
 	 */
 	public void display(Displayable displayer, PrintStream out) {
-		displayer.startDisplay(out, 0);
-		display(displayer, out, this, 0, 0);
-		displayer.endDisplay(out, 0);
+		this.displayer = displayer;
+		
+		this.displayer.startDisplay(out, 0);
+		display(out, this, 0, 0);
+		this.displayer.endDisplay(out, 0);
 	}
 	
 	/** Display a {@link org.jhove2.core.Reportable}.
-	 * @param displayer  Displayer
 	 * @param out        Print stream
 	 * @param reportable Reportable
 	 * @param level      Nesting level
 	 * @param order      Ordinal position of this reportable with respect to
 	 *                   its enclosing reportable or collection
 	 */
-	protected void display(Displayable displayer, PrintStream out,
-			               Reportable reportable, int level, int order) {
+	protected void display(PrintStream out, Reportable reportable, int level,
+			               int order) {
 		Info   info       = new Info(reportable);
 		String name       = info.getName();
 		I8R    identifier = info.getIdentifier();
-		displayer.startReportable(out, level, name, identifier, order);
+		this.displayer.startReportable(out, level, name, identifier, order);
 
 		int or = 0;
 		List<Set<InfoProperty>> list = info.getProperties();
@@ -251,7 +334,7 @@ public class JHOVE2
 				try {
 					Object value = method.invoke(reportable);
 					if (value != null) {
-						display(displayer, out, level+1, nm, id, value, or++);
+						display(out, level, nm, id, value, or++);
 					}
 				} catch (IllegalArgumentException e) {
 					// TODO Auto-generated catch block
@@ -265,11 +348,10 @@ public class JHOVE2
 				}
 			}
 		}	
-		displayer.endReportable(out, level, name, identifier);
+		this.displayer.endReportable(out, level, name, identifier);
 	}
 	
 	/** Display a {@link org.jhove2.core.Reportable}.
-	 * @param displayer  Displayer
 	 * @param out        Print stream
 	 * @param reportable Reportable
 	 * @param level      Nesting level
@@ -277,48 +359,50 @@ public class JHOVE2
 	 *                   its enclosing reportable or collection
 	 * @param prop       Reportable property
 	 */
-	protected void display(Displayable displayer, PrintStream out, int level,
-			               String name, I8R identifier, Object value,
-			               int order) {
+	protected void display(PrintStream out, int level, String name,
+			               I8R identifier, Object value, int order) {
 		if (value instanceof List) {
 			List ls = (List) value;
 			int size = ls.size();
 			if (size > 0) {
-				displayer.startCollection(out, level, name, identifier,
+				this.displayer.startCollection(out, level+1, name, identifier,
 						                  size, order);
 				String nm = Displayer.singularName(name);
 				I8R    id = Displayer.singularIdentifier(identifier);
 				Iterator it3 = ls.iterator();
 				for (int i=0; it3.hasNext(); i++) {
 					Object prop = it3.next();
-					display(displayer, out, level+1, nm, id, prop, i);
+					this.display(out, level+1, nm, id, prop, i);
 				}
-				displayer.endCollection(out, level, name, identifier, size);
+				this.displayer.endCollection(out, level+1, name, identifier, size);
 			}
 		}
 		else if (value instanceof Set) {
 			Set set = (Set) value;
 			int size = set.size();
 			if (size > 0) {
-				displayer.startCollection(out, level, name,
+				this.displayer.startCollection(out, level+1, name,
 						                  identifier, size, order);
 				String nm = Displayer.singularName(name);
 				I8R    id = Displayer.singularIdentifier(identifier);
 				Iterator it3 = set.iterator();
 				for (int i=0; it3.hasNext(); i++) {
 					Object prop = it3.next();
-					display(displayer, out, level+1, nm, id, prop, i);
+					display(out, level+1, nm, id, prop, i);
 				}
-				displayer.endCollection(out, level, name, identifier,
+				this.displayer.endCollection(out, level+1, name, identifier,
 						                size);
 			}
 		}
 		else if (value instanceof Reportable) {
-			display(displayer, out, (Reportable) value, level+1, order);
+			display(out, (Reportable) value, level+1, order);
 		}
 		else {
-			displayer.displayProperty(out, level+1, name, identifier,
-				                      value, order);
+			if (value instanceof Date) {
+				value = ISO8601.format(value);
+			}
+			this.displayer.displayProperty(out, level+1, name, identifier,
+				                           value, order);
 		}
 	}
 
@@ -346,21 +430,29 @@ public class JHOVE2
 		return this.classpath;
 	}
 	
-	/** Get application invocation date/timestamp.
-	 * @return Application invocation date/timestamp
+	/** Get framework invocation date/timestamp.
+	 * @return Framework invocation date/timestamp
 	 */
-	@ReportableProperty(order=4, value="Application invocation " +
+	@ReportableProperty(order=4, value="Framework invocation " +
 			"date/timestatmp.")
 	public Date getDateTime() {
 		return new Date(this.timeInitial);
 	}
 	
-	/** Get fail fast limit.  Processing of a given source unit is terminated
-	 * once the number of detected errors exceeds the limit.  A limit of 0
-	 * indicates no fail fast, i.e., process and report all errors. 
+	/** Get displayer.
+	 * @return displayer
+	 */
+	@ReportableProperty(order=21, value="Displayer.")
+	public Displayable getDisplayer() {
+		return this.displayer;
+	}
+	
+	/** Get framework fail fast limit.  Processing of a given source unit is
+	 * terminated once the number of detected errors exceeds the limit.  A
+	 * limit of 0 indicates no fail fast, i.e., process and report all errors. 
 	 * @return Fail fast limit
 	 */
-	@ReportableProperty(order=20, value="Fail fast limit.")
+	@ReportableProperty(order=20, value="Framework fail fast limit.")
 	public int getFailFastLimit() {
 		return this.failFastLimit;
 	}
@@ -429,12 +521,12 @@ public class JHOVE2
 		return this.maxMemory;
 	}
 
-	/** Get application memory usage.  This is calculated naively as the Java
+	/** Get framework memory usage.  This is calculated naively as the Java
 	 * {@link java.lang.Runtime}'s total memory minus free memory at the time
 	 * of method invocation.
 	 * @return Memory usage, in bytes
 	 */
-	@ReportableProperty(order=29, value="Application memory usage, in bytes.")
+	@ReportableProperty(order=30, value="Framework memory usage, in bytes.")
 	public long getMemoryUsage() {
 		Runtime rt = Runtime.getRuntime();
 		long use = rt.totalMemory() - rt.freeMemory();
@@ -445,7 +537,7 @@ public class JHOVE2
 	/** Get number of aggregate source units processed.
 	 * @return Number of aggregate source units processed
 	 */
-	@ReportableProperty(order=26, value="Number of bytestream source units " +
+	@ReportableProperty(order=27, value="Number of bytestream source units " +
 			"processed.")
 	public int getNumBytestreamSources() {
 		return this.numBytestreams;
@@ -454,7 +546,7 @@ public class JHOVE2
 	/** Get number of clump source units processed.
 	 * @return Number of clump source units processed
 	 */
-	@ReportableProperty(order=28, value="Number of clump source units " +
+	@ReportableProperty(order=29, value="Number of clump source units " +
 			"processed.")
 	public int getNumClumpSources() {
 		return this.numClumps;
@@ -463,7 +555,7 @@ public class JHOVE2
 	/** Get number of container source units processed.
 	 * @return Number of container source units processed
 	 */
-	@ReportableProperty(order=27, value="Number of bytestream source units " +
+	@ReportableProperty(order=28, value="Number of container source units " +
 			"processed.")
 	public int getNumContainerSources() {
 		return this.numContainers;
@@ -521,26 +613,34 @@ public class JHOVE2
 		return  this.osVersion;
 	}
 	
-	/** Get temporary directory.
-	 * @return Temporary directory
+	/** Get framework source unit.
+	 * @return Framework source unit
 	 */
-	@ReportableProperty(order=3, value="Temporary directory.")
+	@ReportableProperty(order=5, value="Framework source unit.")
+	public Source getSource() {
+		return this.source;
+	}
+	
+	/** Get framework temporary directory.
+	 * @return Framework temporary directory
+	 */
+	@ReportableProperty(order=3, value="Framework temporary directory.")
 	public String getTempDirectory() {
 		return this.tempDirectory;
 	}
 	
-	/** Get application user name.
-	 * @return Application user name
+	/** Get framework user name.
+	 * @return Framework user name
 	 */
-	@ReportableProperty(order=1, value="Application user name.")
+	@ReportableProperty(order=1, value="Framework user name.")
 	public String getUserName() {
 		return this.userName;
 	}
 	
-	/** Get application current working directory.
-	 * @return Application current working directory
+	/** Get framework current working directory.
+	 * @return Framework current working directory
 	 */
-	@ReportableProperty(order=2, value="Application current working directory.")
+	@ReportableProperty(order=2, value="Framework current working directory.")
 	public String getWorkingDirectory() {
 		return this.workingDirectory;
 	}

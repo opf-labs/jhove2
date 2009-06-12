@@ -36,18 +36,12 @@
 
 package org.jhove2.core;
 
-import java.util.List;
-
-import org.jhove2.annotation.ReportableProperty;
-
-/** Interface for JHOVE2 reportables.
+/** Marker interface for JHOVE2 processing modules.  Processing modules
+ * encapsulate characterization strategies.
  * 
  * @author mstrong, slabrams
  */
-public interface Reportable {
-	/** Get reportable capabilities.
-	 * @return Reportable capabilities
-	 */
-	@ReportableProperty("Reportable capabilities.")
-	public List<String> getCapabilities();
+public interface Processible
+	extends Capable
+{
 }

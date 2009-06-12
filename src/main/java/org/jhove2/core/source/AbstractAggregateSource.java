@@ -34,20 +34,79 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.core;
+package org.jhove2.core.source;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import org.jhove2.annotation.ReportableProperty;
-
-/** Interface for JHOVE2 reportables.
+/** An abstract JHOVE2 aggregate source unit.
  * 
  * @author mstrong, slabrams
+ *
  */
-public interface Reportable {
-	/** Get reportable capabilities.
-	 * @return Reportable capabilities
+public abstract class AbstractAggregateSource
+	extends AbstractSource
+	implements AggregateSource
+{
+	/** Child source units. */
+	protected List<Source> children;
+	
+	/** Instantiate a new <code>AbstractAggregateSource</code>.
 	 */
-	@ReportableProperty("Reportable capabilities.")
-	public List<String> getCapabilities();
+	public AbstractAggregateSource() {
+		super();
+		
+		this.children = new ArrayList<Source>();
+	}
+	
+	/** Instantiate a new <code>AbstractAggregateSource</code>.
+	 * @param child    First child source units
+	 * @param children Remaining child source units
+	 */
+	public AbstractAggregateSource(Source child, Source... children) {
+		this();
+		
+		this.children.add(child);
+		if (children != null && children.length > 0) {
+			for (int i=0; i<children.length; i++) {
+				this.children.add(children[i]);
+			}
+		}
+	}
+	
+	/** Instantiate a new <code>AbstractAggregateSource</code>.
+	 * @param children Child source units
+	 */
+	public AbstractAggregateSource(List<Source> children) {
+		this();
+		
+		this.children.addAll(children);
+	}
+	
+	/** Add a child source unit.
+	 * @param child Child source unit
+	 * @see org.jhove2.core.source.AggregateSource#addChildSource(org.jhove2.core.source.Source)
+	 */
+	@Override
+	public void addChildSource(Source child) {
+		this.children.add(child);
+	}
+	
+	/** Get child source units.
+	 * @return Child source units
+	 * @see org.jhove2.core.source.AggregateSource#getChildSources()
+	 */
+	@Override
+	public List<Source> getChildSources() {
+		return this.children;
+	}
+
+	/** Get number of child source units.
+	 * @return Number of child source units
+	 * @see org.jhove2.core.source.AggregateSource#getNumChildSources()
+	 */
+	@Override
+	public int getNumChildSources() {
+		return this.children.size();
+	}
 }

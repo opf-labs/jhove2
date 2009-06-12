@@ -36,18 +36,40 @@
 
 package org.jhove2.core;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import org.jhove2.annotation.ReportableProperty;
-
-/** Interface for JHOVE2 reportables.
+/** An abstract JHOVE2 {@link org.jhove2.core.Reportable}, which is a named
+ * aggregation of reportable properties.
  * 
  * @author mstrong, slabrams
  */
-public interface Reportable {
+public abstract class AbstractReportable
+	implements Reportable
+{
+	/** Reportable capabilities. */
+	protected List<String> capabilities;
+	
+	/** Instantiate a new <code>AbstractReportable</code>.
+	 */
+	public AbstractReportable() {
+		this.capabilities = new ArrayList<String>();
+
+		Class<?> cl = this.getClass();
+		do {
+			Class<?> [] ifs = cl.getInterfaces();
+			for (int i=0; i<ifs.length; i++) {
+				/* TODO: determine if a capable interface. */
+			}
+		} while ((cl = cl.getSuperclass()) != null);
+	}
+	
 	/** Get reportable capabilities.
 	 * @return Reportable capabilities
+	 * @see org.jhove2.core.Reportable#getCapabilities()
 	 */
-	@ReportableProperty("Reportable capabilities.")
-	public List<String> getCapabilities();
+	@Override
+	public List<String> getCapabilities() {
+		return this.capabilities;
+	}
 }

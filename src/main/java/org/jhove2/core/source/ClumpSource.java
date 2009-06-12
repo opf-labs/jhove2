@@ -34,20 +34,37 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.core;
+package org.jhove2.core.source;
 
 import java.util.List;
 
-import org.jhove2.annotation.ReportableProperty;
-
-/** Interface for JHOVE2 reportables.
+/** JHOVE2 clump source unit.  A clump is an aggregation of source units that
+ * collectively form a single coherent characterizable object. 
  * 
  * @author mstrong, slabrams
+ *
  */
-public interface Reportable {
-	/** Get reportable capabilities.
-	 * @return Reportable capabilities
+public class ClumpSource
+	extends AbstractAggregateSource
+{
+	/** Instantiate a new <code>ClumpSource</code>.
 	 */
-	@ReportableProperty("Reportable capabilities.")
-	public List<String> getCapabilities();
+	public ClumpSource() {
+		super();
+	}
+	
+	/** Instantiate a new <code>ClumpSource</code>.
+	 * @param child    First child source unit
+	 * @param children Remaining child source units
+	 */
+	public ClumpSource(Source child, Source... children) {
+		super(child, children);
+	}
+
+	/** Instantiate a new <code>ClumpSource</code>.
+	 * @param children Child source units
+	 */
+	public ClumpSource(List<Source> children) {
+		super(children);
+	}
 }

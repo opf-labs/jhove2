@@ -34,20 +34,60 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.core;
+package org.jhove2.core.source;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.AbstractReportable;
+import org.jhove2.core.Module;
+import org.jhove2.core.io.Input;
 
-/** Interface for JHOVE2 reportables.
+/** An abstract JHOVE2 source unit.  A source unit is a formatted object that
+ * can be characterized, which may be a file, a subset of a file, or a group
+ * of files.
  * 
  * @author mstrong, slabrams
  */
-public interface Reportable {
-	/** Get reportable capabilities.
-	 * @return Reportable capabilities
+public abstract class AbstractSource
+	extends AbstractReportable
+	implements Source
+{
+	/** Modules that processed the source unit. */
+	protected List<Module> modules;
+	
+	/** Instantiate a new <code>AbstractSource</code>.
 	 */
-	@ReportableProperty("Reportable capabilities.")
-	public List<String> getCapabilities();
+	public AbstractSource() {
+		this.modules = new ArrayList<Module>();
+	}
+	
+	/** Add a module that processed the source unit.
+	 * @param module Module that processed the source unit
+	 * @see org.jhove2.core.source.Source#addModule(org.jhove2.core.Module)
+	 */
+	@Override
+	public void addModule(Module module) {
+		this.addModule(module);
+	}
+
+	/** Get {@link org.jhove2.core.io.Input} for the source unit.
+	 * @return Input for the source unit
+	 * @see org.jhove2.core.source.Source#getInput()
+	 */
+	@Override
+	public Input getInput() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/** Get modules that processed the source unit.
+	 * @return Modules that processed the source unit
+	 * @see org.jhove2.core.source.Source#getModules()
+	 */
+	@Override
+	public List<Module> getModules() {
+		return this.modules;
+	}
+
 }

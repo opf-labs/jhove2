@@ -48,7 +48,7 @@ import org.jhove2.annotation.ReportableProperty;
  * @author mstrong, slabrams
  */
 public class Format
-	implements Reportable
+	extends AbstractReportable
 {
 	/** Format ambiguities. Ambiguous formats should report their caveats. */
 	public enum Ambiguity {

@@ -34,20 +34,37 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.core;
+package org.jhove2.core.source;
 
 import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.Module;
+import org.jhove2.core.Reportable;
+import org.jhove2.core.io.Input;
 
-/** Interface for JHOVE2 reportables.
+/** Interface for JHOVE2 source units.  A source unit is a formatted object
+ * that can be characterized, which may be a file, a subset of a file, or a
+ * group of files.
  * 
  * @author mstrong, slabrams
  */
-public interface Reportable {
-	/** Get reportable capabilities.
-	 * @return Reportable capabilities
+public interface Source
+	extends Reportable
+{
+	/** Add a module that processed the source unit.
+	 * @param module Module that processed the source unit
 	 */
-	@ReportableProperty("Reportable capabilities.")
-	public List<String> getCapabilities();
+	public void addModule(Module module);
+	
+	/** Get {@link org.jhove2.core.io.Input} for the source unit.
+	 * @return Input for the source unit
+	 */
+	public Input getInput();
+	
+	/** Get modules that processed the source unit.
+	 * @return Modules that processed the source unit
+	 */
+	@ReportableProperty("Modules that processed the source unit")
+	public List<Module> getModules();
 }

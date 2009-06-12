@@ -34,17 +34,18 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.core.display;
+package org.jhove2.core;
 
 import java.io.PrintStream;
 
-import org.jhove2.core.I8R;
 
 /** Interface for JHOVE2 displayers.
  * 
  * @author mstrong, slabrams
  */
-public interface Displayable {
+public interface Displayable
+	extends Capable
+{
 	/** Start display.
 	 * @param out   Print stream
 	 * @param level Nesting level

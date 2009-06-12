@@ -39,6 +39,7 @@ package org.jhove2.core.display;
 import java.io.PrintStream;
 
 import org.jhove2.core.AbstractModule;
+import org.jhove2.core.Displayable;
 import org.jhove2.core.I8R;
 
 /** JSON displayer.  The JSON format is defined by RFC 4627.
@@ -73,7 +74,7 @@ public class JSONDisplayer
 	/** Start display.
 	 * @param out   Print stream
 	 * @param level Nesting level
-	 * @see org.jhove2.core.display.Displayable#startDisplay(java.io.PrintStream, int)
+	 * @see org.jhove2.core.Displayable#startDisplay(java.io.PrintStream, int)
 	 */
 	@Override
 	public void startDisplay(PrintStream out, int level) {
@@ -90,7 +91,7 @@ public class JSONDisplayer
 	 * @param order      Ordinal position of this reportable with respect to
 	 *                   enclosing {@link org.jhove2.core.Reportable} or
 	 *                   collection
-	 * @see org.jhove2.core.display.Displayable#startReportable(java.io.PrintStream, java.lang.String, org.jhove2.core.I8R, int, boolean)
+	 * @see org.jhove2.core.Displayable#startReportable(java.io.PrintStream, java.lang.String, org.jhove2.core.I8R, int, boolean)
 	 */
 	@Override
 	public void startReportable(PrintStream out, int level, String name,
@@ -116,7 +117,7 @@ public class JSONDisplayer
 	 * @param iorder      Ordinal position of this reportable with respect to
 	 *                   enclosing {@link org.jhove2.core.Reportable} or
 	 *                   collection
-	 * @see org.jhove2.core.display.Displayable#startCollection(java.io.PrintStream, int, java.lang.String, org.jhove2.core.I8R, int, boolean)
+	 * @see org.jhove2.core.Displayable#startCollection(java.io.PrintStream, int, java.lang.String, org.jhove2.core.I8R, int, boolean)
 	 */
 	@Override
 	public void startCollection(PrintStream out, int level, String name,
@@ -142,7 +143,7 @@ public class JSONDisplayer
 	 * @param order      Ordinal position of this reportable with respect to
 	 *                   enclosing {@link org.jhove2.core.Reportable} or
 	 *                   collection
-	 * @see org.jhove2.core.display.Displayable#displayProperty(java.io.PrintStream, int, java.lang.String, org.jhove2.core.I8R, java.lang.Object, boolean)
+	 * @see org.jhove2.core.Displayable#displayProperty(java.io.PrintStream, int, java.lang.String, org.jhove2.core.I8R, java.lang.Object, boolean)
 	 */
 	@Override
 	public void displayProperty(PrintStream out, int level, String name,
@@ -165,7 +166,7 @@ public class JSONDisplayer
 	 * @param name       Property collection name
 	 * @param identifier Property identifier in the JHOVE2 namespace
 	 * @param size       Property collection size
-	 * @see org.jhove2.core.display.Displayable#endCollection(java.io.PrintStream, java.lang.String, org.jhove2.core.I8R, int)
+	 * @see org.jhove2.core.Displayable#endCollection(java.io.PrintStream, java.lang.String, org.jhove2.core.I8R, int)
 	 */
 	@Override
 	public void endCollection(PrintStream out, int level, String name,
@@ -180,7 +181,7 @@ public class JSONDisplayer
 	 * @param level      Nesting level
 	 * @param name       Reportable name
 	 * @param identifier Reportable in the JHOVE2 namespace
-	 * @see org.jhove2.core.display.Displayable#endReportable(java.io.PrintStream, java.lang.String, org.jhove2.core.I8R)
+	 * @see org.jhove2.core.Displayable#endReportable(java.io.PrintStream, java.lang.String, org.jhove2.core.I8R)
 	 */
 	@Override
 	public void endReportable(PrintStream out, int level, String name,
@@ -193,7 +194,7 @@ public class JSONDisplayer
 	/** End display.
 	 * @param out   Print stream
 	 * @param level Nesting level
-	 * @see org.jhove2.core.display.Displayable#endDisplay(java.io.PrintStream, int)
+	 * @see org.jhove2.core.Displayable#endDisplay(java.io.PrintStream, int)
 	 */
 	@Override
 	public void endDisplay(PrintStream out, int level) {

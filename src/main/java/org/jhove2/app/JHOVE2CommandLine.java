@@ -38,8 +38,8 @@ package org.jhove2.app;
 
 import java.util.List;
 
+import org.jhove2.core.Displayable;
 import org.jhove2.core.JHOVE2;
-import org.jhove2.core.display.Displayable;
 
 /** JHOVE2 command line application.
  * 
@@ -68,6 +68,8 @@ public class JHOVE2CommandLine {
 		JHOVE2 jhove2 = new JHOVE2();
 		jhove2.setBufferSize(parser.getBufferSize());
 		jhove2.setFailFastLimit(parser.getFailFastLimit());
+		
+		jhove2.characterize(pathNames);
 		
 		Displayable displayer = new org.jhove2.core.display.TextDisplayer();
 		jhove2.display(displayer);

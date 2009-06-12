@@ -34,20 +34,33 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.core;
+package org.jhove2.core.source;
 
 import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
 
-/** Interface for JHOVE2 reportables.
+/** Interface for JHOVE2 aggregate sources.
  * 
  * @author mstrong, slabrams
  */
-public interface Reportable {
-	/** Get reportable capabilities.
-	 * @return Reportable capabilities
+public interface AggregateSource
+	extends Source
+{
+	/** Add a child source unit.
+	 * @param child Child source unit
 	 */
-	@ReportableProperty("Reportable capabilities.")
-	public List<String> getCapabilities();
+	public void addChildSource(Source child);
+	
+	/** Get child source units.
+	 * @return Child source units
+	 */
+	@ReportableProperty(order=2, value="Child source untis.")
+	public List<Source> getChildSources();
+	
+	/** Get number of child source units.
+	 * @return Number of child source units
+	 */
+	@ReportableProperty(order=1, value="Number of child source units.")
+	public int getNumChildSources();
 }

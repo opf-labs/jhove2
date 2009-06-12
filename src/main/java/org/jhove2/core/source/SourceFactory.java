@@ -34,20 +34,31 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.core;
+package org.jhove2.core.source;
 
-import java.util.List;
+import java.io.File;
 
-import org.jhove2.annotation.ReportableProperty;
-
-/** Interface for JHOVE2 reportables.
+/** Factory for JHOVE2 file and directory source units.
  * 
  * @author mstrong, slabrams
  */
-public interface Reportable {
-	/** Get reportable capabilities.
-	 * @return Reportable capabilities
+public abstract class SourceFactory {
+	/** Get source unit.
+	 * @param pathName Path name
 	 */
-	@ReportableProperty("Reportable capabilities.")
-	public List<String> getCapabilities();
+	public static synchronized Source getSource(String pathName) {
+		return getSource(new File(pathName));
+	}
+	
+	/** Get source unit.
+	 * @param file Java {@link java.io.File} representing the file or directory
+	 */
+	public static synchronized Source getSource(File file) {
+		if (file.isDirectory()) {
+			return new DirectorySource(file);
+		}
+		else {
+			return new FileSource(file);
+		}
+	}
 }
