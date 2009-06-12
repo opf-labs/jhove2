@@ -39,7 +39,6 @@ package org.jhove2.core.source;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jhove2.core.AbstractReportable;
 import org.jhove2.core.Module;
 import org.jhove2.core.io.Input;
 
@@ -50,7 +49,6 @@ import org.jhove2.core.io.Input;
  * @author mstrong, slabrams
  */
 public abstract class AbstractSource
-	extends AbstractReportable
 	implements Source
 {
 	/** Modules that processed the source unit. */

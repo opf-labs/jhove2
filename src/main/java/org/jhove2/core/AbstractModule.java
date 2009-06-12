@@ -45,7 +45,6 @@ import java.util.List;
  * @author mstrong, slabrams
  */
 public class AbstractModule
-	extends AbstractReportable
 	implements Module, Durable
 {
 	/** Module developers. */

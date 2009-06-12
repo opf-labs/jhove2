@@ -46,7 +46,7 @@ import org.jhove2.annotation.ReportableProperty;
  * @author mstrong, slabrams
  */
 public class Document
-	extends AbstractReportable
+	implements Reportable
 {
 	/** Document intentions. */
 	public enum Intention {
