@@ -42,6 +42,6 @@ package org.jhove2.core;
  * @author mstrong, slabrams
  */
 public interface Processible
-	extends Capable
+	extends Module
 {
 }

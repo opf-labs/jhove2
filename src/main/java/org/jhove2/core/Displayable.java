@@ -38,13 +38,11 @@ package org.jhove2.core;
 
 import java.io.PrintStream;
 
-
 /** Interface for JHOVE2 displayers.
  * 
  * @author mstrong, slabrams
  */
 public interface Displayable
-	extends Capable
 {
 	/** Start display.
 	 * @param out   Print stream
