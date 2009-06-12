@@ -48,11 +48,8 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.display.Displayer;
-import org.jhove2.core.source.AggregateSource;
+import org.jhove2.module.display.Displayer;
 import org.jhove2.core.source.ClumpSource;
-import org.jhove2.core.source.DirectorySource;
-import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
 import org.jhove2.core.util.Info;

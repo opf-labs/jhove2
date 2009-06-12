@@ -34,7 +34,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.core.display;
+package org.jhove2.module.display;
 
 import java.io.PrintStream;
 

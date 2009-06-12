@@ -34,60 +34,73 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.module.display;
+package org.jhove2.module.characterize;
 
-import org.jhove2.core.I8R;
+import java.util.Iterator;
+import java.util.List;
 
-/** JHOVE2 displayer utility.
+import org.jhove2.core.AbstractModule;
+import org.jhove2.core.Characterizable;
+import org.jhove2.core.JHOVE2;
+import org.jhove2.core.source.AggregateSource;
+import org.jhove2.core.source.ClumpSource;
+import org.jhove2.core.source.DirectorySource;
+import org.jhove2.core.source.FileSource;
+import org.jhove2.core.source.Source;
+
+/** JHOVE2 characterization module.
  * 
  * @author mstrong, slabrams
  */
-public class Displayer {
-	/** Get indentation appropriate for a nesting level.
-	 * @param level Nesting level
+public class Characterizer
+	extends AbstractModule
+	implements Characterizable
+{
+	/** Characterization process module version identifier. */
+	public static final String VERSION = "1.0.0";
+
+	/** Characterization process module release date. */
+	public static final String DATE = "2009-06-12";
+	
+	/** Characterization process module rights statement. */
+	public static final String RIGHTS =
+		"Copyright 2009 by The Regents of the University of California, " +
+		"Ithaka Harbors, Inc., and The Board of Trustees of the Leland " +
+		"Stanford Junior University. " +
+		"Available under the terms of the BSD license.";
+
+	/** Instantiate a new <code>Chacacterizer</code>.
 	 */
-	public static synchronized String getIndent(int level) {
-		StringBuffer indent = new StringBuffer();
-		for (int i=0; i<level; i++) {
-			indent.append(" ");
-		}
-		
-		return indent.toString();
+	public Characterizer() {
+		super(VERSION, DATE, RIGHTS);
 	}
 
-	/** Get the singular form of a plural property identifier.
-	 * @param identifier Property identifier
-	 * @return Singular form of a property identifier
+	/** Characterize a source unit.
+	 * @param jhove2 JHOVE2 framework
+	 * @param source Source unit
+	 * @see org.jhove2.core.Characterizable#characterize(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
 	 */
-	public static synchronized I8R singularIdentifier(I8R identifier) {
-		I8R singular = null;
-		String value = identifier.getValue();
-		int in  = value.lastIndexOf('/') + 1;
-		int len = value.length();
-		if (value.substring(len-3).equals("ies")) {
-			singular = new I8R(value + "/" + value.substring(in, len-3) + "y");
+	@Override
+	public void characterize(JHOVE2 jhove2, Source source) {
+		if      (source instanceof ClumpSource) {
+			jhove2.incrementNumClumps();
+		}
+		else if (source instanceof DirectorySource) {
+			jhove2.incrementNumDirectories();
+		}
+		else if (source instanceof FileSource) {
+			jhove2.incrementNumFiles();
+		}
+	
+		if (source instanceof AggregateSource) {
+			List<Source> list = ((AggregateSource) source).getChildSources();
+			Iterator<Source> iter = list.iterator();
+			while (iter.hasNext()) {
+				characterize(jhove2, iter.next());
+			}
 		}
 		else {
-			singular = new I8R(value + "/" + value.substring(in, len-1));
+			;
 		}
-		
-		return singular;
-	}
-
-	/** Get the singular form of a plural property name.
-	 * @param name Property name
-	 * @return Singular form of a property name
-	 */
-	public static synchronized String singularName(String name) {
-		String singular = null;
-		int len = name.length();
-		if (name.substring(len-3).equals("ies")) {
-			singular = name.substring(0, len-3) + "y";
-		}
-		else {
-			singular = name.substring(0, len-1);
-		}
-		
-		return singular;
 	}
 }
