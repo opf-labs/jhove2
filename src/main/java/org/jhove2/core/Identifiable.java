@@ -34,54 +34,31 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.app;
+package org.jhove2.core;
 
-import java.util.List;
+import java.io.IOException;
+import java.util.Set;
 
-import org.jhove2.core.Characterizable;
-import org.jhove2.core.Displayable;
-import org.jhove2.core.JHOVE2;
-import org.jhove2.core.Reportable;
-import org.jhove2.core.util.ReportableFactory;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.io.Input;
 
-/** JHOVE2 command line application.
+/** Interface for JHOVE2 identification modules.
  * 
  * @author mstrong, slabrams
  */
-public class JHOVE2CommandLine {
-	/** Usage statement return code. */
-	public static final int EUSAGE = -1;
-	
-	/** Usage statement. */
-	public static final String USAGE =
-		"usage: java " + JHOVE2CommandLine.class.getName() + " file ...";
-	
-	/** Main entry point for the JHOVE2 command line application.
-	 * @param args Command line arguments
+public interface Identifiable
+	extends Processible
+{
+	/** Presumptively identify the format of a source unit.
+	 * @param jhove2 JHOVE2 framework
+	 * @param input  Source unit input
 	 */
-	public static void main(String[] args) {
-		if (args.length < 1) {
-			System.out.println(USAGE);
-			System.exit(EUSAGE);
-		}
-		
-		JHOVE2CommandLineParser parser = new JHOVE2CommandLineParser();
-		List<String> pathNames = parser.parse(args);
-
-		JHOVE2 jhove2 = (JHOVE2) ReportableFactory.getReportable("JHOVE2");
-		jhove2.setBufferSize(parser.getBufferSize());
-		jhove2.setFailFastLimit(parser.getFailFastLimit());
-		
-		Characterizable characterizer =
-			(Characterizable) ReportableFactory.getReportable("Characterizer");
-		jhove2.setCharacterizer(characterizer);
-		jhove2.characterize(pathNames);
-		
-		Displayable displayer =
-			(Displayable) ReportableFactory.getReportable("TextDisplayer");
-		jhove2.setDisplayer(displayer);
-		jhove2.display();
-	}
+	public Set<FormatIdentification> identify(JHOVE2 jhove2, Input input)
+		throws IOException;
+	
+	/** Get presumptive format identifications.
+	 * @return Presumptive format identifications
+	 */
+	@ReportableProperty("Presumptive format identifications.")
+	public Set<FormatIdentification> getFormats();
 }

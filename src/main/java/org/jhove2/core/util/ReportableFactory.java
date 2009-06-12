@@ -34,54 +34,34 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.app;
+package org.jhove2.core.util;
 
-import java.util.List;
-
-import org.jhove2.core.Characterizable;
-import org.jhove2.core.Displayable;
-import org.jhove2.core.JHOVE2;
 import org.jhove2.core.Reportable;
-import org.jhove2.core.util.ReportableFactory;
+import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-/** JHOVE2 command line application.
+/** Factory for instantiating JHOVE2 reportables using Spring.
  * 
  * @author mstrong, slabrams
  */
-public class JHOVE2CommandLine {
-	/** Usage statement return code. */
-	public static final int EUSAGE = -1;
+public class ReportableFactory {
+	/** Spring configuration classpath. */
+	public static final String CLASSPATH = "classpath*:**/*-config.xml";
 	
-	/** Usage statement. */
-	public static final String USAGE =
-		"usage: java " + JHOVE2CommandLine.class.getName() + " file ...";
+	/** Spring application context. */
+	protected static ApplicationContext context;
 	
-	/** Main entry point for the JHOVE2 command line application.
-	 * @param args Command line arguments
+	/** Get reportable by bean name.
+	 * @param name Reportable bean name
 	 */
-	public static void main(String[] args) {
-		if (args.length < 1) {
-			System.out.println(USAGE);
-			System.exit(EUSAGE);
+	public static Reportable getReportable(String name)
+		throws BeansException
+	{
+		if (context == null) {
+			context = 	new ClassPathXmlApplicationContext(CLASSPATH);
 		}
 		
-		JHOVE2CommandLineParser parser = new JHOVE2CommandLineParser();
-		List<String> pathNames = parser.parse(args);
-
-		JHOVE2 jhove2 = (JHOVE2) ReportableFactory.getReportable("JHOVE2");
-		jhove2.setBufferSize(parser.getBufferSize());
-		jhove2.setFailFastLimit(parser.getFailFastLimit());
-		
-		Characterizable characterizer =
-			(Characterizable) ReportableFactory.getReportable("Characterizer");
-		jhove2.setCharacterizer(characterizer);
-		jhove2.characterize(pathNames);
-		
-		Displayable displayer =
-			(Displayable) ReportableFactory.getReportable("TextDisplayer");
-		jhove2.setDisplayer(displayer);
-		jhove2.display();
+		return (Reportable) context.getBean(name);
 	}
 }
