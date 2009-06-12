@@ -41,10 +41,7 @@ import java.util.List;
 import org.jhove2.core.Characterizable;
 import org.jhove2.core.Displayable;
 import org.jhove2.core.JHOVE2;
-import org.jhove2.core.Reportable;
-import org.jhove2.core.util.ReportableFactory;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.jhove2.core.spring.Configure;
 
 /** JHOVE2 command line application.
  * 
@@ -54,34 +51,53 @@ public class JHOVE2CommandLine {
 	/** Usage statement return code. */
 	public static final int EUSAGE = -1;
 	
-	/** Usage statement. */
-	public static final String USAGE =
-		"usage: java " + JHOVE2CommandLine.class.getName() + " file ...";
-	
 	/** Main entry point for the JHOVE2 command line application.
 	 * @param args Command line arguments
 	 */
 	public static void main(String[] args) {
 		if (args.length < 1) {
-			System.out.println(USAGE);
+			System.out.println(getUsage());
 			System.exit(EUSAGE);
 		}
 		
 		JHOVE2CommandLineParser parser = new JHOVE2CommandLineParser();
 		List<String> pathNames = parser.parse(args);
 
-		JHOVE2 jhove2 = (JHOVE2) ReportableFactory.getReportable("JHOVE2");
+		JHOVE2 jhove2 = (JHOVE2) Configure.getReportable("JHOVE2");
 		jhove2.setBufferSize(parser.getBufferSize());
 		jhove2.setFailFastLimit(parser.getFailFastLimit());
 		
 		Characterizable characterizer =
-			(Characterizable) ReportableFactory.getReportable("Characterizer");
+			(Characterizable) Configure.getReportable("Characterizer");
 		jhove2.setCharacterizer(characterizer);
 		jhove2.characterize(pathNames);
 		
 		Displayable displayer =
-			(Displayable) ReportableFactory.getReportable("TextDisplayer");
+			(Displayable) Configure.getReportable(parser.getDisplayer());
 		jhove2.setDisplayer(displayer);
 		jhove2.display();
+	}
+	
+	/** Get application usage statement.
+	 * @return Application usage statement
+	 */
+	public static String getUsage() {
+		String [] displayers = Configure.getReportableNames(Displayable.class);
+		
+		StringBuffer usage = new StringBuffer("usage: ");
+		usage.append(JHOVE2CommandLine.class.getName());
+		usage.append(" -b <bufferSize>");
+		usage.append(" -d ");
+		for (int i=0; i<displayers.length; i++) {
+			if (i > 0) {
+				usage.append("|");
+			}
+			int in = displayers[i].indexOf("Displayer");
+			usage.append(displayers[i].substring(0, in));
+		}
+		usage.append(" -f <failFastLimit>");
+		usage.append(" <file> ...");
+		
+		return usage.toString();
 	}
 }

@@ -34,18 +34,18 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.core.util;
+package org.jhove2.core.spring;
 
 import org.jhove2.core.Reportable;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-/** Factory for instantiating JHOVE2 reportables using Spring.
+/** Spring configuration utility.
  * 
  * @author mstrong, slabrams
  */
-public class ReportableFactory {
+public class Configure {
 	/** Spring configuration classpath. */
 	public static final String CLASSPATH = "classpath*:**/*-config.xml";
 	
@@ -63,5 +63,18 @@ public class ReportableFactory {
 		}
 		
 		return (Reportable) context.getBean(name);
+	}
+	
+	/** Get reportable names by type.
+	 * @param type Reportable type
+	 */
+	public static String [] getReportableNames(Class<?> reportable)
+		throws BeansException
+	{
+		if (context == null) {
+			context = 	new ClassPathXmlApplicationContext(CLASSPATH);
+		}
+		
+		return context.getBeanNamesForType(reportable);
 	}
 }

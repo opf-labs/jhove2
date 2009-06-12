@@ -41,13 +41,19 @@ import java.util.List;
 
 import org.jhove2.core.JHOVE2;
 
-/**
- * @author slabrams
- *
+/** JHOVE2 command line application command line parser.
+ * 
+ * @author mstrong, slabrams
  */
 public class JHOVE2CommandLineParser {
+	/** Default displayer. */
+	public static final String DEFAULT_DISPLAYER = "Text";
+	
 	/** Buffer size. */
 	protected int bufferSize;
+	
+	/** Displayer. */
+	protected String displayer;
 	
 	/** Fail fast limit. */
 	protected int failFastLimit;
@@ -64,16 +70,20 @@ public class JHOVE2CommandLineParser {
 	/** Instantiate a new <code>JHOVE2CommandLineParser</code>.
 	 */
 	public JHOVE2CommandLineParser() {
-		this(JHOVE2.DEFAULT_BUFFER_SIZE, JHOVE2.DEFAULT_FAIL_FAST_LIMIT);
+		this(JHOVE2.DEFAULT_BUFFER_SIZE, DEFAULT_DISPLAYER,
+			 JHOVE2.DEFAULT_FAIL_FAST_LIMIT);
 	}
 	
 	/** Instantiate a new <code>JHOVE2CommandLineParser</code> with specific
 	 * default values.
 	 * @param bufferSize    Default buffer size
+	 * @param displayer     Default displayer
 	 * @param failFastLimit Default fail fast limit
 	 */
-	public JHOVE2CommandLineParser(int bufferSize, int failFastLimit) {
+	public JHOVE2CommandLineParser(int bufferSize, String displayer,
+			                       int failFastLimit) {
 		this.bufferSize    = bufferSize;
+		this.displayer     = displayer;
 		this.failFastLimit = failFastLimit;
 		this.names         = new ArrayList<String>();
 	}
@@ -91,6 +101,11 @@ public class JHOVE2CommandLineParser {
 					if      (opt == 'b') {
 						if (i+1 < args.length) {
 							this.bufferSize = Integer.valueOf(args[++i]);
+						}
+					}
+					else if (opt == 'd') {
+						if (i+1 < args.length) {
+							this.displayer = args[++i] + "Displayer";
 						}
 					}
 					else if (opt == 'f') {
@@ -118,6 +133,13 @@ public class JHOVE2CommandLineParser {
 	 */
 	public int getBufferSize() {
 		return this.bufferSize;
+	}
+	
+	/** Get displayer.
+	 * @return Displayer
+	 */
+	public String getDisplayer() {
+		return this.displayer;
 	}
 	
 	/** Get fail fast limit.
