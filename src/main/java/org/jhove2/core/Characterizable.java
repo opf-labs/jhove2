@@ -34,48 +34,20 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.app;
+package org.jhove2.core;
 
-import java.util.List;
+import org.jhove2.core.source.Source;
 
-import org.jhove2.core.Characterizable;
-import org.jhove2.core.Displayable;
-import org.jhove2.core.JHOVE2;
-
-/** JHOVE2 command line application.
+/** Interface for JHOVE2 characteriztion modules.
  * 
  * @author mstrong, slabrams
  */
-public class JHOVE2CommandLine {
-	/** Usage statement return code. */
-	public static final int EUSAGE = -1;
-	
-	/** Usage statement. */
-	public static final String USAGE =
-		"usage: java " + JHOVE2CommandLine.class.getName() + " file ...";
-	
-	/** Main entry point for the JHOVE2 command line application.
-	 * @param args Command line arguments
+public interface Characterizable
+	extends Processible
+{
+	/** Characterize a source unit.
+	 * @param jhove2 JHOVE2 framework
+	 * @param source Source unit
 	 */
-	public static void main(String[] args) {
-		if (args.length < 1) {
-			System.out.println(USAGE);
-			System.exit(EUSAGE);
-		}
-		
-		JHOVE2CommandLineParser parser = new JHOVE2CommandLineParser();
-		List<String> pathNames = parser.parse(args);
-		
-		JHOVE2 jhove2 = new JHOVE2();
-		jhove2.setBufferSize(parser.getBufferSize());
-		jhove2.setFailFastLimit(parser.getFailFastLimit());
-		
-		Characterizable characterizer = new org.jhove2.module.process.Characterizer();
-		jhove2.setCharacterizer(characterizer);
-		jhove2.characterize(pathNames);
-		
-		Displayable displayer = new org.jhove2.core.display.TextDisplayer();
-		jhove2.setDisplayer(displayer);
-		jhove2.display();
-	}
+	public void characterize(JHOVE2 jhove2, Source source);
 }

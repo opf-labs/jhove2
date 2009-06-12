@@ -46,7 +46,7 @@ import org.jhove2.annotation.ReportableProperty;
  * @author mstrong, slabrams
  */
 public interface Module
-	extends Reportable
+	extends Reportable, Durable
 {
 	/** Get module developer.
 	 * @return Module developer

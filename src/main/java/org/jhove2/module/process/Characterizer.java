@@ -34,48 +34,73 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.app;
+package org.jhove2.module.process;
 
+import java.util.Iterator;
 import java.util.List;
 
+import org.jhove2.core.AbstractModule;
 import org.jhove2.core.Characterizable;
-import org.jhove2.core.Displayable;
 import org.jhove2.core.JHOVE2;
+import org.jhove2.core.source.AggregateSource;
+import org.jhove2.core.source.ClumpSource;
+import org.jhove2.core.source.DirectorySource;
+import org.jhove2.core.source.FileSource;
+import org.jhove2.core.source.Source;
 
-/** JHOVE2 command line application.
+/** JHOVE2 characterization module.
  * 
  * @author mstrong, slabrams
  */
-public class JHOVE2CommandLine {
-	/** Usage statement return code. */
-	public static final int EUSAGE = -1;
+public class Characterizer
+	extends AbstractModule
+	implements Characterizable
+{
+	/** Characterization process module version identifier. */
+	public static final String VERSION = "1.0.0";
+
+	/** Characterization process module release date. */
+	public static final String DATE = "2009-06-12";
 	
-	/** Usage statement. */
-	public static final String USAGE =
-		"usage: java " + JHOVE2CommandLine.class.getName() + " file ...";
-	
-	/** Main entry point for the JHOVE2 command line application.
-	 * @param args Command line arguments
+	/** Characterization process module rights statement. */
+	public static final String RIGHTS =
+		"Copyright 2009 by The Regents of the University of California, " +
+		"Ithaka Harbors, Inc., and The Board of Trustees of the Leland " +
+		"Stanford Junior University. " +
+		"Available under the terms of the BSD license.";
+
+	/** Instantiate a new <code>Chacacterizer</code>.
 	 */
-	public static void main(String[] args) {
-		if (args.length < 1) {
-			System.out.println(USAGE);
-			System.exit(EUSAGE);
+	public Characterizer() {
+		super(VERSION, DATE, RIGHTS);
+	}
+
+	/** Characterize a source unit.
+	 * @param jhove2 JHOVE2 framework
+	 * @param source Source unit
+	 * @see org.jhove2.core.Characterizable#characterize(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
+	 */
+	@Override
+	public void characterize(JHOVE2 jhove2, Source source) {
+		if      (source instanceof ClumpSource) {
+			jhove2.incrementNumClumps();
 		}
-		
-		JHOVE2CommandLineParser parser = new JHOVE2CommandLineParser();
-		List<String> pathNames = parser.parse(args);
-		
-		JHOVE2 jhove2 = new JHOVE2();
-		jhove2.setBufferSize(parser.getBufferSize());
-		jhove2.setFailFastLimit(parser.getFailFastLimit());
-		
-		Characterizable characterizer = new org.jhove2.module.process.Characterizer();
-		jhove2.setCharacterizer(characterizer);
-		jhove2.characterize(pathNames);
-		
-		Displayable displayer = new org.jhove2.core.display.TextDisplayer();
-		jhove2.setDisplayer(displayer);
-		jhove2.display();
+		else if (source instanceof DirectorySource) {
+			jhove2.incrementNumDirectories();
+		}
+		else if (source instanceof FileSource) {
+			jhove2.incrementNumFiles();
+		}
+	
+		if (source instanceof AggregateSource) {
+			List<Source> list = ((AggregateSource) source).getChildSources();
+			Iterator<Source> iter = list.iterator();
+			while (iter.hasNext()) {
+				characterize(jhove2, iter.next());
+			}
+		}
+		else {
+			;
+		}
 	}
 }

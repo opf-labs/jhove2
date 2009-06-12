@@ -43,6 +43,7 @@ import java.io.PrintStream;
  * @author mstrong, slabrams
  */
 public interface Displayable
+	extends Processible
 {
 	/** Start display.
 	 * @param out   Print stream

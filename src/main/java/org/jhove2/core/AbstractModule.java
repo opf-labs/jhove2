@@ -59,11 +59,11 @@ public class AbstractModule
 	/** Module rights statement. */
 	protected String rights;
 	
-	/** Module elapsed time, final. */
-	protected long timeFinal;
+	/** Module elapsed time, end. */
+	protected long endTime;
 	
-	/** Module elapsed time, initial. */
-	protected long timeInitial;
+	/** Module elapsed time, start. */
+	protected long startTime;
 	
 	/** Module version identifier in three-part form: "M.N.P". */
 	protected String version;
@@ -79,8 +79,8 @@ public class AbstractModule
 		this.rights  = rights;
 		
 		this.developers  = new ArrayList<Agent>();
-		this.timeFinal   = Duration.UNINITIALIZED;
-		this.timeInitial = System.currentTimeMillis();
+		this.startTime = System.currentTimeMillis();
+		this.endTime   = Duration.UNINITIALIZED;
 	}
 	
 	/** Add module developer.
@@ -148,24 +148,24 @@ public class AbstractModule
 	 */
 	@Override
 	public Duration getElapsedTime() {
-		if (this.timeFinal == Duration.UNINITIALIZED) {
-			this.timeFinal = System.currentTimeMillis();
+		if (this.endTime == Duration.UNINITIALIZED) {
+			this.endTime = System.currentTimeMillis();
 		}
 		
-		return new Duration(this.timeFinal - this.timeInitial);
+		return new Duration(this.endTime - this.startTime);
 	}
 
-	/** Set the initial time of the elapsed duration.
+	/** Set the end time of the elapsed duration.
 	 */
 	@Override
-	public void setFinalTime() {
-		this.timeFinal = System.currentTimeMillis();
+	public void setEndTime() {
+		this.endTime = System.currentTimeMillis();
 	}
 
-	/** Set the final time of the elapsed duration.
+	/** Set the start time of the elapsed duration.
 	 */
 	@Override
-	public void setInitialTime() {
-		this.timeInitial = System.currentTimeMillis();
+	public void setStartTime() {
+		this.startTime = System.currentTimeMillis();
 	}
 }

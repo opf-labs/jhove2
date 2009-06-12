@@ -36,12 +36,11 @@
 
 package org.jhove2.core;
 
-/** Marker interface for JHOVE2 processing modules.  Processing modules
- * encapsulate characterization strategies.
+/** Marker interface for JHOVE2 processing modules.
  * 
  * @author mstrong, slabrams
  */
 public interface Processible
-	extends Module
+	extends Durable
 {
 }

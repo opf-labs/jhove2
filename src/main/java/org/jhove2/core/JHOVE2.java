@@ -40,6 +40,7 @@ import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -68,7 +69,7 @@ public class JHOVE2
 	public static final String VERSION = "2.0.0";
 
 	/** Framework release date. */
-	public static final String DATE = "2009-06-11";
+	public static final String DATE = "2009-06-12";
 	
 	/** Framework rights statement. */
 	public static final String RIGHTS =
@@ -93,10 +94,13 @@ public class JHOVE2
 	/** {@link org.jhove2.core.io.Input} buffer size. */
 	protected int bufferSize;
 	
+	/** Framework characterization module. */
+	protected Characterizable characterizer;
+	
 	/** Java classpath. */
 	protected String classpath;
 	
-	/** Displayer. */
+	/** Framework displayer module. */
 	protected Displayable displayer;
 
 	/** Framework fail fast limit.  Processing of a given source unit is
@@ -222,29 +226,26 @@ public class JHOVE2
 	 * @param pathNames Remaining path names
 	 */
 	public void characterize(String pathName, String... pathNames) {
-		if (pathNames == null) {
-			this.source = SourceFactory.getSource(pathName);
-			characterize(this.source);
-		}
-		else if (pathNames.length > 0) {
-			this.source = new ClumpSource();
+		List<String> list = new ArrayList<String>();
+		list.add(pathName);
+		if (pathNames != null && pathNames.length > 0) {
 			for (int i=0; i<pathNames.length; i++) {
-				Source src = SourceFactory.getSource(pathNames[i]);
-				((ClumpSource) this.source).addChildSource(src);
+				list.add(pathNames[i]);
 			}
-			characterize(this.source);
 		}
+		characterize(list);
 	}
 	
 	/** Characterize file system objects (files and directories).
 	 * @param pathNames File system path names
 	 */
 	public void characterize(List<String> pathNames) {
+		this.characterizer.setStartTime();
 		Iterator<String> iter = pathNames.iterator();
 		if (pathNames.size() == 1) {
 			String pathName = iter.next();
 			this.source = SourceFactory.getSource(pathName);
-			characterize(this.source);
+			this.characterizer.characterize(this, this.source);
 		}
 		else {
 			this.source = new ClumpSource();
@@ -253,53 +254,26 @@ public class JHOVE2
 				Source src = SourceFactory.getSource(pathName);
 				((ClumpSource) this.source).addChildSource(src);
 			}
-			characterize(this.source);
+			this.characterizer.characterize(this, this.source);
 		}
-	}
-	
-	/** Characterize a source unit.
-	 * @param sourcc Source unit
-	 */
-	protected void characterize(Source source) {
-		if      (source instanceof ClumpSource) {
-			this.numClumps++;
-		}
-		else if (source instanceof DirectorySource) {
-			this.numDirectories++;
-		}
-		else if (source instanceof FileSource) {
-			this.numFiles++;
-		}
-		
-		if (source instanceof AggregateSource) {
-			List<Source> list = ((AggregateSource) source).getChildSources();
-			Iterator<Source> iter = list.iterator();
-			while (iter.hasNext()) {
-				characterize(iter.next());
-			}
-		}
-		else {
-			;
-		}
+		this.characterizer.setEndTime();
 	}
 	
 	/** Display the framework to the standard output stream.
-	 * @param displayer Displayer
 	 */
-	public void display(Displayable displayer) {
-		display(displayer, System.out);
+	public void display() {
+		display(System.out);
 	}
 	
 	/** Display the framework.
-	 * @param out       Print stream
-	 * @param displayer Displayer
+	 * @param out Print stream
 	 */
-	public void display(Displayable displayer, PrintStream out) {
-		this.displayer = displayer;
-		
+	public void display(PrintStream out) {
+		this.displayer.setStartTime();
 		this.displayer.startDisplay(out, 0);
 		display(out, this, 0, 0);
 		this.displayer.endDisplay(out, 0);
+		this.displayer.setEndTime();
 	}
 	
 	/** Display a {@link org.jhove2.core.Reportable}.
@@ -362,14 +336,14 @@ public class JHOVE2
 	protected void display(PrintStream out, int level, String name,
 			               I8R identifier, Object value, int order) {
 		if (value instanceof List) {
-			List ls = (List) value;
+			List<?> ls = (List<?>) value;
 			int size = ls.size();
 			if (size > 0) {
 				this.displayer.startCollection(out, level+1, name, identifier,
 						                  size, order);
 				String nm = Displayer.singularName(name);
 				I8R    id = Displayer.singularIdentifier(identifier);
-				Iterator it3 = ls.iterator();
+				Iterator<?> it3 = ls.iterator();
 				for (int i=0; it3.hasNext(); i++) {
 					Object prop = it3.next();
 					this.display(out, level+1, nm, id, prop, i);
@@ -378,14 +352,14 @@ public class JHOVE2
 			}
 		}
 		else if (value instanceof Set) {
-			Set set = (Set) value;
+			Set<?> set = (Set<?>) value;
 			int size = set.size();
 			if (size > 0) {
 				this.displayer.startCollection(out, level+1, name,
 						                  identifier, size, order);
 				String nm = Displayer.singularName(name);
 				I8R    id = Displayer.singularIdentifier(identifier);
-				Iterator it3 = set.iterator();
+				Iterator<?> it3 = set.iterator();
 				for (int i=0; it3.hasNext(); i++) {
 					Object prop = it3.next();
 					display(out, level+1, nm, id, prop, i);
@@ -422,6 +396,14 @@ public class JHOVE2
 		return this.bufferSize;
 	}
 	
+	/** Get framework characterization module.
+	 * @return Framework characterization module
+	 */
+	@ReportableProperty(order=21, value="Framework characterization module.")
+	public Processible getCharacterizer() {
+		return this.characterizer;
+	}
+	
 	/** Get Java classpath.
 	 * @return Java classpath
 	 */
@@ -436,13 +418,13 @@ public class JHOVE2
 	@ReportableProperty(order=4, value="Framework invocation " +
 			"date/timestatmp.")
 	public Date getDateTime() {
-		return new Date(this.timeInitial);
+		return new Date(this.startTime);
 	}
 	
-	/** Get displayer.
-	 * @return displayer
+	/** Get framework displayer module.
+	 * @return Framework displayer module
 	 */
-	@ReportableProperty(order=21, value="Displayer.")
+	@ReportableProperty(order=22, value="Framework displayer module.")
 	public Displayable getDisplayer() {
 		return this.displayer;
 	}
@@ -526,7 +508,7 @@ public class JHOVE2
 	 * of method invocation.
 	 * @return Memory usage, in bytes
 	 */
-	@ReportableProperty(order=30, value="Framework memory usage, in bytes.")
+	@ReportableProperty(order=31, value="Framework memory usage, in bytes.")
 	public long getMemoryUsage() {
 		Runtime rt = Runtime.getRuntime();
 		long use = rt.totalMemory() - rt.freeMemory();
@@ -537,7 +519,7 @@ public class JHOVE2
 	/** Get number of aggregate source units processed.
 	 * @return Number of aggregate source units processed
 	 */
-	@ReportableProperty(order=27, value="Number of bytestream source units " +
+	@ReportableProperty(order=28, value="Number of bytestream source units " +
 			"processed.")
 	public int getNumBytestreamSources() {
 		return this.numBytestreams;
@@ -546,7 +528,7 @@ public class JHOVE2
 	/** Get number of clump source units processed.
 	 * @return Number of clump source units processed
 	 */
-	@ReportableProperty(order=29, value="Number of clump source units " +
+	@ReportableProperty(order=30, value="Number of clump source units " +
 			"processed.")
 	public int getNumClumpSources() {
 		return this.numClumps;
@@ -555,7 +537,7 @@ public class JHOVE2
 	/** Get number of container source units processed.
 	 * @return Number of container source units processed
 	 */
-	@ReportableProperty(order=28, value="Number of container source units " +
+	@ReportableProperty(order=29, value="Number of container source units " +
 			"processed.")
 	public int getNumContainerSources() {
 		return this.numContainers;
@@ -564,7 +546,7 @@ public class JHOVE2
 	/** Get number of directory source units processed.
 	 * @return Number of directory source units processed
 	 */
-	@ReportableProperty(order=24, value="Number of directory source units " +
+	@ReportableProperty(order=25, value="Number of directory source units " +
 			"processed.")
 	public int getNumDirectorySources() {
 		return this.numDirectories;
@@ -573,7 +555,7 @@ public class JHOVE2
 	/** Get number of file source units processed.
 	 * @return Number of file source units processed
 	 */
-	@ReportableProperty(order=25, value="Number of file source units " +
+	@ReportableProperty(order=26, value="Number of file source units " +
 			"processed.")
 	public int getNumFileSources() {
 		return this.numFiles;
@@ -591,7 +573,7 @@ public class JHOVE2
 	/** Get number of source units processed.
 	 * @return Number of source units processed
 	 */
-	@ReportableProperty(order=23, value="Number of source units processed.")
+	@ReportableProperty(order=24, value="Number of source units processed.")
 	public int getNumSources() {
 		return this.numDirectories + this.numFiles + this.numBytestreams + 
 		       this.numContainers  + this.numClumps;
@@ -645,11 +627,43 @@ public class JHOVE2
 		return this.workingDirectory;
 	}
 	
+	/** Increment the number of clump source units.
+	 */
+	public void incrementNumClumps() {
+		this.numClumps++;
+	}
+	
+	/** Increment the number of directory source units.
+	 */
+	public void incrementNumDirectories() {
+		this.numDirectories++;
+	}
+	
+	/** Increment the number of file source units.
+	 */
+	public void incrementNumFiles() {
+		this.numFiles++;
+	}
+	
 	/** Set {@link org.jhove2.core.io.Input} buffer size.
 	 * @param size Buffer size
 	 */
 	public void setBufferSize(int size) {
 		this.bufferSize = size;
+	}
+
+	/** Set framework characterization process module.
+	 * @param characterizer Framework characterization process module
+	 */
+	public void setCharacterizer(Characterizable characterizer) {
+		this.characterizer = characterizer;
+	}
+	
+	/** Set framework displayer module.
+	 * @param displayer Framework displayer module
+	 */
+	public void setDisplayer(Displayable displayer) {
+		this.displayer = displayer;
 	}
 	
 	/** Set fail fast limit.  Processing of a given source unit is terminated
