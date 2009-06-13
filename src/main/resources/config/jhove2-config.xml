@@ -9,8 +9,14 @@
  	<!-- JHOVE2 framework bean -->
 	<bean id="JHOVE2" class="org.jhove2.core.JHOVE2" scope="prototype"/>
 		
- 	<!-- Characterizer bean -->
-	<bean id="Characterizer" class="org.jhove2.module.characterize.Characterizer"
+ 	<!-- Characterizer module bean -->
+	<bean id="CharacterizerModule" 
+	      class="org.jhove2.module.characterize.CharacterizerModule"
+	      scope="prototype"/>
+	      
+	<!-- Identifier module bean -->
+	<bean id="IdentifierModule"
+	      class="org.jhove2.module.identify.IdentifierModule"
 	      scope="prototype"/>
 	      
  	<!-- JSON displayer bean -->
@@ -24,5 +30,18 @@
  	<!-- XML displayer bean -->
 	<bean id="XMLDisplayer" class="org.jhove2.module.display.XMLDisplayer"
 	      scope="prototype"/>
-	
+
+	<!-- UTF-8 format bean -->
+	<bean id="UTF8Format" class="org.jhove2.core.Format" scope="singleton">
+      <constructor-arg type="java.lang.String" value="UTF-8"/>
+      <constructor-arg ref="UTF8Identifier"/>
+      <constructor-arg type="org.jhove2.core.Format$Type" value="Family"/>
+      <constructor-arg type="org.jhove2.core.Format$Ambiguity" value="Unambiguous"/>
+	</bean>
+		
+   <!-- UTF-8 identifier bean -->  
+   <bean id="UTF8Identifier" class="org.jhove2.core.I8R" >
+      <constructor-arg type="java.lang.String" value="info:jhove2/format/utf-8"/>
+   </bean>
+   
 </beans>

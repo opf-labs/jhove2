@@ -39,7 +39,7 @@ package org.jhove2.core.source;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jhove2.core.Module;
+import org.jhove2.core.Processible;
 import org.jhove2.core.io.Input;
 
 /** An abstract JHOVE2 source unit.  A source unit is a formatted object that
@@ -52,21 +52,21 @@ public abstract class AbstractSource
 	implements Source
 {
 	/** Modules that processed the source unit. */
-	protected List<Module> modules;
+	protected List<Processible> modules;
 	
 	/** Instantiate a new <code>AbstractSource</code>.
 	 */
 	public AbstractSource() {
-		this.modules = new ArrayList<Module>();
+		this.modules = new ArrayList<Processible>();
 	}
 	
 	/** Add a module that processed the source unit.
 	 * @param module Module that processed the source unit
-	 * @see org.jhove2.core.source.Source#addModule(org.jhove2.core.Module)
+	 * @see org.jhove2.core.source.Source#addModule(org.jhove2.core.Processible)
 	 */
 	@Override
-	public void addModule(Module module) {
-		this.addModule(module);
+	public void addModule(Processible module) {
+		this.modules.add(module);
 	}
 
 	/** Get {@link org.jhove2.core.io.Input} for the source unit.
@@ -84,7 +84,7 @@ public abstract class AbstractSource
 	 * @see org.jhove2.core.source.Source#getModules()
 	 */
 	@Override
-	public List<Module> getModules() {
+	public List<Processible> getModules() {
 		return this.modules;
 	}
 

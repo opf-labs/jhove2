@@ -68,7 +68,7 @@ public class JHOVE2CommandLine {
 		jhove2.setFailFastLimit(parser.getFailFastLimit());
 		
 		Characterizable characterizer =
-			(Characterizable) Configure.getReportable("Characterizer");
+			(Characterizable) Configure.getReportable("CharacterizerModule");
 		jhove2.setCharacterizer(characterizer);
 		jhove2.characterize(pathNames);
 		

@@ -66,7 +66,7 @@ public class XMLDisplayer
 	/** Collection element. */
 	public static final String COLLECTION = "collection";
 	
-	/** Identifier element. */
+	/** IdentifierModule element. */
 	public static final String IDENTIFIER = "identifier";
 	
 	/** Name element. */

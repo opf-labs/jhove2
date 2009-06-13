@@ -34,13 +34,31 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.core;
+package org.jhove2.module.identify;
 
-/** Marker interface for JHOVE2 processing modules.
+import org.jhove2.core.AbstractModule;
+
+/** JHOVE2 wrapper for the DROID format identification tool.
  * 
  * @author mstrong, slabrams
  */
-public interface Processible
-	extends Reportable, Durable
+public class DROIDWrapper
+	extends AbstractModule
 {
+	/** DROID version identifier. */
+	public static final String VERSION = "4.0";
+
+	/** DROID release date. */
+	public static final String DATE = "2009-06-09";
+	
+	/** DROID rights statement. */
+	public static final String RIGHTS =
+		"Copyright 2008 by the National Archives. " +
+		"Available under the terms of the BSD license.";
+	
+	/** Instantiate a new <code>DROIDWrapper</code>.
+	 */
+	public DROIDWrapper() {
+		super(VERSION, DATE, RIGHTS);
+	}
 }

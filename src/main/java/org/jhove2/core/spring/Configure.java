@@ -53,7 +53,8 @@ public class Configure {
 	protected static ApplicationContext context;
 	
 	/** Get reportable by bean name.
-	 * @param name Reportable bean name
+	 * @param reportable Reportable class
+	 * @param name       Reportable bean name
 	 */
 	public static Reportable getReportable(String name)
 		throws BeansException

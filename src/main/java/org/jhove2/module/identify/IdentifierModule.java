@@ -34,73 +34,80 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.module.characterize;
+package org.jhove2.module.identify;
 
-import java.util.Iterator;
-import java.util.List;
+import java.io.IOException;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.jhove2.core.AbstractModule;
-import org.jhove2.core.Characterizable;
+import org.jhove2.core.Format;
+import org.jhove2.core.FormatIdentification;
+import org.jhove2.core.Identifiable;
 import org.jhove2.core.JHOVE2;
-import org.jhove2.core.source.AggregateSource;
-import org.jhove2.core.source.ClumpSource;
-import org.jhove2.core.source.DirectorySource;
-import org.jhove2.core.source.FileSource;
-import org.jhove2.core.source.Source;
+import org.jhove2.core.Module;
+import org.jhove2.core.FormatIdentification.Confidence;
+import org.jhove2.core.io.Input;
+import org.jhove2.core.spring.Configure;
 
-/** JHOVE2 characterization module.
+/** JHOVE2 identification module.
  * 
  * @author mstrong, slabrams
  */
-public class Characterizer
+public class IdentifierModule
 	extends AbstractModule
-	implements Characterizable
+	implements Identifiable
 {
-	/** Characterization process module version identifier. */
-	public static final String VERSION = "1.0.0";
+	/**Identification module version identifier. */
+	public static final String VERSION = "2.0.0";
 
-	/** Characterization process module release date. */
+	/** Identification module release date. */
 	public static final String DATE = "2009-06-12";
 	
-	/** Characterization process module rights statement. */
+	/** Identification module rights statement. */
 	public static final String RIGHTS =
 		"Copyright 2009 by The Regents of the University of California, " +
 		"Ithaka Harbors, Inc., and The Board of Trustees of the Leland " +
 		"Stanford Junior University. " +
 		"Available under the terms of the BSD license.";
 
-	/** Instantiate a new <code>Chacacterizer</code>.
+	/** Presumptively identified formats. */
+	protected Set<FormatIdentification> formats;
+	
+	/** Instantiate a new <code>IdentifierModule</code>.
 	 */
-	public Characterizer() {
+	public IdentifierModule() {
 		super(VERSION, DATE, RIGHTS);
+		
+		this.formats = new TreeSet<FormatIdentification>();
 	}
 
-	/** Characterize a source unit.
+	/** Presumptively identify the format of a source unit.
 	 * @param jhove2 JHOVE2 framework
-	 * @param source Source unit
-	 * @see org.jhove2.core.Characterizable#characterize(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
+	 * @param input  Source unit input
+	 * @see org.jhove2.core.Identifiable#getFormats()
 	 */
 	@Override
-	public void characterize(JHOVE2 jhove2, Source source) {
-		if      (source instanceof ClumpSource) {
-			jhove2.incrementNumClumps();
-		}
-		else if (source instanceof DirectorySource) {
-			jhove2.incrementNumDirectories();
-		}
-		else if (source instanceof FileSource) {
-			jhove2.incrementNumFiles();
-		}
-	
-		if (source instanceof AggregateSource) {
-			List<Source> list = ((AggregateSource) source).getChildSources();
-			Iterator<Source> iter = list.iterator();
-			while (iter.hasNext()) {
-				characterize(jhove2, iter.next());
-			}
-		}
-		else {
-			;
-		}
+	public Set<FormatIdentification> identify(JHOVE2 jhove2, Input input)
+			throws IOException {
+		Module droid = new DROIDWrapper();
+		droid.setStartTime();
+		droid.setEndTime();
+		FormatIdentification id =
+			new FormatIdentification(droid, (Format)
+					                 Configure.getReportable("UTF8Format"),
+					                 Confidence.PositiveGeneric);
+		this.formats.add(id);
+		
+		return this.formats;
+	}
+
+	/** Get presumptive format identifications.
+	 * @return Presumptive format identifications
+	 * @see org.jhove2.core.Identifiable#identify(org.jhove2.core.JHOVE2, org.jhove2.core.io.Input)
+	 */
+	@Override
+	public Set<FormatIdentification> getFormats() {
+		return this.formats;
 	}
 }

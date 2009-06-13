@@ -114,7 +114,7 @@ public class FormatIdentification
 	}
 
 	/** Lexically compare format identifications.
-	 * @param identifier Identifier to be compared
+	 * @param identifier IdentifierModule to be compared
 	 * @return -1, 0, or 1 if this identifier value is less than, equal
 	 *         to, or greater than the second
 	 * @see java.lang.comparable#compareTo(Object)

@@ -36,7 +36,7 @@
 
 package org.jhove2.core;
 
-/** A JHOVE2 identifier.  Note that this class is named "I8R", not "Identifier"
+/** A JHOVE2 identifier.  Note that this class is named "I8R", not "IdentifierModule"
  * to avoid confusion between "identifier" as a label and "identifier" as a
  * process that determines a format.
  * 
@@ -61,7 +61,7 @@ public class I8R
 	 */
 	public static final String JHOVE2_REPORTABLE_INFIX = "reportable/";
 	
-	/** Identifier types, or namespaces. */
+	/** IdentifierModule types, or namespaces. */
 	public enum Namespace {
 		AFNOR,      /* AFNOR standard */
 		AIIM,       /* AIIM standard */
@@ -73,12 +73,12 @@ public class I8R
 		CCITT,      /* CCITT standard */
 		Charset,    /* IANA charset */
 		DDC,        /* Dewey Decimal Classification */
-		DOI,        /* Digital Object Identifier */
+		DOI,        /* Digital Object IdentifierModule */
 		ECMA,       /* ECMA standard */
 		FDD,        /* Library of Congress FDD identifier */
 		FIPS,       /* FIPS standard */
 		FourCC,     /* 4CC Standard */
-		GUID,       /* Globally Unique Identifier */
+		GUID,       /* Globally Unique IdentifierModule */
 		Handle,     /* Handle */
 		I3A,        /* I3A standard */
 		IEC,        /* IEC standard */
@@ -93,32 +93,32 @@ public class I8R
 		MIME,       /* MIME media type */
 		NISO,       /* NISO standard */
 		OCLC,       /* OCLC number */
-		PII,        /* Publisher Item Identifier */
-		PUID,       /* PRONOM Unique Identifier */
+		PII,        /* Publisher Item IdentifierModule */
+		PUID,       /* PRONOM Unique IdentifierModule */
 		PURL,       /* Persistent URL */
 		RFC,        /* IETF Request for Comments */
 		Shelfmark,  /* Shelfmark */
-		SICI,       /* Serial Item and Contribution Identifier */
+		SICI,       /* Serial Item and Contribution IdentifierModule */
 		SMPTE,      /* SMPTE standard */
 		SN,         /* Serial number */
 		STD,        /* IETF standard */
 		TOM,        /* TOM identifier */
-		UUID,       /* Universally Unique Identifier */
-		URI,        /* W3C Uniform Resource Identifier */
+		UUID,       /* Universally Unique IdentifierModule */
+		URI,        /* W3C Uniform Resource IdentifierModule */
 		URL,        /* W3C Uniform Resource Locator */
 		URN,        /* W3C Uniform Resource Name */
-		UTI,        /* Apple Uniform Type Identifier */
+		UTI,        /* Apple Uniform Type IdentifierModule */
 		Other
 	}
 
-	/** Identifier namespace. */
+	/** IdentifierModule namespace. */
 	protected Namespace namespace;
 	
-	/** Identifier value. */
+	/** IdentifierModule value. */
 	protected String value;
 
 	/** Instantiate a <code>I8R</code> identifier in the JHOVE2 namespace. 
-	 * @param value Identifier value
+	 * @param value IdentifierModule value
 	 */
 	public I8R(String value)
 	{
@@ -126,8 +126,8 @@ public class I8R
 	}
 	
 	/** Instantiate a new <code>I8R</code>. 
-	 * @param value     Identifier value
-	 * @param namespace Identifier namespace
+	 * @param value     IdentifierModule value
+	 * @param namespace IdentifierModule namespace
 	 */
 	public I8R(String value, Namespace namespace)
 	{
@@ -136,7 +136,7 @@ public class I8R
 	}
 
 	/** Get the identifier namespace.
-	 * @return Identifier namespace
+	 * @return IdentifierModule namespace
 	 */
 	public Namespace getNamespace ()
 	{
@@ -144,7 +144,7 @@ public class I8R
 	}
 
 	/** Get the identifier value.
-	 * @return Identifier value
+	 * @return IdentifierModule value
 	 */
 	public String getValue ()
 	{
@@ -162,7 +162,7 @@ public class I8R
 	}
 
 	/** Lexically compare identifier.
-	 * @param identifier Identifier to be compared
+	 * @param identifier IdentifierModule to be compared
 	 * @return -1, 0, or 1 if this identifier value is less than, equal
 	 *         to, or greater than the second
 	 * @see java.lang.comparable#compareTo(Object)

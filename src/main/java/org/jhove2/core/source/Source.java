@@ -39,7 +39,7 @@ package org.jhove2.core.source;
 import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.Module;
+import org.jhove2.core.Processible;
 import org.jhove2.core.Reportable;
 import org.jhove2.core.io.Input;
 
@@ -55,7 +55,7 @@ public interface Source
 	/** Add a module that processed the source unit.
 	 * @param module Module that processed the source unit
 	 */
-	public void addModule(Module module);
+	public void addModule(Processible module);
 	
 	/** Get {@link org.jhove2.core.io.Input} for the source unit.
 	 * @return Input for the source unit
@@ -66,5 +66,5 @@ public interface Source
 	 * @return Modules that processed the source unit
 	 */
 	@ReportableProperty("Modules that processed the source unit")
-	public List<Module> getModules();
+	public List<Processible> getModules();
 }
