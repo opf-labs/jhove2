@@ -52,9 +52,12 @@ public interface Identifiable
 	/** Presumptively identify the format of a source unit.
 	 * @param jhove2 JHOVE2 framework
 	 * @param input  Source unit input
+	 * @throws IOException     If an I/O exception is raised reading the
+	 *                         source unit
+	 * @throws JHOVE2Exception
 	 */
 	public Set<FormatIdentification> identify(JHOVE2 jhove2, Input input)
-		throws IOException;
+		throws IOException, JHOVE2Exception;
 	
 	/** Get presumptive format identifications.
 	 * @return Presumptive format identifications

@@ -37,6 +37,8 @@
 package org.jhove2.core.source;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /** Factory for JHOVE2 file and directory source units.
  * 
@@ -45,15 +47,23 @@ import java.io.File;
 public abstract class SourceFactory {
 	/** Get source unit.
 	 * @param pathName Path name
+	 * @throws IOException 
+	 * @throws FileNotFoundException 
 	 */
-	public static synchronized Source getSource(String pathName) {
+	public static synchronized Source getSource(String pathName)
+		throws FileNotFoundException, IOException
+	{
 		return getSource(new File(pathName));
 	}
 	
 	/** Get source unit.
 	 * @param file Java {@link java.io.File} representing the file or directory
+	 * @throws IOException 
+	 * @throws FileNotFoundException 
 	 */
-	public static synchronized Source getSource(File file) {
+	public static synchronized Source getSource(File file)
+		throws FileNotFoundException, IOException
+	{
 		if (file.isDirectory()) {
 			return new DirectorySource(file);
 		}

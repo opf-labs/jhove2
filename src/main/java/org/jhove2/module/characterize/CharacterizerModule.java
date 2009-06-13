@@ -43,9 +43,11 @@ import java.util.Set;
 
 import org.jhove2.core.AbstractModule;
 import org.jhove2.core.Characterizable;
+import org.jhove2.core.Digestable;
 import org.jhove2.core.FormatIdentification;
 import org.jhove2.core.Identifiable;
 import org.jhove2.core.JHOVE2;
+import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.AggregateSource;
 import org.jhove2.core.source.ClumpSource;
@@ -53,8 +55,6 @@ import org.jhove2.core.source.DirectorySource;
 import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.spring.Configure;
-
-import sun.security.krb5.Config;
 
 /** JHOVE2 characterization module.
  * 
@@ -68,7 +68,7 @@ public class CharacterizerModule
 	public static final String VERSION = "1.0.0";
 
 	/** Characterization process module release date. */
-	public static final String DATE = "2009-06-12";
+	public static final String DATE = "2009-06-13";
 	
 	/** Characterization process module rights statement. */
 	public static final String RIGHTS =
@@ -76,8 +76,10 @@ public class CharacterizerModule
 		"Ithaka Harbors, Inc., and The Board of Trustees of the Leland " +
 		"Stanford Junior University. " +
 		"Available under the terms of the BSD license.";
-
+	
 	/** Instantiate a new <code>CharacterizerModule</code>.
+	 * @param identifier Identification module
+	 * @param digester   Message digesting module
 	 */
 	public CharacterizerModule() {
 		super(VERSION, DATE, RIGHTS);
@@ -86,10 +88,16 @@ public class CharacterizerModule
 	/** Characterize a source unit.
 	 * @param jhove2 JHOVE2 framework
 	 * @param source Source unit
+	 * @throws IOException     If an I/O exception is raised characterizing
+	 *                         the source unit
+	 * @throws JHOVE2Exception
 	 * @see org.jhove2.core.Characterizable#characterize(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
 	 */
 	@Override
-	public void characterize(JHOVE2 jhove2, Source source) {
+	public void characterize(JHOVE2 jhove2, Source source)
+		throws IOException, JHOVE2Exception
+	{
+		/* Update summary counts of source units, by type. */
 		if      (source instanceof ClumpSource) {
 			jhove2.incrementNumClumps();
 		}
@@ -104,27 +112,37 @@ public class CharacterizerModule
 			List<Source> list = ((AggregateSource) source).getChildSources();
 			Iterator<Source> iter = list.iterator();
 			while (iter.hasNext()) {
-				characterize(jhove2, iter.next());
+				Source src = iter.next();
+				characterize(jhove2, src);
 			}
+			
+			/* TODO: aggregate identification, etc. */
 		}
 		else {
 			Input input = source.getInput();
-			
-			/* Presumptively identifier the format(s) of the source unit. */
-			Identifiable identifier =
-				(Identifiable) Configure.getReportable("IdentifierModule");
-			identifier.setStartTime();
-			try {
+			if (input != null) {
+				/* Presumptively identifier the format(s) of the source unit. */
+				Identifiable identifier =
+					(Identifiable) Configure.getReportable("IdentifierModule");
+				identifier.setStartTime();
 				Set<FormatIdentification> formats =
 					identifier.identify(jhove2, input);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			identifier.setEndTime();
-			source.addModule(identifier);
+				identifier.setEndTime();
+				source.addModule(identifier);
 			
-			/* Parse and validate the source unit. */
+				/* TODO: Parse and validate the source unit. */
+			
+				/** Calculate message digest(s) for the source unit. */
+				Digestable digester =
+					(Digestable) Configure.getReportable("DigesterModule");
+				digester.setStartTime();
+				digester.digest(jhove2, input);
+				digester.setEndTime();
+				source.addModule(digester);
+			}
+			else {
+				/* TODO: what to do if no input? */
+			}
 		}
 	}
 }

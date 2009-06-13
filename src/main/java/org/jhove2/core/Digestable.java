@@ -56,8 +56,8 @@ public interface Digestable
 	public void digest(JHOVE2 jhove2, Input input)
 		throws IOException;
 	
-	/** Get message digest values.
-	 * @return Message digest values
+	/** Get message digests.
+	 * @return Message digests
 	 */
 	@ReportableProperty("Get message digests.")
 	public Set<Digest> getDigests();

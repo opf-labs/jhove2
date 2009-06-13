@@ -19,6 +19,15 @@
 	      class="org.jhove2.module.identify.IdentifierModule"
 	      scope="prototype"/>
 	      
+	<!--  Message digester module bean -->
+	<bean id="DigesterModule"
+	      class="org.jhove2.module.digest.DigesterModule"
+	      scope="prototype"/>
+	
+	<!-- MD5 message digester bean -->
+	<bean id="MD5Digester" class="org.jhove2.module.digest.MD5Digester"
+	      scope="prototype"/>
+	      
  	<!-- JSON displayer bean -->
 	<bean id="JSONDisplayer" class="org.jhove2.module.display.JSONDisplayer"
 	      scope="prototype"/>
@@ -40,7 +49,7 @@
 	</bean>
 		
    <!-- UTF-8 identifier bean -->  
-   <bean id="UTF8Identifier" class="org.jhove2.core.I8R" >
+   <bean id="UTF8Identifier" class="org.jhove2.core.I8R" scope="singleton">
       <constructor-arg type="java.lang.String" value="info:jhove2/format/utf-8"/>
    </bean>
    

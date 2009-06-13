@@ -37,6 +37,7 @@
 package org.jhove2.core.source;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.jhove2.annotation.ReportableProperty;
@@ -65,15 +66,23 @@ public class DirectorySource
 	
 	/** Instantiate a new <code>DirectorySource</code>.
 	 * @param pathName Directory path name
+	 * @throws IOException 
+	 * @throws FileNotFoundException 
 	 */
-	public DirectorySource(String pathName) {
+	public DirectorySource(String pathName)
+		throws FileNotFoundException, IOException
+	{
 		this(new File(pathName));
 	}
 	
 	/** Instantiate a new <code>DirectorySource</code>.
 	 * @param dir Java {@link java.io.File} representing a directory
+	 * @throws IOException 
+	 * @throws FileNotFoundException 
 	 */
-	public DirectorySource(File dir) {
+	public DirectorySource(File dir)
+		throws FileNotFoundException, IOException
+	{
 		super();
 		
 		this.dir  = dir;

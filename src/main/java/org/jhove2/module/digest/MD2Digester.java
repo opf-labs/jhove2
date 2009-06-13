@@ -34,69 +34,48 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.core;
+package org.jhove2.module.digest;
 
-/** A JHOVE2 message digest.
+import java.nio.ByteBuffer;
+import java.security.NoSuchAlgorithmException;
+
+import org.jhove2.core.Digest;
+
+/** JHOVE2 MD2 message digester.  The MD2 algorithm is defined by RFC 1319.
  * 
  * @author mstrong, slabrams
  */
-public class Digest
-	implements Comparable<Digest>
+public class MD2Digester
+	extends AbstractBufferDigester
 {
-	/** Message digest algorithm. */
-	protected String algorithm;
+	/** Algorithm name. */
+	public static final String ALGORITHM = "MD2";
 	
-	/** Message digest value, hex encoded. */
-	protected String value;
-	
-	/** Instantiate a new <code>Digest</code>.
-	 * @param value     Message digest value, hex encoded
-	 * @param algorithm Message digest algorithm
+	/** Instantiate a new <code>MD2Digester</code>.
+	 * @throws NoSuchAlgorithmException 
 	 */
-	public Digest(String value, String algorithm) {
-		this.value     = value;
-		this.algorithm = algorithm;
-	}
-
-	/** Get the message digest algorithm.
-	 * @return Message digest algorithm
-	 */
-	public String getAlgorithm ()
+	public MD2Digester()
+		throws NoSuchAlgorithmException
 	{
-		return this.algorithm;
+		super(ALGORITHM);
 	}
 
-	/** Get the message digest value.
-	 * @return Message digest value, hex encoded
-	 */
-	public String getValue ()
-	{
-		return this.value;
-	}
-
-	/** Get a String representation of the message digest, in the form
-	 * "algorithm:value".
-	 * @return String representation of the message digest
+	/* (non-Javadoc)
+	 * @see org.jhove2.module.digest.BufferDigester#update(java.nio.ByteBuffer)
 	 */
 	@Override
-	public String toString()
-	{
-		return this.algorithm + ":" + value;
+	public void update(ByteBuffer buffer) {
+		// TODO Auto-generated method stub
+
 	}
 
-	/** Lexically compare message digest.
-	 * @param digest Message digest to be compared
-	 * @return -1, 0, or 1 if this identifier value is less than, equal
-	 *         to, or greater than the second
-	 * @see java.lang.comparable#compareTo(Object)
+	/* (non-Javadoc)
+	 * @see org.jhove2.module.digest.Digester#getDigest()
 	 */
 	@Override
-	public int compareTo(Digest digest)
-	{
-		int ret = this.algorithm.compareToIgnoreCase(digest.getAlgorithm());
-		if (ret == 0) {
-			ret = this.value.compareToIgnoreCase(digest.getValue());
-		}
-		return ret;
+	public Digest getDigest() {
+		// TODO Auto-generated method stub
+		return null;
 	}
+
 }

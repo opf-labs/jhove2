@@ -33,70 +33,91 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.jhove2.module.digest;
 
-package org.jhove2.core;
+import java.nio.ByteBuffer;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
-/** A JHOVE2 message digest.
- * 
- * @author mstrong, slabrams
+import org.jhove2.core.Digest;
+
+/**
+ * @author slabrams
+ *
  */
-public class Digest
-	implements Comparable<Digest>
+public abstract class AbstractBufferDigester
+	implements BufferDigester
 {
 	/** Message digest algorithm. */
 	protected String algorithm;
 	
-	/** Message digest value, hex encoded. */
-	protected String value;
+	/** Message digester. */
+	protected MessageDigest digester;
 	
-	/** Instantiate a new <code>Digest</code>.
-	 * @param value     Message digest value, hex encoded
-	 * @param algorithm Message digest algorithm
+	/** Instantiate a new <code>AbstractBufferDigester</code>
 	 */
-	public Digest(String value, String algorithm) {
-		this.value     = value;
+	public AbstractBufferDigester(String algorithm)
+		throws NoSuchAlgorithmException
+	{
 		this.algorithm = algorithm;
-	}
 
-	/** Get the message digest algorithm.
-	 * @return Message digest algorithm
-	 */
-	public String getAlgorithm ()
-	{
-		return this.algorithm;
+		this.digester = MessageDigest.getInstance(algorithm);
 	}
-
-	/** Get the message digest value.
-	 * @return Message digest value, hex encoded
-	 */
-	public String getValue ()
-	{
-		return this.value;
-	}
-
-	/** Get a String representation of the message digest, in the form
-	 * "algorithm:value".
-	 * @return String representation of the message digest
+	
+	/** Update a message digest.
+	 * @param buffer Buffer
+	 * @see org.jhove2.module.digest.BufferDigester#update(java.nio.ByteBuffer)
 	 */
 	@Override
-	public String toString()
-	{
-		return this.algorithm + ":" + value;
+	public void update(ByteBuffer buffer) {
+		this.digester.update(buffer);
 	}
 
-	/** Lexically compare message digest.
-	 * @param digest Message digest to be compared
-	 * @return -1, 0, or 1 if this identifier value is less than, equal
-	 *         to, or greater than the second
-	 * @see java.lang.comparable#compareTo(Object)
+	/** Get message digest value, as a hexadecimal string.
+	 * @return Message digest value, as a hexadecimal string
+	 * @see org.jhove2.module.digest.Digester#getDigest()
 	 */
 	@Override
-	public int compareTo(Digest digest)
-	{
-		int ret = this.algorithm.compareToIgnoreCase(digest.getAlgorithm());
-		if (ret == 0) {
-			ret = this.value.compareToIgnoreCase(digest.getValue());
+	public Digest getDigest() {
+		byte [] value = this.digester.digest();
+		
+		return new Digest(toHexString(value), this.algorithm);
+	}
+	
+	/** Format a message digest value as a hexadecimal string.
+	 * @param digest Message digest value
+	 * @return Message digest value as a hexadecimal string
+	 */
+	public static synchronized String toHexString(byte [] digest) {
+		StringBuffer hex = new StringBuffer();
+		for (int i=0; i<digest.length; i++) {
+			int in = digest[i];
+			if (in < 0) {
+				in = 256 + in;
+			}
+			if (in < 16) {
+				hex.append("0");
+			}
+			String h = Integer.toHexString(in);
+			hex.append(h);
 		}
-		return ret;
+		
+		return hex.toString();
+	}
+
+	/** Format a message digest value as a hexadecimal string.
+	 * @param digest Message digest value
+	 * @return Message digest value as a hexadecimal string
+	 */
+	public static synchronized String toHexString(long digest) {
+		StringBuffer hex = new StringBuffer();
+		String h = Long.toHexString(digest);
+		int len = h.length();
+		for (int i=len; i<8; i++) {
+			hex.append("0");
+		}
+		hex.append(h);
+		
+		return hex.toString();
 	}
 }

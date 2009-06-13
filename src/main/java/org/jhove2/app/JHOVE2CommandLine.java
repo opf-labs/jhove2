@@ -39,6 +39,7 @@ package org.jhove2.app;
 import java.util.List;
 
 import org.jhove2.core.Characterizable;
+import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Displayable;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.spring.Configure;
@@ -48,40 +49,91 @@ import org.jhove2.core.spring.Configure;
  * @author mstrong, slabrams
  */
 public class JHOVE2CommandLine {
+	/** Normal termination return code. */
+	public static final int EOK = 0;
+	
 	/** Usage statement return code. */
-	public static final int EUSAGE = -1;
+	public static final int EUSAGE = 1;
+	
+	/** Caught excecption return code. */
+	public static final int EEXCEPTION = -1;
 	
 	/** Main entry point for the JHOVE2 command line application.
 	 * @param args Command line arguments
 	 */
 	public static void main(String[] args) {
-		if (args.length < 1) {
-			System.out.println(getUsage());
-			System.exit(EUSAGE);
+		int returnCode = EOK;
+		Exception exception1 = null;
+		Exception exception2 = null;
+		String returnMessage = null;
+		try {
+			if (args.length < 1) {
+				returnMessage = getUsage();
+				returnCode    = EUSAGE;
+			}
+		} catch (Exception e) {
+			exception1    = e;
+			returnMessage = e.getMessage();
+			returnCode    = EEXCEPTION;
 		}
-		
-		JHOVE2CommandLineParser parser = new JHOVE2CommandLineParser();
-		List<String> pathNames = parser.parse(args);
 
-		JHOVE2 jhove2 = (JHOVE2) Configure.getReportable("JHOVE2");
-		jhove2.setBufferSize(parser.getBufferSize());
-		jhove2.setFailFastLimit(parser.getFailFastLimit());
-		
-		Characterizable characterizer =
-			(Characterizable) Configure.getReportable("CharacterizerModule");
-		jhove2.setCharacterizer(characterizer);
-		jhove2.characterize(pathNames);
-		
-		Displayable displayer =
-			(Displayable) Configure.getReportable(parser.getDisplayer());
-		jhove2.setDisplayer(displayer);
-		jhove2.display();
+		if (returnCode == EOK) {
+			JHOVE2CommandLineParser parser = new JHOVE2CommandLineParser();
+			List<String> pathNames = parser.parse(args);
+
+			JHOVE2 jhove2 = null;
+			try {
+				jhove2 = (JHOVE2) Configure.getReportable("JHOVE2");
+				jhove2.setCommandLine(args);
+				jhove2.setBufferSize(parser.getBufferSize());
+				jhove2.setFailFastLimit(parser.getFailFastLimit());
+	
+				Characterizable characterizer =
+					(Characterizable) Configure.getReportable("CharacterizerModule");
+				jhove2.setCharacterizer(characterizer);
+				jhove2.characterize(pathNames);
+			} catch (Exception e) {
+				exception1    = e;
+				returnMessage = e.getMessage();
+				returnCode    = EEXCEPTION;
+			}
+	
+			if (jhove2 != null) {
+				try {
+					Displayable displayer =
+						(Displayable) Configure.getReportable(parser.getDisplayer());
+					jhove2.setDisplayer(displayer);
+					jhove2.display();
+				} catch (Exception e) {
+					exception2 = e;
+					if (returnMessage != null) {
+						returnMessage += "; " + e.getMessage();
+					}
+					else {
+						returnMessage = e.getMessage();
+					}
+					returnCode = EEXCEPTION;
+				}
+			}
+		}
+		if (returnMessage != null) {
+			System.err.println("Error: " + returnMessage);
+			if (exception1 != null) {
+				exception1.printStackTrace(System.err);
+			}
+			if (exception2 != null) {
+				exception2.printStackTrace(System.err);
+			}
+		}
+		System.exit(returnCode);
 	}
 	
 	/** Get application usage statement.
 	 * @return Application usage statement
 	 */
-	public static String getUsage() {
+	public static String getUsage()
+		throws JHOVE2Exception
+	{
 		String [] displayers = Configure.getReportableNames(Displayable.class);
 		
 		StringBuffer usage = new StringBuffer("usage: ");

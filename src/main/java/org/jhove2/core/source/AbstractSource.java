@@ -51,6 +51,9 @@ import org.jhove2.core.io.Input;
 public abstract class AbstractSource
 	implements Source
 {
+	/** Source unit input. */
+	protected Input input;
+	
 	/** Modules that processed the source unit. */
 	protected List<Processible> modules;
 	
@@ -75,8 +78,7 @@ public abstract class AbstractSource
 	 */
 	@Override
 	public Input getInput() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.input;
 	}
 
 	/** Get modules that processed the source unit.

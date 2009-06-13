@@ -37,10 +37,14 @@
 package org.jhove2.core.source;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Date;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.JHOVE2;
+import org.jhove2.core.io.InputFactory;
+import org.jhove2.core.io.Input.Type;
 
 /** JHOVE2 file source unit.  A file source unit is a unitary formatted object
  * 
@@ -79,14 +83,20 @@ public class FileSource
 	/** Instantiate a new <code>FileSource</code>.
 	 * @param pathName File path name
 	 */
-	public FileSource(String pathName) {
+	public FileSource(String pathName)
+		throws FileNotFoundException, IOException
+	{
 		this(new File(pathName));
 	}
 	
 	/** Instantiate a new <code>FileSource</code>.
 	 * @param file File
+	 * @throws IOException 
+	 * @throws FileNotFoundException 
 	 */
-	public FileSource(File file) {
+	public FileSource(File file)
+		throws FileNotFoundException, IOException
+	{
 		super();
 		
 		this.file = file;
@@ -103,6 +113,10 @@ public class FileSource
 			this.isReadable = file.canRead();
 			this.isSpecial = !file.isFile();
 			this.lastModified = new Date(file.lastModified());
+
+			/* TODO: get actual buffer size and type. */
+			this.input = InputFactory.getInput(file, JHOVE2.DEFAULT_BUFFER_SIZE,
+					                           Type.Direct);
 		}
 		else {
 			this.size = 0L;
@@ -127,7 +141,7 @@ public class FileSource
 	public boolean isHidden() {
 		return this.isHidden;
 	}
-	
+
 	/** Get file last modified date.
 	 * @return File last modified date
 	 */

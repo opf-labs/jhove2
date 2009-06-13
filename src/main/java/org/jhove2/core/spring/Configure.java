@@ -36,6 +36,7 @@
 
 package org.jhove2.core.spring;
 
+import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Reportable;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -55,27 +56,45 @@ public class Configure {
 	/** Get reportable by bean name.
 	 * @param reportable Reportable class
 	 * @param name       Reportable bean name
+	 * @throws JHOVE2Exception
 	 */
-	public static Reportable getReportable(String name)
-		throws BeansException
+	public static synchronized Reportable getReportable(String name)
+		throws JHOVE2Exception
 	{
-		if (context == null) {
-			context = 	new ClassPathXmlApplicationContext(CLASSPATH);
+		Reportable reportable = null;
+		try {
+			if (context == null) {
+				context = new ClassPathXmlApplicationContext(CLASSPATH);
+			}
+		
+			reportable = (Reportable) context.getBean(name);
+		} catch (BeansException e) {
+			throw new JHOVE2Exception("Can't instantiate reportable: " +
+					                         name, e);
 		}
 		
-		return (Reportable) context.getBean(name);
+		return reportable;
 	}
 	
 	/** Get reportable names by type.
 	 * @param type Reportable type
+	 * @throws JHOVE2Exception 
 	 */
-	public static String [] getReportableNames(Class<?> reportable)
-		throws BeansException
+	public static synchronized String [] getReportableNames(Class<?> reportable)
+		throws JHOVE2Exception
 	{
-		if (context == null) {
-			context = 	new ClassPathXmlApplicationContext(CLASSPATH);
+		String [] names = null;
+		try {
+			if (context == null) {
+				context = new ClassPathXmlApplicationContext(CLASSPATH);
+			}
+		
+			names = context.getBeanNamesForType(reportable);
+		} catch (BeansException e) {
+			throw new JHOVE2Exception("Can't retrieve instantiation names for reportable: " +
+					                         reportable.getName(), e);
 		}
 		
-		return context.getBeanNamesForType(reportable);
+		return names;
 	}
 }

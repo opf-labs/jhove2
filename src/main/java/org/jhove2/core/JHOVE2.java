@@ -36,6 +36,7 @@
 
 package org.jhove2.core;
 
+import java.io.IOException;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -96,6 +97,9 @@ public class JHOVE2
 	
 	/** Java classpath. */
 	protected String classpath;
+	
+	/** JHOVE2 application command line. */
+	protected String commandLine;
 	
 	/** Framework displayer module. */
 	protected Displayable displayer;
@@ -222,7 +226,9 @@ public class JHOVE2
 	 * @param pathName  First path name
 	 * @param pathNames Remaining path names
 	 */
-	public void characterize(String pathName, String... pathNames) {
+	public void characterize(String pathName, String... pathNames)
+		throws IOException, JHOVE2Exception
+	{
 		List<String> list = new ArrayList<String>();
 		list.add(pathName);
 		if (pathNames != null && pathNames.length > 0) {
@@ -236,7 +242,9 @@ public class JHOVE2
 	/** Characterize file system objects (files and directories).
 	 * @param pathNames File system path names
 	 */
-	public void characterize(List<String> pathNames) {
+	public void characterize(List<String> pathNames)
+		throws IOException, JHOVE2Exception
+	{
 		this.characterizer.setStartTime();
 		Iterator<String> iter = pathNames.iterator();
 		if (pathNames.size() == 1) {
@@ -407,6 +415,14 @@ public class JHOVE2
 	@ReportableProperty(order=17, value="Java classpath.")
 	public String getClasspath() {
 		return this.classpath;
+	}
+	
+	/** Get JHOVE2 application command line.
+	 * @return JHOVE2 application command line
+	 */
+	@ReportableProperty(order=1, value="JHOVE2 application command line.")
+	public String getCommandLine() {
+		return this.commandLine;
 	}
 	
 	/** Get framework invocation date/timestamp.
@@ -654,6 +670,18 @@ public class JHOVE2
 	 */
 	public void setCharacterizer(Characterizable characterizer) {
 		this.characterizer = characterizer;
+	}
+	
+	/** Set JHOVE2 application command line.
+	 * @param JHOVE2 application command line arguments
+	 */
+	public void setCommandLine(String [] args) {
+		if (args.length > -1) {
+			this.commandLine = args[0];
+			for (int i=1; i<args.length; i++) {
+				this.commandLine += " " + args[i];
+			}
+		}
 	}
 	
 	/** Set framework displayer module.

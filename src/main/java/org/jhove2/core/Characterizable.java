@@ -36,6 +36,8 @@
 
 package org.jhove2.core;
 
+import java.io.IOException;
+
 import org.jhove2.core.source.Source;
 
 /** Interface for JHOVE2 characteriztion modules.
@@ -48,6 +50,10 @@ public interface Characterizable
 	/** Characterize a source unit.
 	 * @param jhove2 JHOVE2 framework
 	 * @param source Source unit
+	 * @throws IOException     If an I/O exception is raised characterizing
+	 *                         the source unit
+	 * @throws JHOVE2Exception
 	 */
-	public void characterize(JHOVE2 jhove2, Source source);
+	public void characterize(JHOVE2 jhove2, Source source)
+		throws IOException, JHOVE2Exception;
 }

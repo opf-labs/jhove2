@@ -51,7 +51,9 @@ public interface Parsable
 	/** Parse a source unit.
 	 * @param jhove2 JHOVE2 framework
 	 * @param input  Source unit input
-	 * @throws IOException
+	 * @throws EOFException If End-of-File is reached reading the source unit
+	 * @throws IOException  If an I/O exception is raised reading the source
+	 *                      unit
 	 */
 	public long parse(JHOVE2 jhove2, Input input)
 		throws EOFException, IOException;

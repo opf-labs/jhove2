@@ -34,84 +34,111 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.module.identify;
+package org.jhove2.module.digest;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
 import org.jhove2.core.AbstractModule;
-import org.jhove2.core.Format;
-import org.jhove2.core.FormatIdentification;
-import org.jhove2.core.Identifiable;
+import org.jhove2.core.Digest;
+import org.jhove2.core.Digestable;
 import org.jhove2.core.JHOVE2;
-import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.Module;
-import org.jhove2.core.FormatIdentification.Confidence;
 import org.jhove2.core.io.Input;
-import org.jhove2.core.spring.Configure;
 
-/** JHOVE2 identification module.
+/** JHOVE2 message digester module.
  * 
- * @author mstrong, slabrams
+ * @author mstrong,slabrams
  */
-public class IdentifierModule
+public class DigesterModule
 	extends AbstractModule
-	implements Identifiable
+	implements Digestable
 {
-	/**Identification module version identifier. */
-	public static final String VERSION = "2.0.0";
+	/** Framework version identifier. */
+	public static final String VERSION = "1.0.0";
 
-	/** Identification module release date. */
-	public static final String DATE = "2009-06-12";
+	/** Framework release date. */
+	public static final String DATE = "2009-06-13";
 	
-	/** Identification module rights statement. */
+	/** Framework rights statement. */
 	public static final String RIGHTS =
 		"Copyright 2009 by The Regents of the University of California, " +
 		"Ithaka Harbors, Inc., and The Board of Trustees of the Leland " +
 		"Stanford Junior University. " +
 		"Available under the terms of the BSD license.";
 
-	/** Presumptively identified formats. */
-	protected Set<FormatIdentification> formats;
+	protected List<BufferDigester> digesters;
 	
-	/** Instantiate a new <code>IdentifierModule</code>.
+	/** Instantiate a new <code>DigesterModule</code>.
 	 */
-	public IdentifierModule() {
+	public DigesterModule() {
 		super(VERSION, DATE, RIGHTS);
+
+		this.digesters = new ArrayList<BufferDigester>();
 		
-		this.formats = new TreeSet<FormatIdentification>();
+		/* TODO: configure via Spring. */
+		try {
+			this.digesters.add(new MD5Digester());
+			this.digesters.add(new SHA1Digester());
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
-	/** Presumptively identify the format of a source unit.
+	/** Calculate message digests.
 	 * @param jhove2 JHOVE2 framework
-	 * @param input  Source unit input
-	 * @throws IOException     If an I/O exception is raised reading the
-	 *                         source unit
-	 * @throws JHOVE2Exception
-	 * @see org.jhove2.core.Identifiable#getFormats()
+	 * @see org.jhove2.core.Digestable#digest(org.jhove2.core.JHOVE2, org.jhove2.core.io.Input)
 	 */
 	@Override
-	public Set<FormatIdentification> identify(JHOVE2 jhove2, Input input)
-			throws IOException, JHOVE2Exception {
-		Module droid = new DROIDWrapper();
-		droid.setStartTime();
-		droid.setEndTime();
-		FormatIdentification id =
-			new FormatIdentification(droid, (Format)
-					                 Configure.getReportable("UTF8Format"),
-					                 Confidence.PositiveGeneric);
-		this.formats.add(id);
-		
-		return this.formats;
+	public void digest(JHOVE2 jhove2, Input input)
+		throws IOException
+	{
+		long inputSize  = input.getSize();
+		long bufferSize = input.getMaxBufferSize();
+		long ptr = 0L;
+		while (inputSize - ptr > -1L) {
+			input.setPosition(ptr);
+			ByteBuffer buffer = input.getBuffer();
+			if (this.digesters.size() > 0) {
+				Iterator<BufferDigester> iter = this.digesters.iterator();
+				while (iter.hasNext()) {
+					BufferDigester digester = iter.next();
+					digester.update(buffer);
+				}
+			}
+			ptr += bufferSize;
+		}
 	}
 
-	/** Get presumptive format identifications.
-	 * @return Presumptive format identifications
-	 * @see org.jhove2.core.Identifiable#identify(org.jhove2.core.JHOVE2, org.jhove2.core.io.Input)
+	/** Get message digests.
+	 * @return Message digests
+	 * @see org.jhove2.core.Digestable#getDigests()
 	 */
 	@Override
-	public Set<FormatIdentification> getFormats() {
-		return this.formats;
+	public Set<Digest> getDigests() {
+		Set<Digest> set = new TreeSet<Digest>();
+		if (this.digesters.size() > 0) {
+			Iterator<BufferDigester> iter = this.digesters.iterator();
+			while (iter.hasNext()) {
+				BufferDigester digester = iter.next();
+				Digest digest = digester.getDigest();
+				set.add(digest);
+			}
+		}
+		
+		return set;
+	}
+
+	/** Set an algorithm-specific digester.
+	 * @param digester Algorithm-specific digester
+	 */
+	public void setDigester(BufferDigester digester) {
+		this.digesters.add((BufferDigester) digester);
 	}
 }

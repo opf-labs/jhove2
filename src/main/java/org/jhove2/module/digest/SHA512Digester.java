@@ -34,69 +34,27 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.core;
+package org.jhove2.module.digest;
 
-/** A JHOVE2 message digest.
+import java.security.NoSuchAlgorithmException;
+
+/*** JHOVE2 SHA-512 message digester.  The SHA-512 algorithm is defined by FIPS
+ * PUB 180-2.
  * 
  * @author mstrong, slabrams
  */
-public class Digest
-	implements Comparable<Digest>
+public class SHA512Digester
+	extends AbstractBufferDigester
 {
-	/** Message digest algorithm. */
-	protected String algorithm;
+	/** Algorithm name. */
+	public static final String ALGORITHM = "SHA-512";
 	
-	/** Message digest value, hex encoded. */
-	protected String value;
-	
-	/** Instantiate a new <code>Digest</code>.
-	 * @param value     Message digest value, hex encoded
-	 * @param algorithm Message digest algorithm
+	/** Instantiate a new <code>SHA512Digester</code>.
+	 * @throws NoSuchAlgorithmException 
 	 */
-	public Digest(String value, String algorithm) {
-		this.value     = value;
-		this.algorithm = algorithm;
-	}
-
-	/** Get the message digest algorithm.
-	 * @return Message digest algorithm
-	 */
-	public String getAlgorithm ()
+	public SHA512Digester()
+		throws NoSuchAlgorithmException
 	{
-		return this.algorithm;
-	}
-
-	/** Get the message digest value.
-	 * @return Message digest value, hex encoded
-	 */
-	public String getValue ()
-	{
-		return this.value;
-	}
-
-	/** Get a String representation of the message digest, in the form
-	 * "algorithm:value".
-	 * @return String representation of the message digest
-	 */
-	@Override
-	public String toString()
-	{
-		return this.algorithm + ":" + value;
-	}
-
-	/** Lexically compare message digest.
-	 * @param digest Message digest to be compared
-	 * @return -1, 0, or 1 if this identifier value is less than, equal
-	 *         to, or greater than the second
-	 * @see java.lang.comparable#compareTo(Object)
-	 */
-	@Override
-	public int compareTo(Digest digest)
-	{
-		int ret = this.algorithm.compareToIgnoreCase(digest.getAlgorithm());
-		if (ret == 0) {
-			ret = this.value.compareToIgnoreCase(digest.getValue());
-		}
-		return ret;
+		super(ALGORITHM);
 	}
 }

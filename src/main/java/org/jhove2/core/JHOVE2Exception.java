@@ -36,67 +36,18 @@
 
 package org.jhove2.core;
 
-/** A JHOVE2 message digest.
+/** JHOVE2 configuration exception
  * 
  * @author mstrong, slabrams
  */
-public class Digest
-	implements Comparable<Digest>
+public class JHOVE2Exception
+	extends Exception
 {
-	/** Message digest algorithm. */
-	protected String algorithm;
-	
-	/** Message digest value, hex encoded. */
-	protected String value;
-	
-	/** Instantiate a new <code>Digest</code>.
-	 * @param value     Message digest value, hex encoded
-	 * @param algorithm Message digest algorithm
+	/** Instantiate a new <code>JHOVE2Exception</code>
+	 * @param message
+	 * @param cause
 	 */
-	public Digest(String value, String algorithm) {
-		this.value     = value;
-		this.algorithm = algorithm;
-	}
-
-	/** Get the message digest algorithm.
-	 * @return Message digest algorithm
-	 */
-	public String getAlgorithm ()
-	{
-		return this.algorithm;
-	}
-
-	/** Get the message digest value.
-	 * @return Message digest value, hex encoded
-	 */
-	public String getValue ()
-	{
-		return this.value;
-	}
-
-	/** Get a String representation of the message digest, in the form
-	 * "algorithm:value".
-	 * @return String representation of the message digest
-	 */
-	@Override
-	public String toString()
-	{
-		return this.algorithm + ":" + value;
-	}
-
-	/** Lexically compare message digest.
-	 * @param digest Message digest to be compared
-	 * @return -1, 0, or 1 if this identifier value is less than, equal
-	 *         to, or greater than the second
-	 * @see java.lang.comparable#compareTo(Object)
-	 */
-	@Override
-	public int compareTo(Digest digest)
-	{
-		int ret = this.algorithm.compareToIgnoreCase(digest.getAlgorithm());
-		if (ret == 0) {
-			ret = this.value.compareToIgnoreCase(digest.getValue());
-		}
-		return ret;
+	public JHOVE2Exception(String message, Throwable cause) {
+		super(message, cause);
 	}
 }
