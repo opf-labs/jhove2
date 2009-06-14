@@ -83,7 +83,8 @@ public class IdentifierModule
 		this.formats = new TreeSet<FormatIdentification>();
 	}
 
-	/** Presumptively identify the format of a source unit.
+	/** Presumptively identify the format of a source unit.  Implicitly set
+	 * the start and ending
 	 * @param jhove2 JHOVE2 framework
 	 * @param input  Source unit input
 	 * @throws IOException     If an I/O exception is raised reading the
@@ -93,7 +94,10 @@ public class IdentifierModule
 	 */
 	@Override
 	public Set<FormatIdentification> identify(JHOVE2 jhove2, Input input)
-			throws IOException, JHOVE2Exception {
+			throws IOException, JHOVE2Exception
+	{
+		setStartTime();
+		
 		Module droid = new DROIDWrapper();
 		droid.setStartTime();
 		droid.setEndTime();
@@ -102,6 +106,7 @@ public class IdentifierModule
 					                 Configure.getReportable("UTF8Format"),
 					                 Confidence.PositiveGeneric);
 		this.formats.add(id);
+		setEndTime();
 		
 		return this.formats;
 	}

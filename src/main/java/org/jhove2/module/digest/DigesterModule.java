@@ -38,8 +38,6 @@ package org.jhove2.module.digest;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -72,26 +70,20 @@ public class DigesterModule
 		"Stanford Junior University. " +
 		"Available under the terms of the BSD license.";
 
-	protected List<BufferDigester> digesters;
+	/** Algorithm-specific byte array digesters. */
+	protected List<ArrayDigester> arrayDigesters;
+	
+	/** Algorithm-specific byte buffer digesters. */
+	protected List<BufferDigester> bufferDigesters;
 	
 	/** Instantiate a new <code>DigesterModule</code>.
 	 */
 	public DigesterModule() {
 		super(VERSION, DATE, RIGHTS);
-
-		this.digesters = new ArrayList<BufferDigester>();
-		
-		/* TODO: configure via Spring. */
-		try {
-			this.digesters.add(new MD5Digester());
-			this.digesters.add(new SHA1Digester());
-		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
-	/** Calculate message digests.
+	/** Calculate message digests.  Implicitly set the start and ending
+	 * elapsed time.
 	 * @param jhove2 JHOVE2 framework
 	 * @see org.jhove2.core.Digestible#digest(org.jhove2.core.JHOVE2, org.jhove2.core.io.Input)
 	 */
@@ -99,21 +91,35 @@ public class DigesterModule
 	public void digest(JHOVE2 jhove2, Input input)
 		throws IOException
 	{
+		setStartTime();
+		
 		long inputSize  = input.getSize();
 		long bufferSize = input.getMaxBufferSize();
 		long ptr = 0L;
 		while (inputSize - ptr > -1L) {
 			input.setPosition(ptr);
-			ByteBuffer buffer = input.getBuffer();
-			if (this.digesters.size() > 0) {
-				Iterator<BufferDigester> iter = this.digesters.iterator();
+			if (this.arrayDigesters != null &&
+				this.arrayDigesters.size() > 0) {
+				byte [] array = input.getByteArray();
+				Iterator<ArrayDigester> iter = this.arrayDigesters.iterator();
+				while (iter.hasNext()) {
+					ArrayDigester digester = iter.next();
+					digester.update(array);
+				}
+			}
+			if (this.bufferDigesters != null &&
+				this.bufferDigesters.size() > 0) {
+				ByteBuffer buffer = input.getBuffer();
+				Iterator<BufferDigester> iter = this.bufferDigesters.iterator();
 				while (iter.hasNext()) {
 					BufferDigester digester = iter.next();
+					buffer.position(0);
 					digester.update(buffer);
 				}
 			}
 			ptr += bufferSize;
 		}
+		setEndTime();
 	}
 
 	/** Get message digests.
@@ -123,8 +129,18 @@ public class DigesterModule
 	@Override
 	public Set<Digest> getDigests() {
 		Set<Digest> set = new TreeSet<Digest>();
-		if (this.digesters.size() > 0) {
-			Iterator<BufferDigester> iter = this.digesters.iterator();
+		if (this.arrayDigesters != null &&
+			this.arrayDigesters.size() > 0) {
+			Iterator<ArrayDigester> iter = this.arrayDigesters.iterator();
+			while (iter.hasNext()) {
+				ArrayDigester digester = iter.next();
+				Digest digest = digester.getDigest();
+				set.add(digest);
+			}
+		}
+		if (this.bufferDigesters != null &&
+			this.bufferDigesters.size() > 0) {
+			Iterator<BufferDigester> iter = this.bufferDigesters.iterator();
 			while (iter.hasNext()) {
 				BufferDigester digester = iter.next();
 				Digest digest = digester.getDigest();
@@ -135,10 +151,17 @@ public class DigesterModule
 		return set;
 	}
 
-	/** Set an algorithm-specific digester.
-	 * @param digester Algorithm-specific digester
+	/** Set the algorithm-specific byte array digesters.
+	 * @param digesters Algorithm-specific byte array digesters
 	 */
-	public void setDigester(BufferDigester digester) {
-		this.digesters.add((BufferDigester) digester);
+	public void setArrayDigesters(List<ArrayDigester> digesters) {
+		this.arrayDigesters = digesters;
+	}
+	
+	/** Set the algorithm-specific byte buffer digesters.
+	 * @param digesters Algorithm-specific byte buffer digesters
+	 */
+	public void setBufferDigesters(List<BufferDigester> digesters) {
+		this.bufferDigesters = digesters;
 	}
 }

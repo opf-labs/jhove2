@@ -39,6 +39,7 @@ package org.jhove2.core.source;
 import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.Durable;
 import org.jhove2.core.Processible;
 import org.jhove2.core.Reportable;
 import org.jhove2.core.io.Input;
@@ -50,7 +51,7 @@ import org.jhove2.core.io.Input;
  * @author mstrong, slabrams
  */
 public interface Source
-	extends Reportable
+	extends Reportable, Durable
 {
 	/** Add a module that processed the source unit.
 	 * @param module Module that processed the source unit

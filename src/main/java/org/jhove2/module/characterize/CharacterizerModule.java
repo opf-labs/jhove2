@@ -101,6 +101,8 @@ public class CharacterizerModule
 	public void characterize(JHOVE2 jhove2, Source source)
 		throws IOException, JHOVE2Exception
 	{
+		source.setStartTime();
+		
 		/* Update summary counts of source units, by type. */
 		if      (source instanceof ClumpSource) {
 			jhove2.incrementNumClumps();
@@ -131,24 +133,23 @@ public class CharacterizerModule
 		else {
 			Input input = source.getInput();
 			if (input != null) {
-				/* Presumptively identifier the format(s) of the source unit. */
+				/* Presumptively identify the format(s) of the source unit. */
+				Set<FormatIdentification> formats = null;
 				if (this.identifier != null) {
-					this.identifier.setStartTime();
-					Set<FormatIdentification> formats =
-						this.identifier.identify(jhove2, input);
-					this.identifier.setEndTime();
+					formats = this.identifier.identify(jhove2, input);
 					source.addModule(this.identifier);
 				}
 			
 				/* TODO: Parse and validate the source unit. */
+				if (formats != null && formats.size() > 0) {
+					
+				}
 				
 				/* TODO: Assess the source unit. */
 			
 				/** Calculate message digest(s) for the source unit. */
 				if (this.digester != null) {
-					this.digester.setStartTime();
 					this.digester.digest(jhove2, input);
-					this.digester.setEndTime();
 					source.addModule(this.digester);
 				}
 			}
@@ -156,6 +157,7 @@ public class CharacterizerModule
 				/* TODO: what to do if no input? */
 			}
 		}
+		source.setEndTime();
 	}
 	
 	/** Set the characterizer identification module.

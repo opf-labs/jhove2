@@ -36,74 +36,16 @@
 
 package org.jhove2.module.digest;
 
-import java.nio.ByteBuffer;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
-import org.jhove2.core.Digest;
-
-/** Abstract JHOVE2 algorithm-specific message digester that operates on a
- * Java NIO {@link java.nio.ByteBuffer}.
+/** Interface for JHOVE2 algorithm-spedcific message digestgers that operate
+ * on byte arrays.
  * 
  * @author mstrong, slabrams
  */
-public abstract class AbstractBufferDigester
-	implements BufferDigester
+public interface ArrayDigester
+	extends Digester
 {
-	/** Message digest algorithm. */
-	protected String algorithm;
-	
-	/** Message digester. */
-	protected MessageDigest digester;
-	
-	/** Instantiate a new <code>AbstractBufferDigester</code>
-	 */
-	public AbstractBufferDigester(String algorithm)
-		throws NoSuchAlgorithmException
-	{
-		this.algorithm = algorithm;
-
-		this.digester = MessageDigest.getInstance(algorithm);
-	}
-	
 	/** Update a message digest.
-	 * @param buffer Buffer
-	 * @see org.jhove2.module.digest.BufferDigester#update(java.nio.ByteBuffer)
+	 * @param array Byte array
 	 */
-	@Override
-	public void update(ByteBuffer buffer) {
-		this.digester.update(buffer);
-	}
-
-	/** Get message digest value, as a hexadecimal string.
-	 * @return Message digest value, as a hexadecimal string
-	 * @see org.jhove2.module.digest.Digester#getDigest()
-	 */
-	@Override
-	public Digest getDigest() {
-		byte [] value = this.digester.digest();
-		
-		return new Digest(toHexString(value), this.algorithm);
-	}
-	
-	/** Format a message digest value as a hexadecimal string.
-	 * @param digest Message digest value
-	 * @return Message digest value as a hexadecimal string
-	 */
-	public static synchronized String toHexString(byte [] digest) {
-		StringBuffer hex = new StringBuffer();
-		for (int i=0; i<digest.length; i++) {
-			int in = digest[i];
-			if (in < 0) {
-				in = 256 + in;
-			}
-			if (in < 16) {
-				hex.append("0");
-			}
-			String h = Integer.toHexString(in);
-			hex.append(h);
-		}
-		
-		return hex.toString();
-	}
+	public void update(byte [] array);
 }

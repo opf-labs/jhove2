@@ -99,6 +99,19 @@ public class AbstractModule
 		return this.developers;
 	}
 
+	/** Get elapsed time, in milliseconds.  The shortest reportable
+	 * elapsed time is 1 milliscond.
+	 * @return Elapsed time, in milliseconds
+	 */
+	@Override
+	public Duration getElapsedTime() {
+		if (this.endTime == Duration.UNINITIALIZED) {
+			this.endTime = System.currentTimeMillis();
+		}
+		
+		return new Duration(this.endTime - this.startTime);
+	}
+
 	/** Get module informative note.
 	 * @return Module informative note
 	 * @see org.jhove2.core.Module#getNote()
@@ -140,19 +153,6 @@ public class AbstractModule
 	 */
 	public void setNote(String note) {
 		this.note = note;
-	}
-
-	/** Get elapsed time, in milliseconds.  The shortest reportable
-	 * elapsed time is 1 milliscond.
-	 * @return Elapsed time, in milliseconds
-	 */
-	@Override
-	public Duration getElapsedTime() {
-		if (this.endTime == Duration.UNINITIALIZED) {
-			this.endTime = System.currentTimeMillis();
-		}
-		
-		return new Duration(this.endTime - this.startTime);
 	}
 
 	/** Set the end time of the elapsed duration.

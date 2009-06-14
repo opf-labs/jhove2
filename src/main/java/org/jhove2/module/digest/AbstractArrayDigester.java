@@ -36,73 +36,37 @@
 
 package org.jhove2.module.digest;
 
-import java.nio.ByteBuffer;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
 import org.jhove2.core.Digest;
 
 /** Abstract JHOVE2 algorithm-specific message digester that operates on a
- * Java NIO {@link java.nio.ByteBuffer}.
+ * byte array.
  * 
  * @author mstrong, slabrams
  */
-public abstract class AbstractBufferDigester
-	implements BufferDigester
+public abstract class AbstractArrayDigester
+	implements ArrayDigester
 {
 	/** Message digest algorithm. */
 	protected String algorithm;
 	
-	/** Message digester. */
-	protected MessageDigest digester;
-	
-	/** Instantiate a new <code>AbstractBufferDigester</code>
+	/** Instantiate a new <code>AbstractArrayDigester</code>.
 	 */
-	public AbstractBufferDigester(String algorithm)
-		throws NoSuchAlgorithmException
-	{
+	public AbstractArrayDigester(String algorithm) {
 		this.algorithm = algorithm;
-
-		this.digester = MessageDigest.getInstance(algorithm);
-	}
-	
-	/** Update a message digest.
-	 * @param buffer Buffer
-	 * @see org.jhove2.module.digest.BufferDigester#update(java.nio.ByteBuffer)
-	 */
-	@Override
-	public void update(ByteBuffer buffer) {
-		this.digester.update(buffer);
 	}
 
-	/** Get message digest value, as a hexadecimal string.
-	 * @return Message digest value, as a hexadecimal string
-	 * @see org.jhove2.module.digest.Digester#getDigest()
-	 */
-	@Override
-	public Digest getDigest() {
-		byte [] value = this.digester.digest();
-		
-		return new Digest(toHexString(value), this.algorithm);
-	}
-	
 	/** Format a message digest value as a hexadecimal string.
 	 * @param digest Message digest value
 	 * @return Message digest value as a hexadecimal string
 	 */
-	public static synchronized String toHexString(byte [] digest) {
+	public static synchronized String toHexString(long digest) {
 		StringBuffer hex = new StringBuffer();
-		for (int i=0; i<digest.length; i++) {
-			int in = digest[i];
-			if (in < 0) {
-				in = 256 + in;
-			}
-			if (in < 16) {
-				hex.append("0");
-			}
-			String h = Integer.toHexString(in);
-			hex.append(h);
+		String h = Long.toHexString(digest);
+		int len = h.length();
+		for (int i=len; i<8; i++) {
+			hex.append("0");
 		}
+		hex.append(h);
 		
 		return hex.toString();
 	}

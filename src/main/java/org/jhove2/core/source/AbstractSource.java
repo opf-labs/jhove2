@@ -39,6 +39,8 @@ package org.jhove2.core.source;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jhove2.core.Durable;
+import org.jhove2.core.Duration;
 import org.jhove2.core.Processible;
 import org.jhove2.core.io.Input;
 
@@ -49,13 +51,19 @@ import org.jhove2.core.io.Input;
  * @author mstrong, slabrams
  */
 public abstract class AbstractSource
-	implements Source
-{
+	implements Source, Durable
+{	
+	/** Module elapsed time, end. */
+	protected long endTime;
+
 	/** Source unit input. */
 	protected Input input;
 	
 	/** Modules that processed the source unit. */
 	protected List<Processible> modules;
+	
+	/** Module elapsed time, start. */
+	protected long startTime;
 	
 	/** Instantiate a new <code>AbstractSource</code>.
 	 */
@@ -72,6 +80,19 @@ public abstract class AbstractSource
 		this.modules.add(module);
 	}
 
+	/** Get elapsed time, in milliseconds.  The shortest reportable
+	 * elapsed time is 1 milliscond.
+	 * @return Elapsed time, in milliseconds
+	 */
+	@Override
+	public Duration getElapsedTime() {
+		if (this.endTime == Duration.UNINITIALIZED) {
+			this.endTime = System.currentTimeMillis();
+		}
+		
+		return new Duration(this.endTime - this.startTime);
+	}
+	
 	/** Get {@link org.jhove2.core.io.Input} for the source unit.
 	 * @return Input for the source unit
 	 * @see org.jhove2.core.source.Source#getInput()
@@ -90,4 +111,17 @@ public abstract class AbstractSource
 		return this.modules;
 	}
 
+	/** Set the end time of the elapsed duration.
+	 */
+	@Override
+	public void setEndTime() {
+		this.endTime = System.currentTimeMillis();
+	}
+
+	/** Set the start time of the elapsed duration.
+	 */
+	@Override
+	public void setStartTime() {
+		this.startTime = System.currentTimeMillis();
+	}
 }

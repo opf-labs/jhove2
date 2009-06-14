@@ -36,43 +36,39 @@
 
 package org.jhove2.module.digest;
 
-import java.nio.ByteBuffer;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.util.zip.Adler32;
 
 import org.jhove2.core.Digest;
 
-/** Abstract JHOVE2 algorithm-specific message digester that operates on a
- * Java NIO {@link java.nio.ByteBuffer}.
+/** JHOVE2 Adler-32 message digester.
  * 
  * @author mstrong, slabrams
  */
-public abstract class AbstractBufferDigester
-	implements BufferDigester
+public class Adler32Digester
+	extends AbstractArrayDigester
 {
-	/** Message digest algorithm. */
-	protected String algorithm;
+	/** Algorothm name. */
+	public static final String ALGORITHM = "Adler-32";
 	
-	/** Message digester. */
-	protected MessageDigest digester;
+	/** Alder-32 digester. */
+	protected Adler32 digester;
 	
-	/** Instantiate a new <code>AbstractBufferDigester</code>
+	/**
+	 * @param algorithm
 	 */
-	public AbstractBufferDigester(String algorithm)
-		throws NoSuchAlgorithmException
-	{
-		this.algorithm = algorithm;
-
-		this.digester = MessageDigest.getInstance(algorithm);
+	public Adler32Digester() {
+		super(ALGORITHM);
+		
+		this.digester = new Adler32();
 	}
-	
+
 	/** Update a message digest.
-	 * @param buffer Buffer
-	 * @see org.jhove2.module.digest.BufferDigester#update(java.nio.ByteBuffer)
+	 * @param array Byte array
+	 * @see org.jhove2.module.digest.ArrayDigester#update(byte[])
 	 */
 	@Override
-	public void update(ByteBuffer buffer) {
-		this.digester.update(buffer);
+	public void update(byte[] array) {
+		this.digester.update(array);
 	}
 
 	/** Get message digest value, as a hexadecimal string.
@@ -81,29 +77,8 @@ public abstract class AbstractBufferDigester
 	 */
 	@Override
 	public Digest getDigest() {
-		byte [] value = this.digester.digest();
+		long value = this.digester.getValue();
 		
 		return new Digest(toHexString(value), this.algorithm);
-	}
-	
-	/** Format a message digest value as a hexadecimal string.
-	 * @param digest Message digest value
-	 * @return Message digest value as a hexadecimal string
-	 */
-	public static synchronized String toHexString(byte [] digest) {
-		StringBuffer hex = new StringBuffer();
-		for (int i=0; i<digest.length; i++) {
-			int in = digest[i];
-			if (in < 0) {
-				in = 256 + in;
-			}
-			if (in < 16) {
-				hex.append("0");
-			}
-			String h = Integer.toHexString(in);
-			hex.append(h);
-		}
-		
-		return hex.toString();
 	}
 }

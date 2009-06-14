@@ -44,7 +44,6 @@ import org.jhove2.annotation.ReportableProperty;
  * @author mstrong, slabrams
  */
 public interface Durable {
-
 	/** Get elapsed time, in milliseconds.  The shortest reportable
 	 * elapsed time is 1 milliscond.
 	 * @return Elapsed time, in milliseconds

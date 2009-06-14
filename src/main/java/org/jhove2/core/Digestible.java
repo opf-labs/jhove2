@@ -49,7 +49,8 @@ import org.jhove2.core.io.Input;
 public interface Digestible
 	extends Processible
 {
-	/** Calculate message digests.
+	/** Calculate message digests.  Implicitly set the start and ending
+	 * elapsed time.
 	 * @param jhove2 JHOVE2 framework
 	 * @param input  Input
 	 */

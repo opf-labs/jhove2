@@ -49,7 +49,9 @@ import org.jhove2.core.io.Input;
 public interface Identifiable
 	extends Processible
 {
-	/** Presumptively identify the format of a source unit.
+	/** Presumptively identify the format of a source unit.  Implicitly set
+	 * the start and ending
+	 * elapsed time.
 	 * @param jhove2 JHOVE2 framework
 	 * @param input  Source unit input
 	 * @throws IOException     If an I/O exception is raised reading the
