@@ -12,7 +12,10 @@
  	<!-- Characterizer module bean -->
 	<bean id="CharacterizerModule" 
 	      class="org.jhove2.module.characterize.CharacterizerModule"
-	      scope="prototype"/>
+	      scope="prototype">
+		<property name="identifier" ref="IdentifierModule"/>
+		<property name="digester" ref="DigesterModule"/>
+	</bean>
 	      
 	<!-- Identifier module bean -->
 	<bean id="IdentifierModule"
@@ -23,9 +26,29 @@
 	<bean id="DigesterModule"
 	      class="org.jhove2.module.digest.DigesterModule"
 	      scope="prototype"/>
-	
+		
+	<!-- MD2 message digester bean -->
+	<bean id="MD2Digester" class="org.jhove2.module.digest.MD2Digester"
+	      scope="prototype"/>
+	      	
 	<!-- MD5 message digester bean -->
 	<bean id="MD5Digester" class="org.jhove2.module.digest.MD5Digester"
+	      scope="prototype"/>
+	      
+	<!-- SHA-1 message digester bean -->
+	<bean id="SHA1Digester" class="org.jhove2.module.digest.SHA1Digester"
+	      scope="prototype"/>
+	      	      
+	<!-- SHA=256 message digester bean -->
+	<bean id="SHA256Digester" class="org.jhove2.module.digest.SHA256Digester"
+	      scope="prototype"/>
+	      	      
+	<!-- SHA-384 message digester bean -->
+	<bean id="SHA384Digester" class="org.jhove2.module.digest.SHA384Digester"
+	      scope="prototype"/>
+	      	      
+	<!-- SHA-512 message digester bean -->
+	<bean id="SHA512Digester" class="org.jhove2.module.digest.SHA512Digester"
 	      scope="prototype"/>
 	      
  	<!-- JSON displayer bean -->
@@ -42,15 +65,15 @@
 
 	<!-- UTF-8 format bean -->
 	<bean id="UTF8Format" class="org.jhove2.core.Format" scope="singleton">
-      <constructor-arg type="java.lang.String" value="UTF-8"/>
-      <constructor-arg ref="UTF8Identifier"/>
-      <constructor-arg type="org.jhove2.core.Format$Type" value="Family"/>
-      <constructor-arg type="org.jhove2.core.Format$Ambiguity" value="Unambiguous"/>
+		<constructor-arg type="java.lang.String" value="UTF-8"/>
+		<constructor-arg ref="UTF8Identifier"/>
+		<constructor-arg type="org.jhove2.core.Format$Type" value="Family"/>
+		<constructor-arg type="org.jhove2.core.Format$Ambiguity" value="Unambiguous"/>
 	</bean>
 		
    <!-- UTF-8 identifier bean -->  
    <bean id="UTF8Identifier" class="org.jhove2.core.I8R" scope="singleton">
-      <constructor-arg type="java.lang.String" value="info:jhove2/format/utf-8"/>
+		<constructor-arg type="java.lang.String" value="info:jhove2/format/utf-8"/>
    </bean>
    
 </beans>

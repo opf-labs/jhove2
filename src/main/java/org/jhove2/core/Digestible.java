@@ -46,7 +46,7 @@ import org.jhove2.core.io.Input;
  * 
  * @author mstrong, slabrams
  */
-public interface Digestable
+public interface Digestible
 	extends Processible
 {
 	/** Calculate message digests.

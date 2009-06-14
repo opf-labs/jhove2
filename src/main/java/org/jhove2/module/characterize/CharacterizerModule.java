@@ -43,7 +43,7 @@ import java.util.Set;
 
 import org.jhove2.core.AbstractModule;
 import org.jhove2.core.Characterizable;
-import org.jhove2.core.Digestable;
+import org.jhove2.core.Digestible;
 import org.jhove2.core.FormatIdentification;
 import org.jhove2.core.Identifiable;
 import org.jhove2.core.JHOVE2;
@@ -77,9 +77,13 @@ public class CharacterizerModule
 		"Stanford Junior University. " +
 		"Available under the terms of the BSD license.";
 	
+	/** Characterizer identification module. */
+	protected Identifiable identifier;
+	
+	/** Characterizer message digesting module. */
+	protected Digestible digester;
+	
 	/** Instantiate a new <code>CharacterizerModule</code>.
-	 * @param identifier Identification module
-	 * @param digester   Message digesting module
 	 */
 	public CharacterizerModule() {
 		super(VERSION, DATE, RIGHTS);
@@ -113,7 +117,13 @@ public class CharacterizerModule
 			Iterator<Source> iter = list.iterator();
 			while (iter.hasNext()) {
 				Source src = iter.next();
-				characterize(jhove2, src);
+				
+				/* Get a new instance of the characterizer to process the
+				 * child source unit.
+				 */
+				Characterizable characterizer =
+					(Characterizable) Configure.getReportable("CharacterizerModule");
+				characterizer.characterize(jhove2, src);
 			}
 			
 			/* TODO: aggregate identification, etc. */
@@ -122,27 +132,43 @@ public class CharacterizerModule
 			Input input = source.getInput();
 			if (input != null) {
 				/* Presumptively identifier the format(s) of the source unit. */
-				Identifiable identifier =
-					(Identifiable) Configure.getReportable("IdentifierModule");
-				identifier.setStartTime();
-				Set<FormatIdentification> formats =
-					identifier.identify(jhove2, input);
-				identifier.setEndTime();
-				source.addModule(identifier);
+				if (this.identifier != null) {
+					this.identifier.setStartTime();
+					Set<FormatIdentification> formats =
+						this.identifier.identify(jhove2, input);
+					this.identifier.setEndTime();
+					source.addModule(this.identifier);
+				}
 			
 				/* TODO: Parse and validate the source unit. */
+				
+				/* TODO: Assess the source unit. */
 			
 				/** Calculate message digest(s) for the source unit. */
-				Digestable digester =
-					(Digestable) Configure.getReportable("DigesterModule");
-				digester.setStartTime();
-				digester.digest(jhove2, input);
-				digester.setEndTime();
-				source.addModule(digester);
+				if (this.digester != null) {
+					this.digester.setStartTime();
+					this.digester.digest(jhove2, input);
+					this.digester.setEndTime();
+					source.addModule(this.digester);
+				}
 			}
 			else {
 				/* TODO: what to do if no input? */
 			}
 		}
+	}
+	
+	/** Set the characterizer identification module.
+	 * @param identifier Identification module
+	 */
+	public void setIdentifier(Identifiable identifier) {
+		this.identifier = identifier;
+	}
+	
+	/** Set the characterizer message digesting module.
+	 * @parfam digester Message digesting module
+	 */
+	public void setDigester(Digestible digester) {
+		this.digester = digester;
 	}
 }

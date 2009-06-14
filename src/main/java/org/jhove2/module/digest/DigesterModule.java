@@ -47,7 +47,7 @@ import java.util.TreeSet;
 
 import org.jhove2.core.AbstractModule;
 import org.jhove2.core.Digest;
-import org.jhove2.core.Digestable;
+import org.jhove2.core.Digestible;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.io.Input;
 
@@ -57,7 +57,7 @@ import org.jhove2.core.io.Input;
  */
 public class DigesterModule
 	extends AbstractModule
-	implements Digestable
+	implements Digestible
 {
 	/** Framework version identifier. */
 	public static final String VERSION = "1.0.0";
@@ -93,7 +93,7 @@ public class DigesterModule
 
 	/** Calculate message digests.
 	 * @param jhove2 JHOVE2 framework
-	 * @see org.jhove2.core.Digestable#digest(org.jhove2.core.JHOVE2, org.jhove2.core.io.Input)
+	 * @see org.jhove2.core.Digestible#digest(org.jhove2.core.JHOVE2, org.jhove2.core.io.Input)
 	 */
 	@Override
 	public void digest(JHOVE2 jhove2, Input input)
@@ -118,7 +118,7 @@ public class DigesterModule
 
 	/** Get message digests.
 	 * @return Message digests
-	 * @see org.jhove2.core.Digestable#getDigests()
+	 * @see org.jhove2.core.Digestible#getDigests()
 	 */
 	@Override
 	public Set<Digest> getDigests() {
