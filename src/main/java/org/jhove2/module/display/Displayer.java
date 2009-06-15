@@ -42,7 +42,7 @@ import org.jhove2.core.I8R;
  * 
  * @author mstrong, slabrams
  */
-public class Displayer {
+public abstract class Displayer {
 	/** Get indentation appropriate for a nesting level.
 	 * @param level Nesting level
 	 */

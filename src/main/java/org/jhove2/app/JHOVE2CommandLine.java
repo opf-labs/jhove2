@@ -55,7 +55,7 @@ public class JHOVE2CommandLine {
 	/** Usage statement return code. */
 	public static final int EUSAGE = 1;
 	
-	/** Caught excecption return code. */
+	/** Caught exception return code. */
 	public static final int EEXCEPTION = -1;
 	
 	/** Main entry point for the JHOVE2 command line application.
