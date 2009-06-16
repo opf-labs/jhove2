@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+ 	<!-- JHOVE2 framework bean -->
+	<bean id="JHOVE2" class="org.jhove2.core.JHOVE2" scope="prototype">
+		<!--  <property name="characterizer" ref="CharacterizerModule"/> -->
+	</bean>
+		
+ 	<!-- Characterizer module bean -->
+	<bean id="CharacterizerModule" 
+	      class="org.jhove2.module.characterize.CharacterizerModule"
+	      scope="prototype">
+	      <property name="identifier" ref="IdentifierModule"/>
+	      <property name="dispatcher" ref="DispatcherModule"/>
+	      <property name="digester"   ref="DigesterModule"/>
+	</bean>
+	      
+	<!-- Identifier module bean -->
+	<bean id="IdentifierModule"
+	      class="org.jhove2.module.identify.IdentifierModule"
+	      scope="prototype"/>
+	      
+	<!-- Dispatcher module bean -->
+	<bean id="DispatcherModule"
+	      class="org.jhove2.module.dispatch.DispatcherModule"
+	      scope="prototype"/>
+	      
+	<!--  Message digester module bean -->
+	<bean id="DigesterModule"
+	      class="org.jhove2.module.digest.DigesterModule"
+	      scope="prototype">
+		<property name="arrayDigesters">
+	    	<list value-type="org.jhove2.module.digest.ArrayDigester">
+	    		<ref bean="Adler32Digester"/>
+	    		<ref bean="CRC32Digester"/>
+	    	</list>
+	    </property>
+		<property name="bufferDigesters">
+			<list value-type="org.jhove2.module.digest.BufferDigester">
+				<ref bean="MD5Digester"/>
+				<ref bean="SHA1Digester"/>
+			</list>
+		</property>
+	</bean>
+
+	<!-- Adler-32 message digester bean -->
+	<bean id="Adler32Digester" class="org.jhove2.module.digest.Adler32Digester"
+	      scope="prototype"/>
+	      			
+	<!-- CRC-32 message digester bean -->
+	<bean id="CRC32Digester" class="org.jhove2.module.digest.CRC32Digester"
+	      scope="prototype"/>
+		
+	<!-- MD2 message digester bean -->
+	<bean id="MD2Digester" class="org.jhove2.module.digest.MD2Digester"
+	      scope="prototype"/>
+	      	
+	<!-- MD5 message digester bean -->
+	<bean id="MD5Digester" class="org.jhove2.module.digest.MD5Digester"
+	      scope="prototype"/>
+	      
+	<!-- SHA-1 message digester bean -->
+	<bean id="SHA1Digester" class="org.jhove2.module.digest.SHA1Digester"
+	      scope="prototype"/>
+	      	      
+	<!-- SHA=256 message digester bean -->
+	<bean id="SHA256Digester" class="org.jhove2.module.digest.SHA256Digester"
+	      scope="prototype"/>
+	      	      
+	<!-- SHA-384 message digester bean -->
+	<bean id="SHA384Digester" class="org.jhove2.module.digest.SHA384Digester"
+	      scope="prototype"/>
+	      	      
+	<!-- SHA-512 message digester bean -->
+	<bean id="SHA512Digester" class="org.jhove2.module.digest.SHA512Digester"
+	      scope="prototype"/>
+	      
+ 	<!-- JSON displayer bean -->
+	<bean id="JSONDisplayer" class="org.jhove2.module.display.JSONDisplayer"
+	      scope="prototype"/>
+	      	
+ 	<!-- Text displayer bean -->
+	<bean id="TextDisplayer" class="org.jhove2.module.display.TextDisplayer"
+	      scope="prototype"/>
+	      	
+ 	<!-- XML displayer bean -->
+	<bean id="XMLDisplayer" class="org.jhove2.module.display.XMLDisplayer"
+	      scope="prototype"/>
+	
+	<!-- Clump module bean -->
+	<bean id="ClumpModule" class="org.jhove2.module.format.clump.ClumpModule"
+	      scope="prototype"/>
+			  
+	<!-- Clump format bean -->
+	<bean id="ClumpFormat" class="org.jhove2.core.Format" scope="singleton">
+		<constructor-arg type="java.lang.String" value="Clump"/>
+		<constructor-arg ref="ClumpIdentifier"/>
+		<constructor-arg type="org.jhove2.core.Format$Type" value="Format"/>
+		<constructor-arg type="org.jhove2.core.Format$Ambiguity" value="Unambiguous"/>
+	</bean>
+	
+   <!-- Clump identifier bean -->  
+   <bean id="ClumpIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="info:jhove2/format/clump"/>
+   </bean>
+     	
+	<!-- Directory module bean -->
+	<bean id="DirectoryModule" class="org.jhove2.module.format.directory.DirectoryModule"
+	      scope="prototype"/>
+	
+	<!-- Directory format bean -->
+	<bean id="DirectoryFormat" class="org.jhove2.core.Format" scope="singleton">
+		<constructor-arg type="java.lang.String" value="Directory"/>
+		<constructor-arg ref="DirectoryIdentifier"/>
+		<constructor-arg type="org.jhove2.core.Format$Type" value="Format"/>
+		<constructor-arg type="org.jhove2.core.Format$Ambiguity" value="Unambiguous"/>
+	</bean>
+				
+	<!-- Directory identifier bean -->  
+	<bean id="DirectoryIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="info:jhove2/format/directory"/>
+	</bean>
+	
+	<!-- UTF-8 module bean -->
+	<bean id="UTF8Module" class="org.jhove2.module.format.utf8.UTF8Module"
+	      scope="prototype"/>
+   
+	<!-- UTF-8 format bean -->
+	<bean id="UTF8Format" class="org.jhove2.core.Format" scope="singleton">
+		<constructor-arg type="java.lang.String" value="UTF-8"/>
+		<constructor-arg ref="UTF8Identifier"/>
+		<constructor-arg type="org.jhove2.core.Format$Type" value="Family"/>
+		<constructor-arg type="org.jhove2.core.Format$Ambiguity" value="Unambiguous"/>
+	</bean>
+		
+	<!-- UTF-8 identifier bean -->  
+	<bean id="UTF8Identifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="info:jhove2/format/utf-8"/>
+	</bean>
+	
+	<!-- Zip module bean -->
+	<bean id="ZipModule" class="org.jhove2.module.format.zip.ZipModule"
+	      scope="prototype"/>
+      
+	<!-- Zip format bean -->
+	<bean id="ZipFormat" class="org.jhove2.core.Format" scope="singleton">
+		<constructor-arg type="java.lang.String" value="Zip"/>
+		<constructor-arg ref="ZipIdentifier"/>
+		<constructor-arg type="org.jhove2.core.Format$Type" value="Family"/>
+		<constructor-arg type="org.jhove2.core.Format$Ambiguity" value="Unambiguous"/>
+	</bean>
+		
+	<!-- Zip identifier bean -->  
+	<bean id="ZipIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="info:jhove2/format/zip"/>
+	</bean>
+	
+	<!-- Bytestream format bean -->
+	<bean id="BytestreamFormat" class="org.jhove2.core.Format" scope="singleton">
+		<constructor-arg type="java.lang.String" value="Bytestream"/>
+		<constructor-arg ref="BytestreamIdentifier"/>
+		<constructor-arg type="org.jhove2.core.Format$Type" value="Family"/>
+		<constructor-arg type="org.jhove2.core.Format$Ambiguity" value="Unambiguous"/>
+	</bean>
+		
+	<!-- Bytestream identifier bean -->  
+	<bean id="BytestreamIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="info:jhove2/format/bytestream"/>
+	</bean>
+	
+</beans>
