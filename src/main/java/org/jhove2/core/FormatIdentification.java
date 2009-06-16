@@ -79,10 +79,10 @@ public class FormatIdentification
 	protected Format format;
 	
 	/** Identification process. */
-	protected Module process;
+	protected Product process;
 	
 	/** Instantiate a new <code>FormatIdentification</code>. */
-	public FormatIdentification(Module process, Format format,
+	public FormatIdentification(Product process, Format format,
 			                    Confidence confidence) {
 		this.process    = process;
 		this.format     = format;
@@ -93,7 +93,7 @@ public class FormatIdentification
 	 * @return Identification process
 	 */
 	@ReportableProperty(order=1, value="Identification process.")
-	public Module getProcess() {
+	public Product getProcess() {
 		return this.process;
 	}
 

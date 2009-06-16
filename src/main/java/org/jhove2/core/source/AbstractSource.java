@@ -53,6 +53,9 @@ import org.jhove2.core.io.Input;
 public abstract class AbstractSource
 	implements Source, Durable
 {	
+	/** Child source units. */
+	protected List<Source> children;
+	
 	/** Module elapsed time, end. */
 	protected long endTime;
 
@@ -68,7 +71,17 @@ public abstract class AbstractSource
 	/** Instantiate a new <code>AbstractSource</code>.
 	 */
 	public AbstractSource() {
-		this.modules = new ArrayList<Processible>();
+		this.children = new ArrayList<Source>();
+		this.modules  = new ArrayList<Processible>();
+	}
+	
+	/** Add a child source unit.
+	 * @param child Child source unit
+	 * @see org.jhove2.core.source.Source#addChildSource(org.jhove2.core.source.Source)
+	 */
+	@Override
+	public void addChildSource(Source child) {
+		this.children.add(child);
 	}
 	
 	/** Add a module that processed the source unit.
@@ -79,7 +92,16 @@ public abstract class AbstractSource
 	public void addModule(Processible module) {
 		this.modules.add(module);
 	}
-
+	
+	/** Get child source units.
+	 * @return Child source units
+	 * @see org.jhove2.core.source.Source#getChildSources()
+	 */
+	@Override
+	public List<Source> getChildSources() {
+		return this.children;
+	}
+	
 	/** Get elapsed time, in milliseconds.  The shortest reportable
 	 * elapsed time is 1 milliscond.
 	 * @return Elapsed time, in milliseconds
@@ -110,8 +132,18 @@ public abstract class AbstractSource
 	public List<Processible> getModules() {
 		return this.modules;
 	}
-
+	
+	/** Get number of child source units.
+	 * @return Number of child source units
+	 * @see org.jhove2.core.source.Source#getNumChildSources()
+	 */
+	@Override
+	public int getNumChildSources() {
+		return this.children.size();
+	}
+	
 	/** Set the end time of the elapsed duration.
+	 * @see org.jhove2.core.Durable#setStartTime()
 	 */
 	@Override
 	public void setEndTime() {
@@ -119,6 +151,7 @@ public abstract class AbstractSource
 	}
 
 	/** Set the start time of the elapsed duration.
+	 * @see org.jhove2.core.Durable#setStartTime()
 	 */
 	@Override
 	public void setStartTime() {

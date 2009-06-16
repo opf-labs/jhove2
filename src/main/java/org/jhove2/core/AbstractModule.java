@@ -36,37 +36,20 @@
 
 package org.jhove2.core;
 
-import java.util.ArrayList;
-import java.util.List;
-
-/** An abstract JHOVE2 module.  A module is an independently-distributable
- * {@link org.jhove2.annotation.Reportable}.
+/** An abstract JHOVE2 module, a {@link org.jhove2.core.Product} that performs
+ * one or more processes in an elapsed duration.
  * 
  * @author mstrong, slabrams
  */
 public class AbstractModule
-	implements Module, Durable
-{
-	/** Module developers. */
-	protected List<Agent> developers;
-	
-	/** Module informative note. */
-	protected String note;
-	
-	/** Module release date in ISO 8601 form: "YYYY-MM-DD". */
-	protected String date;
-	
-	/** Module rights statement. */
-	protected String rights;
-	
+	extends AbstractProduct
+	implements Durable
+{	
 	/** Module elapsed time, end. */
 	protected long endTime;
 	
 	/** Module elapsed time, start. */
 	protected long startTime;
-	
-	/** Module version identifier in three-part form: "M.N.P". */
-	protected String version;
 	
 	/** Instantiate a new <code>AbstractModule</code>.
 	 * @oaran version Module version identifier in three-part form: "M.N.P"
@@ -74,31 +57,12 @@ public class AbstractModule
 	 * @param rights  Module rights statement
 	 */
 	public AbstractModule(String version, String date, String rights) {
-		this.version = version;
-		this.date    = date;
-		this.rights  = rights;
+		super(version, date, rights);
 		
-		this.developers  = new ArrayList<Agent>();
 		this.startTime = System.currentTimeMillis();
 		this.endTime   = Duration.UNINITIALIZED;
 	}
 	
-	/** Add module developer.
-	 * @param developer Module developer
-	 */
-	public void addDeveloper(Agent developer) {
-		this.developers.add(developer);
-	}
-	
-	/** Get module developers.
-	 * @return Module developers
-	 * @see org.jhove2.core.Module#getDevelopers()
-	 */
-	@Override
-	public List<Agent> getDevelopers() {
-		return this.developers;
-	}
-
 	/** Get elapsed time, in milliseconds.  The shortest reportable
 	 * elapsed time is 1 milliscond.
 	 * @return Elapsed time, in milliseconds
@@ -110,49 +74,6 @@ public class AbstractModule
 		}
 		
 		return new Duration(this.endTime - this.startTime);
-	}
-
-	/** Get module informative note.
-	 * @return Module informative note
-	 * @see org.jhove2.core.Module#getNote()
-	 */
-	@Override
-	public String getNote() {
-		return this.note;
-	}
-
-	/** Get module release date.
-	 * @return AbstractModule release date
-	 * @see org.jhove2.core.Module#getReleaseDate()
-	 */
-	@Override
-	public String getReleaseDate() {
-		return this.date;
-	}
-
-	/** Get module rights statement.
-	 * @return Module rights statement
-	 * @see org.jhove2.core.Module#getRightsStatement()
-	 */
-	@Override
-	public String getRightsStatement() {
-		return this.rights;
-	}
-
-	/** Get module version.
-	 * @return Module version
-	 * @see org.jhove2.core.Module#getVersion()
-	 */
-	@Override
-	public String getVersion() {
-		return this.version;
-	}
-
-	/** Set module informative note.
-	 * @param note Module informative note
-	 */
-	public void setNote(String note) {
-		this.note = note;
 	}
 
 	/** Set the end time of the elapsed duration.

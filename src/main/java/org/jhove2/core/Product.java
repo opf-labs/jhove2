@@ -34,79 +34,47 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.core.source;
+package org.jhove2.core;
 
-import java.util.ArrayList;
 import java.util.List;
 
-/** An abstract JHOVE2 aggregate source unit.
+import org.jhove2.annotation.ReportableProperty;
+
+/** Interface for JHOVE2 products, which are independently-distributable
+ * {@link org.jhove2.core.Reportable}s.
  * 
  * @author mstrong, slabrams
- *
  */
-public abstract class AbstractAggregateSource
-	extends AbstractSource
-	implements AggregateSource
+public interface Product
+	extends Reportable
 {
-	/** Child source units. */
-	protected List<Source> children;
-	
-	/** Instantiate a new <code>AbstractAggregateSource</code>.
+	/** Get product developer.
+	 * @return Product developer
 	 */
-	public AbstractAggregateSource() {
-		super();
-		
-		this.children = new ArrayList<Source>();
-	}
-	
-	/** Instantiate a new <code>AbstractAggregateSource</code>.
-	 * @param child    First child source units
-	 * @param children Remaining child source units
-	 */
-	public AbstractAggregateSource(Source child, Source... children) {
-		this();
-		
-		this.children.add(child);
-		if (children != null && children.length > 0) {
-			for (int i=0; i<children.length; i++) {
-				this.children.add(children[i]);
-			}
-		}
-	}
-	
-	/** Instantiate a new <code>AbstractAggregateSource</code>.
-	 * @param children Child source units
-	 */
-	public AbstractAggregateSource(List<Source> children) {
-		this();
-		
-		this.children.addAll(children);
-	}
-	
-	/** Add a child source unit.
-	 * @param child Child source unit
-	 * @see org.jhove2.core.source.AggregateSource#addChildSource(org.jhove2.core.source.Source)
-	 */
-	@Override
-	public void addChildSource(Source child) {
-		this.children.add(child);
-	}
-	
-	/** Get child source units.
-	 * @return Child source units
-	 * @see org.jhove2.core.source.AggregateSource#getChildSources()
-	 */
-	@Override
-	public List<Source> getChildSources() {
-		return this.children;
-	}
+	@ReportableProperty(order=3, value="Product developers")
+	public List<Agent> getDevelopers();
 
-	/** Get number of child source units.
-	 * @return Number of child source units
-	 * @see org.jhove2.core.source.AggregateSource#getNumChildSources()
+	/** Get product informative note.
+	 * @return Product informative note
 	 */
-	@Override
-	public int getNumChildSources() {
-		return this.children.size();
-	}
+	@ReportableProperty(order=5, value="Product informative note.")
+	public String getNote();
+	
+	/** Get product release date.
+	 * @return AbstractProduct release date
+	 */
+	@ReportableProperty(order=2, value="Product release date.")
+	public String getReleaseDate();
+
+	/** Get product rights statement.
+	 * @return Product rights statement
+	 */
+	@ReportableProperty(order=4, value="Product rights statement.")
+	public String getRightsStatement();
+	
+	/** Get product version identifier.
+	 * @return Product version identifier
+	 */
+	@ReportableProperty(order=1, value="Product version identifier.")
+	public String getVersion();
 }

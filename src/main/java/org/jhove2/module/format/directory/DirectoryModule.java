@@ -34,32 +34,75 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.core;
+package org.jhove2.module.format.directory;
 
+import java.io.EOFException;
+import java.io.File;
 import java.io.IOException;
-import java.util.Set;
+import java.util.Iterator;
+import java.util.List;
 
-import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.AbstractModule;
+import org.jhove2.core.Characterizable;
+import org.jhove2.core.JHOVE2;
+import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.Parsable;
+import org.jhove2.core.source.DirectorySource;
+import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.Source;
+import org.jhove2.core.spring.Configure;
 
-/** Interface for JHOVE2 message digesters.
+/** JHOVE2 file system directory module.
  * 
  * @author mstrong, slabrams
  */
-public interface Digestible
-	extends Processible
+public class DirectoryModule
+	extends AbstractModule
+	implements Parsable
 {
-	/** Calculate message digests for a source unit.  Implicitly set the start
-	 * and ending elapsed time.
+	/** Directory module version identifier. */
+	public static final String VERSION = "1.0.0";
+
+	/** Directory module release date. */
+	public static final String DATE = "2009-06-15";
+	
+	/** Directory module rights statement. */
+	public static final String RIGHTS =
+		"Copyright 2009 by The Regents of the University of California, " +
+		"Ithaka Harbors, Inc., and The Board of Trustees of the Leland " +
+		"Stanford Junior University. " +
+		"Available under the terms of the BSD license.";
+
+	/** Instantiate a new <code>DirectoryModule</code>.
+	 */
+	public DirectoryModule() {
+		super(VERSION, DATE, RIGHTS);
+	}
+
+	/** Parse a source unit.
 	 * @param jhove2 JHOVE2 framework
 	 * @param source Source unit
+	 * @return 0 
+	 * @throws EOFException If End-of-File is reached reading the source unit
+	 * @throws IOException  If an I/O exception is raised reading the source
+	 *                      unit
+	 * @see org.jhove2.core.Parsable#parse(org.jhove2.core.JHOVE2, org.jhove2.core.io.Input)
 	 */
-	public void digest(JHOVE2 jhove2, Source source)
-		throws IOException;
-	
-	/** Get message digests.
-	 * @return Message digests
-	 */
-	@ReportableProperty("Get message digests.")
-	public Set<Digest> getDigests();
+	@Override
+	public long parse(JHOVE2 jhove2, Source source)
+		throws EOFException, IOException, JHOVE2Exception
+	{
+		if (source instanceof DirectorySource) {
+			List<Source> files = ((DirectorySource) source).getChildSources();
+			Iterator<Source> iter = files.iterator();
+			while (iter.hasNext()) {
+				Source src = iter.next();
+				jhove2.characterize(src);
+				source.addChildSource(src);
+			}
+			
+			/* TODO: aggregate identification, etc. */
+		}
+		return 0;
+	}
 }

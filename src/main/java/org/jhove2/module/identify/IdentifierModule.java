@@ -46,9 +46,11 @@ import org.jhove2.core.FormatIdentification;
 import org.jhove2.core.Identifiable;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.Module;
+import org.jhove2.core.Product;
 import org.jhove2.core.FormatIdentification.Confidence;
-import org.jhove2.core.io.Input;
+import org.jhove2.core.source.ClumpSource;
+import org.jhove2.core.source.DirectorySource;
+import org.jhove2.core.source.Source;
 import org.jhove2.core.spring.Configure;
 
 /** JHOVE2 identification module.
@@ -63,7 +65,7 @@ public class IdentifierModule
 	public static final String VERSION = "2.0.0";
 
 	/** Identification module release date. */
-	public static final String DATE = "2009-06-12";
+	public static final String DATE = "2009-06-15";
 	
 	/** Identification module rights statement. */
 	public static final String RIGHTS =
@@ -71,6 +73,9 @@ public class IdentifierModule
 		"Ithaka Harbors, Inc., and The Board of Trustees of the Leland " +
 		"Stanford Junior University. " +
 		"Available under the terms of the BSD license.";
+	
+	/** DROID product information. */
+	protected static final Product droid = new DROIDWrapper();
 
 	/** Presumptively identified formats. */
 	protected Set<FormatIdentification> formats;
@@ -86,26 +91,43 @@ public class IdentifierModule
 	/** Presumptively identify the format of a source unit.  Implicitly set
 	 * the start and ending
 	 * @param jhove2 JHOVE2 framework
-	 * @param input  Source unit input
+	 * @param source Source unit
+	 * @return Presumptively identified formats
 	 * @throws IOException     If an I/O exception is raised reading the
 	 *                         source unit
 	 * @throws JHOVE2Exception
 	 * @see org.jhove2.core.Identifiable#getFormats()
 	 */
 	@Override
-	public Set<FormatIdentification> identify(JHOVE2 jhove2, Input input)
+	public Set<FormatIdentification> identify(JHOVE2 jhove2, Source source)
 			throws IOException, JHOVE2Exception
 	{
 		setStartTime();
-		
-		Module droid = new DROIDWrapper();
-		droid.setStartTime();
-		droid.setEndTime();
-		FormatIdentification id =
-			new FormatIdentification(droid, (Format)
-					                 Configure.getReportable("UTF8Format"),
-					                 Confidence.PositiveGeneric);
-		this.formats.add(id);
+		if (source instanceof ClumpSource) {
+			FormatIdentification id =
+				new FormatIdentification(null, (Format)
+						                 Configure.getReportable(Format.class,
+						                		                 "ClumpFormat"),
+					                     Confidence.PositiveSpecific);
+			this.formats.add(id);
+		}
+		else if (source instanceof DirectorySource) {
+			FormatIdentification id =
+				new FormatIdentification(null, (Format)
+						                 Configure.getReportable(Format.class,
+						                		                 "DirectoryFormat"),
+					                     Confidence.PositiveSpecific);
+			this.formats.add(id);
+		}
+		else {
+			/* TODO: implement DROID. */
+			FormatIdentification id =
+				new FormatIdentification(droid, (Format)
+						                 Configure.getReportable(Format.class,
+						                		                 "UTF8Format"),
+						                 Confidence.PositiveGeneric);
+			this.formats.add(id);
+		}
 		setEndTime();
 		
 		return this.formats;

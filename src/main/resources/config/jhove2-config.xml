@@ -7,17 +7,12 @@
            http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
  	<!-- JHOVE2 framework bean -->
-	<bean id="JHOVE2" class="org.jhove2.core.JHOVE2" scope="prototype">
-		<!--  property name="characterizer" ref="CharacterizerModule"/ -->
-	</bean>
+	<bean id="JHOVE2" class="org.jhove2.core.JHOVE2" scope="prototype"/>
 		
  	<!-- Characterizer module bean -->
 	<bean id="CharacterizerModule" 
 	      class="org.jhove2.module.characterize.CharacterizerModule"
-	      scope="prototype">
-		<property name="identifier" ref="IdentifierModule"/>
-		<property name="digester" ref="DigesterModule"/>
-	</bean>
+	      scope="prototype"/>
 	      
 	<!-- Identifier module bean -->
 	<bean id="IdentifierModule"
@@ -41,7 +36,7 @@
 			</list>
 		</property>
 	</bean>
-			
+
 	<!-- Adler-32 message digester bean -->
 	<bean id="Adler32Digester" class="org.jhove2.module.digest.Adler32Digester"
 	      scope="prototype"/>
@@ -85,7 +80,41 @@
  	<!-- XML displayer bean -->
 	<bean id="XMLDisplayer" class="org.jhove2.module.display.XMLDisplayer"
 	      scope="prototype"/>
-
+	
+	<!-- Clump module bean -->
+	<bean id="ClumpModule" class="org.jhove2.module.format.clump.ClumpModule"
+	      scope="prototype"/>
+			  
+	<!-- Clump format bean -->
+	<bean id="ClumpFormat" class="org.jhove2.core.Format" scope="singleton">
+		<constructor-arg type="java.lang.String" value="Clump"/>
+		<constructor-arg ref="ClumpIdentifier"/>
+		<constructor-arg type="org.jhove2.core.Format$Type" value="Format"/>
+		<constructor-arg type="org.jhove2.core.Format$Ambiguity" value="Unambiguous"/>
+	</bean>
+	
+   <!-- Clump identifier bean -->  
+   <bean id="ClumpIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="info:jhove2/format/clump"/>
+   </bean>
+     	
+	<!-- Directory module bean -->
+	<bean id="DirectoryModule" class="org.jhove2.module.format.directory.DirectoryModule"
+	      scope="prototype"/>
+	
+	<!-- Directory format bean -->
+	<bean id="DirectoryFormat" class="org.jhove2.core.Format" scope="singleton">
+		<constructor-arg type="java.lang.String" value="Directory"/>
+		<constructor-arg ref="DirectoryIdentifier"/>
+		<constructor-arg type="org.jhove2.core.Format$Type" value="Format"/>
+		<constructor-arg type="org.jhove2.core.Format$Ambiguity" value="Unambiguous"/>
+	</bean>
+				
+   <!-- Directory identifier bean -->  
+   <bean id="DirectoryIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="info:jhove2/format/directory"/>
+   </bean>
+   
 	<!-- UTF-8 format bean -->
 	<bean id="UTF8Format" class="org.jhove2.core.Format" scope="singleton">
 		<constructor-arg type="java.lang.String" value="UTF-8"/>

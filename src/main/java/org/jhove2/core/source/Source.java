@@ -53,10 +53,21 @@ import org.jhove2.core.io.Input;
 public interface Source
 	extends Reportable, Durable
 {
+	/** Add a child source unit.
+	 * @param child Child source unit
+	 */
+	public void addChildSource(Source child);
+	
 	/** Add a module that processed the source unit.
 	 * @param module Module that processed the source unit
 	 */
 	public void addModule(Processible module);
+	
+	/** Get child source units.
+	 * @return Child source units
+	 */
+	@ReportableProperty(order=3, value="Child source untis.")
+	public List<Source> getChildSources();
 	
 	/** Get {@link org.jhove2.core.io.Input} for the source unit.
 	 * @return Input for the source unit
@@ -66,6 +77,12 @@ public interface Source
 	/** Get modules that processed the source unit.
 	 * @return Modules that processed the source unit
 	 */
-	@ReportableProperty("Modules that processed the source unit")
+	@ReportableProperty(order=1, value="Modules that processed the source unit")
 	public List<Processible> getModules();
+
+	/** Get number of child source units.
+	 * @return Number of child source units
+	 */
+	@ReportableProperty(order=2, value="Number of child source units.")
+	public int getNumChildSources();
 }

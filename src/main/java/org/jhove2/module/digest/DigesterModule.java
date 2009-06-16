@@ -48,6 +48,7 @@ import org.jhove2.core.Digest;
 import org.jhove2.core.Digestible;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.io.Input;
+import org.jhove2.core.source.Source;
 
 /** JHOVE2 message digester module.
  * 
@@ -82,20 +83,22 @@ public class DigesterModule
 		super(VERSION, DATE, RIGHTS);
 	}
 
-	/** Calculate message digests.  Implicitly set the start and ending
-	 * elapsed time.
+	/** Calculate message digests for the source unit.  Implicitly set the
+	 * start and ending elapsed time.
 	 * @param jhove2 JHOVE2 framework
+	 * @param source Source unit
 	 * @see org.jhove2.core.Digestible#digest(org.jhove2.core.JHOVE2, org.jhove2.core.io.Input)
 	 */
 	@Override
-	public void digest(JHOVE2 jhove2, Input input)
+	public void digest(JHOVE2 jhove2, Source source)
 		throws IOException
 	{
 		setStartTime();
 		
-		long inputSize  = input.getSize();
-		long bufferSize = input.getMaxBufferSize();
-		long ptr = 0L;
+		Input input      = source.getInput();
+		long  inputSize  = input.getSize();
+		long  bufferSize = input.getMaxBufferSize();
+		long  ptr = 0L;
 		while (inputSize - ptr > -1L) {
 			input.setPosition(ptr);
 			if (this.arrayDigesters != null &&

@@ -40,7 +40,7 @@ import java.io.IOException;
 import java.util.Set;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.io.Input;
+import org.jhove2.core.source.Source;
 
 /** Interface for JHOVE2 identification modules.
  * 
@@ -53,12 +53,13 @@ public interface Identifiable
 	 * the start and ending
 	 * elapsed time.
 	 * @param jhove2 JHOVE2 framework
-	 * @param input  Source unit input
+	 * @param source Source unit
+	 * @return Presumptively identified formats
 	 * @throws IOException     If an I/O exception is raised reading the
 	 *                         source unit
 	 * @throws JHOVE2Exception
 	 */
-	public Set<FormatIdentification> identify(JHOVE2 jhove2, Input input)
+	public Set<FormatIdentification> identify(JHOVE2 jhove2, Source source)
 		throws IOException, JHOVE2Exception;
 	
 	/** Get presumptive format identifications.

@@ -39,15 +39,17 @@ package org.jhove2.core.source;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
 
-/** JHOVE2 directory source unit.
+/** JHOVE2 file system directory source unit.
  * 
  * @author mstrong, slabrams
  */
 public class DirectorySource
-	extends AbstractAggregateSource
+	extends AbstractSource
 {
 	/** Java {@link java.io.File} representing the directory. */
 	protected File dir;
@@ -95,30 +97,19 @@ public class DirectorySource
 		this.isExtant = dir.exists();
 		if (this.isExtant) {
 			this.isReadable = dir.canRead();
-			File [] files = dir.listFiles();
-			for (int i=0; i<files.length; i++) {
-				Source source = SourceFactory.getSource(files[i]);
+			File [] list = dir.listFiles();
+			for (int i=0; i<list.length; i++) {
+				Source source = SourceFactory.getSource(list[i]);
 				this.children.add(source);
 			}
 		}
 	}
 	
-	/** Get directory existence.
-	 * @return True if directory exists
+	/** Get Java {@link java.io.File} representing the directory.
+	 * @return Java {@link java.io.File} representing the directory
 	 */
-	@ReportableProperty(order=3, value="Directory existence: true if the " +
-			"directory exists")
-	public boolean isExtant() {
-		return this.isExtant;
-	}
-	
-	/** Get directory readability.
-	 * @return True if directory is readable
-	 */
-	@ReportableProperty(order=4, value="Directory readability: true if the " +
-			"directory is readable.")
-	public boolean isReadable() {
-		return this.isReadable;
+	public File getFile() {
+		return this.dir;
 	}
 	
 	/** Get directory name.
@@ -127,13 +118,31 @@ public class DirectorySource
 	@ReportableProperty(order=1, value="Directory name.")
 	public String getName() {
 		return this.name;
-	}
-	
+	}	
+
 	/** Get directory path.
 	 * @return Directory path
 	 */
 	@ReportableProperty(order=2, value="Directory path.")
 	public String getPath() {
 		return this.path;
+	}	
+	
+	/** Get directory existence.
+	 * @return True if directory exists
+	 */
+	@ReportableProperty(order=4, value="Directory existence: true if the " +
+			"directory exists")
+	public boolean isExtant() {
+		return this.isExtant;
+	}
+	
+	/** Get directory readability.
+	 * @return True if directory is readable
+	 */
+	@ReportableProperty(order=5, value="Directory readability: true if the " +
+			"directory is readable.")
+	public boolean isReadable() {
+		return this.isReadable;
 	}
 }

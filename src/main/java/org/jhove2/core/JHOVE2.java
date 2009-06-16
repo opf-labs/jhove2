@@ -250,7 +250,7 @@ public class JHOVE2
 		if (pathNames.size() == 1) {
 			String pathName = iter.next();
 			this.source = SourceFactory.getSource(pathName);
-			this.characterizer.characterize(this, this.source);
+			characterize(this.source);
 		}
 		else {
 			this.source = new ClumpSource();
@@ -259,9 +259,20 @@ public class JHOVE2
 				Source src = SourceFactory.getSource(pathName);
 				((ClumpSource) this.source).addChildSource(src);
 			}
-			this.characterizer.characterize(this, this.source);
+			characterize(this.source);
 		}
 		this.characterizer.setEndTime();
+	}
+	
+	/** Characterize a source unit.
+	 * @param source Source unit
+	 * @throws JHOVE2Exception 
+	 * @throws IOException 
+	 */
+	public void characterize(Source source)
+		throws IOException, JHOVE2Exception
+	{
+		this.characterizer.characterize(this, source);
 	}
 	
 	/** Display the framework to the standard output stream.

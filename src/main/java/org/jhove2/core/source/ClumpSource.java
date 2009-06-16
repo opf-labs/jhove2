@@ -36,8 +36,6 @@
 
 package org.jhove2.core.source;
 
-import java.util.List;
-
 /** JHOVE2 clump source unit.  A clump is an aggregation of source units that
  * collectively form a single coherent characterizable object. 
  * 
@@ -45,26 +43,11 @@ import java.util.List;
  *
  */
 public class ClumpSource
-	extends AbstractAggregateSource
+	extends AbstractSource
 {
 	/** Instantiate a new <code>ClumpSource</code>.
 	 */
 	public ClumpSource() {
 		super();
-	}
-	
-	/** Instantiate a new <code>ClumpSource</code>.
-	 * @param child    First child source unit
-	 * @param children Remaining child source units
-	 */
-	public ClumpSource(Source child, Source... children) {
-		super(child, children);
-	}
-
-	/** Instantiate a new <code>ClumpSource</code>.
-	 * @param children Child source units
-	 */
-	public ClumpSource(List<Source> children) {
-		super(children);
 	}
 }

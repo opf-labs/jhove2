@@ -83,13 +83,14 @@ public class JHOVE2CommandLine {
 
 			JHOVE2 jhove2 = null;
 			try {
-				jhove2 = (JHOVE2) Configure.getReportable("JHOVE2");
+				jhove2 = Configure.getReportable(JHOVE2.class, "JHOVE2");
 				jhove2.setCommandLine(args);
 				jhove2.setBufferSize(parser.getBufferSize());
 				jhove2.setFailFastLimit(parser.getFailFastLimit());
 	
 				Characterizable characterizer =
-					(Characterizable) Configure.getReportable("CharacterizerModule");
+					Configure.getReportable(Characterizable.class,
+							                "CharacterizerModule");
 				jhove2.setCharacterizer(characterizer);
 				jhove2.characterize(pathNames);
 			} catch (Exception e) {
@@ -101,7 +102,8 @@ public class JHOVE2CommandLine {
 			if (jhove2 != null) {
 				try {
 					Displayable displayer =
-						(Displayable) Configure.getReportable(parser.getDisplayer());
+						Configure.getReportable(Displayable.class,
+								                parser.getDisplayer());
 					jhove2.setDisplayer(displayer);
 					jhove2.display();
 				} catch (Exception e) {

@@ -38,18 +38,17 @@ package org.jhove2.module.characterize;
 
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 import org.jhove2.core.AbstractModule;
 import org.jhove2.core.Characterizable;
 import org.jhove2.core.Digestible;
+import org.jhove2.core.Format;
 import org.jhove2.core.FormatIdentification;
 import org.jhove2.core.Identifiable;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.io.Input;
-import org.jhove2.core.source.AggregateSource;
+import org.jhove2.core.Parsable;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.DirectorySource;
 import org.jhove2.core.source.FileSource;
@@ -68,7 +67,7 @@ public class CharacterizerModule
 	public static final String VERSION = "1.0.0";
 
 	/** Characterization process module release date. */
-	public static final String DATE = "2009-06-13";
+	public static final String DATE = "2009-06-15";
 	
 	/** Characterization process module rights statement. */
 	public static final String RIGHTS =
@@ -76,13 +75,7 @@ public class CharacterizerModule
 		"Ithaka Harbors, Inc., and The Board of Trustees of the Leland " +
 		"Stanford Junior University. " +
 		"Available under the terms of the BSD license.";
-	
-	/** Characterizer identification module. */
-	protected Identifiable identifier;
-	
-	/** Characterizer message digesting module. */
-	protected Digestible digester;
-	
+
 	/** Instantiate a new <code>CharacterizerModule</code>.
 	 */
 	public CharacterizerModule() {
@@ -114,63 +107,48 @@ public class CharacterizerModule
 			jhove2.incrementNumFiles();
 		}
 	
-		if (source instanceof AggregateSource) {
-			List<Source> list = ((AggregateSource) source).getChildSources();
-			Iterator<Source> iter = list.iterator();
+		/* Presumptively identify the format(s) of the source unit. */
+		Set<FormatIdentification> formats = null;
+		Identifiable identifier =
+			Configure.getReportable(Identifiable.class, "IdentifierModule");
+		formats = identifier.identify(jhove2, source);
+		source.addModule(identifier);
+			
+		/* TODO: Parse and validate the source unit. */
+		if (formats.size() > 0) {
+			Iterator<FormatIdentification> iter = formats.iterator();
 			while (iter.hasNext()) {
-				Source src = iter.next();
-				
-				/* Get a new instance of the characterizer to process the
-				 * child source unit.
-				 */
-				Characterizable characterizer =
-					(Characterizable) Configure.getReportable("CharacterizerModule");
-				characterizer.characterize(jhove2, src);
-			}
-			
-			/* TODO: aggregate identification, etc. */
-		}
-		else {
-			Input input = source.getInput();
-			if (input != null) {
-				/* Presumptively identify the format(s) of the source unit. */
-				Set<FormatIdentification> formats = null;
-				if (this.identifier != null) {
-					formats = this.identifier.identify(jhove2, input);
-					source.addModule(this.identifier);
+				FormatIdentification id = iter.next();
+				Format format = id.getFormat();
+				System.out.println("# SOURCE " + source.getClass().getSimpleName() +
+						           " FORMAT " + format.getName());
+				if (format == Configure.getReportable(Format.class,
+						                              "ClumpFormat")) {
+					Parsable module =
+						Configure.getReportable(Parsable.class, "ClumpModule");
+					module.parse(jhove2, source);
+					source.addModule(module);
 				}
-			
-				/* TODO: Parse and validate the source unit. */
-				if (formats != null && formats.size() > 0) {
-					
+				else if (format == Configure.getReportable(Format.class,
+						                                   "DirectoryFormat")) {
+					Parsable module =
+						Configure.getReportable(Parsable.class,
+						                        "DirectoryModule");
+					module.parse(jhove2, source);
+					source.addModule(module);
 				}
-				
-				/* TODO: Assess the source unit. */
-			
-				/** Calculate message digest(s) for the source unit. */
-				if (this.digester != null) {
-					this.digester.digest(jhove2, input);
-					source.addModule(this.digester);
-				}
-			}
-			else {
-				/* TODO: what to do if no input? */
 			}
 		}
+				
+		/* TODO: Assess the source unit. */
+		
+		/* TODO: Aggregate identification and validation. */
+			
+		/* Calculate message digest(s) for the source unit. */
+		Digestible digester =
+			Configure.getReportable(Digestible.class, "DigesterModule");
+		digester.digest(jhove2, source);
+		source.addModule(digester);
 		source.setEndTime();
-	}
-	
-	/** Set the characterizer identification module.
-	 * @param identifier Identification module
-	 */
-	public void setIdentifier(Identifiable identifier) {
-		this.identifier = identifier;
-	}
-	
-	/** Set the characterizer message digesting module.
-	 * @parfam digester Message digesting module
-	 */
-	public void setDigester(Digestible digester) {
-		this.digester = digester;
 	}
 }

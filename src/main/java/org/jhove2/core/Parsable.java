@@ -39,7 +39,7 @@ package org.jhove2.core;
 import java.io.EOFException;
 import java.io.IOException;
 
-import org.jhove2.core.io.Input;
+import org.jhove2.core.source.Source;
 
 /** Interface for JHOVE2 modules with parsing capability.
  * 
@@ -48,13 +48,15 @@ import org.jhove2.core.io.Input;
 public interface Parsable
 	extends Processible
 {
-	/** Parse a source unit.
+	/** Parse a source unit.  Implicitly set the start and end elapsed duration
+	 * times.
 	 * @param jhove2 JHOVE2 framework
-	 * @param input  Source unit input
+	 * @param source Source unit
+	 * @return Number of bytes consumed
 	 * @throws EOFException If End-of-File is reached reading the source unit
 	 * @throws IOException  If an I/O exception is raised reading the source
 	 *                      unit
 	 */
-	public long parse(JHOVE2 jhove2, Input input)
-		throws EOFException, IOException;
+	public long parse(JHOVE2 jhove2, Source source)
+		throws EOFException, IOException, JHOVE2Exception;
 }

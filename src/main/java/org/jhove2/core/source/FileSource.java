@@ -46,7 +46,7 @@ import org.jhove2.core.JHOVE2;
 import org.jhove2.core.io.InputFactory;
 import org.jhove2.core.io.Input.Type;
 
-/** JHOVE2 file source unit.  A file source unit is a unitary formatted object
+/** JHOVE2 file system file source unit.
  * 
  * @author mstrong, slabrams
  */
@@ -123,6 +123,13 @@ public class FileSource
 			this.isHidden = false;
 			this.isSpecial = false;
 		}
+	}
+	
+	/** Get Java {@link java.io.File}.
+	 * @return Java {@link java.io.File}
+	 */
+	public File getFile() {
+		return this.file;
 	}
 	
 	/** Get file existence.

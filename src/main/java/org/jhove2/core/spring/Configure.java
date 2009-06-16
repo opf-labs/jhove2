@@ -54,20 +54,21 @@ public class Configure {
 	protected static ApplicationContext context;
 	
 	/** Get reportable by bean name.
-	 * @param reportable Reportable class
-	 * @param name       Reportable bean name
+	 * @param cl   Reportable class
+	 * @param name Reportable bean name
+	 * @return Reportable
 	 * @throws JHOVE2Exception
 	 */
-	public static synchronized Reportable getReportable(String name)
+	public static synchronized <R extends Reportable> R getReportable(Class<? extends Reportable> cl, String name)
 		throws JHOVE2Exception
 	{
-		Reportable reportable = null;
+		R reportable = null;
 		try {
 			if (context == null) {
 				context = new ClassPathXmlApplicationContext(CLASSPATH);
 			}
 		
-			reportable = (Reportable) context.getBean(name);
+			reportable = (R) context.getBean(name);
 		} catch (BeansException e) {
 			throw new JHOVE2Exception("Can't instantiate reportable: " +
 					                         name, e);
@@ -78,9 +79,10 @@ public class Configure {
 	
 	/** Get reportable names by type.
 	 * @param type Reportable type
+	 * @return Reportable names
 	 * @throws JHOVE2Exception 
 	 */
-	public static synchronized String [] getReportableNames(Class<?> reportable)
+	public static synchronized String [] getReportableNames(Class<? extends Reportable> reportable)
 		throws JHOVE2Exception
 	{
 		String [] names = null;
