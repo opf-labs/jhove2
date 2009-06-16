@@ -39,6 +39,7 @@ package org.jhove2.core.io;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteOrder;
 
 import org.jhove2.core.io.Input.Type;
@@ -64,9 +65,9 @@ public class InputFactory {
 		else if (type.equals(Type.NonDirect)){ 
 			abstractInput = new NonDirectInput(file, maxBufferSize);
 		}
-		//else if (type.equals(Type.MemoryMapped)) {
-		//	abstractInput = new MappedInput(file, maxBufferSize);
-		//}
+		else if (type.equals(Type.MemoryMapped)) {
+			abstractInput = new MappedInput(file, maxBufferSize);
+		}
 
 		return abstractInput;
 	}
@@ -90,6 +91,50 @@ public class InputFactory {
 		//else if (type.equals(Type.MemoryMapped)) {
 		//	abstractInput = new MappedInput(file, maxBufferSize);
 		//}
+
+		return abstractInput;
+	}	
+	/** Factory to create an appropriate <code>AbstractInput</code>.
+	 * @param stream      Java {java.io.InputStream} underlying the inputable
+	 * @param maxBufferSize Maximum buffer size, in bytes
+	 * @return Input 
+	 */
+	public static AbstractInput getInput(InputStream stream, int maxBufferSize, Type type)
+		throws FileNotFoundException, IOException
+	{
+		AbstractInput abstractInput = null;
+		if      (type.equals(Type.Direct)) {
+			abstractInput = new DirectInput(stream, maxBufferSize);
+		}
+		else if (type.equals(Type.NonDirect)){ 
+			abstractInput = new NonDirectInput(stream, maxBufferSize);
+		}
+		else if (type.equals(Type.MemoryMapped)) {
+			abstractInput = new MappedInput(stream, maxBufferSize);
+		}
+
+		return abstractInput;
+	}
+	
+	/** Factory to create an appropriate <code>AbstractInput</code>.
+	 * @param stream          Java {java.io.InputStream} underlying the inputable
+	 * @param maxBufferSize Maximum buffer size, in bytes
+	 * @param order         Byte order
+	 * @return Input 
+	 */
+	public static AbstractInput getInput(InputStream stream, int maxBufferSize, Type type, ByteOrder order)
+		throws FileNotFoundException, IOException
+	{
+		AbstractInput abstractInput = null;
+		if      (type.equals(Type.Direct)) {
+			abstractInput = new DirectInput(stream, maxBufferSize, order);
+		}
+		else if (type.equals(Type.NonDirect)){ 
+			abstractInput = new NonDirectInput(stream, maxBufferSize, order);
+		}
+		else if (type.equals(Type.MemoryMapped)) {
+			abstractInput = new MappedInput(stream, maxBufferSize, order);
+		}
 
 		return abstractInput;
 	}	

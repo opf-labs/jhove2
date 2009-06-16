@@ -1,9 +1,6 @@
-/**
- * JHOVE2 - Next-generation architecture for format-aware characterization
+/* JHOVE2 - Next-generation architecture for format-aware characterization
  *
- * Copyright (c) 2009 by The Regents of the University of California,
- * Ithaka Harbors, Inc., and The Board of Trustees of the Leland Stanford
- * Junior University.
+ * Copyright (c) 2008 by The Regents of the University of California.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -17,9 +14,9 @@
  *   and/or other materials provided with the distribution.
  *
  * o Neither the name of the University of California/California Digital
- *   Library, Ithaka Harbors/Portico, or Stanford University, nor the names of
- *   its contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
+ *   Library nor the names of its contributors may be used to endorse or
+ *   promote products derived from this software without specific prior
+ *   written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -38,14 +35,16 @@ package org.jhove2.core.io;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-/** Interface for JHOVE2 inputters.
- * 
- * @author mstrong, slabrams
+/**
+ * @author MStrong
+ *
  */
 public interface Input {
+	
 	/** AbstractInput buffer type. */
 	public enum Type {
 		Direct,
@@ -59,7 +58,7 @@ public interface Input {
 	/** Marker indicating an uninitialized value. */
 	public final static int UNINITIALIZED = -1;
 	
-	/** Close the inputable.
+	/** Close the inputable and delete any temporary files.
 	 */
 	public void close()
 		throws IOException;
@@ -90,10 +89,17 @@ public interface Input {
 	 */
 	public File getFile();
 	
+	/** Get InputStream associated with this input
+	 *  handles URLs and Zip Files
+	 * @return InputStream
+	 */
+	public InputStream getInputStream();
+	
 	/** Get maximum buffer size, in bytes.
 	 * @return Maximum buffer size, in bytes
 	 */
 	public int getMaxBufferSize();
+	
 	
 	/** Get current position, as a byte offet.
 	 * @return Current position, as a byte offset
@@ -104,40 +110,61 @@ public interface Input {
 	 * the current position by one byte.
 	 * @return Signed byte at the current position, or -1 if EOF
 	 */
-	public byte getSignedByte()
+	public byte readSignedByte()
 		throws IOException;
 	
-	/** Get signed (four byte) integer at the the current position.  This
+	/** read signed (four byte) integer at the the current position.  This
 	 * implicitly advances the current position by four bytes.
 	 * @return Unsigned integer at the current position, or -1 if EOF
 	 */
-	int getSignedInt() 
+	int readSignedInt() 
 		throws IOException;
 	
-	/** Get size, in bytes.
+	/** Get signed short at the current position.  This implicitly advances
+	 * the current position by two bytes.
+	 * @return Signed short at the current position, or -1 if EOF
+	 */
+	public byte readSignedShort()
+		throws IOException;
+	
+	/** Get signed long at the current position.  This implicitly advances
+	 * the current position by eight bytes.
+	 * @return Signed long at the current position, or -1 if EOF
+	 */
+	public byte readSignedLong()
+		throws IOException;
+	
+	/** read size, in bytes.
 	 * @return Size
 	 */
-	public long getSize();
+	public long readSize();
 	
-	/** Get unsigned byte at the current position.  This implicitly advances
+	/** read unsigned byte at the current position.  This implicitly advances
 	 * the current position by one byte.
 	 * @return Unsigned byte at the current position, or -1 if EOF
 	 */
-	public short getUnsignedByte()
+	public short readUnsignedByte()
 		throws IOException;
 	
-	/** Get unsigned short (two byte) integer at the current position.  This
+	/** read unsigned short (two byte) integer at the current position.  This
 	 * implicitly advances the current position by two bytes.
 	 * @return Unsigned short integer at the current position, or -1 if EOF
 	 */
-	public int getUnsignedShort()
+	public int readUnsignedShort()
 		throws IOException;
 	
-	/** Get unsigned (four byte) integer at the the current position.  This
+	/** read unsigned (four byte) integer at the the current position.  This
 	 * implicitly advances the current position by four bytes.
 	 * @return Unsigned integer at the current position, or -1 if EOF
 	 */
-	public long getUnsignedInt()
+	public long readUnsignedInt()
+		throws IOException;
+	
+	/** read unsigned long (eight byte) at the the current position.  This
+	 * implicitly advances the current position by four bytes.
+	 * @return Unsigned integer at the current position, or -1 if EOF
+	 */
+	public long readUnsignedLong()
 		throws IOException;
 	
 	/** Set byte order: big-endian or little-endian.
@@ -151,5 +178,8 @@ public interface Input {
 	public void setPosition(long position)
 		throws IOException;
 
-
+	/** Retrieve size of Input (File or InputStream)
+	 */
+	public long getSize();
+	 
 }

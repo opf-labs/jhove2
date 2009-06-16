@@ -39,6 +39,9 @@ package org.jhove2.core.io;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.ByteOrder;
+import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 
 
@@ -53,7 +56,7 @@ public class MappedInput
 {
 	/** Maximum buffer size, in bytes. */
 	protected int maxBufferSize;
-	
+		
 	/** Instantiate a new <code>MappedInput</code> object.
 	 * @param file          Java {@link java.io.File} underlying the inputable
 	 * @param maxBufferSize Size of the mapped byte buffer, in bytes
@@ -64,20 +67,42 @@ public class MappedInput
 		super(file);
 		
 		/* Allocate memory mapped buffer and initialize it. */
+		if (maxBufferSize > this.channel.size())
+			maxBufferSize = (int) this.channel.size();
 		this.maxBufferSize = maxBufferSize;
-		this.buffer = null;
+		this.buffer = (MappedByteBuffer) buffer;
 		/* TODO: fix Access Denied problem 
 		 * java.io.IOException: Access is denied
 				at sun.nio.ch.FileChannelImpl.truncate0(Native Method)
 				at sun.nio.ch.FileChannelImpl.map(FileChannelImpl.java:731)
 	    this works if maxBuffersize set to 0
 	    */
+		
+		try {
 		this.buffer = this.channel.map(FileChannel.MapMode.READ_ONLY, 0,
 					                      maxBufferSize);
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
 		
-		getNextBuffer();
+		
+		// getNextBuffer();
 	}
 	
+	public MappedInput(InputStream stream, int maxBufferSize2) 
+		throws FileNotFoundException, IOException 
+	{
+		super(stream);
+		// TODO Auto-generated constructor stub
+	}
+
+	public MappedInput(InputStream stream, int maxBufferSize2, ByteOrder order) 
+		throws FileNotFoundException, IOException 
+	{
+		super(stream);
+		// TODO Auto-generated constructor stub
+	}
+
 	/** Get maximum buffer size, in bytes.
 	 * @return Maximum buffer size, in bytes
 	 * @see org.jhove2.core.io.Input#getMaxBufferSize()
@@ -86,4 +111,26 @@ public class MappedInput
 	public int getMaxBufferSize() {
 		return this.maxBufferSize;
 	}
+	
+	/** Get the next buffer's worth of data from the channel.
+	 * @return Number of bytes actually read, possibly 0 or -1 if EOF 
+	 * @throws IOException 
+	 */
+	@Override
+	protected long getNextBuffer()
+		throws IOException
+	{
+		this.buffer.clear();
+		//int n = this.channel.read(this.buffer);
+		this.buffer.flip();
+		long position = this.channel.position();
+		this.bufferOffset      = this.channel.position() - buffer.capacity();
+		
+		
+		this.bufferSize        = buffer.capacity();
+		this.inputablePosition = this.bufferOffset + this.buffer.position();
+		
+		return this.bufferSize;
+	}
+	
 }
