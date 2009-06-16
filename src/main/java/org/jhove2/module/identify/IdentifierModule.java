@@ -40,19 +40,23 @@ import java.io.IOException;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.AbstractModule;
 import org.jhove2.core.Format;
 import org.jhove2.core.FormatIdentification;
 import org.jhove2.core.Identifiable;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.Message;
 import org.jhove2.core.Product;
 import org.jhove2.core.FormatIdentification.Confidence;
+import org.jhove2.core.Message.Context;
+import org.jhove2.core.Message.Severity;
+import org.jhove2.core.config.Configure;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.DirectorySource;
 import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.Source;
-import org.jhove2.core.spring.Configure;
 
 /** JHOVE2 identification module.
  * 
@@ -77,6 +81,9 @@ public class IdentifierModule
 	
 	/** DROID product information. */
 	protected static final Product droid = new DROIDWrapper();
+	
+	/** File not found message. */
+	protected Message fileNotFound;
 
 	/** Presumptively identified formats. */
 	protected Set<FormatIdentification> formats;
@@ -107,7 +114,7 @@ public class IdentifierModule
 		if (source instanceof ClumpSource) {
 			/* Identify clump source unit. */
 			FormatIdentification id =
-				new FormatIdentification(null, (Format)
+				new FormatIdentification(null, 
 						                 Configure.getReportable(Format.class,
 						                		                 "ClumpFormat"),
 					                     Confidence.PositiveSpecific);
@@ -116,7 +123,7 @@ public class IdentifierModule
 		else if (source instanceof DirectorySource) {
 			/* Identify directory source unit. */
 			FormatIdentification id =
-				new FormatIdentification(null, (Format)
+				new FormatIdentification(null,
 						                 Configure.getReportable(Format.class,
 						                		                 "DirectoryFormat"),
 					                     Confidence.PositiveSpecific);
@@ -129,16 +136,28 @@ public class IdentifierModule
 				
 				/* TODO: implement DROID. */
 				FormatIdentification id =
-					new FormatIdentification(droid, (Format)
+					new FormatIdentification(droid,
 							                 Configure.getReportable(Format.class,
 							                                         "UTF8Format"),
 						                     Confidence.PositiveGeneric);
 				this.formats.add(id);
 			}
+			else {
+				this.fileNotFound = new Message(Severity.ERROR, Context.PROCESS,
+						"File not found: " + fileSource.getName());
+			}
 		}
 		setEndTime();
 		
 		return this.formats;
+	}
+	
+	/** Get file not found message
+	 * @return File not found message
+	 */
+	@ReportableProperty("File not found message.")
+	public Message getFileNotFound() {
+		return this.fileNotFound;
 	}
 
 	/** Get presumptive format identifications.

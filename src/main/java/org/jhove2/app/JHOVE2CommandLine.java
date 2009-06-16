@@ -42,7 +42,8 @@ import org.jhove2.core.Characterizable;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Displayable;
 import org.jhove2.core.JHOVE2;
-import org.jhove2.core.spring.Configure;
+import org.jhove2.core.config.Configure;
+import org.jhove2.core.io.Input.Type;
 
 /** JHOVE2 command line application.
  * 
@@ -73,6 +74,7 @@ public class JHOVE2CommandLine {
 			jhove2 = Configure.getReportable(JHOVE2.class, "JHOVE2");
 			jhove2.setCommandLine(args);
 			jhove2.setBufferSize(parser.getBufferSize());
+			jhove2.setBufferType(parser.getBufferType());
 			jhove2.setFailFastLimit(parser.getFailFastLimit());
 
 			Characterizable characterizer =
@@ -100,11 +102,19 @@ public class JHOVE2CommandLine {
 	public static String getUsage()
 		throws JHOVE2Exception
 	{
-		String [] displayers = Configure.getReportableNames(Displayable.class);
+		Type   [] bufferTypes = Type.values();
+		String [] displayers  = Configure.getReportableNames(Displayable.class);
 		
 		StringBuffer usage = new StringBuffer("usage: ");
 		usage.append(JHOVE2CommandLine.class.getName());
 		usage.append(" -b <bufferSize>");
+		usage.append(" -B ");
+		for (int i=0; i<bufferTypes.length; i++) {
+			if ( i > 0) {
+				usage.append("|");
+			}
+			usage.append(bufferTypes[i]);
+		}
 		usage.append(" -d ");
 		for (int i=0; i<displayers.length; i++) {
 			if (i > 0) {

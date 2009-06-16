@@ -40,19 +40,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jhove2.core.JHOVE2;
+import org.jhove2.core.io.Input.Type;
 
 /** JHOVE2 command line application command line parser.
  * 
  * @author mstrong, slabrams
  */
 public class JHOVE2CommandLineParser {
-	/** Default displayer. */
+	/** Default {@link org.jhove2.core.io.Input} buffer type. */
+	public static final Type DEFAULT_BUFFER_TYPE = Type.Direct;
+	
+	/** Default {@link org.jhove2.core.Displayable}. */
 	public static final String DEFAULT_DISPLAYER = "Text";
 	
-	/** Buffer size. */
+	/** {@link org.jhove2.core.io.Input} buffer size. */
 	protected int bufferSize;
 	
-	/** Displayer. */
+	/** {@link org.jhove2.core.io.Input} buffer type. */
+	protected Type bufferType;
+	
+	/** {@link org.jhove2.Displayable}. */
 	protected String displayer;
 	
 	/** Fail fast limit. */
@@ -70,19 +77,21 @@ public class JHOVE2CommandLineParser {
 	/** Instantiate a new <code>JHOVE2CommandLineParser</code>.
 	 */
 	public JHOVE2CommandLineParser() {
-		this(JHOVE2.DEFAULT_BUFFER_SIZE, DEFAULT_DISPLAYER,
-			 JHOVE2.DEFAULT_FAIL_FAST_LIMIT);
+		this(JHOVE2.DEFAULT_BUFFER_SIZE, DEFAULT_BUFFER_TYPE,
+			 DEFAULT_DISPLAYER, JHOVE2.DEFAULT_FAIL_FAST_LIMIT);
 	}
 	
 	/** Instantiate a new <code>JHOVE2CommandLineParser</code> with specific
 	 * default values.
-	 * @param bufferSize    Default buffer size
-	 * @param displayer     Default displayer
+	 * @param bufferSize    Default {@link org.jhove2.core.io.Input} buffer size
+	 * @param bufferType    Default {@link org.jhove2.core.io.Input} buffer type
+	 * @param displayer     Default {@link org.jhove2.core.Displayable}
 	 * @param failFastLimit Default fail fast limit
 	 */
-	public JHOVE2CommandLineParser(int bufferSize, String displayer,
-			                       int failFastLimit) {
+	public JHOVE2CommandLineParser(int bufferSize, Type bufferType,
+			                       String displayer, int failFastLimit) {
 		this.bufferSize    = bufferSize;
+		this.bufferType    = bufferType;
 		this.displayer     = displayer;
 		this.failFastLimit = failFastLimit;
 		this.names         = new ArrayList<String>();
@@ -101,6 +110,11 @@ public class JHOVE2CommandLineParser {
 					if      (opt == 'b') {
 						if (i+1 < args.length) {
 							this.bufferSize = Integer.valueOf(args[++i]);
+						}
+					}
+					else if (opt == 'B') {
+						if (i+1 < args.length) {
+							this.bufferType = Type.valueOf(args[++i]);
 						}
 					}
 					else if (opt == 'd') {
@@ -128,14 +142,21 @@ public class JHOVE2CommandLineParser {
 		return this.names;
 	}
 	
-	/** Get buffer size.
+	/** Get {@link org.jhove2.core.io.Input} buffer size.
 	 * @return Buffer size
 	 */
 	public int getBufferSize() {
 		return this.bufferSize;
 	}
 	
-	/** Get displayer.
+	/** Get {@link org.jhove2.core.io.Input} buffer type.
+	 * @return Input buffer type
+	 */
+	public Type getBufferType() {
+		return this.bufferType;
+	}
+	
+	/** Get {@link org.jhove2.core.Displayeble}.
 	 * @return Displayer
 	 */
 	public String getDisplayer() {

@@ -49,11 +49,11 @@ import org.jhove2.core.Identifiable;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Parsable;
+import org.jhove2.core.config.Configure;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.DirectorySource;
 import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.Source;
-import org.jhove2.core.spring.Configure;
 
 /** JHOVE2 characterization module.
  * 
@@ -67,7 +67,7 @@ public class CharacterizerModule
 	public static final String VERSION = "1.0.0";
 
 	/** Characterization process module release date. */
-	public static final String DATE = "2009-06-15";
+	public static final String DATE = "2009-06-16";
 	
 	/** Characterization process module rights statement. */
 	public static final String RIGHTS =

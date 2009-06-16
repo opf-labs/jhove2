@@ -81,10 +81,10 @@ public class JHOVE2
 	public static final SimpleDateFormat ISO8601 =
 		            new SimpleDateFormat("yyyy-MM-ss'T'hh:mm:ssZ");
 	
-	/** Default buffer size. */
+	/** Default {@link org.jhove2.core.io.Input} buffer size. */
 	public static final int DEFAULT_BUFFER_SIZE = 131072;
 	
-	/** Default buffer type. */
+	/** Default {@link org.jhove2.core.io.Input} buffer type. */
 	public static final Type DEFAULT_BUFFER_TYPE = Type.Direct;
 	
 	/** Default fail fast limit. */

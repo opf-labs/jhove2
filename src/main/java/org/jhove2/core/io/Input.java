@@ -39,12 +39,15 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-/**
+import org.jhove2.core.Reportable;
+
+/** JHOVE2 input, an I/O abstraction used for parsing the contents of source units.
+ * 
  * @author MStrong
- *
  */
-public interface Input {
-	
+public interface Input
+	extends Reportable
+{
 	/** AbstractInput buffer type. */
 	public enum Type {
 		Direct,

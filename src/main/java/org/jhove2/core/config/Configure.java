@@ -34,7 +34,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.core.spring;
+package org.jhove2.core.config;
 
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Reportable;
@@ -59,7 +59,7 @@ public class Configure {
 	 * @return Reportable
 	 * @throws JHOVE2Exception
 	 */
-	public static synchronized <R extends Reportable> R getReportable(Class<? extends Reportable> cl, String name)
+	public static synchronized <R> R getReportable(Class<? super R> cl, String name)
 		throws JHOVE2Exception
 	{
 		R reportable = null;

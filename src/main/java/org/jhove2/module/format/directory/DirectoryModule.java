@@ -47,10 +47,10 @@ import org.jhove2.core.Characterizable;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Parsable;
+import org.jhove2.core.config.Configure;
 import org.jhove2.core.source.DirectorySource;
 import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.Source;
-import org.jhove2.core.spring.Configure;
 
 /** JHOVE2 file system directory module.
  * 
