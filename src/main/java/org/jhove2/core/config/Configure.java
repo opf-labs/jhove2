@@ -36,6 +36,8 @@
 
 package org.jhove2.core.config;
 
+import java.util.Properties;
+
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Reportable;
 import org.springframework.beans.BeansException;
@@ -99,4 +101,27 @@ public class Configure {
 		
 		return names;
 	}
+	
+	/** Get Java properties from a named properties file.
+	 * @param name Properties file base name, i.e., without an extension
+	 * @return Java properties
+	 */
+	public static synchronized Properties getProperties(String name)
+		throws JHOVE2Exception
+	{
+		Properties props = null;
+		try {
+			if (context == null) {
+				context = new ClassPathXmlApplicationContext(CLASSPATH);
+			}
+			
+			Properties cp = (Properties) context.getBean(name);
+		} catch (BeansException e) {
+			throw new JHOVE2Exception("Can't instantiate properties: " + name, e);	
+		}
+
+
+		return props;
+	}
+
 }
