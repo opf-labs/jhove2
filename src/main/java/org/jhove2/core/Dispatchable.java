@@ -36,27 +36,23 @@
 
 package org.jhove2.core;
 
-import java.io.EOFException;
-import java.io.IOException;
-
 import org.jhove2.core.source.Source;
 
-/** Interface for JHOVE2 modules with parsing capability.
+/** Interface for JHOVE2 dispatcher modules.  A dispatcher module instantiates
+ * and invokes the module associated with a format.
  * 
  * @author mstrong, slabrams
  */
-public interface Parsable
+public interface Dispatchable
 	extends Processible
 {
-	/** Parse a source unit.  Implicitly set the start and end elapsed time.
-	 * @param jhove2 JHOVE2 framework
-	 * @param source Source unit
-	 * @return Number of bytes consumed
-	 * @throws EOFException    If End-of-File is reached reading the source unit
-	 * @throws IOException     If an I/O exception is raised reading the source
-	 *                         unit
+	/** Dispatch a module appropriate for a source unit's format.
+	 * @param jhove2   JHOVE2 framework
+	 * @param source   Source unit
+	 * @param formatID Source unit format identification
 	 * @throws JHOVE2Exception
 	 */
-	public long parse(JHOVE2 jhove2, Source source)
-		throws EOFException, IOException, JHOVE2Exception;
+	public Parsable dispatch(JHOVE2 jhove2, Source source,
+			                 FormatIdentification formatID)
+		throws JHOVE2Exception;
 }

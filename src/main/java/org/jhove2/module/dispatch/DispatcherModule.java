@@ -34,71 +34,81 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.module.format.clump;
+package org.jhove2.module.dispatch;
 
-import java.io.EOFException;
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.jhove2.core.AbstractModule;
+import org.jhove2.core.Dispatchable;
+import org.jhove2.core.Format;
+import org.jhove2.core.FormatIdentification;
+import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Parsable;
-import org.jhove2.core.source.ClumpSource;
+import org.jhove2.core.config.Configure;
 import org.jhove2.core.source.Source;
 
-/** JHOVE2 clump module.  A clump is an  aggregation of source units that
- * collectively form a single coherent characterizable object.
+/** JHOVE2 dispatcher module.  The module instantiates and invokes the module
+ * appropriate for a format.
  * 
  * @author mstrong, slabrams
  */
-public class ClumpModule
+public class DispatcherModule
 	extends AbstractModule
-	implements Parsable
+	implements Dispatchable
 {
-	/** Directory module version identifier. */
+	/** Dispatcher module version identifier. */
 	public static final String VERSION = "1.0.0";
 
-	/** Directory module release date. */
-	public static final String DATE = "2009-06-15";
+	/** Dispatcher module release date. */
+	public static final String DATE = "2009-06-16";
 	
-	/** Directory module rights statement. */
+	/** Dispatcher module rights statement. */
 	public static final String RIGHTS =
 		"Copyright 2009 by The Regents of the University of California, " +
 		"Ithaka Harbors, Inc., and The Board of Trustees of the Leland " +
 		"Stanford Junior University. " +
 		"Available under the terms of the BSD license.";
-
-	/** Instantiate a new <code>ClumpModule</code>.
+	
+	/** Dispatch map. */
+	protected Map<String,String> dispatch;
+	
+	/** Instantiate a new <code>DispatcherModule</code>.
 	 */
-	public ClumpModule() {
+	public DispatcherModule() {
 		super(VERSION, DATE, RIGHTS);
+		
+		this.dispatch = new TreeMap<String,String>();
+		this.dispatch.put("info:jhove2/format/bytestream", "BytestreamModule");
+		this.dispatch.put("info:jhove2/format/clump",      "ClumpModule");
+		this.dispatch.put("info:jhove2/format/directory",  "DirectoryModule");
+		this.dispatch.put("info:jhove2/format/utf-8",      "UTF8Module");
+		this.dispatch.put("info:jhove2/format/zip",        "ZipModule");
 	}
 
-	/** Parse a source unit.
-	 * @param jhove2 JHOVE2 framework
-	 * @param source Source unit
-	 * @return 0 
-	 * @throws EOFException    If End-of-File is reached reading the source unit
-	 * @throws IOException     If an I/O exception is raised reading the source
-	 *                         unit
-	 * @throws JHOVE2Exception
-	 * @see org.jhove2.core.Parsable#parse(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
+	/** Dispatch a module appropriate for a source unit's format.
+	 * @param jhove2   JHOVE2 framework
+	 * @param source   Source unit
+	 * @param formatID Source unit format identification
+	 * @throws JHOVE2Exception 
+	 * @see org.jhove2.core.Dispatchable#dispatch(org.jhove2.core.JHOVE2, org.jhove2.core.FormatIdentification)
 	 */
 	@Override
-	public long parse(JHOVE2 jhove2, Source source)
-		throws EOFException, IOException, JHOVE2Exception
+	public Parsable dispatch(JHOVE2 jhove2, Source source,
+			                 FormatIdentification formatID)
+		throws JHOVE2Exception
 	{
-		if (source instanceof ClumpSource) {
-			List<Source> files = ((ClumpSource) source).getChildSources();
-			Iterator<Source> iter = files.iterator();
-			while (iter.hasNext()) {
-				Source src = iter.next();
-				jhove2.characterize(src);
-			}
+		Parsable module = null;
+		
+		Format format     = formatID.getFormat();
+		I8R    identifier = format.getIdentifier();
+		String name       = this.dispatch.get(identifier.getValue());
+		if (name != null) {
+			module = Configure.getReportable(Parsable.class, name);
 		}
 		
-		return 0;
+		return module;
 	}
 }

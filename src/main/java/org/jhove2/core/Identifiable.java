@@ -50,7 +50,7 @@ public interface Identifiable
 	extends Processible
 {
 	/** Presumptively identify the format of a source unit.  Implicitly set
-	 * the start and ending
+	 * the start and ending elapsed time.
 	 * elapsed time.
 	 * @param jhove2 JHOVE2 framework
 	 * @param source Source unit

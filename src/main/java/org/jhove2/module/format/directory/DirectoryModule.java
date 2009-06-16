@@ -37,19 +37,15 @@
 package org.jhove2.module.format.directory;
 
 import java.io.EOFException;
-import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
 import org.jhove2.core.AbstractModule;
-import org.jhove2.core.Characterizable;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Parsable;
-import org.jhove2.core.config.Configure;
 import org.jhove2.core.source.DirectorySource;
-import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.Source;
 
 /** JHOVE2 file system directory module.
@@ -83,9 +79,10 @@ public class DirectoryModule
 	 * @param jhove2 JHOVE2 framework
 	 * @param source Source unit
 	 * @return 0 
-	 * @throws EOFException If End-of-File is reached reading the source unit
-	 * @throws IOException  If an I/O exception is raised reading the source
-	 *                      unit
+	 * @throws EOFException    If End-of-File is reached reading the source unit
+	 * @throws IOException     If an I/O exception is raised reading the source
+	 *                         unit
+	 * @throws JHOVE2Exception
 	 * @see org.jhove2.core.Parsable#parse(org.jhove2.core.JHOVE2, org.jhove2.core.io.Input)
 	 */
 	@Override

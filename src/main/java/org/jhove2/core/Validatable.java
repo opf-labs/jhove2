@@ -45,7 +45,8 @@ import org.jhove2.annotation.ReportableProperty;
 public interface Validatable
 	extends Processible
 {
-	/** Validate a source unit.
+	/** Validate a source unit.  Implicitly set the starting and ending elapsed
+	 * time.
 	 * @param jhove2 JHOVE2 framework
 	 */
 	public boolean validate(JHOVE2 jhove2);

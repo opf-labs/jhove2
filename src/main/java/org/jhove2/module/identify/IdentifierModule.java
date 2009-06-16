@@ -53,6 +53,7 @@ import org.jhove2.core.FormatIdentification.Confidence;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.config.Configure;
+import org.jhove2.core.io.Input;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.DirectorySource;
 import org.jhove2.core.source.FileSource;
@@ -81,9 +82,6 @@ public class IdentifierModule
 	
 	/** DROID product information. */
 	protected static final Product droid = new DROIDWrapper();
-	
-	/** File not found message. */
-	protected Message fileNotFound;
 
 	/** Presumptively identified formats. */
 	protected Set<FormatIdentification> formats;
@@ -97,7 +95,7 @@ public class IdentifierModule
 	}
 
 	/** Presumptively identify the format of a source unit.  Implicitly set
-	 * the start and ending
+	 * the start and ending elapsed time.
 	 * @param jhove2 JHOVE2 framework
 	 * @param source Source unit
 	 * @return Presumptively identified formats
@@ -135,29 +133,41 @@ public class IdentifierModule
 			if (fileSource.isExtant() && fileSource.isReadable()) {
 				
 				/* TODO: implement DROID. */
-				FormatIdentification id =
-					new FormatIdentification(droid,
-							                 Configure.getReportable(Format.class,
-							                                         "UTF8Format"),
-						                     Confidence.PositiveGeneric);
-				this.formats.add(id);
-			}
-			else {
-				this.fileNotFound = new Message(Severity.ERROR, Context.PROCESS,
-						"File not found: " + fileSource.getName());
+				Input input = fileSource.getInput(jhove2.getBufferSize(),
+						                          jhove2.getBufferType());
+				/* Test for Zip. */
+				if (input != null) {
+					byte [] zip = new byte[] {0x50, 0x4b, 0x03, 0x04};
+					boolean isZip = true;
+					for (int i=0; i<4; i++) {
+						short b = input.readUnsignedByte();
+						if (b != zip[i]) {
+							isZip = false;
+							break;
+						}
+					}
+					
+					FormatIdentification id = null;
+					if (isZip) {
+						id = new FormatIdentification(droid,
+								Configure.getReportable(Format.class,
+										                "ZipFormat"),
+								Confidence.PositiveGeneric);
+					}
+					else {
+						/* Default to UTF-8. */
+						id = new FormatIdentification(droid,
+								Configure.getReportable(Format.class,
+							                            "UTF8Format"),
+						        Confidence.PositiveGeneric);
+					}
+					this.formats.add(id);
+				}
 			}
 		}
 		setEndTime();
 		
 		return this.formats;
-	}
-	
-	/** Get file not found message
-	 * @return File not found message
-	 */
-	@ReportableProperty("File not found message.")
-	public Message getFileNotFound() {
-		return this.fileNotFound;
 	}
 
 	/** Get presumptive format identifications.

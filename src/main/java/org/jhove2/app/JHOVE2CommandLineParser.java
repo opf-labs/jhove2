@@ -51,7 +51,7 @@ public class JHOVE2CommandLineParser {
 	public static final Type DEFAULT_BUFFER_TYPE = Type.Direct;
 	
 	/** Default {@link org.jhove2.core.Displayable}. */
-	public static final String DEFAULT_DISPLAYER = "Text";
+	public static final String DEFAULT_DISPLAYER = "TextDisplayer";
 	
 	/** {@link org.jhove2.core.io.Input} buffer size. */
 	protected int bufferSize;

@@ -34,29 +34,59 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.core;
+package org.jhove2.module.format.zip;
 
 import java.io.EOFException;
 import java.io.IOException;
 
+import org.jhove2.core.AbstractModule;
+import org.jhove2.core.JHOVE2;
+import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.Parsable;
 import org.jhove2.core.source.Source;
 
-/** Interface for JHOVE2 modules with parsing capability.
+/** JHOVE2 Zip module.
  * 
  * @author mstrong, slabrams
  */
-public interface Parsable
-	extends Processible
+public class ZipModule
+	extends AbstractModule
+	implements Parsable
 {
-	/** Parse a source unit.  Implicitly set the start and end elapsed time.
+	/** Zip module version identifier. */
+	public static final String VERSION = "1.0.0";
+
+	/** Zip module release date. */
+	public static final String DATE = "2009-06-15";
+	
+	/** Zip module rights statement. */
+	public static final String RIGHTS =
+		"Copyright 2009 by The Regents of the University of California, " +
+		"Ithaka Harbors, Inc., and The Board of Trustees of the Leland " +
+		"Stanford Junior University. " +
+		"Available under the terms of the BSD license.";
+
+
+	/** Instantiate a new <code>ZipModule</code>.
+	 */
+	public ZipModule() {
+		super(VERSION, DATE, RIGHTS);
+	}
+
+	/** Parse a source unit.
 	 * @param jhove2 JHOVE2 framework
 	 * @param source Source unit
-	 * @return Number of bytes consumed
+	 * @return 0 
 	 * @throws EOFException    If End-of-File is reached reading the source unit
 	 * @throws IOException     If an I/O exception is raised reading the source
 	 *                         unit
 	 * @throws JHOVE2Exception
+	 * @see org.jhove2.core.Parsable#parse(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
 	 */
+	@Override
 	public long parse(JHOVE2 jhove2, Source source)
-		throws EOFException, IOException, JHOVE2Exception;
+		throws EOFException, IOException, JHOVE2Exception
+	{
+		return 0;
+	}
 }

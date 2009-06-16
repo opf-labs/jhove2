@@ -50,6 +50,7 @@ import java.util.Set;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.module.display.Displayer;
+import org.jhove2.core.config.Configure;
 import org.jhove2.core.io.Input.Type;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.Source;
@@ -253,7 +254,6 @@ public class JHOVE2
 	public void characterize(List<String> pathNames)
 		throws IOException, JHOVE2Exception
 	{
-		this.characterizer.setStartTime();
 		Iterator<String> iter = pathNames.iterator();
 		if (pathNames.size() == 1) {
 			String pathName = iter.next();
@@ -269,7 +269,6 @@ public class JHOVE2
 			}
 			characterize(this.source);
 		}
-		this.characterizer.setEndTime();
 	}
 	
 	/** Characterize a source unit.
@@ -280,7 +279,17 @@ public class JHOVE2
 	public void characterize(Source source)
 		throws IOException, JHOVE2Exception
 	{
-		this.characterizer.characterize(this, source);
+		Characterizable characterizer =
+			Configure.getReportable(Characterizable.class,
+					                "CharacterizerModule");
+		if (characterizer != null) {
+			characterizer.setStartTime();
+			characterizer.characterize(this, source);
+			characterizer.setEndTime();
+		}
+		else {
+			/* TODO: characterizer not defined. */
+		}
 	}
 	
 	/** Display the framework to the standard output stream.

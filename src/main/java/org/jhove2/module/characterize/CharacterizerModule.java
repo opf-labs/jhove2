@@ -43,13 +43,12 @@ import java.util.Set;
 import org.jhove2.core.AbstractModule;
 import org.jhove2.core.Characterizable;
 import org.jhove2.core.Digestible;
-import org.jhove2.core.Format;
+import org.jhove2.core.Dispatchable;
 import org.jhove2.core.FormatIdentification;
 import org.jhove2.core.Identifiable;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Parsable;
-import org.jhove2.core.config.Configure;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.DirectorySource;
 import org.jhove2.core.source.FileSource;
@@ -76,6 +75,15 @@ public class CharacterizerModule
 		"Stanford Junior University. " +
 		"Available under the terms of the BSD license.";
 
+	/** Message digester module. */
+	protected Digestible digester;
+	
+	/** Dispatcher module. */
+	protected Dispatchable dispatcher;
+	
+	/** Identifier module. */
+	protected Identifiable identifier;
+	
 	/** Instantiate a new <code>CharacterizerModule</code>.
 	 */
 	public CharacterizerModule() {
@@ -106,56 +114,64 @@ public class CharacterizerModule
 		else if (source instanceof FileSource) {
 			jhove2.incrementNumFiles();
 		}
-	
-		/* Presumptively identify the format(s) of the source unit. */
-		Set<FormatIdentification> formats = null;
-		Identifiable identifier =
-			Configure.getReportable(Identifiable.class, "IdentifierModule");
-		formats = identifier.identify(jhove2, source);
-		source.addModule(identifier);
-			
-		if (formats.size() > 0) {
-			Iterator<FormatIdentification> iter = formats.iterator();
-			while (iter.hasNext()) {
-				FormatIdentification id = iter.next();
-				Format format = id.getFormat();
 
-				if (format == Configure.getReportable(Format.class,
-						                              "ClumpFormat")) {
-					/* Parse clump source unit. */
-					Parsable module =
-						Configure.getReportable(Parsable.class, "ClumpModule");
-					module.parse(jhove2, source);
-					source.addModule(module);
-				}
-				else if (format == Configure.getReportable(Format.class,
-						                                   "DirectoryFormat")) {
-					/* Parse directory source unit. */
-					Parsable module =
-						Configure.getReportable(Parsable.class,
-						                        "DirectoryModule");
-					module.parse(jhove2, source);
-					source.addModule(module);
-					
-					/* TODO: Aggregate identification and validation. */
-				}
-				else {
-					/* Parse file source unit. */
-					FileSource fileSource = (FileSource) source;
-					if (fileSource.isExtant() && fileSource.isReadable()) {
-						
-						/* TODO: Assess the source unit. */
-					
-						/* Calculate message digest(s) for the source unit. */
-						Digestible digester =
-							Configure.getReportable(Digestible.class, "DigesterModule");
-						digester.digest(jhove2, source);
-						source.addModule(digester);
+		/* Presumptively identify the format(s) of the source unit. */
+		if (this.identifier != null) {
+			Set<FormatIdentification> formats =
+				this.identifier.identify(jhove2, source);
+			source.addModule(identifier);
+
+			/* Dispatch to the appropriate module for the source unit's
+			 * format.
+			 */
+			if (this.dispatcher != null) {
+				if (formats.size() > 0) {
+					Iterator<FormatIdentification> iter = formats.iterator();
+					while (iter.hasNext()) {
+						FormatIdentification id = iter.next();
+						Parsable module =
+							this.dispatcher.dispatch(jhove2, source, id);
+						if (module != null) {
+							module.parse(jhove2, source);
+							source.addModule(module);
+						}
 					}
+				}
+			}
+		}
+		
+		/* Calculate message digest(s) for the source unit. */
+		if (this.digester != null) {
+			if (source instanceof FileSource) {
+				FileSource fileSource = (FileSource) source;
+				if (fileSource.isExtant() && fileSource.isReadable()) {
+					this.digester.digest(jhove2, source);
+					source.addModule(digester);
 				}
 			}
 		}
 
 		source.setEndTime();
+	}
+	
+	/** Set the message digester module.
+	 * @param digester Message digester module
+	 */
+	public void setDigester(Digestible digester) {
+		this.digester = digester;
+	}
+	
+	/** Set the dispatcher module.
+	 * @param dispatcher Dispatcher module
+	 */
+	public void setDispatcher(Dispatchable dispatcher) {
+		this.dispatcher = dispatcher;
+	}
+	
+	/** Set the identifier module
+	 * @param identifier Identifier module
+	 */
+	public void setIdentifier(Identifiable identifier) {
+		this.identifier = identifier;
 	}
 }

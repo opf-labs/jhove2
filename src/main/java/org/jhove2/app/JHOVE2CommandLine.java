@@ -67,22 +67,21 @@ public class JHOVE2CommandLine {
 				System.exit(EUSAGE);
 			}
 
+			/* Parse the application command line. */
 			JHOVE2CommandLineParser parser = new JHOVE2CommandLineParser();
 			List<String> pathNames = parser.parse(args);
 
-			JHOVE2 jhove2 = null;
-			jhove2 = Configure.getReportable(JHOVE2.class, "JHOVE2");
+			/* Initialize the JHOVE2 framework. */
+			JHOVE2 jhove2 = Configure.getReportable(JHOVE2.class, "JHOVE2");
 			jhove2.setCommandLine(args);
 			jhove2.setBufferSize(parser.getBufferSize());
 			jhove2.setBufferType(parser.getBufferType());
 			jhove2.setFailFastLimit(parser.getFailFastLimit());
-
-			Characterizable characterizer =
-				Configure.getReportable(Characterizable.class,
-						                "CharacterizerModule");
-			jhove2.setCharacterizer(characterizer);
+			
+			/* Characterize all file system path names. */
 			jhove2.characterize(pathNames);
 
+			/* Display the characterization results. */
 			Displayable displayer =
 				Configure.getReportable(Displayable.class,
 						                parser.getDisplayer());
