@@ -36,6 +36,8 @@
 
 package org.jhove2.core.source;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +45,7 @@ import org.jhove2.core.Durable;
 import org.jhove2.core.Duration;
 import org.jhove2.core.Processible;
 import org.jhove2.core.io.Input;
+import org.jhove2.core.io.Input.Type;
 
 /** An abstract JHOVE2 source unit.  A source unit is a formatted object that
  * can be characterized, which may be a file, a subset of a file, or a group
@@ -59,9 +62,6 @@ public abstract class AbstractSource
 	/** Module elapsed time, end. */
 	protected long endTime;
 
-	/** Source unit input. */
-	protected Input input;
-	
 	/** Modules that processed the source unit. */
 	protected List<Processible> modules;
 	
@@ -115,13 +115,24 @@ public abstract class AbstractSource
 		return new Duration(this.endTime - this.startTime);
 	}
 	
-	/** Get {@link org.jhove2.core.io.Input} for the source unit.
-	 * @return Input for the source unit
+	/** Get {@link org.jhove2.core.io.Input} for the source unit.  Concrete
+	 * classes extending this abstract class must provide an implementation of 
+	 * this method if they are are based on parsable input.  Classes without
+	 * parsable input (e.g. {@link org.jhove2.core.source.ClumpSource} or
+	 * {@link org.jhove2.core.source.DirectorySource} can let this inherited
+	 * method return null.
+	 * @param bufferSize Input buffer size
+	 * @param bufferType Input buffer type
+	 * @return Null
+	 * @throws FileNotFound
+	 * @throws IOException
 	 * @see org.jhove2.core.source.Source#getInput()
 	 */
 	@Override
-	public Input getInput() {
-		return this.input;
+	public Input getInput(int bufferSize, Type bufferType)
+		throws FileNotFoundException, IOException
+	{
+		return null;
 	}
 
 	/** Get modules that processed the source unit.
@@ -140,6 +151,15 @@ public abstract class AbstractSource
 	@Override
 	public int getNumChildSources() {
 		return this.children.size();
+	}
+	
+	/** Get number of modules.
+	 * @return Number of modules
+	 * @see org.jhove2.core.source.Source#getNumModules()
+	 */
+	@Override
+	public int getNumModules() {
+		return this.modules.size();
 	}
 	
 	/** Set the end time of the elapsed duration.

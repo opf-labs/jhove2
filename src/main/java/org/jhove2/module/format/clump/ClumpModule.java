@@ -96,7 +96,6 @@ public class ClumpModule
 			while (iter.hasNext()) {
 				Source src = iter.next();
 				jhove2.characterize(src);
-				source.addChildSource(src);
 			}
 		}
 		

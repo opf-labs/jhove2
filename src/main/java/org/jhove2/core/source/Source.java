@@ -36,6 +36,8 @@
 
 package org.jhove2.core.source;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
@@ -43,6 +45,7 @@ import org.jhove2.core.Durable;
 import org.jhove2.core.Processible;
 import org.jhove2.core.Reportable;
 import org.jhove2.core.io.Input;
+import org.jhove2.core.io.Input.Type;
 
 /** Interface for JHOVE2 source units.  A source unit is a formatted object
  * that can be characterized, which may be a file, a subset of a file, or a
@@ -70,9 +73,14 @@ public interface Source
 	public List<Source> getChildSources();
 	
 	/** Get {@link org.jhove2.core.io.Input} for the source unit.
+	 * @param bufferSize Input buffer size
+	 * @param bufferType Input buffer type
 	 * @return Input for the source unit
+	 * @throws FileNotFoundException
+	 * @throws IOException
 	 */
-	public Input getInput();
+	public Input getInput(int bufferSize, Type bufferType)
+		throws FileNotFoundException, IOException;
 	
 	/** Get modules that processed the source unit.
 	 * @return Modules that processed the source unit
@@ -85,4 +93,9 @@ public interface Source
 	 */
 	@ReportableProperty(order=2, value="Number of child source units.")
 	public int getNumChildSources();
+	
+	/** Get number of modules.
+	 * @return Number of modules
+	 */
+	public int getNumModules();
 }

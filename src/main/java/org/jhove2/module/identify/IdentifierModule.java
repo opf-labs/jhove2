@@ -50,6 +50,7 @@ import org.jhove2.core.Product;
 import org.jhove2.core.FormatIdentification.Confidence;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.DirectorySource;
+import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.spring.Configure;
 
@@ -65,7 +66,7 @@ public class IdentifierModule
 	public static final String VERSION = "2.0.0";
 
 	/** Identification module release date. */
-	public static final String DATE = "2009-06-15";
+	public static final String DATE = "2009-06-16";
 	
 	/** Identification module rights statement. */
 	public static final String RIGHTS =
@@ -104,6 +105,7 @@ public class IdentifierModule
 	{
 		setStartTime();
 		if (source instanceof ClumpSource) {
+			/* Identify clump source unit. */
 			FormatIdentification id =
 				new FormatIdentification(null, (Format)
 						                 Configure.getReportable(Format.class,
@@ -112,6 +114,7 @@ public class IdentifierModule
 			this.formats.add(id);
 		}
 		else if (source instanceof DirectorySource) {
+			/* Identify directory source unit. */
 			FormatIdentification id =
 				new FormatIdentification(null, (Format)
 						                 Configure.getReportable(Format.class,
@@ -120,13 +123,18 @@ public class IdentifierModule
 			this.formats.add(id);
 		}
 		else {
-			/* TODO: implement DROID. */
-			FormatIdentification id =
-				new FormatIdentification(droid, (Format)
-						                 Configure.getReportable(Format.class,
-						                		                 "UTF8Format"),
-						                 Confidence.PositiveGeneric);
-			this.formats.add(id);
+			/* Identify file source unit. */
+			FileSource fileSource = (FileSource) source;
+			if (fileSource.isExtant() && fileSource.isReadable()) {
+				
+				/* TODO: implement DROID. */
+				FormatIdentification id =
+					new FormatIdentification(droid, (Format)
+							                 Configure.getReportable(Format.class,
+							                                         "UTF8Format"),
+						                     Confidence.PositiveGeneric);
+				this.formats.add(id);
+			}
 		}
 		setEndTime();
 		

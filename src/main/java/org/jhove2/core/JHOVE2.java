@@ -50,6 +50,7 @@ import java.util.Set;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.module.display.Displayer;
+import org.jhove2.core.io.Input.Type;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
@@ -83,6 +84,9 @@ public class JHOVE2
 	/** Default buffer size. */
 	public static final int DEFAULT_BUFFER_SIZE = 131072;
 	
+	/** Default buffer type. */
+	public static final Type DEFAULT_BUFFER_TYPE = Type.Direct;
+	
 	/** Default fail fast limit. */
 	public static final int DEFAULT_FAIL_FAST_LIMIT = 0;
 	
@@ -91,6 +95,9 @@ public class JHOVE2
 	
 	/** {@link org.jhove2.core.io.Input} buffer size. */
 	protected int bufferSize;
+	
+	/** {@link org.jhove.core.io.Input} buffer type. */
+	protected Type bufferType;
 	
 	/** Framework characterization module. */
 	protected Characterizable characterizer;
@@ -183,6 +190,7 @@ public class JHOVE2
 		initInvocation();
 		
 		this.bufferSize     = DEFAULT_BUFFER_SIZE;
+		this.bufferType     = DEFAULT_BUFFER_TYPE;
 		this.failFastLimit  = DEFAULT_FAIL_FAST_LIMIT;
 		
 		this.numBytestreams = 0;
@@ -410,6 +418,14 @@ public class JHOVE2
 	@ReportableProperty(order=19, value="Input buffer size.")
 	public int getBufferSize() {
 		return this.bufferSize;
+	}
+	
+	/** Get {@link org.jhove2.core.io.Input} buffer type.
+	 * @return Input buffer type
+	 */
+	@ReportableProperty(order=20, value="Input buffer type.")
+	public Type getBufferType() {
+		return this.bufferType;
 	}
 	
 	/** Get framework characterization module.
@@ -674,6 +690,13 @@ public class JHOVE2
 	 */
 	public void setBufferSize(int size) {
 		this.bufferSize = size;
+	}
+	
+	/** Set {@link org.jhove2.core.io.Input} buffer type.
+	 * @param type Buffer type
+	 */
+	public void setBufferType(Type type) {
+		this.bufferType = type;
 	}
 
 	/** Set framework characterization process module.

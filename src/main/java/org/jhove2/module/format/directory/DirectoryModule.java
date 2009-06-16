@@ -98,11 +98,9 @@ public class DirectoryModule
 			while (iter.hasNext()) {
 				Source src = iter.next();
 				jhove2.characterize(src);
-				source.addChildSource(src);
 			}
-			
-			/* TODO: aggregate identification, etc. */
 		}
+		
 		return 0;
 	}
 }

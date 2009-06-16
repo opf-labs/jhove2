@@ -49,9 +49,6 @@ import org.jhove2.core.spring.Configure;
  * @author mstrong, slabrams
  */
 public class JHOVE2CommandLine {
-	/** Normal termination return code. */
-	public static final int EOK = 0;
-	
 	/** Usage statement return code. */
 	public static final int EUSAGE = 1;
 	
@@ -62,72 +59,39 @@ public class JHOVE2CommandLine {
 	 * @param args Command line arguments
 	 */
 	public static void main(String[] args) {
-		int returnCode = EOK;
-		Exception exception1 = null;
-		Exception exception2 = null;
-		String returnMessage = null;
+
 		try {
 			if (args.length < 1) {
-				returnMessage = getUsage();
-				returnCode    = EUSAGE;
+				System.out.println(getUsage());
+				System.exit(EUSAGE);
 			}
-		} catch (Exception e) {
-			exception1    = e;
-			returnMessage = e.getMessage();
-			returnCode    = EEXCEPTION;
-		}
 
-		if (returnCode == EOK) {
 			JHOVE2CommandLineParser parser = new JHOVE2CommandLineParser();
 			List<String> pathNames = parser.parse(args);
 
 			JHOVE2 jhove2 = null;
-			try {
-				jhove2 = Configure.getReportable(JHOVE2.class, "JHOVE2");
-				jhove2.setCommandLine(args);
-				jhove2.setBufferSize(parser.getBufferSize());
-				jhove2.setFailFastLimit(parser.getFailFastLimit());
-	
-				Characterizable characterizer =
-					Configure.getReportable(Characterizable.class,
-							                "CharacterizerModule");
-				jhove2.setCharacterizer(characterizer);
-				jhove2.characterize(pathNames);
-			} catch (Exception e) {
-				exception1    = e;
-				returnMessage = e.getMessage();
-				returnCode    = EEXCEPTION;
-			}
-	
-			if (jhove2 != null) {
-				try {
-					Displayable displayer =
-						Configure.getReportable(Displayable.class,
-								                parser.getDisplayer());
-					jhove2.setDisplayer(displayer);
-					jhove2.display();
-				} catch (Exception e) {
-					exception2 = e;
-					if (returnMessage != null) {
-						returnMessage += "; " + e.getMessage();
-					}
-					else {
-						returnMessage = e.getMessage();
-					}
-					returnCode = EEXCEPTION;
-				}
-			}
+			jhove2 = Configure.getReportable(JHOVE2.class, "JHOVE2");
+			jhove2.setCommandLine(args);
+			jhove2.setBufferSize(parser.getBufferSize());
+			jhove2.setFailFastLimit(parser.getFailFastLimit());
+
+			Characterizable characterizer =
+				Configure.getReportable(Characterizable.class,
+						                "CharacterizerModule");
+			jhove2.setCharacterizer(characterizer);
+			jhove2.characterize(pathNames);
+
+			Displayable displayer =
+				Configure.getReportable(Displayable.class,
+						                parser.getDisplayer());
+			jhove2.setDisplayer(displayer);
+			jhove2.display();
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			e.printStackTrace(System.err);
+			System.exit(EEXCEPTION);
 		}
-		if (returnMessage != null) {
-			System.err.println("Error: " + returnMessage);
-			if (exception1 != null) {
-				exception1.printStackTrace(System.err);
-			}
-			if (exception2 != null) {
-				exception2.printStackTrace(System.err);
-			}
-		}
-		System.exit(returnCode);
+		
 	}
 	
 	/** Get application usage statement.

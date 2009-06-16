@@ -114,16 +114,15 @@ public class CharacterizerModule
 		formats = identifier.identify(jhove2, source);
 		source.addModule(identifier);
 			
-		/* TODO: Parse and validate the source unit. */
 		if (formats.size() > 0) {
 			Iterator<FormatIdentification> iter = formats.iterator();
 			while (iter.hasNext()) {
 				FormatIdentification id = iter.next();
 				Format format = id.getFormat();
-				System.out.println("# SOURCE " + source.getClass().getSimpleName() +
-						           " FORMAT " + format.getName());
+
 				if (format == Configure.getReportable(Format.class,
 						                              "ClumpFormat")) {
+					/* Parse clump source unit. */
 					Parsable module =
 						Configure.getReportable(Parsable.class, "ClumpModule");
 					module.parse(jhove2, source);
@@ -131,24 +130,32 @@ public class CharacterizerModule
 				}
 				else if (format == Configure.getReportable(Format.class,
 						                                   "DirectoryFormat")) {
+					/* Parse directory source unit. */
 					Parsable module =
 						Configure.getReportable(Parsable.class,
 						                        "DirectoryModule");
 					module.parse(jhove2, source);
 					source.addModule(module);
+					
+					/* TODO: Aggregate identification and validation. */
+				}
+				else {
+					/* Parse file source unit. */
+					FileSource fileSource = (FileSource) source;
+					if (fileSource.isExtant() && fileSource.isReadable()) {
+						
+						/* TODO: Assess the source unit. */
+					
+						/* Calculate message digest(s) for the source unit. */
+						Digestible digester =
+							Configure.getReportable(Digestible.class, "DigesterModule");
+						digester.digest(jhove2, source);
+						source.addModule(digester);
+					}
 				}
 			}
 		}
-				
-		/* TODO: Assess the source unit. */
-		
-		/* TODO: Aggregate identification and validation. */
-			
-		/* Calculate message digest(s) for the source unit. */
-		Digestible digester =
-			Configure.getReportable(Digestible.class, "DigesterModule");
-		digester.digest(jhove2, source);
-		source.addModule(digester);
+
 		source.setEndTime();
 	}
 }

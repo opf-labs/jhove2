@@ -43,6 +43,7 @@ import java.util.Date;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2;
+import org.jhove2.core.io.Input;
 import org.jhove2.core.io.InputFactory;
 import org.jhove2.core.io.Input.Type;
 
@@ -90,7 +91,7 @@ public class FileSource
 	}
 	
 	/** Instantiate a new <code>FileSource</code>.
-	 * @param file File
+	 * @param file Java {@link java.io.File}
 	 * @throws IOException 
 	 * @throws FileNotFoundException 
 	 */
@@ -113,10 +114,6 @@ public class FileSource
 			this.isReadable = file.canRead();
 			this.isSpecial = !file.isFile();
 			this.lastModified = new Date(file.lastModified());
-
-			/* TODO: get actual buffer size and type. */
-			this.input = InputFactory.getInput(file, JHOVE2.DEFAULT_BUFFER_SIZE,
-					                           Type.Direct);
 		}
 		else {
 			this.size = 0L;
@@ -132,6 +129,22 @@ public class FileSource
 		return this.file;
 	}
 	
+	/** Get {@link org.jhove2.core.io.Input} for the source unit.
+	 * @param bufferSize Buffer size
+	 * @param bufferType Buffer type
+	 * @return Input for the source unit
+	 */
+	public Input getInput(int bufferSize, Type bufferType)
+		throws FileNotFoundException, IOException
+	{
+		Input input = null;
+		if (this.isExtant && this.isReadable) {
+			input = InputFactory.getInput(file, bufferSize, bufferType);
+		}
+		
+		return input;
+	}
+
 	/** Get file existence.
 	 * @return True if file exists
 	 */
