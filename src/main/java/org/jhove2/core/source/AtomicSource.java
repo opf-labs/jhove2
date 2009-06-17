@@ -36,56 +36,11 @@
 
 package org.jhove2.core.source;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
-
-/** Factory for JHOVE2 file and directory source units.
+/** Marker interface for JHOVE2 atomic source units.
  * 
  * @author mstrong, slabrams
  */
-public abstract class SourceFactory {
-	/** Get source unit from a file system path name.
-	 * @param pathName File system path name
-	 * @throws IOException 
-	 * @throws FileNotFoundException 
-	 */
-	public static synchronized Source getSource(String pathName)
-		throws FileNotFoundException, IOException
-	{
-		return getSource(new File(pathName));
-	}
-	
-	/** Get source unit from a Java {@link java.io.File}.
-	 * @param file Java {@link java.io.File}
-	 * @throws IOException 
-	 * @throws FileNotFoundException 
-	 */
-	public static synchronized Source getSource(File file)
-		throws FileNotFoundException, IOException
-	{
-		if (file.isDirectory()) {
-			return new DirectorySource(file);
-		}
-
-		return new FileSource(file);
-	}
-	
-	/** Get source unit from a Zip file entry.
-	 * @param entry Zip file entry
-	 * @throws IOException 
-	 */
-	public static synchronized Source getSource(ZipFile zip, ZipEntry entry)
-		throws IOException
-	{
-		InputStream stream = zip.getInputStream(entry);
-		if (entry.isDirectory()) {
-			return new ZipDirectorySource(stream, entry);
-		}
-		
-		return new ZipFileSource(stream, entry);
-	}
+public interface AtomicSource
+	extends Source
+{
 }

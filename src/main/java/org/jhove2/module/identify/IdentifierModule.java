@@ -54,10 +54,12 @@ import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.config.Configure;
 import org.jhove2.core.io.Input;
+import org.jhove2.core.source.AggregateSource;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.DirectorySource;
 import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.Source;
+import org.jhove2.core.source.ZipDirectorySource;
 
 /** JHOVE2 identification module.
  * 
@@ -109,23 +111,26 @@ public class IdentifierModule
 			throws IOException, JHOVE2Exception
 	{
 		setStartTime();
-		if (source instanceof ClumpSource) {
-			/* Identify clump source unit. */
-			FormatIdentification id =
-				new FormatIdentification(null, 
-						                 Configure.getReportable(Format.class,
-						                		                 "ClumpFormat"),
-					                     Confidence.PositiveSpecific);
-			this.formats.add(id);
-		}
-		else if (source instanceof DirectorySource) {
-			/* Identify directory source unit. */
-			FormatIdentification id =
-				new FormatIdentification(null,
-						                 Configure.getReportable(Format.class,
-						                		                 "DirectoryFormat"),
-					                     Confidence.PositiveSpecific);
-			this.formats.add(id);
+		if (source instanceof AggregateSource) {
+			if (source instanceof ClumpSource) {
+				/* Identify clump source unit. */
+				FormatIdentification id =
+					new FormatIdentification(null, 
+							Configure.getReportable(Format.class,
+								"ClumpFormat"),
+						Confidence.PositiveSpecific);
+				this.formats.add(id);
+			}
+			else if (source instanceof DirectorySource ||
+					 source instanceof ZipDirectorySource) {
+				/* Identify directory source unit. */
+				FormatIdentification id =
+					new FormatIdentification(null,
+							Configure.getReportable(Format.class,
+							"DirectoryFormat"),
+							Confidence.PositiveSpecific);
+				this.formats.add(id);
+			}
 		}
 		else {
 			/* Identify file source unit. */

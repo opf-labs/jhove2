@@ -36,38 +36,28 @@
 
 package org.jhove2.core.source;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
+import java.util.zip.ZipEntry;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.io.Input;
-import org.jhove2.core.io.InputFactory;
-import org.jhove2.core.io.Input.Type;
+import org.jhove2.core.Digest;
+import org.jhove2.module.digest.AbstractArrayDigester;
+import org.jhove2.module.digest.CRC32Digester;
 
-/** JHOVE2 file system file source unit.
+/** JHOVE2 Zip file source unit.
  * 
  * @author mstrong, slabrams
  */
-public class FileSource
+public class ZipFileSource
 	extends AbstractSource
 	implements AtomicSource
 {
-	/** Java {@link java.io.File}. */
-	protected File file;
+	/** File CRC-32 message digest. */
+	protected Digest crc32;
 	
-	/** File existence. */
-	protected boolean isExtant;
-	
-	/** File hiddeness. */
-	protected boolean isHidden;
-	
-	/** File readability. */
-	protected boolean isReadable;
-	
-	/** File specialness. */
-	protected boolean isSpecial;
+	/** File comment. */
+	protected String comment;
 	
 	/** File last modified date. */
 	protected Date lastModified;
@@ -75,91 +65,46 @@ public class FileSource
 	/** File name. */
 	protected String name;
 	
-	/** File path name. */
+	/** File path. */
 	protected String path;
 	
 	/** File size, in bytes. */
 	protected long size;
 	
-	/** Instantiate a new <code>FileSource</code>.
-	 * @param pathName File path name
-	 */
-	public FileSource(String pathName)
-		throws FileNotFoundException, IOException
-	{
-		this(new File(pathName));
-	}
+	/** File input stream. */
+	protected InputStream stream;
 	
-	/** Instantiate a new <code>FileSource</code>.
-	 * @param file Java {@link java.io.File}
-	 * @throws IOException 
-	 * @throws FileNotFoundException 
+	/** Instantiate a new <code>ZipFileSource</code>.
+	 * @param stream Input stream for the Zip file entry
+	 * @param entry  Zip file entry
 	 */
-	public FileSource(File file)
-		throws FileNotFoundException, IOException
-	{
+	public ZipFileSource(InputStream stream, ZipEntry entry) {
 		super();
 		
-		this.file = file;
-		this.name = file.getName();
-		try {
-			this.path = file.getCanonicalPath();
-		} catch (IOException e) {
-			/* Let path stay uninitialized. */
-		}		
-		this.isExtant = file.exists();
-		if (this.isExtant) {
-			this.size = file.length();
-			this.isHidden = file.isHidden();
-			this.isReadable = file.canRead();
-			this.isSpecial = !file.isFile();
-			this.lastModified = new Date(file.lastModified());
-		}
-		else {
-			this.size = 0L;
-			this.isHidden = false;
-			this.isSpecial = false;
-		}
+		this.stream = stream;
+		this.name         = entry.getName();
+		this.path         = this.name;
+		this.size         = entry.getSize();
+		this.lastModified = new Date(entry.getTime());
+		this.crc32        = new Digest(AbstractArrayDigester.toHexString(entry.getCrc()),
+				                       CRC32Digester.ALGORITHM);
+		this.comment      = entry.getComment();
 	}
 	
-	/** Get Java {@link java.io.File}.
-	 * @return Java {@link java.io.File}
+	/** Get file CRC-32 message digest.
+	 * @return File CRC-32 message digest
 	 */
-	public File getFile() {
-		return this.file;
+	@ReportableProperty(order=5, value="File CRC-32 message digest.")
+	public Digest getCRC32MessageDigest() {
+		return this.crc32;
 	}
 	
-	/** Get {@link org.jhove2.core.io.Input} for the source unit.
-	 * @param bufferSize Buffer size
-	 * @param bufferType Buffer type
-	 * @return Input for the source unit
+	/** Get file comment.
+	 * @return File comment
 	 */
-	public Input getInput(int bufferSize, Type bufferType)
-		throws FileNotFoundException, IOException
-	{
-		Input input = null;
-		if (this.isExtant && this.isReadable) {
-			input = InputFactory.getInput(file, bufferSize, bufferType);
-		}
-		
-		return input;
-	}
-
-	/** Get file existence.
-	 * @return True if file exists
-	 */
-	@ReportableProperty(order=5, value="File existence: true if the file exists")
-	public boolean isExtant() {
-		return this.isExtant;
-	}
-	
-	/** Get file hiddeness.
-	 * @return True if file is hidden
-	 */
-	@ReportableProperty(order=7, value="File hiddeness: True if the file is " +
-			"hidden")
-	public boolean isHidden() {
-		return this.isHidden;
+	@ReportableProperty(order=6, value="File comment.")
+	public String getComment() {
+		return this.comment;
 	}
 
 	/** Get file last modified date.
@@ -184,24 +129,6 @@ public class FileSource
 	@ReportableProperty(order=2, value="File path.")
 	public String getPath() {
 		return this.path;
-	}
-	
-	/** Get file readability.
-	 * @return True if file is readable
-	 */
-	@ReportableProperty(order=6, value="File readability: true if the file is " +
-			"readable.")
-	public boolean isReadable() {
-		return this.isReadable;
-	}
-	
-	/** Get file specialness.
-	 * @return True if file is special
-	 */
-	@ReportableProperty(order=8, value="File specialness: true if the file is " +
-			"special.")
-	public boolean isSpecial() {
-		return this.isSpecial;
 	}
 	
 	/** Get file size, in bytes.

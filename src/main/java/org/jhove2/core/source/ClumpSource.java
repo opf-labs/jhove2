@@ -44,6 +44,7 @@ package org.jhove2.core.source;
  */
 public class ClumpSource
 	extends AbstractSource
+	implements AggregateSource
 {
 	/** Instantiate a new <code>ClumpSource</code>.
 	 */

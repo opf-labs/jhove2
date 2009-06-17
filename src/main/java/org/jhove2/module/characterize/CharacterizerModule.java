@@ -49,6 +49,7 @@ import org.jhove2.core.Identifiable;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Parsable;
+import org.jhove2.core.source.AtomicSource;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.DirectorySource;
 import org.jhove2.core.source.FileSource;
@@ -142,12 +143,9 @@ public class CharacterizerModule
 		
 		/* Calculate message digest(s) for the source unit. */
 		if (this.digester != null) {
-			if (source instanceof FileSource) {
-				FileSource fileSource = (FileSource) source;
-				if (fileSource.isExtant() && fileSource.isReadable()) {
-					this.digester.digest(jhove2, source);
-					source.addModule(digester);
-				}
+			if (source instanceof AtomicSource) {
+				this.digester.digest(jhove2, source);
+				source.addModule(digester);
 			}
 		}
 

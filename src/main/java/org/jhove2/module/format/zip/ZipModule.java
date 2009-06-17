@@ -37,13 +37,22 @@
 package org.jhove2.module.format.zip;
 
 import java.io.EOFException;
+import java.io.File;
 import java.io.IOException;
+import java.util.Enumeration;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 import org.jhove2.core.AbstractModule;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Parsable;
+import org.jhove2.core.io.Input;
+import org.jhove2.core.io.InputFactory;
+import org.jhove2.core.source.AtomicSource;
+import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.Source;
+import org.jhove2.core.source.SourceFactory;
 
 /** JHOVE2 Zip module.
  * 
@@ -57,7 +66,7 @@ public class ZipModule
 	public static final String VERSION = "1.0.0";
 
 	/** Zip module release date. */
-	public static final String DATE = "2009-06-15";
+	public static final String DATE = "2009-06-16";
 	
 	/** Zip module rights statement. */
 	public static final String RIGHTS =
@@ -73,7 +82,7 @@ public class ZipModule
 		super(VERSION, DATE, RIGHTS);
 	}
 
-	/** Parse a source unit.
+	/** Parse a source unit.  Implicitly set the start and end elapsed time.
 	 * @param jhove2 JHOVE2 framework
 	 * @param source Source unit
 	 * @return 0 
@@ -87,6 +96,20 @@ public class ZipModule
 	public long parse(JHOVE2 jhove2, Source source)
 		throws EOFException, IOException, JHOVE2Exception
 	{
+		setStartTime();
+		/* TODO: if (source instanceof AtomicSource) { */
+		if (source instanceof FileSource) {
+			File file = ((FileSource) source).getFile();
+			ZipFile zip = new ZipFile(file, ZipFile.OPEN_READ);
+			Enumeration<? extends ZipEntry> en = zip.entries();
+			while (en.hasMoreElements()) {
+				ZipEntry entry = en.nextElement();
+				Source src = SourceFactory.getSource(zip, entry);
+				source.addChildSource(src);
+			}
+		}
+		setEndTime();
+		
 		return 0;
 	}
 }

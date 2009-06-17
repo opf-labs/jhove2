@@ -39,8 +39,6 @@ package org.jhove2.core.source;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
 
@@ -50,6 +48,7 @@ import org.jhove2.annotation.ReportableProperty;
  */
 public class DirectorySource
 	extends AbstractSource
+	implements AggregateSource
 {
 	/** Java {@link java.io.File} representing the directory. */
 	protected File dir;
