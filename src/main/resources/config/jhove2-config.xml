@@ -4,9 +4,11 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
            http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
            http://www.springframework.org/schema/context
-           http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+           http://www.springframework.org/schema/context/spring-context-2.5.xsd
+		   http://www.springframework.org/schema/util 
+		   http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
- 	<!-- JHOVE2 framework bean -->
+	<!-- JHOVE2 framework bean -->
 	<bean id="JHOVE2" class="org.jhove2.core.JHOVE2" scope="prototype">
 		<!--  <property name="characterizer" ref="CharacterizerModule"/> -->
 	</bean>
