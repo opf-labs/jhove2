@@ -115,7 +115,7 @@ public class Configure {
 				context = new ClassPathXmlApplicationContext(CLASSPATH);
 			}
 			
-			Properties cp = (Properties) context.getBean(name);
+			props = (Properties) context.getBean(name);
 		} catch (BeansException e) {
 			throw new JHOVE2Exception("Can't instantiate properties: " + name, e);	
 		}
