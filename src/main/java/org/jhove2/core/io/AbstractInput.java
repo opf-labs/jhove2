@@ -270,6 +270,14 @@ public abstract class AbstractInput
 		return this.inputablePosition;
 	}
 
+	/** Get size, in bytes.
+	 * @return Size
+	 */
+	@Override
+	public long getSize() {
+		return this.fileSize;
+	}
+
 	/** Get signed byte at the current position.  This implicitly advances
 	 * the current position by one byte.
 	 * @return Signed byte at the current position, or -1 if EOF
@@ -339,12 +347,92 @@ public abstract class AbstractInput
 		return in;
 	}
 	
-	/** Get size, in bytes.
-	 * @return Size
-	 */
 	@Override
-	public long getSize() {
-		return this.fileSize;
+	public long readSignedLong() throws IOException {
+		long in = 0;
+		int byteValue = 0;
+		int remaining = this.buffer.limit() - this.buffer.position();
+		if (remaining < 8) {
+			for (int i=0; i<remaining; i++) {
+				/* LITTLE_ENDIAN - shift byte value then add to accumlative value */
+				if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
+					byteValue = (((int) this.buffer.get()& 0xff));
+					byteValue <<=(8*i);
+					in += byteValue;
+				}
+				else {
+					/* BIG_ENDIAN - shift accumulative value then add byte value */
+				  in <<= 8;
+				  in += (((int) this.buffer.get()& 0xff));
+				}
+			}
+			if (getNextBuffer() == EOF) {
+				return EOF;
+			}
+			for (int i=remaining; i<8; i++) {
+				if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
+					byteValue = (((int) this.buffer.get()& 0xff));
+					byteValue <<= (8*i);
+					in += byteValue;
+				}
+				else {
+				  in <<=8;
+				  in += (((int) this.buffer.get()& 0xff));
+				}
+			}
+		}
+		else {
+			in = this.buffer.getShort();
+		}
+		this.inputablePosition += 8L;
+		
+		return in;
+	}
+
+	
+
+	@Override
+	public short readSignedShort() throws IOException {
+		{
+			short in = 0;
+			int byteValue = 0;
+			int remaining = this.buffer.limit() - this.buffer.position();
+			if (remaining < 2) {
+				for (int i=0; i<remaining; i++) {
+					/* LITTLE_ENDIAN - shift byte value then add to accumlative value */
+					if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
+						byteValue = (((int) this.buffer.get()& 0xff));
+						byteValue <<=(8*i);
+						in += byteValue;
+					}
+					else {
+						/* BIG_ENDIAN - shift accumulative value then add byte value */
+					  in <<= 8;
+					  in += (((int) this.buffer.get()& 0xff));
+					}
+				}
+				if (getNextBuffer() == EOF) {
+					return EOF;
+				}
+				for (int i=remaining; i<2; i++) {
+					if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
+						byteValue = (((int) this.buffer.get()& 0xff));
+						byteValue <<= (8*i);
+						in += byteValue;
+					}
+					else {
+					  in <<=8;
+					  in += (((int) this.buffer.get()& 0xff));
+					}
+				}
+			}
+			else {
+				in = this.buffer.getShort();
+			}
+			this.inputablePosition += 2L;
+			
+			return in;
+		}
 	}
 
 	/** Get unsigned byte at the current position.  This implicitly advances
@@ -503,27 +591,4 @@ public abstract class AbstractInput
 		
 	}
 	
-	@Override
-	public byte readSignedLong() throws IOException {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public byte readSignedShort() throws IOException {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public long readSize() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public long readUnsignedLong() throws IOException {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 }
