@@ -127,20 +127,15 @@ public interface Input
 	 * the current position by two bytes.
 	 * @return Signed short at the current position, or -1 if EOF
 	 */
-	public byte readSignedShort()
+	public short readSignedShort()
 		throws IOException;
 	
 	/** Get signed long at the current position.  This implicitly advances
 	 * the current position by eight bytes.
 	 * @return Signed long at the current position, or -1 if EOF
 	 */
-	public byte readSignedLong()
+	public long readSignedLong()
 		throws IOException;
-	
-	/** read size, in bytes.
-	 * @return Size
-	 */
-	public long readSize();
 	
 	/** read unsigned byte at the current position.  This implicitly advances
 	 * the current position by one byte.
@@ -162,14 +157,7 @@ public interface Input
 	 */
 	public long readUnsignedInt()
 		throws IOException;
-	
-	/** read unsigned long (eight byte) at the the current position.  This
-	 * implicitly advances the current position by four bytes.
-	 * @return Unsigned integer at the current position, or -1 if EOF
-	 */
-	public long readUnsignedLong()
-		throws IOException;
-	
+		
 	/** Set byte order: big-endian or little-endian.
 	 * @param order Byte order
 	 */
