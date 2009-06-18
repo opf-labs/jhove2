@@ -37,8 +37,10 @@
 package org.jhove2.core.source;
 
 import java.io.InputStream;
+import java.util.Date;
 import java.util.zip.ZipEntry;
 
+import org.jhove2.annotation.ReportableProperty;
 
 /** JHOVE2 ZIP directory source unit.
  * 
@@ -48,12 +50,73 @@ public class ZipDirectorySource
 	extends AbstractSource
 	implements AggregateSource
 {
-
+	/** Zip directory comment. */
+	protected String comment;
+	
+	/** Zip directory last modified date. */
+	protected Date lastModified;
+	
+	/** Zip directory name. */
+	protected String name;
+	
+	/** Zip directory path. */
+	protected String path;
+	
+	/** Zip directory input stream. */
+	protected InputStream stream;
+	
 	/** Instantiate a new <code>ZipDirectorySource</code>.
-	 * @param stream Input stream for the Zip file entry
-	 * @param entry  Zip file entry
+	 * @param stream Input stream for the Zip directory entry
+	 * @param entry  Zip directory entry
 	 */
 	public ZipDirectorySource(InputStream stream, ZipEntry entry) {
 		super();
+		
+		this.stream       = stream;
+		this.path         = entry.getName();
+		/* Directory name has a trailing slash (/). */
+		int in = this.path.lastIndexOf('/');
+		if (in == this.path.length()-1) {
+			this.path = this.path.substring(0, in);
+		}
+		this.name         = this.path;
+		in = this.name.lastIndexOf('/');
+		if (in > -1) {
+			this.name = this.name.substring(in+1);
+		}
+		this.lastModified = new Date(entry.getTime());
+		this.comment      = entry.getComment();
+	}
+	
+	/** Get Zip directory comment.
+	 * @return Zip directory comment
+	 */
+	@ReportableProperty(order=4, value="Zip directory comment.")
+	public String getComment() {
+		return this.comment;
+	}
+	
+	/** Get Zip directory last modified date.
+	 * @return Zip directory last modified date
+	 */
+	@ReportableProperty(order=3, value="Zip directory last modified date.")
+	public Date getLastModified() {
+		return this.lastModified;
+	}
+	
+	/** Get Zip directory name.
+	 * @return Zip directory name
+	 */
+	@ReportableProperty(order=1, value="Zip directory name.")
+	public String getName() {
+		return this.name;
+	}
+	
+	/** Get Zip directory path.
+	 * @return Zip directory path
+	 */
+	@ReportableProperty(order=2, value="Zip directory path.")
+	public String getPath() {
+		return this.path;
 	}
 }

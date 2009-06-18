@@ -592,20 +592,24 @@ public class JHOVE2
 		return this.numContainers;
 	}
 	
-	/** Get number of directory source units processed.
+	/** Get number of directory source units processed, including both file
+	 * system directories and Zip entry directories.
 	 * @return Number of directory source units processed
 	 */
 	@ReportableProperty(order=25, value="Number of directory source units " +
-			"processed.")
+			"processed, including both file system directories and Zip " +
+			"entry directories.")
 	public int getNumDirectorySources() {
 		return this.numDirectories;
 	}
 	
-	/** Get number of file source units processed.
+	/** Get number of file source units processed, including both file system
+	 * files and Zip entry files.
 	 * @return Number of file source units processed
 	 */
 	@ReportableProperty(order=26, value="Number of file source units " +
-			"processed.")
+			"processed, including both file system files and Zip entry " +
+			"files.")
 	public int getNumFileSources() {
 		return this.numFiles;
 	}
@@ -682,13 +686,15 @@ public class JHOVE2
 		this.numClumps++;
 	}
 	
-	/** Increment the number of directory source units.
+	/** Increment the number of directory source units, including source units
+	 * for both file system files and Zip entry files.
 	 */
 	public void incrementNumDirectories() {
 		this.numDirectories++;
 	}
 	
-	/** Increment the number of file source units.
+	/** Increment the number of file source units, including source units for
+	 * both file system files and Zip entry files.
 	 */
 	public void incrementNumFiles() {
 		this.numFiles++;

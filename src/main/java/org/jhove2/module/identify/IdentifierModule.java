@@ -40,18 +40,14 @@ import java.io.IOException;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.AbstractModule;
 import org.jhove2.core.Format;
 import org.jhove2.core.FormatIdentification;
 import org.jhove2.core.Identifiable;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.Message;
 import org.jhove2.core.Product;
 import org.jhove2.core.FormatIdentification.Confidence;
-import org.jhove2.core.Message.Context;
-import org.jhove2.core.Message.Severity;
 import org.jhove2.core.config.Configure;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.AggregateSource;
@@ -115,20 +111,18 @@ public class IdentifierModule
 			if (source instanceof ClumpSource) {
 				/* Identify clump source unit. */
 				FormatIdentification id =
-					new FormatIdentification(null, 
-							Configure.getReportable(Format.class,
-								"ClumpFormat"),
-						Confidence.PositiveSpecific);
+					new FormatIdentification(Configure.getReportable(Format.class,
+								                                     "ClumpFormat"),
+						                     Confidence.PositiveSpecific);
 				this.formats.add(id);
 			}
 			else if (source instanceof DirectorySource ||
 					 source instanceof ZipDirectorySource) {
 				/* Identify directory source unit. */
 				FormatIdentification id =
-					new FormatIdentification(null,
-							Configure.getReportable(Format.class,
-							"DirectoryFormat"),
-							Confidence.PositiveSpecific);
+					new FormatIdentification(Configure.getReportable(Format.class,
+							                                         "DirectoryFormat"),
+							                 Confidence.PositiveSpecific);
 				this.formats.add(id);
 			}
 		}
@@ -154,17 +148,17 @@ public class IdentifierModule
 					
 					FormatIdentification id = null;
 					if (isZip) {
-						id = new FormatIdentification(droid,
-								Configure.getReportable(Format.class,
-										                "ZipFormat"),
-								Confidence.PositiveGeneric);
+						id = new FormatIdentification(Configure.getReportable(Format.class,
+										                                      "ZipFormat"),
+								                      Confidence.PositiveGeneric,
+								                      droid);
 					}
 					else {
 						/* Default to UTF-8. */
-						id = new FormatIdentification(droid,
-								Configure.getReportable(Format.class,
-							                            "UTF8Format"),
-						        Confidence.PositiveGeneric);
+						id = new FormatIdentification(Configure.getReportable(Format.class,
+							                                                  "UTF8Format"),
+						                              Confidence.PositiveGeneric,
+						                              droid);
 					}
 					this.formats.add(id);
 				}

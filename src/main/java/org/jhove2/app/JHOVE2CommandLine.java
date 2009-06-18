@@ -38,7 +38,6 @@ package org.jhove2.app;
 
 import java.util.List;
 
-import org.jhove2.core.Characterizable;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Displayable;
 import org.jhove2.core.JHOVE2;
@@ -92,7 +91,6 @@ public class JHOVE2CommandLine {
 			e.printStackTrace(System.err);
 			System.exit(EEXCEPTION);
 		}
-		
 	}
 	
 	/** Get application usage statement.

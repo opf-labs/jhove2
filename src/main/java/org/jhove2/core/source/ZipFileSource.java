@@ -53,25 +53,25 @@ public class ZipFileSource
 	extends AbstractSource
 	implements AtomicSource
 {
-	/** File CRC-32 message digest. */
+	/** Zip file CRC-32 message digest. */
 	protected Digest crc32;
 	
-	/** File comment. */
+	/** Zip file comment. */
 	protected String comment;
 	
-	/** File last modified date. */
+	/** Zip file last modified date. */
 	protected Date lastModified;
 	
-	/** File name. */
+	/** Zip file name. */
 	protected String name;
 	
-	/** File path. */
+	/** Zip file path. */
 	protected String path;
 	
-	/** File size, in bytes. */
+	/** Zip file size, in bytes. */
 	protected long size;
 	
-	/** File input stream. */
+	/** Zip file input stream. */
 	protected InputStream stream;
 	
 	/** Instantiate a new <code>ZipFileSource</code>.
@@ -81,60 +81,64 @@ public class ZipFileSource
 	public ZipFileSource(InputStream stream, ZipEntry entry) {
 		super();
 		
-		this.stream = stream;
-		this.name         = entry.getName();
-		this.path         = this.name;
+		this.stream       = stream;
+		this.path         = entry.getName();
+		this.name         = this.path;
+		int in = this.name.lastIndexOf('/');
+		if (in > -1) {
+			this.name = this.name.substring(in+1);
+		}
 		this.size         = entry.getSize();
 		this.lastModified = new Date(entry.getTime());
 		this.crc32        = new Digest(AbstractArrayDigester.toHexString(entry.getCrc()),
 				                       CRC32Digester.ALGORITHM);
 		this.comment      = entry.getComment();
 	}
-	
-	/** Get file CRC-32 message digest.
-	 * @return File CRC-32 message digest
+
+	/** Get Zip file comment.
+	 * @return Zip file comment
 	 */
-	@ReportableProperty(order=5, value="File CRC-32 message digest.")
+	@ReportableProperty(order=6, value="Zip file comment.")
+	public String getComment() {
+		return this.comment;
+	}
+	
+	/** Get Zip file CRC-32 message digest.
+	 * @return Zip file CRC-32 message digest
+	 */
+	@ReportableProperty(order=5, value="Zip file CRC-32 message digest.")
 	public Digest getCRC32MessageDigest() {
 		return this.crc32;
 	}
 	
-	/** Get file comment.
-	 * @return File comment
+	/** Get Zip file last modified date.
+	 * @return Zip file last modified date
 	 */
-	@ReportableProperty(order=6, value="File comment.")
-	public String getComment() {
-		return this.comment;
-	}
-
-	/** Get file last modified date.
-	 * @return File last modified date
-	 */
-	@ReportableProperty(order=4, value="File last modified date.")
+	@ReportableProperty(order=4, value="Zip file last modified date.")
 	public Date getLastModified() {
 		return this.lastModified;
 	}
 	
-	/** Get file name.
-	 * @return File name
+	/** Get Zip file name.
+	 * @return Zip file name
 	 */
-	@ReportableProperty(order=1, value="File name.")
+	@ReportableProperty(order=1, value="Zip file name.")
 	public String getName() {
 		return this.name;
 	}
 	
-	/** Get file path.
-	 * @return File path
+	/** Get Zip file path.
+	 * @return Zip file path
 	 */
-	@ReportableProperty(order=2, value="File path.")
+	@ReportableProperty(order=2, value="Zip file path.")
 	public String getPath() {
 		return this.path;
 	}
 	
-	/** Get file size, in bytes.
-	 * @return File size, in bytes
+	/** Get Zip file size, in bytes.
+	 * @return Zip file size, in bytes
 	 */
-	@ReportableProperty(order=3, value="File size, in bytes.")
+	@ReportableProperty(order=3, value="Zip file size, in bytes.")
 	public long getSize() {
 		return this.size;
 	}

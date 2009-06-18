@@ -54,6 +54,8 @@ import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.DirectorySource;
 import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.Source;
+import org.jhove2.core.source.ZipDirectorySource;
+import org.jhove2.core.source.ZipFileSource;
 
 /** JHOVE2 characterization module.
  * 
@@ -109,10 +111,12 @@ public class CharacterizerModule
 		if      (source instanceof ClumpSource) {
 			jhove2.incrementNumClumps();
 		}
-		else if (source instanceof DirectorySource) {
+		else if (source instanceof DirectorySource ||
+				 source instanceof ZipDirectorySource) {
 			jhove2.incrementNumDirectories();
 		}
-		else if (source instanceof FileSource) {
+		else if (source instanceof FileSource ||
+				 source instanceof ZipFileSource) {
 			jhove2.incrementNumFiles();
 		}
 

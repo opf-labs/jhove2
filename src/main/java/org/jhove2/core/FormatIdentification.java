@@ -45,7 +45,7 @@ import org.jhove2.annotation.ReportableProperty;
 public class FormatIdentification
 	implements Reportable, Comparable<FormatIdentification>
 {
-	/** Confidence levels. */
+	/** Identification confidence levels. */
 	public enum Confidence {
 		Negative         (6),
 		Tentative        (5),
@@ -72,7 +72,7 @@ public class FormatIdentification
 		}
 	}
 
-	/** Confidence level. */
+	/** Identification confidence level. */
 	protected Confidence confidence;
 	
 	/** Presumptive format. */
@@ -81,9 +81,22 @@ public class FormatIdentification
 	/** Identification process. */
 	protected Product process;
 	
-	/** Instantiate a new <code>FormatIdentification</code>. */
-	public FormatIdentification(Product process, Format format,
-			                    Confidence confidence) {
+	/** Instantiate a new <code>FormatIdentification</code>.
+	 * @param format     Presumptively identified format
+	 * @param confidence Identification confidence level
+	 */
+	public FormatIdentification(Format format, Confidence confidence) {
+		this(format, confidence, null);
+	}
+	
+	/** Instantiate a new <code>FormatIdentification</code>.
+	 * @param format     Presumptively identified format
+	 * @param confidence Identification confidence level
+	 * @param process    Identification process
+	 */
+	public FormatIdentification(Format format, Confidence confidence,
+			                    Product process)
+	{
 		this.process    = process;
 		this.format     = format;
 		this.confidence = confidence;
@@ -97,10 +110,10 @@ public class FormatIdentification
 		return this.process;
 	}
 
-	/** Get identification confidence.
-	 * @return Identification confidence
+	/** Get identification confidence level.
+	 * @return Identification confidence level
 	 */
-	@ReportableProperty(order=2, value="Identification confidence.")
+	@ReportableProperty(order=2, value="Identification confidence level.")
 	public Confidence getConfidence() {
 		return this.confidence;
 	}
