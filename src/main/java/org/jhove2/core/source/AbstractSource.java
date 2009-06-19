@@ -170,8 +170,9 @@ public abstract class AbstractSource
 			buffer.compact();  /* in case write was incomplete. */
 		}
 		buffer.flip();
-		while (buffer.hasRemaining())
+		while (buffer.hasRemaining()) {
 			out.write(buffer);
+		}
 
 		/* Closing the channel implicitly closes the stream. */
 		in.close();

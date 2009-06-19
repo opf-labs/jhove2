@@ -85,9 +85,15 @@ public class Info {
 			Method [] methods = cl.getDeclaredMethods();
 			for (int j=0; j<methods.length; j++) {
 				if (methods[j].getAnnotation(ReportableProperty.class) != null) {
+					String name = methods[j].getName();
+					int in = name.indexOf("get");
+					if (in == 0) {
+						name = name.substring(3);
+					}
 					I8R id = new I8R(I8R.JHOVE2_PREFIX +
 							         I8R.JHOVE2_REPORTABLE_INFIX +
-							         cl.getName().replace('.', '/'));
+							         cl.getName().replace('.', '/') + "/" +
+							         name);
 					InfoProperty prop = new InfoProperty(id, methods[j]);
 					set.add(prop);
 				}
@@ -103,9 +109,15 @@ public class Info {
 				methods = ifs[i].getDeclaredMethods();
 				for (int j=0; j<methods.length; j++) {
 					if (methods[j].getAnnotation(ReportableProperty.class) != null) {
+						String name = methods[j].getName();
+						int in = name.indexOf("get");
+						if (in == 0) {
+							name = name.substring(3);
+						}
 						I8R id = new I8R(I8R.JHOVE2_PREFIX +
 								         I8R.JHOVE2_REPORTABLE_INFIX +
-								         ifs[i].getName().replace('.', '/'));
+								         ifs[i].getName().replace('.', '/') +
+								         "/" + name);
 						InfoProperty prop = new InfoProperty(id, methods[j]);
 						set.add(prop);
 					}

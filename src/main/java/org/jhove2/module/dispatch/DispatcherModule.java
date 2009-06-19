@@ -36,6 +36,8 @@
 
 package org.jhove2.module.dispatch;
 
+import java.io.EOFException;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
@@ -102,12 +104,14 @@ public class DispatcherModule
 	 * @param source   Source unit
 	 * @param formatID Source unit format identification
 	 * @throws JHOVE2Exception 
+	 * @throws IOException 
+	 * @throws EOFException 
 	 * @see org.jhove2.core.Dispatchable#dispatch(org.jhove2.core.JHOVE2, org.jhove2.core.FormatIdentification)
 	 */
 	@Override
 	public Parsable dispatch(JHOVE2 jhove2, Source source,
 			                 FormatIdentification formatID)
-		throws JHOVE2Exception
+		throws EOFException, IOException, JHOVE2Exception
 	{
 		Parsable module = null;
 		
@@ -116,6 +120,11 @@ public class DispatcherModule
 		String name       = this.dispatch.get(identifier.getValue());
 		if (name != null) {
 			module = Configure.getReportable(Parsable.class, name);
+			if (module != null) {
+				module.setStartTime();
+				module.parse(jhove2, source);
+				module.setEndTime();
+			}
 		}
 		
 		return module;

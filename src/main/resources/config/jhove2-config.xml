@@ -176,23 +176,24 @@
 		<constructor-arg type="java.lang.String" value="info:jhove2/format/bytestream"/>
 	</bean>
 	
-	<!-- C0 Control Properties bean -->
+	<!-- C0 Control properties bean -->
 	<util:properties id="C0Control"	
-		location="classpath:properties/unicode/c0control.properties" 
-	/>
+		             location="classpath:properties/unicode/c0control.properties"/>
 	
-	<!-- C1 Control Properties bean -->
+	<!-- C1 Control properties bean -->
 	<util:properties id="C1Control"	
-		location="classpath:properties/unicode/c1control.properties" 
-	/>
+		             location="classpath:properties/unicode/c1control.properties"/>
 
-	<!-- Codeblock Properties bean -->
+	<!-- Codeblock properties bean -->
 	<util:properties id="Codeblock"	
-		location="classpath:properties/unicode/codeblock.properties" 
-	/>
+		             location="classpath:properties/unicode/codeblock.properties"/>
+		
+	<!-- Displayer properties bean -->
+	<util:properties id="Displayer"
+	                 location="classpath:properties/displayer.properties"/>
 
-	<!-- Dispatch Properties bean -->
+	<!-- Dispatch properties bean -->
 	<util:properties id="Dispatch"	
-		location="classpath:properties/dispatch.properties" 
-	/>
+		             location="classpath:properties/dispatch.properties"/>
+		
 </beans>

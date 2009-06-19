@@ -105,17 +105,10 @@ public class ZipModule
 				Enumeration<? extends ZipEntry> en = zip.entries();
 				while (en.hasMoreElements()) {
 					ZipEntry entry = en.nextElement();
-					Source src = null;
-					try {
-						src = SourceFactory.getSource(jhove2, zip, entry);
-						if (src != null) {
-							jhove2.characterize(src);
-							source.addChildSource(src);
-						}
-					} finally {
-						if (src != null) {
-							src.close();
-						}
+					Source src = SourceFactory.getSource(jhove2, zip, entry);
+					if (src != null) {
+						jhove2.characterize(src);
+						source.addChildSource(src);
 					}
 				}
 			}

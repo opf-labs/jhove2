@@ -63,18 +63,15 @@ public class TextDisplayer
 		"Stanford Junior University. " +
 		"Available under the terms of the BSD license.";
 	
-	/** Display identifiers flag; if true display identifiers. */
-	protected boolean displayIdentifiers;
+	/** Property identifiers flag; if true, show property identifiers. */
+	protected boolean showIdentifiers;
 	
 	/** Instantiate a new <code>TextDisplayer</code>.
-	 * @param version
-	 * @param date
-	 * @param rights
 	 */
 	public TextDisplayer() {
 		super(VERSION, DATE, RIGHTS);
 		
-		this.displayIdentifiers = false;
+		this.showIdentifiers = false;
 	}
 
 	/** Start display.
@@ -102,7 +99,7 @@ public class TextDisplayer
 		StringBuffer buffer = new StringBuffer(Displayer.getIndent(level));
 		
 		buffer.append(name);
-		if (this.displayIdentifiers) {
+		if (this.showIdentifiers) {
 			buffer.append(" [" + identifier + "]");
 		}
 		buffer.append(":");
@@ -126,7 +123,7 @@ public class TextDisplayer
 		StringBuffer buffer = new StringBuffer(Displayer.getIndent(level));
 		
 		buffer.append(name);
-		if (this.displayIdentifiers) {
+		if (this.showIdentifiers) {
 			buffer.append(" [" + identifier + "]");
 		}
 		buffer.append(":");
@@ -150,7 +147,7 @@ public class TextDisplayer
 		StringBuffer buffer = new StringBuffer(Displayer.getIndent(level));
 		
 		buffer.append(name);
-		if (this.displayIdentifiers) {
+		if (this.showIdentifiers) {
 			buffer.append(" [" + identifier + "]");
 		}
 		buffer.append(": " + value);
@@ -191,10 +188,10 @@ public class TextDisplayer
 	public void endDisplay(PrintStream out, int level) {
 	}
 	
-	/** Set display identifiers flag.
-	 * @param flag If true, display identifiers
+	/** Set property identifiers flag.
+	 * @param showIdentifiers If true, show property identifiers
 	 */
-	public void setDisplayIdentifiers(boolean flag) {
-		this.displayIdentifiers = flag;
+	public void setShowIdentifiers(boolean showIdentifiers) {
+		this.showIdentifiers = showIdentifiers;
 	}
 }

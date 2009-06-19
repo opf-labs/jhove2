@@ -45,8 +45,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.module.display.Displayer;
@@ -77,6 +79,20 @@ public class JHOVE2
 		"Ithaka Harbors, Inc., and The Board of Trustees of the Leland " +
 		"Stanford Junior University. " +
 		"Available under the terms of the BSD license.";
+
+	/** Framework display directives. */
+	public enum Directive {
+		Always,
+		IfFalse,
+		IfNegative,
+		IfNonNegative,
+		IfNonPositive,
+		IfNonZero,
+		IfPositive,
+		IfTrue,
+		IfZero,
+		Never
+	}
 	
 	/** ISO 8601 date/time format. */
 	public static final SimpleDateFormat ISO8601 =
@@ -111,6 +127,9 @@ public class JHOVE2
 	
 	/** JHOVE2 application command line. */
 	protected String commandLine;
+	
+	/** Framework display directives. */
+	protected Map<String,Directive> directives;
 	
 	/** Framework displayer module. */
 	protected Displayable displayer;
@@ -191,8 +210,11 @@ public class JHOVE2
 	protected String workingDirectory;
 
 	/** Instantiate a new <code>JHOVE2</code> core framework.
+	 * @throws JHOVE2Exception 
 	 */
-	public JHOVE2() {
+	public JHOVE2()
+		throws JHOVE2Exception
+	{
 		super(VERSION, DATE, RIGHTS);
 		
 		/* Initialize the framework. */
@@ -210,6 +232,20 @@ public class JHOVE2
 		this.numContainers  = 0;
 		this.numDirectories = 0;
 		this.numFiles       = 0;
+		
+		this.directives = new TreeMap<String,Directive>();
+		Properties props = Configure.getProperties("Displayer");
+		if (props != null) {
+			Set<String> keys = props.stringPropertyNames();
+			Iterator<String> iter = keys.iterator();
+			while (iter.hasNext()) {
+				String key   = iter.next();
+				Directive value = Directive.valueOf(props.getProperty(key));
+				if (value != null) {
+					this.directives.put(key, value);
+				}
+			}
+		}
 	}
 
 	/* Initialize the static framework installation properties.
@@ -265,26 +301,20 @@ public class JHOVE2
 	public void characterize(List<String> pathNames)
 		throws IOException, JHOVE2Exception
 	{
-		try {
-			Iterator<String> iter = pathNames.iterator();
-			if (pathNames.size() == 1) {
+		Iterator<String> iter = pathNames.iterator();
+		if (pathNames.size() == 1) {
+			String pathName = iter.next();
+			this.source = SourceFactory.getSource(pathName);
+			characterize(this.source);
+		}
+		else {
+			this.source = new ClumpSource();
+			while (iter.hasNext()) {
 				String pathName = iter.next();
-				this.source = SourceFactory.getSource(pathName);
-				characterize(this.source);
+				Source src = SourceFactory.getSource(pathName);
+				((ClumpSource) this.source).addChildSource(src);
 			}
-			else {
-				this.source = new ClumpSource();
-				while (iter.hasNext()) {
-					String pathName = iter.next();
-					Source src = SourceFactory.getSource(pathName);
-					((ClumpSource) this.source).addChildSource(src);
-				}
-				characterize(this.source);
-			}
-		} finally {
-			if (this.source != null) {
-				this.source.close();
-			}
+			characterize(this.source);
 		}
 	}
 	
@@ -301,11 +331,12 @@ public class JHOVE2
 					                "CharacterizerModule");
 		if (characterizer != null) {
 			characterizer.setStartTime();
-			characterizer.characterize(this, source);
+			try {
+				characterizer.characterize(this, source);
+			} finally {
+				source.close();
+			}
 			characterizer.setEndTime();
-		}
-		else {
-			/* TODO: characterizer not defined. */
 		}
 	}
 	
@@ -348,7 +379,11 @@ public class JHOVE2
 			Iterator<InfoProperty> it2 = methods.iterator();
 			while (it2.hasNext()) {
 				InfoProperty prop = it2.next();
-				I8R    id     = prop.getIdentifier();
+				I8R id = prop.getIdentifier();
+				Directive directive = this.directives.get(id.getValue());
+				if (directive != null && directive == Directive.Never) {
+					continue;
+				}
 				Method method = prop.getMethod();
 				String nm     = method.getName();
 				if (nm.indexOf("get") == 0) {
@@ -358,6 +393,26 @@ public class JHOVE2
 				try {
 					Object value = method.invoke(reportable);
 					if (value != null) {
+						if (directive != null) {
+							if (value instanceof Boolean) {
+								boolean b = ((Boolean) value).booleanValue();
+								if (( b && directive == Directive.IfFalse) ||
+									(!b && directive == Directive.IfTrue)) {
+									continue;
+								}
+							}
+							else if (value instanceof Number) {
+								double d = ((Number) value).doubleValue();
+								if ((d == 0.0 && directive == Directive.IfNonZero) ||
+									(d != 0.0 && directive == Directive.IfZero) ||
+									(d <  0.0 && directive == Directive.IfNonNegative) ||
+									(d >  0.0 && directive == Directive.IfNonPositive) ||
+									(d <= 0.0 && directive == Directive.IfPositive) ||
+									(d >= 0.0 && directive == Directive.IfNegative)) {
+									continue;
+								}
+							}
+						}
 						display(out, level, nm, id, value, or++);
 					}
 				} catch (IllegalArgumentException e) {

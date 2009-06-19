@@ -34,30 +34,60 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.core;
+package org.jhove2.core.source;
 
-import java.io.EOFException;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
 
-import org.jhove2.core.source.Source;
+import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.JHOVE2;
+import org.jhove2.core.io.Input;
+import org.jhove2.core.io.InputFactory;
+import org.jhove2.core.io.Input.Type;
 
-/** Interface for JHOVE2 dispatcher modules.  A dispatcher module instantiates
- * and invokes the module associated with a format.
+/** JHOVE2 URL source unit.
  * 
  * @author mstrong, slabrams
  */
-public interface Dispatchable
-	extends Processible
+public class URLSource
+	extends AbstractSource
+	implements AtomicSource	
 {
-	/** Dispatch a module appropriate for a source unit's format.
-	 * @param jhove2   JHOVE2 framework
-	 * @param source   Source unit
-	 * @param formatID Source unit format identification
-	 * @throws EOFException
-	 * @throws IOException
-	 * @throws JHOVE2Exception
+	/** URL backing the source unit. */
+	protected URL url;
+	
+	/** Instantiate a new <code>URLSource</code>.
+	 * @param jhove2 JHOVE framework
+	 * @param url    URL
+	 * @throws IOException 
 	 */
-	public Parsable dispatch(JHOVE2 jhove2, Source source,
-			                 FormatIdentification formatID)
-		throws EOFException, IOException, JHOVE2Exception;
+	public URLSource(JHOVE2 jhove2, URL url)
+		throws IOException
+	{
+		super(jhove2, url.openStream());
+		
+		this.url = url;
+	}
+	
+	/** Get {@link org.jhove2.core.io.Input} for the source unit.
+	 * @param bufferSize Input buffer size
+	 * @param bufferType Input buffer type
+	 * @return Input
+	 * @throws FileNotFound
+	 * @throws IOException
+	 * @see org.jhove2.core.source.Source#getInput()
+	 */
+	@Override
+	public Input getInput(int bufferSize, Type bufferType)
+		throws FileNotFoundException, IOException
+	{
+		return InputFactory.getInput(this.file, bufferSize, bufferType);
+	}
+	
+	@ReportableProperty("URL.")
+	public String getURL() {
+		return this.url.toString();
+	}
 }

@@ -140,7 +140,7 @@ public class IdentifierModule
 						short b = input.readUnsignedByte();
 						if (b != zip[i]) {
 							isZip = false;
-							//break;
+							break;
 						}
 					}
 				
