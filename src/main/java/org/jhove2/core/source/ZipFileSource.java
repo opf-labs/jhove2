@@ -36,12 +36,18 @@
 
 package org.jhove2.core.source;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.zip.ZipEntry;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.Digest;
+import org.jhove2.core.JHOVE2;
+import org.jhove2.core.io.Input;
+import org.jhove2.core.io.InputFactory;
+import org.jhove2.core.io.Input.Type;
 import org.jhove2.module.digest.AbstractArrayDigester;
 import org.jhove2.module.digest.CRC32Digester;
 
@@ -71,17 +77,17 @@ public class ZipFileSource
 	/** Zip file size, in bytes. */
 	protected long size;
 	
-	/** Zip file input stream. */
-	protected InputStream stream;
-	
 	/** Instantiate a new <code>ZipFileSource</code>.
+	 * @param jhove2 JHOVE2 framework
 	 * @param stream Input stream for the Zip file entry
 	 * @param entry  Zip file entry
+	 * @throws IOException 
 	 */
-	public ZipFileSource(InputStream stream, ZipEntry entry) {
-		super();
+	public ZipFileSource(JHOVE2 jhove2, InputStream stream, ZipEntry entry)
+		throws IOException
+	{
+		super(jhove2, stream);
 		
-		this.stream       = stream;
 		this.path         = entry.getName();
 		this.name         = this.path;
 		int in = this.name.lastIndexOf('/');
@@ -109,6 +115,19 @@ public class ZipFileSource
 	@ReportableProperty(order=5, value="Zip file CRC-32 message digest.")
 	public Digest getCRC32MessageDigest() {
 		return this.crc32;
+	}
+	
+	/** Get {@link org.jhove2.core.io.Input} for the Zip file.
+	 * @param bufferSize Input buffer size
+	 * @param bufferType Input buffer type
+	 * @return Input for the source unit
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
+	public Input getInput(int bufferSize, Type bufferType)
+		throws FileNotFoundException, IOException
+	{
+		return InputFactory.getInput(this.file, bufferSize, bufferType);
 	}
 	
 	/** Get Zip file last modified date.

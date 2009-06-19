@@ -48,9 +48,6 @@ import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Parsable;
 import org.jhove2.core.io.Input;
-import org.jhove2.core.io.InputFactory;
-import org.jhove2.core.source.AtomicSource;
-import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
 
@@ -97,15 +94,34 @@ public class ZipModule
 		throws EOFException, IOException, JHOVE2Exception
 	{
 		setStartTime();
-		/* TODO: if (source instanceof AtomicSource) { */
-		if (source instanceof FileSource) {
-			File file = ((FileSource) source).getFile();
-			ZipFile zip = new ZipFile(file, ZipFile.OPEN_READ);
-			Enumeration<? extends ZipEntry> en = zip.entries();
-			while (en.hasMoreElements()) {
-				ZipEntry entry = en.nextElement();
-				Source src = SourceFactory.getSource(zip, entry);
-				source.addChildSource(src);
+		
+		Input input = null;
+		try {
+			input = source.getInput(jhove2.getBufferSize(),
+					                jhove2.getBufferType());
+			if (input != null) {
+				File  file  = input.getFile();
+				ZipFile zip = new ZipFile(file, ZipFile.OPEN_READ);
+				Enumeration<? extends ZipEntry> en = zip.entries();
+				while (en.hasMoreElements()) {
+					ZipEntry entry = en.nextElement();
+					Source src = null;
+					try {
+						src = SourceFactory.getSource(jhove2, zip, entry);
+						if (src != null) {
+							jhove2.characterize(src);
+							source.addChildSource(src);
+						}
+					} finally {
+						if (src != null) {
+							src.close();
+						}
+					}
+				}
+			}
+		} finally {
+			if (input != null) {
+				input.close();
 			}
 		}
 		setEndTime();

@@ -43,6 +43,8 @@ import java.io.InputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.jhove2.core.JHOVE2;
+
 /** Factory for JHOVE2 file and directory source units.
  * 
  * @author mstrong, slabrams
@@ -75,10 +77,12 @@ public abstract class SourceFactory {
 	}
 	
 	/** Get source unit from a Zip file entry.
-	 * @param entry Zip file entry
+	 * @param jhove2 JHOVE2 framework
+	 * @param entry  Zip file entry
 	 * @throws IOException 
 	 */
-	public static synchronized Source getSource(ZipFile zip, ZipEntry entry)
+	public static synchronized Source getSource(JHOVE2 jhove2, ZipFile zip,
+			                                    ZipEntry entry)
 		throws IOException
 	{
 		InputStream stream = zip.getInputStream(entry);
@@ -86,6 +90,6 @@ public abstract class SourceFactory {
 			return new ZipDirectorySource(stream, entry);
 		}
 		
-		return new ZipFileSource(stream, entry);
+		return new ZipFileSource(jhove2, stream, entry);
 	}
 }

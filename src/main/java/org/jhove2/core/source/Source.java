@@ -36,8 +36,10 @@
 
 package org.jhove2.core.source;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
@@ -66,11 +68,21 @@ public interface Source
 	 */
 	public void addModule(Processible module);
 	
+	/** Close the source unit.  If the source unit is backed by a temporary
+	 * file, delete the file.
+	 */
+	public void close();
+	
 	/** Get child source units.
 	 * @return Child source units
 	 */
 	@ReportableProperty(order=3, value="Child source untis.")
 	public List<Source> getChildSources();
+	
+	/** Get {@link java.io.File} backing the source unit.
+	 * @return File backing the source unit
+	 */
+	public File getFile();
 	
 	/** Get {@link org.jhove2.core.io.Input} for the source unit.
 	 * @param bufferSize Input buffer size
@@ -82,11 +94,22 @@ public interface Source
 	public Input getInput(int bufferSize, Type bufferType)
 		throws FileNotFoundException, IOException;
 	
+	/** Get {@link java.io.InputStream} backing the source unit
+	 * @return Input stream backing the source unit
+	 */
+	public InputStream getInputStream()
+		throws FileNotFoundException;
+	
 	/** Get modules that processed the source unit.
 	 * @return Modules that processed the source unit
 	 */
 	@ReportableProperty(order=1, value="Modules that processed the source unit")
 	public List<Processible> getModules();
+	
+	/** Get source unit backing file temporary status.
+	 * @return True if the source unit backing file is a temporary file
+	 */
+	public boolean isTemp();
 
 	/** Get number of child source units.
 	 * @return Number of child source units

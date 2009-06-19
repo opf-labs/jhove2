@@ -61,7 +61,7 @@ public interface Input
 	/** Marker indicating an uninitialized value. */
 	public final static int UNINITIALIZED = -1;
 	
-	/** Close the inputable and delete any temporary files.
+	/** Close the input.
 	 */
 	public void close()
 		throws IOException;
@@ -87,14 +87,13 @@ public interface Input
 	 */
 	public long getBufferOffset();
 	
-	/** Get {@link java.io.File} underlying the inputable.
-	 * @return File underlying the inputable
+	/** Get {@link java.io.File} backing the input.
+	 * @return File backing the input
 	 */
 	public File getFile();
 	
-	/** Get InputStream associated with this input
-	 *  handles URLs and Zip Files
-	 * @return InputStream
+	/** Get {@link java.io.InputStream} backing the input
+	 * @return Input stream backing the input
 	 */
 	public InputStream getInputStream();
 	
@@ -172,5 +171,4 @@ public interface Input
 	/** Retrieve size of Input (File or InputStream)
 	 */
 	public long getSize();
-	 
 }

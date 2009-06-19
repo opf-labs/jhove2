@@ -36,13 +36,23 @@
 
 package org.jhove2.core.source;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
+import java.nio.channels.WritableByteChannel;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.jhove2.core.Durable;
 import org.jhove2.core.Duration;
+import org.jhove2.core.JHOVE2;
 import org.jhove2.core.Processible;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.io.Input.Type;
@@ -61,6 +71,14 @@ public abstract class AbstractSource
 	
 	/** Module elapsed time, end. */
 	protected long endTime;
+	
+	/** Source unit backing file. */
+	protected File file;
+	
+	/** Source unit backing file temporary status: true if the source unit
+	 * backing file is a temporary file.
+	 */
+	protected boolean isTemp;
 
 	/** Modules that processed the source unit. */
 	protected List<Processible> modules;
@@ -70,9 +88,35 @@ public abstract class AbstractSource
 	
 	/** Instantiate a new <code>AbstractSource</code>.
 	 */
-	public AbstractSource() {
+	protected AbstractSource() {
 		this.children = new ArrayList<Source>();
 		this.modules  = new ArrayList<Processible>();
+	}
+	
+	/** Instantiate a new <code>AbstractSource</code> backed by a file.
+	 * @param jhove2 JHOVE2 framework
+	 * @param file   File underlying the source unit
+	 */
+	public AbstractSource(File file) {
+		this();
+		
+		this.file   = file;
+		this.isTemp = false;
+	}
+	
+	/** Instantiate a new <code>AbstractSource</code> backed by an input
+	 * stream.
+	 * @param jhove2 JHOVE2 framework
+	 * @param stream Input stream underlying the source unit
+	 * @throws IOException 
+	 */
+	public AbstractSource(JHOVE2 jhove2, InputStream stream)
+		throws IOException
+	{
+		this();
+		
+		this.file   = createTempFile(jhove2, stream);
+		this.isTemp = true;
 	}
 	
 	/** Add a child source unit.
@@ -93,6 +137,49 @@ public abstract class AbstractSource
 		this.modules.add(module);
 	}
 	
+	/** Close the source unit.  If the source unit is backed by a temporary
+	 * file, delete the file.
+	 */
+	public void close() {
+		if (this.file != null && this.isTemp) {
+			this.file.delete();
+			this.file = null;
+		}
+	}
+	
+	/** Create a temporary backing file from an input stream.
+	 * @param jhove2   JHOVE2 framework
+	 * @param inStream Input stream
+	 * @return file Temporary backing file
+	 * @throws IOException
+	 */
+	protected File createTempFile(JHOVE2 jhove2, InputStream inStream)
+		throws IOException
+	{
+		File tempFile = File.createTempFile(jhove2.getTempPrefix(),
+				                            jhove2.getTempSuffix());
+		OutputStream outStream  = new FileOutputStream(tempFile);
+		ReadableByteChannel in  = Channels.newChannel(inStream);
+		WritableByteChannel out = Channels.newChannel(outStream);
+		final ByteBuffer buffer =
+			ByteBuffer.allocateDirect(jhove2.getBufferSize());
+		
+		while ((in.read(buffer)) > 0) {
+			buffer.flip();
+			out.write(buffer);
+			buffer.compact();  /* in case write was incomplete. */
+		}
+		buffer.flip();
+		while (buffer.hasRemaining())
+			out.write(buffer);
+
+		/* Closing the channel implicitly closes the stream. */
+		in.close();
+		out.close();
+		
+		return tempFile;
+	}
+
 	/** Get child source units.
 	 * @return Child source units
 	 * @see org.jhove2.core.source.Source#getChildSources()
@@ -115,6 +202,14 @@ public abstract class AbstractSource
 		return new Duration(this.endTime - this.startTime);
 	}
 	
+	/** Get {@link java.io.File} backing the source unit.
+	 * @return File backing the source unit
+	 * @see org.jhove2.core.source.Source#getFile()
+	 */
+	public File getFile() {
+		return this.file;
+	}
+	
 	/** Get {@link org.jhove2.core.io.Input} for the source unit.  Concrete
 	 * classes extending this abstract class must provide an implementation of 
 	 * this method if they are are based on parsable input.  Classes without
@@ -123,7 +218,7 @@ public abstract class AbstractSource
 	 * method return null.
 	 * @param bufferSize Input buffer size
 	 * @param bufferType Input buffer type
-	 * @return Null
+	 * @return null
 	 * @throws FileNotFound
 	 * @throws IOException
 	 * @see org.jhove2.core.source.Source#getInput()
@@ -134,7 +229,18 @@ public abstract class AbstractSource
 	{
 		return null;
 	}
-
+	
+	/** Get {@link java.io.InputStream} backing the source unit
+	 * @return Input stream backing the source unit
+	 * @throws FileNotFoundException 
+	 * @see org.jhove2.core.source.Source#getInputStream()
+	 */
+	public InputStream getInputStream()
+		throws FileNotFoundException
+	{
+		return new FileInputStream(this.file);
+	}
+	
 	/** Get modules that processed the source unit.
 	 * @return Modules that processed the source unit
 	 * @see org.jhove2.core.source.Source#getModules()
@@ -162,6 +268,14 @@ public abstract class AbstractSource
 		return this.modules.size();
 	}
 	
+	/** Get source unit backing file temporary status.
+	 * @return True if the source unit backing file is a temporary file
+	 * @see org.jhove2.source.Source#isTemp()
+	 */
+	public boolean isTemp() {
+		return this.isTemp;
+	}
+
 	/** Set the end time of the elapsed duration.
 	 * @see org.jhove2.core.Durable#setStartTime()
 	 */

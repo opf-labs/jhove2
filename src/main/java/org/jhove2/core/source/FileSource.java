@@ -53,10 +53,7 @@ import org.jhove2.core.io.Input.Type;
 public class FileSource
 	extends AbstractSource
 	implements AtomicSource
-{
-	/** Java {@link java.io.File}. */
-	protected File file;
-	
+{	
 	/** File existence. */
 	protected boolean isExtant;
 	
@@ -98,9 +95,8 @@ public class FileSource
 	public FileSource(File file)
 		throws FileNotFoundException, IOException
 	{
-		super();
+		super(file);
 		
-		this.file = file;
 		this.name = file.getName();
 		try {
 			this.path = file.getCanonicalPath();
@@ -138,8 +134,8 @@ public class FileSource
 		throws FileNotFoundException, IOException
 	{
 		Input input = null;
-		if (this.isExtant && this.isReadable) {
-			input = InputFactory.getInput(file, bufferSize, bufferType);
+		if (this.file != null && this.isExtant && this.isReadable) {
+			input = InputFactory.getInput(this.file, bufferSize, bufferType);
 		}
 		
 		return input;

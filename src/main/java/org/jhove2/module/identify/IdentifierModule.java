@@ -53,7 +53,6 @@ import org.jhove2.core.io.Input;
 import org.jhove2.core.source.AggregateSource;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.DirectorySource;
-import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.ZipDirectorySource;
 
@@ -128,12 +127,11 @@ public class IdentifierModule
 		}
 		else {
 			/* Identify file source unit. */
-			FileSource fileSource = (FileSource) source;
-			if (fileSource.isExtant() && fileSource.isReadable()) {
-				
-				/* TODO: implement DROID. */
-				Input input = fileSource.getInput(jhove2.getBufferSize(),
-						                          jhove2.getBufferType());
+			/* TODO: implement DROID. */
+			Input input = null;
+			try {
+				input = source.getInput(jhove2.getBufferSize(),
+					                    jhove2.getBufferType());
 				/* Test for Zip. */
 				if (input != null) {
 					byte [] zip = new byte[] {0x50, 0x4b, 0x03, 0x04};
@@ -142,25 +140,29 @@ public class IdentifierModule
 						short b = input.readUnsignedByte();
 						if (b != zip[i]) {
 							isZip = false;
-							break;
+							//break;
 						}
 					}
-					
+				
 					FormatIdentification id = null;
 					if (isZip) {
 						id = new FormatIdentification(Configure.getReportable(Format.class,
-										                                      "ZipFormat"),
-								                      Confidence.PositiveGeneric,
-								                      droid);
+									                                      "ZipFormat"),
+							                      Confidence.PositiveGeneric,
+							                      droid);
 					}
 					else {
 						/* Default to UTF-8. */
 						id = new FormatIdentification(Configure.getReportable(Format.class,
-							                                                  "UTF8Format"),
-						                              Confidence.PositiveGeneric,
-						                              droid);
+						                                                  "UTF8Format"),
+					                              Confidence.PositiveGeneric,
+					                              droid);
 					}
 					this.formats.add(id);
+				}
+			} finally {
+				if (input != null) {
+					input.close();
 				}
 			}
 		}

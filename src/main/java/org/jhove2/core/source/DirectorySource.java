@@ -50,9 +50,6 @@ public class DirectorySource
 	extends AbstractSource
 	implements AggregateSource
 {
-	/** Java {@link java.io.File} representing the directory. */
-	protected File dir;
-	
 	/** Directory existence. */
 	protected boolean isExtant;
 	
@@ -77,38 +74,30 @@ public class DirectorySource
 	}
 	
 	/** Instantiate a new <code>DirectorySource</code>.
-	 * @param dir Java {@link java.io.File} representing a directory
+	 * @param file Java {@link java.io.File} representing a directory
 	 * @throws IOException 
 	 * @throws FileNotFoundException 
 	 */
-	public DirectorySource(File dir)
+	public DirectorySource(File file)
 		throws FileNotFoundException, IOException
 	{
-		super();
-		
-		this.dir  = dir;
-		this.name = dir.getName();
+		super(file);
+
+		this.name = file.getName();
 		try {
-			this.path = dir.getCanonicalPath();
+			this.path = file.getCanonicalPath();
 		} catch (IOException e) {
 			/* Let path stay uninitialized. */
 		}		
-		this.isExtant = dir.exists();
+		this.isExtant = file.exists();
 		if (this.isExtant) {
-			this.isReadable = dir.canRead();
-			File [] list = dir.listFiles();
+			this.isReadable = file.canRead();
+			File [] list = file.listFiles();
 			for (int i=0; i<list.length; i++) {
 				Source source = SourceFactory.getSource(list[i]);
 				this.children.add(source);
 			}
 		}
-	}
-	
-	/** Get Java {@link java.io.File} representing the directory.
-	 * @return Java {@link java.io.File} representing the directory
-	 */
-	public File getFile() {
-		return this.dir;
 	}
 	
 	/** Get directory name.

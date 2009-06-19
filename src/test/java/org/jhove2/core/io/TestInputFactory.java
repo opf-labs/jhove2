@@ -22,28 +22,6 @@ public class TestInputFactory {
 	@After
 	public void tearDown() throws Exception {
 	}
-	@Test
-	public void testGetInputInputStreamIntType() {
-		URL yahoo = null;
-		try {
-			yahoo = new URL("http://www.yahoo.com/");
-		} catch (MalformedURLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		try {
-			Input input = InputFactory.getInput(yahoo.openStream(), 8192, Type.Direct);
-			input.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		fail("Not yet implemented"); // TODO
-	}
-	
 	@Ignore
 	@Test
 	public void testGetInputInputStreamIntTypeByteOrder() {

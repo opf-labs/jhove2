@@ -91,6 +91,12 @@ public class JHOVE2
 	/** Default fail fast limit. */
 	public static final int DEFAULT_FAIL_FAST_LIMIT = 0;
 	
+	/** Default temporary file prefix. */
+	public static final String DEFAULT_TEMP_PREFIX = "jhove2-tmp";
+	
+	/** Default temporary file suffix. */
+	public static final String DEFAULT_TEMP_SUFFIX = ".dat";
+	
 	/** Platform architecture. */
 	protected String architecture;
 	
@@ -99,10 +105,7 @@ public class JHOVE2
 	
 	/** {@link org.jhove.core.io.Input} buffer type. */
 	protected Type bufferType;
-	
-	/** Framework characterization module. */
-	protected Characterizable characterizer;
-	
+		
 	/** Java classpath. */
 	protected String classpath;
 	
@@ -172,6 +175,12 @@ public class JHOVE2
 	/** Framework temporary directory. */
 	protected String tempDirectory;
 	
+	/** Framework temporary file prefix. */
+	protected String tempPrefix;
+	
+	/** Framework temporary file suffix. */
+	protected String tempSuffix;
+	
 	/** Used memory, in bytes. */
 	protected long useMemory;
 	
@@ -193,6 +202,8 @@ public class JHOVE2
 		this.bufferSize     = DEFAULT_BUFFER_SIZE;
 		this.bufferType     = DEFAULT_BUFFER_TYPE;
 		this.failFastLimit  = DEFAULT_FAIL_FAST_LIMIT;
+		this.tempPrefix     = DEFAULT_TEMP_PREFIX;
+		this.tempSuffix     = DEFAULT_TEMP_SUFFIX;
 		
 		this.numBytestreams = 0;
 		this.numClumps      = 0;
@@ -254,20 +265,26 @@ public class JHOVE2
 	public void characterize(List<String> pathNames)
 		throws IOException, JHOVE2Exception
 	{
-		Iterator<String> iter = pathNames.iterator();
-		if (pathNames.size() == 1) {
-			String pathName = iter.next();
-			this.source = SourceFactory.getSource(pathName);
-			characterize(this.source);
-		}
-		else {
-			this.source = new ClumpSource();
-			while (iter.hasNext()) {
+		try {
+			Iterator<String> iter = pathNames.iterator();
+			if (pathNames.size() == 1) {
 				String pathName = iter.next();
-				Source src = SourceFactory.getSource(pathName);
-				((ClumpSource) this.source).addChildSource(src);
+				this.source = SourceFactory.getSource(pathName);
+				characterize(this.source);
 			}
-			characterize(this.source);
+			else {
+				this.source = new ClumpSource();
+				while (iter.hasNext()) {
+					String pathName = iter.next();
+					Source src = SourceFactory.getSource(pathName);
+					((ClumpSource) this.source).addChildSource(src);
+				}
+				characterize(this.source);
+			}
+		} finally {
+			if (this.source != null) {
+				this.source.close();
+			}
 		}
 	}
 	
@@ -416,7 +433,7 @@ public class JHOVE2
 	/** Get platform architecture.
 	 * @return Platform architecture
 	 */
-	@ReportableProperty(order=6, value="Platform architecture.")
+	@ReportableProperty(order=11, value="Platform architecture.")
 	public String getArchitecture() {
 		return this.architecture;
 	}
@@ -424,7 +441,7 @@ public class JHOVE2
 	/** Get {@link org.jhove2.core.io.Input} buffer size.
 	 * @return Input buffer size
 	 */
-	@ReportableProperty(order=19, value="Input buffer size.")
+	@ReportableProperty(order=53, value="Input buffer size.")
 	public int getBufferSize() {
 		return this.bufferSize;
 	}
@@ -432,23 +449,15 @@ public class JHOVE2
 	/** Get {@link org.jhove2.core.io.Input} buffer type.
 	 * @return Input buffer type
 	 */
-	@ReportableProperty(order=20, value="Input buffer type.")
+	@ReportableProperty(order=54, value="Input buffer type.")
 	public Type getBufferType() {
 		return this.bufferType;
-	}
-	
-	/** Get framework characterization module.
-	 * @return Framework characterization module
-	 */
-	@ReportableProperty(order=21, value="Framework characterization module.")
-	public Processible getCharacterizer() {
-		return this.characterizer;
 	}
 	
 	/** Get Java classpath.
 	 * @return Java classpath
 	 */
-	@ReportableProperty(order=17, value="Java classpath.")
+	@ReportableProperty(order=51, value="Java classpath.")
 	public String getClasspath() {
 		return this.classpath;
 	}
@@ -456,7 +465,7 @@ public class JHOVE2
 	/** Get JHOVE2 application command line.
 	 * @return JHOVE2 application command line
 	 */
-	@ReportableProperty(order=1, value="JHOVE2 application command line.")
+	@ReportableProperty(order=2, value="JHOVE2 application command line.")
 	public String getCommandLine() {
 		return this.commandLine;
 	}
@@ -464,7 +473,7 @@ public class JHOVE2
 	/** Get framework invocation date/timestamp.
 	 * @return Framework invocation date/timestamp
 	 */
-	@ReportableProperty(order=4, value="Framework invocation " +
+	@ReportableProperty(order=1, value="Framework invocation " +
 			"date/timestatmp.")
 	public Date getDateTime() {
 		return new Date(this.startTime);
@@ -473,7 +482,7 @@ public class JHOVE2
 	/** Get framework displayer module.
 	 * @return Framework displayer module
 	 */
-	@ReportableProperty(order=22, value="Framework displayer module.")
+	@ReportableProperty(order=61, value="Framework displayer module.")
 	public Displayable getDisplayer() {
 		return this.displayer;
 	}
@@ -483,7 +492,7 @@ public class JHOVE2
 	 * limit of 0 indicates no fail fast, i.e., process and report all errors. 
 	 * @return Fail fast limit
 	 */
-	@ReportableProperty(order=20, value="Framework fail fast limit.")
+	@ReportableProperty(order=54, value="Framework fail fast limit.")
 	public int getFailFastLimit() {
 		return this.failFastLimit;
 	}
@@ -491,7 +500,7 @@ public class JHOVE2
 	/** Get JRE home.
 	 * @return JRE home
 	 */
-	@ReportableProperty(order=13, value="JRE home.")
+	@ReportableProperty(order=33, value="JRE home.")
 	public String getJREHome() {
 		return this.jreHome;
 	}
@@ -499,7 +508,7 @@ public class JHOVE2
 	/** Get JRE vendor.
 	 * @return JRE vendor
 	 */
-	@ReportableProperty(order=11, value="JRE vendor.")
+	@ReportableProperty(order=31, value="JRE vendor.")
 	public String getJREVendor() {
 		return this.jreVendor;
 	}
@@ -507,14 +516,14 @@ public class JHOVE2
 	/** Get JRE version.
 	 * @return JRE version
 	 */
-	@ReportableProperty(order=12, value="JRE version.")
+	@ReportableProperty(order=32, value="JRE version.")
 	public String getJREVersion() {
 		return this.jreVersion;
 	}
 	/** Get JVM name.
 	 * @return JVM name
 	 */
-	@ReportableProperty(order=15, value="JVM name.")
+	@ReportableProperty(order=43, value="JVM name.")
 	public String getJVMName() {
 		return this.jvmName;
 	}
@@ -522,7 +531,7 @@ public class JHOVE2
 	/** Get JVM vendor.
 	 * @return JVM vendor
 	 */
-	@ReportableProperty(order=14, value="JVM vendor.")
+	@ReportableProperty(order=41, value="JVM vendor.")
 	public String getJVMVendor() {
 		return this.jvmVendor;
 	}
@@ -530,7 +539,7 @@ public class JHOVE2
 	/** Get JVM version.
 	 * @return JVM version
 	 */
-	@ReportableProperty(order=16, value="JVM version.")
+	@ReportableProperty(order=42, value="JVM version.")
 	public String getJVMVersion() {
 		return this.jvmVersion;
 	}
@@ -538,7 +547,7 @@ public class JHOVE2
 	/** Get Java library path.
 	 * @return Java library path
 	 */
-	@ReportableProperty(order=18, value="Java library path.")
+	@ReportableProperty(order=52, value="Java library path.")
 	public String getLibraryPath() {
 		return this.libraryPath;
 	}
@@ -546,7 +555,7 @@ public class JHOVE2
 	/** Get maximum memory available to the JVM, in bytes.
 	 * @return maximum memory available to the JVM, in bytes
 	 */
-	@ReportableProperty(order=8, value="Maximum memory available to the " +
+	@ReportableProperty(order=13, value="Maximum memory available to the " +
 			"JVM, in bytes.")
 	public long getMaxMemory() {
 		return this.maxMemory;
@@ -557,7 +566,7 @@ public class JHOVE2
 	 * of method invocation.
 	 * @return Memory usage, in bytes
 	 */
-	@ReportableProperty(order=31, value="Framework memory usage, in bytes.")
+	@ReportableProperty(order=81, value="Framework memory usage, in bytes.")
 	public long getMemoryUsage() {
 		Runtime rt = Runtime.getRuntime();
 		long use = rt.totalMemory() - rt.freeMemory();
@@ -568,7 +577,7 @@ public class JHOVE2
 	/** Get number of aggregate source units processed.
 	 * @return Number of aggregate source units processed
 	 */
-	@ReportableProperty(order=28, value="Number of bytestream source units " +
+	@ReportableProperty(order=73, value="Number of bytestream source units " +
 			"processed.")
 	public int getNumBytestreamSources() {
 		return this.numBytestreams;
@@ -577,7 +586,7 @@ public class JHOVE2
 	/** Get number of clump source units processed.
 	 * @return Number of clump source units processed
 	 */
-	@ReportableProperty(order=30, value="Number of clump source units " +
+	@ReportableProperty(order=75, value="Number of clump source units " +
 			"processed.")
 	public int getNumClumpSources() {
 		return this.numClumps;
@@ -586,7 +595,7 @@ public class JHOVE2
 	/** Get number of container source units processed.
 	 * @return Number of container source units processed
 	 */
-	@ReportableProperty(order=29, value="Number of container source units " +
+	@ReportableProperty(order=76, value="Number of container source units " +
 			"processed.")
 	public int getNumContainerSources() {
 		return this.numContainers;
@@ -596,7 +605,7 @@ public class JHOVE2
 	 * system directories and Zip entry directories.
 	 * @return Number of directory source units processed
 	 */
-	@ReportableProperty(order=25, value="Number of directory source units " +
+	@ReportableProperty(order=74, value="Number of directory source units " +
 			"processed, including both file system directories and Zip " +
 			"entry directories.")
 	public int getNumDirectorySources() {
@@ -607,7 +616,7 @@ public class JHOVE2
 	 * files and Zip entry files.
 	 * @return Number of file source units processed
 	 */
-	@ReportableProperty(order=26, value="Number of file source units " +
+	@ReportableProperty(order=72, value="Number of file source units " +
 			"processed, including both file system files and Zip entry " +
 			"files.")
 	public int getNumFileSources() {
@@ -617,7 +626,7 @@ public class JHOVE2
 	/** Get number of processors available to the JVM.
 	 * @return Number of processors.
 	 */
-	@ReportableProperty(order=7, value="Number of processors available to " +
+	@ReportableProperty(order=12, value="Number of processors available to " +
 	"the JVM.")
 	public int getNumProcessors() {
 		return this.numProcessors;
@@ -626,7 +635,7 @@ public class JHOVE2
 	/** Get number of source units processed.
 	 * @return Number of source units processed
 	 */
-	@ReportableProperty(order=24, value="Number of source units processed.")
+	@ReportableProperty(order=71, value="Number of source units processed.")
 	public int getNumSources() {
 		return this.numDirectories + this.numFiles + this.numBytestreams + 
 		       this.numContainers  + this.numClumps;
@@ -635,7 +644,7 @@ public class JHOVE2
 	/** Get operating system name.
 	 * @return Operating system name
 	 */
-	@ReportableProperty(order=9, value="Operating system name.")
+	@ReportableProperty(order=21, value="Operating system name.")
 	public String getOSName() {
 		return this.osName;
 	}
@@ -643,7 +652,7 @@ public class JHOVE2
 	/** Get operating system version.
 	 * @return Operating system version
 	 */
-	@ReportableProperty(order=10, value="Operating system version.")
+	@ReportableProperty(order=22, value="Operating system version.")
 	public String getOSVersion() {
 		return  this.osVersion;
 	}
@@ -651,7 +660,7 @@ public class JHOVE2
 	/** Get framework source unit.
 	 * @return Framework source unit
 	 */
-	@ReportableProperty(order=5, value="Framework source unit.")
+	@ReportableProperty(order=8, value="Framework source unit.")
 	public Source getSource() {
 		return this.source;
 	}
@@ -659,15 +668,31 @@ public class JHOVE2
 	/** Get framework temporary directory.
 	 * @return Framework temporary directory
 	 */
-	@ReportableProperty(order=3, value="Framework temporary directory.")
+	@ReportableProperty(order=5, value="Framework temporary directory.")
 	public String getTempDirectory() {
 		return this.tempDirectory;
+	}
+	
+	/** Get framework temporary file prefix.
+	 * @return Framework temporary file prefix
+	 */
+	@ReportableProperty(order=6, value="Framework temporary file prefix.")
+	public String getTempPrefix() {
+		return this.tempPrefix;
+	}
+	
+	/** Get framework temporary file suffix.
+	 * @return Framework temporary file suffix
+	 */
+	@ReportableProperty(order=7, value="Framework temporary file suffix.")
+	public String getTempSuffix() {
+		return this.tempSuffix;
 	}
 	
 	/** Get framework user name.
 	 * @return Framework user name
 	 */
-	@ReportableProperty(order=1, value="Framework user name.")
+	@ReportableProperty(order=3, value="Framework user name.")
 	public String getUserName() {
 		return this.userName;
 	}
@@ -675,7 +700,7 @@ public class JHOVE2
 	/** Get framework current working directory.
 	 * @return Framework current working directory
 	 */
-	@ReportableProperty(order=2, value="Framework current working directory.")
+	@ReportableProperty(order=4, value="Framework current working directory.")
 	public String getWorkingDirectory() {
 		return this.workingDirectory;
 	}
@@ -713,13 +738,6 @@ public class JHOVE2
 	public void setBufferType(Type type) {
 		this.bufferType = type;
 	}
-
-	/** Set framework characterization process module.
-	 * @param characterizer Framework characterization process module
-	 */
-	public void setCharacterizer(Characterizable characterizer) {
-		this.characterizer = characterizer;
-	}
 	
 	/** Set JHOVE2 application command line.
 	 * @param JHOVE2 application command line arguments
@@ -754,5 +772,19 @@ public class JHOVE2
 	 */
 	public void setTempDirectory(String directory) {
 		this.tempDirectory = directory;
+	}
+	
+	/** Set temporary file prefix.
+	 * @param prefix Temporary file prefix
+	 */
+	public void setTempPrefix(String prefix) {
+		this.tempPrefix = prefix;
+	}
+	
+	/** Set temporary file suffix.
+	 * @param suffix Temporary file suffix
+	 */
+	public void setTempSuffix(String suffix) {
+		this.tempSuffix = suffix;
 	}
 }

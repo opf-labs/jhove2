@@ -39,10 +39,8 @@ package org.jhove2.core.io;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-
 
 /** JHOVE2 non direct inputable.  
  * 
@@ -79,35 +77,6 @@ public class NonDirectInput
 	{
 		super(file);
 		
-		/* Allocate direct buffer and initialize it. */
-		this.maxBufferSize = maxBufferSize;
-		this.buffer = ByteBuffer.allocate(this.maxBufferSize).order(endianess);
-		getNextBuffer();
-	}
-	
-	/** Instantiate a new <code>NonDirectInput</code> object.
-	 * @param file          Java {@link java.io.File} underlying the inputable
-	 * @param maxBufferSize Size of the direct buffer, in bytes
-	 */
-	public NonDirectInput(InputStream stream, int maxBufferSize) 
-		throws FileNotFoundException, IOException 
-	{
-		super(stream);
-		/* Allocate direct buffer and initialize it. */
-		this.maxBufferSize = maxBufferSize;
-		this.buffer = ByteBuffer.allocate(this.maxBufferSize);
-		getNextBuffer();
-	}
-
-	/** Instantiate a new <code>NonDirectInput</code> object.
-	 * @param file          Java {@link java.io.File} underlying the inputable
-	 * @param maxBufferSize Size of the direct buffer, in bytes
-	 * @param endianess     byte order of the underlying buffer	
-	 */
-	public NonDirectInput(InputStream stream, int maxBufferSize, ByteOrder endianess) 
-		throws FileNotFoundException, IOException 
-	{
-		super(stream);
 		/* Allocate direct buffer and initialize it. */
 		this.maxBufferSize = maxBufferSize;
 		this.buffer = ByteBuffer.allocate(this.maxBufferSize).order(endianess);

@@ -36,7 +36,10 @@
 
 package org.jhove2.module.dispatch;
 
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
 import java.util.TreeMap;
 
 import org.jhove2.core.AbstractModule;
@@ -76,16 +79,22 @@ public class DispatcherModule
 	protected Map<String,String> dispatch;
 	
 	/** Instantiate a new <code>DispatcherModule</code>.
+	 * @throws JHOVE2Exception 
 	 */
-	public DispatcherModule() {
+	public DispatcherModule()
+		throws JHOVE2Exception
+	{
 		super(VERSION, DATE, RIGHTS);
 		
 		this.dispatch = new TreeMap<String,String>();
-		this.dispatch.put("info:jhove2/format/bytestream", "BytestreamModule");
-		this.dispatch.put("info:jhove2/format/clump",      "ClumpModule");
-		this.dispatch.put("info:jhove2/format/directory",  "DirectoryModule");
-		this.dispatch.put("info:jhove2/format/utf-8",      "UTF8Module");
-		this.dispatch.put("info:jhove2/format/zip",        "ZipModule");
+		Properties props = Configure.getProperties("Dispatch");
+		Set<String> keys = props.stringPropertyNames();
+		Iterator<String> iter = keys.iterator();
+		while (iter.hasNext()) {
+			String key   = iter.next();
+			String value = props.getProperty(key);
+			this.dispatch.put(key, value);
+		}
 	}
 
 	/** Dispatch a module appropriate for a source unit's format.

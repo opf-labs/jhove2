@@ -39,17 +39,12 @@ package org.jhove2.core.io;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
-import java.nio.channels.ReadableByteChannel;
-import java.nio.channels.WritableByteChannel;
 
 /** Abstract JHOVE2 inputter.
  * 
@@ -58,10 +53,6 @@ import java.nio.channels.WritableByteChannel;
 public abstract class AbstractInput
 	implements Input
 {
-	private static final String TEMP_PREFIX = "TempJhove2";
-
-	private static final String TEMP_SUFFIX = ".out";
-
 	/** Buffer to hold data from channel. */
 	protected ByteBuffer buffer;
 
@@ -105,26 +96,6 @@ public abstract class AbstractInput
 		this.channel = raf.getChannel();
 	}
 
-	/** Instantiate a new <code>AbstractInput</code>.
-	 * @param stream Java {@link java.io.Stream} underlying the inputable
-	 */
-	public AbstractInput(InputStream inStream)
-		throws FileNotFoundException, IOException
-	{
-		/* 
-		 * write the input stream to a temporary file and 
-		 * use that file to obtain the channel
-		 */
-		File tempFile          = createTempFile(inStream);
-		this.file              = tempFile;
-		this.stream            = inStream;
-		this.fileSize          = tempFile.length();
-		this.inputablePosition = 0L;
-
-		RandomAccessFile raf   = new RandomAccessFile(tempFile, "r");
-		this.channel           = raf.getChannel();
-	}
-
 	/** Close the inputable.
 	 * @see org.jhove2.core.io.Input#close()
 	 */
@@ -133,41 +104,8 @@ public abstract class AbstractInput
 		throws IOException
 	{
 		this.channel.close();
-		if (this.file.getName().startsWith(TEMP_PREFIX))
-			//delete the temporary file
-			file.delete();
 	}
 	
-	/**
-	 * 
-	 * @param inStream inputStream
-	 * @return file temporary file
-	 * 
-	 * converts the input stream to a temporary file.
-	 * @throws IOException
-	 */
-	protected File createTempFile(InputStream inStream) throws IOException {
-		File tempFile                  = File.createTempFile(TEMP_PREFIX, TEMP_SUFFIX);
-		OutputStream outStream         = new FileOutputStream(tempFile);
-		ReadableByteChannel inChannel  = Channels.newChannel(inStream);
-		WritableByteChannel outChannel = Channels.newChannel(outStream);
-		final ByteBuffer buffer        = ByteBuffer.allocateDirect(8192);
-		
-		while ((inChannel.read(buffer)) > 0) {
-			buffer.flip();
-			outChannel.write(buffer);
-			buffer.compact();  // in case write was incomplete
-		}
-		buffer.flip();
-		while (buffer.hasRemaining())
-			outChannel.write(buffer);
-
-		// closing the channel in turn closes the stream
-		inChannel.close();
-		outChannel.close();
-		return tempFile;
-	}
-
 	/** Get the {@link java.nio.ByteBuffer} underlying the inputable.
 	 * @return Buffer underlying the inputable
 	 * @see org.jhove2.core.io.Input#getBuffer()
@@ -177,8 +115,8 @@ public abstract class AbstractInput
 		return this.buffer;
 	}
 	
-	/** Get {@link java.io.File} underlying the inputable.
-	 * @return File underlying the inputable
+	/** Get {@link java.io.File} backing the input.
+	 * @return File backing the input
 	 * @see org.jhove2.core.io.Input#getFile()
 	 */
 	@Override
@@ -186,9 +124,9 @@ public abstract class AbstractInput
 		return this.file;
 	}
 	
-	/** Get {@link java.io.File} underlying the inputable.
-	 * @return File underlying the inputable
-	 * @see org.jhove2.core.io.Input#getFile()
+	/** Get {@link java.io.InputStream} backing the input.
+	 * @return Input stream backing the input
+	 * @see org.jhove2.core.io.Input#getInputStream()
 	 */	
 	@Override
 	public InputStream getInputStream() {

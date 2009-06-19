@@ -62,9 +62,6 @@ public class ZipDirectorySource
 	/** Zip directory path. */
 	protected String path;
 	
-	/** Zip directory input stream. */
-	protected InputStream stream;
-	
 	/** Instantiate a new <code>ZipDirectorySource</code>.
 	 * @param stream Input stream for the Zip directory entry
 	 * @param entry  Zip directory entry
@@ -72,8 +69,7 @@ public class ZipDirectorySource
 	public ZipDirectorySource(InputStream stream, ZipEntry entry) {
 		super();
 		
-		this.stream       = stream;
-		this.path         = entry.getName();
+		this.path = entry.getName();
 		/* Directory name has a trailing slash (/). */
 		int in = this.path.lastIndexOf('/');
 		if (in == this.path.length()-1) {

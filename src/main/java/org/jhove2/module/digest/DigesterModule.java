@@ -95,34 +95,41 @@ public class DigesterModule
 	{
 		setStartTime();
 		
-		Input input      = source.getInput(jhove2.getBufferSize(),
-				                           jhove2.getBufferType());
-		if (input != null) {
-			long  inputSize  = input.getSize();
-			long  bufferSize = input.getMaxBufferSize();
-			long  ptr = 0L;
-			while (inputSize - ptr > -1L) {
-				input.setPosition(ptr);
-				if (this.arrayDigesters != null &&
-					this.arrayDigesters.size() > 0) {
-					byte [] array = input.getByteArray();
-					Iterator<ArrayDigester> iter = this.arrayDigesters.iterator();
-					while (iter.hasNext()) {
-						ArrayDigester digester = iter.next();
-						digester.update(array);
+		Input input = null;
+		try {
+			input = source.getInput(jhove2.getBufferSize(),
+				                    jhove2.getBufferType());
+			if (input != null) {
+				long  inputSize  = input.getSize();
+				long  bufferSize = input.getMaxBufferSize();
+				long  ptr = 0L;
+				while (inputSize - ptr > -1L) {
+					input.setPosition(ptr);
+					if (this.arrayDigesters != null &&
+						this.arrayDigesters.size() > 0) {
+						byte [] array = input.getByteArray();
+						Iterator<ArrayDigester> iter = this.arrayDigesters.iterator();
+						while (iter.hasNext()) {
+							ArrayDigester digester = iter.next();
+							digester.update(array);
+						}
 					}
-				}
-				if (this.bufferDigesters != null &&
-					this.bufferDigesters.size() > 0) {
-					ByteBuffer buffer = input.getBuffer();
-					Iterator<BufferDigester> iter = this.bufferDigesters.iterator();
-					while (iter.hasNext()) {
-						BufferDigester digester = iter.next();
-						buffer.position(0);
-						digester.update(buffer);
+					if (this.bufferDigesters != null &&
+							this.bufferDigesters.size() > 0) {
+						ByteBuffer buffer = input.getBuffer();
+						Iterator<BufferDigester> iter = this.bufferDigesters.iterator();
+						while (iter.hasNext()) {
+							BufferDigester digester = iter.next();
+							buffer.position(0);
+							digester.update(buffer);
+						}
 					}
+					ptr += bufferSize;
 				}
-				ptr += bufferSize;
+			}
+		} finally {
+			if (input != null) {
+				input.close();
 			}
 		}
 		setEndTime();

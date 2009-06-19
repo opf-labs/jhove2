@@ -39,11 +39,8 @@ package org.jhove2.core.io;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.ByteOrder;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
-
 
 /** JHOVE2 mapped inputable.  A direct byte buffer whose content 
  * is a memory-mapped region of a file. Use of a direct buffer 
@@ -88,20 +85,6 @@ public class MappedInput
 		
 		// getNextBuffer();
 	}
-	
-	public MappedInput(InputStream stream, int maxBufferSize2) 
-		throws FileNotFoundException, IOException 
-	{
-		super(stream);
-		// TODO Auto-generated constructor stub
-	}
-
-	public MappedInput(InputStream stream, int maxBufferSize2, ByteOrder order) 
-		throws FileNotFoundException, IOException 
-	{
-		super(stream);
-		// TODO Auto-generated constructor stub
-	}
 
 	/** Get maximum buffer size, in bytes.
 	 * @return Maximum buffer size, in bytes
@@ -123,7 +106,6 @@ public class MappedInput
 		this.buffer.clear();
 		//int n = this.channel.read(this.buffer);
 		this.buffer.flip();
-		long position = this.channel.position();
 		this.bufferOffset      = this.channel.position() - buffer.capacity();
 		
 		
@@ -132,5 +114,4 @@ public class MappedInput
 		
 		return this.bufferSize;
 	}
-	
 }

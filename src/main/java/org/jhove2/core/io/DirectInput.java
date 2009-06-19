@@ -39,10 +39,8 @@ package org.jhove2.core.io;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-
 
 /** JHOVE2 direct inputable.  Use of a direct buffer permits the JVM to use
  * native I/O for increased performance. 
@@ -87,39 +85,6 @@ public class DirectInput
 		this.byteOrder = this.buffer.order();
 		getNextBuffer();
 	}
-	
-	/** Instantiate a new <code>DirectInput</code> object from an InputStream.
-	 * @param stream        Java {@link java.io.InputStream} underlying the inputable
-	 * @param maxBufferSize Size of the direct buffer, in bytes
-	 */
-	public DirectInput(InputStream stream, int maxBufferSize) 
-		throws FileNotFoundException, IOException 
-	{
-		super(stream);
-		
-		/* Allocate direct buffer and initialize it. */
-		this.maxBufferSize = maxBufferSize;
-		this.buffer = ByteBuffer.allocateDirect(this.maxBufferSize);
-		this.byteOrder = this.buffer.order();
-		getNextBuffer();
-	}
-
-	/** Instantiate a new <code>DirectInput</code> object from an InputStream.
-	 * @param stream        Java {@link java.io.InputStream} underlying the inputable
-	 * @param maxBufferSize Size of the direct buffer, in bytes
-	 * @param endianess     byte order of the underlying buffer	
-	 */
-	public DirectInput(InputStream stream, int maxBufferSize, ByteOrder endianess) 
-		throws FileNotFoundException, IOException 
-	{
-		super(stream);
-		
-		/* Allocate direct buffer and initialize it. */
-		this.maxBufferSize = maxBufferSize;
-		this.buffer = ByteBuffer.allocateDirect(this.maxBufferSize).order(endianess);
-		this.byteOrder = this.buffer.order();
-		getNextBuffer();
-	}
 
 	/** Get maximum buffer size, in bytes.
 	 * @return Maximum buffer size, in bytes
@@ -129,6 +94,4 @@ public class DirectInput
 	public int getMaxBufferSize() {
 		return this.maxBufferSize;
 	}
-
-
 }
