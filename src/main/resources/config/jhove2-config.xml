@@ -124,6 +124,8 @@
 		<constructor-arg type="java.lang.String" value="info:jhove2/format/clump"/>
    </bean>
      	
+     	
+     	
 	<!-- Directory module bean -->
 	<bean id="DirectoryModule" class="org.jhove2.module.format.directory.DirectoryModule"
 	      scope="prototype"/>
@@ -141,8 +143,18 @@
 		<constructor-arg type="java.lang.String" value="info:jhove2/format/directory"/>
 	</bean>
 	
+	
+	
 	<!-- UTF-8 module bean -->
 	<bean id="UTF8Module" class="org.jhove2.module.format.utf8.UTF8Module"
+	      scope="prototype">
+	    <constructor-arg ref="UTF8"/>
+	</bean>
+	      
+	<bean id="UTF8" class="org.jhove2.module.format.utf8.UTF8"
+	      scope="prototype"/>
+   	      
+	<bean id="UTF8Character" class="org.jhove2.module.format.utf8.UTFCharacter"
 	      scope="prototype"/>
    
 	<!-- UTF-8 format bean -->
@@ -157,6 +169,8 @@
 	<bean id="UTF8Identifier" class="org.jhove2.core.I8R" scope="singleton">
 		<constructor-arg type="java.lang.String" value="info:jhove2/format/utf-8"/>
 	</bean>
+	
+	
 	
 	<!-- Zip module bean -->
 	<bean id="ZipModule" class="org.jhove2.module.format.zip.ZipModule"
@@ -187,6 +201,8 @@
 	<bean id="BytestreamIdentifier" class="org.jhove2.core.I8R" scope="singleton">
 		<constructor-arg type="java.lang.String" value="info:jhove2/format/bytestream"/>
 	</bean>
+	
+	
 	
 	<!-- C0 Control properties bean -->
 	<util:properties id="C0Control"	

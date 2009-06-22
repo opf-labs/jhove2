@@ -41,6 +41,7 @@ import org.jhove2.core.AbstractModule;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Parsable;
+import org.jhove2.core.Validatable;
 import org.jhove2.core.source.Source;
 
 /** JHOVE2 UTF-8 module.
@@ -49,7 +50,7 @@ import org.jhove2.core.source.Source;
  */
 public class UTF8Module
 	extends AbstractModule
-	implements Parsable
+	implements Parsable, Validatable
 {
 	/** UTF-8 module version identifier. */
 	public static final String VERSION = "1.0.0";
@@ -61,11 +62,17 @@ public class UTF8Module
 	public static final String RIGHTS =
 		"Copyright 2009 by The Regents of the University of California. " +
 		"Available under the terms of the BSD license.";
+	
+	/** UTF-8 modeling class. */
+	protected UTF8 utf8;
 
 	/** Instantiate a new <code>UTF8Module</code>.
+	 * @param utf8 UTF-8 modeling class
 	 */
-	public UTF8Module() {
+	public UTF8Module(UTF8 utf8) {
 		super(VERSION, DATE, RIGHTS);
+		
+		this.utf8 = utf8;
 	}
 
 	/** Parse a source unit.
@@ -82,6 +89,26 @@ public class UTF8Module
 	public long parse(JHOVE2 jhove2, Source source)
 		throws EOFException, IOException, JHOVE2Exception
 	{
-		return 0;
+		return this.utf8.parse(jhove2, source);
+	}
+
+	/** Validate a source unit.  Implicitly set the starting and ending elapsed
+	 * time.
+	 * @param jhove2 JHOVE2 framework
+	 * @return Validation status
+	 * @see org.jhove2.core.Validatable#validate(org.jhove2.core.JHOVE2)
+	 */
+	@Override
+	public Validity validate(JHOVE2 jhove2) {
+		return this.utf8.validate(jhove2);
+	}
+
+	/** Get validation status.
+	 * @return Validation status
+	 * @see org.jhove2.core.Validatable#isValid()
+	 */
+	@Override
+	public Validity isValid() {
+		return this.utf8.isValid();
 	}
 }

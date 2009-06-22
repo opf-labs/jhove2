@@ -34,64 +34,56 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.module.display;
+package org.jhove2.core;
 
-import org.jhove2.core.AbstractModule;
-import org.jhove2.core.Displayable;
-import org.jhove2.core.JHOVE2;
-
-/** JHOVE2 displayer utility.
+/** Abstract JHOVE2 process.  A process is a {@link org.jhove2.core.Reportable}
+ * that tracks its elapsed time.
  * 
  * @author mstrong, slabrams
  */
-public abstract class AbstractDisplayer
-	extends AbstractModule
-	implements Displayable
+public abstract class AbstractModel
+	implements Processible
 {
-	/** Show identifiers flag: if true, show identifiers in Text display
-	 * mode.
-	 */
-	protected boolean showIdentifiers;
+	/** Module elapsed time, end. */
+	protected long endTime;
 	
-	/** Instantiate a new <code>AbstractDisplayer</code>.
-	 * @param version AbstractDisplayer version identifier
-	 * @param date    AbstractDisplayer build date
-	 * @param rights  AbstractDisplayer rights statement
+	/** Module elapsed time, start. */
+	protected long startTime;
+	
+	/** Instantiate a new <code>AbstractModel</code>.
 	 */
-	public AbstractDisplayer(String version, String date, String rights) {
-		super(version, date, rights);
-		
-		this.showIdentifiers = JHOVE2.DEFAULT_SHOW_IDENTIFIERS;
+	public AbstractModel() {
+		this.startTime = System.currentTimeMillis();
+		this.endTime   = Duration.UNINITIALIZED;
 	}
 	
-	/** Get indentation appropriate for a nesting level.
-	 * @param level Nesting level
+	/** Get elapsed time, in milliseconds.  The shortest reportable
+	 * elapsed time is 1 milliscond.
+	 * @return Elapsed time, in milliseconds
+	 * @see org.jhove2.core.Durable#getElapsedTime()
 	 */
-	public static synchronized String getIndent(int level) {
-		StringBuffer indent = new StringBuffer();
-		for (int i=0; i<level; i++) {
-			indent.append(" ");
+	@Override
+	public Duration getElapsedTime() {
+		if (this.endTime == Duration.UNINITIALIZED) {
+			this.endTime = System.currentTimeMillis();
 		}
 		
-		return indent.toString();
+		return new Duration(this.endTime - this.startTime);
 	}
 
-	/** Get show identifiers flag.
-	 * @return Show identifiers flag; if true, show identifiers in Text display
-	 *         mode
-	 * @see org.jhove2.core.Displayable#getShowIdentifiers()
+	/** Set the end time of the elapsed duration.
+	 * @see org.jhove2.core.Durable#setEndTime()
 	 */
 	@Override
-	public boolean getShowIdentifiers() {
-		return this.showIdentifiers;
+	public void setEndTime() {
+		this.endTime = System.currentTimeMillis();
 	}
-	
-	/** Set show identifiers flag.
-	 * @param flag If true, show identifiers in Text display mode
-	 * @see org.jhove2.core.Displayable#setShowIdentifiers(boolean)
+
+	/** Set the start time of the elapsed duration.
+	 * @see org.jhove2.core.Durable#setStartTime()
 	 */
 	@Override
-	public void setShowIdentifiers(boolean flag) {
-		this.showIdentifiers = flag;
+	public void setStartTime() {
+		this.startTime = System.currentTimeMillis();
 	}
 }

@@ -66,6 +66,7 @@ public class AbstractModule
 	/** Get elapsed time, in milliseconds.  The shortest reportable
 	 * elapsed time is 1 milliscond.
 	 * @return Elapsed time, in milliseconds
+	 * @see org.jhove2.core.Durable#getElapsedTime()
 	 */
 	@Override
 	public Duration getElapsedTime() {
@@ -77,6 +78,7 @@ public class AbstractModule
 	}
 
 	/** Set the end time of the elapsed duration.
+	 * @see org.jhove2.core.Durable#setEndTime()
 	 */
 	@Override
 	public void setEndTime() {
@@ -84,6 +86,7 @@ public class AbstractModule
 	}
 
 	/** Set the start time of the elapsed duration.
+	 * @see org.jhove2.core.Durable#setStartTime()
 	 */
 	@Override
 	public void setStartTime() {

@@ -45,15 +45,23 @@ import org.jhove2.annotation.ReportableProperty;
 public interface Validatable
 	extends Processible
 {
+	/** Validity values. */
+	public enum Validity {
+		Valid,
+		Invalid,
+		Undetermined
+	}
+	
 	/** Validate a source unit.  Implicitly set the starting and ending elapsed
 	 * time.
 	 * @param jhove2 JHOVE2 framework
+	 * @return Validation status
 	 */
-	public boolean validate(JHOVE2 jhove2);
+	public Validity validate(JHOVE2 jhove2);
 	
 	/** Get validation status.
-	 * @return Validation status: true if valie
+	 * @return Validation status
 	 */
-	@ReportableProperty("Validation status: true if valid.")
-	public boolean isValid();
+	@ReportableProperty("Validation status.")
+	public Validity isValid();
 }

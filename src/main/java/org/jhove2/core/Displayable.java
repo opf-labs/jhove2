@@ -114,6 +114,12 @@ public interface Displayable
 	 */
 	public void endDisplay(PrintStream out, int level);
 	
+	/** Get show identifiers flag.
+	 * @return Show identifier flag; if true, show identifiers in Text display
+	 *         mode
+	 */
+	public boolean getShowIdentifiers();
+	
 	/** Set show identifiers flag.
 	 * @param flag If true, show identifiers in Text display mode
 	 */
