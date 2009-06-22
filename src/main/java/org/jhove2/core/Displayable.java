@@ -113,4 +113,9 @@ public interface Displayable
 	 * @param level Nesting level
 	 */
 	public void endDisplay(PrintStream out, int level);
+	
+	/** Set show identifiers flag.
+	 * @param flag If true, show identifiers in Text display mode
+	 */
+	public void setShowIdentifiers(boolean flag);
 }

@@ -38,8 +38,6 @@ package org.jhove2.module.display;
 
 import java.io.PrintStream;
 
-import org.jhove2.core.AbstractModule;
-import org.jhove2.core.Displayable;
 import org.jhove2.core.I8R;
 
 /** JHOVE2 XML displayer.
@@ -47,8 +45,7 @@ import org.jhove2.core.I8R;
  * @author mstrong, slabrams
  */
 public class XMLDisplayer
-	extends AbstractModule
-	implements Displayable
+	extends AbstractDisplayer
 {
 	/** XML displayer version identifier. */
 	public static final String VERSION = "1.0.0";
@@ -250,7 +247,7 @@ public class XMLDisplayer
 	 * @param name  Tag name
 	 */
 	public void startTag(PrintStream out, int level, String name) {
-		String indent = Displayer.getIndent(level);
+		String indent = getIndent(level);
 		
 		out.println(indent + "<" + this.prefix + name + ">");
 	}
@@ -263,7 +260,7 @@ public class XMLDisplayer
 	 */
 	public void startTag(PrintStream out, int level, String name,
 			             String... attrs) {
-		String indent = Displayer.getIndent(level);
+		String indent = AbstractDisplayer.getIndent(level);
 		
 		out.print(indent + "<" + this.prefix + name);
 		for (int i=0; i<attrs.length; i+=2) {
@@ -279,7 +276,7 @@ public class XMLDisplayer
 	 * @param content Tag content
 	 */
 	public void tag(PrintStream out, int level, String name, String content) {
-		String indent = Displayer.getIndent(level);
+		String indent = AbstractDisplayer.getIndent(level);
 		
 		out.println(indent + "<"  + this.prefix + name + ">" + content +
 				             "</" + this.prefix + name + ">");
@@ -293,7 +290,7 @@ public class XMLDisplayer
 	 */
 	public void tag(PrintStream out, int level, String name, String content,
 			        String... attrs) {
-		String indent = Displayer.getIndent(level);
+		String indent = AbstractDisplayer.getIndent(level);
 		
 		out.print(indent + "<"  + this.prefix + name);
 		for (int i=0; i<attrs.length; i+=2) {
@@ -308,7 +305,7 @@ public class XMLDisplayer
 	 * @param name  Tag name
 	 */
 	public void endTag(PrintStream out, int level, String name) {
-		String indent = Displayer.getIndent(level);
+		String indent = AbstractDisplayer.getIndent(level);
 		
 		out.println(indent + "</" + this.prefix + name + ">");
 	}

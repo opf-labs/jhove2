@@ -38,8 +38,6 @@ package org.jhove2.module.display;
 
 import java.io.PrintStream;
 
-import org.jhove2.core.AbstractModule;
-import org.jhove2.core.Displayable;
 import org.jhove2.core.I8R;
 
 /** JHOVE2 text displayer.
@@ -47,8 +45,7 @@ import org.jhove2.core.I8R;
  * @author mstrong, slabrams
  */
 public class TextDisplayer
-	extends AbstractModule
-	implements Displayable
+	extends AbstractDisplayer
 {
 	/** Text displayer version identifier. */
 	public static final String VERSION = "1.0.0";
@@ -62,16 +59,11 @@ public class TextDisplayer
 		"Ithaka Harbors, Inc., and The Board of Trustees of the Leland " +
 		"Stanford Junior University. " +
 		"Available under the terms of the BSD license.";
-	
-	/** Property identifiers flag; if true, show property identifiers. */
-	protected boolean showIdentifiers;
-	
+
 	/** Instantiate a new <code>TextDisplayer</code>.
 	 */
 	public TextDisplayer() {
 		super(VERSION, DATE, RIGHTS);
-		
-		this.showIdentifiers = false;
 	}
 
 	/** Start display.
@@ -96,7 +88,7 @@ public class TextDisplayer
 	@Override
 	public void startReportable(PrintStream out, int level, String name,
 			                    I8R identifier, int order) {
-		StringBuffer buffer = new StringBuffer(Displayer.getIndent(level));
+		StringBuffer buffer = new StringBuffer(getIndent(level));
 		
 		buffer.append(name);
 		if (this.showIdentifiers) {
@@ -120,7 +112,7 @@ public class TextDisplayer
 	@Override
 	public void startCollection(PrintStream out, int level, String name,
 			                    I8R identifier, int size, int order) {
-		StringBuffer buffer = new StringBuffer(Displayer.getIndent(level));
+		StringBuffer buffer = new StringBuffer(getIndent(level));
 		
 		buffer.append(name);
 		if (this.showIdentifiers) {
@@ -144,7 +136,7 @@ public class TextDisplayer
 	@Override
 	public void displayProperty(PrintStream out, int level, String name,
 			                    I8R identifier, Object value, int order) {
-		StringBuffer buffer = new StringBuffer(Displayer.getIndent(level));
+		StringBuffer buffer = new StringBuffer(getIndent(level));
 		
 		buffer.append(name);
 		if (this.showIdentifiers) {
@@ -186,12 +178,5 @@ public class TextDisplayer
 	 */
 	@Override
 	public void endDisplay(PrintStream out, int level) {
-	}
-	
-	/** Set property identifiers flag.
-	 * @param showIdentifiers If true, show property identifiers
-	 */
-	public void setShowIdentifiers(boolean showIdentifiers) {
-		this.showIdentifiers = showIdentifiers;
 	}
 }

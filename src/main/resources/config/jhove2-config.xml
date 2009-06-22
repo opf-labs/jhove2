@@ -14,6 +14,8 @@
 		<!--  <property name="characterizer" ref="CharacterizerModule"/> -->
 	</bean>
 		
+		
+		
  	<!-- Characterizer module bean -->
 	<bean id="CharacterizerModule" 
 	      class="org.jhove2.module.characterize.CharacterizerModule"
@@ -22,6 +24,8 @@
 	      <property name="dispatcher" ref="DispatcherModule"/>
 	      <property name="digester"   ref="DigesterModule"/>
 	</bean>
+	      
+	      
 	      
 	<!-- Identifier module bean -->
 	<bean id="IdentifierModule"
@@ -32,6 +36,8 @@
 	<bean id="DispatcherModule"
 	      class="org.jhove2.module.dispatch.DispatcherModule"
 	      scope="prototype"/>
+	      
+	      
 	      
 	<!--  Message digester module bean -->
 	<bean id="DigesterModule"
@@ -83,17 +89,23 @@
 	<bean id="SHA512Digester" class="org.jhove2.module.digest.SHA512Digester"
 	      scope="prototype"/>
 	      
+	      
+	      
  	<!-- JSON displayer bean -->
 	<bean id="JSONDisplayer" class="org.jhove2.module.display.JSONDisplayer"
 	      scope="prototype"/>
 	      	
  	<!-- Text displayer bean -->
 	<bean id="TextDisplayer" class="org.jhove2.module.display.TextDisplayer"
-	      scope="prototype"/>
+	      scope="prototype">
+	    <property name="showIdentifiers" value="false"/>
+	</bean>
 	      	
  	<!-- XML displayer bean -->
 	<bean id="XMLDisplayer" class="org.jhove2.module.display.XMLDisplayer"
 	      scope="prototype"/>
+	
+	
 	
 	<!-- Clump module bean -->
 	<bean id="ClumpModule" class="org.jhove2.module.format.clump.ClumpModule"

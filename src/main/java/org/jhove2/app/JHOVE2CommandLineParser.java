@@ -47,12 +47,6 @@ import org.jhove2.core.io.Input.Type;
  * @author mstrong, slabrams
  */
 public class JHOVE2CommandLineParser {
-	/** Default {@link org.jhove2.core.io.Input} buffer type. */
-	public static final Type DEFAULT_BUFFER_TYPE = Type.Direct;
-	
-	/** Default {@link org.jhove2.core.Displayable}. */
-	public static final String DEFAULT_DISPLAYER = "TextDisplayer";
-	
 	/** {@link org.jhove2.core.io.Input} buffer size. */
 	protected int bufferSize;
 	
@@ -68,6 +62,9 @@ public class JHOVE2CommandLineParser {
 	/** File system path names. */
 	protected List<String> names;
 	
+	/** Show identifiers flag. */
+	protected boolean showIdentifiers;
+	
 	/** Temporary directory. */
 	protected String tempDirectory;
 	
@@ -77,24 +74,31 @@ public class JHOVE2CommandLineParser {
 	/** Instantiate a new <code>JHOVE2CommandLineParser</code>.
 	 */
 	public JHOVE2CommandLineParser() {
-		this(JHOVE2.DEFAULT_BUFFER_SIZE, DEFAULT_BUFFER_TYPE,
-			 DEFAULT_DISPLAYER, JHOVE2.DEFAULT_FAIL_FAST_LIMIT);
+		this(JHOVE2.DEFAULT_BUFFER_SIZE, JHOVE2.DEFAULT_BUFFER_TYPE,
+			 JHOVE2.DEFAULT_DISPLAYER, JHOVE2.DEFAULT_SHOW_IDENTIFIERS,
+			 JHOVE2.DEFAULT_FAIL_FAST_LIMIT);
 	}
 	
 	/** Instantiate a new <code>JHOVE2CommandLineParser</code> with specific
 	 * default values.
-	 * @param bufferSize    Default {@link org.jhove2.core.io.Input} buffer size
-	 * @param bufferType    Default {@link org.jhove2.core.io.Input} buffer type
-	 * @param displayer     Default {@link org.jhove2.core.Displayable}
-	 * @param failFastLimit Default fail fast limit
+	 * @param bufferSize      Default {@link org.jhove2.core.io.Input} buffer
+	 *                        size
+	 * @param bufferType      Default {@link org.jhove2.core.io.Input} buffer
+	 *                        type
+	 * @param displayer       Default {@link org.jhove2.core.Displayable}
+	 * @param showIdentifiers Show identifiers flag; if true, show identifiers
+	 *                        in Text display mode
+	 * @param failFastLimit   Default fail fast limit
 	 */
 	public JHOVE2CommandLineParser(int bufferSize, Type bufferType,
-			                       String displayer, int failFastLimit) {
-		this.bufferSize    = bufferSize;
-		this.bufferType    = bufferType;
-		this.displayer     = displayer;
-		this.failFastLimit = failFastLimit;
-		this.names         = new ArrayList<String>();
+			                       String displayer, boolean showIdentifiers,
+			                       int failFastLimit) {
+		this.bufferSize      = bufferSize;
+		this.bufferType      = bufferType;
+		this.displayer       = displayer;
+		this.showIdentifiers = showIdentifiers;
+		this.failFastLimit   = failFastLimit;
+		this.names           = new ArrayList<String>();
 	}
 	
 	/** Parse the JHOVE2 application command line.
@@ -132,6 +136,12 @@ public class JHOVE2CommandLineParser {
 							this.tempDirectory = args[++i];
 						}
 					}
+					else {
+						int in = args[i].indexOf('I');
+						if (in > -1) {
+							this.showIdentifiers = true;
+						}
+					}
 				}
 			}
 			else {
@@ -157,7 +167,7 @@ public class JHOVE2CommandLineParser {
 	}
 	
 	/** Get {@link org.jhove2.core.Displayeble}.
-	 * @return Displayer
+	 * @return AbstractDisplayer
 	 */
 	public String getDisplayer() {
 		return this.displayer;
@@ -175,6 +185,13 @@ public class JHOVE2CommandLineParser {
 	 */
 	public List<String> getPathNames() {
 		return this.names;
+	}
+	
+	/** Get show identifiers flag.
+	 * @param Show identifiers flag
+	 */
+	public boolean getShowIdentifiers() {
+		return this.showIdentifiers;
 	}
 	
 	/** Get temporary directory.

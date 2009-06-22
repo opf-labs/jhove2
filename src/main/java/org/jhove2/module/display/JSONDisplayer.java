@@ -38,8 +38,6 @@ package org.jhove2.module.display;
 
 import java.io.PrintStream;
 
-import org.jhove2.core.AbstractModule;
-import org.jhove2.core.Displayable;
 import org.jhove2.core.I8R;
 
 /** JSON displayer.  The JSON format is defined by RFC 4627.
@@ -47,8 +45,7 @@ import org.jhove2.core.I8R;
  * @author mstrong, slabrams
  */
 public class JSONDisplayer
-	extends AbstractModule
-	implements Displayable
+	extends AbstractDisplayer
 {
 	/** JSON displayer version identifier. */
 	public static final String VERSION = "1.0.0";
@@ -78,7 +75,7 @@ public class JSONDisplayer
 	 */
 	@Override
 	public void startDisplay(PrintStream out, int level) {
-		String indent = Displayer.getIndent(level);
+		String indent = getIndent(level);
 		
 		out.println(indent + "{");
 	}
@@ -96,7 +93,7 @@ public class JSONDisplayer
 	@Override
 	public void startReportable(PrintStream out, int level, String name,
 			                    I8R identifier, int order) {
-		StringBuffer buffer = new StringBuffer(Displayer.getIndent(level));
+		StringBuffer buffer = new StringBuffer(getIndent(level));
 		
 		if (order == 0) {
 			buffer.append(" ");
@@ -122,7 +119,7 @@ public class JSONDisplayer
 	@Override
 	public void startCollection(PrintStream out, int level, String name,
 			                    I8R identifier, int size, int order) {
-		StringBuffer buffer = new StringBuffer(Displayer.getIndent(level));
+		StringBuffer buffer = new StringBuffer(getIndent(level));
 		
 		if (order == 0) {
 			buffer.append(" ");
@@ -148,7 +145,7 @@ public class JSONDisplayer
 	@Override
 	public void displayProperty(PrintStream out, int level, String name,
 			                    I8R identifier, Object value, int order) {
-		StringBuffer buffer = new StringBuffer(Displayer.getIndent(level));
+		StringBuffer buffer = new StringBuffer(getIndent(level));
 		
 		if (order == 0) {
 			buffer.append(" ");
@@ -171,7 +168,7 @@ public class JSONDisplayer
 	@Override
 	public void endCollection(PrintStream out, int level, String name,
 			                  I8R identifier, int size) {
-		String indent = Displayer.getIndent(level+1);
+		String indent = getIndent(level+1);
 		
 		out.println(indent + "}");
 	}
@@ -186,7 +183,7 @@ public class JSONDisplayer
 	@Override
 	public void endReportable(PrintStream out, int level, String name,
 			                  I8R identifier) {
-		String indent = Displayer.getIndent(level+1);
+		String indent = getIndent(level+1);
 		
 		out.println(indent + "}");
 	}
@@ -198,7 +195,7 @@ public class JSONDisplayer
 	 */
 	@Override
 	public void endDisplay(PrintStream out, int level) {
-		String indent = Displayer.getIndent(level);
+		String indent = getIndent(level);
 		
 		out.println(indent + "}");
 	}

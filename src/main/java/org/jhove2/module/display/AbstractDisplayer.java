@@ -36,13 +36,34 @@
 
 package org.jhove2.module.display;
 
-import org.jhove2.core.I8R;
+import org.jhove2.core.AbstractModule;
+import org.jhove2.core.Displayable;
+import org.jhove2.core.JHOVE2;
 
 /** JHOVE2 displayer utility.
  * 
  * @author mstrong, slabrams
  */
-public class Displayer {
+public abstract class AbstractDisplayer
+	extends AbstractModule
+	implements Displayable
+{
+	/** Show identifiers flag: if true, show identifiers in Text display
+	 * mode.
+	 */
+	protected boolean showIdentifiers;
+	
+	/** Instantiate a new <code>AbstractDisplayer</code>.
+	 * @param version AbstractDisplayer version identifier
+	 * @param date    AbstractDisplayer build date
+	 * @param rights  AbstractDisplayer rights statement
+	 */
+	public AbstractDisplayer(String version, String date, String rights) {
+		super(version, date, rights);
+		
+		this.showIdentifiers = JHOVE2.DEFAULT_SHOW_IDENTIFIERS;
+	}
+	
 	/** Get indentation appropriate for a nesting level.
 	 * @param level Nesting level
 	 */
@@ -55,39 +76,17 @@ public class Displayer {
 		return indent.toString();
 	}
 
-	/** Get the singular form of a plural property identifier.
-	 * @param identifier Property identifier
-	 * @return Singular form of a property identifier
+	/** Get show identifiers flag.
+	 * @return Show identifiers flag
 	 */
-	public static synchronized I8R singularIdentifier(I8R identifier) {
-		I8R singular = null;
-		String value = identifier.getValue();
-		int in  = value.lastIndexOf('/') + 1;
-		int len = value.length();
-		if (value.substring(len-3).equals("ies")) {
-			singular = new I8R(value + "/" + value.substring(in, len-3) + "y");
-		}
-		else {
-			singular = new I8R(value + "/" + value.substring(in, len-1));
-		}
-		
-		return singular;
+	public boolean getShowIdentifiers() {
+		return this.showIdentifiers;
 	}
-
-	/** Get the singular form of a plural property name.
-	 * @param name Property name
-	 * @return Singular form of a property name
+	
+	/** Set show identifiers flag.
+	 * @param flag If true, show identifiers in Text display mode
 	 */
-	public static synchronized String singularName(String name) {
-		String singular = null;
-		int len = name.length();
-		if (name.substring(len-3).equals("ies")) {
-			singular = name.substring(0, len-3) + "y";
-		}
-		else {
-			singular = name.substring(0, len-1);
-		}
-		
-		return singular;
+	public void setShowIdentifiers(boolean flag) {
+		this.showIdentifiers = flag;
 	}
 }

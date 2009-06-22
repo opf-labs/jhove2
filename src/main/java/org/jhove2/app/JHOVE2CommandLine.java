@@ -84,6 +84,7 @@ public class JHOVE2CommandLine {
 			Displayable displayer =
 				Configure.getReportable(Displayable.class,
 						                parser.getDisplayer());
+			displayer.setShowIdentifiers(parser.getShowIdentifiers());
 			jhove2.setDisplayer(displayer);
 			jhove2.display();
 		} catch (Exception e) {
@@ -104,15 +105,17 @@ public class JHOVE2CommandLine {
 		
 		StringBuffer usage = new StringBuffer("usage: ");
 		usage.append(JHOVE2CommandLine.class.getName());
-		usage.append(" -b <bufferSize>");
-		usage.append(" -B ");
+		usage.append(" [-I]");
+		usage.append(" [-b <bufferSize>]");
+		usage.append(" [-B ");
 		for (int i=0; i<bufferTypes.length; i++) {
 			if ( i > 0) {
 				usage.append("|");
 			}
 			usage.append(bufferTypes[i]);
 		}
-		usage.append(" -d ");
+		usage.append("]");
+		usage.append(" [-d ");
 		for (int i=0; i<displayers.length; i++) {
 			if (i > 0) {
 				usage.append("|");
@@ -120,7 +123,8 @@ public class JHOVE2CommandLine {
 			int in = displayers[i].indexOf("Displayer");
 			usage.append(displayers[i].substring(0, in));
 		}
-		usage.append(" -f <failFastLimit>");
+		usage.append("]");
+		usage.append(" [-f <failFastLimit>]");
 		usage.append(" <file> ...");
 		
 		return usage.toString();

@@ -51,7 +51,6 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.module.display.Displayer;
 import org.jhove2.core.config.Configure;
 import org.jhove2.core.io.Input.Type;
 import org.jhove2.core.source.ClumpSource;
@@ -103,9 +102,15 @@ public class JHOVE2
 	
 	/** Default {@link org.jhove2.core.io.Input} buffer type. */
 	public static final Type DEFAULT_BUFFER_TYPE = Type.Direct;
+
+	/** Default {@link org.jhove2.core.Displayable}. */
+	public static final String DEFAULT_DISPLAYER = "TextDisplayer";
 	
 	/** Default fail fast limit. */
 	public static final int DEFAULT_FAIL_FAST_LIMIT = 0;
+	
+	/** Default show identifiers flag. */
+	public static final boolean DEFAULT_SHOW_IDENTIFIERS = false;
 	
 	/** Default temporary file prefix. */
 	public static final String DEFAULT_TEMP_PREFIX = "jhove2-tmp";
@@ -221,11 +226,11 @@ public class JHOVE2
 		initInstallation();
 		initInvocation();
 		
-		this.bufferSize     = DEFAULT_BUFFER_SIZE;
-		this.bufferType     = DEFAULT_BUFFER_TYPE;
-		this.failFastLimit  = DEFAULT_FAIL_FAST_LIMIT;
-		this.tempPrefix     = DEFAULT_TEMP_PREFIX;
-		this.tempSuffix     = DEFAULT_TEMP_SUFFIX;
+		this.bufferSize      = DEFAULT_BUFFER_SIZE;
+		this.bufferType      = DEFAULT_BUFFER_TYPE;
+		this.failFastLimit   = DEFAULT_FAIL_FAST_LIMIT;
+		this.tempPrefix      = DEFAULT_TEMP_PREFIX;
+		this.tempSuffix      = DEFAULT_TEMP_SUFFIX;
 		
 		this.numBytestreams = 0;
 		this.numClumps      = 0;
@@ -446,8 +451,8 @@ public class JHOVE2
 			if (size > 0) {
 				this.displayer.startCollection(out, level+1, name, identifier,
 						                  size, order);
-				String nm = Displayer.singularName(name);
-				I8R    id = Displayer.singularIdentifier(identifier);
+				String nm = singularName(name);
+				I8R    id = singularIdentifier(identifier);
 				Iterator<?> it3 = ls.iterator();
 				for (int i=0; it3.hasNext(); i++) {
 					Object prop = it3.next();
@@ -462,8 +467,8 @@ public class JHOVE2
 			if (size > 0) {
 				this.displayer.startCollection(out, level+1, name,
 						                  identifier, size, order);
-				String nm = Displayer.singularName(name);
-				I8R    id = Displayer.singularIdentifier(identifier);
+				String nm = singularName(name);
+				I8R    id = singularIdentifier(identifier);
 				Iterator<?> it3 = set.iterator();
 				for (int i=0; it3.hasNext(); i++) {
 					Object prop = it3.next();
@@ -485,6 +490,42 @@ public class JHOVE2
 		}
 	}
 
+	/** Get the singular form of a plural property identifier.
+	 * @param identifier Property identifier
+	 * @return Singular form of a property identifier
+	 */
+	public static synchronized I8R singularIdentifier(I8R identifier) {
+		I8R singular = null;
+		String value = identifier.getValue();
+		int in  = value.lastIndexOf('/') + 1;
+		int len = value.length();
+		if (value.substring(len-3).equals("ies")) {
+			singular = new I8R(value + "/" + value.substring(in, len-3) + "y");
+		}
+		else {
+			singular = new I8R(value + "/" + value.substring(in, len-1));
+		}
+		
+		return singular;
+	}
+
+	/** Get the singular form of a plural property name.
+	 * @param name Property name
+	 * @return Singular form of a property name
+	 */
+	public static synchronized String singularName(String name) {
+		String singular = null;
+		int len = name.length();
+		if (name.substring(len-3).equals("ies")) {
+			singular = name.substring(0, len-3) + "y";
+		}
+		else {
+			singular = name.substring(0, len-1);
+		}
+		
+		return singular;
+	}
+	
 	/** Get platform architecture.
 	 * @return Platform architecture
 	 */
