@@ -147,13 +147,8 @@
 	
 	<!-- UTF-8 module bean -->
 	<bean id="UTF8Module" class="org.jhove2.module.format.utf8.UTF8Module"
-	      scope="prototype">
-	    <constructor-arg ref="UTF8"/>
-	</bean>
-	      
-	<bean id="UTF8" class="org.jhove2.module.format.utf8.UTF8"
 	      scope="prototype"/>
-   	      
+
 	<bean id="UTF8Character" class="org.jhove2.module.format.utf8.UTFCharacter"
 	      scope="prototype"/>
    
@@ -213,7 +208,7 @@
 		             location="classpath:properties/unicode/c1control.properties"/>
 
 	<!-- Codeblock properties bean -->
-	<util:properties id="Codeblock"	
+	<util:properties id="CodeBlock"	
 		             location="classpath:properties/unicode/codeblock.properties"/>
 		
 	<!-- Displayer properties bean -->

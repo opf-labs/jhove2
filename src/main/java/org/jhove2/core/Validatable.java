@@ -47,8 +47,8 @@ public interface Validatable
 {
 	/** Validity values. */
 	public enum Validity {
-		Valid,
-		Invalid,
+		True,
+		False,
 		Undetermined
 	}
 	

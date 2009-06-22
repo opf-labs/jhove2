@@ -345,6 +345,14 @@ public class JHOVE2
 		}
 	}
 	
+	public boolean failFast(int numErrors) {
+		if (failFastLimit > 0 && numErrors > failFastLimit) {
+			return true;
+		}
+		
+		return false;
+	}
+	
 	/** Display the framework to the standard output stream.
 	 */
 	public void display() {

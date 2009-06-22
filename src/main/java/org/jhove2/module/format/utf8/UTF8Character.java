@@ -43,9 +43,8 @@ import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.AbstractModel;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.Parsable;
 import org.jhove2.core.Validatable;
-import org.jhove2.core.source.Source;
+import org.jhove2.core.io.Input;
 import org.jhove2.module.format.unicode.C0Control;
 import org.jhove2.module.format.unicode.C1Control;
 import org.jhove2.module.format.unicode.CodeBlock;
@@ -58,7 +57,7 @@ import org.jhove2.module.format.unicode.Unicode.EOL;
  */
 public class UTF8Character
 	extends AbstractModel
-	implements Parsable, Validatable
+	implements Validatable
 {
 	/** C0 control. */
 	protected C0Control c0control;
@@ -100,9 +99,18 @@ public class UTF8Character
 	 */
 	public UTF8Character() {
 		super();
+		
+		this.codePoint      = UNINITIALIZED;
+		this.isBOM          = false;
+		this.isC0Control    = false;
+		this.isC1Control    = false;
+		this.isNonCharacter = false;
+		this.isValid        = Validity.Undetermined;
+		this.size           = 0;
 	}
 
-	/** Parse a source unit.  Implicitly set the start and end elapsed time.
+	/** Parse a source unit input.  Implicitly set the start and end elapsed
+	 * time.
 	 * @param jhove2 JHOVE2 framework
 	 * @param source Source unit
 	 * @return Number of bytes consumed
@@ -110,13 +118,137 @@ public class UTF8Character
 	 * @throws IOException     If an I/O exception is raised reading the source
 	 *                         unit
 	 * @throws JHOVE2Exception
-	 * @see org.jhove2.core.Parsable#parse(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
 	 */
-	@Override
-	public long parse(JHOVE2 jhove2, Source source) throws EOFException,
-			IOException, JHOVE2Exception {
-		// TODO Auto-generated method stub
-		return 0;
+	public long parse(JHOVE2 jhove2, Input input)
+		throws EOFException, IOException, JHOVE2Exception
+	{
+		setStartTime();
+		
+		this.isValid  = Validity.True;
+		int numErrors = 0;
+		
+		/* Read the first byte. */
+		long consumed = 0L;
+		int[] b = new int[4];
+		b[0] = input.readUnsignedByte();
+		if (b[0] == Input.EOF) {
+			this.isValid = Validity.False;
+			throw new EOFException();
+		}
+		consumed++;
+		
+		/* Determine size of the character [Unicode, D92]. */
+		if      (0x00 <= b[0] && b[0] <= 0x7F) {
+			this.size = 1;
+		}
+		else if (0xC2 <= b[0] && b[0] <= 0xDF) {
+			this.size = 2;
+		}
+		else if  (0xe0 <= b[0] && b[0] <= 0xEF) {
+			this.size = 3;
+		}
+		else if  (0xF0 <= b[0] && b[0] <= 0xF4) {
+			this.size = 4;
+		}
+		else if ((0x80 <= b[0] && b[0] <= 0xC1) ||
+		         (0xF5 <= b[0] && b[0] <= 0xFF)) {
+			this.isValid = Validity.False;
+			
+			/* TODO: InvalidByteValue. */
+			
+			if (jhove2.failFast(++numErrors)) {
+				setEndTime();
+				
+				return consumed;
+			}
+		}
+		
+		/* Read the remaining bytes. */
+		for (int i=1; i<this.size; i++) {
+			b[i] = input.readUnsignedByte();
+			if (b[i] == Input.EOF) {
+				this.isValid = Validity.False;
+				throw new EOFException();
+			}
+			consumed++;
+
+			if ((i == 2 && ((this.size == 3 &&
+					         ((b[0] == 0xE0 && (0x0A > b[i] || b[i] > 0xBF)) ||
+					          (b[0] == 0xED && (0x80 > b[i] || b[i] > 0x9F)))) ||
+					        (this.size == 4 &&
+					         ((b[0] == 0xF0 && (0x90 > b[i] || b[i] > 0xBF)) ||
+					          (b[0] == 0xF4 && (0x80 > b[i] || b[i] > 0x8F)))))) ||
+				(0x80 > b[i] || b[i] > 0xBF)) {
+				this.isValid = Validity.False;
+
+				/* TODO: InvalidByteValue. */
+				
+				if (jhove2.failFast(++numErrors)) {
+					setEndTime();
+					
+					return consumed;
+				}
+			}
+		}
+		
+		/* Determine the character's code point. */
+		if      (this.size == 1) {
+			this.codePoint =   b[0];
+		}
+		else if (this.size == 2) {
+			this.codePoint = ((b[0] & 0x1f) <<  6) + (  b[1] & 0x3f);
+		}
+		else if (this.size == 3) {
+			this.codePoint = ((b[0] & 0x0f) << 12) + (( b[1] & 0x3f) <<  6) +
+					                                  ( b[2] & 0x3f);
+		}
+		else if (this.size == 4) {
+			this.codePoint = ((b[0] & 0x07) << 18) + (( b[1] & 0x3f) << 12) +
+				 	                                  ((b[2] & 0x3f) <<  6) +
+					                                   (b[3] & 0x3f);
+		}
+
+		/* Set character properties. */
+		if (this.codePoint == BOM) {
+			this.isBOM = true;
+		}	
+		
+		this.codeBlock = CodeBlock.getBlock(this.codePoint);
+		this.c0control = C0Control.getControl(this.codePoint);
+		this.c1control = C1Control.getControl(this.codePoint);
+
+		/* Check for code point outside of valid range [Unicode, D76]. */
+		if (this.codePoint < 0x00 ||
+			(0xD7FF < this.codePoint && this.codePoint < 0xE000) ||
+			this.codePoint > 0x10FFFF) {
+			this.isValid = Validity.False;
+			
+			/* TODO: code point outside of valid range. */
+			
+			if (jhove2.failFast(++numErrors)) {
+				setEndTime();
+				
+				return consumed;
+			}
+		}
+		/* Check if code point is a non-character [Unicode, D14] */
+		if ((this.codePoint >= 0xFDD0  && this.codePoint <= 0xFDEF) ||
+		     this.codePoint == 0x0FFFE || this.codePoint == 0x0FFFF ||
+			 this.codePoint == 0x1FFFE || this.codePoint == 0x1FFFF ||
+			 this.codePoint == 0x2FFFE || this.codePoint == 0x2FFFF ||
+			 this.codePoint == 0x3FFFE || this.codePoint == 0x3FFFF ||
+			 this.codePoint == 0x4FFFE || this.codePoint == 0x4FFFF ||
+			 this.codePoint == 0x5FFFE || this.codePoint == 0x5FFFF ||
+			 this.codePoint == 0x6FFFE || this.codePoint == 0x6FFFF ||
+			 this.codePoint == 0x7FFFE || this.codePoint == 0x7FFFF ||
+			 this.codePoint == 0x8FFFE || this.codePoint == 0x8FFFF ||
+			 this.codePoint == 0x9FFFE || this.codePoint == 0x9FFFF ||
+			 this.codePoint ==0x10FFFE || this.codePoint ==0x10FFFF) {
+			this.isNonCharacter = true;
+		}
+		setEndTime();
+		
+		return consumed;
 	}
 
 	/** Validate a source unit.  Implicitly set the starting and ending elapsed
@@ -126,7 +258,6 @@ public class UTF8Character
 	 */
 	@Override
 	public Validity validate(JHOVE2 jhove2) {
-		// TODO Auto-generated method stub
 		return this.isValid;
 	}
 	
