@@ -136,9 +136,8 @@ public class CharacterizerModule
 						FormatIdentification id = iter.next();
 						Parsable module =
 							this.dispatcher.dispatch(jhove2, source, id);
-						if (module != null) {
-							module.parse(jhove2, source);
-							source.addModule(module);
+					if (module != null) {
+						source.addModule(module);
 						}
 					}
 				}
