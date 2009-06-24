@@ -39,6 +39,7 @@ package org.jhove2.module.dispatch;
 import java.io.EOFException;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -48,10 +49,13 @@ import org.jhove2.core.AbstractModule;
 import org.jhove2.core.Dispatchable;
 import org.jhove2.core.Format;
 import org.jhove2.core.FormatIdentification;
+import org.jhove2.core.FormatModule;
+import org.jhove2.core.FormatProfile;
 import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Parsable;
+import org.jhove2.core.Validatable;
 import org.jhove2.core.config.Configure;
 import org.jhove2.core.source.Source;
 
@@ -68,7 +72,7 @@ public class DispatcherModule
 	public static final String VERSION = "1.0.0";
 
 	/** Dispatcher module release date. */
-	public static final String DATE = "2009-06-16";
+	public static final String RELEASE = "2009-06-23";
 	
 	/** Dispatcher module rights statement. */
 	public static final String RIGHTS =
@@ -86,7 +90,7 @@ public class DispatcherModule
 	public DispatcherModule()
 		throws JHOVE2Exception
 	{
-		super(VERSION, DATE, RIGHTS);
+		super(VERSION, RELEASE, RIGHTS);
 		
 		this.dispatch = new TreeMap<String,String>();
 		Properties props = Configure.getProperties("Dispatch");
@@ -123,6 +127,22 @@ public class DispatcherModule
 			if (module != null) {
 				module.setStartTime();
 				module.parse(jhove2, source);
+				if (module instanceof Validatable) {
+					((Validatable) module).validate(jhove2, source);
+				}
+				if (module instanceof FormatModule) {
+					List<FormatProfile> profiles =
+						((FormatModule) module).getProfiles();
+					if (profiles.size() > 0) {
+						Iterator<FormatProfile> iter = profiles.iterator();
+						while (iter.hasNext()) {
+							FormatProfile profile = iter.next();
+							profile.setStartTime();
+							profile.validate(jhove2, source);
+							profile.setEndTime();
+						}
+					}
+				}
 				module.setEndTime();
 			}
 		}

@@ -36,21 +36,41 @@
 
 package org.jhove2.core;
 
-import org.jhove2.annotation.ReportableProperty;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.jhove2.core.source.Source;
 
-/** Interface for JHOVE2 modules with validation capability.
+/** Abstract JHOVE2 format module.
  * 
  * @author mstrong, slabrams
  */
-public interface Validatable
-	extends Processible
+public abstract class AbstractFormatModule
+	extends AbstractModule
+	implements Validatable, FormatModule
 {
-	/** Validity values. */
-	public enum Validity {
-		True,
-		False,
-		Undetermined
+	/** Format module format. */
+	protected Format format;
+	
+	/** Format profile validity. */
+	protected Validity isValid;
+	
+	/** Format module format profiles. */
+	protected List<FormatProfile> profiles;
+
+	/** Instantiate a new <code>AbstractFormatModule</code>
+	 * @param version Format module version identifier
+	 * @param release Format module release date
+	 * @param rights  Format module rights statement
+	 * @param format  Format
+	 */
+	public AbstractFormatModule(String version, String release, String rights,
+			                    Format format) {
+		super(version, release, rights);
+
+		this.format   = format;
+		this.isValid  = Validity.Undetermined;
+		this.profiles = new ArrayList<FormatProfile>();
 	}
 	
 	/** Validate a source unit.  Implicitly set the starting and ending elapsed
@@ -58,12 +78,44 @@ public interface Validatable
 	 * @param jhove2 JHOVE2 framework
 	 * @param source Source unit
 	 * @return Validation status
+	 * @see org.jhove2.core.Validatable#validate(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
 	 */
-	public Validity validate(JHOVE2 jhove2, Source source);
+	public abstract Validity validate(JHOVE2 jhove2, Source source);
+
+	/** Get format module format.
+	 * @return Format module format
+	 * @see org.jhove2.core.FormatProfile#getFormat()
+	 */
+	@Override
+	public Format getFormat() {
+		return this.format;
+	}
 	
-	/** Get validation status.
-	 * @return Validation status
+	/** Get format module format profiles.
+	 * @return Format module format rofiles
+	 * @see org.jhove2.core.FormatModule#getProfiles()
 	 */
-	@ReportableProperty("Validation status.")
-	public Validity isValid();
+	@Override
+	public List<FormatProfile> getProfiles() {
+		return this.profiles;
+	}
+		
+	/** Set format module format profile.
+	 * @param profile Format module format profile
+	 * @see org.jhove2.core.FormatModule#setProfile(org.jhove2.core.FormatProfile)
+	 */
+	@Override
+	public void setProfile(FormatProfile profile) {
+		profile.setFormatModule(this);
+		this.profiles.add(profile);
+	}
+
+	/** Get format validation status.
+	 * @return Format validation status
+	 * @see org.jhove2.core.Validatable#isValid()
+	 */
+	@Override
+	public Validity isValid() {
+		return this.isValid;
+	}
 }

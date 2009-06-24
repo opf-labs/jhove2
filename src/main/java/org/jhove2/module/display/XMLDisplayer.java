@@ -51,7 +51,7 @@ public class XMLDisplayer
 	public static final String VERSION = "1.0.0";
 
 	/** XML displayer release date. */
-	public static final String DATE = "2009-06-11";
+	public static final String RELEASE = "2009-06-11";
 	
 	/** XML displayer rights statement. */
 	public static final String RIGHTS =
@@ -114,7 +114,7 @@ public class XMLDisplayer
 	/** Instantiate a new <code>XMLDisplayer</code>.
 	 */
 	public XMLDisplayer() {
-		super(VERSION, DATE, RIGHTS);
+		super(VERSION, RELEASE, RIGHTS);
 		
 		this.prefix = "j2:";
 		this.uri    = "http://jhove2.org/ns/display/1.0.0";

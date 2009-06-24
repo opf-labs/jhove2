@@ -51,7 +51,7 @@ public class TextDisplayer
 	public static final String VERSION = "1.0.0";
 
 	/** Text displayer release date. */
-	public static final String DATE = "2009-06-11";
+	public static final String RELEASE = "2009-06-11";
 	
 	/** Text displayer rights statement. */
 	public static final String RIGHTS =
@@ -63,7 +63,7 @@ public class TextDisplayer
 	/** Instantiate a new <code>TextDisplayer</code>.
 	 */
 	public TextDisplayer() {
-		super(VERSION, DATE, RIGHTS);
+		super(VERSION, RELEASE, RIGHTS);
 	}
 
 	/** Start display.

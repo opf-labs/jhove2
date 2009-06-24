@@ -36,20 +36,20 @@
 
 package org.jhove2.module.identify;
 
-import org.jhove2.core.AbstractModule;
+import org.jhove2.core.AbstractProduct;
 
 /** JHOVE2 wrapper for the DROID format identification tool.
  * 
  * @author mstrong, slabrams
  */
 public class DROIDWrapper
-	extends AbstractModule
+	extends AbstractProduct
 {
 	/** DROID version identifier. */
 	public static final String VERSION = "4.0";
 
 	/** DROID release date. */
-	public static final String DATE = "2009-06-09";
+	public static final String RELEASE = "2009-06-09";
 	
 	/** DROID rights statement. */
 	public static final String RIGHTS =
@@ -59,6 +59,6 @@ public class DROIDWrapper
 	/** Instantiate a new <code>DROIDWrapper</code>.
 	 */
 	public DROIDWrapper() {
-		super(VERSION, DATE, RIGHTS);
+		super(VERSION, RELEASE, RIGHTS);
 	}
 }

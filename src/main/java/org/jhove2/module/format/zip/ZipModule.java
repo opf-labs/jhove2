@@ -63,7 +63,7 @@ public class ZipModule
 	public static final String VERSION = "1.0.0";
 
 	/** Zip module release date. */
-	public static final String DATE = "2009-06-16";
+	public static final String RELEASE = "2009-06-16";
 	
 	/** Zip module rights statement. */
 	public static final String RIGHTS =
@@ -76,7 +76,7 @@ public class ZipModule
 	/** Instantiate a new <code>ZipModule</code>.
 	 */
 	public ZipModule() {
-		super(VERSION, DATE, RIGHTS);
+		super(VERSION, RELEASE, RIGHTS);
 	}
 
 	/** Parse a source unit.  Implicitly set the start and end elapsed time.

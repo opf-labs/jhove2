@@ -60,7 +60,7 @@ public class DirectoryModule
 	public static final String VERSION = "1.0.0";
 
 	/** Directory module release date. */
-	public static final String DATE = "2009-06-15";
+	public static final String RELEASE = "2009-06-15";
 	
 	/** Directory module rights statement. */
 	public static final String RIGHTS =
@@ -72,7 +72,7 @@ public class DirectoryModule
 	/** Instantiate a new <code>DirectoryModule</code>.
 	 */
 	public DirectoryModule() {
-		super(VERSION, DATE, RIGHTS);
+		super(VERSION, RELEASE, RIGHTS);
 	}
 
 	/** Parse a source unit.

@@ -38,12 +38,17 @@ package org.jhove2.module.format.utf8;
 
 import java.io.EOFException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.AbstractModel;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.Validatable;
+import org.jhove2.core.Message;
+import org.jhove2.core.Message.Context;
+import org.jhove2.core.Message.Severity;
+import org.jhove2.core.Validatable.Validity;
 import org.jhove2.core.io.Input;
 import org.jhove2.module.format.unicode.C0Control;
 import org.jhove2.module.format.unicode.C1Control;
@@ -57,8 +62,13 @@ import org.jhove2.module.format.unicode.Unicode.EOL;
  */
 public class UTF8Character
 	extends AbstractModel
-	implements Validatable
 {
+	/** Byte Order Mark (BOM). */
+	public static final int BOM = 0xFEFF;
+	
+	/** Marker that the character code point is uninitialized or unknown. */
+	public static final int UNINITIALIZED = -1;
+	
 	/** C0 control. */
 	protected C0Control c0control;
 
@@ -67,15 +77,15 @@ public class UTF8Character
 	
 	/** Unicode code block. */
 	protected CodeBlock codeBlock;
-	
-	/** Byte Order Mark (BOM). */
-	public static final int BOM = 0xFEFF;
-	
-	/** Marker that the character code point is uninitialized or unknown. */
-	public static final int UNINITIALIZED = -1;
-	
+
 	/** Character code point. */
 	protected int codePoint;
+		
+	/** Code point out of range message. */
+	protected Message codePointOutOfRangeMessage;
+
+	/** Invalid byte value message. */
+	protected List<Message> invalidByteValueMessages;
 	
 	/** Byte Order Mark (BOM) status. */
 	protected boolean isBOM;
@@ -107,6 +117,8 @@ public class UTF8Character
 		this.isNonCharacter = false;
 		this.isValid        = Validity.Undetermined;
 		this.size           = 0;
+		
+		this.invalidByteValueMessages = new ArrayList<Message>();
 	}
 
 	/** Parse a source unit input.  Implicitly set the start and end elapsed
@@ -123,9 +135,7 @@ public class UTF8Character
 		throws EOFException, IOException, JHOVE2Exception
 	{
 		setStartTime();
-		
-		this.isValid  = Validity.True;
-		int numErrors = 0;
+		this.isValid = Validity.True;
 		
 		/* Read the first byte. */
 		long consumed = 0L;
@@ -153,14 +163,10 @@ public class UTF8Character
 		else if ((0x80 <= b[0] && b[0] <= 0xC1) ||
 		         (0xF5 <= b[0] && b[0] <= 0xFF)) {
 			this.isValid = Validity.False;
-			
-			/* TODO: InvalidByteValue. */
-			
-			if (jhove2.failFast(++numErrors)) {
-				setEndTime();
-				
-				return consumed;
-			}
+			this.invalidByteValueMessages.add(new Message(Severity.ERROR,
+					                                      Context.OBJECT,
+						                                  "Invalid byte value: " +
+						                                  b[0]));
 		}
 		
 		/* Read the remaining bytes. */
@@ -180,14 +186,10 @@ public class UTF8Character
 					          (b[0] == 0xF4 && (0x80 > b[i] || b[i] > 0x8F)))))) ||
 				(0x80 > b[i] || b[i] > 0xBF)) {
 				this.isValid = Validity.False;
-
-				/* TODO: InvalidByteValue. */
-				
-				if (jhove2.failFast(++numErrors)) {
-					setEndTime();
-					
-					return consumed;
-				}
+				this.invalidByteValueMessages.add(new Message(Severity.ERROR,
+						                                      Context.OBJECT,
+						                                      "Invalid byte value: " +
+						                                      b[i]));
 			}
 		}
 		
@@ -222,15 +224,11 @@ public class UTF8Character
 			(0xD7FF < this.codePoint && this.codePoint < 0xE000) ||
 			this.codePoint > 0x10FFFF) {
 			this.isValid = Validity.False;
-			
-			/* TODO: code point outside of valid range. */
-			
-			if (jhove2.failFast(++numErrors)) {
-				setEndTime();
-				
-				return consumed;
-			}
+			this.codePointOutOfRangeMessage =
+				new Message(Severity.ERROR, Context.OBJECT,
+						    "Code point out of range: " + this.codePoint);
 		}
+		
 		/* Check if code point is a non-character [Unicode, D14] */
 		if ((this.codePoint >= 0xFDD0  && this.codePoint <= 0xFDEF) ||
 		     this.codePoint == 0x0FFFE || this.codePoint == 0x0FFFF ||
@@ -254,9 +252,8 @@ public class UTF8Character
 	/** Validate a source unit.  Implicitly set the starting and ending elapsed
 	 * time.
 	 * @param jhove2 JHOVE2 framework
-	 * @see org.jhove2.core.Validatable#validate(org.jhove2.core.JHOVE2)
+	 * @param source Source unit
 	 */
-	@Override
 	public Validity validate(JHOVE2 jhove2) {
 		return this.isValid;
 	}
@@ -325,6 +322,22 @@ public class UTF8Character
 	public C1Control getC1Control() {
 		return this.c1control;
 	}
+	
+	/** Get code point out of range message.
+	 * @return Code point our of range message
+	 */
+	@ReportableProperty(order=12, value="Code point out of range message.")
+	public Message getCodePointOutOfRange() {
+		return this.codePointOutOfRangeMessage;
+	}
+	
+	/** Get invalid byte value message.
+	 * @return Invalid byte value message
+	 */
+	@ReportableProperty(order=11, value="Invalid byte value message.")
+	public List<Message> getInvalidByteValues() {
+		return this.invalidByteValueMessages;
+	}
 
 	/** Get Byte Order Mark (BOM) status.
 	 * @return True if a BOM
@@ -360,9 +373,7 @@ public class UTF8Character
 
 	/** Get validation status.
 	 * @return True if a valid ASCII character stream
-	 * @see org.jhove2.core.Validatable#isValid()
 	 */
-	@Override
 	public Validity isValid() {
 		return this.isValid;
 	}

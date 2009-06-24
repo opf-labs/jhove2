@@ -53,11 +53,11 @@ public class AbstractModule
 	
 	/** Instantiate a new <code>AbstractModule</code>.
 	 * @oaran version Module version identifier in three-part form: "M.N.P"
-	 * @param date    Module release date in ISO 8601 format: "YYYY-MM-DD"
+	 * @param release Module release date in ISO 8601 format: "YYYY-MM-DD"
 	 * @param rights  Module rights statement
 	 */
-	public AbstractModule(String version, String date, String rights) {
-		super(version, date, rights);
+	public AbstractModule(String version, String release, String rights) {
+		super(version, release, rights);
 		
 		this.startTime = System.currentTimeMillis();
 		this.endTime   = Duration.UNINITIALIZED;

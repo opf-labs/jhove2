@@ -36,15 +36,20 @@ package org.jhove2.module.format.utf8;
 
 import java.io.EOFException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.AbstractModule;
+import org.jhove2.core.AbstractFormatModule;
+import org.jhove2.core.Format;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.Message;
 import org.jhove2.core.Parsable;
-import org.jhove2.core.Validatable;
+import org.jhove2.core.Message.Context;
+import org.jhove2.core.Message.Severity;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.Source;
@@ -60,19 +65,22 @@ import org.jhove2.module.format.unicode.Unicode.EOL;
  * @author mstrong, slabrams
  */
 public class UTF8Module
-	extends AbstractModule
-	implements Parsable, Validatable
+	extends AbstractFormatModule
+	implements Parsable
 {
 	/** UTF-8 module version identifier. */
 	public static final String VERSION = "1.0.0";
 
 	/** UTF-8 module release date. */
-	public static final String DATE = "2009-06-22";
+	public static final String RELEASE = "2009-06-23";
 	
 	/** UTF-8 module rights statement. */
 	public static final String RIGHTS =
 		"Copyright 2009 by The Regents of the University of California. " +
 		"Available under the terms of the BSD license.";
+	
+	/** Byte Order Mark (BOM) message. */
+	protected Message bomMessage;
 	
 	/** Non-line ending C0 control characters. CR and LF are therefore
 	 * <em>not</em> found in this set. */
@@ -87,8 +95,11 @@ public class UTF8Module
 	/** End-of-Line (EOL) characters. */
 	protected Set<EOL> eolCharacters;
 	
-	/** Validity status. */
-	protected Validity isValid;
+	/** Fail fast message. */
+	protected Message failFastMessage;
+	
+	/** Invalid UTF-8 characters. */
+	protected List<UTF8Character> invalidCharacters;
 
 	/** Number of characters. */
 	protected long numCharacters;
@@ -100,18 +111,20 @@ public class UTF8Module
 	protected long numNonCharacters;
 
 	/** Instantiate a new <code>UTF8Module</code>.
+	 * @param format UTF-8 format
 	 */
-	public UTF8Module() {
-		super(VERSION, DATE, RIGHTS);
+	public UTF8Module(Format format) {
+		super(VERSION, RELEASE, RIGHTS, format);
 		
 		this.c0Characters  = new TreeSet<C0Control>();
 		this.c1Characters  = new TreeSet<C1Control>();
 		this.codeBlocks    = new TreeSet<CodeBlock>();
-		this.eolCharacters = new TreeSet<EOL>();		
-		this.isValid       = Validity.Undetermined;	
+		this.eolCharacters = new TreeSet<EOL>();
 		this.numCharacters    = 0L;
 		this.numLines         = 0L;
 		this.numNonCharacters = 0L;
+		
+		this.invalidCharacters = new ArrayList<UTF8Character>();
 	}
 
 	/** Parse a source unit.
@@ -159,11 +172,23 @@ public class UTF8Module
 				/* TODO: EndOfFile. */
 				break;
 			}
+			consumed += n;
 			int codePoint = ch.getCodePoint();
-			
-			/* TODO: copy any error messages. */
-			
 			this.numCharacters++;
+			
+			Validity isValid  = ch.isValid();
+			if (isValid == Validity.False) {
+				this.isValid = isValid;
+				if (jhove2.failFast(++numErrors)) {
+					this.failFastMessage =
+						new Message(Severity.INFO, Context.PROCESS,
+								    "Fail fast limit exceeded; additional " +
+								    "errors may exist but will not be " +
+								    "reported");
+					break;
+				}
+				this.invalidCharacters.add(ch);
+			}
 			
 			/* Determine character properties. */
 			eol = UTF8Character.getEOL(prevCodePoint, codePoint);
@@ -186,8 +211,10 @@ public class UTF8Module
 				this.c1Characters.add(c1);
 			}
 			if (position == start && ch.isByteOrderMark()) {
-
-				/* TODO: ByteOrderMark. */
+				this.bomMessage =
+					new Message(Severity.INFO, Context.OBJECT,
+							    "Byte Order Mark (BOM) at byte offset: " +
+							    position);
 			}
 			if (ch.isNonCharacter()) {
 				this.numNonCharacters++;
@@ -198,11 +225,9 @@ public class UTF8Module
 			
 			prevCodePoint = codePoint;
 			position += n;
-			consumed += n;
 		}
 		eol = UTF8Character.getEOL(prevCodePoint, UTF8Character.UNINITIALIZED);
 		if (eol != null) {
-			/* TODO: this.eolCharacters.add(eol); */
 			this.numLines++;
 			this.eolCharacters.add(eol);
 		}
@@ -214,15 +239,24 @@ public class UTF8Module
 		return consumed;
 	}
 
-	/** Validate a source unit.  Implicitly set the starting and ending elapsed
-	 * time.
+	/** Validate a UTF-8 source unit.  Implicitly set the starting and ending
+	 * lapsed time.
 	 * @param jhove2 JHOVE2 framework
+	 * @param source Source unit
 	 * @return Validation status
 	 * @see org.jhove2.core.Validatable#validate(org.jhove2.core.JHOVE2)
 	 */
 	@Override
-	public Validity validate(JHOVE2 jhove2) {
+	public Validity validate(JHOVE2 jhove2, Source source) {
 		return this.isValid;
+	}
+	
+	/** Get Byte Order Mark (BOM) message.
+	 * @return Byte Order Mark (BOM) message
+	 */
+	@ReportableProperty(order=11, value="Byte Order Mark (BOM) message.")
+	public Message getByteOrderMark() {
+		return this.bomMessage;
 	}
 
 	/** Get non-line ending C0 control characters.  Therefore CR and LF will
@@ -259,6 +293,22 @@ public class UTF8Module
 		return this.eolCharacters;
 	}
 	
+	/** Get fail fast message.
+	 * @return Fail fast message
+	 */
+	@ReportableProperty(order=13, value="Fail fast message.")
+	public Message getFailFast() {
+		return this.failFastMessage;
+	}
+	
+	/** Get invalid UTF-8 characters.
+	 * @return Invalid UTF-8 characters
+	 */
+	@ReportableProperty(order=12, value="Invalid UTF-8 characters.")
+	public List<UTF8Character> getInvalidCharacters() {
+		return this.invalidCharacters;
+	}
+	
 	/** Get number of characters.
 	 * @return Number of characters
 	 */
@@ -282,14 +332,5 @@ public class UTF8Module
 	@ReportableProperty(order=7, value="Number of UTF-8 non-characters.")
 	public long getNumNonCharacters() {
 		return this.numNonCharacters;
-	}
-	
-	/** Get validation status.
-	 * @return Validation status
-	 * @see org.jhove2.core.Validatable#isValid()
-	 */
-	@Override
-	public Validity isValid() {
-		return this.isValid;
 	}
 }

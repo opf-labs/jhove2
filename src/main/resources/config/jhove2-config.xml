@@ -147,7 +147,10 @@
 	
 	<!-- UTF-8 module bean -->
 	<bean id="UTF8Module" class="org.jhove2.module.format.utf8.UTF8Module"
-	      scope="prototype"/>
+	      scope="prototype">
+	    <constructor-arg ref="UTF8Format"/>
+	    <property name="profile" ref="ASCIIProfile"/>
+	</bean>
 
 	<bean id="UTF8Character" class="org.jhove2.module.format.utf8.UTFCharacter"
 	      scope="prototype"/>
@@ -163,6 +166,27 @@
 	<!-- UTF-8 identifier bean -->  
 	<bean id="UTF8Identifier" class="org.jhove2.core.I8R" scope="singleton">
 		<constructor-arg type="java.lang.String" value="info:jhove2/format/utf-8"/>
+	</bean>
+	
+	
+	  
+  	<!-- ASCII profile bean -->
+	<bean id="ASCIIProfile" class="org.jhove2.module.format.utf8.ascii.ASCIIProfile"
+	      scope="prototype">
+	    <constructor-arg ref="ASCIIFormat"/>
+	</bean>
+	
+	<!-- ASCII format bean -->
+	<bean id="ASCIIFormat" class="org.jhove2.core.Format" scope="singleton">
+		<constructor-arg type="java.lang.String" value="ASCII"/>
+		<constructor-arg ref="ASCIIIdentifier"/>
+		<constructor-arg type="org.jhove2.core.Format$Type" value="Format"/>
+		<constructor-arg type="org.jhove2.core.Format$Ambiguity" value="Unambiguous"/>
+	</bean>
+		
+	<!-- ASCII identifier bean -->  
+	<bean id="ASCIIIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="info:jhove2/format/ascii"/>
 	</bean>
 	
 	

@@ -36,21 +36,37 @@
 
 package org.jhove2.core;
 
-import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.source.Source;
 
-/** Interface for JHOVE2 modules with validation capability.
+/** Absttract JHOVE2 format profile.
  * 
  * @author mstrong, slabrams
  */
-public interface Validatable
-	extends Processible
+public abstract class AbstractFormatProfile
+	extends AbstractModule
+	implements FormatProfile, Validatable
 {
-	/** Validity values. */
-	public enum Validity {
-		True,
-		False,
-		Undetermined
+	/** Format profile profile. */
+	protected Format format;
+	
+	/** Format profile validity. */
+	protected Validity isValid;
+	
+	/** Format module of which this is a profile. */
+	protected FormatModule module;
+	
+	/** Instantiate a new <code>AbstractFormatProfile</code>.
+	 * @param version Format profile version identifier
+	 * @param release Format profile release date
+	 * @param rights  Format profile rights statement
+	 * @param format  Format profile format
+	 */
+	public AbstractFormatProfile(String version, String release, String rights,
+			                     Format format) {
+		super(version, release, rights);
+		
+		this.format  = format;
+		this.isValid = Validity.Undetermined;
 	}
 	
 	/** Validate a source unit.  Implicitly set the starting and ending elapsed
@@ -58,12 +74,34 @@ public interface Validatable
 	 * @param jhove2 JHOVE2 framework
 	 * @param source Source unit
 	 * @return Validation status
+	 * @see org.jhove2.core.Validatable#validate(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
 	 */
-	public Validity validate(JHOVE2 jhove2, Source source);
+	public abstract Validity validate(JHOVE2 jhove2, Source source);
+
+	/** Get format profile format.
+	 * @return Format profile format
+	 * @see org.jhove2.core.FormatProfile#getFormat()
+	 */
+	@Override
+	public Format getFormat() {
+		return this.format;
+	}
+
+	/** Get format profile validation status.
+	 * @return Format profile validation status
+	 * @see org.jhove2.core.Validatable#isValid()
+	 */
+	@Override
+	public Validity isValid() {
+		return this.isValid;
+	}
 	
-	/** Get validation status.
-	 * @return Validation status
+	/** Set the format module of which this is a profile.
+	 * @param module Format module
+	 * @see org.jhove2.core.FormatProfile#setFormatMole()
 	 */
-	@ReportableProperty("Validation status.")
-	public Validity isValid();
+	@Override
+	public void setFormatModule(FormatModule module) {
+		this.module = module;
+	}
 }

@@ -70,7 +70,7 @@ public class JHOVE2
 	public static final String VERSION = "2.0.0";
 
 	/** Framework release date. */
-	public static final String DATE = "2009-06-12";
+	public static final String RELEASE = "2009-06-12";
 	
 	/** Framework rights statement. */
 	public static final String RIGHTS =
@@ -220,7 +220,7 @@ public class JHOVE2
 	public JHOVE2()
 		throws JHOVE2Exception
 	{
-		super(VERSION, DATE, RIGHTS);
+		super(VERSION, RELEASE, RIGHTS);
 		
 		/* Initialize the framework. */
 		initInstallation();

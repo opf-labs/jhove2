@@ -37,33 +37,22 @@
 package org.jhove2.core;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.source.Source;
 
-/** Interface for JHOVE2 modules with validation capability.
+/** Interface for JHOVE2 format formatProfiles.
  * 
- * @author mstrong, slabrams
+ * @author mstring, slabrams
  */
-public interface Validatable
-	extends Processible
+public interface FormatProfile
+	extends Validatable
 {
-	/** Validity values. */
-	public enum Validity {
-		True,
-		False,
-		Undetermined
-	}
-	
-	/** Validate a source unit.  Implicitly set the starting and ending elapsed
-	 * time.
-	 * @param jhove2 JHOVE2 framework
-	 * @param source Source unit
-	 * @return Validation status
+	/** Get format profile format.
+	 * @return Format profile format
 	 */
-	public Validity validate(JHOVE2 jhove2, Source source);
+	@ReportableProperty("Format profile format.")
+	public Format getFormat();
 	
-	/** Get validation status.
-	 * @return Validation status
+	/** Set the format module of which this is a profile.
+	 * @param module Format module
 	 */
-	@ReportableProperty("Validation status.")
-	public Validity isValid();
+	public void setFormatModule(FormatModule module);
 }

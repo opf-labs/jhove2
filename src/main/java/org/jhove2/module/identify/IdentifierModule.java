@@ -65,10 +65,10 @@ public class IdentifierModule
 	implements Identifiable
 {
 	/**Identification module version identifier. */
-	public static final String VERSION = "2.0.0";
+	public static final String VERSION = "1.0.0";
 
 	/** Identification module release date. */
-	public static final String DATE = "2009-06-16";
+	public static final String RELEASE = "2009-06-16";
 	
 	/** Identification module rights statement. */
 	public static final String RIGHTS =
@@ -86,7 +86,7 @@ public class IdentifierModule
 	/** Instantiate a new <code>IdentifierModule</code>.
 	 */
 	public IdentifierModule() {
-		super(VERSION, DATE, RIGHTS);
+		super(VERSION, RELEASE, RIGHTS);
 		
 		this.formats = new TreeSet<FormatIdentification>();
 	}
