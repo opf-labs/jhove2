@@ -93,7 +93,8 @@ public class JSONDisplayer
 	@Override
 	public void startReportable(PrintStream out, int level, String name,
 			                    I8R identifier, int order) {
-		StringBuffer buffer = new StringBuffer(getIndent(level));
+		String indent = getIndent(this.showIdentifiers ? 2*level : level);
+		StringBuffer buffer = new StringBuffer(indent);
 		
 		if (order == 0) {
 			buffer.append(" ");
@@ -102,6 +103,10 @@ public class JSONDisplayer
 			buffer.append(",");
 		}
 		buffer.append("\"" + name + "\": {");
+		if (this.showIdentifiers) {
+			buffer.append("\n" + indent + "  \"identifier\": " + identifier + "\"" +
+						  "\n" + indent + " ,\"value\": {");
+		}
 		out.println(buffer);
 	}
 	
@@ -119,7 +124,8 @@ public class JSONDisplayer
 	@Override
 	public void startCollection(PrintStream out, int level, String name,
 			                    I8R identifier, int size, int order) {
-		StringBuffer buffer = new StringBuffer(getIndent(level));
+		String indent = getIndent(this.showIdentifiers ? 2*level : level);
+		StringBuffer buffer = new StringBuffer(indent);
 		
 		if (order == 0) {
 			buffer.append(" ");
@@ -128,6 +134,10 @@ public class JSONDisplayer
 			buffer.append(",");
 		}
 		buffer.append("\"" + name + "\": {");
+		if (this.showIdentifiers) {
+			buffer.append("\n" + indent + "  \"identifier\": " + identifier + "\"" +
+						  "\n" + indent + " ,\"value\": {");
+		}
 		out.println(buffer);
 	}
 	
@@ -145,7 +155,8 @@ public class JSONDisplayer
 	@Override
 	public void displayProperty(PrintStream out, int level, String name,
 			                    I8R identifier, Object value, int order) {
-		StringBuffer buffer = new StringBuffer(getIndent(level));
+		String indent = getIndent(this.showIdentifiers ? 2*level : level);
+		StringBuffer buffer = new StringBuffer(indent);
 		
 		if (order == 0) {
 			buffer.append(" ");
@@ -153,7 +164,21 @@ public class JSONDisplayer
 		else {
 			buffer.append(",");
 		}
-		buffer.append("\"" + name + "\": " + value);
+		buffer.append("\"" + name + "\": ");
+		if (this.showIdentifiers) {
+			buffer.append("{\n" + indent + "   \"identifier\": \"" + identifier + "\"" +
+					       "\n" + indent + "  ,\"value\": ");
+		}
+		if (!(value instanceof Number)) {
+			buffer.append("\"");
+		}
+		buffer.append(value);
+		if (!(value instanceof Number)) {
+			buffer.append("\"");
+		}
+		if (this.showIdentifiers) {
+			buffer.append("\n" + indent + " }");
+		}
 		out.println(buffer);
 	}
 
@@ -168,9 +193,14 @@ public class JSONDisplayer
 	@Override
 	public void endCollection(PrintStream out, int level, String name,
 			                  I8R identifier, int size) {
-		String indent = getIndent(level+1);
+		String indent = getIndent(this.showIdentifiers ? (2*level)+1 : level+1);
+		StringBuffer buffer = new StringBuffer(indent);
 		
-		out.println(indent + "}");
+		if (this.showIdentifiers) {
+			buffer.append(" }\n" + indent);
+		}	
+		buffer.append("}");
+		out.println(buffer);
 	}
 
 	/** End display of a {@link org.jhove2.core.Reportable}.
@@ -183,9 +213,14 @@ public class JSONDisplayer
 	@Override
 	public void endReportable(PrintStream out, int level, String name,
 			                  I8R identifier) {
-		String indent = getIndent(level+1);
+		String indent = getIndent(this.showIdentifiers ? (2*level)+1 : level+1);
+		StringBuffer buffer = new StringBuffer(indent);
 		
-		out.println(indent + "}");
+		if (this.showIdentifiers) {
+			buffer.append(" }\n" + indent);
+		}
+		buffer.append("}");
+		out.println(buffer);
 	}
 	
 	/** End display.
