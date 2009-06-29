@@ -66,6 +66,9 @@ public class UTF8Character
 	/** Byte Order Mark (BOM). */
 	public static final int BOM = 0xFEFF;
 	
+	/** Encoded byte places. */
+	public static final String [] PLACE = {"2nd", "3rd", "4th"};
+	
 	/** Marker that the character code point is uninitialized or unknown. */
 	public static final int UNINITIALIZED = -1;
 	
@@ -101,6 +104,9 @@ public class UTF8Character
 	
 	/** Validation status. */
 	protected Validity isValid;
+	
+	/** Byte offset. */
+	protected long offset;
 	
 	/** Character encoded size, in bytes. */
 	protected int size;
@@ -164,9 +170,8 @@ public class UTF8Character
 		         (0xF5 <= b[0] && b[0] <= 0xFF)) {
 			this.isValid = Validity.False;
 			this.invalidByteValueMessages.add(new Message(Severity.ERROR,
-					                                      Context.OBJECT,
-						                                  "Invalid byte value: " +
-						                                  b[0]));
+					Context.OBJECT, "Invalid first byte value at offset " +
+					input.getPosition() + ": " + b[0]));
 		}
 		
 		/* Read the remaining bytes. */
@@ -187,9 +192,9 @@ public class UTF8Character
 				(0x80 > b[i] || b[i] > 0xBF)) {
 				this.isValid = Validity.False;
 				this.invalidByteValueMessages.add(new Message(Severity.ERROR,
-						                                      Context.OBJECT,
-						                                      "Invalid byte value: " +
-						                                      b[i]));
+						Context.OBJECT, "Invalid " + PLACE[i-1] + " byte " +
+						"value at offset " + input.getPosition() + ": " +
+						b[i]));
 			}
 		}
 		
@@ -226,7 +231,9 @@ public class UTF8Character
 			this.isValid = Validity.False;
 			this.codePointOutOfRangeMessage =
 				new Message(Severity.ERROR, Context.OBJECT,
-						    "Code point out of range: " + this.codePoint);
+						    "Code point out of range at offset " +
+						    (input.getPosition() - consumed) +": " +
+						    this.codePoint);
 		}
 		
 		/* Check if code point is a non-character [Unicode, D14] */
