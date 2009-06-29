@@ -87,7 +87,7 @@ public class JHOVE2CommandLineParser {
 	 *                        type
 	 * @param displayer       Default {@link org.jhove2.core.Displayable}
 	 * @param showIdentifiers Show identifiers flag; if true, show identifiers
-	 *                        in Text display mode
+	 *                        in JSON and Text display mode
 	 * @param failFastLimit   Default fail fast limit
 	 */
 	public JHOVE2CommandLineParser(int bufferSize, Type bufferType,

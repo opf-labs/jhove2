@@ -48,8 +48,8 @@ public abstract class AbstractDisplayer
 	extends AbstractModule
 	implements Displayable
 {
-	/** Show identifiers flag: if true, show identifiers in Text display
-	 * mode.
+	/** Show identifiers flag: if true, show identifiers in JSON and Text
+	 * display mode.
 	 */
 	protected boolean showIdentifiers;
 	
@@ -77,8 +77,8 @@ public abstract class AbstractDisplayer
 	}
 
 	/** Get show identifiers flag.
-	 * @return Show identifiers flag; if true, show identifiers in Text display
-	 *         mode
+	 * @return Show identifiers flag; if true, show identifiers in JSON and
+	 *         Text display mode
 	 * @see org.jhove2.core.Displayable#getShowIdentifiers()
 	 */
 	@Override
@@ -87,7 +87,7 @@ public abstract class AbstractDisplayer
 	}
 	
 	/** Set show identifiers flag.
-	 * @param flag If true, show identifiers in Text display mode
+	 * @param flag If true, show identifiers in JSON and Text display mode
 	 * @see org.jhove2.core.Displayable#setShowIdentifiers(boolean)
 	 */
 	@Override
