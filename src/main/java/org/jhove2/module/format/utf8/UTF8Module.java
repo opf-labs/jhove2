@@ -143,96 +143,104 @@ public class UTF8Module
 	{
 		setStartTime();
 		
-		this.isValid  = Validity.True;
-		int numErrors = 0;
-		Input input   = source.getInput(jhove2.getBufferSize(),
-				                        jhove2.getBufferType());
-		long start    = 0L;
-		long end      = 0L;
-		if (source instanceof FileSource) {
-			end = ((FileSource) source).getSize();
-		}
-		else if (source instanceof ZipFileSource) {
-			end = ((ZipFileSource) source).getSize();
-		};
-		input.setPosition(start);
-
 		long consumed = 0L;
-		EOL  eol = null;
-		long position = start;
-		int  prevCodePoint = UTF8Character.UNINITIALIZED;
-		while (end == 0 || position < end) {
-			UTF8Character ch = new UTF8Character();
-			long n = 0L;
-			try {
-				n = ch.parse(jhove2, input);
-			} catch (EOFException e) {
-				this.isValid = Validity.False;
-
-				/* TODO: EndOfFile. */
-				break;
+		this.isValid  = Validity.Undetermined;
+		int numErrors = 0;
+		Input input = null;
+		try {
+			input = source.getInput(jhove2.getBufferSize(),
+					                jhove2.getBufferType());
+			long start    = 0L;
+			long end      = 0L;
+			if (source instanceof FileSource) {
+				end = ((FileSource) source).getSize();
 			}
-			consumed += n;
-			int codePoint = ch.getCodePoint();
-			this.numCharacters++;
+			else if (source instanceof ZipFileSource) {
+				end = ((ZipFileSource) source).getSize();
+			};
+			input.setPosition(start);
+
+			EOL  eol = null;
+			long position = start;
+			int  prevCodePoint = UTF8Character.UNINITIALIZED;
+			this.isValid = Validity.True;
+			while (end == 0 || position < end) {
+				UTF8Character ch = new UTF8Character();
+				long n = 0L;
+				try {
+					n = ch.parse(jhove2, input);
+				} catch (EOFException e) {
+					this.isValid = Validity.False;
+
+					/* TODO: EndOfFile. */
+					break;
+				}
+				consumed += n;
+				int codePoint = ch.getCodePoint();
+				this.numCharacters++;
 			
-			Validity isValid  = ch.isValid();
-			if (isValid == Validity.False) {
-				this.isValid = isValid;
-				if (jhove2.failFast(++numErrors)) {
-					this.failFastMessage =
-						new Message(Severity.INFO, Context.PROCESS,
+				Validity isValid  = ch.isValid();
+				if (isValid == Validity.False) {
+					this.isValid = isValid;
+					if (jhove2.failFast(++numErrors)) {
+						this.failFastMessage =
+							new Message(Severity.INFO, Context.PROCESS,
 								    "Fail fast limit exceeded; additional " +
 								    "errors may exist but will not be " +
 								    "reported");
-					break;
+						break;
+					}
+					this.invalidCharacters.add(ch);
 				}
-				this.invalidCharacters.add(ch);
-			}
 			
-			/* Determine character properties. */
-			eol = UTF8Character.getEOL(prevCodePoint, codePoint);
+				/* Determine character properties. */
+				eol = UTF8Character.getEOL(prevCodePoint, codePoint);
+				if (eol != null) {
+					this.numLines++;
+					this.eolCharacters.add(eol);
+				}
+				CodeBlock codeBlock = ch.getCodeBlock();
+				if (codeBlock != null) {
+					this.codeBlocks.add(codeBlock);
+				}
+
+				C0Control c0 = ch.getC0Control();
+				if (c0 != null && !c0.getMnemonic().equals("CR") &&
+						          !c0.getMnemonic().equals("LF")) {
+					this.c0Characters.add(c0);
+				}
+				C1Control c1 = ch.getC1Control();
+				if (c1 != null) {
+					this.c1Characters.add(c1);
+				}
+				if (position == start && ch.isByteOrderMark()) {
+					this.bomMessage =
+						new Message(Severity.INFO, Context.OBJECT,
+							    "Byte Order Mark (BOM) at byte offset: " +
+							    position);
+				}
+				if (ch.isNonCharacter()) {
+					this.numNonCharacters++;
+				}
+				if (ch.isValid() == Validity.False) {
+					this.isValid = Validity.False;
+				}
+			
+				prevCodePoint = codePoint;
+				position += n;
+			}
+			eol = UTF8Character.getEOL(prevCodePoint, UTF8Character.UNINITIALIZED);
 			if (eol != null) {
 				this.numLines++;
 				this.eolCharacters.add(eol);
 			}
-			CodeBlock codeBlock = ch.getCodeBlock();
-			if (codeBlock != null) {
-				this.codeBlocks.add(codeBlock);
+			else if (prevCodePoint != Unicode.LF) {
+				this.numLines++;
 			}
-
-			C0Control c0 = ch.getC0Control();
-			if (c0 != null && !c0.getMnemonic().equals("CR") &&
-					          !c0.getMnemonic().equals("LF")) {
-				this.c0Characters.add(c0);
+		} finally {
+			if (input != null) {
+				input.close();
 			}
-			C1Control c1 = ch.getC1Control();
-			if (c1 != null) {
-				this.c1Characters.add(c1);
-			}
-			if (position == start && ch.isByteOrderMark()) {
-				this.bomMessage =
-					new Message(Severity.INFO, Context.OBJECT,
-							    "Byte Order Mark (BOM) at byte offset: " +
-							    position);
-			}
-			if (ch.isNonCharacter()) {
-				this.numNonCharacters++;
-			}
-			if (ch.isValid() == Validity.False) {
-				this.isValid = Validity.False;
-			}
-			
-			prevCodePoint = codePoint;
-			position += n;
-		}
-		eol = UTF8Character.getEOL(prevCodePoint, UTF8Character.UNINITIALIZED);
-		if (eol != null) {
-			this.numLines++;
-			this.eolCharacters.add(eol);
-		}
-		else if (prevCodePoint != Unicode.LF) {
-			this.numLines++;
 		}
 		setEndTime();
 		

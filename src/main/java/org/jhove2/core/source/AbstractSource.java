@@ -142,6 +142,7 @@ public abstract class AbstractSource
 	 */
 	public void close() {
 		if (this.file != null && this.isTemp) {
+			/* TODO: delete is not working. */
 			this.file.delete();
 			this.file = null;
 		}
