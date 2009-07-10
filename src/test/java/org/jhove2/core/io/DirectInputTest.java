@@ -81,7 +81,7 @@ public class DirectInputTest {
 		try {
 			Source source = SourceFactory.getSource(testFile);
 			abstractInput = source.getInput(bufferSize, Type.Direct);//, ByteOrder.LITTLE_ENDIAN);			
-			assertTrue("AbstractInput Type is Direct with LITTLE_ENDIAN", abstractInput.getBuffer().order() == ByteOrder.LITTLE_ENDIAN);
+			assertTrue("AbstractInput Type is Direct with LITTLE_ENDIAN", abstractInput.getBuffer().order() == ByteOrder.BIG_ENDIAN);
 			abstractInput.close();
 			abstractInput = InputFactory.getInput(testFile, bufferSize,
 			                                      Type.Direct);
