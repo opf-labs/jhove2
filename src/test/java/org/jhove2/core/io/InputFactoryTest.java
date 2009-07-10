@@ -21,7 +21,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-public class TestInputFactory {
+public class InputFactoryTest {
 
 	@Before
 	public void setUp() throws Exception {
