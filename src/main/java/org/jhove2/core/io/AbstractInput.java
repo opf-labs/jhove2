@@ -103,6 +103,7 @@ public abstract class AbstractInput
 	public void close()
 		throws IOException
 	{
+		this.stream.close();
 		this.channel.close();
 	}
 	
