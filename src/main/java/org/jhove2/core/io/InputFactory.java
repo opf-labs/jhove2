@@ -71,4 +71,31 @@ public class InputFactory {
 
 		return abstractInput;
 	}
+	
+
+
+	/** Factory to create an appropriate <code>AbstractInput</code>.
+	 * @param file      Java {java.io.File} underlying the inputable
+	 * @param maxBufferSize Maximum buffer size, in bytes
+	 * @param order ByteOrder Endianess of buffer
+	 * @return Input 
+	 */
+	public static AbstractInput getInput(File file, int maxBufferSize, Type type, ByteOrder order)
+		throws FileNotFoundException, IOException
+	{
+		AbstractInput abstractInput = null;
+		if      (type.equals(Type.Direct)) {
+			abstractInput = new DirectInput(file, maxBufferSize, order);
+		}
+		else if (type.equals(Type.NonDirect)){ 
+			abstractInput = new NonDirectInput(file, maxBufferSize, order);
+		}
+		else if (type.equals(Type.MemoryMapped)) {
+			abstractInput = new MappedInput(file, maxBufferSize, order);
+		}
+
+		return abstractInput;
+
+	}
+
 }
