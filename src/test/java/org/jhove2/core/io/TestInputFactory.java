@@ -38,7 +38,6 @@ public class TestInputFactory {
 		try {
 			yahoo = new URL("http://www.yahoo.com/");
 		} catch (MalformedURLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		try {
