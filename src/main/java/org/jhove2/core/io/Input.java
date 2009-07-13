@@ -81,6 +81,11 @@ public interface Input
 	 */
 	public byte [] getByteArray();
 	
+	/** Get byte order.
+	 * @return Byte order
+	 */
+	public ByteOrder getByteOrder();
+	
 	/** Get current buffer offset from the beginning of the inputable, in
 	 * bytes.
 	 * @return Current buffer offset, in bytes

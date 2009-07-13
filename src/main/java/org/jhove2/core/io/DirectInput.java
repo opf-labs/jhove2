@@ -51,38 +51,31 @@ public class DirectInput
 	extends AbstractInput
 {
 	/** Maximum buffer size, in bytes. */
-	protected int maxBufferSize;
+	protected int bufferSize;
 	
 	/** Instantiate a new <code>DirectInput</code> object.
 	 * @param file          Java {@link java.io.File} underlying the inputable
 	 * @param maxBufferSize Size of the direct buffer, in bytes
 	 */
-	public DirectInput(File file, int maxBufferSize)
+	public DirectInput(File file, int bufferSize)
 		throws FileNotFoundException, IOException
 	{
-		super(file);
-		
-		/* Allocate direct buffer and initialize it. */
-		this.maxBufferSize = maxBufferSize;
-		this.buffer = ByteBuffer.allocateDirect(this.maxBufferSize);
-		this.byteOrder = this.buffer.order();
-		getNextBuffer();
+		super(file, ByteOrder.LITTLE_ENDIAN);
 	}
 	
 	/** Instantiate a new <code>DirectInput</code> object from a File object.
-	 * @param file          Java {@link java.io.File} underlying the inputable
-	 * @param maxBufferSize Size of the direct buffer, in bytes
-	 * @param endianess     byte order of the underlying buffer	
+	 * @param file       Java {@link java.io.File} underlying the inputable
+	 * @param bufferSize Size of the direct buffer, in bytes
+	 * @param order      Byte order of the underlying buffer	
 	 */
-	public DirectInput(File file, int maxBufferSize, ByteOrder endianess)
+	public DirectInput(File file, int bufferSize, ByteOrder order)
 		throws FileNotFoundException, IOException
 	{
-		super(file);
+		super(file, order);
 		
 		/* Allocate direct buffer and initialize it. */
-		this.maxBufferSize = maxBufferSize;
-		this.buffer = ByteBuffer.allocateDirect(this.maxBufferSize).order(endianess);
-		this.byteOrder = this.buffer.order();
+		this.bufferSize = bufferSize;
+		this.buffer = ByteBuffer.allocateDirect(this.bufferSize).order(order);
 		getNextBuffer();
 	}
 
@@ -92,6 +85,6 @@ public class DirectInput
 	 * @Override
 	 */
 	public int getMaxBufferSize() {
-		return this.maxBufferSize;
+		return this.bufferSize;
 	}
 }

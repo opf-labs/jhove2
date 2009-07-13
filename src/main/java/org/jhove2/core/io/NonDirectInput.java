@@ -50,36 +50,31 @@ public class NonDirectInput
 	extends AbstractInput
 {
 	/** Maximum buffer size, in bytes. */
-	protected int maxBufferSize;
+	protected int bufferSize;
 	
 	/** Instantiate a new <code>NonDirectInput</code> object.
-	 * @param file          Java {@link java.io.File} underlying the inputable
-	 * @param maxBufferSize Size of the direct buffer, in bytes
+	 * @param file       Java {@link java.io.File} underlying the inputable
+	 * @param bufferSize Size of the direct buffer, in bytes
 	 */
-	public NonDirectInput(File file, int maxBufferSize)
+	public NonDirectInput(File file, int bufferSize)
 		throws FileNotFoundException, IOException
 	{
-		super(file);
-		
-		/* Allocate direct buffer and initialize it. */
-		this.maxBufferSize = maxBufferSize;
-		this.buffer = ByteBuffer.allocate(this.maxBufferSize);
-		getNextBuffer();
+		super(file, ByteOrder.LITTLE_ENDIAN);
 	}
 	
 	/** Instantiate a new <code>NonDirectInput</code> object.
-	 * @param file          Java {@link java.io.File} underlying the inputable
-	 * @param maxBufferSize Size of the direct buffer, in bytes
-	 * @param endianess     byte order of the underlying buffer	
+	 * @param file       Java {@link java.io.File} underlying the inputable
+	 * @param bufferSize Size of the direct buffer, in bytes
+	 * @param order      Byte order of the underlying buffer	
 	 */
-	public NonDirectInput(File file, int maxBufferSize, ByteOrder endianess)
+	public NonDirectInput(File file, int bufferSize, ByteOrder order)
 		throws FileNotFoundException, IOException
 	{
-		super(file);
+		super(file, order);
 		
 		/* Allocate direct buffer and initialize it. */
-		this.maxBufferSize = maxBufferSize;
-		this.buffer = ByteBuffer.allocate(this.maxBufferSize).order(endianess);
+		this.bufferSize = bufferSize;
+		this.buffer = ByteBuffer.allocate(this.bufferSize).order(order);
 		getNextBuffer();
 	}
 
@@ -89,6 +84,6 @@ public class NonDirectInput
 	 * @Override
 	 */
 	public int getMaxBufferSize() {
-		return this.maxBufferSize;
+		return this.bufferSize;
 	}
 }

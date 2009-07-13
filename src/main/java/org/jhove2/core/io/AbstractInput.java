@@ -87,7 +87,19 @@ public abstract class AbstractInput
 	public AbstractInput(File file)
 		throws FileNotFoundException, IOException
 	{
+		this(file, ByteOrder.LITTLE_ENDIAN);
+	}
+	
+
+	/** Instantiate a new <code>AbstractInput</code>.
+	 * @param file  Java {@link java.io.File} underlying the inputable
+	 * @param order Byte order
+	 */
+	public AbstractInput(File file, ByteOrder order)
+		throws FileNotFoundException, IOException
+	{
 		this.file              = file;
+		this.byteOrder         = order;
 		this.stream            = (InputStream) new FileInputStream(file); 
 		this.fileSize          = file.length();
 		this.inputablePosition = 0L;
@@ -114,6 +126,13 @@ public abstract class AbstractInput
 	@Override
 	public ByteBuffer getBuffer() {
 		return this.buffer;
+	}
+	
+	/** Get byte order.
+	 * @return Byte order
+	 */
+	public ByteOrder getByteOrder() {
+		return this.byteOrder;
 	}
 	
 	/** Get {@link java.io.File} backing the input.

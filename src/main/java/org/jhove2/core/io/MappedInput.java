@@ -39,6 +39,7 @@ package org.jhove2.core.io;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.ByteOrder;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 
@@ -52,21 +53,32 @@ public class MappedInput
 	extends AbstractInput
 {
 	/** Maximum buffer size, in bytes. */
-	protected int maxBufferSize;
-		
+	protected int bufferSize;
+	
 	/** Instantiate a new <code>MappedInput</code> object.
-	 * @param file          Java {@link java.io.File} underlying the inputable
-	 * @param maxBufferSize Size of the mapped byte buffer, in bytes
+	 * @param file       Java {@link java.io.File} underlying the inputable
+	 * @param bufferSize Size of the mapped byte buffer, in bytes
 	 */
-	public MappedInput(File file, int maxBufferSize)
+	public MappedInput(File file, int bufferSize)
 		throws FileNotFoundException, IOException
 	{
-		super(file);
+		this(file, bufferSize, ByteOrder.LITTLE_ENDIAN);
+	}
+	
+	/** Instantiate a new <code>MappedInput</code> object.
+	 * @param file       Java {@link java.io.File} underlying the inputable
+	 * @param bufferSize Size of the mapped byte buffer, in bytes
+	 * @param order      Byte order
+	 */
+	public MappedInput(File file, int bufferSize, ByteOrder order)
+		throws FileNotFoundException, IOException
+	{
+		super(file, order);
 		
 		/* Allocate memory mapped buffer and initialize it. */
-		if (maxBufferSize > this.channel.size())
-			maxBufferSize = (int) this.channel.size();
-		this.maxBufferSize = maxBufferSize;
+		if (bufferSize > this.channel.size())
+			bufferSize = (int) this.channel.size();
+		this.bufferSize = bufferSize;
 		this.buffer = (MappedByteBuffer) buffer;
 		/* TODO: fix Access Denied problem 
 		 * java.io.IOException: Access is denied
@@ -77,7 +89,7 @@ public class MappedInput
 		
 		try {
 		this.buffer = this.channel.map(FileChannel.MapMode.READ_ONLY, 0,
-					                      maxBufferSize);
+					                   bufferSize);
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
@@ -92,7 +104,7 @@ public class MappedInput
 	 * @Override
 	 */
 	public int getMaxBufferSize() {
-		return this.maxBufferSize;
+		return this.bufferSize;
 	}
 	
 	/** Get the next buffer's worth of data from the channel.
