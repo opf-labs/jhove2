@@ -11,7 +11,8 @@
 
 	<!-- JHOVE2 framework bean -->
 	<bean id="JHOVE2" class="org.jhove2.core.JHOVE2" scope="prototype">
-		<!--  <property name="characterizer" ref="CharacterizerModule"/> -->
+		<property name="characterizerModule" ref="CharacterizerModule"/>
+		<property name="dispatcherModule" ref="DispatcherModule"/>
 	</bean>
 		
 		
@@ -19,11 +20,7 @@
  	<!-- Characterizer module bean -->
 	<bean id="CharacterizerModule" 
 	      class="org.jhove2.module.characterize.CharacterizerModule"
-	      scope="prototype">
-	      <property name="identifier" ref="IdentifierModule"/>
-	      <property name="dispatcher" ref="DispatcherModule"/>
-	      <property name="digester"   ref="DigesterModule"/>
-	</bean>
+	      scope="prototype"/>
 	      
 	      
 	      
@@ -31,6 +28,8 @@
 	<bean id="IdentifierModule"
 	      class="org.jhove2.module.identify.IdentifierModule"
 	      scope="prototype"/>
+	   
+	   
 	      
 	<!-- Dispatcher module bean -->
 	<bean id="DispatcherModule"
@@ -45,7 +44,6 @@
 	      scope="prototype">
 		<property name="arrayDigesters">
 	    	<list value-type="org.jhove2.module.digest.ArrayDigester">
-	    		<ref bean="Adler32Digester"/>
 	    		<ref bean="CRC32Digester"/>
 	    	</list>
 	    </property>
@@ -109,7 +107,9 @@
 	
 	<!-- Clump module bean -->
 	<bean id="ClumpModule" class="org.jhove2.module.format.clump.ClumpModule"
-	      scope="prototype"/>
+	      scope="prototype">
+	    <constructor-arg ref="ClumpFormat"/>
+	</bean>
 			  
 	<!-- Clump format bean -->
 	<bean id="ClumpFormat" class="org.jhove2.core.Format" scope="singleton">
@@ -128,7 +128,9 @@
      	
 	<!-- Directory module bean -->
 	<bean id="DirectoryModule" class="org.jhove2.module.format.directory.DirectoryModule"
-	      scope="prototype"/>
+	      scope="prototype">
+	    <constructor-arg ref="DirectoryFormat"/>
+	</bean>
 	
 	<!-- Directory format bean -->
 	<bean id="DirectoryFormat" class="org.jhove2.core.Format" scope="singleton">
@@ -193,7 +195,9 @@
 	
 	<!-- Zip module bean -->
 	<bean id="ZipModule" class="org.jhove2.module.format.zip.ZipModule"
-	      scope="prototype"/>
+	      scope="prototype">
+	    <constructor-arg ref="ZipFormat"/>
+	</bean>
       
 	<!-- Zip format bean -->
 	<bean id="ZipFormat" class="org.jhove2.core.Format" scope="singleton">
@@ -207,6 +211,8 @@
 	<bean id="ZipIdentifier" class="org.jhove2.core.I8R" scope="singleton">
 		<constructor-arg type="java.lang.String" value="info:jhove2/format/zip"/>
 	</bean>
+	
+	
 	
 	<!-- Bytestream format bean -->
 	<bean id="BytestreamFormat" class="org.jhove2.core.Format" scope="singleton">
@@ -239,8 +245,8 @@
 	<util:properties id="Displayer"
 	                 location="classpath:properties/displayer.properties"/>
 
-	<!-- Dispatch properties bean -->
-	<util:properties id="Dispatch"	
-		             location="classpath:properties/dispatch.properties"/>
+	<!-- Dispatcher properties bean -->
+	<util:properties id="Dispatcher"	
+		             location="classpath:properties/dispatcher.properties"/>
 		
 </beans>

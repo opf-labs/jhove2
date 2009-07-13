@@ -526,25 +526,25 @@ public abstract class AbstractInput
 	}
 
 	/** Set the current position, as a byte offset
-	 * @param newInputablePosition Current position, as a byte offset
+	 * @param position Current position, as a byte offset
 	 * @throws IOException 
 	 * @see org.jhove2.core.io.Input#setPosition(long)
 	 */
 	@Override
-	public void setPosition(long newInputablePosition)
+	public void setPosition(long position)
 		throws IOException
 	{
 		/* Determine if the new position is within the current buffer. */
 		int  pos = this.buffer.position();
 		int  lim = this.buffer.limit();
-		long del = newInputablePosition - this.inputablePosition;
+		long del = position - this.inputablePosition;
 		if (-del > pos || del > lim - pos) {
-			this.channel.position(newInputablePosition);
+			this.channel.position(position);
 			getNextBuffer();
 		}
 		else {
 			this.buffer.position(pos + (int) del);
-			this.inputablePosition = newInputablePosition;
+			this.inputablePosition = position;
 		}
 		
 	}

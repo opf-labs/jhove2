@@ -45,27 +45,28 @@ import java.util.TreeMap;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import org.jhove2.core.AbstractModule;
+import org.jhove2.core.Format;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.Parsable;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
+import org.jhove2.module.format.AbstractFormatModule;
+import org.jhove2.module.format.Parser;
 
 /** JHOVE2 Zip module.
  * 
  * @author mstrong, slabrams
  */
 public class ZipModule
-	extends AbstractModule
-	implements Parsable
+	extends AbstractFormatModule
+	implements Parser
 {
 	/** Zip module version identifier. */
 	public static final String VERSION = "1.0.0";
 
 	/** Zip module release date. */
-	public static final String RELEASE = "2009-06-16";
+	public static final String RELEASE = "2009-07-13";
 	
 	/** Zip module rights statement. */
 	public static final String RIGHTS =
@@ -76,9 +77,10 @@ public class ZipModule
 
 
 	/** Instantiate a new <code>ZipModule</code>.
+	 * @param format Zip format
 	 */
-	public ZipModule() {
-		super(VERSION, RELEASE, RIGHTS);
+	public ZipModule(Format format) {
+		super(VERSION, RELEASE, RIGHTS, format);
 	}
 
 	/** Parse a source unit.  Implicitly set the start and end elapsed time.
@@ -89,7 +91,7 @@ public class ZipModule
 	 * @throws IOException     If an I/O exception is raised reading the source
 	 *                         unit
 	 * @throws JHOVE2Exception
-	 * @see org.jhove2.core.Parsable#parse(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
+	 * @see org.jhove2.module.format.Parser#parse(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
 	 */
 	@Override
 	public long parse(JHOVE2 jhove2, Source source)

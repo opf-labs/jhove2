@@ -36,14 +36,15 @@
 
 package org.jhove2.module.identify;
 
-import org.jhove2.core.AbstractProduct;
+import org.jhove2.core.Product;
 
-/** JHOVE2 wrapper for the DROID format identification tool.
+/** JHOVE2 {@link org.jhove2.core.Product} wrapper for the DROID format
+ * identification tool.
  * 
  * @author mstrong, slabrams
  */
 public class DROIDWrapper
-	extends AbstractProduct
+	extends Product
 {
 	/** DROID version identifier. */
 	public static final String VERSION = "4.0";

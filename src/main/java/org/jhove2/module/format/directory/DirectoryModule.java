@@ -41,26 +41,27 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
-import org.jhove2.core.AbstractModule;
+import org.jhove2.core.Format;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.Parsable;
 import org.jhove2.core.source.DirectorySource;
 import org.jhove2.core.source.Source;
+import org.jhove2.module.format.AbstractFormatModule;
+import org.jhove2.module.format.Parser;
 
 /** JHOVE2 file system directory module.
  * 
  * @author mstrong, slabrams
  */
 public class DirectoryModule
-	extends AbstractModule
-	implements Parsable
+	extends AbstractFormatModule
+	implements Parser
 {
 	/** Directory module version identifier. */
 	public static final String VERSION = "1.0.0";
 
 	/** Directory module release date. */
-	public static final String RELEASE = "2009-06-15";
+	public static final String RELEASE = "2009-07-13";
 	
 	/** Directory module rights statement. */
 	public static final String RIGHTS =
@@ -70,9 +71,10 @@ public class DirectoryModule
 		"Available under the terms of the BSD license.";
 
 	/** Instantiate a new <code>DirectoryModule</code>.
+	 * @param format Directory format
 	 */
-	public DirectoryModule() {
-		super(VERSION, RELEASE, RIGHTS);
+	public DirectoryModule(Format format) {
+		super(VERSION, RELEASE, RIGHTS, format);
 	}
 
 	/** Parse a source unit.
@@ -83,7 +85,7 @@ public class DirectoryModule
 	 * @throws IOException     If an I/O exception is raised reading the source
 	 *                         unit
 	 * @throws JHOVE2Exception
-	 * @see org.jhove2.core.Parsable#parse(org.jhove2.core.JHOVE2, org.jhove2.core.io.Input)
+	 * @see org.jhove2.module.format.Parser#parse(org.jhove2.core.JHOVE2, org.jhove2.core.io.Input)
 	 */
 	@Override
 	public long parse(JHOVE2 jhove2, Source source)

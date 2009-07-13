@@ -34,29 +34,36 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.core;
+package org.jhove2.module.format;
 
-import java.io.EOFException;
-import java.io.IOException;
+import java.util.List;
 
-import org.jhove2.core.source.Source;
+import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.Format;
+import org.jhove2.module.Module;
 
-/** Interface for JHOVE2 modules with parsing capability.
+/** Interface for JHOVE2 format {@link org.jhove2.module.Module}s that model
+ * a format or format family.
  * 
  * @author mstrong, slabrams
  */
-public interface Parsable
-	extends Processible
+public interface FormatModule
+	extends Module
 {
-	/** Parse a source unit.  Implicitly set the start and end elapsed time.
-	 * @param jhove2 JHOVE2 framework
-	 * @param source Source unit
-	 * @return Number of bytes consumed
-	 * @throws EOFException    If End-of-File is reached reading the source unit
-	 * @throws IOException     If an I/O exception is raised reading the source
-	 *                         unit
-	 * @throws JHOVE2Exception
+	/** Get format module format.
+	 * @return Format module format
 	 */
-	public long parse(JHOVE2 jhove2, Source source)
-		throws EOFException, IOException, JHOVE2Exception;
+	@ReportableProperty(order=1, value="Format module format.")
+	public Format getFormat();
+	
+	/** Get format module format profiles.
+	 * @return Format module format profiles.
+	 */
+	@ReportableProperty(order=2, value="Format module format profiles.")
+	public List<FormatProfile> getProfiles();
+	
+	/** Add a format module format profile.
+	 * @param rofile Format module format profile
+	 */
+	public void setProfile(FormatProfile formatProfile);
 }

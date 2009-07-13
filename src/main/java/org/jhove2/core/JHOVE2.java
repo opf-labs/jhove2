@@ -36,6 +36,7 @@
 
 package org.jhove2.core;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
@@ -56,8 +57,13 @@ import org.jhove2.core.io.Input.Type;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
-import org.jhove2.core.util.Info;
-import org.jhove2.core.util.InfoProperty;
+import org.jhove2.core.util.ReportableInfo;
+import org.jhove2.core.util.ReportablePropertyInfo;
+import org.jhove2.module.AbstractModule;
+import org.jhove2.module.Module;
+import org.jhove2.module.characterize.Characterizer;
+import org.jhove2.module.dispatch.Dispatcher;
+import org.jhove2.module.display.Displayer;
 
 /** The JHOVE2 core processing framework.
  * 
@@ -70,7 +76,7 @@ public class JHOVE2
 	public static final String VERSION = "2.0.0";
 
 	/** Framework release date. */
-	public static final String RELEASE = "2009-06-12";
+	public static final String RELEASE = "2009-07-13";
 	
 	/** Framework rights statement. */
 	public static final String RIGHTS =
@@ -102,14 +108,17 @@ public class JHOVE2
 	
 	/** Default {@link org.jhove2.core.io.Input} buffer type. */
 	public static final Type DEFAULT_BUFFER_TYPE = Type.Direct;
+	
+	/** Default message digests flag: don't calculate digests. */
+	public static final boolean DEFAULT_CALC_DIGESTS = false;
 
-	/** Default {@link org.jhove2.core.Displayable}. */
+	/** Default {@link org.jhove2.module.display.Displayer}. */
 	public static final String DEFAULT_DISPLAYER = "TextDisplayer";
 	
 	/** Default fail fast limit. */
 	public static final int DEFAULT_FAIL_FAST_LIMIT = 0;
 	
-	/** Default show identifiers flag. */
+	/** Default show identifiers flag: don't show identifiers. */
 	public static final boolean DEFAULT_SHOW_IDENTIFIERS = false;
 	
 	/** Default temporary file prefix. */
@@ -126,6 +135,12 @@ public class JHOVE2
 	
 	/** {@link org.jhove.core.io.Input} buffer type. */
 	protected Type bufferType;
+	
+	/** Framework message digests flag; if true, calculate digests. */
+	protected boolean calcDigests;
+	
+	/** Framework characterizer module. */
+	protected Characterizer characterizer;
 		
 	/** Java classpath. */
 	protected String classpath;
@@ -136,8 +151,11 @@ public class JHOVE2
 	/** Framework display directives. */
 	protected Map<String,Directive> directives;
 	
+	/** Framework dispatcher module. */
+	protected Dispatcher dispatcher;
+	
 	/** Framework displayer module. */
-	protected Displayable displayer;
+	protected Displayer displayer;
 
 	/** Framework fail fast limit.  Processing of a given source unit is
 	 * terminated once the number of detected errors exceeds the limit.  A
@@ -193,6 +211,11 @@ public class JHOVE2
 	/** Operating system version. */
 	protected String osVersion;
 	
+	/** Framework show identifiers flag; if true, show identifiers in non-XML
+	 * display modes.
+	 */
+	protected boolean showIdentifiers;
+	
 	/** Framework source unit. */
 	protected Source source;
 	
@@ -238,6 +261,7 @@ public class JHOVE2
 		this.numDirectories = 0;
 		this.numFiles       = 0;
 		
+		/* Initialize the displayer directives map. */
 		this.directives = new TreeMap<String,Directive>();
 		Properties props = Configure.getProperties("Displayer");
 		if (props != null) {
@@ -306,6 +330,9 @@ public class JHOVE2
 	public void characterize(List<String> pathNames)
 		throws IOException, JHOVE2Exception
 	{
+		if (this.characterizer != null) {
+			this.characterizer.setStartTime();
+		}
 		Iterator<String> iter = pathNames.iterator();
 		if (pathNames.size() == 1) {
 			String pathName = iter.next();
@@ -321,6 +348,9 @@ public class JHOVE2
 			}
 			characterize(this.source);
 		}
+		if (this.characterizer != null) {
+			this.characterizer.setEndTime();
+		}
 	}
 	
 	/** Characterize a source unit.
@@ -331,28 +361,37 @@ public class JHOVE2
 	public void characterize(Source source)
 		throws IOException, JHOVE2Exception
 	{
-		Characterizable characterizer =
-			Configure.getReportable(Characterizable.class,
-					                "CharacterizerModule");
-		if (characterizer != null) {
-			characterizer.setStartTime();
+		if (this.characterizer != null) {
 			try {
-				characterizer.characterize(this, source);
+				this.characterizer.characterize(this, source);
 			} finally {
 				source.close();
 			}
-			characterizer.setEndTime();
 		}
 	}
 	
-	public boolean failFast(int numErrors) {
-		if (failFastLimit > 0 && numErrors > failFastLimit) {
-			return true;
+	/** Dispatch a source unit to the module associated with an identifier.
+	 * @param source     Source unit
+	 * @param identifier Module identifier
+	 * @return Module
+	 * @throws EOFException
+	 * @throws IOException
+	 * @throws JHOVE2Exception
+	 */
+	public Module dispatch(Source source, I8R identifier)
+		throws EOFException, IOException, JHOVE2Exception
+	{
+		Module module = null;
+		
+		if (this.dispatcher != null) {
+			this.dispatcher.setRestartTime();
+			module = this.dispatcher.dispatch(this, source, identifier);
+			this.dispatcher.setEndTime();
 		}
 		
-		return false;
+		return module;
 	}
-	
+
 	/** Display the framework to the standard output stream.
 	 */
 	public void display() {
@@ -364,9 +403,12 @@ public class JHOVE2
 	 */
 	public void display(PrintStream out) {
 		this.displayer.setStartTime();
+
+		this.displayer.setShowIdentifiers(this.showIdentifiers);
 		this.displayer.startDisplay(out, 0);
 		display(out, this, 0, 0);
 		this.displayer.endDisplay(out, 0);
+		
 		this.displayer.setEndTime();
 	}
 	
@@ -379,19 +421,19 @@ public class JHOVE2
 	 */
 	protected void display(PrintStream out, Reportable reportable, int level,
 			               int order) {
-		Info   info       = new Info(reportable);
-		String name       = info.getName();
-		I8R    identifier = info.getIdentifier();
+		ReportableInfo   reportableInfo       = new ReportableInfo(reportable);
+		String name       = reportableInfo.getName();
+		I8R    identifier = reportableInfo.getIdentifier();
 		this.displayer.startReportable(out, level, name, identifier, order);
 
 		int or = 0;
-		List<Set<InfoProperty>> list = info.getProperties();
-		Iterator<Set<InfoProperty>> iter = list.iterator();
+		List<Set<ReportablePropertyInfo>> list = reportableInfo.getProperties();
+		Iterator<Set<ReportablePropertyInfo>> iter = list.iterator();
 		while (iter.hasNext()) {
-			Set<InfoProperty> methods = iter.next();
-			Iterator<InfoProperty> it2 = methods.iterator();
+			Set<ReportablePropertyInfo> methods = iter.next();
+			Iterator<ReportablePropertyInfo> it2 = methods.iterator();
 			while (it2.hasNext()) {
-				InfoProperty prop = it2.next();
+				ReportablePropertyInfo prop = it2.next();
 				I8R id = prop.getIdentifier();
 				Directive directive = this.directives.get(id.getValue());
 				if (directive != null && directive == Directive.Never) {
@@ -534,6 +576,18 @@ public class JHOVE2
 		return singular;
 	}
 	
+	/** Determine if the fail fast limit has been exceeded.
+	 * @param numErrors Number of errors
+	 * @return True if the fail fast limit has been exceeded
+	 */
+	public boolean failFast(int numErrors) {
+		if (failFastLimit > 0 && numErrors > failFastLimit) {
+			return true;
+		}
+		
+		return false;
+	}
+		
 	/** Get platform architecture.
 	 * @return Platform architecture
 	 */
@@ -556,6 +610,23 @@ public class JHOVE2
 	@ReportableProperty(order=54, value="Input buffer type.")
 	public Type getBufferType() {
 		return this.bufferType;
+	}
+	
+	/** Get framework message digests flag; if true, calculate digests.
+	 * @return Framework message digests flag
+	 */
+	@ReportableProperty(order=54, value="Framework message digests flag; if " +
+			"true, calculate digests.")
+	public boolean getCalcDigests() {
+		return this.calcDigests;
+	}
+	
+	/** Get framework characterizer module.
+	 * @return Framework characterizer module
+	 */
+	@ReportableProperty(order=61, value="Framework characterizer module.")
+	public Characterizer getCharacterizerModule() {
+		return this.characterizer;
 	}
 	
 	/** Get Java classpath.
@@ -583,11 +654,19 @@ public class JHOVE2
 		return new Date(this.startTime);
 	}
 	
+	/** Get framework dispatcher module.
+	 * @return Framework dispatch module
+	 */
+	@ReportableProperty(order=62, value="Framework dispatcher module.")
+	public Dispatcher getDispatcherModule() {
+		return this.dispatcher;
+	}
+	
 	/** Get framework displayer module.
 	 * @return Framework displayer module
 	 */
-	@ReportableProperty(order=61, value="Framework displayer module.")
-	public Displayable getDisplayer() {
+	@ReportableProperty(order=63, value="Framework displayer module.")
+	public Displayer getDisplayerModule() {
 		return this.displayer;
 	}
 	
@@ -596,7 +675,7 @@ public class JHOVE2
 	 * limit of 0 indicates no fail fast, i.e., process and report all errors. 
 	 * @return Fail fast limit
 	 */
-	@ReportableProperty(order=54, value="Framework fail fast limit.")
+	@ReportableProperty(order=55, value="Framework fail fast limit.")
 	public int getFailFastLimit() {
 		return this.failFastLimit;
 	}
@@ -761,6 +840,15 @@ public class JHOVE2
 		return  this.osVersion;
 	}
 	
+	/** Get framework show identifiers flag; if true, show identifiers in
+	 * non-XML display modes.
+	 * @return Framework message digests flag
+	 */
+	@ReportableProperty(order=56, value="Framework show identifiers flag; " +
+			"if true, show identifiers in non-XML display modes.")
+	public boolean getShowIdentifiers() {
+		return this.showIdentifiers;
+	}
 	/** Get framework source unit.
 	 * @return Framework source unit
 	 */
@@ -843,6 +931,21 @@ public class JHOVE2
 		this.bufferType = type;
 	}
 	
+	/** Set framework message digests flag; if true, calculate message digests.
+	 * @param flag Framework message digests flag
+	 */
+	public void setCalcDigests(boolean flag) {
+		this.calcDigests = flag;
+	}
+	
+	/** Set framework {@link org.jhove.module.characterize.Characterizer}
+	 * module.
+	 * @param characterizer Framework characterizer module
+	 */
+	public void setCharacterizerModule(Characterizer characterizer) {
+		this.characterizer = characterizer;
+	}
+	
 	/** Set JHOVE2 application command line.
 	 * @param JHOVE2 application command line arguments
 	 */
@@ -855,10 +958,17 @@ public class JHOVE2
 		}
 	}
 	
+	/** Set framework dispatcher module.
+	 * @param dispatcher Framework dispatcher module
+	 */
+	public void setDispatcherModule(Dispatcher dispatcher) {
+		this.dispatcher = dispatcher;
+	}
+	
 	/** Set framework displayer module.
 	 * @param displayer Framework displayer module
 	 */
-	public void setDisplayer(Displayable displayer) {
+	public void setDisplayerModule(Displayer displayer) {
 		this.displayer = displayer;
 	}
 	
@@ -869,6 +979,14 @@ public class JHOVE2
 	 */
 	public void setFailFastLimit(int limit) {
 		this.failFastLimit = limit;
+	}
+	
+	/** Set framework show identifiers flag; if true, show identifiers in
+	 * non-XML display modes.
+	 * @param flag Framework show identifiers flag
+	 */
+	public void setShowIdentifiers(boolean flag) {
+		this.showIdentifiers = flag;
 	}
 	
 	/** Set temporary directory.

@@ -34,13 +34,39 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.core.source;
+package org.jhove2.module.identify;
 
-/** Marker interface for JHOVE2 atomic source units.
+import java.io.IOException;
+import java.util.Set;
+
+import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.FormatIdentification;
+import org.jhove2.core.JHOVE2;
+import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.source.Source;
+import org.jhove2.module.Module;
+
+/** Interface for JHOVE2 identification modules.
  * 
  * @author mstrong, slabrams
  */
-public interface AtomicSource
-	extends Source
+public interface Identifier
+	extends Module
 {
+	/** Presumptively identify the format of a source unit.
+	 * @param jhove2 JHOVE2 framework
+	 * @param source Source unit
+	 * @return Presumptively identified formats
+	 * @throws IOException     If an I/O exception is raised reading the
+	 *                         source unit
+	 * @throws JHOVE2Exception
+	 */
+	public Set<FormatIdentification> identify(JHOVE2 jhove2, Source source)
+		throws IOException, JHOVE2Exception;
+	
+	/** Get presumptive format identifications.
+	 * @return Presumptive format identifications
+	 */
+	@ReportableProperty("Presumptive format identifications.")
+	public Set<FormatIdentification> getPresumptiveFormats();
 }

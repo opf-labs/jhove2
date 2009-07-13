@@ -39,10 +39,10 @@ package org.jhove2.app;
 import java.util.List;
 
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.Displayable;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.config.Configure;
 import org.jhove2.core.io.Input.Type;
+import org.jhove2.module.display.Displayer;
 
 /** JHOVE2 command line application.
  * 
@@ -75,17 +75,17 @@ public class JHOVE2CommandLine {
 			jhove2.setCommandLine(args);
 			jhove2.setBufferSize(parser.getBufferSize());
 			jhove2.setBufferType(parser.getBufferType());
+			jhove2.setCalcDigests(parser.getCalcDigests());
 			jhove2.setFailFastLimit(parser.getFailFastLimit());
+			jhove2.setShowIdentifiers(parser.getShowIdentifiers());
 			
 			/* Characterize all file system path names. */
 			jhove2.characterize(pathNames);
 
 			/* Display the characterization results. */
-			Displayable displayer =
-				Configure.getReportable(Displayable.class,
-						                parser.getDisplayer());
-			displayer.setShowIdentifiers(parser.getShowIdentifiers());
-			jhove2.setDisplayer(displayer);
+			Displayer displayer =
+				Configure.getReportable(Displayer.class, parser.getDisplayer());
+			jhove2.setDisplayerModule(displayer);
 			jhove2.display();
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -101,11 +101,11 @@ public class JHOVE2CommandLine {
 		throws JHOVE2Exception
 	{
 		Type   [] bufferTypes = Type.values();
-		String [] displayers  = Configure.getReportableNames(Displayable.class);
+		String [] displayers  = Configure.getReportableNames(Displayer.class);
 		
 		StringBuffer usage = new StringBuffer("usage: ");
 		usage.append(JHOVE2CommandLine.class.getName());
-		usage.append(" [-I]");
+		usage.append(" [-ik]");
 		usage.append(" [-b <bufferSize>]");
 		usage.append(" [-B ");
 		for (int i=0; i<bufferTypes.length; i++) {

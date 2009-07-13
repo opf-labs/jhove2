@@ -36,9 +36,8 @@
 
 package org.jhove2.module.display;
 
-import org.jhove2.core.AbstractModule;
-import org.jhove2.core.Displayable;
 import org.jhove2.core.JHOVE2;
+import org.jhove2.module.AbstractModule;
 
 /** JHOVE2 displayer utility.
  * 
@@ -46,7 +45,7 @@ import org.jhove2.core.JHOVE2;
  */
 public abstract class AbstractDisplayer
 	extends AbstractModule
-	implements Displayable
+	implements Displayer
 {
 	/** Show identifiers flag: if true, show identifiers in JSON and Text
 	 * display mode.
@@ -79,7 +78,7 @@ public abstract class AbstractDisplayer
 	/** Get show identifiers flag.
 	 * @return Show identifiers flag; if true, show identifiers in JSON and
 	 *         Text display mode
-	 * @see org.jhove2.core.Displayable#getShowIdentifiers()
+	 * @see org.jhove2.module.display.Displayer#getShowIdentifiers()
 	 */
 	@Override
 	public boolean getShowIdentifiers() {
@@ -88,7 +87,7 @@ public abstract class AbstractDisplayer
 	
 	/** Set show identifiers flag.
 	 * @param flag If true, show identifiers in JSON and Text display mode
-	 * @see org.jhove2.core.Displayable#setShowIdentifiers(boolean)
+	 * @see org.jhove2.module.display.Displayer#setShowIdentifiers(boolean)
 	 */
 	@Override
 	public void setShowIdentifiers(boolean flag) {

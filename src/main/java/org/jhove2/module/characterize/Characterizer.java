@@ -34,32 +34,29 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.core;
+package org.jhove2.module.characterize;
 
-import java.util.List;
+import java.io.IOException;
 
-import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.JHOVE2;
+import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.source.Source;
+import org.jhove2.module.Module;
 
-/** Interface for JHOVE2 format modules.
+/** Interface for JHOVE2 characterization modules.
  * 
  * @author mstrong, slabrams
  */
-public interface FormatModule
+public interface Characterizer
+	extends Module
 {
-	/** Get format module format.
-	 * @return Format module format
+	/** Characterize a source unit.
+	 * @param jhove2 JHOVE2 framework
+	 * @param source Source unit
+	 * @throws IOException     If an I/O exception is raised characterizing
+	 *                         the source unit
+	 * @throws JHOVE2Exception
 	 */
-	@ReportableProperty(order=1, value="Format module format.")
-	public Format getFormat();
-	
-	/** Get format module format profiles.
-	 * @return Format module format profiles.
-	 */
-	@ReportableProperty(order=1, value="Format module format profiles.")
-	public List<FormatProfile> getProfiles();
-	
-	/** Add a format module format profile.
-	 * @param rofile Format module format profile
-	 */
-	public void setProfile(FormatProfile formatProfile);
+	public void characterize(JHOVE2 jhove2, Source source)
+		throws IOException, JHOVE2Exception;
 }

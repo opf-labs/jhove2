@@ -72,7 +72,7 @@ public class CRC32Digester
 
 	/** Get message digest value, as a hexadecimal string.
 	 * @return Message digest value, as a hexadecimal string
-	 * @see org.jhove2.module.digest.Digester#getDigest()
+	 * @see org.jhove2.module.digest.DigesterAlgorithm#getDigest()
 	 */
 	@Override
 	public Digest getDigest() {

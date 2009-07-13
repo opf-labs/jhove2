@@ -41,13 +41,14 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.AbstractFormatProfile;
 import org.jhove2.core.Format;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.source.Source;
+import org.jhove2.module.format.AbstractFormatProfile;
+import org.jhove2.module.format.Validator;
 import org.jhove2.module.format.unicode.CodeBlock;
 import org.jhove2.module.format.utf8.UTF8Module;
 
@@ -57,6 +58,7 @@ import org.jhove2.module.format.utf8.UTF8Module;
  */
 public class ASCIIProfile
 	extends AbstractFormatProfile
+	implements Validator
 {
 	/** Basic Latin code block. */
 	public static final String BASIC_LATIN = "Basic Latin";
@@ -71,6 +73,9 @@ public class ASCIIProfile
 		"Copyright 2009 by The Regents of the University of California. " +
 		"Available under the terms of the BSD license.";
 	
+	/** ASCII validation status. */
+	protected Validity isValid;
+	
 	/** Non-Basic Latin code blocks message. */
 	protected Message nonBasicLatinMessage;
 	
@@ -78,24 +83,22 @@ public class ASCIIProfile
 	protected Set<CodeBlock> nonBasicLatinCodeBlocks;
 	
 	/** Instantiate a new <code>ASCIIProfile</code>.
-	 * @param version ASCII profile version identifier
-	 * @param release ASCII profile release date
-	 * @param rights  ASCII profile rights statement
-	 * @param format  ASCII format
+	 * @param format ASCII format
 	 */
 	public ASCIIProfile(Format format) {
 		super(VERSION, RELEASE, RIGHTS, format);
-		
+	
+		this.isValid = Validity.Undetermined;
 		this.nonBasicLatinCodeBlocks = new TreeSet<CodeBlock>();
 	}
 	
-	/** Validate a source unit.  Implicitly set the starting and ending elapsed
-	 * time.
+	/** Validate an ASCII source unit.
 	 * @param jhove2 JHOVE2 framework
 	 * @param source Source unit
-	 * @return Validation status
-	 * @see org.jhove2.core.Validatable#validate(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
+	 * @return ASCII validation status
+	 * @see org.jhove2.module.format.Validator#validate(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
 	 */
+	@Override
 	public Validity validate(JHOVE2 jhove2, Source source) {
 		if (this.module != null) {
 			this.isValid = Validity.True;
@@ -135,5 +138,14 @@ public class ASCIIProfile
 	@ReportableProperty("Non-Basic Latin code blocks message.")
 	public Message getNonBasicLatinCodeBlocks() {
 		return this.nonBasicLatinMessage;
+	}
+
+	/** Get ASCII validation status.
+	 * @return ASCII validation status
+	 * @see org.jhove2.module.format.Validator#isValid()
+	 */
+	@Override
+	public Validity isValid() {
+		return this.isValid;
 	}
 }

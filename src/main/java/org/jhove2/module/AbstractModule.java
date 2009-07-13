@@ -34,33 +34,48 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.core;
+package org.jhove2.module;
 
-/** Abstract JHOVE2 process.  A process is a {@link org.jhove2.core.Reportable}
- * that tracks its elapsed time.
+import org.jhove2.core.Product;
+import org.jhove2.core.Duration;
+
+/** An abstract JHOVE2 module, a {@link org.jhove2.core.Product} that reports
+ * its elapsed processing time.
  * 
  * @author mstrong, slabrams
  */
-public abstract class AbstractModel
-	implements Processible
-{
-	/** Module elapsed time, end. */
+public class AbstractModule
+	extends Product
+	implements Module
+{	
+	/** Module elapsed end time. */
 	protected long endTime;
 	
-	/** Module elapsed time, start. */
+	/** Module elapsed start time. */
 	protected long startTime;
 	
-	/** Instantiate a new <code>AbstractModel</code>.
+	/** Module wrapped product.  This field should be defined if the module
+	 * does not directly perform its own processing, but rather invokes
+	 * an external tool.
 	 */
-	public AbstractModel() {
+	protected Product product;
+	
+	/** Instantiate a new <code>AbstractModule</code>.
+	 * @oaran version Module version identifier in three-part form: "M.N.P"
+	 * @param release Module release date in ISO 8601 format: "YYYY-MM-DD"
+	 * @param rights  Module rights statement
+	 */
+	public AbstractModule(String version, String release, String rights) {
+		super(version, release, rights);
+		
 		this.startTime = System.currentTimeMillis();
 		this.endTime   = Duration.UNINITIALIZED;
 	}
 	
-	/** Get elapsed time, in milliseconds.  The shortest reportable
-	 * elapsed time is 1 milliscond.
+	/** Get elapsed time, in milliseconds.  The reported time will never be
+	 * less than 1 milliscond.
 	 * @return Elapsed time, in milliseconds
-	 * @see org.jhove2.core.Durable#getElapsedTime()
+	 * @see org.jhove2.core.Temporal#getElapsedTime()
 	 */
 	@Override
 	public Duration getElapsedTime() {
@@ -71,19 +86,51 @@ public abstract class AbstractModel
 		return new Duration(this.endTime - this.startTime);
 	}
 
-	/** Set the end time of the elapsed duration.
-	 * @see org.jhove2.core.Durable#setEndTime()
+	/** Get wrapped {@link org.jhove2.core.Product}.
+	 * @return Wrapped {@link org.jhove2.core.Product}
+	 * @see org.jhove2.module.Module#getWrappedProduct()
 	 */
 	@Override
-	public void setEndTime() {
-		this.endTime = System.currentTimeMillis();
+	public Product getWrappedProduct() {
+		return this.product;
+	}
+	
+	/** Set the end time of the elapsed duration.
+	 * @return End time, in millieconds
+	 * @see org.jhove2.core.Temporal#setEndTime()
+	 */
+	@Override
+	public long setEndTime() {
+		return this.endTime = System.currentTimeMillis();
+	}
+	
+	/** Set the restart time of the elapsed duration.  All subsequent time
+	 * (until the next invocation of the setEndTime() method) will be added
+	 * to the time already accounted for by an earlier invocation of the
+	 * setEndTime() method.
+	 * @return Current time minus the elapsed time, in milliseconds
+	 * @see org.jhove2.core.Temporal#setReStartTime()
+	 */
+	public long setRestartTime() {
+		if (this.endTime == Duration.UNINITIALIZED) {
+			return this.startTime = System.currentTimeMillis();
+		}
+		return this.startTime = System.currentTimeMillis() - this.endTime + this.startTime;
+	}
+	
+	/** Set the start time of the elapsed duration.
+	 * @return Start time, in milliseconds
+	 * @see org.jhove2.core.Temporal#setStartTime()
+	 */
+	@Override
+	public long setStartTime() {
+		return this.startTime = System.currentTimeMillis();
 	}
 
-	/** Set the start time of the elapsed duration.
-	 * @see org.jhove2.core.Durable#setStartTime()
+	/** Set wrapped product.
+	 * @param product Wrapped product
 	 */
-	@Override
-	public void setStartTime() {
-		this.startTime = System.currentTimeMillis();
+	public void setWrappedProduct(Product product) {
+		this.product = product;
 	}
 }

@@ -36,35 +36,41 @@
 
 package org.jhove2.core;
 
-import java.io.IOException;
-import java.util.Set;
-
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.source.Source;
 
-/** Interface for JHOVE2 identification modules.
+/** Interface for {@link org.jhove2.core.Reportable}s that report their
+ * elapsed processing times.
  * 
  * @author mstrong, slabrams
  */
-public interface Identifiable
-	extends Processible
+public interface Temporal
+	extends Reportable
 {
-	/** Presumptively identify the format of a source unit.  Implicitly set
-	 * the start and ending elapsed time.
-	 * elapsed time.
-	 * @param jhove2 JHOVE2 framework
-	 * @param source Source unit
-	 * @return Presumptively identified formats
-	 * @throws IOException     If an I/O exception is raised reading the
-	 *                         source unit
-	 * @throws JHOVE2Exception
+	/** Get elapsed time, in milliseconds.  The reportable time will never be
+	 * less than 1 milliscond.
+	 * @return Elapsed time, in milliseconds
 	 */
-	public Set<FormatIdentification> identify(JHOVE2 jhove2, Source source)
-		throws IOException, JHOVE2Exception;
+	@ReportableProperty("Elapsed time, milliseconds. The reported time will " +
+			"never be less than 1 millisecond.")
+	public Duration getElapsedTime();
 	
-	/** Get presumptive format identifications.
-	 * @return Presumptive format identifications
+	/** Set the end time of the elapsed duration.  Defaults to the time of
+	 * invocation of the {@link org.jhove2.core.Module.getElapsedTime} method.
+	 * @return End time, in milliseconds
 	 */
-	@ReportableProperty("Presumptive format identifications.")
-	public Set<FormatIdentification> getFormats();
+	public long setEndTime();
+	
+	/** Set the restart time of the elapsed duration.  All subsequent time
+	 * (until the next invocation of the setEndTime() method) will be added
+	 * to the time already accounted for by an earlier invocation of the
+	 * setEndTime() method.
+	 * @return Current time minus the elapsed time, in milliseconds
+	 */
+	public long setRestartTime();
+	
+	/** Set the start time of the elapsed duration.  Defaults to the time of
+	 * module instantiation.
+	 * @return Start time, in milliseconds
+	 */
+	public long setStartTime();
 }

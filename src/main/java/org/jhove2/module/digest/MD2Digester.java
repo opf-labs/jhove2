@@ -70,7 +70,7 @@ public class MD2Digester
 	}
 
 	/* (non-Javadoc)
-	 * @see org.jhove2.module.digest.Digester#getDigest()
+	 * @see org.jhove2.module.digest.DigesterAlgorithm#getDigest()
 	 */
 	@Override
 	public Digest getDigest() {

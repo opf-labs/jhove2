@@ -34,62 +34,29 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.core;
+package org.jhove2.module.format;
 
-/** An abstract JHOVE2 module, a {@link org.jhove2.core.Product} that performs
- * one or more processes in an elapsed duration.
+import java.io.EOFException;
+import java.io.IOException;
+
+import org.jhove2.core.JHOVE2;
+import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.source.Source;
+
+/** Interface for JHOVE2 format modules with parsing capability.
  * 
  * @author mstrong, slabrams
  */
-public class AbstractModule
-	extends AbstractProduct
-	implements Durable
-{	
-	/** Module elapsed time, end. */
-	protected long endTime;
-	
-	/** Module elapsed time, start. */
-	protected long startTime;
-	
-	/** Instantiate a new <code>AbstractModule</code>.
-	 * @oaran version Module version identifier in three-part form: "M.N.P"
-	 * @param release Module release date in ISO 8601 format: "YYYY-MM-DD"
-	 * @param rights  Module rights statement
+public interface Parser {
+	/** Parse a source unit.
+	 * @param jhove2 JHOVE2 framework
+	 * @param source Source unit
+	 * @return Number of bytes consumed
+	 * @throws EOFException    If End-of-File is reached reading the source unit
+	 * @throws IOException     If an I/O exception is raised reading the source
+	 *                         unit
+	 * @throws JHOVE2Exception
 	 */
-	public AbstractModule(String version, String release, String rights) {
-		super(version, release, rights);
-		
-		this.startTime = System.currentTimeMillis();
-		this.endTime   = Duration.UNINITIALIZED;
-	}
-	
-	/** Get elapsed time, in milliseconds.  The shortest reportable
-	 * elapsed time is 1 milliscond.
-	 * @return Elapsed time, in milliseconds
-	 * @see org.jhove2.core.Durable#getElapsedTime()
-	 */
-	@Override
-	public Duration getElapsedTime() {
-		if (this.endTime == Duration.UNINITIALIZED) {
-			this.endTime = System.currentTimeMillis();
-		}
-		
-		return new Duration(this.endTime - this.startTime);
-	}
-
-	/** Set the end time of the elapsed duration.
-	 * @see org.jhove2.core.Durable#setEndTime()
-	 */
-	@Override
-	public void setEndTime() {
-		this.endTime = System.currentTimeMillis();
-	}
-
-	/** Set the start time of the elapsed duration.
-	 * @see org.jhove2.core.Durable#setStartTime()
-	 */
-	@Override
-	public void setStartTime() {
-		this.startTime = System.currentTimeMillis();
-	}
+	public long parse(JHOVE2 jhove2, Source source)
+		throws EOFException, IOException, JHOVE2Exception;
 }

@@ -39,7 +39,6 @@ package org.jhove2.core.io;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.ByteOrder;
 
 import org.jhove2.core.io.Input.Type;
@@ -51,51 +50,37 @@ import org.jhove2.core.io.Input.Type;
 public class InputFactory {
 
 	/** Factory to create an appropriate <code>AbstractInput</code>.
-	 * @param file      Java {java.io.File} underlying the inputable
-	 * @param maxBufferSize Maximum buffer size, in bytes
+	 * @param file       Java {java.io.File} underlying the inputable
+	 * @param bufferSize Maximum buffer size, in bytes
 	 * @return Input 
 	 */
-	public static AbstractInput getInput(File file, int maxBufferSize, Type type)
+	public static AbstractInput getInput(File file, int bufferSize, Type type)
 		throws FileNotFoundException, IOException
 	{
-		AbstractInput abstractInput = null;
-		if      (type.equals(Type.Direct)) {
-			abstractInput = new DirectInput(file, maxBufferSize);
-		}
-		else if (type.equals(Type.NonDirect)){ 
-			abstractInput = new NonDirectInput(file, maxBufferSize);
-		}
-		else if (type.equals(Type.MemoryMapped)) {
-			abstractInput = new MappedInput(file, maxBufferSize);
-		}
-
-		return abstractInput;
+		return getInput(file, bufferSize, type, ByteOrder.LITTLE_ENDIAN);
 	}
-	
-
 
 	/** Factory to create an appropriate <code>AbstractInput</code>.
-	 * @param file      Java {java.io.File} underlying the inputable
-	 * @param maxBufferSize Maximum buffer size, in bytes
-	 * @param order ByteOrder Endianess of buffer
+	 * @param file       Java {java.io.File} underlying the inputable
+	 * @param bufferSize Maximum buffer size, in bytes
+	 * @param order      ByteOrder Endianess of buffer
 	 * @return Input 
 	 */
-	public static AbstractInput getInput(File file, int maxBufferSize, Type type, ByteOrder order)
+	public static AbstractInput getInput(File file, int bufferSize, Type type, ByteOrder order)
 		throws FileNotFoundException, IOException
 	{
 		AbstractInput abstractInput = null;
 		if      (type.equals(Type.Direct)) {
-			abstractInput = new DirectInput(file, maxBufferSize, order);
+			abstractInput = new DirectInput(file, bufferSize, order);
 		}
 		else if (type.equals(Type.NonDirect)){ 
-			abstractInput = new NonDirectInput(file, maxBufferSize, order);
+			abstractInput = new NonDirectInput(file, bufferSize, order);
 		}
 		else if (type.equals(Type.MemoryMapped)) {
-			abstractInput = new MappedInput(file, maxBufferSize, order);
+			abstractInput = new MappedInput(file, bufferSize, order);
 		}
 
 		return abstractInput;
 
 	}
-
 }

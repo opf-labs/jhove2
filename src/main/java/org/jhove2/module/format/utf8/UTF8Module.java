@@ -42,18 +42,19 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.AbstractFormatModule;
 import org.jhove2.core.Format;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
-import org.jhove2.core.Parsable;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.ZipFileSource;
+import org.jhove2.module.format.AbstractFormatModule;
+import org.jhove2.module.format.Parser;
+import org.jhove2.module.format.Validator;
 import org.jhove2.module.format.unicode.C0Control;
 import org.jhove2.module.format.unicode.C1Control;
 import org.jhove2.module.format.unicode.CodeBlock;
@@ -66,7 +67,7 @@ import org.jhove2.module.format.unicode.Unicode.EOL;
  */
 public class UTF8Module
 	extends AbstractFormatModule
-	implements Parsable
+	implements Parser, Validator
 {
 	/** UTF-8 module version identifier. */
 	public static final String VERSION = "1.0.0";
@@ -109,6 +110,9 @@ public class UTF8Module
 	
 	/** Number of non-characters. */
 	protected long numNonCharacters;
+	
+	/** UTF-8 validity status. */
+	protected Validity isValid;
 
 	/** Instantiate a new <code>UTF8Module</code>.
 	 * @param format UTF-8 format
@@ -116,15 +120,15 @@ public class UTF8Module
 	public UTF8Module(Format format) {
 		super(VERSION, RELEASE, RIGHTS, format);
 		
-		this.c0Characters  = new TreeSet<C0Control>();
-		this.c1Characters  = new TreeSet<C1Control>();
-		this.codeBlocks    = new TreeSet<CodeBlock>();
-		this.eolCharacters = new TreeSet<EOL>();
-		this.numCharacters    = 0L;
-		this.numLines         = 0L;
-		this.numNonCharacters = 0L;
-		
+		this.c0Characters      = new TreeSet<C0Control>();
+		this.c1Characters      = new TreeSet<C1Control>();
+		this.codeBlocks        = new TreeSet<CodeBlock>();
+		this.eolCharacters     = new TreeSet<EOL>();
 		this.invalidCharacters = new ArrayList<UTF8Character>();
+		this.isValid           = Validity.Undetermined;
+		this.numCharacters     = 0L;
+		this.numLines          = 0L;
+		this.numNonCharacters  = 0L;
 	}
 
 	/** Parse a source unit.
@@ -135,7 +139,7 @@ public class UTF8Module
 	 * @throws IOException     If an I/O exception is raised reading the source
 	 *                         unit
 	 * @throws JHOVE2Exception
-	 * @see org.jhove2.core.Parsable#parse(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
+	 * @see org.jhove2.module.format.Parser#parse(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
 	 */
 	@Override
 	public long parse(JHOVE2 jhove2, Source source)
@@ -251,8 +255,8 @@ public class UTF8Module
 	 * lapsed time.
 	 * @param jhove2 JHOVE2 framework
 	 * @param source Source unit
-	 * @return Validation status
-	 * @see org.jhove2.core.Validatable#validate(org.jhove2.core.JHOVE2)
+	 * @return UTF-8 validation status
+	 * @see org.jhove2.module.format.Validator#validate(org.jhove2.core.JHOVE2)
 	 */
 	@Override
 	public Validity validate(JHOVE2 jhove2, Source source) {
@@ -340,5 +344,13 @@ public class UTF8Module
 	@ReportableProperty(order=7, value="Number of UTF-8 non-characters.")
 	public long getNumNonCharacters() {
 		return this.numNonCharacters;
+	}
+
+	/** Get UTF-8 validation status.
+	 * @return UTF-8 validation status
+	 */
+	@Override
+	public Validity isValid() {
+		return this.isValid;
 	}
 }

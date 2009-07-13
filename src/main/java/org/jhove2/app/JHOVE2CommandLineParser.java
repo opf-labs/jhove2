@@ -50,10 +50,13 @@ public class JHOVE2CommandLineParser {
 	/** {@link org.jhove2.core.io.Input} buffer size. */
 	protected int bufferSize;
 	
+	/** Message digests flag; ff true, calculate message digests. */
+	protected boolean calcDigests;
+	
 	/** {@link org.jhove2.core.io.Input} buffer type. */
 	protected Type bufferType;
 	
-	/** {@link org.jhove2.Displayable}. */
+	/** {@link org.jhove2.module.display.Displayer}. */
 	protected String displayer;
 	
 	/** Fail fast limit. */
@@ -62,7 +65,9 @@ public class JHOVE2CommandLineParser {
 	/** File system path names. */
 	protected List<String> names;
 	
-	/** Show identifiers flag. */
+	/** Show identifiers flag; tf true, show identifiers in non-XML display
+	 * modes.
+	 */
 	protected boolean showIdentifiers;
 	
 	/** Temporary directory. */
@@ -70,13 +75,10 @@ public class JHOVE2CommandLineParser {
 	
 	/** Instantiate a new <code>JHOVE2CommandLineParser</code>.
 	 */
-	
-	/** Instantiate a new <code>JHOVE2CommandLineParser</code>.
-	 */
 	public JHOVE2CommandLineParser() {
 		this(JHOVE2.DEFAULT_BUFFER_SIZE, JHOVE2.DEFAULT_BUFFER_TYPE,
 			 JHOVE2.DEFAULT_DISPLAYER, JHOVE2.DEFAULT_SHOW_IDENTIFIERS,
-			 JHOVE2.DEFAULT_FAIL_FAST_LIMIT);
+			 JHOVE2.DEFAULT_FAIL_FAST_LIMIT, JHOVE2.DEFAULT_CALC_DIGESTS);
 	}
 	
 	/** Instantiate a new <code>JHOVE2CommandLineParser</code> with specific
@@ -85,19 +87,22 @@ public class JHOVE2CommandLineParser {
 	 *                        size
 	 * @param bufferType      Default {@link org.jhove2.core.io.Input} buffer
 	 *                        type
-	 * @param displayer       Default {@link org.jhove2.core.Displayable}
+	 * @param displayer       Default {@link org.jhove2.module.display.Displayer}
 	 * @param showIdentifiers Show identifiers flag; if true, show identifiers
 	 *                        in JSON and Text display mode
 	 * @param failFastLimit   Default fail fast limit
+	 * @param calcDigests     Default message digests flag; if true, calculate
+	 *                        message digests
 	 */
 	public JHOVE2CommandLineParser(int bufferSize, Type bufferType,
 			                       String displayer, boolean showIdentifiers,
-			                       int failFastLimit) {
+			                       int failFastLimit, boolean calcDigests) {
 		this.bufferSize      = bufferSize;
 		this.bufferType      = bufferType;
 		this.displayer       = displayer;
 		this.showIdentifiers = showIdentifiers;
 		this.failFastLimit   = failFastLimit;
+		this.calcDigests     = calcDigests;
 		this.names           = new ArrayList<String>();
 	}
 	
@@ -137,9 +142,11 @@ public class JHOVE2CommandLineParser {
 						}
 					}
 					else {
-						int in = args[i].indexOf('I');
-						if (in > -1) {
+						if      (args[i].indexOf('i') > -1) {
 							this.showIdentifiers = true;
+						}
+						else if (args[i].indexOf('k') > -1) {
+							this.calcDigests = true;
 						}
 					}
 				}
@@ -164,6 +171,13 @@ public class JHOVE2CommandLineParser {
 	 */
 	public Type getBufferType() {
 		return this.bufferType;
+	}
+	
+	/** Get message digests flag.
+	 * @return Message digests flag; if true, calculate message digests
+	 */
+	public boolean getCalcDigests() {
+		return this.calcDigests;
 	}
 	
 	/** Get {@link org.jhove2.core.Displayeble}.

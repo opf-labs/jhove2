@@ -34,30 +34,69 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.core;
+package org.jhove2.module.format;
 
-import org.jhove2.annotation.ReportableProperty;
+import java.util.ArrayList;
+import java.util.List;
 
-/** Interface for JHOVE2 {@link org.jhove2.core.Reportable}s that track
- * their elapsed processing time.
+import org.jhove2.core.Format;
+import org.jhove2.module.AbstractModule;
+
+/** Abstract JHOVE2 format module.
  * 
  * @author mstrong, slabrams
  */
-public interface Durable {
-	/** Get elapsed time, in milliseconds.  The shortest reportable
-	 * elapsed time is 1 milliscond.
-	 * @return Elapsed time, in milliseconds
+public abstract class AbstractFormatModule
+	extends AbstractModule
+	implements FormatModule
+{
+	/** Format module format. */
+	protected Format format;
+
+	/** Format module format profiles. */
+	protected List<FormatProfile> profiles;
+
+	/** Instantiate a new <code>AbstractFormatModule</code>
+	 * @param version Format module version identifier in three-part form:
+	 *                "M.N.P"
+	 * @param release Format module release date in ISO 8601 format:
+	 *                "YYYY-MM-DD"
+	 * @param rights  Format module rights statement
+	 * @param format  Format module format
 	 */
-	@ReportableProperty("Elapsed time.")
-	public Duration getElapsedTime();
+	public AbstractFormatModule(String version, String release, String rights,
+			                    Format format) {
+		super(version, release, rights);
+
+		this.format   = format;
+		this.profiles = new ArrayList<FormatProfile>();
+	}
+
+	/** Get format module format.
+	 * @return Format module format
+	 * @see org.jhove2.module.format.FormatProfile#getFormat()
+	 */
+	@Override
+	public Format getFormat() {
+		return this.format;
+	}
 	
-	/** Set the end time of the elapsed duration.  Defaults to the time of
-	 * invocation of the {@link org.core2.core.Durable.getElapsedTime} method.
+	/** Get format module format profiles.
+	 * @return Format module format rofiles
+	 * @see org.jhove2.module.format.FormatModule#getProfiles()
 	 */
-	public void setEndTime();
-	
-	/** Set the start time of the elapsed duration.  Defaults to the time of
-	 * reporter instantiation.
+	@Override
+	public List<FormatProfile> getProfiles() {
+		return this.profiles;
+	}
+		
+	/** Set format module format profile.
+	 * @param profile Format module format profile
+	 * @see org.jhove2.module.format.FormatModule#setProfile(org.jhove2.module.format.FormatProfile)
 	 */
-	public void setStartTime();
+	@Override
+	public void setProfile(FormatProfile profile) {
+		profile.setFormatModule(this);
+		this.profiles.add(profile);
+	}
 }

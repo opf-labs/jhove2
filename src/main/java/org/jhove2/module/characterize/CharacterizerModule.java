@@ -40,22 +40,22 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.jhove2.core.AbstractModule;
-import org.jhove2.core.Characterizable;
-import org.jhove2.core.Digestible;
-import org.jhove2.core.Dispatchable;
+import org.jhove2.core.Format;
 import org.jhove2.core.FormatIdentification;
-import org.jhove2.core.Identifiable;
+import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.Parsable;
-import org.jhove2.core.source.AtomicSource;
+import org.jhove2.core.config.Configure;
+import org.jhove2.core.source.AggregateSource;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.DirectorySource;
 import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.ZipDirectorySource;
 import org.jhove2.core.source.ZipFileSource;
+import org.jhove2.module.AbstractModule;
+import org.jhove2.module.digest.Digester;
+import org.jhove2.module.identify.Identifier;
 
 /** JHOVE2 characterization module.
  * 
@@ -63,13 +63,13 @@ import org.jhove2.core.source.ZipFileSource;
  */
 public class CharacterizerModule
 	extends AbstractModule
-	implements Characterizable
+	implements Characterizer
 {
 	/** Characterization process module version identifier. */
 	public static final String VERSION = "1.0.0";
 
 	/** Characterization process module release date. */
-	public static final String RELEASE = "2009-06-16";
+	public static final String RELEASE = "2009-07-13";
 	
 	/** Characterization process module rights statement. */
 	public static final String RIGHTS =
@@ -78,15 +78,6 @@ public class CharacterizerModule
 		"Stanford Junior University. " +
 		"Available under the terms of the BSD license.";
 
-	/** Message digester module. */
-	protected Digestible digester;
-	
-	/** Dispatcher module. */
-	protected Dispatchable dispatcher;
-	
-	/** Identifier module. */
-	protected Identifiable identifier;
-	
 	/** Instantiate a new <code>CharacterizerModule</code>.
 	 */
 	public CharacterizerModule() {
@@ -99,7 +90,7 @@ public class CharacterizerModule
 	 * @throws IOException     If an I/O exception is raised characterizing
 	 *                         the source unit
 	 * @throws JHOVE2Exception
-	 * @see org.jhove2.core.Characterizable#characterize(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
+	 * @see org.jhove2.module.characterize.Characterizer#characterize(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
 	 */
 	@Override
 	public void characterize(JHOVE2 jhove2, Source source)
@@ -121,58 +112,44 @@ public class CharacterizerModule
 		}
 
 		/* Presumptively identify the format(s) of the source unit. */
-		if (this.identifier != null) {
-			Set<FormatIdentification> formats =
-				this.identifier.identify(jhove2, source);
+		Identifier identifier = Configure.getReportable(Identifier.class,
+				                                        "IdentifierModule");
+		if (identifier != null) {
+			identifier.setStartTime();
+			Set<FormatIdentification> formats =	identifier.identify(jhove2,
+					                                                source);
+			identifier.setEndTime();
 			source.addModule(identifier);
 
-			/* Dispatch to the appropriate module for the source unit's
+			/* Dispatch to the module associated with the source unit's
 			 * format.
 			 */
-			if (this.dispatcher != null) {
-				if (formats.size() > 0) {
-					Iterator<FormatIdentification> iter = formats.iterator();
-					while (iter.hasNext()) {
-						FormatIdentification id = iter.next();
-						Parsable module =
-							this.dispatcher.dispatch(jhove2, source, id);
-					if (module != null) {
-						source.addModule(module);
-						}
-					}
+		
+			if (formats.size() > 0) {
+				Iterator<FormatIdentification> iter = formats.iterator();
+				while (iter.hasNext()) {
+					FormatIdentification fid = iter.next();
+					Format format = fid.getPresumptiveFormat();
+					I8R id = format.getIdentifier();
+					jhove2.dispatch(source, id);
 				}
 			}
 		}
 		
 		/* Calculate message digest(s) for the source unit. */
-		if (this.digester != null) {
-			if (source instanceof AtomicSource) {
-				this.digester.digest(jhove2, source);
-				source.addModule(digester);
+		if (!(source instanceof AggregateSource)) {
+			if (jhove2.getCalcDigests()) {
+				Digester digester = Configure.getReportable(Digester.class,
+						                                    "DigesterModule");
+				if (digester != null) {
+					digester.setStartTime();
+					digester.digest(jhove2, source);
+					digester.setEndTime();
+					source.addModule(digester);
+				}
 			}
 		}
-
+		
 		source.setEndTime();
-	}
-	
-	/** Set the message digester module.
-	 * @param digester Message digester module
-	 */
-	public void setDigester(Digestible digester) {
-		this.digester = digester;
-	}
-	
-	/** Set the dispatcher module.
-	 * @param dispatcher Dispatcher module
-	 */
-	public void setDispatcher(Dispatchable dispatcher) {
-		this.dispatcher = dispatcher;
-	}
-	
-	/** Set the identifier module
-	 * @param identifier Identifier module
-	 */
-	public void setIdentifier(Identifiable identifier) {
-		this.identifier = identifier;
 	}
 }

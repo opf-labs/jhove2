@@ -57,7 +57,6 @@ import org.jhove2.module.digest.CRC32Digester;
  */
 public class ZipFileSource
 	extends AbstractSource
-	implements AtomicSource
 {
 	/** Zip file CRC-32 message digest. */
 	protected Digest crc32;

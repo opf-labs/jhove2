@@ -34,24 +34,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.core;
+package org.jhove2.module.format;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.Format;
+import org.jhove2.module.Module;
 
-/** Interface for JHOVE2 format formatProfiles.
+/** Interface for JHOVE2 format profiles, which are
+ * {@link org.jhove2.module.Module}s that model a specific format in a format
+ * family.
  * 
- * @author mstring, slabrams
+ * @author mstrong, slabrams
  */
 public interface FormatProfile
-	extends Validatable
+	extends Module
 {
 	/** Get format profile format.
 	 * @return Format profile format
 	 */
-	@ReportableProperty("Format profile format.")
+	@ReportableProperty(order=1, value="Format module format.")
 	public Format getFormat();
 	
-	/** Set the format module of which this is a profile.
+	/** Set format profile format module.
 	 * @param module Format module
 	 */
 	public void setFormatModule(FormatModule module);

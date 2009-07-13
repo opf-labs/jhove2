@@ -34,43 +34,56 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.core.util;
+package org.jhove2.module.format;
 
-import java.lang.reflect.Method;
+import org.jhove2.core.Format;
+import org.jhove2.module.AbstractModule;
 
-import org.jhove2.core.I8R;
-
-/** A reportable property discovered by introspection.
+/** Abstract JHOVE2 format profile, which is {@link org.jhove2.module.Module}
+ * that models a specific format in a format family.
  * 
  * @author mstrong, slabrams
  */
-public class InfoProperty {
-	/** Property identifier in the JHOVE2 namespace. */
-	protected I8R identifier;
+public class AbstractFormatProfile
+	extends AbstractModule
+	implements FormatProfile
+{
+	/** Format profile format. */
+	protected Format format;
 	
-	/** Method defining the property. */
-	protected Method method;
+	/** Format profile format module. */
+	protected FormatModule module;
 	
-	/** Instantiate a new <code>InfoProperty</code>.
-	 * @param identifier Property identifier in the JHOVE2 namespace
-	 * @param method     Method defining the property
+	/** Instantiate a new <code>AbstractFormatProfile</code>.
+	 * @param version Format profile version identifier in three-part form:
+	 *                "M.N.P"
+	 * @param release Format profile release date in ISO 8601 format:
+	 *                "YYYY-MM-DD"
+	 * @param rights  Format profile rights statement
+	 * @param format  Format profile format
 	 */
-	public InfoProperty(I8R identifier, Method method) {
-		this.identifier = identifier;
-		this.method     = method;
+	public AbstractFormatProfile(String version, String release, String rights,
+			                     Format format) {
+		super(version, release, rights);
+		
+		this.format = format;
 	}
-	
-	/** Get property identifier in the JHOVE2 namespace.
-	 * @return Property identifier in the JHOVE2 namespace
+
+	/** Get format profile format.
+	 * @return Format profile format
+	 * @see org.jhove2.module.format.FormatProfile#getFormat()
 	 */
-	public I8R getIdentifier() {
-		return this.identifier;
+	@Override
+	public Format getFormat() {
+		return this.format;
 	}
-	
-	/** Get method defining the property.
-	 * @param Method defining the property
+
+	/** Set format profile format module.
+	 * @param module Format module
+	 * @see org.jhove2.module.format.FormatProfile#setFormatModule(org.jhove2.module.format.FormatModule)
 	 */
-	public Method getMethod() {
-		return this.method;
+	@Override
+	public void setFormatModule(FormatModule module) {
+		this.module = module;
 	}
 }

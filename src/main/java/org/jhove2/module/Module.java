@@ -34,36 +34,26 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.core;
+package org.jhove2.module;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.source.Source;
+import org.jhove2.core.Product;
+import org.jhove2.core.Temporal;
 
-/** Interface for JHOVE2 modules with validation capability.
+/** Interface for JHOVE2 modules, which are {@link org.jhove2.core.Reportable}s
+ * that perform some process and report their elapsed processing time.  A
+ * module generally directly performs its process; however, some module
+ * implementations may be thin wrappers around 3rd party tools.
  * 
  * @author mstrong, slabrams
  */
-public interface Validatable
-	extends Processible
+public interface Module
+	extends Temporal
 {
-	/** Validity values. */
-	public enum Validity {
-		True,
-		False,
-		Undetermined
-	}
-	
-	/** Validate a source unit.  Implicitly set the starting and ending elapsed
-	 * time.
-	 * @param jhove2 JHOVE2 framework
-	 * @param source Source unit
-	 * @return Validation status
+	/** Get wrapped {@link org.jhove2.core.Product} used to perform a process.
+	 * @return Wrapped {@link org.jhove2.core.Product}, or null if the module
+	 *         directly performs its process
 	 */
-	public Validity validate(JHOVE2 jhove2, Source source);
-	
-	/** Get validation status.
-	 * @return Validation status
-	 */
-	@ReportableProperty("Validation status.")
-	public Validity isValid();
+	@ReportableProperty("External tool wrapped by the module.")
+	public Product getWrappedProduct();
 }

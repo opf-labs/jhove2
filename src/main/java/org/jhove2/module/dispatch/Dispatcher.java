@@ -34,13 +34,34 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.core;
+package org.jhove2.module.dispatch;
 
-/** Marker interface for JHOVE2 processing modules.
+import java.io.EOFException;
+import java.io.IOException;
+
+import org.jhove2.core.I8R;
+import org.jhove2.core.JHOVE2;
+import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.source.Source;
+import org.jhove2.module.Module;
+
+/** Interface for JHOVE2 dispatcher modules.  A dispatcher module instantiates
+ * and invokes the module associated with an identifier.
  * 
  * @author mstrong, slabrams
  */
-public interface Processible
-	extends Reportable, Durable
+public interface Dispatcher
+	extends Module
 {
+	/** Dispatch a source unit to the module associated with an identifier.
+	 * @param jhove2     JHOVE2 framework
+	 * @param source     Source unit
+	 * @param identifier Module identifier
+	 * @return Module
+	 * @throws EOFException
+	 * @throws IOException
+	 * @throws JHOVE2Exception
+	 */
+	public Module dispatch(JHOVE2 jhove2, Source source, I8R identifier)
+		throws EOFException, IOException, JHOVE2Exception;
 }

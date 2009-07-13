@@ -34,74 +34,55 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.core;
+package org.jhove2.core.util;
 
-import org.jhove2.core.source.Source;
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 
-/** Absttract JHOVE2 format profile.
+import org.jhove2.core.I8R;
+
+/** A reportable property discovered by introspection.
  * 
  * @author mstrong, slabrams
  */
-public abstract class AbstractFormatProfile
-	extends AbstractModule
-	implements FormatProfile, Validatable
-{
-	/** Format profile profile. */
-	protected Format format;
+public class ReportablePropertyInfo {
+	/** Property identifier in the JHOVE2 namespace. */
+	protected I8R identifier;
 	
-	/** Format profile validity. */
-	protected Validity isValid;
+	/** Method defining the property. */
+	protected Method method;
 	
-	/** Format module of which this is a profile. */
-	protected FormatModule module;
+	/** Property type, as defined by the return type of the method. */
+	protected Type type;
 	
-	/** Instantiate a new <code>AbstractFormatProfile</code>.
-	 * @param version Format profile version identifier
-	 * @param release Format profile release date
-	 * @param rights  Format profile rights statement
-	 * @param format  Format profile format
+	/** Instantiate a new <code>ReportablePropertyInfo</code>.
+	 * @param identifier Property identifier in the JHOVE2 namespace
+	 * @param method     Method defining the property
 	 */
-	public AbstractFormatProfile(String version, String release, String rights,
-			                     Format format) {
-		super(version, release, rights);
-		
-		this.format  = format;
-		this.isValid = Validity.Undetermined;
+	public ReportablePropertyInfo(I8R identifier, Method method) {
+		this.identifier = identifier;
+		this.method     = method;
+		this.type       = method.getGenericReturnType();
 	}
 	
-	/** Validate a source unit.  Implicitly set the starting and ending elapsed
-	 * time.
-	 * @param jhove2 JHOVE2 framework
-	 * @param source Source unit
-	 * @return Validation status
-	 * @see org.jhove2.core.Validatable#validate(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
+	/** Get property identifier in the JHOVE2 namespace.
+	 * @return Property identifier in the JHOVE2 namespace
 	 */
-	public abstract Validity validate(JHOVE2 jhove2, Source source);
-
-	/** Get format profile format.
-	 * @return Format profile format
-	 * @see org.jhove2.core.FormatProfile#getFormat()
-	 */
-	@Override
-	public Format getFormat() {
-		return this.format;
-	}
-
-	/** Get format profile validation status.
-	 * @return Format profile validation status
-	 * @see org.jhove2.core.Validatable#isValid()
-	 */
-	@Override
-	public Validity isValid() {
-		return this.isValid;
+	public I8R getIdentifier() {
+		return this.identifier;
 	}
 	
-	/** Set the format module of which this is a profile.
-	 * @param module Format module
-	 * @see org.jhove2.core.FormatProfile#setFormatMole()
+	/** Get method defining the property.
+	 * @param Method defining the property
 	 */
-	@Override
-	public void setFormatModule(FormatModule module) {
-		this.module = module;
+	public Method getMethod() {
+		return this.method;
+	}
+	
+	/** Get property type, as defined by the return type of the method.
+	 * @return Property type
+	 */
+	public Type getTyep() {
+		return this.type;
 	}
 }

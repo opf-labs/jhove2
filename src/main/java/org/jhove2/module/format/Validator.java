@@ -34,30 +34,34 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.core;
+package org.jhove2.module.format;
 
-import java.io.EOFException;
-import java.io.IOException;
-
+import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.JHOVE2;
 import org.jhove2.core.source.Source;
 
-/** Interface for JHOVE2 dispatcher modules.  A dispatcher module instantiates
- * and invokes the module associated with a format.
+/** Interface for JHOVE2 format modules with validation capability.
  * 
  * @author mstrong, slabrams
  */
-public interface Dispatchable
-	extends Processible
-{
-	/** Dispatch a module appropriate for a source unit's format.
-	 * @param jhove2   JHOVE2 framework
-	 * @param source   Source unit
-	 * @param formatID Source unit format identification
-	 * @throws EOFException
-	 * @throws IOException
-	 * @throws JHOVE2Exception
+public interface Validator {
+	/** Validity values. */
+	public enum Validity {
+		True,
+		False,
+		Undetermined
+	}
+	
+	/** Validate a source unit.
+	 * @param jhove2 JHOVE2 framework
+	 * @param source Source unit
+	 * @return Validation status
 	 */
-	public Parsable dispatch(JHOVE2 jhove2, Source source,
-			                 FormatIdentification formatID)
-		throws EOFException, IOException, JHOVE2Exception;
+	public Validity validate(JHOVE2 jhove2, Source source);
+	
+	/** Get validation status.
+	 * @return Validation status
+	 */
+	@ReportableProperty("Validation status.")
+	public Validity isValid();
 }

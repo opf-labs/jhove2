@@ -36,20 +36,32 @@
 
 package org.jhove2.module.digest;
 
+import java.io.IOException;
+import java.util.Set;
+
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.Digest;
-import org.jhove2.core.Reportable;
+import org.jhove2.core.JHOVE2;
+import org.jhove2.core.source.Source;
+import org.jhove2.module.Module;
 
-/** Interface for JHOVE2 algorithm-specific message digesters.
+/** Interface for JHOVE2 message digesting modules.
  * 
  * @author mstrong, slabrams
  */
 public interface Digester
-	extends Reportable
+	extends Module
 {
-	/** Get message digest value, as a hexadecimal string.
-	 * @return Message digest value, as a hexadecimal string
+	/** Calculate message digests for a source unit.
+	 * @param jhove2 JHOVE2 framework
+	 * @param source Source unit
 	 */
-	@ReportableProperty("Get message digest value, as a hexadecimal string.")
-	public Digest getDigest();
+	public void digest(JHOVE2 jhove2, Source source)
+		throws IOException;
+	
+	/** Get message digests.
+	 * @return Message digests
+	 */
+	@ReportableProperty("Get message digests.")
+	public Set<Digest> getDigests();
 }

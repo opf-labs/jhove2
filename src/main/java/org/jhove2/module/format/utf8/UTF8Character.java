@@ -42,14 +42,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.AbstractModel;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
+import org.jhove2.core.Reportable;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
-import org.jhove2.core.Validatable.Validity;
 import org.jhove2.core.io.Input;
+import org.jhove2.module.format.Validator.Validity;
 import org.jhove2.module.format.unicode.C0Control;
 import org.jhove2.module.format.unicode.C1Control;
 import org.jhove2.module.format.unicode.CodeBlock;
@@ -61,7 +61,7 @@ import org.jhove2.module.format.unicode.Unicode.EOL;
  * @author mstrong, slabrams
  */
 public class UTF8Character
-	extends AbstractModel
+	implements Reportable
 {
 	/** Byte Order Mark (BOM). */
 	public static final int BOM = 0xFEFF;
@@ -72,10 +72,10 @@ public class UTF8Character
 	/** Marker that the character code point is uninitialized or unknown. */
 	public static final int UNINITIALIZED = -1;
 	
-	/** C0 control. */
+	/** C0 control.  Null if character is not a C0 control. */
 	protected C0Control c0control;
 
-	/** C1 control. */
+	/** C1 control.  Null if character is not a C1 control. */
 	protected C1Control c1control;
 	
 	/** Unicode code block. */
@@ -90,22 +90,22 @@ public class UTF8Character
 	/** Invalid byte value message. */
 	protected List<Message> invalidByteValueMessages;
 	
-	/** Byte Order Mark (BOM) status. */
+	/** Character Byte Order Mark (BOM) status. */
 	protected boolean isBOM;
 	
-	/** C0 control status. */
+	/** Character C0 control status. */
 	protected boolean isC0Control;
 	
-	/** C1 control status. */
+	/** Character C1 control status. */
 	protected boolean isC1Control;
 	
 	/** Non-character status. */
 	protected boolean isNonCharacter;
 	
-	/** Validation status. */
+	/** Character validation status. */
 	protected Validity isValid;
 	
-	/** Byte offset. */
+	/** Character byte offset. */
 	protected long offset;
 	
 	/** Character encoded size, in bytes. */
@@ -116,15 +116,14 @@ public class UTF8Character
 	public UTF8Character() {
 		super();
 		
-		this.codePoint      = UNINITIALIZED;
-		this.isBOM          = false;
-		this.isC0Control    = false;
-		this.isC1Control    = false;
-		this.isNonCharacter = false;
-		this.isValid        = Validity.Undetermined;
-		this.size           = 0;
-		
+		this.codePoint                = UNINITIALIZED;		
 		this.invalidByteValueMessages = new ArrayList<Message>();
+		this.isBOM                    = false;
+		this.isC0Control              = false;
+		this.isC1Control              = false;
+		this.isNonCharacter           = false;
+		this.isValid                  = Validity.Undetermined;
+		this.size                     = 0;
 	}
 
 	/** Parse a source unit input.  Implicitly set the start and end elapsed
@@ -140,7 +139,6 @@ public class UTF8Character
 	public long parse(JHOVE2 jhove2, Input input)
 		throws EOFException, IOException, JHOVE2Exception
 	{
-		setStartTime();
 		this.isValid = Validity.True;
 		
 		/* Read the first byte. */
@@ -251,7 +249,6 @@ public class UTF8Character
 			 this.codePoint ==0x10FFFE || this.codePoint ==0x10FFFF) {
 			this.isNonCharacter = true;
 		}
-		setEndTime();
 		
 		return consumed;
 	}

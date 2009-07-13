@@ -45,34 +45,32 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.jhove2.core.AbstractModule;
-import org.jhove2.core.Dispatchable;
-import org.jhove2.core.Format;
-import org.jhove2.core.FormatIdentification;
-import org.jhove2.core.FormatModule;
-import org.jhove2.core.FormatProfile;
 import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.Parsable;
-import org.jhove2.core.Validatable;
 import org.jhove2.core.config.Configure;
 import org.jhove2.core.source.Source;
+import org.jhove2.module.AbstractModule;
+import org.jhove2.module.Module;
+import org.jhove2.module.format.FormatModule;
+import org.jhove2.module.format.FormatProfile;
+import org.jhove2.module.format.Parser;
+import org.jhove2.module.format.Validator;
 
 /** JHOVE2 dispatcher module.  The module instantiates and invokes the module
- * appropriate for a format.
+ * associated with an identifier.
  * 
  * @author mstrong, slabrams
  */
 public class DispatcherModule
 	extends AbstractModule
-	implements Dispatchable
+	implements Dispatcher
 {
 	/** Dispatcher module version identifier. */
 	public static final String VERSION = "1.0.0";
 
 	/** Dispatcher module release date. */
-	public static final String RELEASE = "2009-06-23";
+	public static final String RELEASE = "2009-07-13";
 	
 	/** Dispatcher module rights statement. */
 	public static final String RIGHTS =
@@ -93,7 +91,7 @@ public class DispatcherModule
 		super(VERSION, RELEASE, RIGHTS);
 		
 		this.dispatch = new TreeMap<String,String>();
-		Properties props = Configure.getProperties("Dispatch");
+		Properties props = Configure.getProperties("Dispatcher");
 		Set<String> keys = props.stringPropertyNames();
 		Iterator<String> iter = keys.iterator();
 		while (iter.hasNext()) {
@@ -103,48 +101,61 @@ public class DispatcherModule
 		}
 	}
 
-	/** Dispatch a module appropriate for a source unit's format.
-	 * @param jhove2   JHOVE2 framework
-	 * @param source   Source unit
-	 * @param formatID Source unit format identification
+	/** Dispatch a source unit to the module associated with an identifier.
+	 * @param jhove2     JHOVE2 framework
+	 * @param source     Source unit
+	 * @param identifier Module identifier
+	 * @return Module
 	 * @throws JHOVE2Exception 
 	 * @throws IOException 
 	 * @throws EOFException 
-	 * @see org.jhove2.core.Dispatchable#dispatch(org.jhove2.core.JHOVE2, org.jhove2.core.FormatIdentification)
+	 * @see org.jhove2.module.dispatch.Dispatcher#dispatch(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source, org.jhove2.core.I8R)
 	 */
 	@Override
-	public Parsable dispatch(JHOVE2 jhove2, Source source,
-			                 FormatIdentification formatID)
+	public Module dispatch(JHOVE2 jhove2, Source source, I8R identifier)
 		throws EOFException, IOException, JHOVE2Exception
 	{
-		Parsable module = null;
-		
-		Format format     = formatID.getFormat();
-		I8R    identifier = format.getIdentifier();
-		String name       = this.dispatch.get(identifier.getValue());
+		Module module = null;
+
+		String name = this.dispatch.get(identifier.getValue());
 		if (name != null) {
-			module = Configure.getReportable(Parsable.class, name);
+			module = Configure.getReportable(Module.class, name);
 			if (module != null) {
 				module.setStartTime();
-				module.parse(jhove2, source);
-				if (module instanceof Validatable) {
-					((Validatable) module).validate(jhove2, source);
-				}
+				
 				if (module instanceof FormatModule) {
+					if (module instanceof Parser) {
+						((Parser) module).parse(jhove2, source);
+					}
+					if (module instanceof Validator) {
+						((Validator) module).validate(jhove2, source);
+					}
+					
 					List<FormatProfile> profiles =
 						((FormatModule) module).getProfiles();
 					if (profiles.size() > 0) {
 						Iterator<FormatProfile> iter = profiles.iterator();
 						while (iter.hasNext()) {
 							FormatProfile profile = iter.next();
-							profile.setStartTime();
-							profile.validate(jhove2, source);
-							profile.setEndTime();
+							if (profile instanceof Validator) {
+								profile.setStartTime();
+								((Validator) profile).validate(jhove2, source);
+								profile.setEndTime();
+							}
 						}
 					}
 				}
 				module.setEndTime();
+				source.addModule(module);
 			}
+			else {
+				/* TODO: module can't be instantiated. */
+				System.out.println("# CAN'T INSTANTIATE " + name);
+			}
+		}
+		else {
+			/* TODO: report that no dispatchable module was found. */
+			System.out.println("# CAN'T DISPATCH " + identifier);
 		}
 		
 		return module;

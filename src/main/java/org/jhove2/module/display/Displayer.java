@@ -34,16 +34,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.core;
+package org.jhove2.module.display;
 
 import java.io.PrintStream;
 
-/** Interface for JHOVE2 displayers.
+import org.jhove2.core.I8R;
+import org.jhove2.module.Module;
+
+/** Interface for JHOVE2 displayer modules.
  * 
  * @author mstrong, slabrams
  */
-public interface Displayable
-	extends Processible
+public interface Displayer
+	extends Module
 {
 	/** Start display.
 	 * @param out   Print stream
@@ -115,13 +118,13 @@ public interface Displayable
 	public void endDisplay(PrintStream out, int level);
 	
 	/** Get show identifiers flag.
-	 * @return Show identifier flag; if true, show identifiers in Text display
-	 *         mode
+	 * @return Show identifier flag; if true, show identifiers in non-XML
+	 *         display modes
 	 */
 	public boolean getShowIdentifiers();
 	
 	/** Set show identifiers flag.
-	 * @param flag If true, show identifiers in Text display mode
+	 * @param flag If true, show identifiers in non-XML display modes
 	 */
 	public void setShowIdentifiers(boolean flag);
 }

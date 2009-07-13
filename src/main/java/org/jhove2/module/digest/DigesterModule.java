@@ -43,12 +43,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.jhove2.core.AbstractModule;
 import org.jhove2.core.Digest;
-import org.jhove2.core.Digestible;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
+import org.jhove2.module.AbstractModule;
 
 /** JHOVE2 message digester module.
  * 
@@ -56,7 +55,7 @@ import org.jhove2.core.source.Source;
  */
 public class DigesterModule
 	extends AbstractModule
-	implements Digestible
+	implements Digester
 {
 	/** Framework version identifier. */
 	public static final String VERSION = "1.0.0";
@@ -83,18 +82,15 @@ public class DigesterModule
 		super(VERSION, RELEASE, RIGHTS);
 	}
 
-	/** Calculate message digests for the source unit.  Implicitly set the
-	 * start and ending elapsed time.
+	/** Calculate message digests for the source unit.
 	 * @param jhove2 JHOVE2 framework
 	 * @param source Source unit
-	 * @see org.jhove2.core.Digestible#digest(org.jhove2.core.JHOVE2, org.jhove2.core.io.Input)
+	 * @see org.jhove2.module.digest.Digester#digest(org.jhove2.core.JHOVE2, org.jhove2.core.io.Input)
 	 */
 	@Override
 	public void digest(JHOVE2 jhove2, Source source)
 		throws IOException
 	{
-		setStartTime();
-		
 		Input input = null;
 		try {
 			input = source.getInput(jhove2.getBufferSize(),
@@ -132,12 +128,11 @@ public class DigesterModule
 				input.close();
 			}
 		}
-		setEndTime();
 	}
 
 	/** Get message digests.
 	 * @return Message digests
-	 * @see org.jhove2.core.Digestible#getDigests()
+	 * @see org.jhove2.module.digest.Digester#getDigests()
 	 */
 	@Override
 	public Set<Digest> getDigests() {

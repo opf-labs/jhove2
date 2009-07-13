@@ -36,7 +36,6 @@
 
 package org.jhove2.core.source;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
@@ -53,7 +52,6 @@ import org.jhove2.core.io.Input.Type;
  */
 public class URLSource
 	extends AbstractSource
-	implements AtomicSource	
 {
 	/** URL backing the source unit. */
 	protected URL url;

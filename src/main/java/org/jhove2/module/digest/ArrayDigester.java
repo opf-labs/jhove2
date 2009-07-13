@@ -36,13 +36,14 @@
 
 package org.jhove2.module.digest;
 
+
 /** Interface for JHOVE2 algorithm-spedcific message digestgers that operate
  * on byte arrays.
  * 
  * @author mstrong, slabrams
  */
 public interface ArrayDigester
-	extends Digester
+	extends DigesterAlgorithm
 {
 	/** Update a message digest.
 	 * @param array Byte array

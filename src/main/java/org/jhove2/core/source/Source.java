@@ -40,14 +40,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.ByteOrder;
 import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.Durable;
-import org.jhove2.core.Processible;
-import org.jhove2.core.Reportable;
+import org.jhove2.core.Temporal;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.io.Input.Type;
+import org.jhove2.module.Module;
 
 /** Interface for JHOVE2 source units.  A source unit is a formatted object
  * that can be characterized, which may be a file, a subset of a file, or a
@@ -56,7 +56,7 @@ import org.jhove2.core.io.Input.Type;
  * @author mstrong, slabrams
  */
 public interface Source
-	extends Reportable, Durable
+	extends Temporal
 {
 	/** Add a child source unit.
 	 * @param child Child source unit
@@ -66,7 +66,7 @@ public interface Source
 	/** Add a module that processed the source unit.
 	 * @param module Module that processed the source unit
 	 */
-	public void addModule(Processible module);
+	public void addModule(Module module);
 	
 	/** Close the source unit.  If the source unit is backed by a temporary
 	 * file, delete the file.
@@ -85,13 +85,24 @@ public interface Source
 	public File getFile();
 	
 	/** Get {@link org.jhove2.core.io.Input} for the source unit.
-	 * @param bufferSize Input buffer size
+	 * @param bufferSize Input maximum buffer size
 	 * @param bufferType Input buffer type
 	 * @return Input for the source unit
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
 	public Input getInput(int bufferSize, Type bufferType)
+		throws FileNotFoundException, IOException;
+	
+	/** Get {@link org.jhove2.core.io.Input} for the source unit.
+	 * @param bufferSize Input maximum buffer size
+	 * @param bufferType Input buffer type
+	 * @param order      Byte order
+	 * @return Input for the source unit
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
+	public Input getInput(int bufferSize, Type bufferType, ByteOrder order)
 		throws FileNotFoundException, IOException;
 	
 	/** Get {@link java.io.InputStream} backing the source unit
@@ -104,7 +115,7 @@ public interface Source
 	 * @return Modules that processed the source unit
 	 */
 	@ReportableProperty(order=1, value="Modules that processed the source unit")
-	public List<Processible> getModules();
+	public List<Module> getModules();
 	
 	/** Get source unit backing file temporary status.
 	 * @return True if the source unit backing file is a temporary file

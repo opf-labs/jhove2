@@ -52,7 +52,6 @@ import org.jhove2.core.io.Input.Type;
  */
 public class FileSource
 	extends AbstractSource
-	implements AtomicSource
 {	
 	/** File existence. */
 	protected boolean isExtant;

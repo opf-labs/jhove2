@@ -122,7 +122,7 @@ public class FormatIdentification
 	 * @return Presumptively identified format
 	 */
 	@ReportableProperty(order=3, value="Presumptively identified format.")
-	public Format getFormat() {
+	public Format getPresumptiveFormat() {
 		return this.format;
 	}
 
@@ -142,6 +142,6 @@ public class FormatIdentification
 		else if (order1 > order2) {
 			return 1;
 		}
-		return this.format.getName().compareToIgnoreCase(identification.getFormat().getName());
+		return this.format.getName().compareToIgnoreCase(identification.getPresumptiveFormat().getName());
 	}
 }

@@ -44,18 +44,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jhove2.core.Durable;
 import org.jhove2.core.Duration;
 import org.jhove2.core.JHOVE2;
-import org.jhove2.core.Processible;
 import org.jhove2.core.io.Input;
+import org.jhove2.core.io.InputFactory;
 import org.jhove2.core.io.Input.Type;
+import org.jhove2.module.Module;
 
 /** An abstract JHOVE2 source unit.  A source unit is a formatted object that
  * can be characterized, which may be a file, a subset of a file, or a group
@@ -64,7 +65,7 @@ import org.jhove2.core.io.Input.Type;
  * @author mstrong, slabrams
  */
 public abstract class AbstractSource
-	implements Source, Durable
+	implements Source
 {	
 	/** Child source units. */
 	protected List<Source> children;
@@ -81,7 +82,7 @@ public abstract class AbstractSource
 	protected boolean isTemp;
 
 	/** Modules that processed the source unit. */
-	protected List<Processible> modules;
+	protected List<Module> modules;
 	
 	/** Module elapsed time, start. */
 	protected long startTime;
@@ -90,7 +91,7 @@ public abstract class AbstractSource
 	 */
 	protected AbstractSource() {
 		this.children = new ArrayList<Source>();
-		this.modules  = new ArrayList<Processible>();
+		this.modules  = new ArrayList<Module>();
 	}
 	
 	/** Instantiate a new <code>AbstractSource</code> backed by a file.
@@ -133,7 +134,7 @@ public abstract class AbstractSource
 	 * @see org.jhove2.core.source.Source#addModule(org.jhove2.core.Processible)
 	 */
 	@Override
-	public void addModule(Processible module) {
+	public void addModule(Module module) {
 		this.modules.add(module);
 	}
 	
@@ -216,18 +217,38 @@ public abstract class AbstractSource
 	 * parsable input (e.g. {@link org.jhove2.core.source.ClumpSource} or
 	 * {@link org.jhove2.core.source.DirectorySource} can let this inherited
 	 * method return null.
-	 * @param bufferSize Input buffer size
+	 * @param bufferSize Input maximum buffer size
 	 * @param bufferType Input buffer type
 	 * @return null
 	 * @throws FileNotFound
 	 * @throws IOException
-	 * @see org.jhove2.core.source.Source#getInput()
+	 * @see org.jhove2.core.source.Source#getInput(int, org.jhove2.core.input.Type)
 	 */
 	@Override
 	public Input getInput(int bufferSize, Type bufferType)
 		throws FileNotFoundException, IOException
 	{
-		return null;
+		return getInput(bufferSize, bufferType, ByteOrder.LITTLE_ENDIAN);
+	}
+	
+	/** Get {@link org.jhove2.core.io.Input} for the source unit.  Concrete
+	 * classes extending this abstract class must provide an implementation of 
+	 * this method if they are are based on parsable input.  Classes without
+	 * parsable input (e.g. {@link org.jhove2.core.source.ClumpSource} or
+	 * {@link org.jhove2.core.source.DirectorySource} can let this inherited
+	 * method return null.
+	 * @param bufferSize Input maximum buffer size, in bytes
+	 * @param bufferType Input buffer type
+	 * @param order      Byte order
+	 * @return null
+	 * @throws FileNotFound
+	 * @throws IOException
+	 * @see org.jhove2.core.source.Source#getInput(int, org.jhove2.core.input.Type, java.nio.ByteOrder)
+	 */
+	public Input getInput(int bufferSize, Type bufferType, ByteOrder order)
+		throws FileNotFoundException, IOException
+	{
+		return InputFactory.getInput(this.file, bufferSize, bufferType, order);
 	}
 	
 	/** Get {@link java.io.InputStream} backing the source unit
@@ -246,7 +267,7 @@ public abstract class AbstractSource
 	 * @see org.jhove2.core.source.Source#getModules()
 	 */
 	@Override
-	public List<Processible> getModules() {
+	public List<Module> getModules() {
 		return this.modules;
 	}
 	
@@ -277,18 +298,34 @@ public abstract class AbstractSource
 	}
 
 	/** Set the end time of the elapsed duration.
-	 * @see org.jhove2.core.Durable#setStartTime()
+	 * @return End time, in milliseconds
+	 * @see org.jhove2.module.Module#setStartTime()
 	 */
 	@Override
-	public void setEndTime() {
-		this.endTime = System.currentTimeMillis();
+	public long setEndTime() {
+		return this.endTime = System.currentTimeMillis();
 	}
-
+	
+	/** Set the restart time of the elapsed duration.  All subsequent time
+	 * (until the next invocation of the setEndTime() method) will be added
+	 * to the time already accounted for by an earlier invocation of the
+	 * setEndTime() method.
+	 * @return Current time minus the elapsed time, in milliseconds
+	 * @see org.jhove2.core.Temporal#setReStartTime()
+	 */
+	public long setRestartTime() {
+		if (this.endTime == Duration.UNINITIALIZED) {
+			return this.startTime = System.currentTimeMillis();
+		}
+		return this.startTime = System.currentTimeMillis() - this.endTime - this.startTime;
+	}
+	
 	/** Set the start time of the elapsed duration.
-	 * @see org.jhove2.core.Durable#setStartTime()
+	 * @return Start time, in milliseconds
+	 * @see org.jhove2.module.Module#setStartTime()
 	 */
 	@Override
-	public void setStartTime() {
-		this.startTime = System.currentTimeMillis();
+	public long setStartTime() {
+		return this.startTime = System.currentTimeMillis();
 	}
 }

@@ -40,10 +40,8 @@ import java.io.IOException;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.jhove2.core.AbstractModule;
 import org.jhove2.core.Format;
 import org.jhove2.core.FormatIdentification;
-import org.jhove2.core.Identifiable;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Product;
@@ -55,6 +53,7 @@ import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.DirectorySource;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.ZipDirectorySource;
+import org.jhove2.module.AbstractModule;
 
 /** JHOVE2 identification module.
  * 
@@ -62,7 +61,7 @@ import org.jhove2.core.source.ZipDirectorySource;
  */
 public class IdentifierModule
 	extends AbstractModule
-	implements Identifiable
+	implements Identifier
 {
 	/**Identification module version identifier. */
 	public static final String VERSION = "1.0.0";
@@ -176,7 +175,7 @@ public class IdentifierModule
 	 * @see org.jhove2.core.Identifiable#identify(org.jhove2.core.JHOVE2, org.jhove2.core.io.Input)
 	 */
 	@Override
-	public Set<FormatIdentification> getFormats() {
+	public Set<FormatIdentification> getPresumptiveFormats() {
 		return this.formats;
 	}
 }

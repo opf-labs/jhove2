@@ -47,14 +47,14 @@ import org.jhove2.annotation.ReportableProperty;
  * @author mstrong, slabrams
  */
 public class ReportablePropertyComparator
-	implements Comparator<InfoProperty>
+	implements Comparator<ReportablePropertyInfo>
 {
 	/** Compare two reportable properties for relative ordering.
 	 * @param p1 First reportable property
 	 * @param p2 Second reportable property 
 	 */
 	@Override
-    public int compare(InfoProperty p1, InfoProperty p2) {
+    public int compare(ReportablePropertyInfo p1, ReportablePropertyInfo p2) {
     	int ret = 1;
     	
     	Method m1 = p1.getMethod();
