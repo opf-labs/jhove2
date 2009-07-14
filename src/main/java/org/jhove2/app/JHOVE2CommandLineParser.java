@@ -68,6 +68,9 @@ public class JHOVE2CommandLineParser {
 	/** File system path names. */
 	protected List<String> names;
 	
+	/** Output file. */
+	protected String outputFile;
+	
 	/** Show identifiers flag; tf true, show identifiers in non-XML display
 	 * modes.
 	 */
@@ -112,6 +115,7 @@ public class JHOVE2CommandLineParser {
 		this.failFastLimit   = failFastLimit;
 		this.showIdentifiers = showIdentifiers;
 		this.names           = new ArrayList<String>();
+		this.outputFile      = null;
 	}
 	
 	/** Parse the JHOVE2 application command line.
@@ -124,30 +128,23 @@ public class JHOVE2CommandLineParser {
 			if (args[i].charAt(0) == '-') {
 				if (args[i].length() > 1) {
 					char opt = Character.toLowerCase(args[i].charAt(1));
-					if      (opt == 'b') {
-						if (i+1 < args.length) {
-							this.bufferSize = Integer.valueOf(args[++i]);
-						}
+					if      (opt == 'b' && i+1 < args.length) {
+						this.bufferSize = Integer.valueOf(args[++i]);
 					}
-					else if (opt == 'B') {
-						if (i+1 < args.length) {
-							this.bufferType = Type.valueOf(args[++i]);
-						}
+					else if (opt == 'B' && i+1 < args.length) {
+						this.bufferType = Type.valueOf(args[++i]);
 					}
-					else if (opt == 'd') {
-						if (i+1 < args.length) {
-							this.displayer = args[++i] + "Displayer";
-						}
+					else if (opt == 'd' && i+1 < args.length) {
+						this.displayer = args[++i] + "Displayer";
 					}
-					else if (opt == 'f') {
-						if (i+1 < args.length) {
-							this.failFastLimit = Integer.valueOf(args[++i]);
-						}
+					else if (opt == 'f' && i+1 < args.length) {
+						this.failFastLimit = Integer.valueOf(args[++i]);
 					}
-					else if (opt == 't') {
-						if (i+1 < args.length) {
-							this.tempDirectory = args[++i];
-						}
+					else if (opt == 'o' && i+1 < args.length) {
+						this.outputFile = args[++i];
+					}
+					else if (opt == 't' && i+1 < args.length) {
+						this.tempDirectory = args[++i];
 					}
 					else {
 						if (args[i].indexOf('i') > -1) {
@@ -210,6 +207,13 @@ public class JHOVE2CommandLineParser {
 	 */
 	public int getFailFastLimit() {
 		return this.failFastLimit;
+	}
+	
+	/** Get output file.
+	 * @return Output file, or null if no file is specified
+	 */
+	public String getOutputFile() {
+		return this.outputFile;
 	}
 	
 	/** Get file system path names.

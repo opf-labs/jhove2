@@ -36,6 +36,7 @@
 
 package org.jhove2.app;
 
+import java.io.PrintStream;
 import java.util.List;
 
 import org.jhove2.core.JHOVE2Exception;
@@ -84,10 +85,15 @@ public class JHOVE2CommandLine {
 			jhove2.characterize(pathNames);
 
 			/* Display the characterization results. */
+			PrintStream out = System.out;
+			String outputFile = parser.getOutputFile();
+			if (outputFile != null) {
+				out = new PrintStream(outputFile);
+			}
 			Displayer displayer =
 				Configure.getReportable(Displayer.class, parser.getDisplayer());
 			jhove2.setDisplayerModule(displayer);
-			jhove2.display();
+			jhove2.display(out);
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace(System.err);
@@ -106,7 +112,7 @@ public class JHOVE2CommandLine {
 		
 		StringBuffer usage = new StringBuffer("usage: ");
 		usage.append(JHOVE2CommandLine.class.getName());
-		usage.append(" [-ikT]");
+		usage.append(" [-ik]");
 		usage.append(" [-b <bufferSize>]");
 		usage.append(" [-B ");
 		for (int i=0; i<bufferTypes.length; i++) {
@@ -126,6 +132,7 @@ public class JHOVE2CommandLine {
 		}
 		usage.append("]");
 		usage.append(" [-f <failFastLimit>]");
+		usage.append(" [-o <file>]");
 		usage.append(" <file> ...");
 		
 		return usage.toString();

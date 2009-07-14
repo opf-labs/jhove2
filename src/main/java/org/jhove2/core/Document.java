@@ -147,7 +147,7 @@ public class Document
 	/** Get document identifiers.
 	 * @return List of document identifiers
 	 */
-	@ReportableProperty(order=6, value="List of document identifiers.")
+	@ReportableProperty(order=6, value="List of document formal identifiers.")
 	public List<I8R> getIdentifiers() {
 		return this.identifiers;
 	}

@@ -88,7 +88,7 @@ public class Product
 	 * @return Product developers
 	 * @see org.jhove2.core.Product#getDevelopers()
 	 */
-	@ReportableProperty(order=3, value="Product developers")
+	@ReportableProperty(order=3, value="Product developers.")
 	public List<Agent> getDevelopers() {
 		return this.developers;
 	}

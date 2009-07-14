@@ -125,7 +125,7 @@ public class ReportableInfo {
 							name = name.substring(3);
 						}
 						String id = I8R.JHOVE2_PREFIX +
-						            I8R.JHOVE2_REPORTABLE_INFIX +
+						            I8R.JHOVE2_PROPERTY_INFIX +
 						            cl.getName().replace('.', '/') + "/" +
 						            name;
 						if (idMap.get(id) == null) {
