@@ -45,21 +45,10 @@ import org.jhove2.core.Product;
  */
 public class DROIDWrapper
 	extends Product
-{
-	/** DROID version identifier. */
-	public static final String VERSION = "4.0";
-
-	/** DROID release date. */
-	public static final String RELEASE = "2009-06-09";
-	
-	/** DROID rights statement. */
-	public static final String RIGHTS =
-		"Copyright 2008 by the National Archives. " +
-		"Available under the terms of the BSD license.";
-	
+{	
 	/** Instantiate a new <code>DROIDWrapper</code>.
 	 */
-	public DROIDWrapper() {
-		super(VERSION, RELEASE, RIGHTS);
+	public DROIDWrapper(String version, String release, String rights) {
+		super(version, release, rights);
 	}
 }

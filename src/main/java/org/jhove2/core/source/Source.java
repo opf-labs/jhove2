@@ -79,6 +79,11 @@ public interface Source
 	@ReportableProperty(order=3, value="Child source untis.")
 	public List<Source> getChildSources();
 	
+	/** Get delete temporary files flag; if true, delete files.
+	 * @return Delete temporary files flag
+	 */
+	public boolean getDeleteTempFiles();
+	
 	/** Get {@link java.io.File} backing the source unit.
 	 * @return File backing the source unit
 	 */
@@ -132,4 +137,9 @@ public interface Source
 	 * @return Number of modules
 	 */
 	public int getNumModules();
+	
+	/** Set delete temporary files flag; if true, delete files.
+	 * @param flag Delete temporary files flag
+	 */
+	public void setDeleteTempFiles(boolean flag);
 }

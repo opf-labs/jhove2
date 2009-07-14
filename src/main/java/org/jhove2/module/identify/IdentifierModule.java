@@ -67,7 +67,7 @@ public class IdentifierModule
 	public static final String VERSION = "1.0.0";
 
 	/** Identification module release date. */
-	public static final String RELEASE = "2009-06-16";
+	public static final String RELEASE = "2009-07-13";
 	
 	/** Identification module rights statement. */
 	public static final String RIGHTS =
@@ -75,9 +75,6 @@ public class IdentifierModule
 		"Ithaka Harbors, Inc., and The Board of Trustees of the Leland " +
 		"Stanford Junior University. " +
 		"Available under the terms of the BSD license.";
-	
-	/** DROID product information. */
-	protected static final Product droid = new DROIDWrapper();
 
 	/** Presumptively identified formats. */
 	protected Set<FormatIdentification> formats;
@@ -105,6 +102,7 @@ public class IdentifierModule
 			throws IOException, JHOVE2Exception
 	{
 		setStartTime();
+
 		if (source instanceof AggregateSource) {
 			if (source instanceof ClumpSource) {
 				/* Identify clump source unit. */
@@ -148,14 +146,14 @@ public class IdentifierModule
 						id = new FormatIdentification(Configure.getReportable(Format.class,
 									                                      "ZipFormat"),
 							                      Confidence.PositiveGeneric,
-							                      droid);
+							                      this.wrappedProduct);
 					}
 					else {
 						/* Default to UTF-8. */
 						id = new FormatIdentification(Configure.getReportable(Format.class,
 						                                                  "UTF8Format"),
 					                              Confidence.PositiveGeneric,
-					                              droid);
+					                              this.wrappedProduct);
 					}
 					this.formats.add(id);
 				}

@@ -111,6 +111,9 @@ public class JHOVE2
 	
 	/** Default message digests flag: don't calculate digests. */
 	public static final boolean DEFAULT_CALC_DIGESTS = false;
+	
+	/** Default delete temporary files flag: delete files. */
+	public static final boolean DEFAULT_DELETE_TEMP_FILES = true;
 
 	/** Default {@link org.jhove2.module.display.Displayer}. */
 	public static final String DEFAULT_DISPLAYER = "TextDisplayer";
@@ -147,6 +150,9 @@ public class JHOVE2
 	
 	/** JHOVE2 application command line. */
 	protected String commandLine;
+	
+	/** Framework delete temporary files flag; if true, delete files. */
+	protected boolean deleteTempFiles;
 	
 	/** Framework display directives. */
 	protected Map<String,Directive> directives;
@@ -251,6 +257,8 @@ public class JHOVE2
 		
 		this.bufferSize      = DEFAULT_BUFFER_SIZE;
 		this.bufferType      = DEFAULT_BUFFER_TYPE;
+		this.calcDigests     = DEFAULT_CALC_DIGESTS;
+		this.deleteTempFiles = DEFAULT_DELETE_TEMP_FILES;
 		this.failFastLimit   = DEFAULT_FAIL_FAST_LIMIT;
 		this.tempPrefix      = DEFAULT_TEMP_PREFIX;
 		this.tempSuffix      = DEFAULT_TEMP_SUFFIX;
@@ -362,6 +370,7 @@ public class JHOVE2
 		throws IOException, JHOVE2Exception
 	{
 		if (this.characterizer != null) {
+			source.setDeleteTempFiles(this.deleteTempFiles);
 			try {
 				this.characterizer.characterize(this, source);
 			} finally {
@@ -403,8 +412,8 @@ public class JHOVE2
 	 */
 	public void display(PrintStream out) {
 		this.displayer.setStartTime();
-
 		this.displayer.setShowIdentifiers(this.showIdentifiers);
+		
 		this.displayer.startDisplay(out, 0);
 		display(out, this, 0, 0);
 		this.displayer.endDisplay(out, 0);
@@ -421,7 +430,7 @@ public class JHOVE2
 	 */
 	protected void display(PrintStream out, Reportable reportable, int level,
 			               int order) {
-		ReportableInfo   reportableInfo       = new ReportableInfo(reportable);
+		ReportableInfo reportableInfo = new ReportableInfo(reportable);
 		String name       = reportableInfo.getName();
 		I8R    identifier = reportableInfo.getIdentifier();
 		this.displayer.startReportable(out, level, name, identifier, order);
@@ -529,7 +538,9 @@ public class JHOVE2
 			}
 		}
 		else if (value instanceof Reportable) {
-			display(out, (Reportable) value, level+1, order);
+			this.displayer.startReportable(out, level+1, name, identifier, order);
+			display(out, (Reportable) value, level+2, 0);
+			this.displayer.endReportable(out, level+1, name, identifier);
 		}
 		else {
 			if (value instanceof Date) {
@@ -652,6 +663,13 @@ public class JHOVE2
 			"date/timestatmp.")
 	public Date getDateTime() {
 		return new Date(this.startTime);
+	}
+	
+	/** Get framework delete temporary files flag; if true, delete files.
+	 * @return Framework delete temporary files flag
+	 */
+	public boolean getDeleteTempFiles() {
+		return this.deleteTempFiles;
 	}
 	
 	/** Get framework dispatcher module.
@@ -956,6 +974,13 @@ public class JHOVE2
 				this.commandLine += " " + args[i];
 			}
 		}
+	}
+	
+	/** Set framework delete temporary files flag; if true, delete files.
+	 * @param flag Framework delete temporary files flag
+	 */
+	public void setDeleteTempFiles(boolean flag) {
+		this.deleteTempFiles = flag;
 	}
 	
 	/** Set framework dispatcher module.

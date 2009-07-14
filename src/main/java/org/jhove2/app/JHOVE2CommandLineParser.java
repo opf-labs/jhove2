@@ -56,6 +56,9 @@ public class JHOVE2CommandLineParser {
 	/** {@link org.jhove2.core.io.Input} buffer type. */
 	protected Type bufferType;
 	
+	/** Delete temporary files flag. */
+	protected boolean deleteTempFiles;
+	
 	/** {@link org.jhove2.module.display.Displayer}. */
 	protected String displayer;
 	
@@ -77,8 +80,9 @@ public class JHOVE2CommandLineParser {
 	 */
 	public JHOVE2CommandLineParser() {
 		this(JHOVE2.DEFAULT_BUFFER_SIZE, JHOVE2.DEFAULT_BUFFER_TYPE,
-			 JHOVE2.DEFAULT_DISPLAYER, JHOVE2.DEFAULT_SHOW_IDENTIFIERS,
-			 JHOVE2.DEFAULT_FAIL_FAST_LIMIT, JHOVE2.DEFAULT_CALC_DIGESTS);
+			 JHOVE2.DEFAULT_CALC_DIGESTS, JHOVE2.DEFAULT_DELETE_TEMP_FILES,
+			 JHOVE2.DEFAULT_DISPLAYER, JHOVE2.DEFAULT_FAIL_FAST_LIMIT,
+			 JHOVE2.DEFAULT_SHOW_IDENTIFIERS);
 	}
 	
 	/** Instantiate a new <code>JHOVE2CommandLineParser</code> with specific
@@ -87,22 +91,26 @@ public class JHOVE2CommandLineParser {
 	 *                        size
 	 * @param bufferType      Default {@link org.jhove2.core.io.Input} buffer
 	 *                        type
-	 * @param displayer       Default {@link org.jhove2.module.display.Displayer}
-	 * @param showIdentifiers Show identifiers flag; if true, show identifiers
-	 *                        in JSON and Text display mode
-	 * @param failFastLimit   Default fail fast limit
 	 * @param calcDigests     Default message digests flag; if true, calculate
 	 *                        message digests
+	 * @param deleteTemp      Default delete temporary files flag; if true,
+	 *                        delete files 
+	 * @param displayer       Default {@link org.jhove2.module.display.Displayer}
+	 * @param failFastLimit   Default fail fast limit
+	 * @param showIdentifiers Show identifiers flag; if true, show identifiers
+	 *                        in JSON and Text display mode
 	 */
 	public JHOVE2CommandLineParser(int bufferSize, Type bufferType,
-			                       String displayer, boolean showIdentifiers,
-			                       int failFastLimit, boolean calcDigests) {
+			                       boolean calcDigests, boolean deleteTempFiles,
+			                       String displayer, int failFastLimit,
+			                       boolean showIdentifiers) {
 		this.bufferSize      = bufferSize;
 		this.bufferType      = bufferType;
-		this.displayer       = displayer;
-		this.showIdentifiers = showIdentifiers;
-		this.failFastLimit   = failFastLimit;
 		this.calcDigests     = calcDigests;
+		this.deleteTempFiles = deleteTempFiles;
+		this.displayer       = displayer;
+		this.failFastLimit   = failFastLimit;
+		this.showIdentifiers = showIdentifiers;
 		this.names           = new ArrayList<String>();
 	}
 	
@@ -142,11 +150,14 @@ public class JHOVE2CommandLineParser {
 						}
 					}
 					else {
-						if      (args[i].indexOf('i') > -1) {
+						if (args[i].indexOf('i') > -1) {
 							this.showIdentifiers = true;
 						}
-						else if (args[i].indexOf('k') > -1) {
+						if (args[i].indexOf('k') > -1) {
 							this.calcDigests = true;
+						}
+						if (args[i].indexOf('T') > -1) {
+							this.deleteTempFiles = false;
 						}
 					}
 				}
@@ -178,6 +189,13 @@ public class JHOVE2CommandLineParser {
 	 */
 	public boolean getCalcDigests() {
 		return this.calcDigests;
+	}
+	
+	/** Get delete temporary files flag.
+	 * @param Delete temporary files flag
+	 */
+	public boolean getDeleteTempFiles() {
+		return this.deleteTempFiles;
 	}
 	
 	/** Get {@link org.jhove2.core.Displayeble}.

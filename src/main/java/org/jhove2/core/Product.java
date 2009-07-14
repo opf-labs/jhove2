@@ -47,6 +47,7 @@ import org.jhove2.annotation.ReportableProperty;
  * @author mstrong, slabrams
  */
 public class Product
+	implements Reportable
 {
 	/** Product developers. */
 	protected List<Agent> developers;

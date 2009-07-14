@@ -72,10 +72,11 @@ public class JHOVE2CommandLine {
 
 			/* Initialize the JHOVE2 framework. */
 			JHOVE2 jhove2 = Configure.getReportable(JHOVE2.class, "JHOVE2");
-			jhove2.setCommandLine(args);
 			jhove2.setBufferSize(parser.getBufferSize());
 			jhove2.setBufferType(parser.getBufferType());
 			jhove2.setCalcDigests(parser.getCalcDigests());
+			jhove2.setCommandLine(args);
+			jhove2.setDeleteTempFiles(parser.getDeleteTempFiles());
 			jhove2.setFailFastLimit(parser.getFailFastLimit());
 			jhove2.setShowIdentifiers(parser.getShowIdentifiers());
 			
@@ -105,7 +106,7 @@ public class JHOVE2CommandLine {
 		
 		StringBuffer usage = new StringBuffer("usage: ");
 		usage.append(JHOVE2CommandLine.class.getName());
-		usage.append(" [-ik]");
+		usage.append(" [-ikT]");
 		usage.append(" [-b <bufferSize>]");
 		usage.append(" [-B ");
 		for (int i=0; i<bufferTypes.length; i++) {

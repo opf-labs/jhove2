@@ -58,7 +58,7 @@ public class AbstractModule
 	 * does not directly perform its own processing, but rather invokes
 	 * an external tool.
 	 */
-	protected Product product;
+	protected Product wrappedProduct;
 	
 	/** Instantiate a new <code>AbstractModule</code>.
 	 * @oaran version Module version identifier in three-part form: "M.N.P"
@@ -92,7 +92,7 @@ public class AbstractModule
 	 */
 	@Override
 	public Product getWrappedProduct() {
-		return this.product;
+		return this.wrappedProduct;
 	}
 	
 	/** Set the end time of the elapsed duration.
@@ -131,6 +131,6 @@ public class AbstractModule
 	 * @param product Wrapped product
 	 */
 	public void setWrappedProduct(Product product) {
-		this.product = product;
+		this.wrappedProduct = product;
 	}
 }

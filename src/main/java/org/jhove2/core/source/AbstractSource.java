@@ -70,6 +70,9 @@ public abstract class AbstractSource
 	/** Child source units. */
 	protected List<Source> children;
 	
+	/** Delete temporary files flag; if true, delete files. */
+	protected boolean deleteTempFiles;
+	
 	/** Module elapsed time, end. */
 	protected long endTime;
 	
@@ -90,8 +93,9 @@ public abstract class AbstractSource
 	/** Instantiate a new <code>AbstractSource</code>.
 	 */
 	protected AbstractSource() {
-		this.children = new ArrayList<Source>();
-		this.modules  = new ArrayList<Module>();
+		this.children        = new ArrayList<Source>();
+		this.deleteTempFiles = JHOVE2.DEFAULT_DELETE_TEMP_FILES;
+		this.modules         = new ArrayList<Module>();
 	}
 	
 	/** Instantiate a new <code>AbstractSource</code> backed by a file.
@@ -142,7 +146,7 @@ public abstract class AbstractSource
 	 * file, delete the file.
 	 */
 	public void close() {
-		if (this.file != null && this.isTemp) {
+		if (this.file != null && this.isTemp && this.deleteTempFiles) {
 			this.file.delete();
 		}
 	}
@@ -190,9 +194,19 @@ public abstract class AbstractSource
 		return this.children;
 	}
 	
+	/** Get delete temporary files flag; if true, delete files.
+	 * @return Delete temporary files flag
+	 * @see org.jhove2.core.source.Source#getDeleteTempFiles()
+	 */
+	@Override
+	public boolean getDeleteTempFiles() {
+		return this.deleteTempFiles;
+	}
+	
 	/** Get elapsed time, in milliseconds.  The shortest reportable
 	 * elapsed time is 1 milliscond.
 	 * @return Elapsed time, in milliseconds
+	 * @see org.jhove2.core.Temporal#getElapsedTime()
 	 */
 	@Override
 	public Duration getElapsedTime() {
@@ -299,7 +313,7 @@ public abstract class AbstractSource
 
 	/** Set the end time of the elapsed duration.
 	 * @return End time, in milliseconds
-	 * @see org.jhove2.module.Module#setStartTime()
+	 * @see org.jhove2.core.Temporarl#setStartTime()
 	 */
 	@Override
 	public long setEndTime() {
@@ -322,10 +336,19 @@ public abstract class AbstractSource
 	
 	/** Set the start time of the elapsed duration.
 	 * @return Start time, in milliseconds
-	 * @see org.jhove2.module.Module#setStartTime()
+	 * @see org.jhove2.core.Temporaral#setStartTime()
 	 */
 	@Override
 	public long setStartTime() {
 		return this.startTime = System.currentTimeMillis();
+	}
+	
+	/** Set delete temporary files flag; if true, delete files.
+	 * @param flag Delete temporary files flag
+	 * @see org.jhove2.core.source.Source#setDeleteTempFiles(boolean)
+	 */
+	@Override
+	public void setDeleteTempFiles(boolean flag) {
+		this.deleteTempFiles = flag;
 	}
 }
