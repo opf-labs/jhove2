@@ -80,6 +80,7 @@ public class JHOVE2CommandLine {
 			jhove2.setDeleteTempFiles(parser.getDeleteTempFiles());
 			jhove2.setFailFastLimit(parser.getFailFastLimit());
 			jhove2.setShowIdentifiers(parser.getShowIdentifiers());
+			jhove2.setTempDirectory(parser.getTempDirectory());
 			
 			/* Characterize all file system path names. */
 			jhove2.characterize(pathNames);
@@ -132,6 +133,7 @@ public class JHOVE2CommandLine {
 		}
 		usage.append("]");
 		usage.append(" [-f <failFastLimit>]");
+		usage.append(" [-t <tempDirectory]");
 		usage.append(" [-o <file>]");
 		usage.append(" <file> ...");
 		

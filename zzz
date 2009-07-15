@@ -1,0 +1,97 @@
+JHOVE2:
+ DateTime: 2009-07-37T10:06:37-0700
+ CommandLine: -d Text -f 0 -k -o zzz c:\temp\one-line-with-eol.txt
+ UserName: slabrams
+ WorkingDirectory: C:\Documents and Settings\slabrams\workspace\jhove2
+ TempDirectory: C:\DOCUME~1\slabrams\LOCALS~1\Temp\
+ Source:
+  FileSource:
+   Name: one-line-with-eol.txt
+   Path: C:\Temp\one-line-with-eol.txt
+   Size: 27
+   LastModified: 2009-05-04T02:00:04-0700
+   Modules:
+    Module:
+     IdentifierModule:
+      PresumptiveFormats:
+       PresumptiveFormat:
+        FormatIdentification:
+         Process:
+          DROIDWrapper:
+           Version: 4.0
+         Confidence: PositiveGeneric
+         PresumptiveFormat:
+          Format:
+           Name: UTF-8
+           Identifier: JHOVE2:info:jhove2/format/utf-8
+      ElapsedTime: 00:00:00.016
+      Version: 1.0.0
+    Module:
+     UTF8Module:
+      NumCharacters: 27
+      NumLines: 1
+      EOLCharacters:
+       EOLCharacter: CRLF
+      CodeBlocks:
+       CodeBlock: Basic Latin
+      isValid: True
+      Format:
+       Format:
+        Name: UTF-8
+        Identifier: JHOVE2:info:jhove2/format/utf-8
+      Profiles:
+       Profile:
+        ASCIIProfile:
+         isValid: True
+         Format:
+          Format:
+           Name: ASCII
+           Identifier: JHOVE2:info:jhove2/format/ascii
+         ElapsedTime: 00:00:00.001
+         Version: 1.0.0
+      ElapsedTime: 00:00:00.015
+      Version: 1.0.0
+    Module:
+     DigesterModule:
+      Digests:
+       Digest: CRC-32:0f0cccff
+       Digest: MD5:469da539d811576fccdc05c67ea4a6d1
+       Digest: SHA-1:135e07b44bc15318407899c3c3113a3a1e6cd2db
+      ElapsedTime: 00:00:00.001
+      Version: 1.0.0
+   ElapsedTime: 00:00:00.063
+ Architecture: x86
+ NumProcessors: 2
+ MaxMemory: 66650112
+ OSName: Windows XP
+ OSVersion: 5.1
+ JREVendor: Sun Microsystems Inc.
+ JREVersion: 1.6.0_13
+ JREHome: C:\Program Files\Java\jdk1.6.0_13\jre
+ JVMVendor: Sun Microsystems Inc.
+ JVMVersion: 11.3-b02
+ JVMName: Java HotSpot(TM) Client VM
+ Classpath: C:\Documents and Settings\slabrams\workspace\jhove2\target\classes;C:\Documents and Settings\slabrams\.m2\repository\org\springframework\spring-beans\2.5.3\spring-beans-2.5.3.jar;C:\Documents and Settings\slabrams\.m2\repository\org\springframework\spring-context\2.5.3\spring-context-2.5.3.jar;C:\Documents and Settings\slabrams\.m2\repository\org\springframework\spring-core\2.5.3\spring-core-2.5.3.jar;C:\Documents and Settings\slabrams\.m2\repository\junit\junit\4.1\junit-4.1.jar;C:\Documents and Settings\slabrams\.m2\repository\commons-logging\commons-logging\1.1.1\commons-logging-1.1.1.jar;C:\Documents and Settings\slabrams\.m2\repository\commons-logging\commons-logging-api\1.1\commons-logging-api-1.1.jar;C:\Documents and Settings\slabrams\.m2\repository\log4j\log4j\1.2.14\log4j-1.2.14.jar
+ LibraryPath: C:\Program Files\Java\jdk1.6.0_13\bin;.;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:/Program Files/Java/jre6/bin/client;C:/Program Files/Java/jre6/bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\Program Files\QuickTime\QTSystem\;C:\Program Files\Liquid Technologies\Liquid XML Studio 2009\XmlDataBinder7\Redist7\cpp\win32\bin;C:\Program Files\Java\jdk1.6.0_13;C:\Program Files\Apache Software Foundation\apache-maven-2.1.0\bin;C:\Program Files\SSH Communications Security\SSH Secure Shell
+ BufferSize: 131072
+ BufferType: Direct
+ CalcDigests: true
+ FailFastLimit: 0
+ ShowIdentifiers: false
+ CharacterizerModule:
+  CharacterizerModule:
+   ElapsedTime: 00:00:00.078
+   Version: 1.0.0
+ DispatcherModule:
+  DispatcherModule:
+   ElapsedTime: 00:00:00.031
+   Version: 1.0.0
+ DisplayerModule:
+  TextDisplayer:
+   ElapsedTime: 00:00:00.078
+   Version: 1.0.0
+ NumSources: 1
+ NumFileSources: 1
+ MemoryUsage: 1655880
+ ElapsedTime: 00:00:00.188
+ Version: 2.0.0

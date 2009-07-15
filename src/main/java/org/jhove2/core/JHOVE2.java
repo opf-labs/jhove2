@@ -76,7 +76,7 @@ public class JHOVE2
 	public static final String VERSION = "2.0.0";
 
 	/** Framework release date. */
-	public static final String RELEASE = "2009-07-13";
+	public static final String RELEASE = "2009-07-15";
 	
 	/** Framework rights statement. */
 	public static final String RIGHTS =
@@ -85,7 +85,7 @@ public class JHOVE2
 		"Stanford Junior University. " +
 		"Available under the terms of the BSD license.";
 
-	/** Framework display visbilities. */
+	/** Framework display visibilities. */
 	public enum DisplayVisbility {
 		Always,
 		IfFalse,
@@ -129,10 +129,7 @@ public class JHOVE2
 	
 	/** Default temporary file suffix. */
 	public static final String DEFAULT_TEMP_SUFFIX = ".dat";
-	
-	/** Platform architecture. */
-	protected String architecture;
-	
+
 	/** {@link org.jhove2.core.io.Input} buffer size. */
 	protected int bufferSize;
 	
@@ -144,13 +141,7 @@ public class JHOVE2
 	
 	/** Framework characterizer module. */
 	protected Characterizer characterizer;
-		
-	/** Java classpath. */
-	protected String classpath;
-	
-	/** JHOVE2 application command line. */
-	protected String commandLine;
-	
+
 	/** Framework delete temporary files flag; if true, delete files. */
 	protected boolean deleteTempFiles;
 
@@ -166,30 +157,12 @@ public class JHOVE2
 	 */
 	protected int failFastLimit;
 	
-	/** JRE home. */
-	protected String jreHome;
+	/** Framework installation properties. */
+	protected Installation installation;
 	
-	/** JRE vendor. */
-	protected String jreVendor;
-	
-	/** JRE version. */
-	protected String jreVersion;
-	
-	/** JVM name. */
-	protected String jvmName;
-	
-	/** JVM vendor. */
-	protected String jvmVendor;
-	
-	/** JVM version. */
-	protected String jvmVersion;
-	
-	/** Java library path. */
-	protected String libraryPath;
-	
-	/** Maximum memory available to the JVM, in bytes. */
-	protected long maxMemory;
-	
+	/** Framework invocation properties. */
+	protected Invocation invocation;
+
 	/** Number of bytestream source units. */
 	protected int numBytestreams;
 	
@@ -204,16 +177,7 @@ public class JHOVE2
 	
 	/** Number of file source units. */
 	protected int numFiles;
-	
-	/** Number of processors available to the JVM. */
-	protected int numProcessors;
-	
-	/** Operating system name. */
-	protected String osName;
-	
-	/** Operating system version. */
-	protected String osVersion;
-	
+
 	/** Framework show identifiers flag; if true, show identifiers in non-XML
 	 * display modes.
 	 */
@@ -221,10 +185,7 @@ public class JHOVE2
 	
 	/** Framework source unit. */
 	protected Source source;
-	
-	/** Framework temporary directory. */
-	protected String tempDirectory;
-	
+
 	/** Framework temporary file prefix. */
 	protected String tempPrefix;
 	
@@ -233,15 +194,9 @@ public class JHOVE2
 	
 	/** Used memory, in bytes. */
 	protected long useMemory;
-	
-	/** User name. */
-	protected String userName;
-	
+
 	/** Framework display displayVisbilities. */
 	protected Map<String,DisplayVisbility> visbilities;
-	
-	/** Framework current working directory. */
-	protected String workingDirectory;
 
 	/** Instantiate a new <code>JHOVE2</code> core framework.
 	 * @throws JHOVE2Exception 
@@ -250,10 +205,9 @@ public class JHOVE2
 		throws JHOVE2Exception
 	{
 		super(VERSION, RELEASE, RIGHTS);
-		
-		/* Initialize the framework. */
-		initInstallation();
-		initInvocation();
+
+		this.installation = new Installation();
+		this.invocation   = new Invocation();
 		
 		this.bufferSize      = DEFAULT_BUFFER_SIZE;
 		this.bufferType      = DEFAULT_BUFFER_TYPE;
@@ -283,36 +237,6 @@ public class JHOVE2
 		}
 	}
 
-	/* Initialize the static framework installation properties.
-	 */
-	protected void initInstallation() {
-		Runtime rt = Runtime.getRuntime();	
-		this.maxMemory     = rt.maxMemory();
-		this.numProcessors = rt.availableProcessors();
-
-		Properties prop = System.getProperties();
-		this.architecture  = prop.getProperty("os.arch");
-		this.classpath     = prop.getProperty("java.class.path");
-		this.jreHome       = prop.getProperty("java.home");
-		this.jreVendor     = prop.getProperty("java.vendor");
-		this.jreVersion    = prop.getProperty("java.version");
-		this.jvmName       = prop.getProperty("java.vm.name");
-		this.jvmVendor     = prop.getProperty("java.vm.vendor");
-		this.jvmVersion    = prop.getProperty("java.vm.version");
-		this.libraryPath   = prop.getProperty("java.library.path");
-		this.osName        = prop.getProperty("os.name");
-		this.osVersion     = prop.getProperty("os.version");
-	}
-	
-	/** Initialize the framework invocation properties.
-	 */
-	protected void initInvocation() {
-		Properties prop = System.getProperties();
-		this.tempDirectory    = prop.getProperty("java.io.tmpdir");
-		this.userName         = prop.getProperty("user.name");
-		this.workingDirectory = prop.getProperty("user.dir");
-	}
-	
 	/** Characterize file system objects (files and directories).
 	 * @param pathName  First path name
 	 * @param pathNames Remaining path names
@@ -590,14 +514,6 @@ public class JHOVE2
 		
 		return false;
 	}
-		
-	/** Get platform architecture.
-	 * @return Platform architecture
-	 */
-	@ReportableProperty(order=11, value="Platform architecture.")
-	public String getArchitecture() {
-		return this.architecture;
-	}
 
 	/** Get {@link org.jhove2.core.io.Input} buffer size.
 	 * @return Input buffer size
@@ -630,31 +546,6 @@ public class JHOVE2
 	@ReportableProperty(order=61, value="Framework characterizer module.")
 	public Characterizer getCharacterizerModule() {
 		return this.characterizer;
-	}
-	
-	/** Get Java classpath.
-	 * @return Java classpath
-	 */
-	@ReportableProperty(order=51, value="Java classpath.")
-	public String getClasspath() {
-		return this.classpath;
-	}
-	
-	/** Get JHOVE2 application command line.
-	 * @return JHOVE2 application command line
-	 */
-	@ReportableProperty(order=2, value="JHOVE2 application command line.")
-	public String getCommandLine() {
-		return this.commandLine;
-	}
-	
-	/** Get framework invocation date/timestamp.
-	 * @return Framework invocation date/timestamp
-	 */
-	@ReportableProperty(order=1, value="Framework invocation " +
-			"date/timestatmp.")
-	public Date getDateTime() {
-		return new Date(this.startTime);
 	}
 	
 	/** Get framework delete temporary files flag; if true, delete files.
@@ -690,68 +581,20 @@ public class JHOVE2
 		return this.failFastLimit;
 	}
 	
-	/** Get JRE home.
-	 * @return JRE home
+	/** Get framework installation properties.
+	 * @return Framework installation properties.
 	 */
-	@ReportableProperty(order=33, value="JRE home.")
-	public String getJREHome() {
-		return this.jreHome;
+	@ReportableProperty(order=51, value="Framework installation properties.")
+	public Installation getInstallationProperties() {
+		return this.installation;
 	}
 	
-	/** Get JRE vendor.
-	 * @return JRE vendor
+	/** Get framework invocation properties.
+	 * @return Framework invocation properties.
 	 */
-	@ReportableProperty(order=31, value="JRE vendor.")
-	public String getJREVendor() {
-		return this.jreVendor;
-	}
-	
-	/** Get JRE version.
-	 * @return JRE version
-	 */
-	@ReportableProperty(order=32, value="JRE version.")
-	public String getJREVersion() {
-		return this.jreVersion;
-	}
-	/** Get JVM name.
-	 * @return JVM name
-	 */
-	@ReportableProperty(order=43, value="JVM name.")
-	public String getJVMName() {
-		return this.jvmName;
-	}
-	
-	/** Get JVM vendor.
-	 * @return JVM vendor
-	 */
-	@ReportableProperty(order=41, value="JVM vendor.")
-	public String getJVMVendor() {
-		return this.jvmVendor;
-	}
-	
-	/** Get JVM version.
-	 * @return JVM version
-	 */
-	@ReportableProperty(order=42, value="JVM version.")
-	public String getJVMVersion() {
-		return this.jvmVersion;
-	}
-	
-	/** Get Java library path.
-	 * @return Java library path
-	 */
-	@ReportableProperty(order=52, value="Java library path.")
-	public String getLibraryPath() {
-		return this.libraryPath;
-	}
-	
-	/** Get maximum memory available to the JVM, in bytes.
-	 * @return maximum memory available to the JVM, in bytes
-	 */
-	@ReportableProperty(order=13, value="Maximum memory available to the " +
-			"JVM, in bytes.")
-	public long getMaxMemory() {
-		return this.maxMemory;
+	@ReportableProperty(order=1, value="Framework invocation properties.")
+	public Invocation getInvocationProperties() {
+		return this.invocation;
 	}
 
 	/** Get framework memory usage.  This is calculated naively as the Java
@@ -815,16 +658,7 @@ public class JHOVE2
 	public int getNumFileSources() {
 		return this.numFiles;
 	}
-	
-	/** Get number of processors available to the JVM.
-	 * @return Number of processors.
-	 */
-	@ReportableProperty(order=12, value="Number of processors available to " +
-	"the JVM.")
-	public int getNumProcessors() {
-		return this.numProcessors;
-	}
-	
+
 	/** Get number of source units processed.
 	 * @return Number of source units processed
 	 */
@@ -833,23 +667,7 @@ public class JHOVE2
 		return this.numDirectories + this.numFiles + this.numBytestreams + 
 		       this.numContainers  + this.numClumps;
 	}
-	
-	/** Get operating system name.
-	 * @return Operating system name
-	 */
-	@ReportableProperty(order=21, value="Operating system name.")
-	public String getOSName() {
-		return this.osName;
-	}
-	
-	/** Get operating system version.
-	 * @return Operating system version
-	 */
-	@ReportableProperty(order=22, value="Operating system version.")
-	public String getOSVersion() {
-		return  this.osVersion;
-	}
-	
+
 	/** Get framework show identifiers flag; if true, show identifiers in
 	 * non-XML display modes.
 	 * @return Framework message digests flag
@@ -866,15 +684,7 @@ public class JHOVE2
 	public Source getSource() {
 		return this.source;
 	}
-	
-	/** Get framework temporary directory.
-	 * @return Framework temporary directory
-	 */
-	@ReportableProperty(order=5, value="Framework temporary directory.")
-	public String getTempDirectory() {
-		return this.tempDirectory;
-	}
-	
+
 	/** Get framework temporary file prefix.
 	 * @return Framework temporary file prefix
 	 */
@@ -890,23 +700,7 @@ public class JHOVE2
 	public String getTempSuffix() {
 		return this.tempSuffix;
 	}
-	
-	/** Get framework user name.
-	 * @return Framework user name
-	 */
-	@ReportableProperty(order=3, value="Framework user name.")
-	public String getUserName() {
-		return this.userName;
-	}
-	
-	/** Get framework current working directory.
-	 * @return Framework current working directory
-	 */
-	@ReportableProperty(order=4, value="Framework current working directory.")
-	public String getWorkingDirectory() {
-		return this.workingDirectory;
-	}
-	
+
 	/** Increment the number of clump source units.
 	 */
 	public void incrementNumClumps() {
@@ -960,12 +754,7 @@ public class JHOVE2
 	 * @param JHOVE2 application command line arguments
 	 */
 	public void setCommandLine(String [] args) {
-		if (args.length > -1) {
-			this.commandLine = args[0];
-			for (int i=1; i<args.length; i++) {
-				this.commandLine += " " + args[i];
-			}
-		}
+		this.invocation.setCommandLine(args);
 	}
 	
 	/** Set framework delete temporary files flag; if true, delete files.
@@ -1010,7 +799,7 @@ public class JHOVE2
 	 * @param directory Temporary directory
 	 */
 	public void setTempDirectory(String directory) {
-		this.tempDirectory = directory;
+		this.invocation.setTempDirectory(directory);
 	}
 	
 	/** Set temporary file prefix.
