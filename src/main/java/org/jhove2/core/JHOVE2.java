@@ -85,8 +85,8 @@ public class JHOVE2
 		"Stanford Junior University. " +
 		"Available under the terms of the BSD license.";
 
-	/** Framework display directives. */
-	public enum Directive {
+	/** Framework display visbilities. */
+	public enum DisplayVisbility {
 		Always,
 		IfFalse,
 		IfNegative,
@@ -153,10 +153,7 @@ public class JHOVE2
 	
 	/** Framework delete temporary files flag; if true, delete files. */
 	protected boolean deleteTempFiles;
-	
-	/** Framework display directives. */
-	protected Map<String,Directive> directives;
-	
+
 	/** Framework dispatcher module. */
 	protected Dispatcher dispatcher;
 	
@@ -240,6 +237,9 @@ public class JHOVE2
 	/** User name. */
 	protected String userName;
 	
+	/** Framework display displayVisbilities. */
+	protected Map<String,DisplayVisbility> visbilities;
+	
 	/** Framework current working directory. */
 	protected String workingDirectory;
 
@@ -269,17 +269,15 @@ public class JHOVE2
 		this.numDirectories = 0;
 		this.numFiles       = 0;
 		
-		/* Initialize the displayer directives map. */
-		this.directives = new TreeMap<String,Directive>();
+		/* Initialize the displayer displayVisbilities map. */
+		this.visbilities = new TreeMap<String,DisplayVisbility>();
 		Properties props = Configure.getProperties("Displayer");
 		if (props != null) {
 			Set<String> keys = props.stringPropertyNames();
-			Iterator<String> iter = keys.iterator();
-			while (iter.hasNext()) {
-				String key   = iter.next();
-				Directive value = Directive.valueOf(props.getProperty(key));
+			for (String key : keys) {
+				DisplayVisbility value = DisplayVisbility.valueOf(props.getProperty(key));
 				if (value != null) {
-					this.directives.put(key, value);
+					this.visbilities.put(key, value);
 				}
 			}
 		}
@@ -437,15 +435,11 @@ public class JHOVE2
 
 		int or = 0;
 		List<Set<ReportablePropertyInfo>> list = reportableInfo.getProperties();
-		Iterator<Set<ReportablePropertyInfo>> iter = list.iterator();
-		while (iter.hasNext()) {
-			Set<ReportablePropertyInfo> methods = iter.next();
-			Iterator<ReportablePropertyInfo> it2 = methods.iterator();
-			while (it2.hasNext()) {
-				ReportablePropertyInfo prop = it2.next();
+		for (Set<ReportablePropertyInfo> methods : list) {
+			for (ReportablePropertyInfo prop : methods) {
 				I8R id = prop.getIdentifier();
-				Directive directive = this.directives.get(id.getValue());
-				if (directive != null && directive == Directive.Never) {
+				DisplayVisbility visbility = this.visbilities.get(id.getValue());
+				if (visbility != null && visbility == DisplayVisbility.Never) {
 					continue;
 				}
 				Method method = prop.getMethod();
@@ -457,22 +451,22 @@ public class JHOVE2
 				try {
 					Object value = method.invoke(reportable);
 					if (value != null) {
-						if (directive != null) {
+						if (visbility != null) {
 							if (value instanceof Boolean) {
 								boolean b = ((Boolean) value).booleanValue();
-								if (( b && directive == Directive.IfFalse) ||
-									(!b && directive == Directive.IfTrue)) {
+								if (( b && visbility == DisplayVisbility.IfFalse) ||
+									(!b && visbility == DisplayVisbility.IfTrue)) {
 									continue;
 								}
 							}
 							else if (value instanceof Number) {
 								double d = ((Number) value).doubleValue();
-								if ((d == 0.0 && directive == Directive.IfNonZero) ||
-									(d != 0.0 && directive == Directive.IfZero) ||
-									(d <  0.0 && directive == Directive.IfNonNegative) ||
-									(d >  0.0 && directive == Directive.IfNonPositive) ||
-									(d <= 0.0 && directive == Directive.IfPositive) ||
-									(d >= 0.0 && directive == Directive.IfNegative)) {
+								if ((d == 0.0 && visbility == DisplayVisbility.IfNonZero) ||
+									(d != 0.0 && visbility == DisplayVisbility.IfZero) ||
+									(d <  0.0 && visbility == DisplayVisbility.IfNonNegative) ||
+									(d >  0.0 && visbility == DisplayVisbility.IfNonPositive) ||
+									(d <= 0.0 && visbility == DisplayVisbility.IfPositive) ||
+									(d >= 0.0 && visbility == DisplayVisbility.IfNegative)) {
 									continue;
 								}
 							}
@@ -505,17 +499,16 @@ public class JHOVE2
 	protected void display(PrintStream out, int level, String name,
 			               I8R identifier, Object value, int order) {
 		if (value instanceof List) {
-			List<?> ls = (List<?>) value;
-			int size = ls.size();
+			List<?> lst = (List<?>) value;
+			int size = lst.size();
 			if (size > 0) {
 				this.displayer.startCollection(out, level+1, name, identifier,
 						                  size, order);
 				String nm = singularName(name);
 				I8R    id = singularIdentifier(identifier);
-				Iterator<?> it3 = ls.iterator();
-				for (int i=0; it3.hasNext(); i++) {
-					Object prop = it3.next();
-					this.display(out, level+1, nm, id, prop, i);
+				int i = 0;
+				for (Object prop : lst) {
+					this.display(out, level+1, nm, id, prop, i++);
 				}
 				this.displayer.endCollection(out, level+1, name, identifier, size);
 			}
@@ -528,10 +521,9 @@ public class JHOVE2
 						                  identifier, size, order);
 				String nm = singularName(name);
 				I8R    id = singularIdentifier(identifier);
-				Iterator<?> it3 = set.iterator();
-				for (int i=0; it3.hasNext(); i++) {
-					Object prop = it3.next();
-					display(out, level+1, nm, id, prop, i);
+				int i = 0;
+				for (Object prop : set) {
+					display(out, level+1, nm, id, prop, i++);
 				}
 				this.displayer.endCollection(out, level+1, name, identifier,
 						                size);
