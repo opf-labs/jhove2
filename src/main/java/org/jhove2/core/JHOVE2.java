@@ -53,12 +53,12 @@ import java.util.TreeMap;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.config.Configure;
+import org.jhove2.core.info.ReportableInfo;
+import org.jhove2.core.info.ReportablePropertyInfo;
 import org.jhove2.core.io.Input.Type;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
-import org.jhove2.core.util.ReportableInfo;
-import org.jhove2.core.util.ReportablePropertyInfo;
 import org.jhove2.module.AbstractModule;
 import org.jhove2.module.Module;
 import org.jhove2.module.characterize.Characterizer;
