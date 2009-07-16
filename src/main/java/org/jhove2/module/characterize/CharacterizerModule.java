@@ -47,12 +47,7 @@ import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.config.Configure;
 import org.jhove2.core.source.AggregateSource;
-import org.jhove2.core.source.ClumpSource;
-import org.jhove2.core.source.DirectorySource;
-import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.Source;
-import org.jhove2.core.source.ZipDirectorySource;
-import org.jhove2.core.source.ZipFileSource;
 import org.jhove2.module.AbstractModule;
 import org.jhove2.module.digest.Digester;
 import org.jhove2.module.identify.Identifier;
@@ -69,7 +64,7 @@ public class CharacterizerModule
 	public static final String VERSION = "1.0.0";
 
 	/** Characterization process module release date. */
-	public static final String RELEASE = "2009-07-13";
+	public static final String RELEASE = "2009-07-15";
 	
 	/** Characterization process module rights statement. */
 	public static final String RIGHTS =
@@ -97,19 +92,6 @@ public class CharacterizerModule
 		throws IOException, JHOVE2Exception
 	{
 		source.setStartTime();
-		
-		/* Update summary counts of source units, by type. */
-		if      (source instanceof ClumpSource) {
-			jhove2.incrementNumClumps();
-		}
-		else if (source instanceof DirectorySource ||
-				 source instanceof ZipDirectorySource) {
-			jhove2.incrementNumDirectories();
-		}
-		else if (source instanceof FileSource ||
-				 source instanceof ZipFileSource) {
-			jhove2.incrementNumFiles();
-		}
 
 		/* Presumptively identify the format(s) of the source unit. */
 		Identifier identifier = Configure.getReportable(Identifier.class,

@@ -85,7 +85,9 @@ public class JHOVE2CommandLineParser {
 		this(JHOVE2.DEFAULT_BUFFER_SIZE, JHOVE2.DEFAULT_BUFFER_TYPE,
 			 JHOVE2.DEFAULT_CALC_DIGESTS, JHOVE2.DEFAULT_DELETE_TEMP_FILES,
 			 JHOVE2.DEFAULT_DISPLAYER, JHOVE2.DEFAULT_FAIL_FAST_LIMIT,
-			 JHOVE2.DEFAULT_SHOW_IDENTIFIERS);
+			 JHOVE2.DEFAULT_SHOW_IDENTIFIERS,
+			 System.getProperties().getProperty("java.io.tmpdir"));
+
 	}
 	
 	/** Instantiate a new <code>JHOVE2CommandLineParser</code> with specific
@@ -102,11 +104,12 @@ public class JHOVE2CommandLineParser {
 	 * @param failFastLimit   Default fail fast limit
 	 * @param showIdentifiers Show identifiers flag; if true, show identifiers
 	 *                        in JSON and Text display mode
+	 * @param tempDirectory   Default temporary directory
 	 */
 	public JHOVE2CommandLineParser(int bufferSize, Type bufferType,
 			                       boolean calcDigests, boolean deleteTempFiles,
 			                       String displayer, int failFastLimit,
-			                       boolean showIdentifiers) {
+			                       boolean showIdentifiers, String tempDirectory) {
 		this.bufferSize      = bufferSize;
 		this.bufferType      = bufferType;
 		this.calcDigests     = calcDigests;
@@ -114,6 +117,8 @@ public class JHOVE2CommandLineParser {
 		this.displayer       = displayer;
 		this.failFastLimit   = failFastLimit;
 		this.showIdentifiers = showIdentifiers;
+		this.tempDirectory   = tempDirectory;
+
 		this.names           = new ArrayList<String>();
 		this.outputFile      = null;
 	}

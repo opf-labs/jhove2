@@ -57,8 +57,12 @@ import org.jhove2.core.info.ReportableInfo;
 import org.jhove2.core.info.ReportablePropertyInfo;
 import org.jhove2.core.io.Input.Type;
 import org.jhove2.core.source.ClumpSource;
+import org.jhove2.core.source.DirectorySource;
+import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
+import org.jhove2.core.source.ZipDirectorySource;
+import org.jhove2.core.source.ZipFileSource;
 import org.jhove2.module.AbstractModule;
 import org.jhove2.module.Module;
 import org.jhove2.module.characterize.Characterizer;
@@ -290,7 +294,20 @@ public class JHOVE2
 	 */
 	public void characterize(Source source)
 		throws IOException, JHOVE2Exception
-	{
+	{		
+		/* Update summary counts of source units, by type. */
+		if      (source instanceof ClumpSource) {
+			this.numClumps++;
+		}
+		else if (source instanceof DirectorySource ||
+				 source instanceof ZipDirectorySource) {
+			this.numDirectories++;
+		}
+		else if (source instanceof FileSource ||
+				 source instanceof ZipFileSource) {
+			this.numFiles++;
+		}
+		
 		if (this.characterizer != null) {
 			source.setDeleteTempFiles(this.deleteTempFiles);
 			try {
@@ -454,9 +471,18 @@ public class JHOVE2
 			}
 		}
 		else if (value instanceof Reportable) {
-			this.displayer.startReportable(out, level+1, name, identifier, order);
-			display(out, (Reportable) value, level+2, 0);
-			this.displayer.endReportable(out, level+1, name, identifier);
+			String reportableName = value.getClass().getSimpleName();
+			/* If the reportable name is the same as the property name,
+			 * collapse the hierarchy.
+			 */
+			if (name.equals(reportableName)) {
+				display(out, (Reportable) value, level+1, 0);
+			}
+			else {
+				this.displayer.startReportable(out, level+1, name, identifier, order);
+				display(out, (Reportable) value, level+2, 0);
+				this.displayer.endReportable(out, level+1, name, identifier);
+			}
 		}
 		else {
 			if (value instanceof Date) {
@@ -585,7 +611,7 @@ public class JHOVE2
 	 * @return Framework installation properties.
 	 */
 	@ReportableProperty(order=51, value="Framework installation properties.")
-	public Installation getInstallationProperties() {
+	public Installation getInstallation() {
 		return this.installation;
 	}
 	
@@ -593,7 +619,7 @@ public class JHOVE2
 	 * @return Framework invocation properties.
 	 */
 	@ReportableProperty(order=1, value="Framework invocation properties.")
-	public Invocation getInvocationProperties() {
+	public Invocation getInvocation() {
 		return this.invocation;
 	}
 
