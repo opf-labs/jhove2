@@ -135,7 +135,7 @@ public class DispatcherModule
 		return module;
 	}
 	
-	/** Dispatch a source unit to a module.
+	/** Dispatch a source unit to a module, adding the module to the source.
 	 * @param jhove2 JHOVE2 framework
 	 * @param source Source unit
 	 * @param Module Module
@@ -146,6 +146,23 @@ public class DispatcherModule
 	 * @see org.jhove2.module.dispatch.Dispatcher#dispatch(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source, org.jhove2.module.Module)
 	 */
 	public void dispatch(JHOVE2 jhove2, Source source, Module module)
+		throws EOFException, IOException, JHOVE2Exception
+	{
+		dispatch(jhove2, source, module, Disposition.AddToSource);
+	}
+	
+	/** Dispatch a source unit to a module.
+	 * @param jhove2      JHOVE2 framework
+	 * @param source      Source unit
+	 * @param Module      Module
+	 * @param disposition Module disposition
+	 * @throws EOFException    End-of-file encountered parsing the source unit
+	 * @throws IOException     I/O exception encountered parsing the source unit
+	 * @throws JHOVE2Exception 
+	 * @see org.jhove2.module.dispatch.Dispatcher#dispatch(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source, org.jhove2.module.Module, org.jhove2.module.dispatch.Disposition)
+	 */
+	public void dispatch(JHOVE2 jhove2, Source source, Module module,
+			             Disposition disposition)
 		throws EOFException, IOException, JHOVE2Exception
 	{
 		module.setStartTime();
@@ -179,6 +196,9 @@ public class DispatcherModule
 			((Digester) module).digest(jhove2, source);
 		}
 		module.setEndTime();
-		source.addModule(module);
+		
+		if (disposition == Disposition.AddToSource) {
+			source.addModule(module);
+		}
 	}
 }

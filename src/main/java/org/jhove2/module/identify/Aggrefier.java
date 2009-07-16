@@ -37,36 +37,46 @@
 package org.jhove2.module.identify;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Set;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.FormatIdentification;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.source.AggregateSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.Module;
 
-/** Interface for JHOVE2 identification modules.
+/** Interface for JHOVE2 aggregate identification modules.
  * 
  * @author mstrong, slabrams
  */
-public interface Identifier
+public interface Aggrefier
 	extends Module
 {
-	/** Presumptively identify the format of a source unit.
+	/** Presumptively identify the format of an aggregate source unit.
 	 * @param jhove2 JHOVE2 framework
-	 * @param source Source unit
+	 * @param source Aggregate ource unit
 	 * @return Presumptively identified formats
 	 * @throws IOException     I/O exception encountered identifying the
 	 *                         source unit
 	 * @throws JHOVE2Exception
 	 */
-	public Set<FormatIdentification> identify(JHOVE2 jhove2, Source source)
+	public Set<FormatIdentification> identify(JHOVE2 jhove2, AggregateSource source)
 		throws IOException, JHOVE2Exception;
 	
-	/** Get presumptive format identifications.
-	 * @return Presumptive format identifications
+	/** Get presumptive aggregate format identifications.
+	 * @return Presumptive aggregate format identifications
 	 */
 	@ReportableProperty("Presumptive format identifications.")
 	public Set<FormatIdentification> getPresumptiveFormats();
+	
+	/** Get source units that collectively make up an instance of the
+	 * presumptively-identified aggregate format.
+	 * @return Source units
+	 */
+	@ReportableProperty("Source units that collectively constitute an " +
+			"instance of the presumptively-identified aggregate format.")
+	public List<Source> getSourceUnits();
 }

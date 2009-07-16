@@ -36,37 +36,19 @@
 
 package org.jhove2.module.identify;
 
-import java.io.IOException;
-import java.util.Set;
+import org.jhove2.core.Product;
 
-import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.FormatIdentification;
-import org.jhove2.core.JHOVE2;
-import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.source.Source;
-import org.jhove2.module.Module;
-
-/** Interface for JHOVE2 identification modules.
+/** JHOVE2 {@link org.jhove2.core.Product} product information for the
+ * wrapped DROID format identification tool.
  * 
  * @author mstrong, slabrams
  */
-public interface Identifier
-	extends Module
-{
-	/** Presumptively identify the format of a source unit.
-	 * @param jhove2 JHOVE2 framework
-	 * @param source Source unit
-	 * @return Presumptively identified formats
-	 * @throws IOException     I/O exception encountered identifying the
-	 *                         source unit
-	 * @throws JHOVE2Exception
+public class DROID
+	extends Product
+{	
+	/** Instantiate a new <code>DROID</code> product.
 	 */
-	public Set<FormatIdentification> identify(JHOVE2 jhove2, Source source)
-		throws IOException, JHOVE2Exception;
-	
-	/** Get presumptive format identifications.
-	 * @return Presumptive format identifications
-	 */
-	@ReportableProperty("Presumptive format identifications.")
-	public Set<FormatIdentification> getPresumptiveFormats();
+	public DROID(String version, String release, String rights) {
+		super(version, release, rights);
+	}
 }

@@ -37,30 +37,28 @@
 package org.jhove2.module.identify;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.jhove2.core.Format;
 import org.jhove2.core.FormatIdentification;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.FormatIdentification.Confidence;
-import org.jhove2.core.config.Configure;
-import org.jhove2.core.io.Input;
-import org.jhove2.core.source.ClumpSource;
-import org.jhove2.core.source.DirectorySource;
-import org.jhove2.core.source.FileSet;
+import org.jhove2.core.source.AggregateSource;
+import org.jhove2.core.source.FileSource;
+import org.jhove2.core.source.NamedSource;
 import org.jhove2.core.source.Source;
-import org.jhove2.core.source.ZipDirectorySource;
+import org.jhove2.core.source.ZipFileSource;
 import org.jhove2.module.AbstractModule;
 
-/** JHOVE2 identification module.
+/** JHOVE2 aggregate identification module.
  * 
  * @author mstrong, slabrams
  */
-public class IdentifierModule
+public class AggrefierModule
 	extends AbstractModule
-	implements Identifier
+	implements Aggrefier
 {
 	/**Identification module version identifier. */
 	public static final String VERSION = "1.0.0";
@@ -78,87 +76,42 @@ public class IdentifierModule
 	/** Presumptively identified formats. */
 	protected Set<FormatIdentification> formats;
 	
-	/** Instantiate a new <code>IdentifierModule</code>.
+	/** Source units that collectively constitute an instance of the
+	 * presumptively-identified format.
 	 */
-	public IdentifierModule() {
+	protected List<Source> sources;
+	
+	/** Instantiate a new <code>AggrefierModule</code>.
+	 */
+	public AggrefierModule() {
 		super(VERSION, RELEASE, RIGHTS);
 		
 		this.formats = new TreeSet<FormatIdentification>();
+		this.sources = new ArrayList<Source>();
 	}
 
-	/** Presumptively identify the format of a source unit. 
+	/** Presumptively identify the format of an aggregate source unit.
 	 * @param jhove2 JHOVE2 framework
-	 * @param source Source unit
+	 * @param source Aggregate source unit
 	 * @return Presumptively identified formats
 	 * @throws IOException     I/O exception encountered identifying the
 	 *                         source unit
 	 * @throws JHOVE2Exception
-	 * @see org.jhove2.module.identify.Identifiler#identify(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
+	 * @see org.jhove2.module.identify.Identifier#identify(org.jhove2.core.JHOVE2, org.jhove2.core.source.AggregateSource)
 	 */
 	@Override
-	public Set<FormatIdentification> identify(JHOVE2 jhove2, Source source)
-			throws IOException, JHOVE2Exception
+	public Set<FormatIdentification> identify(JHOVE2 jhove2, AggregateSource source)
+		throws IOException, JHOVE2Exception
 	{
-		if (source instanceof ClumpSource) {
-			FormatIdentification id =
-				new FormatIdentification(Configure.getReportable(Format.class,
-							                                     "ClumpFormat"),
-					                     Confidence.PositiveSpecific);
-			this.formats.add(id);
-		}
-		else if (source instanceof DirectorySource ||
-				 source instanceof ZipDirectorySource) {
-			FormatIdentification id =
-				new FormatIdentification(Configure.getReportable(Format.class,
-						                                         "DirectoryFormat"),
-						                 Confidence.PositiveSpecific);
-			this.formats.add(id);
-		}
-		else if (source instanceof FileSet) {
-			FormatIdentification id =
-				new FormatIdentification(Configure.getReportable(Format.class,
-						                                         "FileSetFormat"),
-						                 Confidence.PositiveSpecific);
-			this.formats.add(id);
-		}
-		else {
-			/* Identify file source unit. */
-			/* TODO: implement DROID. */
-			Input input = null;
-			try {
-				input = source.getInput(jhove2.getBufferSize(),
-					                    jhove2.getBufferType());
-				/* Test for Zip. */
-				if (input != null) {
-					byte [] zip = new byte[] {0x50, 0x4b, 0x03, 0x04};
-					boolean isZip = true;
-					for (int i=0; i<4; i++) {
-						short b = input.readUnsignedByte();
-						if (b != zip[i]) {
-							isZip = false;
-							break;
-						}
-					}
-				
-					FormatIdentification id = null;
-					if (isZip) {
-						id = new FormatIdentification(Configure.getReportable(Format.class,
-									                                      "ZipFormat"),
-							                      Confidence.PositiveGeneric,
-							                      this.wrappedProduct);
-					}
-					else {
-						/* Default to UTF-8. */
-						id = new FormatIdentification(Configure.getReportable(Format.class,
-						                                                  "UTF8Format"),
-					                              Confidence.PositiveGeneric,
-					                              this.wrappedProduct);
-					}
-					this.formats.add(id);
-				}
-			} finally {
-				if (input != null) {
-					input.close();
+		List<Source> children = source.getChildSources();
+		
+		/** Presumptively-identify a shape file by looking for three files
+		 * with the names: abc.shp, abc.shx, abc.dbf
+		 */
+		if (children.size() > 2) {
+			for (Source src : children) {
+				if (src instanceof NamedSource) {
+					String name = ((NamedSource) src).getName();
 				}
 			}
 		}
@@ -173,5 +126,14 @@ public class IdentifierModule
 	@Override
 	public Set<FormatIdentification> getPresumptiveFormats() {
 		return this.formats;
+	}
+	
+	/** Get source units that collectively make up an instance of the
+	 * presumptively-identified aggregate format.
+	 * @see org.jhove2.module.identify.Aggrefier#getSourceUnits()
+	 */
+	@Override
+	public List<Source> getSourceUnits() {
+		return this.sources;
 	}
 }

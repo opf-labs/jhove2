@@ -34,21 +34,21 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.module.identify;
+package org.jhove2.core.source;
 
-import org.jhove2.core.Product;
+import org.jhove2.annotation.ReportableProperty;
 
-/** JHOVE2 {@link org.jhove2.core.Product} wrapper for the DROID format
- * identification tool.
+/** Interface for named JHOVE2 source units.  In general, only files have
+ * names.
  * 
  * @author mstrong, slabrams
  */
-public class DROIDWrapper
-	extends Product
-{	
-	/** Instantiate a new <code>DROIDWrapper</code>.
+public interface NamedSource
+	extends Source
+{
+	/** Get source name.
+	 * @return Source name
 	 */
-	public DROIDWrapper(String version, String release, String rights) {
-		super(version, release, rights);
-	}
+	@ReportableProperty(order=1, value="Source name.")
+	public String getName();
 }

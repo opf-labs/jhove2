@@ -45,8 +45,6 @@ import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.config.Configure;
-import org.jhove2.core.info.ReportableInfo;
-import org.jhove2.core.info.ReportableInfo.Mode;
 import org.jhove2.core.source.AggregateSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractModule;
@@ -104,8 +102,8 @@ public class CharacterizerModule
 	 * digests. 
 	 * @param jhove2 JHOVE2 framework
 	 * @param source Source unit
-	 * @throws IOException     If an I/O exception is raised characterizing
-	 *                         the source unit
+	 * @throws IOException     I/O exception encountered characterizing the
+	 *                         source unit
 	 * @throws JHOVE2Exception
 	 * @see org.jhove2.module.characterize.Characterizer#characterize(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
 	 */
@@ -118,8 +116,7 @@ public class CharacterizerModule
 				                                        "IdentifierModule");
 		if (identifier != null) {
 			jhove2.dispatch(source, identifier);
-			Set<FormatIdentification> formats =
-				identifier.getPresumptiveFormats();
+			Set<FormatIdentification> formats = identifier.getPresumptiveFormats();
 			if (formats.size() > 0) {
 				/* (2) Dispatch the source unit to the module associated with
 				 * format for parsing, feature extraction, and validation.
@@ -132,21 +129,17 @@ public class CharacterizerModule
 			}
 			
 			/* TODO: implement characterization assessment */
-			/*
-			Assessor assessor =
-				Configure.getReportable(Assessor.class, "AssessorModule");
-			if (assessor != null) {
-			*/
+			//Assessor assessor =
+			//	Configure.getReportable(Assessor.class, "AssessorModule");
+			//if (assessor != null) {
 				/* (3) Perform assessment on the source based on its extracted
 				 * reportable properties and validation status.
 				 */
-				/*
-				assessor.setStartTime();
-				assessor.assess(jhove2, source);
-				assessor.setEndTime();
-				source.addModule(assessor);
-			}
-			*/
+			//	jhove2.dispatch(source, assessor;
+			//}
+			//else {
+			//    /* TODO: can't instantiate assessor module. */
+			//}
 		}
 		else {
 			/* TODO: can't instantiate identifier module. */

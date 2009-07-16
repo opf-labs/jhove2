@@ -68,6 +68,7 @@ import org.jhove2.module.AbstractModule;
 import org.jhove2.module.Module;
 import org.jhove2.module.characterize.Characterizer;
 import org.jhove2.module.dispatch.Dispatcher;
+import org.jhove2.module.dispatch.Dispatcher.Disposition;
 import org.jhove2.module.display.Displayer;
 
 /** The JHOVE2 core processing framework.
@@ -350,7 +351,7 @@ public class JHOVE2
 		return module;
 	}
 	
-	/** Dispatch a source unit to the module associated with an identifier.
+	/** Dispatch a source unit to the module, adding the module to the source.
 	 * @param source Source unit
 	 * @param module Module
 	 * @throws EOFException    End-of-file encountered parsing the source unit
@@ -360,9 +361,23 @@ public class JHOVE2
 	public void dispatch(Source source, Module module)
 		throws EOFException, IOException, JHOVE2Exception
 	{
+		dispatch(source, module, Disposition.AddToSource);
+	}
+	
+	/** Dispatch a source unit to the module.
+	 * @param source      Source unit
+	 * @param module      Module
+	 * @param disposition Module disposition
+	 * @throws EOFException    End-of-file encountered parsing the source unit
+	 * @throws IOException     I/O exception encountered parsing the source unit
+	 * @throws JHOVE2Exception
+	 */
+	public void dispatch(Source source, Module module, Disposition disposition)
+		throws EOFException, IOException, JHOVE2Exception
+	{
 		if (this.dispatcher != null) {
 			this.dispatcher.setRestartTime();
-			this.dispatcher.dispatch(this, source, module);
+			this.dispatcher.dispatch(this, source, module, disposition);
 			this.dispatcher.setEndTime();
 		}
 	}

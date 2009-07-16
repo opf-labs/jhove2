@@ -28,12 +28,11 @@
 	<bean id="IdentifierModule"
 	      class="org.jhove2.module.identify.IdentifierModule"
 	      scope="prototype">
-	    <property name="wrappedProduct" ref="DROIDWrapper"/>
+	    <property name="wrappedProduct" ref="DROIDProduct"/>
 	</bean>
 	      
-	<!-- DROID produect wrapper bean -->
-	<bean id="DROIDWrapper"
-	      class="org.jhove2.module.identify.DROIDWrapper"
+	<!-- DROID product information bean -->
+	<bean id="DROIDProduct" class="org.jhove2.module.identify.DROID"
 	      scope="singleton">
 		<constructor-arg type="java.lang.String" value="4.0"/>
 		<constructor-arg type="java.lang.String" value="2009-06-09"/>

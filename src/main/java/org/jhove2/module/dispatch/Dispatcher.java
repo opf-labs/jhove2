@@ -53,6 +53,12 @@ import org.jhove2.module.Module;
 public interface Dispatcher
 	extends Module
 {
+	/** Disposition directives. */
+	public enum Disposition {
+		AddToSource,
+		DontAddToSource
+	}
+	
 	/** Dispatch a source unit to the module associated with an identifier.
 	 * @param jhove2     JHOVE2 framework
 	 * @param source     Source unit
@@ -65,7 +71,7 @@ public interface Dispatcher
 	public Module dispatch(JHOVE2 jhove2, Source source, I8R identifier)
 		throws EOFException, IOException, JHOVE2Exception;
 
-	/** Dispatch a source unit to a module.
+	/** Dispatch a source unit to a module, adding the module to the source.
 	 * @param jhove2 JHOVE2 framework
 	 * @param source Source unit
 	 * @param module Module 
@@ -74,5 +80,18 @@ public interface Dispatcher
 	 * @throws JHOVE2Exception
 	 */
 	public void dispatch(JHOVE2 jhove2, Source source, Module module)
+		throws EOFException, IOException, JHOVE2Exception;
+
+	/** Dispatch a source unit to a module.
+	 * @param jhove2      JHOVE2 framework
+	 * @param source      Source unit
+	 * @param module      Module 
+	 * @param disposition Module disposition
+	 * @throws EOFException    End-of-file encountered parsing the source unit
+	 * @throws IOException     I/O exception encountered parsing the source unit
+	 * @throws JHOVE2Exception
+	 */
+	public void dispatch(JHOVE2 jhove2, Source source, Module module,
+			             Disposition disposition)
 		throws EOFException, IOException, JHOVE2Exception;
 }

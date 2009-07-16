@@ -106,7 +106,7 @@ public class FormatIdentification
 	 * @return Identification process
 	 */
 	@ReportableProperty(order=1, value="Identification process.")
-	public Product getProcess() {
+	public Product getIdentificationProcess() {
 		return this.process;
 	}
 

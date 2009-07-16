@@ -52,6 +52,7 @@ import org.jhove2.core.io.Input.Type;
  */
 public class FileSource
 	extends AbstractSource
+	implements NamedSource
 {	
 	/** File existence. */
 	protected boolean isExtant;
@@ -167,8 +168,9 @@ public class FileSource
 	
 	/** Get file name.
 	 * @return File name
+	 * @see org.jhove2.core.source.NamedSource#getName()
 	 */
-	@ReportableProperty(order=1, value="File name.")
+	@Override
 	public String getName() {
 		return this.name;
 	}

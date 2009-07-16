@@ -57,6 +57,7 @@ import org.jhove2.module.digest.CRC32Digester;
  */
 public class ZipFileSource
 	extends AbstractSource
+	implements NamedSource
 {
 	/** Zip file CRC-32 message digest. */
 	protected Digest crc32;
@@ -139,8 +140,9 @@ public class ZipFileSource
 	
 	/** Get Zip file name.
 	 * @return Zip file name
+	 * @see org.jhove2.core.source.NamedSource#getName()
 	 */
-	@ReportableProperty(order=1, value="Zip file name.")
+	@Override
 	public String getName() {
 		return this.name;
 	}

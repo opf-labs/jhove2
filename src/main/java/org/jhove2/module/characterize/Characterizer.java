@@ -53,8 +53,8 @@ public interface Characterizer
 	/** Characterize a source unit.
 	 * @param jhove2 JHOVE2 framework
 	 * @param source Source unit
-	 * @throws IOException     If an I/O exception is raised characterizing
-	 *                         the source unit
+	 * @throws IOException     I/O exception encountered characterizing the
+	 *                         source unit
 	 * @throws JHOVE2Exception
 	 */
 	public void characterize(JHOVE2 jhove2, Source source)
