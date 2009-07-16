@@ -82,18 +82,18 @@ public class JHOVE2CommandLine {
 			jhove2.setShowIdentifiers(parser.getShowIdentifiers());
 			jhove2.setTempDirectory(parser.getTempDirectory());
 			
-			/* Characterize all file system path names. */
-			jhove2.characterize(pathNames);
-
-			/* Display the characterization results. */
+			/* Initialize the JHOVE2 displayer. */
 			PrintStream out = System.out;
 			String outputFile = parser.getOutputFile();
 			if (outputFile != null) {
 				out = new PrintStream(outputFile);
 			}
-			Displayer displayer =
-				Configure.getReportable(Displayer.class, parser.getDisplayer());
+			Displayer displayer = Configure.getReportable(Displayer.class,
+					                                      parser.getDisplayer());
 			jhove2.setDisplayerModule(displayer);
+			
+			/* Characterize and display all file system path names. */
+			jhove2.characterize(pathNames);
 			jhove2.display(out);
 		} catch (Exception e) {
 			System.err.println(e.getMessage());

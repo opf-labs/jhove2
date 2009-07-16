@@ -44,13 +44,12 @@ import org.jhove2.core.Format;
 import org.jhove2.core.FormatIdentification;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.Product;
 import org.jhove2.core.FormatIdentification.Confidence;
 import org.jhove2.core.config.Configure;
 import org.jhove2.core.io.Input;
-import org.jhove2.core.source.AggregateSource;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.DirectorySource;
+import org.jhove2.core.source.PseudoDirectorySource;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.ZipDirectorySource;
 import org.jhove2.module.AbstractModule;
@@ -67,7 +66,7 @@ public class IdentifierModule
 	public static final String VERSION = "1.0.0";
 
 	/** Identification module release date. */
-	public static final String RELEASE = "2009-07-13";
+	public static final String RELEASE = "2009-07-16";
 	
 	/** Identification module rights statement. */
 	public static final String RIGHTS =
@@ -103,24 +102,27 @@ public class IdentifierModule
 	{
 		setStartTime();
 
-		if (source instanceof AggregateSource) {
-			if (source instanceof ClumpSource) {
-				/* Identify clump source unit. */
-				FormatIdentification id =
-					new FormatIdentification(Configure.getReportable(Format.class,
-								                                     "ClumpFormat"),
-						                     Confidence.PositiveSpecific);
-				this.formats.add(id);
-			}
-			else if (source instanceof DirectorySource ||
-					 source instanceof ZipDirectorySource) {
-				/* Identify directory source unit. */
-				FormatIdentification id =
-					new FormatIdentification(Configure.getReportable(Format.class,
-							                                         "DirectoryFormat"),
-							                 Confidence.PositiveSpecific);
-				this.formats.add(id);
-			}
+		if (source instanceof ClumpSource) {
+			FormatIdentification id =
+				new FormatIdentification(Configure.getReportable(Format.class,
+							                                     "ClumpFormat"),
+					                     Confidence.PositiveSpecific);
+			this.formats.add(id);
+		}
+		else if (source instanceof DirectorySource ||
+				 source instanceof ZipDirectorySource) {
+			FormatIdentification id =
+				new FormatIdentification(Configure.getReportable(Format.class,
+						                                         "DirectoryFormat"),
+						                 Confidence.PositiveSpecific);
+			this.formats.add(id);
+		}
+		else if (source instanceof PseudoDirectorySource) {
+			FormatIdentification id =
+				new FormatIdentification(Configure.getReportable(Format.class,
+						                                         "PseudoDirectoryFormat"),
+						                 Confidence.PositiveSpecific);
+			this.formats.add(id);
 		}
 		else {
 			/* Identify file source unit. */

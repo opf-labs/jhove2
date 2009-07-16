@@ -38,7 +38,6 @@ package org.jhove2.module.format.directory;
 
 import java.io.EOFException;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
 
 import org.jhove2.core.Format;
@@ -77,9 +76,9 @@ public class DirectoryModule
 		super(VERSION, RELEASE, RIGHTS, format);
 	}
 
-	/** Parse a source unit.
+	/** Parse a directory source unit.
 	 * @param jhove2 JHOVE2 framework
-	 * @param source Source unit
+	 * @param source Directory source unit
 	 * @return 0 
 	 * @throws EOFException    If End-of-File is reached reading the source unit
 	 * @throws IOException     If an I/O exception is raised reading the source
@@ -92,10 +91,8 @@ public class DirectoryModule
 		throws EOFException, IOException, JHOVE2Exception
 	{
 		if (source instanceof DirectorySource) {
-			List<Source> files = ((DirectorySource) source).getChildSources();
-			Iterator<Source> iter = files.iterator();
-			while (iter.hasNext()) {
-				Source src = iter.next();
+			List<Source> children = ((DirectorySource) source).getChildSources();
+			for (Source src : children) {
 				jhove2.characterize(src);
 			}
 		}

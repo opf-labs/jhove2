@@ -94,7 +94,7 @@ public class ASCIIProfile
 	
 	/** Validate an ASCII source unit.
 	 * @param jhove2 JHOVE2 framework
-	 * @param source Source unit
+	 * @param source ASCII source unit
 	 * @return ASCII validation status
 	 * @see org.jhove2.module.format.Validator#validate(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
 	 */

@@ -83,9 +83,8 @@ public class ZipModule
 		super(VERSION, RELEASE, RIGHTS, format);
 	}
 
-	/** Parse a source unit.  Implicitly set the start and end elapsed time.
-	 * @param jhove2 JHOVE2 framework
-	 * @param source Source unit
+	/** Parse a Zip source unit.
+	 * @param source Zip ource unit
 	 * @return 0 
 	 * @throws EOFException    If End-of-File is reached reading the source unit
 	 * @throws IOException     If an I/O exception is raised reading the source
@@ -97,8 +96,6 @@ public class ZipModule
 	public long parse(JHOVE2 jhove2, Source source)
 		throws EOFException, IOException, JHOVE2Exception
 	{
-		setStartTime();
-		
 		Input input = null;
 		try {
 			input = source.getInput(jhove2.getBufferSize(),
@@ -194,7 +191,6 @@ public class ZipModule
 				input.close();
 			}
 		}
-		setEndTime();
 		
 		return 0;
 	}

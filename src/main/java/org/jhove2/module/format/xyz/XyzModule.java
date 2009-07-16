@@ -34,58 +34,53 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.module.format.clump;
+package org.jhove2.module.format.xyz;
 
 import java.io.EOFException;
 import java.io.IOException;
-import java.util.List;
 
 import org.jhove2.core.Format;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.AbstractFormatModule;
 import org.jhove2.module.format.Parser;
 import org.jhove2.module.format.Validator;
 
-/** JHOVE2 Clump module.  A Clump is an  aggregation of source units that
- * collectively form a single coherent characterizable object.
- * 
- * @author mstrong, slabrams
+/**
+ * @author slabrams
+ *
  */
-public class ClumpModule
+public class XyzModule
 	extends AbstractFormatModule
 	implements Parser, Validator
 {
-	/** Clump module version identifier. */
+	/** UTF-8 module version identifier. */
 	public static final String VERSION = "1.0.0";
 
-	/** Clump module release date. */
-	public static final String RELEASE = "2009-07-13";
+	/** UTF-8 module release date. */
+	public static final String RELEASE = "2009-07-16";
 	
-	/** Clump module rights statement. */
+	/** UTF-8 module rights statement. */
 	public static final String RIGHTS =
-		"Copyright 2009 by The Regents of the University of California, " +
-		"Ithaka Harbors, Inc., and The Board of Trustees of the Leland " +
-		"Stanford Junior University. " +
+		"Copyright 2009 by The Regents of the University of California. " +
 		"Available under the terms of the BSD license.";
 	
-	/** Clump validation status. */
+	/** Xyz validation status. */
 	protected Validity isValid;
-
-	/** Instantiate a new <code>ClumpModule</code>.
-	 * @param format Clump format
+	
+	/** Instantiate a new <code>XyzModule</code>.
+	 * @param format Xyz format
 	 */
-	public ClumpModule(Format format) {
+	public XyzModule(Format format) {
 		super(VERSION, RELEASE, RIGHTS, format);
 		
 		this.isValid = Validity.Undetermined;
 	}
-
-	/** Parse Clump source unit.
+	
+	/** Parse an Xyz source unit.
 	 * @param jhove2 JHOVE2 framework
-	 * @param source Clump source unit
+	 * @param source Source unit
 	 * @return 0 
 	 * @throws EOFException    If End-of-File is reached reading the source unit
 	 * @throws IOException     If an I/O exception is raised reading the source
@@ -94,22 +89,16 @@ public class ClumpModule
 	 * @see org.jhove2.module.format.Parser#parse(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
 	 */
 	@Override
-	public long parse(JHOVE2 jhove2, Source source)
-		throws EOFException, IOException, JHOVE2Exception
-	{
-		if (source instanceof ClumpSource) {
-			List<Source> children = ((ClumpSource) source).getChildSources();
-			for (Source src : children) {
-				jhove2.characterize(src);
-			}
-		}
-		
+	public long parse(JHOVE2 jhove2, Source source) throws EOFException,
+			IOException, JHOVE2Exception {
+		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	/** Validate a Clump source unit.
+	/** Validate a UTF-8 source unit.  Implicitly set the starting and ending
+	 * lapsed time.
 	 * @param jhove2 JHOVE2 framework
-	 * @param source Clump source unit
+	 * @param source Source unit
 	 * @return UTF-8 validation status
 	 * @see org.jhove2.module.format.Validator#validate(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
 	 */
@@ -118,8 +107,8 @@ public class ClumpModule
 		return this.isValid;
 	}
 
-	/** Get Clump validation status.
-	 * @return Clump validation status
+	/** Get Xyz validation status.
+	 * @return Xyz validation status
 	 * @see org.jhove2.module.format.Validator#isValid()
 	 */
 	@Override

@@ -133,7 +133,7 @@ public class UTF8Module
 
 	/** Parse a source unit.
 	 * @param jhove2 JHOVE2 framework
-	 * @param source Source unit
+	 * @param source UTF-8 source unit
 	 * @return 0 
 	 * @throws EOFException    If End-of-File is reached reading the source unit
 	 * @throws IOException     If an I/O exception is raised reading the source
@@ -251,10 +251,9 @@ public class UTF8Module
 		return consumed;
 	}
 
-	/** Validate a UTF-8 source unit.  Implicitly set the starting and ending
-	 * lapsed time.
+	/** Validate a UTF-8 source unit.
 	 * @param jhove2 JHOVE2 framework
-	 * @param source Source unit
+	 * @param source UTF-8 source unit
 	 * @return UTF-8 validation status
 	 * @see org.jhove2.module.format.Validator#validate(org.jhove2.core.JHOVE2)
 	 */
@@ -348,6 +347,7 @@ public class UTF8Module
 
 	/** Get UTF-8 validation status.
 	 * @return UTF-8 validation status
+	 * @see org.jhove2.module.format.Validator#isValid()
 	 */
 	@Override
 	public Validity isValid() {

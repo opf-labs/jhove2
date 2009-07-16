@@ -59,6 +59,7 @@ import org.jhove2.core.io.Input.Type;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.DirectorySource;
 import org.jhove2.core.source.FileSource;
+import org.jhove2.core.source.PseudoDirectorySource;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
 import org.jhove2.core.source.ZipDirectorySource;
@@ -80,7 +81,7 @@ public class JHOVE2
 	public static final String VERSION = "2.0.0";
 
 	/** Framework release date. */
-	public static final String RELEASE = "2009-07-15";
+	public static final String RELEASE = "2009-07-16";
 	
 	/** Framework rights statement. */
 	public static final String RIGHTS =
@@ -172,15 +173,15 @@ public class JHOVE2
 	
 	/** Number of clump source units. */
 	protected int numClumps;
-	
-	/** Number of container source units. */
-	protected int numContainers;
-	
+
 	/** Number of directory source units. */
 	protected int numDirectories;
 	
 	/** Number of file source units. */
 	protected int numFiles;
+	
+	/** Number of pseudo-directory source units. */
+	protected int numPseudoDirectories;
 
 	/** Framework show identifiers flag; if true, show identifiers in non-XML
 	 * display modes.
@@ -223,9 +224,9 @@ public class JHOVE2
 		
 		this.numBytestreams = 0;
 		this.numClumps      = 0;
-		this.numContainers  = 0;
 		this.numDirectories = 0;
 		this.numFiles       = 0;
+		this.numPseudoDirectories = 0;
 		
 		/* Initialize the displayer displayVisbilities map. */
 		this.visbilities = new TreeMap<String,DisplayVisbility>();
@@ -274,11 +275,11 @@ public class JHOVE2
 			characterize(this.source);
 		}
 		else {
-			this.source = new ClumpSource();
+			this.source = new PseudoDirectorySource();
 			while (iter.hasNext()) {
 				String pathName = iter.next();
 				Source src = SourceFactory.getSource(pathName);
-				((ClumpSource) this.source).addChildSource(src);
+				((PseudoDirectorySource) this.source).addChildSource(src);
 			}
 			characterize(this.source);
 		}
@@ -296,7 +297,10 @@ public class JHOVE2
 		throws IOException, JHOVE2Exception
 	{		
 		/* Update summary counts of source units, by type. */
-		if      (source instanceof ClumpSource) {
+		/*if      (source instanceof BytestreamSource) {
+			this.numBytestreams++;
+		}
+		else*/ if (source instanceof ClumpSource) {
 			this.numClumps++;
 		}
 		else if (source instanceof DirectorySource ||
@@ -306,6 +310,9 @@ public class JHOVE2
 		else if (source instanceof FileSource ||
 				 source instanceof ZipFileSource) {
 			this.numFiles++;
+		}
+		else if (source instanceof PseudoDirectorySource) {
+			this.numPseudoDirectories++;
 		}
 		
 		if (this.characterizer != null) {
@@ -639,7 +646,7 @@ public class JHOVE2
 	/** Get number of aggregate source units processed.
 	 * @return Number of aggregate source units processed
 	 */
-	@ReportableProperty(order=73, value="Number of bytestream source units " +
+	@ReportableProperty(order=76, value="Number of bytestream source units " +
 			"processed.")
 	public int getNumBytestreamSources() {
 		return this.numBytestreams;
@@ -648,26 +655,17 @@ public class JHOVE2
 	/** Get number of clump source units processed.
 	 * @return Number of clump source units processed
 	 */
-	@ReportableProperty(order=75, value="Number of clump source units " +
+	@ReportableProperty(order=74, value="Number of clump source units " +
 			"processed.")
 	public int getNumClumpSources() {
 		return this.numClumps;
 	}
-	
-	/** Get number of container source units processed.
-	 * @return Number of container source units processed
-	 */
-	@ReportableProperty(order=76, value="Number of container source units " +
-			"processed.")
-	public int getNumContainerSources() {
-		return this.numContainers;
-	}
-	
+
 	/** Get number of directory source units processed, including both file
 	 * system directories and Zip entry directories.
 	 * @return Number of directory source units processed
 	 */
-	@ReportableProperty(order=74, value="Number of directory source units " +
+	@ReportableProperty(order=73, value="Number of directory source units " +
 			"processed, including both file system directories and Zip " +
 			"entry directories.")
 	public int getNumDirectorySources() {
@@ -678,7 +676,7 @@ public class JHOVE2
 	 * files and Zip entry files.
 	 * @return Number of file source units processed
 	 */
-	@ReportableProperty(order=72, value="Number of file source units " +
+	@ReportableProperty(order=75, value="Number of file source units " +
 			"processed, including both file system files and Zip entry " +
 			"files.")
 	public int getNumFileSources() {
@@ -690,10 +688,20 @@ public class JHOVE2
 	 */
 	@ReportableProperty(order=71, value="Number of source units processed.")
 	public int getNumSources() {
-		return this.numDirectories + this.numFiles + this.numBytestreams + 
-		       this.numContainers  + this.numClumps;
+		return this.numPseudoDirectories + this.numDirectories +
+		       this.numClumps            + this.numFiles +
+		       this.numBytestreams;
 	}
-
+	
+	/** Get number of container source units processed.
+	 * @return Number of container source units processed
+	 */
+	@ReportableProperty(order=72, value="Number of container source units " +
+			"processed.")
+	public int getNumPseudoDirectorySources() {
+		return this.numPseudoDirectories;
+	}
+	
 	/** Get framework show identifiers flag; if true, show identifiers in
 	 * non-XML display modes.
 	 * @return Framework message digests flag
@@ -727,6 +735,12 @@ public class JHOVE2
 		return this.tempSuffix;
 	}
 
+	/** Increment the number of bytestream source units.
+	 */
+	public void incrementNumBytestreams() {
+		this.numBytestreams++;
+	}
+	
 	/** Increment the number of clump source units.
 	 */
 	public void incrementNumClumps() {
@@ -745,6 +759,12 @@ public class JHOVE2
 	 */
 	public void incrementNumFiles() {
 		this.numFiles++;
+	}
+	
+	/** Increment the number of pseudo-directory source units.
+	 */
+	public void incrementNumPseudoDirectories() {
+		this.numPseudoDirectories++;
 	}
 	
 	/** Set {@link org.jhove2.core.io.Input} buffer size.
