@@ -77,7 +77,7 @@ public class ReportableInfo {
 	 */
 	public ReportableInfo(Reportable reportable)
 	{
-		this(reportable.getClass());
+		this(reportable.getClass(), Mode.WithProperties);
 	}
 	
 	/** Instantiate a new <code>ReportableInfo</code> utility.
@@ -189,7 +189,7 @@ public class ReportableInfo {
 	}
 	
 	/** Get {@link org.jhove2.core.Reportable} formal identifier in
-	 * the JHOVE2 namespace.  This identifier is quaranteed to be unique.
+	 * the JHOVE2 namespace.  This identifier is guaranteed to be unique.
 	 * @return Reportable identifier in the JHOVE2 namespace
 	 */
 	public I8R getIdentifier() {

@@ -38,7 +38,6 @@ package org.jhove2.module.dispatch;
 
 import java.io.EOFException;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -52,10 +51,12 @@ import org.jhove2.core.config.Configure;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractModule;
 import org.jhove2.module.Module;
+import org.jhove2.module.digest.Digester;
 import org.jhove2.module.format.FormatModule;
 import org.jhove2.module.format.FormatProfile;
 import org.jhove2.module.format.Parser;
 import org.jhove2.module.format.Validator;
+import org.jhove2.module.identify.Identifier;
 
 /** JHOVE2 dispatcher module.  The module instantiates and invokes the module
  * associated with an identifier.
@@ -70,7 +71,7 @@ public class DispatcherModule
 	public static final String VERSION = "1.0.0";
 
 	/** Dispatcher module release date. */
-	public static final String RELEASE = "2009-07-13";
+	public static final String RELEASE = "2009-07-16";
 	
 	/** Dispatcher module rights statement. */
 	public static final String RIGHTS =
@@ -93,9 +94,7 @@ public class DispatcherModule
 		this.dispatch = new TreeMap<String,String>();
 		Properties props = Configure.getProperties("Dispatcher");
 		Set<String> keys = props.stringPropertyNames();
-		Iterator<String> iter = keys.iterator();
-		while (iter.hasNext()) {
-			String key   = iter.next();
+		for (String key : keys) {
 			String value = props.getProperty(key);
 			this.dispatch.put(key, value);
 		}
@@ -106,9 +105,9 @@ public class DispatcherModule
 	 * @param source     Source unit
 	 * @param identifier Module identifier
 	 * @return Module
+	 * @throws EOFException    End-of-file encountered parsing the source unit
+	 * @throws IOException     I/O exception encountered parsing the source unit
 	 * @throws JHOVE2Exception 
-	 * @throws IOException 
-	 * @throws EOFException 
 	 * @see org.jhove2.module.dispatch.Dispatcher#dispatch(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source, org.jhove2.core.I8R)
 	 */
 	@Override
@@ -121,32 +120,7 @@ public class DispatcherModule
 		if (name != null) {
 			module = Configure.getReportable(Module.class, name);
 			if (module != null) {
-				module.setStartTime();
-				
-				if (module instanceof FormatModule) {
-					if (module instanceof Parser) {
-						((Parser) module).parse(jhove2, source);
-					}
-					if (module instanceof Validator) {
-						((Validator) module).validate(jhove2, source);
-					}
-					
-					List<FormatProfile> profiles =
-						((FormatModule) module).getProfiles();
-					if (profiles.size() > 0) {
-						Iterator<FormatProfile> iter = profiles.iterator();
-						while (iter.hasNext()) {
-							FormatProfile profile = iter.next();
-							if (profile instanceof Validator) {
-								profile.setStartTime();
-								((Validator) profile).validate(jhove2, source);
-								profile.setEndTime();
-							}
-						}
-					}
-				}
-				module.setEndTime();
-				source.addModule(module);
+				dispatch(jhove2, source, module);
 			}
 			else {
 				/* TODO: module can't be instantiated. */
@@ -159,5 +133,52 @@ public class DispatcherModule
 		}
 		
 		return module;
+	}
+	
+	/** Dispatch a source unit to a module.
+	 * @param jhove2 JHOVE2 framework
+	 * @param source Source unit
+	 * @param Module Module
+	 * @return Module
+	 * @throws EOFException    End-of-file encountered parsing the source unit
+	 * @throws IOException     I/O exception encountered parsing the source unit
+	 * @throws JHOVE2Exception 
+	 * @see org.jhove2.module.dispatch.Dispatcher#dispatch(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source, org.jhove2.module.Module)
+	 */
+	public void dispatch(JHOVE2 jhove2, Source source, Module module)
+		throws EOFException, IOException, JHOVE2Exception
+	{
+		module.setStartTime();
+				
+		if (module instanceof Identifier) {
+			((Identifier) module).identify(jhove2, source);
+		}
+				
+		if (module instanceof FormatModule) {
+			if (module instanceof Parser) {
+				((Parser) module).parse(jhove2, source);
+			}
+			if (module instanceof Validator) {
+				((Validator) module).validate(jhove2, source);
+			}
+					
+			List<FormatProfile> profiles =
+				((FormatModule) module).getProfiles();
+			if (profiles.size() > 0) {
+				for (FormatProfile profile : profiles) {
+					if (profile instanceof Validator) {
+						profile.setStartTime();
+						((Validator) profile).validate(jhove2, source);
+						profile.setEndTime();
+					}
+				}
+			}
+		}
+				
+		if (module instanceof Digester) {
+			((Digester) module).digest(jhove2, source);
+		}
+		module.setEndTime();
+		source.addModule(module);
 	}
 }

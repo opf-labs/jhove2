@@ -59,7 +59,7 @@ import org.jhove2.core.io.Input.Type;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.DirectorySource;
 import org.jhove2.core.source.FileSource;
-import org.jhove2.core.source.PseudoDirectorySource;
+import org.jhove2.core.source.FileSet;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
 import org.jhove2.core.source.ZipDirectorySource;
@@ -181,7 +181,7 @@ public class JHOVE2
 	protected int numFiles;
 	
 	/** Number of pseudo-directory source units. */
-	protected int numPseudoDirectories;
+	protected int numFileSets;
 
 	/** Framework show identifiers flag; if true, show identifiers in non-XML
 	 * display modes.
@@ -226,7 +226,7 @@ public class JHOVE2
 		this.numClumps      = 0;
 		this.numDirectories = 0;
 		this.numFiles       = 0;
-		this.numPseudoDirectories = 0;
+		this.numFileSets    = 0;
 		
 		/* Initialize the displayer displayVisbilities map. */
 		this.visbilities = new TreeMap<String,DisplayVisbility>();
@@ -275,11 +275,11 @@ public class JHOVE2
 			characterize(this.source);
 		}
 		else {
-			this.source = new PseudoDirectorySource();
+			this.source = new FileSet();
 			while (iter.hasNext()) {
 				String pathName = iter.next();
 				Source src = SourceFactory.getSource(pathName);
-				((PseudoDirectorySource) this.source).addChildSource(src);
+				((FileSet) this.source).addChildSource(src);
 			}
 			characterize(this.source);
 		}
@@ -296,6 +296,8 @@ public class JHOVE2
 	public void characterize(Source source)
 		throws IOException, JHOVE2Exception
 	{		
+		source.setStartTime();
+
 		/* Update summary counts of source units, by type. */
 		/*if      (source instanceof BytestreamSource) {
 			this.numBytestreams++;
@@ -311,8 +313,8 @@ public class JHOVE2
 				 source instanceof ZipFileSource) {
 			this.numFiles++;
 		}
-		else if (source instanceof PseudoDirectorySource) {
-			this.numPseudoDirectories++;
+		else if (source instanceof FileSet) {
+			this.numFileSets++;
 		}
 		
 		if (this.characterizer != null) {
@@ -322,15 +324,16 @@ public class JHOVE2
 			} finally {
 				source.close();
 			}
-		}
+		}		
+		source.setEndTime();
 	}
 	
 	/** Dispatch a source unit to the module associated with an identifier.
 	 * @param source     Source unit
 	 * @param identifier Module identifier
 	 * @return Module
-	 * @throws EOFException
-	 * @throws IOException
+	 * @throws EOFException    End-of-file encountered parsing the source unit
+	 * @throws IOException     I/O exception encountered parsing the source unit
 	 * @throws JHOVE2Exception
 	 */
 	public Module dispatch(Source source, I8R identifier)
@@ -346,7 +349,24 @@ public class JHOVE2
 		
 		return module;
 	}
-
+	
+	/** Dispatch a source unit to the module associated with an identifier.
+	 * @param source Source unit
+	 * @param module Module
+	 * @throws EOFException    End-of-file encountered parsing the source unit
+	 * @throws IOException     I/O exception encountered parsing the source unit
+	 * @throws JHOVE2Exception
+	 */
+	public void dispatch(Source source, Module module)
+		throws EOFException, IOException, JHOVE2Exception
+	{
+		if (this.dispatcher != null) {
+			this.dispatcher.setRestartTime();
+			this.dispatcher.dispatch(this, source, module);
+			this.dispatcher.setEndTime();
+		}
+	}
+	
 	/** Display the framework to the standard output stream.
 	 */
 	public void display() {
@@ -688,18 +708,17 @@ public class JHOVE2
 	 */
 	@ReportableProperty(order=71, value="Number of source units processed.")
 	public int getNumSources() {
-		return this.numPseudoDirectories + this.numDirectories +
-		       this.numClumps            + this.numFiles +
-		       this.numBytestreams;
+		return this.numFileSets + this.numDirectories + this.numClumps +
+		       this.numFiles    + this.numBytestreams;
 	}
 	
-	/** Get number of container source units processed.
-	 * @return Number of container source units processed
+	/** Get number of file set source units processed.
+	 * @return Number of file set source units processed
 	 */
-	@ReportableProperty(order=72, value="Number of container source units " +
+	@ReportableProperty(order=72, value="Number of file set source units " +
 			"processed.")
-	public int getNumPseudoDirectorySources() {
-		return this.numPseudoDirectories;
+	public int getNumFileSetSources() {
+		return this.numFileSets;
 	}
 	
 	/** Get framework show identifiers flag; if true, show identifiers in
@@ -761,10 +780,10 @@ public class JHOVE2
 		this.numFiles++;
 	}
 	
-	/** Increment the number of pseudo-directory source units.
+	/** Increment the number of file set source units.
 	 */
-	public void incrementNumPseudoDirectories() {
-		this.numPseudoDirectories++;
+	public void incrementNumFileSets() {
+		this.numFileSets++;
 	}
 	
 	/** Set {@link org.jhove2.core.io.Input} buffer size.

@@ -36,7 +36,7 @@
 
 package org.jhove2.core;
 
-/** Marker interface for JHOVE2 reportables, which are named collections of
+/** Marker interface for JHOVE2 reportables.  A reportable is a collection of
  * reportable properties.
  * 
  * @author mstrong, slabrams

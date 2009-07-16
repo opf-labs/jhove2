@@ -70,13 +70,35 @@ public class Configure {
 				context = new ClassPathXmlApplicationContext(CLASSPATH);
 			}
 		
-			reportable = (R) context.getBean(name);
+			reportable = (R) context.getBean(name, cl);
 		} catch (BeansException e) {
-			throw new JHOVE2Exception("Can't instantiate reportable: " +
-					                         name, e);
+			throw new JHOVE2Exception("Can't instantiate reportable: " + name, e);
 		}
 		
 		return reportable;
+	}
+	
+	/** Get reportable class by bean name.
+	 * @param cl   Reportable class (or super class)
+	 * @param name Reportable bean name
+	 * @return Reportable
+	 * @throws JHOVE2Exception
+	 */
+	public static synchronized <R> Class<R> getReportableClass(Class<? super R> cl, String name)
+		throws JHOVE2Exception
+	{
+		Class<R> cls = null;
+		try {
+			if (context == null) {
+				context = new ClassPathXmlApplicationContext(CLASSPATH);
+			}
+		
+			cls = (Class<R>) context.getType(name);
+		} catch (BeansException e) {
+			throw new JHOVE2Exception("Can't retrieve reportable class: " + name, e);
+		}
+		
+		return cls;
 	}
 	
 	/** Get reportable names by type.
@@ -95,8 +117,9 @@ public class Configure {
 		
 			names = context.getBeanNamesForType(reportable);
 		} catch (BeansException e) {
-			throw new JHOVE2Exception("Can't retrieve instantiation names for reportable: " +
-					                         reportable.getName(), e);
+			throw new JHOVE2Exception("Can't retrieve instantiation names " +
+					                  "for reportable: " + reportable.getName(),
+					                  e);
 		}
 		
 		return names;

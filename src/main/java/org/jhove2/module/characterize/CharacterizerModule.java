@@ -37,7 +37,6 @@
 package org.jhove2.module.characterize;
 
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.Set;
 
 import org.jhove2.core.Format;
@@ -46,13 +45,25 @@ import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.config.Configure;
+import org.jhove2.core.info.ReportableInfo;
+import org.jhove2.core.info.ReportableInfo.Mode;
 import org.jhove2.core.source.AggregateSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractModule;
 import org.jhove2.module.digest.Digester;
 import org.jhove2.module.identify.Identifier;
 
-/** JHOVE2 characterization module.
+/** JHOVE2 characterization module.  The characterization strategy is:
+ * (1) presumptively-identify the format of the source unit;
+ * (2) dispatch the source unit to the module associated with the format for
+ * parsing, feature extraction, and validation;
+ * (3) perform assessment on the source based on its extracted reportable
+ * properties and validation status;
+ * (4) if an aggregate source unit, (a) presumptively-identify any formats
+ * found amongst its child source units, and if so, (b) gather those
+ * source units into a Clump, and (c) dispatch to the module associated
+ * with the format for feature extraction and validation;
+ * (5) if a non-aggregate source unit, optionally calculate message digests.
  * 
  * @author mstrong, slabrams
  */
@@ -79,7 +90,18 @@ public class CharacterizerModule
 		super(VERSION, RELEASE, RIGHTS);
 	}
 
-	/** Characterize a source unit.
+	/** Characterize a source unit.  The characterization strategy is:
+	 * (1) presumptively-identify the format of the source unit;
+	 * (2) dispatch the source unit to the module associated with the format
+	 * for parsing, feature extraction, and validation;
+	 * (3) perform assessment on the source based on its extracted reportable
+	 * properties and validation status;
+	 * (4) if an aggregate source unit, (a) presumptively-identify any formats
+	 * found amongst its child source units, and if so, (b) gather those
+	 * source units into a Clump, and (c) dispatch to the module associated
+	 * with the format for feature extraction and validation;
+	 * (5) if a non-aggregate source unit, optionally calculate message
+	 * digests. 
 	 * @param jhove2 JHOVE2 framework
 	 * @param source Source unit
 	 * @throws IOException     If an I/O exception is raised characterizing
@@ -91,47 +113,65 @@ public class CharacterizerModule
 	public void characterize(JHOVE2 jhove2, Source source)
 		throws IOException, JHOVE2Exception
 	{
-		source.setStartTime();
-
-		/* Presumptively identify the format(s) of the source unit. */
-		Identifier identifier = Configure.getReportable(Identifier.class,
+		/* (1) Presumptively-identify the source unit's format. */
+		Identifier identifier =	Configure.getReportable(Identifier.class,
 				                                        "IdentifierModule");
 		if (identifier != null) {
-			identifier.setStartTime();
-			Set<FormatIdentification> formats =	identifier.identify(jhove2,
-					                                                source);
-			identifier.setEndTime();
-			source.addModule(identifier);
-
-			/* Dispatch to the module associated with the source unit's
-			 * format.
-			 */
-		
+			jhove2.dispatch(source, identifier);
+			Set<FormatIdentification> formats =
+				identifier.getPresumptiveFormats();
 			if (formats.size() > 0) {
-				Iterator<FormatIdentification> iter = formats.iterator();
-				while (iter.hasNext()) {
-					FormatIdentification fid = iter.next();
+				/* (2) Dispatch the source unit to the module associated with
+				 * format for parsing, feature extraction, and validation.
+				 */
+				for (FormatIdentification fid : formats) {
 					Format format = fid.getPresumptiveFormat();
 					I8R id = format.getIdentifier();
 					jhove2.dispatch(source, id);
 				}
 			}
+			
+			/* TODO: implement characterization assessment */
+			/*
+			Assessor assessor =
+				Configure.getReportable(Assessor.class, "AssessorModule");
+			if (assessor != null) {
+			*/
+				/* (3) Perform assessment on the source based on its extracted
+				 * reportable properties and validation status.
+				 */
+				/*
+				assessor.setStartTime();
+				assessor.assess(jhove2, source);
+				assessor.setEndTime();
+				source.addModule(assessor);
+			}
+			*/
+		}
+		else {
+			/* TODO: can't instantiate identifier module. */
 		}
 		
-		/* Calculate message digest(s) for the source unit. */
-		if (!(source instanceof AggregateSource)) {
+		if (source instanceof AggregateSource) {
+			/* (4) (a) Presumptively-identify any formats found amongst the
+			 * child source units; and, if so, (b) gather the source units
+			 * into a new Clump source unit; and (c) dispatch the Clump to
+			 * the module associated with its format. */
+		}
+		else {
+			/* (5) Optionally calculate message digests for the non-aggregate
+			 * source unit.
+			 */
 			if (jhove2.getCalcDigests()) {
 				Digester digester = Configure.getReportable(Digester.class,
 						                                    "DigesterModule");
 				if (digester != null) {
-					digester.setStartTime();
-					digester.digest(jhove2, source);
-					digester.setEndTime();
-					source.addModule(digester);
+					jhove2.dispatch(source, digester);
+				}
+				else {
+					/* TODO: can't instantiate digester module. */
 				}
 			}
 		}
-		
-		source.setEndTime();
 	}
 }

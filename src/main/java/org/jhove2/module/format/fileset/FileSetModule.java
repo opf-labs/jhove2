@@ -34,7 +34,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.module.format.pseudo;
+package org.jhove2.module.format.fileset;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -43,16 +43,16 @@ import java.util.List;
 import org.jhove2.core.Format;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.source.PseudoDirectorySource;
+import org.jhove2.core.source.FileSet;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.AbstractFormatModule;
 import org.jhove2.module.format.Parser;
 
-/** JHOVE2 pseudo-directory module.
+/** JHOVE2 file set module.  A file set is a set of unrelated files.
  * 
  * @author mstrong, slabrams
  */
-public class PseudoDirectoryModule
+public class FileSetModule
 	extends AbstractFormatModule
 	implements Parser
 {
@@ -69,10 +69,10 @@ public class PseudoDirectoryModule
 		"Stanford Junior University. " +
 		"Available under the terms of the BSD license.";
 	
-	/** Instantiate a new <code>PseudoDirectoryModule</code>.
+	/** Instantiate a new <code>FileSetModule</code>.
 	 * @param format Pseudo-directory format
 	 */
-	public PseudoDirectoryModule(Format format) {
+	public FileSetModule(Format format) {
 		super(VERSION, RELEASE, RIGHTS, format);
 	}
 
@@ -90,8 +90,8 @@ public class PseudoDirectoryModule
 	public long parse(JHOVE2 jhove2, Source source)
 		throws EOFException, IOException, JHOVE2Exception
 	{
-		if (source instanceof PseudoDirectorySource) {
-			List<Source> children = ((PseudoDirectorySource) source).getChildSources();
+		if (source instanceof FileSet) {
+			List<Source> children = ((FileSet) source).getChildSources();
 			for (Source src : children) {
 				jhove2.characterize(src);
 			}

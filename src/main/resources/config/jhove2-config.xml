@@ -179,25 +179,25 @@
 	
 	
 	   	
-	<!-- Pseudo-directory module bean -->
-	<bean id="PseudoDirectoryModule" class="org.jhove2.module.format.pseudo.PseudoDirectoryModule"
+	<!-- File set module bean -->
+	<bean id="FileSetModule" class="org.jhove2.module.format.fileset.FileSetModule"
 	      scope="prototype">
-	    <constructor-arg ref="PseudoDirectoryFormat"/>
+	    <constructor-arg ref="FileSetFormat"/>
 	</bean>
 	
-	<!-- Pseudo-directory format bean -->
-	<bean id="PseudoDirectoryFormat" class="org.jhove2.core.Format" scope="singleton">
-		<constructor-arg type="java.lang.String" value="PseudoDirectory"/>
-		<constructor-arg ref="PseudoDirectoryIdentifier"/>
+	<!-- File set format bean -->
+	<bean id="FileSetFormat" class="org.jhove2.core.Format" scope="singleton">
+		<constructor-arg type="java.lang.String" value="FileSet"/>
+		<constructor-arg ref="FileSetIdentifier"/>
 		<constructor-arg type="org.jhove2.core.Format$Type" value="Format"/>
 		<constructor-arg type="org.jhove2.core.Format$Ambiguity" value="Unambiguous"/>
 	</bean>
 				
-	<!-- Pseudo-directory identifier bean -->  
-	<bean id="PseudoDirectoryIdentifier" class="org.jhove2.core.I8R" scope="singleton">
-		<constructor-arg type="java.lang.String" value="info:jhove2/format/pseudo-directory"/>
+	<!-- File set identifier bean -->  
+	<bean id="FileSetIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="info:jhove2/format/file-set"/>
 	</bean>
-	
+		
 	
 	
 	<!-- UTF-8 module bean -->

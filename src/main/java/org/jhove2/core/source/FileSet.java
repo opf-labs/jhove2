@@ -36,17 +36,17 @@
 
 package org.jhove2.core.source;
 
-/** A JHOVE2 pseudo-directory, a group of unrelated files.
+/** A JHOVE2 file set source unit.  A file set is a group of unrelated files.
  * 
  * @author mstrong, slabrams
  */
-public class PseudoDirectorySource
+public class FileSet
 	extends AbstractSource
 	implements AggregateSource
 {
-	/** Instantiate a new <code>PseudoDirectorySource</code>.
+	/** Instantiate a new <code>FileSet</code>.
 	 */
-	public PseudoDirectorySource() {
+	public FileSet() {
 		super();
 	}
 }

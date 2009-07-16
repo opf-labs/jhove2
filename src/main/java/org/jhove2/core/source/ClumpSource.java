@@ -40,7 +40,6 @@ package org.jhove2.core.source;
  * collectively form a single coherent characterizable object. 
  * 
  * @author mstrong, slabrams
- *
  */
 public class ClumpSource
 	extends AbstractSource
