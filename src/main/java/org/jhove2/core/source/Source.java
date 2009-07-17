@@ -79,6 +79,11 @@ public interface Source
 	@ReportableProperty(order=3, value="Child source untis.")
 	public List<Source> getChildSources();
 	
+	/** Delete child source unit.
+	 * @param child Child source unit
+	 */
+	public void deleteChildSource(Source child);
+	
 	/** Get delete temporary files flag; if true, delete files.
 	 * @return Delete temporary files flag
 	 */

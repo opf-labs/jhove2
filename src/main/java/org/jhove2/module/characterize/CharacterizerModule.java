@@ -37,6 +37,7 @@
 package org.jhove2.module.characterize;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Set;
 
 import org.jhove2.core.Format;
@@ -46,6 +47,7 @@ import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.config.Configure;
 import org.jhove2.core.source.AggregateSource;
+import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractModule;
 import org.jhove2.module.digest.Digester;
@@ -75,7 +77,7 @@ public class CharacterizerModule
 	public static final String VERSION = "1.0.0";
 
 	/** Characterization process module release date. */
-	public static final String RELEASE = "2009-07-16";
+	public static final String RELEASE = "2009-07-17";
 	
 	/** Characterization process module rights statement. */
 	public static final String RIGHTS =
@@ -158,12 +160,20 @@ public class CharacterizerModule
 				jhove2.dispatch(source, aggrefier, Disposition.DontAddToSource);
 				Set<FormatIdentification> formats = aggrefier.getPresumptiveFormats();
 				if (formats.size() > 0) {
-					source.addModule(aggrefier);
+					ClumpSource clump = new ClumpSource();
+					List<Source> sources = aggrefier.getSources();
+					for (Source src : sources) {
+						clump.addChildSource(src);
+						source.deleteChildSource(src);
+					}
+					clump.addModule(aggrefier);
+					
 					for (FormatIdentification fid : formats) {
 						Format format = fid.getPresumptiveFormat();
 						I8R id = format.getIdentifier();
-						jhove2.dispatch(source, id);
+						jhove2.dispatch(clump, id);
 					}
+					source.addChildSource(clump);
 				}
 			}
 		}

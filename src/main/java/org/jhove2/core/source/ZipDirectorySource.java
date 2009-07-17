@@ -48,7 +48,7 @@ import org.jhove2.annotation.ReportableProperty;
  */
 public class ZipDirectorySource
 	extends AbstractSource
-	implements AggregateSource
+	implements AggregateSource, NamedSource
 {
 	/** Zip directory comment. */
 	protected String comment;
@@ -102,8 +102,9 @@ public class ZipDirectorySource
 	
 	/** Get Zip directory name.
 	 * @return Zip directory name
+	 * @see org.jhove2.core.source.NamedSource#getName()
 	 */
-	@ReportableProperty(order=1, value="Zip directory name.")
+	@Override
 	public String getName() {
 		return this.name;
 	}

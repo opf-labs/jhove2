@@ -48,7 +48,7 @@ import org.jhove2.annotation.ReportableProperty;
  */
 public class DirectorySource
 	extends AbstractSource
-	implements AggregateSource
+	implements AggregateSource, NamedSource
 {
 	/** Directory existence. */
 	protected boolean isExtant;
@@ -102,8 +102,9 @@ public class DirectorySource
 	
 	/** Get directory name.
 	 * @return Directory name
+	 * @see org.jhove2.core.source.NamedSource#getName()
 	 */
-	@ReportableProperty(order=1, value="Directory name.")
+	@Override
 	public String getName() {
 		return this.name;
 	}	

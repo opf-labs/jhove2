@@ -65,7 +65,7 @@ public class AggrefierModule
 	public static final String VERSION = "1.0.0";
 
 	/** Identification module release date. */
-	public static final String RELEASE = "2009-07-16";
+	public static final String RELEASE = "2009-07-17";
 	
 	/** Identification module rights statement. */
 	public static final String RIGHTS =
@@ -109,31 +109,36 @@ public class AggrefierModule
 		/** Presumptively-identify a shape file by looking for three files
 		 * with the names: abc.shp, abc.shx, abc.dbf
 		 */
-		boolean haveDbf = false;
-		boolean haveShp = false;
-		boolean haveShx = false;
+		Source dbfSource = null;
+		Source shpSource = null;
+		Source shxSource = null;
 		if (children.size() > 2) {
 			for (Source src : children) {
-				if (src instanceof NamedSource) {
+				if (!(src instanceof AggregateSource) &&
+					  src instanceof NamedSource) {
 					String name = ((NamedSource) src).getName();
 					if (name.equals("abc.dbf")) {
-						haveDbf = true;
+						dbfSource = src;
 					}
 					else if (name.equals("abc.shp")) {
-						haveShp = true;
+						shpSource = src;
 					}
 					else if (name.equals("abc.shx")) {
-						haveShx = true;
+						shxSource = src;
 					}
 				}
 			}
 		}
-		if (haveDbf && haveShp && haveShx) {
+		if (dbfSource != null && shpSource != null && shxSource != null) {
 			FormatIdentification id =
 				new FormatIdentification(Configure.getReportable(Format.class,
 						                                         "ShapefileFormat"),
 						                 Confidence.PositiveSpecific);
 			this.formats.add(id);
+			
+			this.sources.add(dbfSource);
+			this.sources.add(shpSource);
+			this.sources.add(shxSource);
 		}
 		
 		return this.formats;
@@ -153,7 +158,7 @@ public class AggrefierModule
 	 * @see org.jhove2.module.identify.Aggrefier#getSourceUnits()
 	 */
 	@Override
-	public List<Source> getSourceUnits() {
+	public List<Source> getSources() {
 		return this.sources;
 	}
 }

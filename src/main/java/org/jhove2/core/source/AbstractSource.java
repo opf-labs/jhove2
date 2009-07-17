@@ -194,6 +194,14 @@ public abstract class AbstractSource
 		return this.children;
 	}
 	
+	/** Delete child source unit.
+	 * @param child Child source unit
+	 * @see org.jhove2.core.source.Source#deleteChildSource(Source)
+	 */
+	public void deleteChildSource(Source child) {
+		this.children.remove(child);
+	}
+	
 	/** Get delete temporary files flag; if true, delete files.
 	 * @return Delete temporary files flag
 	 * @see org.jhove2.core.source.Source#getDeleteTempFiles()

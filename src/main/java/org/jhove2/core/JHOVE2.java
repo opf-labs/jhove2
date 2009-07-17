@@ -297,7 +297,7 @@ public class JHOVE2
 	public void characterize(Source source)
 		throws IOException, JHOVE2Exception
 	{		
-		source.setStartTime();
+		source.setRestartTime();
 
 		/* Update summary counts of source units, by type. */
 		/*if      (source instanceof BytestreamSource) {

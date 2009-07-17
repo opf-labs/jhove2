@@ -76,7 +76,5 @@ public interface Aggrefier
 	 * presumptively-identified aggregate format.
 	 * @return Source units
 	 */
-	@ReportableProperty("Source units that collectively constitute an " +
-			"instance of the presumptively-identified aggregate format.")
-	public List<Source> getSourceUnits();
+	public List<Source> getSources();
 }
