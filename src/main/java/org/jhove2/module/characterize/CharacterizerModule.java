@@ -49,6 +49,8 @@ import org.jhove2.core.source.AggregateSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractModule;
 import org.jhove2.module.digest.Digester;
+import org.jhove2.module.dispatch.Dispatcher.Disposition;
+import org.jhove2.module.identify.Aggrefier;
 import org.jhove2.module.identify.Identifier;
 
 /** JHOVE2 characterization module.  The characterization strategy is:
@@ -150,6 +152,20 @@ public class CharacterizerModule
 			 * child source units; and, if so, (b) gather the source units
 			 * into a new Clump source unit; and (c) dispatch the Clump to
 			 * the module associated with its format. */
+			Aggrefier aggrefier = Configure.getReportable(Aggrefier.class,
+					                                      "AggrefierModule");
+			if (aggrefier != null) {
+				jhove2.dispatch(source, aggrefier, Disposition.DontAddToSource);
+				Set<FormatIdentification> formats = aggrefier.getPresumptiveFormats();
+				if (formats.size() > 0) {
+					source.addModule(aggrefier);
+					for (FormatIdentification fid : formats) {
+						Format format = fid.getPresumptiveFormat();
+						I8R id = format.getIdentifier();
+						jhove2.dispatch(source, id);
+					}
+				}
+			}
 		}
 		else {
 			/* (5) Optionally calculate message digests for the non-aggregate

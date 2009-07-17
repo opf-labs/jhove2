@@ -34,7 +34,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.module.format.xyz;
+package org.jhove2.module.format.shapefile;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -47,40 +47,40 @@ import org.jhove2.module.format.AbstractFormatModule;
 import org.jhove2.module.format.Parser;
 import org.jhove2.module.format.Validator;
 
-/**
- * @author slabrams
- *
+/** JHOVE2 Shapefile module.
+ * 
+ * @author mstrong, slabrams
  */
-public class XyzModule
+public class ShapefileModule
 	extends AbstractFormatModule
 	implements Parser, Validator
 {
-	/** UTF-8 module version identifier. */
+	/** Shapefile module version identifier. */
 	public static final String VERSION = "1.0.0";
 
-	/** UTF-8 module release date. */
+	/** Shapefile module release date. */
 	public static final String RELEASE = "2009-07-16";
 	
-	/** UTF-8 module rights statement. */
+	/** Shapefile module rights statement. */
 	public static final String RIGHTS =
 		"Copyright 2009 by The Regents of the University of California. " +
 		"Available under the terms of the BSD license.";
 	
-	/** Xyz validation status. */
+	/** Shapefile validation status. */
 	protected Validity isValid;
 	
-	/** Instantiate a new <code>XyzModule</code>.
-	 * @param format Xyz format
+	/** Instantiate a new <code>ShapefileModule</code>.
+	 * @param format Shapefile format
 	 */
-	public XyzModule(Format format) {
+	public ShapefileModule(Format format) {
 		super(VERSION, RELEASE, RIGHTS, format);
 		
 		this.isValid = Validity.Undetermined;
 	}
 	
-	/** Parse an Xyz source unit.
+	/** Parse an Shapefile source unit.
 	 * @param jhove2 JHOVE2 framework
-	 * @param source Source unit
+	 * @param source Shapefile source unit
 	 * @return 0 
 	 * @throws EOFException    If End-of-File is reached reading the source unit
 	 * @throws IOException     If an I/O exception is raised reading the source
@@ -95,8 +95,7 @@ public class XyzModule
 		return 0;
 	}
 
-	/** Validate a UTF-8 source unit.  Implicitly set the starting and ending
-	 * lapsed time.
+	/** Validate a Shapefile source unit. 
 	 * @param jhove2 JHOVE2 framework
 	 * @param source Source unit
 	 * @return UTF-8 validation status
@@ -107,8 +106,8 @@ public class XyzModule
 		return this.isValid;
 	}
 
-	/** Get Xyz validation status.
-	 * @return Xyz validation status
+	/** Get Shapefile validation status.
+	 * @return Shapefile validation status
 	 * @see org.jhove2.module.format.Validator#isValid()
 	 */
 	@Override

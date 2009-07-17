@@ -42,14 +42,15 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.jhove2.core.Format;
 import org.jhove2.core.FormatIdentification;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.FormatIdentification.Confidence;
+import org.jhove2.core.config.Configure;
 import org.jhove2.core.source.AggregateSource;
-import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.NamedSource;
 import org.jhove2.core.source.Source;
-import org.jhove2.core.source.ZipFileSource;
 import org.jhove2.module.AbstractModule;
 
 /** JHOVE2 aggregate identification module.
@@ -108,12 +109,31 @@ public class AggrefierModule
 		/** Presumptively-identify a shape file by looking for three files
 		 * with the names: abc.shp, abc.shx, abc.dbf
 		 */
+		boolean haveDbf = false;
+		boolean haveShp = false;
+		boolean haveShx = false;
 		if (children.size() > 2) {
 			for (Source src : children) {
 				if (src instanceof NamedSource) {
 					String name = ((NamedSource) src).getName();
+					if (name.equals("abc.dbf")) {
+						haveDbf = true;
+					}
+					else if (name.equals("abc.shp")) {
+						haveShp = true;
+					}
+					else if (name.equals("abc.shx")) {
+						haveShx = true;
+					}
 				}
 			}
+		}
+		if (haveDbf && haveShp && haveShx) {
+			FormatIdentification id =
+				new FormatIdentification(Configure.getReportable(Format.class,
+						                                         "ShapefileFormat"),
+						                 Confidence.PositiveSpecific);
+			this.formats.add(id);
 		}
 		
 		return this.formats;

@@ -48,6 +48,7 @@ import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.config.Configure;
+import org.jhove2.core.source.AggregateSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractModule;
 import org.jhove2.module.Module;
@@ -56,6 +57,7 @@ import org.jhove2.module.format.FormatModule;
 import org.jhove2.module.format.FormatProfile;
 import org.jhove2.module.format.Parser;
 import org.jhove2.module.format.Validator;
+import org.jhove2.module.identify.Aggrefier;
 import org.jhove2.module.identify.Identifier;
 
 /** JHOVE2 dispatcher module.  The module instantiates and invokes the module
@@ -166,7 +168,11 @@ public class DispatcherModule
 		throws EOFException, IOException, JHOVE2Exception
 	{
 		module.setStartTime();
-				
+			
+		if (module instanceof Aggrefier &&
+			source instanceof AggregateSource) {
+			((Aggrefier) module).identify(jhove2, (AggregateSource) source);
+		}
 		if (module instanceof Identifier) {
 			((Identifier) module).identify(jhove2, source);
 		}

@@ -45,6 +45,13 @@
 	<bean id="DispatcherModule"
 	      class="org.jhove2.module.dispatch.DispatcherModule"
 	      scope="prototype"/>
+	      	      
+	      
+	      
+	<!-- Aggrefier module bean -->
+	<bean id="AggrefierModule"
+	      class="org.jhove2.module.identify.AggrefierModule"
+	      scope="prototype"/>
 	      
 	      
 	      
@@ -196,7 +203,28 @@
 	<bean id="FileSetIdentifier" class="org.jhove2.core.I8R" scope="singleton">
 		<constructor-arg type="java.lang.String" value="info:jhove2/format/file-set"/>
 	</bean>
+
 		
+	
+	<!-- Shapefile module bean -->
+	<bean id="ShapefileModule" class="org.jhove2.module.format.shapefile.ShapefileModule"
+	      scope="prototype">
+	    <constructor-arg ref="ShapefileFormat"/>
+	</bean>
+      
+    <!-- Shapefile format bean -->
+	<bean id="ShapefileFormat" class="org.jhove2.core.Format" scope="singleton">
+		<constructor-arg type="java.lang.String" value="Shapefile"/>
+		<constructor-arg ref="ShapefileIdentifier"/>
+		<constructor-arg type="org.jhove2.core.Format$Type" value="Format"/>
+		<constructor-arg type="org.jhove2.core.Format$Ambiguity" value="Unambiguous"/>
+	</bean>
+		
+	<!-- Shapefile identifier bean -->  
+	<bean id="ShapefileIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="info:jhove2/format/shapefile"/>
+	</bean>
+			
 	
 	
 	<!-- UTF-8 module bean -->
@@ -220,27 +248,6 @@
 	<!-- UTF-8 identifier bean -->  
 	<bean id="UTF8Identifier" class="org.jhove2.core.I8R" scope="singleton">
 		<constructor-arg type="java.lang.String" value="info:jhove2/format/utf-8"/>
-	</bean>
-
-		
-	
-	<!-- Xyz module bean -->
-	<bean id="XyzModule" class="org.jhove2.module.format.xyz.XyzModule"
-	      scope="prototype">
-	    <constructor-arg ref="XyzFormat"/>
-	</bean>
-      
-    <!-- XYZ format bean -->
-	<bean id="XYZFormat" class="org.jhove2.core.Format" scope="singleton">
-		<constructor-arg type="java.lang.String" value="XYZ"/>
-		<constructor-arg ref="XYZIdentifier"/>
-		<constructor-arg type="org.jhove2.core.Format$Type" value="Format"/>
-		<constructor-arg type="org.jhove2.core.Format$Ambiguity" value="Unambiguous"/>
-	</bean>
-		
-	<!-- XYZ identifier bean -->  
-	<bean id="XYZIdentifier" class="org.jhove2.core.I8R" scope="singleton">
-		<constructor-arg type="java.lang.String" value="info:jhove2/format/xyz"/>
 	</bean>
 		     	
      	
