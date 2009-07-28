@@ -66,6 +66,7 @@ public class Document
 		Dissertation,
 		Manual,
 		Memorandum,
+		Monograph,
 		Note,
 		Paper,
 		Presentation,

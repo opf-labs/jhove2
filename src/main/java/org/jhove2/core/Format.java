@@ -108,48 +108,6 @@ public class Format
 		this.aliasNames       = new TreeSet<String>();
 		this.specifications = new ArrayList<Document>();
 	}
-	
-	/** Add format alias identifier.
-	 * @param identifier Format alias identifier
-	 */
-	public void setAliasIdentifier(I8R identifier) {
-		this.aliasIdentifiers.add(identifier);
-	}
-	
-	/** Add a Set of format alias identifiers.
-	 * @param identifiers Format alias identifiers
-	 */
-	public void setAliasIdentifiers(Set<I8R> identifiers) {
-		this.aliasIdentifiers.addAll(identifiers);
-	}
-	
-	/** Add format alias name.
-	 * @param name Format alias name
-	 */
-	public void setAliasName(String name) {
-		this.aliasNames.add(name);
-	}
-	
-	/** Add a Set of format alias names.
-	 * @param names Format alias names
-	 */
-	public void setAliasNames(Set<String> names) {
-		this.aliasNames.addAll(names);
-	}
-	
-	/** Add format specification.
-	 * @param specification Format specification
-	 */
-	public void setSpecification(Document specification) {
-		this.specifications.add(specification);
-	}
-
-	/** Add a List of format specifications.
-	 * @param specification Format specifications
-	 */
-	public void setSpecifications(List<Document> specifications) {
-		this.specifications.addAll(specifications);
-	}
 
 	/** Get format alias identifiers.
 	 * @return Format alias identifiers
@@ -232,6 +190,34 @@ public class Format
 		return this.version;
 	}
 	
+	/** Add format alias identifier.
+	 * @param identifier Format alias identifier
+	 */
+	public void setAliasIdentifier(I8R identifier) {
+		this.aliasIdentifiers.add(identifier);
+	}
+	
+	/** Add a Set of format alias identifiers.
+	 * @param identifiers Format alias identifiers
+	 */
+	public void setAliasIdentifiers(Set<I8R> identifiers) {
+		this.aliasIdentifiers.addAll(identifiers);
+	}
+	
+	/** Add format alias name.
+	 * @param name Format alias name
+	 */
+	public void setAliasName(String name) {
+		this.aliasNames.add(name);
+	}
+	
+	/** Add a Set of format alias names.
+	 * @param names Format alias names
+	 */
+	public void setAliasNames(Set<String> names) {
+		this.aliasNames.addAll(names);
+	}
+
 	/** Set format caveats.
 	 * @param caveats Format caveats
 	 */
@@ -244,6 +230,20 @@ public class Format
 	 */
 	public void setNote(String note) {
 		this.note = note;
+	}
+	
+	/** Add format specification.
+	 * @param specification Format specification
+	 */
+	public void setSpecification(Document specification) {
+		this.specifications.add(specification);
+	}
+
+	/** Add a List of format specifications.
+	 * @param specification Format specifications
+	 */
+	public void setSpecifications(List<Document> specifications) {
+		this.specifications.addAll(specifications);
 	}
 	
 	/** Set format version.
