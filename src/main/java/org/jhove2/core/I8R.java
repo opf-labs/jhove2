@@ -158,7 +158,7 @@ public class I8R
 	@Override
 	public String toString()
 	{
-		return this.namespace.toString() + ":" + value;
+		return "[" + this.namespace.toString() + "] " + value;
 	}
 
 	/** Lexically compare identifier.

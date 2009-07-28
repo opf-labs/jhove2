@@ -80,8 +80,15 @@ public class Product
 	/** Add product developer.
 	 * @param developer Product developer
 	 */
-	public void addDeveloper(Agent developer) {
+	public void setDeveloper(Agent developer) {
 		this.developers.add(developer);
+	}
+	
+	/** Add product developers.
+	 * @param developer Product developers
+	 */
+	public void setDevelopers(List<Agent> developers) {
+		this.developers.addAll(developers);
 	}
 	
 	/** Get product developers.

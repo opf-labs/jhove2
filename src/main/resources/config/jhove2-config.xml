@@ -13,6 +13,13 @@
 	<bean id="JHOVE2" class="org.jhove2.core.JHOVE2" scope="prototype">
 		<property name="characterizerModule" ref="CharacterizerModule"/>
 		<property name="dispatcherModule" ref="DispatcherModule"/>
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+				<ref bean="PorticoAgent"/>
+				<ref bean="StanfordAgent"/>
+			</list>
+		</property>
 	</bean>
 		
 		
@@ -20,7 +27,15 @@
  	<!-- Characterizer module bean -->
 	<bean id="CharacterizerModule" 
 	      class="org.jhove2.module.characterize.CharacterizerModule"
-	      scope="prototype"/>
+	      scope="prototype">
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+				<ref bean="PorticoAgent"/>
+				<ref bean="StanfordAgent"/>
+			</list>
+		</property>
+	</bean>
 	      
 	      
 	      
@@ -29,6 +44,13 @@
 	      class="org.jhove2.module.identify.IdentifierModule"
 	      scope="prototype">
 	    <property name="wrappedProduct" ref="DROIDProduct"/>
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+				<ref bean="PorticoAgent"/>
+				<ref bean="StanfordAgent"/>
+			</list>
+		</property>
 	</bean>
 	      
 	<!-- DROID product information bean -->
@@ -37,6 +59,13 @@
 		<constructor-arg type="java.lang.String" value="4.0"/>
 		<constructor-arg type="java.lang.String" value="2009-06-09"/>
 		<constructor-arg type="java.lang.String" value="Copyright 2008 by the National Archives. Available under the terms of the BSD license."/>
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+				<ref bean="PorticoAgent"/>
+				<ref bean="StanfordAgent"/>
+			</list>
+		</property>
 	</bean>
 	   
 	   
@@ -44,14 +73,30 @@
 	<!-- Dispatcher module bean -->
 	<bean id="DispatcherModule"
 	      class="org.jhove2.module.dispatch.DispatcherModule"
-	      scope="prototype"/>
+	      scope="prototype">
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+				<ref bean="PorticoAgent"/>
+				<ref bean="StanfordAgent"/>
+			</list>
+		</property>
+	</bean>
 	      	      
 	      
 	      
 	<!-- Aggrefier module bean -->
 	<bean id="AggrefierModule"
 	      class="org.jhove2.module.identify.AggrefierModule"
-	      scope="prototype"/>
+	      scope="prototype">
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+				<ref bean="PorticoAgent"/>
+				<ref bean="StanfordAgent"/>
+			</list>
+		</property>
+	</bean>
 	      
 	      
 	      
@@ -68,6 +113,13 @@
 			<list value-type="org.jhove2.module.digest.BufferDigester">
 				<ref bean="MD5Digester"/>
 				<ref bean="SHA1Digester"/>
+			</list>
+		</property>
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+				<ref bean="PorticoAgent"/>
+				<ref bean="StanfordAgent"/>
 			</list>
 		</property>
 	</bean>
@@ -108,17 +160,40 @@
 	      
  	<!-- JSON displayer bean -->
 	<bean id="JSONDisplayer" class="org.jhove2.module.display.JSONDisplayer"
-	      scope="prototype"/>
+	      scope="prototype">
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+				<ref bean="PorticoAgent"/>
+				<ref bean="StanfordAgent"/>
+			</list>
+		</property>
+	</bean>
 	      	
  	<!-- Text displayer bean -->
 	<bean id="TextDisplayer" class="org.jhove2.module.display.TextDisplayer"
 	      scope="prototype">
 	    <property name="showIdentifiers" value="false"/>
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+				<ref bean="PorticoAgent"/>
+				<ref bean="StanfordAgent"/>
+			</list>
+		</property>
 	</bean>
 	      	
  	<!-- XML displayer bean -->
 	<bean id="XMLDisplayer" class="org.jhove2.module.display.XMLDisplayer"
-	      scope="prototype"/>
+	      scope="prototype">
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+				<ref bean="PorticoAgent"/>
+				<ref bean="StanfordAgent"/>
+			</list>
+		</property>
+	</bean>
 	
 	
 	  
@@ -126,6 +201,7 @@
 	<bean id="ASCIIProfile" class="org.jhove2.module.format.utf8.ascii.ASCIIProfile"
 	      scope="prototype">
 	    <constructor-arg ref="ASCIIFormat"/>
+	    <property name="developer" ref="CDLAgent"/>
 	</bean>
 	
 	<!-- ASCII format bean -->
@@ -134,12 +210,74 @@
 		<constructor-arg ref="ASCIIIdentifier"/>
 		<constructor-arg type="org.jhove2.core.Format$Type" value="Format"/>
 		<constructor-arg type="org.jhove2.core.Format$Ambiguity" value="Unambiguous"/>
+		<property name="aliasIdentifiers">
+			<set value-type="org.jhove2.core.I8R">
+				<ref bean="ASCIIANSIX34"/>
+				<ref bean="ASCIIECMA6"/>
+				<ref bean="ASCIIISO646"/>
+				<ref bean="ASCIIITUT50"/>
+				<ref bean="ASCIIMIMEType"/>
+				<ref bean="ASCIIRFC1345"/>
+			</set>
+		</property>
 	</bean>
 		
 	<!-- ASCII identifier bean -->  
 	<bean id="ASCIIIdentifier" class="org.jhove2.core.I8R" scope="singleton">
 		<constructor-arg type="java.lang.String" value="info:jhove2/format/ascii"/>
+	</bean>
+	<!-- ASCII ANSI X3.4-1968 bean  -->
+	<bean id="ASCIIANSIX34" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="ANSI X3.4-1968"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="ANSI"/>
+	</bean>
+	<!-- ASCII ECMA-6 -->
+	<bean id="ASCIIECMA6" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="ECMA-6"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="ECMA"/>
+	</bean>
+	<!-- ASCII ISO 646 -->
+	<bean id="ASCIIISO646" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="ISO/IEC 646:1991"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="ISO"/>
+	</bean>
+	<!-- ASCII ITU-T T.50 -->
+	<bean id="ASCIIITUT50" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="ITU-T T.50"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="ITU"/>
+	</bean>
+	<!-- ASCII MIME type bean -->
+	<bean id="ASCIIMIMEType" class="org.jhove2.core.I8R" scope="singleton">
+	    <constructor-arg type="java.lang.String" value="text/plain; charset=&quot;US-ASCII&quot;"/>
+	    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="MIME"/>
 	</bean>	
+	<!--  ASCII RFC 1345 bean -->
+	<bean id="ASCIIRFC1345" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="RFC 1345"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="RFC"/>
+	</bean>
+	
+	
+	
+	<!-- Bytestream format bean -->
+	<bean id="BytestreamFormat" class="org.jhove2.core.Format" scope="singleton">
+		<constructor-arg type="java.lang.String" value="Bytestream"/>
+		<constructor-arg ref="BytestreamIdentifier"/>
+		<constructor-arg type="org.jhove2.core.Format$Type" value="Format"/>
+		<constructor-arg type="org.jhove2.core.Format$Ambiguity" value="Unambiguous"/>
+		<property name="aliasIdentifiers" ref="BytestreamMIMEType"/>
+		<property name="note" value="A Bytestream is a JHOVE2-defined format representing arbitrary data."/>
+	</bean>
+		
+	<!-- Bytestream identifier bean -->  
+	<bean id="BytestreamIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="info:jhove2/format/bytestream"/>
+	</bean>
+	<!-- Bytestream MIME type bean -->
+	<bean id="BytestreamMIMEType" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="application/octet-stream"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="MIME"/>
+	</bean>
 	
 	
 	
@@ -147,6 +285,14 @@
 	<bean id="ClumpModule" class="org.jhove2.module.format.clump.ClumpModule"
 	      scope="prototype">
 	    <constructor-arg ref="ClumpFormat"/>
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+				<ref bean="PorticoAgent"/>
+				<ref bean="StanfordAgent"/>
+			</list>
+		</property>
+	    <property name="note" value="A Clump is JHOVE2-defined format that is a set of files presumed to collectively form a single logical object."/>
 	</bean>
 			  
 	<!-- Clump format bean -->
@@ -168,6 +314,14 @@
 	<bean id="DirectoryModule" class="org.jhove2.module.format.directory.DirectoryModule"
 	      scope="prototype">
 	    <constructor-arg ref="DirectoryFormat"/>
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+				<ref bean="PorticoAgent"/>
+				<ref bean="StanfordAgent"/>
+			</list>
+		</property>
+	    <property name="note" value="A Directory is a JHOVE2-defined format that is a file system directory."/>
 	</bean>
 	
 	<!-- Directory format bean -->
@@ -189,6 +343,14 @@
 	<bean id="FileSetModule" class="org.jhove2.module.format.fileset.FileSetModule"
 	      scope="prototype">
 	    <constructor-arg ref="FileSetFormat"/>
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+				<ref bean="PorticoAgent"/>
+				<ref bean="StanfordAgent"/>
+			</list>
+		</property>
+	    <property name="note" value="A File Set is a JHOVE2-defined format that is a set of otherwise unrelated files, for example, the set of files specified on the JHOVE2 command line."/>
 	</bean>
 	
 	<!-- File set format bean -->
@@ -210,6 +372,7 @@
 	<bean id="ShapefileModule" class="org.jhove2.module.format.shapefile.ShapefileModule"
 	      scope="prototype">
 	    <constructor-arg ref="ShapefileFormat"/>
+	    <property name="developer" ref="StanfordAgent"/>
 	</bean>
       
     <!-- Shapefile format bean -->
@@ -232,6 +395,7 @@
 	      scope="prototype">
 	    <constructor-arg ref="UTF8Format"/>
 	    <property name="profile" ref="ASCIIProfile"/>
+	    <property name="developer" ref="CDLAgent"/>
 	</bean>
 
 	<bean id="UTF8Character" class="org.jhove2.module.format.utf8.UTFCharacter"
@@ -243,11 +407,33 @@
 		<constructor-arg ref="UTF8Identifier"/>
 		<constructor-arg type="org.jhove2.core.Format$Type" value="Family"/>
 		<constructor-arg type="org.jhove2.core.Format$Ambiguity" value="Unambiguous"/>
+		<property name="aliasIdentifiers">
+			<set value-type="org.jhove2.core.I8R">
+				<ref bean="UTF8MIMEType"/>
+				<ref bean="UTF8RFC3629"/>
+			</set>
+		</property>
+		<property name="aliasNames">
+			<set>
+				<value>UCS Transformation Format, 8 bit</value>
+				<value>Unicode Transformation Format, 8 bit</value>
+			</set>
+		</property>
 	</bean>
 		
 	<!-- UTF-8 identifier bean -->  
 	<bean id="UTF8Identifier" class="org.jhove2.core.I8R" scope="singleton">
 		<constructor-arg type="java.lang.String" value="info:jhove2/format/utf-8"/>
+	</bean>
+	<!-- UTF-8 MIME type bean -->
+	<bean id="UTF8MIMEType" class="org.jhove2.core.I8R" scope="singleton">
+	    <constructor-arg type="java.lang.String" value="text/plain; charset=&quot;UTF-8&quot;"/>
+	    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="MIME"/>
+	</bean>
+	<!--  UTF-8 RFC 3629 bean -->
+	<bean id="UTF8RFC3629" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="RFC 3629"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="RFC"/>
 	</bean>
 		     	
      	
@@ -256,6 +442,13 @@
 	<bean id="ZipModule" class="org.jhove2.module.format.zip.ZipModule"
 	      scope="prototype">
 	    <constructor-arg ref="ZipFormat"/>
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+				<ref bean="PorticoAgent"/>
+				<ref bean="StanfordAgent"/>
+			</list>
+		</property>
 	</bean>
       
 	<!-- Zip format bean -->
@@ -273,17 +466,25 @@
 	
 	
 	
-	<!-- Bytestream format bean -->
-	<bean id="BytestreamFormat" class="org.jhove2.core.Format" scope="singleton">
-		<constructor-arg type="java.lang.String" value="Bytestream"/>
-		<constructor-arg ref="BytestreamIdentifier"/>
-		<constructor-arg type="org.jhove2.core.Format$Type" value="Family"/>
-		<constructor-arg type="org.jhove2.core.Format$Ambiguity" value="Unambiguous"/>
+	<!-- CDL agent bean -->
+	<bean id="CDLAgent" class="org.jhove2.core.Agent" scope="singleton">
+		<constructor-arg type="java.lang.String" value="California Digital Library"/>
+		<constructor-arg type="org.jhove2.core.Agent$Type" value="Corporate"/>
+		<property name="URI" value="http://www.cdlib.org/"/>
 	</bean>
 		
-	<!-- Bytestream identifier bean -->  
-	<bean id="BytestreamIdentifier" class="org.jhove2.core.I8R" scope="singleton">
-		<constructor-arg type="java.lang.String" value="info:jhove2/format/bytestream"/>
+	<!-- Portico agent bean -->
+	<bean id="PorticoAgent" class="org.jhove2.core.Agent" scope="singleton">
+		<constructor-arg type="java.lang.String" value="Portico"/>
+		<constructor-arg type="org.jhove2.core.Agent$Type" value="Corporate"/>
+		<property name="URI" value="http://www.portico.org/"/>
+	</bean>
+		
+	<!-- Stanford agent bean -->
+	<bean id="StanfordAgent" class="org.jhove2.core.Agent" scope="singleton">
+		<constructor-arg type="java.lang.String" value="Stanford University"/>
+		<constructor-arg type="org.jhove2.core.Agent$Type" value="Corporate"/>
+		<property name="URI" value="http://www.stanford.edu/"/>
 	</bean>
 	
 	

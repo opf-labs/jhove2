@@ -81,7 +81,7 @@ public class Digest
 	@Override
 	public String toString()
 	{
-		return this.algorithm + ":" + value;
+		return "[" + this.algorithm + "] " + value;
 	}
 
 	/** Lexically compare message digest.

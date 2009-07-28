@@ -139,7 +139,7 @@ public class CharacterizerModule
 				/* (3) Perform assessment on the source based on its extracted
 				 * reportable properties and validation status.
 				 */
-			//	jhove2.dispatch(source, assessor;
+			//	jhove2.dispatch(source, assessor);
 			//}
 			//else {
 			//    /* TODO: can't instantiate assessor module. */
