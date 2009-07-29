@@ -37,6 +37,7 @@
 package org.jhove2.core;
 
 import java.io.EOFException;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
@@ -52,6 +53,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.app.Application;
 import org.jhove2.core.config.Configure;
 import org.jhove2.core.info.ReportableInfo;
 import org.jhove2.core.info.ReportablePropertyInfo;
@@ -83,7 +85,7 @@ public class JHOVE2
 	public static final String VERSION = "2.0.0";
 
 	/** Framework release date. */
-	public static final String RELEASE = "2009-07-16";
+	public static final String RELEASE = "2009-07-29";
 	
 	/** Framework rights statement. */
 	public static final String RIGHTS =
@@ -137,6 +139,9 @@ public class JHOVE2
 	/** Default temporary file suffix. */
 	public static final String DEFAULT_TEMP_SUFFIX = ".dat";
 
+	/** JHOVE2 application. */
+	protected Application app;
+
 	/** {@link org.jhove2.core.io.Input} buffer size. */
 	protected int bufferSize;
 	
@@ -166,9 +171,6 @@ public class JHOVE2
 	
 	/** Framework installation properties. */
 	protected Installation installation;
-	
-	/** Framework invocation properties. */
-	protected Invocation invocation;
 
 	/** Number of bytestream source units. */
 	protected int numBytestreams;
@@ -192,7 +194,10 @@ public class JHOVE2
 	
 	/** Framework source unit. */
 	protected Source source;
-
+	
+	/** Framework temporary directory. */
+	protected String tempDirectory;
+	
 	/** Framework temporary file prefix. */
 	protected String tempPrefix;
 	
@@ -213,8 +218,7 @@ public class JHOVE2
 	{
 		super(VERSION, RELEASE, RIGHTS);
 
-		this.installation = new Installation();
-		this.invocation   = new Invocation();
+		this.installation    = new Installation();
 		
 		this.bufferSize      = DEFAULT_BUFFER_SIZE;
 		this.bufferType      = DEFAULT_BUFFER_TYPE;
@@ -299,6 +303,16 @@ public class JHOVE2
 		throws IOException, JHOVE2Exception
 	{		
 		source.setRestartTime();
+		
+		if (this.app != null) {
+			this.bufferSize      = this.app.getBufferSize();
+			this.bufferType      = this.app.getBufferType();
+			this.calcDigests     = this.app.getCalcDigests();
+			this.deleteTempFiles = this.app.getDeleteTempFiles();
+			this.failFastLimit   = this.app.getFailFastLimit();
+			this.showIdentifiers = this.app.getShowIdentifiers();
+			this.tempDirectory   = this.app.getTempDirectory();
+		}
 
 		/* Update summary counts of source units, by type. */
 		/*if      (source instanceof BytestreamSource) {
@@ -383,21 +397,46 @@ public class JHOVE2
 		}
 	}
 	
-	/** Display the framework to the standard output stream.
+	/** Display {@link org.jhove2.core.Reportable} to the standard output
+	 * stream.
+	 * @param reportable Reportable
+	 * @throws FileNotFoundException Can't create output file
+	 * @throws JHOVE2Exception       Error instantiating displayer
 	 */
-	public void display() {
-		display(System.out);
+	public void display(Reportable reportable)
+		throws FileNotFoundException, JHOVE2Exception
+	{
+		PrintStream out = System.out;
+		if (this.app != null) {
+			String outputFile = this.app.getOutputFile();
+			if (outputFile != null) {
+				out = new PrintStream(outputFile);
+			}
+		}
+		display(reportable, out);
 	}
 	
-	/** Display the framework.
-	 * @param out Print stream
+	/** Display {@link org.jhove2.core.Reportable}.
+	 * @param reportable Reportable
+	 * @param out        Print stream
+	 * @throws JHOVE2Exception Error instantiating displayer
 	 */
-	public void display(PrintStream out) {
+	public void display(Reportable reportable, PrintStream out)
+		throws JHOVE2Exception
+	{
+		if (this.displayer == null) {
+			if (this.app != null) {
+				this.displayer =
+					Configure.getReportable(Displayer.class,
+							                this.app.getDisplayer());
+			}
+		}
+		
 		this.displayer.setStartTime();
 		this.displayer.setShowIdentifiers(this.showIdentifiers);
 		
 		this.displayer.startDisplay(out, 0);
-		display(out, this, 0, 0);
+		display(out, reportable, 0, 0);
 		this.displayer.endDisplay(out, 0);
 		
 		this.displayer.setEndTime();
@@ -572,7 +611,7 @@ public class JHOVE2
 		
 		return singular;
 	}
-	
+
 	/** Determine if the fail fast limit has been exceeded.
 	 * @param numErrors Number of errors
 	 * @return True if the fail fast limit has been exceeded
@@ -584,11 +623,18 @@ public class JHOVE2
 		
 		return false;
 	}
-
+	
+	/** Get JHOVE2 application.
+	 * @return JHOVE2 application
+	 */
+	public Application getApplication() {
+		return this.app;
+	}
+	
 	/** Get {@link org.jhove2.core.io.Input} buffer size.
 	 * @return Input buffer size
 	 */
-	@ReportableProperty(order=53, value="Input buffer size.")
+	@ReportableProperty(order=1, value="Input buffer size.")
 	public int getBufferSize() {
 		return this.bufferSize;
 	}
@@ -596,7 +642,7 @@ public class JHOVE2
 	/** Get {@link org.jhove2.core.io.Input} buffer type.
 	 * @return Input buffer type
 	 */
-	@ReportableProperty(order=54, value="Input buffer type.")
+	@ReportableProperty(order=2, value="Input buffer type.")
 	public Type getBufferType() {
 		return this.bufferType;
 	}
@@ -604,7 +650,7 @@ public class JHOVE2
 	/** Get framework message digests flag; if true, calculate digests.
 	 * @return Framework message digests flag
 	 */
-	@ReportableProperty(order=54, value="Framework message digests flag; if " +
+	@ReportableProperty(order=3, value="Framework message digests flag; if " +
 			"true, calculate digests.")
 	public boolean getCalcDigests() {
 		return this.calcDigests;
@@ -613,7 +659,7 @@ public class JHOVE2
 	/** Get framework characterizer module.
 	 * @return Framework characterizer module
 	 */
-	@ReportableProperty(order=61, value="Framework characterizer module.")
+	@ReportableProperty(order=31, value="Framework characterizer module.")
 	public Characterizer getCharacterizerModule() {
 		return this.characterizer;
 	}
@@ -628,7 +674,7 @@ public class JHOVE2
 	/** Get framework dispatcher module.
 	 * @return Framework dispatch module
 	 */
-	@ReportableProperty(order=62, value="Framework dispatcher module.")
+	@ReportableProperty(order=32, value="Framework dispatcher module.")
 	public Dispatcher getDispatcherModule() {
 		return this.dispatcher;
 	}
@@ -636,7 +682,7 @@ public class JHOVE2
 	/** Get framework displayer module.
 	 * @return Framework displayer module
 	 */
-	@ReportableProperty(order=63, value="Framework displayer module.")
+	@ReportableProperty(order=33, value="Framework displayer module.")
 	public Displayer getDisplayerModule() {
 		return this.displayer;
 	}
@@ -646,7 +692,7 @@ public class JHOVE2
 	 * limit of 0 indicates no fail fast, i.e., process and report all errors. 
 	 * @return Fail fast limit
 	 */
-	@ReportableProperty(order=55, value="Framework fail fast limit.")
+	@ReportableProperty(order=5, value="Framework fail fast limit.")
 	public int getFailFastLimit() {
 		return this.failFastLimit;
 	}
@@ -654,25 +700,17 @@ public class JHOVE2
 	/** Get framework installation properties.
 	 * @return Framework installation properties.
 	 */
-	@ReportableProperty(order=51, value="Framework installation properties.")
+	@ReportableProperty(order=21, value="Framework installation properties.")
 	public Installation getInstallation() {
 		return this.installation;
-	}
-	
-	/** Get framework invocation properties.
-	 * @return Framework invocation properties.
-	 */
-	@ReportableProperty(order=1, value="Framework invocation properties.")
-	public Invocation getInvocation() {
-		return this.invocation;
 	}
 
 	/** Get framework memory usage.  This is calculated naively as the Java
 	 * {@link java.lang.Runtime}'s total memory minus free memory at the time
-	 * of method invocation.
+	 * of method abstractApplication.
 	 * @return Memory usage, in bytes
 	 */
-	@ReportableProperty(order=81, value="Framework memory usage, in bytes.")
+	@ReportableProperty(order=51, value="Framework memory usage, in bytes.")
 	public long getMemoryUsage() {
 		Runtime rt = Runtime.getRuntime();
 		long use = rt.totalMemory() - rt.freeMemory();
@@ -683,7 +721,7 @@ public class JHOVE2
 	/** Get number of aggregate source units processed.
 	 * @return Number of aggregate source units processed
 	 */
-	@ReportableProperty(order=76, value="Number of bytestream source units " +
+	@ReportableProperty(order=46, value="Number of bytestream source units " +
 			"processed.")
 	public int getNumBytestreamSources() {
 		return this.numBytestreams;
@@ -692,7 +730,7 @@ public class JHOVE2
 	/** Get number of clump source units processed.
 	 * @return Number of clump source units processed
 	 */
-	@ReportableProperty(order=74, value="Number of clump source units " +
+	@ReportableProperty(order=42, value="Number of clump source units " +
 			"processed.")
 	public int getNumClumpSources() {
 		return this.numClumps;
@@ -702,7 +740,7 @@ public class JHOVE2
 	 * system directories and Zip entry directories.
 	 * @return Number of directory source units processed
 	 */
-	@ReportableProperty(order=73, value="Number of directory source units " +
+	@ReportableProperty(order=44, value="Number of directory source units " +
 			"processed, including both file system directories and Zip " +
 			"entry directories.")
 	public int getNumDirectorySources() {
@@ -713,7 +751,7 @@ public class JHOVE2
 	 * files and Zip entry files.
 	 * @return Number of file source units processed
 	 */
-	@ReportableProperty(order=75, value="Number of file source units " +
+	@ReportableProperty(order=45, value="Number of file source units " +
 			"processed, including both file system files and Zip entry " +
 			"files.")
 	public int getNumFileSources() {
@@ -723,7 +761,7 @@ public class JHOVE2
 	/** Get number of source units processed.
 	 * @return Number of source units processed
 	 */
-	@ReportableProperty(order=71, value="Number of source units processed.")
+	@ReportableProperty(order=41, value="Number of source units processed.")
 	public int getNumSources() {
 		return this.numFileSets + this.numDirectories + this.numClumps +
 		       this.numFiles    + this.numBytestreams;
@@ -732,7 +770,7 @@ public class JHOVE2
 	/** Get number of file set source units processed.
 	 * @return Number of file set source units processed
 	 */
-	@ReportableProperty(order=72, value="Number of file set source units " +
+	@ReportableProperty(order=45, value="Number of file set source units " +
 			"processed.")
 	public int getNumFileSetSources() {
 		return this.numFileSets;
@@ -742,7 +780,7 @@ public class JHOVE2
 	 * non-XML display modes.
 	 * @return Framework message digests flag
 	 */
-	@ReportableProperty(order=56, value="Framework show identifiers flag; " +
+	@ReportableProperty(order=6, value="Framework show identifiers flag; " +
 			"if true, show identifiers in non-XML display modes.")
 	public boolean getShowIdentifiers() {
 		return this.showIdentifiers;
@@ -750,15 +788,22 @@ public class JHOVE2
 	/** Get framework source unit.
 	 * @return Framework source unit
 	 */
-	@ReportableProperty(order=8, value="Framework source unit.")
+	@ReportableProperty(order=11, value="Framework source unit.")
 	public Source getSource() {
 		return this.source;
 	}
-
+	/** Get temporary directory.
+	 * @return Temporary directory
+	 */
+	@ReportableProperty(order=7, value="Temporary directory.")
+	public String getTempDirectory() {
+		return this.tempDirectory;
+	}
+	
 	/** Get framework temporary file prefix.
 	 * @return Framework temporary file prefix
 	 */
-	@ReportableProperty(order=6, value="Framework temporary file prefix.")
+	@ReportableProperty(order=8, value="Framework temporary file prefix.")
 	public String getTempPrefix() {
 		return this.tempPrefix;
 	}
@@ -766,7 +811,7 @@ public class JHOVE2
 	/** Get framework temporary file suffix.
 	 * @return Framework temporary file suffix
 	 */
-	@ReportableProperty(order=7, value="Framework temporary file suffix.")
+	@ReportableProperty(order=9, value="Framework temporary file suffix.")
 	public String getTempSuffix() {
 		return this.tempSuffix;
 	}
@@ -803,6 +848,14 @@ public class JHOVE2
 		this.numFileSets++;
 	}
 	
+	/** Set JHOVE2 application.
+	 * @param app JHOVE2 application
+	 */
+	public void setApplication(Application app) {
+		this.app = app;
+		this.app.setJHOVE2(this);
+	}
+	
 	/** Set {@link org.jhove2.core.io.Input} buffer size.
 	 * @param size Buffer size
 	 */
@@ -831,14 +884,7 @@ public class JHOVE2
 	public void setCharacterizerModule(Characterizer characterizer) {
 		this.characterizer = characterizer;
 	}
-	
-	/** Set JHOVE2 application command line.
-	 * @param JHOVE2 application command line arguments
-	 */
-	public void setCommandLine(String [] args) {
-		this.invocation.setCommandLine(args);
-	}
-	
+
 	/** Set framework delete temporary files flag; if true, delete files.
 	 * @param flag Framework delete temporary files flag
 	 */
@@ -881,7 +927,7 @@ public class JHOVE2
 	 * @param directory Temporary directory
 	 */
 	public void setTempDirectory(String directory) {
-		this.invocation.setTempDirectory(directory);
+		this.tempDirectory = directory;
 	}
 	
 	/** Set temporary file prefix.

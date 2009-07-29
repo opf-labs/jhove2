@@ -36,110 +36,46 @@
 
 package org.jhove2.core;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
 
-/** JHOVE2 product, an independently distributable and configurable
- * {@link org.jhove2.core.Reportable}.
+/** Interface for JHOVE2 products.  A product is an independently
+ * distributable and configurable {@link org.jhove2.core.Reportable}.
  * 
  * @author mstrong, slabrams
  */
-public class Product
-	implements Reportable
+public interface Product
+	extends Reportable
 {
-	/** Product developers. */
-	protected List<Agent> developers;
-	
-	/** Product informative note. */
-	protected String note;
-	
-	/** Product release date in ISO 8601 form: "YYYY-MM-DD". */
-	protected String date;
-	
-	/** Product rights statement. */
-	protected String rights;
-
-	/** Product version identifier in three-part form: "M.N.P". */
-	protected String version;
-	
-	/** Instantiate a new <code>Product</code>.
-	 * @oaran version Product version identifier in three-part form: "M.N.P"
-	 * @param date    Product release date in ISO 8601 format: "YYYY-MM-DD"
-	 * @param rights  Product rights statement
-	 */
-	public Product(String version, String date, String rights) {
-		this.version = version;
-		this.date    = date;
-		this.rights  = rights;
-		
-		this.developers  = new ArrayList<Agent>();
-	}
-	
-	/** Add product developer.
-	 * @param developer Product developer
-	 */
-	public void setDeveloper(Agent developer) {
-		this.developers.add(developer);
-	}
-	
-	/** Add product developers.
-	 * @param developer Product developers
-	 */
-	public void setDevelopers(List<Agent> developers) {
-		this.developers.addAll(developers);
-	}
-	
 	/** Get product developers.
 	 * @return Product developers
-	 * @see org.jhove2.core.Product#getDevelopers()
+	 * @see org.jhove2.core.AbstractProduct#getDevelopers()
 	 */
-	@ReportableProperty(order=3, value="Product developers.")
-	public List<Agent> getDevelopers() {
-		return this.developers;
-	}
-
+	@ReportableProperty(order=3, value="AbstractProduct developers.")
+	public List<Agent> getDevelopers();
+	
 	/** Get product informative note.
 	 * @return Product informative note
-	 * @see org.jhove2.core.Product#getNote()
 	 */
-	@ReportableProperty(order=5, value="Product informative note.")
-	public String getNote() {
-		return this.note;
-	}
+	@ReportableProperty(order=5, value="AbstractProduct informative note.")
+	public String getNote();
 
 	/** Get product release date.
 	 * @return Product release date
-	 * @see org.jhove2.core.Product#getReleaseDate()
 	 */
-	@ReportableProperty(order=2, value="Product release date.")
-	public String getReleaseDate() {
-		return this.date;
-	}
+	@ReportableProperty(order=2, value="AbstractProduct release date.")
+	public String getReleaseDate();
 
 	/** Get product rights statement.
 	 * @return Product rights statement
-	 * @see org.jhove2.core.Product#getRightsStatement()
 	 */
-	@ReportableProperty(order=4, value="Product rights statement.")
-	public String getRightsStatement() {
-		return this.rights;
-	}
+	@ReportableProperty(order=4, value="AbstractProduct rights statement.")
+	public String getRightsStatement();
 
 	/** Get product version.
 	 * @return Product version
-	 * @see org.jhove2.core.Product#getVersion()
 	 */
-	@ReportableProperty(order=1, value="Product version identifier.")
-	public String getVersion() {
-		return this.version;
-	}
-
-	/** Set product informative note.
-	 * @param note Product informative note
-	 */
-	public void setNote(String note) {
-		this.note = note;
-	}
+	@ReportableProperty(order=1, value="AbstractProduct version identifier.")
+	public String getVersion();
 }

@@ -55,14 +55,14 @@ public interface Temporal
 	public Duration getElapsedTime();
 	
 	/** Set the end time of the elapsed duration.  Defaults to the time of
-	 * invocation of the {@link org.jhove2.core.Module.getElapsedTime} method.
+	 * abstractApplication of the {@link org.jhove2.core.Module.getElapsedTime} method.
 	 * @return End time, in milliseconds
 	 */
 	public long setEndTime();
 	
 	/** Set the restart time of the elapsed duration.  All subsequent time
-	 * (until the next invocation of the setEndTime() method) will be added
-	 * to the time already accounted for by an earlier invocation of the
+	 * (until the next abstractApplication of the setEndTime() method) will be added
+	 * to the time already accounted for by an earlier abstractApplication of the
 	 * setEndTime() method.
 	 * @return Current time minus the elapsed time, in milliseconds
 	 */

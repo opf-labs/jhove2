@@ -36,7 +36,6 @@
 
 package org.jhove2.app;
 
-import java.io.PrintStream;
 import java.util.List;
 
 import org.jhove2.core.JHOVE2Exception;
@@ -49,12 +48,33 @@ import org.jhove2.module.display.Displayer;
  * 
  * @author mstrong, slabrams
  */
-public class JHOVE2CommandLine {
+public class JHOVE2CommandLine
+	extends AbstractApplication
+{
+	/** JHOVE2 application version identifier. */
+	public static final String VERSION = "2.0.0";
+
+	/** JHOVE2 application release date. */
+	public static final String RELEASE = "2009-07-29";
+	
+	/** JHOVE2 application rights statement. */
+	public static final String RIGHTS =
+		"Copyright 2009 by The Regents of the University of California, " +
+		"Ithaka Harbors, Inc., and The Board of Trustees of the Leland " +
+		"Stanford Junior University. " +
+		"Available under the terms of the BSD license.";
+
 	/** Usage statement return code. */
 	public static final int EUSAGE = 1;
 	
 	/** Caught exception return code. */
 	public static final int EEXCEPTION = -1;
+
+	/** Instantiate a new <code>JHOVE2CommandLine</code>.
+	 */
+	public JHOVE2CommandLine() {
+		super(VERSION, RELEASE, RIGHTS);
+	}
 	
 	/** Main entry point for the JHOVE2 command line application.
 	 * @param args Command line arguments
@@ -68,33 +88,16 @@ public class JHOVE2CommandLine {
 			}
 
 			/* Parse the application command line. */
-			JHOVE2CommandLineParser parser = new JHOVE2CommandLineParser();
-			List<String> pathNames = parser.parse(args);
+			JHOVE2CommandLine app = Configure.getReportable(Application.class, "JHOVE2CommandLine");
+			List<String> pathNames = app.parse(args);
 
 			/* Initialize the JHOVE2 framework. */
 			JHOVE2 jhove2 = Configure.getReportable(JHOVE2.class, "JHOVE2");
-			jhove2.setBufferSize(parser.getBufferSize());
-			jhove2.setBufferType(parser.getBufferType());
-			jhove2.setCalcDigests(parser.getCalcDigests());
-			jhove2.setCommandLine(args);
-			jhove2.setDeleteTempFiles(parser.getDeleteTempFiles());
-			jhove2.setFailFastLimit(parser.getFailFastLimit());
-			jhove2.setShowIdentifiers(parser.getShowIdentifiers());
-			jhove2.setTempDirectory(parser.getTempDirectory());
-			
-			/* Initialize the JHOVE2 displayer. */
-			PrintStream out = System.out;
-			String outputFile = parser.getOutputFile();
-			if (outputFile != null) {
-				out = new PrintStream(outputFile);
-			}
-			Displayer displayer = Configure.getReportable(Displayer.class,
-					                                      parser.getDisplayer());
-			jhove2.setDisplayerModule(displayer);
-			
+			jhove2.setApplication(app);
+				
 			/* Characterize and display all file system path names. */
 			jhove2.characterize(pathNames);
-			jhove2.display(out);
+			jhove2.display(app);
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace(System.err);
@@ -102,6 +105,66 @@ public class JHOVE2CommandLine {
 		}
 	}
 	
+	/** Parse the JHOVE2 application command line.
+	 * @param args Command line arguments
+	 * @return File system path names
+	 */
+	public List<String> parse(String [] args) {
+		for (int i=0; i<args.length; i++) {
+			if (i == 0) {
+				this.commandLine = args[i];
+			}
+			else {
+				this.commandLine += " " + args[i];
+			}
+			if (args[i].charAt(0) == '-') {
+				if (args[i].length() > 1) {
+					char opt = Character.toLowerCase(args[i].charAt(1));
+					if      (opt == 'b' && i+1 < args.length) {
+						this.bufferSize = Integer.valueOf(args[++i]);
+						this.commandLine += " " + args[i];
+					}
+					else if (opt == 'B' && i+1 < args.length) {
+						this.bufferType = Type.valueOf(args[++i]);
+						this.commandLine += " " + args[i];
+					}
+					else if (opt == 'd' && i+1 < args.length) {
+						this.displayer = args[++i] + "Displayer";
+						this.commandLine += " " + args[i];
+					}
+					else if (opt == 'f' && i+1 < args.length) {
+						this.failFastLimit = Integer.valueOf(args[++i]);
+						this.commandLine += " " + args[i];
+					}
+					else if (opt == 'o' && i+1 < args.length) {
+						this.outputFile = args[++i];
+						this.commandLine += " " + args[i];
+					}
+					else if (opt == 't' && i+1 < args.length) {
+						this.tempDirectory = args[++i];
+						this.commandLine += " " + args[i];
+					}
+					else {
+						if (args[i].indexOf('i') > -1) {
+							this.showIdentifiers = true;
+						}
+						if (args[i].indexOf('k') > -1) {
+							this.calcDigests = true;
+						}
+						if (args[i].indexOf('T') > -1) {
+							this.deleteTempFiles = false;
+						}
+					}
+				}
+			}
+			else {
+				this.names.add(args[i]);
+			}
+		}
+		
+		return this.names;
+	}
+
 	/** Get application usage statement.
 	 * @return Application usage statement
 	 */

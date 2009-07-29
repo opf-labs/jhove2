@@ -329,8 +329,8 @@ public abstract class AbstractSource
 	}
 	
 	/** Set the restart time of the elapsed duration.  All subsequent time
-	 * (until the next invocation of the setEndTime() method) will be added
-	 * to the time already accounted for by an earlier invocation of the
+	 * (until the next abstractApplication of the setEndTime() method) will be added
+	 * to the time already accounted for by an earlier abstractApplication of the
 	 * setEndTime() method.
 	 * @return Current time minus the elapsed time, in milliseconds
 	 * @see org.jhove2.core.Temporal#setReStartTime()

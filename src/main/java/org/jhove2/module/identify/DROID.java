@@ -36,15 +36,15 @@
 
 package org.jhove2.module.identify;
 
-import org.jhove2.core.Product;
+import org.jhove2.core.AbstractProduct;
 
-/** JHOVE2 {@link org.jhove2.core.Product} product information for the
+/** JHOVE2 {@link org.jhove2.core.AbstractProduct} product information for the
  * wrapped DROID format identification tool.
  * 
  * @author mstrong, slabrams
  */
 public class DROID
-	extends Product
+	extends AbstractProduct
 {	
 	/** Instantiate a new <code>DROID</code> product.
 	 */

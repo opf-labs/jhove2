@@ -36,16 +36,17 @@
 
 package org.jhove2.module;
 
-import org.jhove2.core.Product;
 import org.jhove2.core.Duration;
+import org.jhove2.core.AbstractProduct;
+import org.jhove2.core.Product;
 
-/** An abstract JHOVE2 module, a {@link org.jhove2.core.Product} that reports
+/** An abstract JHOVE2 module, a {@link org.jhove2.core.AbstractProduct} that reports
  * its elapsed processing time.
  * 
  * @author mstrong, slabrams
  */
-public class AbstractModule
-	extends Product
+public abstract class AbstractModule
+	extends AbstractProduct
 	implements Module
 {	
 	/** Module elapsed end time. */
@@ -86,8 +87,8 @@ public class AbstractModule
 		return new Duration(this.endTime - this.startTime);
 	}
 
-	/** Get wrapped {@link org.jhove2.core.Product}.
-	 * @return Wrapped {@link org.jhove2.core.Product}
+	/** Get wrapped {@link org.jhove2.core.AbstractProduct}.
+	 * @return Wrapped {@link org.jhove2.core.AbstractProduct}
 	 * @see org.jhove2.module.Module#getWrappedProduct()
 	 */
 	@Override
@@ -105,8 +106,8 @@ public class AbstractModule
 	}
 	
 	/** Set the restart time of the elapsed duration.  All subsequent time
-	 * (until the next invocation of the setEndTime() method) will be added
-	 * to the time already accounted for by an earlier invocation of the
+	 * (until the next abstractApplication of the setEndTime() method) will be added
+	 * to the time already accounted for by an earlier abstractApplication of the
 	 * setEndTime() method.
 	 * @return Current time minus the elapsed time, in milliseconds
 	 * @see org.jhove2.core.Temporal#setReStartTime()

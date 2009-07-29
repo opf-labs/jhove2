@@ -37,21 +37,33 @@
 package org.jhove2.app;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.io.Input.Type;
+import org.jhove2.module.AbstractModule;
 
-/** JHOVE2 command line application command line parser.
+/** Abstract JHOVE2 application .
  * 
  * @author mstrong, slabrams
  */
-public class JHOVE2CommandLineParser {
+public abstract class AbstractApplication
+	extends AbstractModule
+	implements Application
+{	
 	/** {@link org.jhove2.core.io.Input} buffer size. */
 	protected int bufferSize;
 	
-	/** Message digests flag; ff true, calculate message digests. */
+	/** Message digests flag; if true, calculate message digests. */
 	protected boolean calcDigests;
+	
+	/** Application command line. */
+	protected String commandLine;
+	
+	/** Application invocation date/timestamp. */
+	protected Date dateTime;
 	
 	/** {@link org.jhove2.core.io.Input} buffer type. */
 	protected Type bufferType;
@@ -64,6 +76,9 @@ public class JHOVE2CommandLineParser {
 	
 	/** Fail fast limit. */
 	protected int failFastLimit;
+
+	/** Application framework. */
+	protected JHOVE2 jhove2;
 	
 	/** File system path names. */
 	protected List<String> names;
@@ -78,167 +93,175 @@ public class JHOVE2CommandLineParser {
 	
 	/** Temporary directory. */
 	protected String tempDirectory;
-	
-	/** Instantiate a new <code>JHOVE2CommandLineParser</code>.
-	 */
-	public JHOVE2CommandLineParser() {
-		this(JHOVE2.DEFAULT_BUFFER_SIZE, JHOVE2.DEFAULT_BUFFER_TYPE,
-			 JHOVE2.DEFAULT_CALC_DIGESTS, JHOVE2.DEFAULT_DELETE_TEMP_FILES,
-			 JHOVE2.DEFAULT_DISPLAYER, JHOVE2.DEFAULT_FAIL_FAST_LIMIT,
-			 JHOVE2.DEFAULT_SHOW_IDENTIFIERS,
-			 System.getProperties().getProperty("java.io.tmpdir"));
 
-	}
+	/** Application user name. */
+	protected String userName;
 	
-	/** Instantiate a new <code>JHOVE2CommandLineParser</code> with specific
-	 * default values.
-	 * @param bufferSize      Default {@link org.jhove2.core.io.Input} buffer
-	 *                        size
-	 * @param bufferType      Default {@link org.jhove2.core.io.Input} buffer
-	 *                        type
-	 * @param calcDigests     Default message digests flag; if true, calculate
-	 *                        message digests
-	 * @param deleteTemp      Default delete temporary files flag; if true,
-	 *                        delete files 
-	 * @param displayer       Default {@link org.jhove2.module.display.Displayer}
-	 * @param failFastLimit   Default fail fast limit
-	 * @param showIdentifiers Show identifiers flag; if true, show identifiers
-	 *                        in JSON and Text display mode
-	 * @param tempDirectory   Default temporary directory
-	 */
-	public JHOVE2CommandLineParser(int bufferSize, Type bufferType,
-			                       boolean calcDigests, boolean deleteTempFiles,
-			                       String displayer, int failFastLimit,
-			                       boolean showIdentifiers, String tempDirectory) {
-		this.bufferSize      = bufferSize;
-		this.bufferType      = bufferType;
-		this.calcDigests     = calcDigests;
-		this.deleteTempFiles = deleteTempFiles;
-		this.displayer       = displayer;
-		this.failFastLimit   = failFastLimit;
-		this.showIdentifiers = showIdentifiers;
-		this.tempDirectory   = tempDirectory;
+	/** Application current working directory. */
+	protected String workingDirectory;
 
-		this.names           = new ArrayList<String>();
-		this.outputFile      = null;
-	}
-	
-	/** Parse the JHOVE2 application command line.
-	 * @param args Command line arguments
-	 * @return File system path names
+	/** Instantiate a new <code>AbstractApplication</code>.
 	 */
-	public List<String> parse(String [] args) {
-		/* TODO: add more robust error handling. */
-		for (int i=0; i<args.length; i++) {
-			if (args[i].charAt(0) == '-') {
-				if (args[i].length() > 1) {
-					char opt = Character.toLowerCase(args[i].charAt(1));
-					if      (opt == 'b' && i+1 < args.length) {
-						this.bufferSize = Integer.valueOf(args[++i]);
-					}
-					else if (opt == 'B' && i+1 < args.length) {
-						this.bufferType = Type.valueOf(args[++i]);
-					}
-					else if (opt == 'd' && i+1 < args.length) {
-						this.displayer = args[++i] + "Displayer";
-					}
-					else if (opt == 'f' && i+1 < args.length) {
-						this.failFastLimit = Integer.valueOf(args[++i]);
-					}
-					else if (opt == 'o' && i+1 < args.length) {
-						this.outputFile = args[++i];
-					}
-					else if (opt == 't' && i+1 < args.length) {
-						this.tempDirectory = args[++i];
-					}
-					else {
-						if (args[i].indexOf('i') > -1) {
-							this.showIdentifiers = true;
-						}
-						if (args[i].indexOf('k') > -1) {
-							this.calcDigests = true;
-						}
-						if (args[i].indexOf('T') > -1) {
-							this.deleteTempFiles = false;
-						}
-					}
-				}
-			}
-			else {
-				this.names.add(args[i]);
-			}
-		}
-		
-		return this.names;
+	public AbstractApplication(String version, String release, String rights) {
+		super(version, release, rights);
+
+		this.bufferSize       = JHOVE2.DEFAULT_BUFFER_SIZE;
+		this.bufferType       = JHOVE2.DEFAULT_BUFFER_TYPE;
+		this.calcDigests      = JHOVE2.DEFAULT_CALC_DIGESTS;		
+		this.dateTime         = new Date();
+		this.deleteTempFiles  = JHOVE2.DEFAULT_DELETE_TEMP_FILES;
+		this.displayer        = JHOVE2.DEFAULT_DISPLAYER;
+		this.failFastLimit    = JHOVE2.DEFAULT_FAIL_FAST_LIMIT;
+		this.names            = new ArrayList<String>();
+		this.outputFile       = null;
+		this.showIdentifiers  = JHOVE2.DEFAULT_SHOW_IDENTIFIERS;
+		Properties props      = System.getProperties();
+		this.tempDirectory    = props.getProperty("java.io.tmpdir");
+		this.userName         = props.getProperty("user.name");
+		this.workingDirectory = props.getProperty("user.dir");
 	}
 	
 	/** Get {@link org.jhove2.core.io.Input} buffer size.
 	 * @return Buffer size
+	 * @see org.jhove2.app.Application#getBufferSize()
 	 */
+	@Override
 	public int getBufferSize() {
 		return this.bufferSize;
 	}
 	
 	/** Get {@link org.jhove2.core.io.Input} buffer type.
 	 * @return Input buffer type
+	 * @see org.jhove2.app.Application#getBufferType()
 	 */
+	@Override
 	public Type getBufferType() {
 		return this.bufferType;
 	}
 	
 	/** Get message digests flag.
 	 * @return Message digests flag; if true, calculate message digests
+	 * @see org.jhove2.app.Application#getCalcDigests()
 	 */
+	@Override
 	public boolean getCalcDigests() {
 		return this.calcDigests;
 	}
 	
+	/** Get application command line.
+	 * @return Application command line
+	 * @see org.jhove2.app.Application#getCommandLine()
+	 */
+	@Override
+	public String getCommandLine() {
+		return this.commandLine;
+	}
+	
+	/** Get application invocation date/timestamp.
+	 * @return Application invocation date/timestamp
+	 * @see org.jhove2.app.Application#getDateTime()
+	 */
+	@Override
+	public Date getDateTime() {
+		return this.dateTime;
+	}
+
 	/** Get delete temporary files flag.
 	 * @param Delete temporary files flag
+	 * @see org.jhove2.app.Application#getDeleteTempFiles()
 	 */
+	@Override
 	public boolean getDeleteTempFiles() {
 		return this.deleteTempFiles;
 	}
 	
-	/** Get {@link org.jhove2.core.Displayeble}.
-	 * @return AbstractDisplayer
+	/** Get displayer.
+	 * @return Displayer
+	 * @see org.jhove2.app.Application#getDisplayer()
 	 */
+	@Override
 	public String getDisplayer() {
 		return this.displayer;
 	}
 	
 	/** Get fail fast limit.
 	 * @return Fail fast limit
+	 * @see org.jhove2.app.Application#getFailFastLimit()
 	 */
+	@Override
 	public int getFailFastLimit() {
 		return this.failFastLimit;
 	}
 	
+	/** Get application framework.
+	 * @return Application framework
+	 * @see org.jhove2.app.Application#getJHOVE2()
+	 */
+	@Override
+	public JHOVE2 getJHOVE2() {
+		return this.jhove2;
+	}
+
 	/** Get output file.
 	 * @return Output file, or null if no file is specified
+	 * @see org.jhove2.app.Application#getOutputFile()
 	 */
+	@Override
 	public String getOutputFile() {
 		return this.outputFile;
 	}
 	
 	/** Get file system path names.
 	 * @return File system path names
+	 * @see org.jhove2.app.Application#getPathNames()
 	 */
+	@Override
 	public List<String> getPathNames() {
 		return this.names;
 	}
 	
 	/** Get show identifiers flag.
 	 * @param Show identifiers flag
+	 * @see org.jhove2.app.Application#getShowIdentifiers()
 	 */
+	@Override
 	public boolean getShowIdentifiers() {
 		return this.showIdentifiers;
 	}
 	
 	/** Get temporary directory.
 	 * @return Temporary directory
+	 * @see org.jhove2.app.Application#getTempDirectory()
 	 */
+	@Override
 	public String getTempDirectory() {
 		return this.tempDirectory;
+	}
+	
+	/** Get application user name.
+	 * @return Application user name
+	 * @see org.jhove2.app.Application#getUserName()
+	 */
+	@Override
+	public String getUserName() {
+		return this.userName;
+	}
+	
+	/** Get application working directory.
+	 * @return Application working directory
+	 * @see org.jhove2.app.Application#getWorkingDirectory()
+	 */
+	@Override
+	public String getWorkingDirectory() {
+		return this.workingDirectory;
+	}
+	
+	/** Set application framework.
+	 * @param jhove2 Application framework
+	 * @see org.jhove2.app.Application#setJHOVE2()
+	 */
+	@Override
+	public void setJHOVE2(JHOVE2 jhove2) {
+		this.jhove2 = jhove2;
 	}
 }
