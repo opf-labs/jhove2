@@ -34,44 +34,61 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.annotation;
+package org.jhove2.core.info;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.util.Set;
 
-/** JHOVE2 annotation marking reportable properties.  A reportable property is
- * a named, typed value.  Properties have two names: a short descriptive name,
- * not necessarily unique; and a formal name guaranteed unique.  The
- * descriptive name is implied by the accessor method that returns it.  For
- * example, the method <code>String getName()</code> defines a scalar
- * string-valued property named "Name".  the formal name is an identifier in
- * JHOVE2 namespace based on the name of the
- * {@link org.jhove2.core.Reportable} containing the property
- * concatenated with the property's descriptive name.
+/** Information about the source of JHOVE2 reportable properties, which is
+ * either an interface or superclass in which the properties are defined.
  * 
  * @author mstrong, slabrams
  */
-@Documented
-@Inherited
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD})
-public @interface ReportableProperty {
-	/** Default description and reference value. */
-	public static final String DEFAULT = "Not available.";
+public class ReportableSourceInfo {
+	/** Source types for reportable properties. */
+	public enum Type {
+		Class,
+		Interface
+	}
 	
-	/** Property description.*/
-	public String value() default DEFAULT;
+	/** Source name. */
+	protected String name;
 	
-	/** Property reference, a citation to an external source document that
-	 * defines the property. */
-	public String ref() default DEFAULT;
+	/** Reportable properties. */
+	protected Set<ReportablePropertyInfo> props;
 	
-	/** Ordinal position of this property relative to all properties directly
-	 * defined in a class.
+	/** Source type of the reportable properties. */
+	protected Type type;
+	
+	/** Instantiate a new <code>ReportableSourceInfo</code>.
+	 * @param name  Source name
+	 * @param type  Source type
+	 * @param props Reportable properties defined by source
 	 */
-	public int order() default 1;
+	public ReportableSourceInfo(String name, Type type,
+			                    Set<ReportablePropertyInfo> props) {
+		this.name  = name;
+		this.type  = type;
+		this.props = props;
+	}
+	
+	/** Get source name.
+	 * @return Source name
+	 */
+	public String getName() {
+		return this.name;
+	}
+	
+	/** Get source reportable properties.
+	 * @return Source reportable properties
+	 */
+	public Set<ReportablePropertyInfo> getProperties() {
+		return this.props;
+	}
+	
+	/** Get source type.
+	 * @return Source type
+	 */
+	public Type getType() {
+		return this.type;
+	}
 }

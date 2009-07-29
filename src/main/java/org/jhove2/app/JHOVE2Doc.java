@@ -42,8 +42,11 @@ import java.util.Set;
 import org.jhove2.core.Reportable;
 import org.jhove2.core.info.ReportableInfo;
 import org.jhove2.core.info.ReportablePropertyInfo;
+import org.jhove2.core.info.ReportableSourceInfo;
 
-/** JHOVE2 {@link org.jhove2.core.Reportable} documentation utility.
+/** JHOVE2 {@link org.jhove2.core.Reportable} documentation utility.  The
+ * properties of the reportable (name, identifier, properties, messages) are
+ * determined by reflection of the class.
  * 
  * @author mstrong, slabrams
  */
@@ -59,17 +62,24 @@ public class JHOVE2Doc {
 		
 
 		try {
+			int n = 0;
 			for (String arg : args) {
 				Class<? extends Reportable> cl =
 					(Class<? extends Reportable>) Class.forName(arg);
 				ReportableInfo info = new ReportableInfo(cl);
 				
+				if (n > 0) {
+					System.out.println();
+				}
 				System.out.println("Reportable: Name: "       + info.getName());
 				System.out.println("            Identifier: " + info.getIdentifier());
 				System.out.println("            Package: "    + info.getPackage());
 				
-				List<Set<ReportablePropertyInfo>> prop2 = info.getProperties();
-				for (Set<ReportablePropertyInfo> props : prop2) {
+				List<ReportableSourceInfo> prop2 = info.getProperties();
+				for (ReportableSourceInfo source : prop2) {
+					System.out.println(" From: " + source.getType() +
+							                 " " + source.getName());
+					Set<ReportablePropertyInfo> props = source.getProperties();
 					for (ReportablePropertyInfo prop : props) {
 						String name = prop.getMethod().getName();
 						int in = name.indexOf("get");
@@ -92,17 +102,31 @@ public class JHOVE2Doc {
 						if (in > 0) {
 							type = type.substring(in+1);
 						}
+
+						String description = prop.getDescription();
+						String reference   = prop.getReference();
 						
-						System.out.println("  Property: Name: "       + name);
-						System.out.println("            Identifier: " + prop.getIdentifier());
+						String label = "Property";
+						if (type.equals("Message")) {
+							label = " Message";
+						}
+						System.out.println("  " + label + ": Name: "        + name);
+						System.out.println("            Identifier: "      + prop.getIdentifier());
 						if (collection == null) {
-							System.out.println("            Type: "   + type);
+							System.out.println("            Type: "        + type);
 						}
 						else {
-							System.out.println("            Type: "   + collection + "<" + type + ">");
+							System.out.println("            Type: "        + collection + "<" + type + ">");
+						}
+						if (description != null) {
+							System.out.println("            Description: " + description);
+						}
+						if (reference != null) {
+							System.out.println("            Reference: "   + reference);
 						}
 					}
 				}
+				n++;
 			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();

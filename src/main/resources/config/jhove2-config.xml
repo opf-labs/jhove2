@@ -397,9 +397,6 @@
 	    <property name="profile" ref="ASCIIProfile"/>
 	    <property name="developer" ref="CDLAgent"/>
 	</bean>
-
-	<bean id="UTF8Character" class="org.jhove2.module.format.utf8.UTFCharacter"
-	      scope="prototype"/>
    
 	<!-- UTF-8 format bean -->
 	<bean id="UTF8Format" class="org.jhove2.core.Format" scope="singleton">

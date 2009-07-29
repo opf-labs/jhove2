@@ -47,6 +47,7 @@ import java.util.TreeSet;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.I8R;
 import org.jhove2.core.Reportable;
+import org.jhove2.core.info.ReportableSourceInfo.Type;
 
 /** JHOVE2 introspection utility for retrieving the properties of
  * {@link org.jhove2.core.Reportable}s.
@@ -54,12 +55,6 @@ import org.jhove2.core.Reportable;
  * @author mstrong, slabrams
  */
 public class ReportableInfo {
-	/** Information modes. */
-	public enum Mode {
-		NoProperties,
-		WithProperties
-	}
-	
 	/** Reportable identifier. */
 	protected I8R identifier;
 	
@@ -67,7 +62,7 @@ public class ReportableInfo {
 	protected String name;
 	
 	/** Reportable properties defined for the reportable. */
-	protected List<Set<ReportablePropertyInfo>> properties;
+	protected List<ReportableSourceInfo> properties;
 	
 	/** Reportable package. */
 	protected String packageName;
@@ -77,33 +72,18 @@ public class ReportableInfo {
 	
 	/** Instantiate a new <code>ReportableInfo</code> utility.
 	 * @param reportable Reportable
-	 */
-	public ReportableInfo(Reportable reportable)
-	{
-		this(reportable.getClass(), Mode.WithProperties);
-	}
-	
-	/** Instantiate a new <code>ReportableInfo</code> utility.
-	 * @param reportable Reportable
 	 * @param mode       Information mode
 	 */
-	public ReportableInfo(Reportable reportable, Mode mode)
+	public ReportableInfo(Reportable reportable) //, Mode mode)
 	{
-		this(reportable.getClass(), mode);
+		this(reportable.getClass()); //, mode);
 	}
-	
-	/** Instantiate a new <code>ReportableInfo</code> utility.
-	 * @param cl Reportable class
-	 */
-	public ReportableInfo(Class<? extends Reportable> cl) {
-		this(cl, Mode.WithProperties);
-	}
-	
+
 	/** Instantiate a new <code>ReportableInfo</code> utility.
 	 * @param cl   Reportable class
 	 * @param mode Information mode
 	 */
-	public ReportableInfo(Class<? extends Reportable> cl, Mode mode) {
+	public ReportableInfo(Class<? extends Reportable> cl) {
 		this.name  = cl.getSimpleName();
 		this.qName = cl.getName();
 		int in = this.qName.lastIndexOf('.');
@@ -116,48 +96,50 @@ public class ReportableInfo {
 		this.identifier = new I8R(I8R.JHOVE2_PREFIX +
 				                  I8R.JHOVE2_REPORTABLE_INFIX +
 				                  this.qName.replace('.', '/'));
-		this.properties = new ArrayList<Set<ReportablePropertyInfo>>();
+		this.properties = new ArrayList<ReportableSourceInfo>();
 		Map<String,String> idMap = new HashMap<String,String>();
-		if (mode == Mode.WithProperties) {
-			ReportablePropertyComparator comparator =
-				new ReportablePropertyComparator();
-			do {
-				/* Introspect on the class's methods (and all of its superclass
-				 * methods) to retrieve reportable properties.
-			 	 */
-				Set<ReportablePropertyInfo> set = new TreeSet<ReportablePropertyInfo>(comparator);
-				Method [] methods = cl.getDeclaredMethods();
-				for (int j=0; j<methods.length; j++) {
-					if (methods[j].getAnnotation(ReportableProperty.class) != null) {
-						String name = methods[j].getName();
-						in = name.indexOf("get");
-						if (in == 0) {
-							name = name.substring(3);
-						}
-						String id = I8R.JHOVE2_PREFIX +
-						            I8R.JHOVE2_PROPERTY_INFIX +
-						            cl.getName().replace('.', '/') + "/" +
-						            name;
-						if (idMap.get(id) == null) {
-							idMap.put(id, id);
-							ReportablePropertyInfo prop =
-								new ReportablePropertyInfo(new I8R(id),
-										                   methods[j]);
-							set.add(prop);
-						}
+		ReportablePropertyComparator comparator =
+			new ReportablePropertyComparator();
+		do {
+			/* Introspect on the class's methods (and all of its superclass
+			 * methods) to retrieve reportable properties.
+		 	 */
+			Set<ReportablePropertyInfo> set = new TreeSet<ReportablePropertyInfo>(comparator);
+			Method [] methods = cl.getDeclaredMethods();
+			for (int j=0; j<methods.length; j++) {
+				ReportableProperty annot = methods[j].getAnnotation(ReportableProperty.class);
+				if (annot != null) {
+					String name = methods[j].getName();
+					in = name.indexOf("get");
+					if (in == 0) {
+						name = name.substring(3);
+					}
+					String id = I8R.JHOVE2_PREFIX +
+					            I8R.JHOVE2_PROPERTY_INFIX +
+					            cl.getName().replace('.', '/') + "/" +
+					            name;
+					if (idMap.get(id) == null) {
+						idMap.put(id, id);
+						ReportablePropertyInfo prop =
+							new ReportablePropertyInfo(new I8R(id), methods[j],
+									                   annot.value(),
+									                   annot.ref());
+						set.add(prop);
 					}
 				}
-				if (set.size() > 0) {
-					this.properties.add(set);
-				}
-			
-				/* Introspect on the class's interface's methods (and all its
-				 * superinterfaces) to retrieve reportable properties.
-				 */
-				checkInterfaces(cl.getInterfaces(), idMap, comparator);
-
-			} while ((cl = (Class<? extends Reportable>) cl.getSuperclass()) != null);
-		}
+			}
+			if (set.size() > 0) {
+				ReportableSourceInfo source =
+					new ReportableSourceInfo(cl.getSimpleName(), Type.Class,
+							                 set);
+				this.properties.add(source);
+			}
+		
+			/* Introspect on the class's interface's methods (and all its
+			 * superinterfaces) to retrieve reportable properties.
+			 */
+			checkInterfaces(cl.getInterfaces(), idMap, comparator);
+		} while ((cl = (Class<? extends Reportable>) cl.getSuperclass()) != null);
 	}
 	
 	/** Introspect on interfaces (and superinterfaces) to retrieve reportable
@@ -172,7 +154,8 @@ public class ReportableInfo {
 			Set<ReportablePropertyInfo> set = new TreeSet<ReportablePropertyInfo>(comparator);
 			Method [] methods = ifs[i].getDeclaredMethods();
 			for (int j=0; j<methods.length; j++) {
-				if (methods[j].getAnnotation(ReportableProperty.class) != null) {
+				ReportableProperty annot = methods[j].getAnnotation(ReportableProperty.class);
+				if (annot != null) {
 					String name = methods[j].getName();
 					int in = name.indexOf("get");
 					if (in == 0) {
@@ -185,14 +168,18 @@ public class ReportableInfo {
 					if (idMap.get(id)== null) {
 						idMap.put(id, id);
 						ReportablePropertyInfo prop =
-							new ReportablePropertyInfo(new I8R(id),
-									                   methods[j]);
+							new ReportablePropertyInfo(new I8R(id), methods[j],
+									                   annot.value(),
+									                   annot.ref());
 						set.add(prop);
 					}
 				}
 			}
 			if (set.size() > 0) {
-				this.properties.add(set);
+				ReportableSourceInfo source =
+					new ReportableSourceInfo(ifs[i].getSimpleName(),
+							                 Type.Interface, set);
+				this.properties.add(source);
 			}
 			checkInterfaces(ifs[i].getInterfaces(), idMap, comparator);
 		}
@@ -223,7 +210,7 @@ public class ReportableInfo {
 	/** Get reportable properties of the {@link org.jhove2.core.Reportable}.
 	 * @return Reportable properties of the reportable
 	 */
-	public List<Set<ReportablePropertyInfo>> getProperties() {
+	public List<ReportableSourceInfo> getProperties() {
 		return this.properties;
 	}
 	

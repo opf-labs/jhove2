@@ -55,6 +55,7 @@ import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.config.Configure;
 import org.jhove2.core.info.ReportableInfo;
 import org.jhove2.core.info.ReportablePropertyInfo;
+import org.jhove2.core.info.ReportableSourceInfo;
 import org.jhove2.core.io.Input.Type;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.DirectorySource;
@@ -417,9 +418,10 @@ public class JHOVE2
 		this.displayer.startReportable(out, level, name, identifier, order);
 
 		int or = 0;
-		List<Set<ReportablePropertyInfo>> list = reportableInfo.getProperties();
-		for (Set<ReportablePropertyInfo> methods : list) {
-			for (ReportablePropertyInfo prop : methods) {
+		List<ReportableSourceInfo> list = reportableInfo.getProperties();
+		for (ReportableSourceInfo source : list) {
+			Set<ReportablePropertyInfo> props = source.getProperties();
+			for (ReportablePropertyInfo prop : props) {
 				I8R id = prop.getIdentifier();
 				DisplayVisbility visbility = this.visbilities.get(id.getValue());
 				if (visbility != null && visbility == DisplayVisbility.Never) {
