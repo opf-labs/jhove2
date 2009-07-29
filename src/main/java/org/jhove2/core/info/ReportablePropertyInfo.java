@@ -52,17 +52,19 @@ public class ReportablePropertyInfo {
 	/** Method defining the property. */
 	protected Method method;
 	
-	/** Property type, as defined by the return type of the method. */
-	protected Type type;
+	/** Property generic type, as defined by the generic return type of the
+	 * method.  For collection types, this represents the entire nested type.
+	 */
+	protected Type genericType;
 	
 	/** Instantiate a new <code>ReportablePropertyInfo</code>.
 	 * @param identifier Property identifier in the JHOVE2 namespace
 	 * @param method     Method defining the property
 	 */
 	public ReportablePropertyInfo(I8R identifier, Method method) {
-		this.identifier = identifier;
-		this.method     = method;
-		this.type       = method.getGenericReturnType();
+		this.identifier  = identifier;
+		this.method      = method;
+		this.genericType = method.getGenericReturnType();
 	}
 	
 	/** Get property identifier in the JHOVE2 namespace.
@@ -79,10 +81,12 @@ public class ReportablePropertyInfo {
 		return this.method;
 	}
 	
-	/** Get property type, as defined by the return type of the method.
-	 * @return Property type
+	/** Get property generic type, as defined by the generic return type of
+	 * the method.  For ncollection types this represents the entire nested
+	 * type.
+	 * @return Property generic type
 	 */
-	public Type getTyep() {
-		return this.type;
+	public Type getGenericType() {
+		return this.genericType;
 	}
 }

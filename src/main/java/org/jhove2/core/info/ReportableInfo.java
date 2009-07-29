@@ -69,6 +69,9 @@ public class ReportableInfo {
 	/** Reportable properties defined for the reportable. */
 	protected List<Set<ReportablePropertyInfo>> properties;
 	
+	/** Reportable package. */
+	protected String packageName;
+	
 	/** Reportable qualified name. */
 	protected String qName;
 	
@@ -103,6 +106,13 @@ public class ReportableInfo {
 	public ReportableInfo(Class<? extends Reportable> cl, Mode mode) {
 		this.name  = cl.getSimpleName();
 		this.qName = cl.getName();
+		int in = this.qName.lastIndexOf('.');
+		if (in > -1) {
+			this.packageName = this.qName.substring(0, in);
+		}
+		else {
+			this.packageName = this.qName;
+		}
 		this.identifier = new I8R(I8R.JHOVE2_PREFIX +
 				                  I8R.JHOVE2_REPORTABLE_INFIX +
 				                  this.qName.replace('.', '/'));
@@ -120,7 +130,7 @@ public class ReportableInfo {
 				for (int j=0; j<methods.length; j++) {
 					if (methods[j].getAnnotation(ReportableProperty.class) != null) {
 						String name = methods[j].getName();
-						int in = name.indexOf("get");
+						in = name.indexOf("get");
 						if (in == 0) {
 							name = name.substring(3);
 						}
@@ -201,6 +211,13 @@ public class ReportableInfo {
 	 */
 	public String getName() {
 		return this.name;
+	}
+	
+	/** Get {@link org.jhove2.core.Reportable} package name.
+	 * @return Package name of the reportable
+	 */
+	public String getPackage() {
+		return this.packageName;
 	}
 	
 	/** Get reportable properties of the {@link org.jhove2.core.Reportable}.
