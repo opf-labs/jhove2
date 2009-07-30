@@ -559,7 +559,7 @@ public class JHOVE2
 			 * collapse the hierarchy.
 			 */
 			if (name.equals(reportableName)) {
-				display(out, (Reportable) value, level+1, 0);
+				display(out, (Reportable) value, level+1, order);
 			}
 			else {
 				this.displayer.startReportable(out, level+1, name, identifier, order);
