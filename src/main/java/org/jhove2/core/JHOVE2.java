@@ -397,11 +397,21 @@ public class JHOVE2
 		}
 	}
 	
+	/** Display the JHOVE2 framework to the standard output stream.
+	 * @throws FileNotFoundException Can't create output file
+	 * @throws JHOVE2Exception       Can't instantiate displayer
+	 */
+	public void display()
+		throws FileNotFoundException, JHOVE2Exception
+	{
+		display(this);
+	}
+	
 	/** Display {@link org.jhove2.core.Reportable} to the standard output
 	 * stream.
 	 * @param reportable Reportable
 	 * @throws FileNotFoundException Can't create output file
-	 * @throws JHOVE2Exception       Error instantiating displayer
+	 * @throws JHOVE2Exception       Can't instantiate displayer
 	 */
 	public void display(Reportable reportable)
 		throws FileNotFoundException, JHOVE2Exception
@@ -419,17 +429,17 @@ public class JHOVE2
 	/** Display {@link org.jhove2.core.Reportable}.
 	 * @param reportable Reportable
 	 * @param out        Print stream
-	 * @throws JHOVE2Exception Error instantiating displayer
+	 * @throws JHOVE2Exception Can't instantiate displayer
 	 */
 	public void display(Reportable reportable, PrintStream out)
 		throws JHOVE2Exception
 	{
 		if (this.displayer == null) {
-			if (this.app != null) {
-				this.displayer =
-					Configure.getReportable(Displayer.class,
-							                this.app.getDisplayer());
-			}
+			this.displayer =
+				Configure.getReportable(Displayer.class,
+						                this.app != null ?
+						                this.app.getDisplayer() :
+						                DEFAULT_DISPLAYER);
 		}
 		
 		this.displayer.setStartTime();

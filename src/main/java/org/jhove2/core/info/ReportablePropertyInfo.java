@@ -116,7 +116,7 @@ public class ReportablePropertyInfo {
 	}
 	
 	/** Get property generic type, as defined by the generic return type of
-	 * the method.  For ncollection types this represents the entire nested
+	 * the method.  For collection types this represents the entire nested
 	 * type.
 	 * @return Property generic type
 	 */

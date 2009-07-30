@@ -77,7 +77,7 @@ public class JHOVE2Doc {
 				
 				List<ReportableSourceInfo> prop2 = info.getProperties();
 				for (ReportableSourceInfo source : prop2) {
-					System.out.println(" From: " + source.getType() +
+					System.out.println(" From: " + source.getSource() +
 							                 " " + source.getName());
 					Set<ReportablePropertyInfo> props = source.getProperties();
 					for (ReportablePropertyInfo prop : props) {
@@ -89,10 +89,10 @@ public class JHOVE2Doc {
 
 						String collection = null;
 						String type = prop.getGenericType().toString();
-						in = type.indexOf('<');
+						in = type.lastIndexOf('<');
 						if (in > 0) {
 							collection = type.substring(0, in);
-							type       = type.substring(in+1, type.length()-1);
+							type       = type.substring(in+1, type.indexOf('>'));
 							in = collection.lastIndexOf('.');
 							if (in > 0) {
 								collection = collection.substring(in+1);

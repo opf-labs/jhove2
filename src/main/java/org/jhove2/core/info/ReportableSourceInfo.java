@@ -45,7 +45,7 @@ import java.util.Set;
  */
 public class ReportableSourceInfo {
 	/** Source types for reportable properties. */
-	public enum Type {
+	public enum Source {
 		Class,
 		Interface
 	}
@@ -57,18 +57,18 @@ public class ReportableSourceInfo {
 	protected Set<ReportablePropertyInfo> props;
 	
 	/** Source type of the reportable properties. */
-	protected Type type;
+	protected Source source;
 	
 	/** Instantiate a new <code>ReportableSourceInfo</code>.
-	 * @param name  Source name
-	 * @param type  Source type
-	 * @param props Reportable properties defined by source
+	 * @param name   Source name
+	 * @param source Source type
+	 * @param props  Reportable properties defined by source
 	 */
-	public ReportableSourceInfo(String name, Type type,
+	public ReportableSourceInfo(String name, Source source,
 			                    Set<ReportablePropertyInfo> props) {
-		this.name  = name;
-		this.type  = type;
-		this.props = props;
+		this.name   = name;
+		this.source = source;
+		this.props  = props;
 	}
 	
 	/** Get source name.
@@ -88,7 +88,7 @@ public class ReportableSourceInfo {
 	/** Get source type.
 	 * @return Source type
 	 */
-	public Type getType() {
-		return this.type;
+	public Source getSource() {
+		return this.source;
 	}
 }

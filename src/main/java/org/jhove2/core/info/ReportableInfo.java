@@ -37,6 +37,7 @@
 package org.jhove2.core.info;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,8 +47,9 @@ import java.util.TreeSet;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.I8R;
+import org.jhove2.core.Message;
 import org.jhove2.core.Reportable;
-import org.jhove2.core.info.ReportableSourceInfo.Type;
+import org.jhove2.core.info.ReportableSourceInfo.Source;
 
 /** JHOVE2 introspection utility for retrieving the properties of
  * {@link org.jhove2.core.Reportable}s.
@@ -93,8 +95,8 @@ public class ReportableInfo {
 		else {
 			this.packageName = this.qName;
 		}
-		this.identifier = new I8R(I8R.JHOVE2_PREFIX +
-				                  I8R.JHOVE2_REPORTABLE_INFIX +
+		this.identifier = new I8R(I8R.JHOVE2_PREFIX + "/" +
+				                  I8R.JHOVE2_REPORTABLE_INFIX + "/" +
 				                  this.qName.replace('.', '/'));
 		this.properties = new ArrayList<ReportableSourceInfo>();
 		Map<String,String> idMap = new HashMap<String,String>();
@@ -114,10 +116,15 @@ public class ReportableInfo {
 					if (in == 0) {
 						name = name.substring(3);
 					}
-					String id = I8R.JHOVE2_PREFIX +
-					            I8R.JHOVE2_PROPERTY_INFIX +
-					            cl.getName().replace('.', '/') + "/" +
-					            name;
+					String id = I8R.JHOVE2_PREFIX + "/";
+					Type type = methods[j].getGenericReturnType();
+					if (isMessage(type)) {
+						id += I8R.JHOVE2_MESSAGE_INFIX;
+					}
+					else {
+						id += I8R.JHOVE2_PROPERTY_INFIX;
+					}
+					id += "/" + cl.getName().replace('.', '/') + "/" + name;
 					if (idMap.get(id) == null) {
 						idMap.put(id, id);
 						ReportablePropertyInfo prop =
@@ -130,7 +137,7 @@ public class ReportableInfo {
 			}
 			if (set.size() > 0) {
 				ReportableSourceInfo source =
-					new ReportableSourceInfo(cl.getSimpleName(), Type.Class,
+					new ReportableSourceInfo(cl.getSimpleName(), Source.Class,
 							                 set);
 				this.properties.add(source);
 			}
@@ -161,10 +168,15 @@ public class ReportableInfo {
 					if (in == 0) {
 						name = name.substring(3);
 					}
-					String id = I8R.JHOVE2_PREFIX +
-					            I8R.JHOVE2_PROPERTY_INFIX +
-					            ifs[i].getName().replace('.', '/') +
-					            "/" + name;
+					String id = I8R.JHOVE2_PREFIX + "/";
+					Type type = methods[j].getGenericReturnType();
+					if (isMessage(type)) {
+						id += I8R.JHOVE2_MESSAGE_INFIX;
+					}
+					else {
+						id += I8R.JHOVE2_PROPERTY_INFIX;
+					}
+					id += "/" + ifs[i].getName().replace('.', '/') + "/" + name;
 					if (idMap.get(id)== null) {
 						idMap.put(id, id);
 						ReportablePropertyInfo prop =
@@ -178,7 +190,7 @@ public class ReportableInfo {
 			if (set.size() > 0) {
 				ReportableSourceInfo source =
 					new ReportableSourceInfo(ifs[i].getSimpleName(),
-							                 Type.Interface, set);
+							                 Source.Interface, set);
 				this.properties.add(source);
 			}
 			checkInterfaces(ifs[i].getInterfaces(), idMap, comparator);
@@ -219,5 +231,23 @@ public class ReportableInfo {
 	 */
 	public String getQName() {
 		return this.qName;
+	}
+	
+	/** Get property message status.
+	 * @param type Property type
+	 * @return True if the property is a message; otherwise, false
+	 */
+	protected static synchronized boolean isMessage(Type type) {
+		String name = type.toString();
+		int in = name.lastIndexOf('<');
+		if (in > 0) {
+			name = name.substring(in+1, name.indexOf('>'));
+		}
+		in = name.lastIndexOf('.');
+		if (in > 0) {
+			name = name.substring(in+1);
+		}
+		
+		return name.equals(Message.class.getSimpleName()) ? true : false;
 	}
 }

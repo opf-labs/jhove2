@@ -46,20 +46,25 @@ public class I8R
 	implements Comparable<I8R>
 {
 	/** JHOVE2 namespace identifier prefix. */
-	public static final String JHOVE2_PREFIX = "info:jhove2/";
+	public static final String JHOVE2_PREFIX = "info:jhove2";
 	
 	/** JHOVE2 namespace identifier format infix. */
-	public static final String JHOVE2_FORMAT_INFIX = "format/";
+	public static final String JHOVE2_FORMAT_INFIX = "format";
+	
+	/** JHOVE2 namespace identifier
+	 * {@link org.jhove2.core.Message} infix.
+	 */
+	public static final String JHOVE2_MESSAGE_INFIX = "message";
 	
 	/** JHOVE2 namespace identifier
 	 * {@link org.jhove2.annotation.ReportableProperty) infix.
 	 */
-	public static final String JHOVE2_PROPERTY_INFIX = "property/";
+	public static final String JHOVE2_PROPERTY_INFIX = "property";
 	
 	/** JHOVE2 namespace identifier
 	 * {@link org.jhove2.annotation.Reportable} infix.
 	 */
-	public static final String JHOVE2_REPORTABLE_INFIX = "reportable/";
+	public static final String JHOVE2_REPORTABLE_INFIX = "reportable";
 	
 	/** IdentifierModule types, or namespaces. */
 	public enum Namespace {
