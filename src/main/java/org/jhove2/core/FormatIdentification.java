@@ -36,7 +36,11 @@
 
 package org.jhove2.core;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.source.Source;
 
 /** JHOVE2 presumptive format identification.
  * 
@@ -81,12 +85,18 @@ public class FormatIdentification
 	/** Identification process. */
 	protected Product process;
 	
+	/** Source units associated with the format.  Defined only by aggregate
+	 * identification. */
+	protected List<Source> sources;
+	
 	/** Instantiate a new <code>FormatIdentification</code>.
 	 * @param format     Presumptively identified format
 	 * @param confidence Identification confidence level
 	 */
 	public FormatIdentification(Format format, Confidence confidence) {
 		this(format, confidence, null);
+		
+		this.sources = new ArrayList<Source>();
 	}
 	
 	/** Instantiate a new <code>FormatIdentification</code>.
@@ -126,6 +136,21 @@ public class FormatIdentification
 		return this.format;
 	}
 
+	/** Get source units associated with the format.  Defined only by aggregate
+	 * identification.
+	 * @return Source units associated with the format
+	 */
+	public List<Source> getSources() {
+		return this.sources;
+	}
+	
+	/** Add a source unit for an aggregate format.
+	 * @param source Source unit
+	 */
+	public void setSource(Source source) {
+		this.sources.add(source);
+	}
+	
 	/** Lexically compare format identifications.
 	 * @param identifier IdentifierModule to be compared
 	 * @return -1, 0, or 1 if this identifier value is less than, equal

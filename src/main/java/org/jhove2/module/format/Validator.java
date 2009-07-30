@@ -47,9 +47,24 @@ import org.jhove2.core.source.Source;
 public interface Validator {
 	/** Validity values. */
 	public enum Validity {
-		True,
-		False,
-		Undetermined
+		True        ("true"),
+		False       ("false"),
+		Undetermined("undetermined");
+		
+		/** Status label. */
+		private String label;
+		
+		/** Instantiate a new <code>Validity</code>.
+		 * @param label Status label
+		 */
+		private Validity(String label) {
+			this.label = label;
+		}
+		
+		/** Get status label. */
+		public String toString() {
+			return this.label;
+		}
 	}
 	
 	/** Validate a source unit.

@@ -71,10 +71,4 @@ public interface Aggrefier
 	 */
 	@ReportableProperty("Presumptive format identifications.")
 	public Set<FormatIdentification> getPresumptiveFormats();
-	
-	/** Get source units that collectively make up an instance of the
-	 * presumptively-identified aggregate format.
-	 * @return Source units
-	 */
-	public List<Source> getSources();
 }

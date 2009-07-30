@@ -37,7 +37,6 @@
 package org.jhove2.module.identify;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -77,18 +76,12 @@ public class AggrefierModule
 	/** Presumptively identified formats. */
 	protected Set<FormatIdentification> formats;
 	
-	/** Source units that collectively constitute an instance of the
-	 * presumptively-identified format.
-	 */
-	protected List<Source> sources;
-	
 	/** Instantiate a new <code>AggrefierModule</code>.
 	 */
 	public AggrefierModule() {
 		super(VERSION, RELEASE, RIGHTS);
 		
 		this.formats = new TreeSet<FormatIdentification>();
-		this.sources = new ArrayList<Source>();
 	}
 
 	/** Presumptively identify the format of an aggregate source unit.
@@ -133,12 +126,12 @@ public class AggrefierModule
 			FormatIdentification id =
 				new FormatIdentification(Configure.getReportable(Format.class,
 						                                         "ShapefileFormat"),
-						                 Confidence.PositiveSpecific);
+						                 Confidence.PositiveSpecific);			
+			id.setSource(dbfSource);
+			id.setSource(shpSource);
+			id.setSource(shxSource);
 			this.formats.add(id);
-			
-			this.sources.add(dbfSource);
-			this.sources.add(shpSource);
-			this.sources.add(shxSource);
+
 		}
 		
 		return this.formats;
@@ -151,14 +144,5 @@ public class AggrefierModule
 	@Override
 	public Set<FormatIdentification> getPresumptiveFormats() {
 		return this.formats;
-	}
-	
-	/** Get source units that collectively make up an instance of the
-	 * presumptively-identified aggregate format.
-	 * @see org.jhove2.module.identify.Aggrefier#getSourceUnits()
-	 */
-	@Override
-	public List<Source> getSources() {
-		return this.sources;
 	}
 }
