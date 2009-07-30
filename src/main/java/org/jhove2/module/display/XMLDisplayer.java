@@ -51,7 +51,7 @@ public class XMLDisplayer
 	public static final String VERSION = "1.0.0";
 
 	/** XML displayer release date. */
-	public static final String RELEASE = "2009-06-11";
+	public static final String RELEASE = "2009-07-30";
 	
 	/** XML displayer rights statement. */
 	public static final String RIGHTS =
@@ -116,9 +116,10 @@ public class XMLDisplayer
 	public XMLDisplayer() {
 		super(VERSION, RELEASE, RIGHTS);
 		
-		this.prefix = "j2:";
-		this.uri    = "http://jhove2.org/ns/display/1.0.0";
-		this.schema = "http://jhove2.org/xsd/display/1.0.0/jhove2.xsd";
+		this.prefix = "j2";
+		this.uri    = "http://jhove2.org/xsd/1.0.0";
+		/* TODO: Define actual schema. */
+		//this.schema = "http://jhove2.org/xsd/1.0.0/jhove2.xsd";
 	}
 
 	/** Start display.
@@ -130,8 +131,10 @@ public class XMLDisplayer
 	public void startDisplay(PrintStream out, int level) {
 		declaration(out);
 		startTag(out, level, ROOT, XMLNS+this.prefix, this.uri,
-				                   XMLNS+XSI, XSI_URI,
-				                   XSI+SCHEMA_LOCATION, this.uri+" "+this.schema);
+				                   XMLNS+XSI, XSI_URI);
+				                   /* TODO: Define actual schema. */
+				                   //,XSI+SCHEMA_LOCATION,
+		                           //this.uri + " " + this.schema);
 	}
 	
 	/** Start display of a {@link org.jhove2.core.Reportable}.
@@ -208,7 +211,8 @@ public class XMLDisplayer
 	@Override
 	public void endCollection(PrintStream out, int level, String name,
 			                  I8R identifier, int size) {
-		endTag(out, level, COLLECTION);
+		endTag(out, level+1, PROPERTIES);
+		endTag(out, level,   COLLECTION);
 	}
 
 	/** End display of a {@link org.jhove2.core.Reportable}.
@@ -221,7 +225,8 @@ public class XMLDisplayer
 	@Override
 	public void endReportable(PrintStream out, int level, String name,
 			                  I8R identifier) {
-		endTag(out, level, REPORTABLE);
+		endTag(out, level+1, PROPERTIES);
+		endTag(out, level,   REPORTABLE);
 	}
 	
 	/** End display.
@@ -249,7 +254,7 @@ public class XMLDisplayer
 	public void startTag(PrintStream out, int level, String name) {
 		String indent = getIndent(level);
 		
-		out.println(indent + "<" + this.prefix + name + ">");
+		out.println(indent + "<" + this.prefix + ":" + name + ">");
 	}
 	
 	/** Display start tag.
@@ -262,7 +267,7 @@ public class XMLDisplayer
 			             String... attrs) {
 		String indent = AbstractDisplayer.getIndent(level);
 		
-		out.print(indent + "<" + this.prefix + name);
+		out.print(indent + "<" + this.prefix + ":" + name);
 		for (int i=0; i<attrs.length; i+=2) {
 			out.print(" " + attrs[i] + "=\"" + attrs[i+1] + "\"");
 		}
@@ -278,8 +283,8 @@ public class XMLDisplayer
 	public void tag(PrintStream out, int level, String name, String content) {
 		String indent = AbstractDisplayer.getIndent(level);
 		
-		out.println(indent + "<"  + this.prefix + name + ">" + content +
-				             "</" + this.prefix + name + ">");
+		out.println(indent + "<"  + this.prefix + ":" + name + ">" + content +
+				             "</" + this.prefix + ":" + name + ">");
 	}
 	/** Display tag.
 	 * @param out     Print stream
@@ -292,11 +297,11 @@ public class XMLDisplayer
 			        String... attrs) {
 		String indent = AbstractDisplayer.getIndent(level);
 		
-		out.print(indent + "<"  + this.prefix + name);
+		out.print(indent + "<"  + this.prefix + ":" + name);
 		for (int i=0; i<attrs.length; i+=2) {
 			out.print(" " + attrs[i] + "=\"" + attrs[i] + "\"");
 		}
-		out.println(">" + content + "</" + this.prefix + name + ">");
+		out.println(">" + content + "</" + this.prefix + ":" + name + ">");
 	}
 	
 	/** Display end tag.
@@ -307,6 +312,25 @@ public class XMLDisplayer
 	public void endTag(PrintStream out, int level, String name) {
 		String indent = AbstractDisplayer.getIndent(level);
 		
-		out.println(indent + "</" + this.prefix + name + ">");
+		out.println(indent + "</" + this.prefix + ":" + name + ">");
+	}
+	
+	/** Replace invalid characters with escaped values.
+	 * @param value String value
+	 * @return Escaped version of the string
+	 */
+	protected String escape(String value) {
+		value = value.replace("&", "&amp;");
+		value = value.replace("<", "&lt;");
+		return value.replace(">", "&gt;");
+	}
+	
+	/** Replace invalid attribute characters with escape values.
+	 * @param value String value
+	 * @return Escaped version of the string
+	 */
+	protected String escapeAttr(String value) {
+		value = escape(value);
+		return value.replace("\"", "&quot;");
 	}
 }

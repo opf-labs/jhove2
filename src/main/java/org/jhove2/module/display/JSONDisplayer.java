@@ -51,7 +51,7 @@ public class JSONDisplayer
 	public static final String VERSION = "1.0.0";
 
 	/** JSON displayer release date. */
-	public static final String RELEASE = "2009-06-11";
+	public static final String RELEASE = "2009-07-30";
 	
 	/** JSON displayer rights statement. */
 	public static final String RIGHTS =
@@ -66,7 +66,6 @@ public class JSONDisplayer
 	public JSONDisplayer() {
 		super(VERSION, RELEASE, RIGHTS);
 	}
-
 
 	/** Start display.
 	 * @param out   Print stream
@@ -169,11 +168,12 @@ public class JSONDisplayer
 			buffer.append("{\n" + indent + "   \"identifier\": \"" + identifier + "\"" +
 					       "\n" + indent + "  ,\"value\": ");
 		}
-		if (!(value instanceof Number)) {
-			buffer.append("\"");
+		if (value instanceof Number) {
+			buffer.append(value);
 		}
-		buffer.append(value);
-		if (!(value instanceof Number)) {
+		else {
+			buffer.append("\"");
+			buffer.append(escape(value.toString()));
 			buffer.append("\"");
 		}
 		if (this.showIdentifiers) {
@@ -233,5 +233,16 @@ public class JSONDisplayer
 		String indent = getIndent(level);
 		
 		out.println(indent + "}");
+	}
+	
+	/** Replace invalid characters with escaped values.  The escape character
+	 * is a backslash (\).  All literal backslashes (\) are replaced with (\\).
+	 * All quotes (") are replaced with (\"). 
+	 * @param value String value
+	 * @return Escaped version of the string
+	 */
+	protected String escape(String value) {
+		value = value.replace("\\", "\\\\");
+		return value.replace("\"", "\\\"");
 	}
 }
