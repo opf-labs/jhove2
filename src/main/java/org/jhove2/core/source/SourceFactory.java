@@ -40,6 +40,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -74,6 +75,17 @@ public abstract class SourceFactory {
 		}
 
 		return new FileSource(file);
+	}
+	
+	/** Get source unit from a URL.
+	 * @param jhove2 JHOVE2 framework
+	 * @param url    URL
+	 * @throws IOException 
+	 */
+	public static synchronized Source getSource(JHOVE2 jhove2, URL url)
+		throws IOException
+	{
+		return new URLSource(jhove2, url); 
 	}
 	
 	/** Get source unit from a Zip file entry.

@@ -77,7 +77,7 @@ public class CharacterizerModule
 	public static final String VERSION = "1.0.0";
 
 	/** Characterization process module release date. */
-	public static final String RELEASE = "2009-07-29";
+	public static final String RELEASE = "2009-07-31";
 	
 	/** Characterization process module rights statement. */
 	public static final String RIGHTS =
@@ -154,11 +154,11 @@ public class CharacterizerModule
 				ClumpSource clump = new ClumpSource();
 				List<Source> sources = fid.getSources();
 				for (Source src : sources) {
-					clump.addChildSource(src);
+					clump.setChildSource(src);
 					source.deleteChildSource(src);
 				}
-				clump.addModule(aggrefier);
-				source.addChildSource(clump);
+				clump.setModule(aggrefier);
+				source.setChildSource(clump);
 
 				Format format = fid.getPresumptiveFormat();
 				I8R id = format.getIdentifier();

@@ -54,7 +54,7 @@ public class InputFactory {
 	 * @param bufferSize Maximum buffer size, in bytes
 	 * @return Input 
 	 */
-	public static AbstractInput getInput(File file, int bufferSize, Type type)
+	public static Input getInput(File file, int bufferSize, Type type)
 		throws FileNotFoundException, IOException
 	{
 		return getInput(file, bufferSize, type, ByteOrder.LITTLE_ENDIAN);
@@ -66,7 +66,7 @@ public class InputFactory {
 	 * @param order      ByteOrder Endianess of buffer
 	 * @return Input 
 	 */
-	public static AbstractInput getInput(File file, int bufferSize, Type type, ByteOrder order)
+	public static Input getInput(File file, int bufferSize, Type type, ByteOrder order)
 		throws FileNotFoundException, IOException
 	{
 		AbstractInput abstractInput = null;

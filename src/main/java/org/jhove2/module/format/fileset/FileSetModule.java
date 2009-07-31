@@ -43,7 +43,7 @@ import java.util.List;
 import org.jhove2.core.Format;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.source.FileSet;
+import org.jhove2.core.source.FileSetSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.AbstractFormatModule;
 import org.jhove2.module.format.Parser;
@@ -90,8 +90,8 @@ public class FileSetModule
 	public long parse(JHOVE2 jhove2, Source source)
 		throws EOFException, IOException, JHOVE2Exception
 	{
-		if (source instanceof FileSet) {
-			List<Source> children = ((FileSet) source).getChildSources();
+		if (source instanceof FileSetSource) {
+			List<Source> children = ((FileSetSource) source).getChildSources();
 			for (Source src : children) {
 				jhove2.characterize(src);
 			}

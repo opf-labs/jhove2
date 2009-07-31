@@ -58,31 +58,21 @@ import org.jhove2.module.Module;
 public interface Source
 	extends Temporal
 {
-	/** Add a child source unit.
-	 * @param child Child source unit
-	 */
-	public void addChildSource(Source child);
-	
-	/** Add a module that processed the source unit.
-	 * @param module Module that processed the source unit
-	 */
-	public void addModule(Module module);
-	
 	/** Close the source unit.  If the source unit is backed by a temporary
 	 * file, delete the file.
 	 */
 	public void close();
+
+	/** Delete child source unit.
+	 * @param child Child source unit
+	 */
+	public void deleteChildSource(Source child);
 	
 	/** Get child source units.
 	 * @return Child source units
 	 */
 	@ReportableProperty(order=3, value="Child source untis.")
 	public List<Source> getChildSources();
-	
-	/** Delete child source unit.
-	 * @param child Child source unit
-	 */
-	public void deleteChildSource(Source child);
 	
 	/** Get delete temporary files flag; if true, delete files.
 	 * @return Delete temporary files flag
@@ -142,9 +132,19 @@ public interface Source
 	 * @return Number of modules
 	 */
 	public int getNumModules();
+
+	/** Add a child source unit.
+	 * @param child Child source unit
+	 */
+	public void setChildSource(Source child);
 	
 	/** Set delete temporary files flag; if true, delete files.
 	 * @param flag Delete temporary files flag
 	 */
 	public void setDeleteTempFiles(boolean flag);
+	
+	/** Add a module that processed the source unit.
+	 * @param module Module that processed the source unit
+	 */
+	public void setModule(Module module);
 }

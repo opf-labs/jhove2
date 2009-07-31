@@ -52,7 +52,7 @@ public interface FormatProfile
 	/** Get format profile format.
 	 * @return Format profile format
 	 */
-	@ReportableProperty(order=1, value="Format module format.")
+	@ReportableProperty(order=1, value="Format profile format.")
 	public Format getFormat();
 	
 	/** Set format profile format module.

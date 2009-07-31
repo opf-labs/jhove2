@@ -73,7 +73,7 @@ public class DispatcherModule
 	public static final String VERSION = "1.0.0";
 
 	/** Dispatcher module release date. */
-	public static final String RELEASE = "2009-07-16";
+	public static final String RELEASE = "2009-07-31";
 	
 	/** Dispatcher module rights statement. */
 	public static final String RIGHTS =
@@ -204,7 +204,7 @@ public class DispatcherModule
 		module.setEndTime();
 		
 		if (disposition == Disposition.AddToSource) {
-			source.addModule(module);
+			source.setModule(module);
 		}
 	}
 }

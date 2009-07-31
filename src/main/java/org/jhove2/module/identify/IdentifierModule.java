@@ -49,7 +49,7 @@ import org.jhove2.core.config.Configure;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.DirectorySource;
-import org.jhove2.core.source.FileSet;
+import org.jhove2.core.source.FileSetSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.ZipDirectorySource;
 import org.jhove2.module.AbstractModule;
@@ -114,7 +114,7 @@ public class IdentifierModule
 						                 Confidence.PositiveSpecific);
 			this.formats.add(id);
 		}
-		else if (source instanceof FileSet) {
+		else if (source instanceof FileSetSource) {
 			FormatIdentification id =
 				new FormatIdentification(Configure.getReportable(Format.class,
 						                                         "FileSetFormat"),

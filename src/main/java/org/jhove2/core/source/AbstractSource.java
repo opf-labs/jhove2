@@ -123,25 +123,7 @@ public abstract class AbstractSource
 		this.file   = createTempFile(jhove2, stream);
 		this.isTemp = true;
 	}
-	
-	/** Add a child source unit.
-	 * @param child Child source unit
-	 * @see org.jhove2.core.source.Source#addChildSource(org.jhove2.core.source.Source)
-	 */
-	@Override
-	public void addChildSource(Source child) {
-		this.children.add(child);
-	}
-	
-	/** Add a module that processed the source unit.
-	 * @param module Module that processed the source unit
-	 * @see org.jhove2.core.source.Source#addModule(org.jhove2.core.Processible)
-	 */
-	@Override
-	public void addModule(Module module) {
-		this.modules.add(module);
-	}
-	
+
 	/** Close the source unit.  If the source unit is backed by a temporary
 	 * file, delete the file.
 	 */
@@ -318,7 +300,34 @@ public abstract class AbstractSource
 	public boolean isTemp() {
 		return this.isTemp;
 	}
-
+	
+	/** Add a child source unit.
+	 * @param child Child source unit
+	 * @see org.jhove2.core.source.Source#setChildSource(org.jhove2.core.source.Source)
+	 */
+	@Override
+	public void setChildSource(Source child) {
+		this.children.add(child);
+	}
+	
+	/** Set delete temporary files flag; if true, delete files.
+	 * @param flag Delete temporary files flag
+	 * @see org.jhove2.core.source.Source#setDeleteTempFiles(boolean)
+	 */
+	@Override
+	public void setDeleteTempFiles(boolean flag) {
+		this.deleteTempFiles = flag;
+	}
+	
+	/** Add a module that processed the source unit.
+	 * @param module Module that processed the source unit
+	 * @see org.jhove2.core.source.Source#setModule(org.jhove2.core.Processible)
+	 */
+	@Override
+	public void setModule(Module module) {
+		this.modules.add(module);
+	}
+	
 	/** Set the end time of the elapsed duration.
 	 * @return End time, in milliseconds
 	 * @see org.jhove2.core.Temporarl#setStartTime()
@@ -349,14 +358,5 @@ public abstract class AbstractSource
 	@Override
 	public long setStartTime() {
 		return this.startTime = System.currentTimeMillis();
-	}
-	
-	/** Set delete temporary files flag; if true, delete files.
-	 * @param flag Delete temporary files flag
-	 * @see org.jhove2.core.source.Source#setDeleteTempFiles(boolean)
-	 */
-	@Override
-	public void setDeleteTempFiles(boolean flag) {
-		this.deleteTempFiles = flag;
 	}
 }

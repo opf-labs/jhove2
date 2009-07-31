@@ -62,7 +62,7 @@ import org.jhove2.core.io.Input.Type;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.DirectorySource;
 import org.jhove2.core.source.FileSource;
-import org.jhove2.core.source.FileSet;
+import org.jhove2.core.source.FileSetSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
 import org.jhove2.core.source.ZipDirectorySource;
@@ -85,7 +85,7 @@ public class JHOVE2
 	public static final String VERSION = "2.0.0";
 
 	/** Framework release date. */
-	public static final String RELEASE = "2009-07-29";
+	public static final String RELEASE = "2009-07-31";
 	
 	/** Framework rights statement. */
 	public static final String RIGHTS =
@@ -281,11 +281,11 @@ public class JHOVE2
 			characterize(this.source);
 		}
 		else {
-			this.source = new FileSet();
+			this.source = new FileSetSource();
 			while (iter.hasNext()) {
 				String pathName = iter.next();
 				Source src = SourceFactory.getSource(pathName);
-				((FileSet) this.source).addChildSource(src);
+				((FileSetSource) this.source).setChildSource(src);
 			}
 			characterize(this.source);
 		}
@@ -329,7 +329,7 @@ public class JHOVE2
 				 source instanceof ZipFileSource) {
 			this.numFiles++;
 		}
-		else if (source instanceof FileSet) {
+		else if (source instanceof FileSetSource) {
 			this.numFileSets++;
 		}
 		

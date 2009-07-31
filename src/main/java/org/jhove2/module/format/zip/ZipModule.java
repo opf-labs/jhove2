@@ -66,7 +66,7 @@ public class ZipModule
 	public static final String VERSION = "1.0.0";
 
 	/** Zip module release date. */
-	public static final String RELEASE = "2009-07-13";
+	public static final String RELEASE = "2009-07-31";
 	
 	/** Zip module rights statement. */
 	public static final String RIGHTS =
@@ -152,12 +152,12 @@ public class ZipModule
 								String key = name.substring(0, in);
 								Source parent = map.get(key);
 								if (parent != null) {
-									parent.addChildSource(src);
+									parent.setChildSource(src);
 								}
 							}
 							else {
 								/* Directory is a child of the Zip file. */
-								source.addChildSource(src);
+								source.setChildSource(src);
 							}
 						}
 					}
@@ -170,7 +170,7 @@ public class ZipModule
 							int in = name.lastIndexOf('/');
 							if (in < 0) {
 								/* File is a child of the Zip file. */
-								source.addChildSource(src);
+								source.setChildSource(src);
 							}
 							else {
 								/* File is a child of a Zip file entry that
@@ -179,7 +179,7 @@ public class ZipModule
 								String key = name.substring(0, in);
 								Source parent = map.get(key);
 								if (parent != null) {
-									parent.addChildSource(src);
+									parent.setChildSource(src);
 								}
 							}
 						}
