@@ -58,7 +58,8 @@ public interface Product
 	/** Get product name.
 	 * @return Product name
 	 */
-	@ReportableProperty(order=1, value="Product name.")
+	@ReportableProperty(order=1, value="Product name, based on the class " +
+			"simple name.")
 	public String getName();
 	
 	/** Get product informative note.
