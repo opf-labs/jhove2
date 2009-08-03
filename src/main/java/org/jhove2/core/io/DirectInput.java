@@ -51,35 +51,35 @@ public class DirectInput
 	extends AbstractInput
 {
 	/** Maximum buffer size, in bytes. */
-	protected int bufferSize;
+	protected int maxBufferSize;
 	
 	/** Instantiate a new <code>DirectInput</code> object.
-	 * @param file       Java {@link java.io.File} underlying the inputable
-	 * @param bufferSize Size of the direct buffer, in bytes
+	 * @param file          Java {@link java.io.File} underlying the inputable
+	 * @param maxBufferSize Size of the direct buffer, in bytes
 	 * @throws FileNotFoundException File not found 
 	 * @throws IOException           I/O exception instantiating input
 	 */
-	public DirectInput(File file, int bufferSize)
+	public DirectInput(File file, int maxBufferSize)
 		throws FileNotFoundException, IOException
 	{
-		super(file, ByteOrder.LITTLE_ENDIAN);
+		this(file, maxBufferSize, ByteOrder.LITTLE_ENDIAN);
 	}
 	
 	/** Instantiate a new <code>DirectInput</code> object from a File object.
-	 * @param file       Java {@link java.io.File} underlying the inputable
-	 * @param bufferSize Size of the direct buffer, in bytes
-	 * @param order      Byte order of the underlying buffer	
+	 * @param file          Java {@link java.io.File} underlying the inputable
+	 * @param maxBufferSize Size of the direct buffer, in bytes
+	 * @param order         Byte order of the underlying buffer	
 	 * @throws FileNotFoundException File not found 
 	 * @throws IOException           I/O exception instantiating input
 	 */
-	public DirectInput(File file, int bufferSize, ByteOrder order)
+	public DirectInput(File file, int maxBufferSize, ByteOrder order)
 		throws FileNotFoundException, IOException
 	{
 		super(file, order);
 		
 		/* Allocate direct buffer and initialize it. */
-		this.bufferSize = bufferSize;
-		this.buffer = ByteBuffer.allocateDirect(this.bufferSize).order(order);
+		this.maxBufferSize = maxBufferSize;
+		this.buffer = ByteBuffer.allocateDirect(this.maxBufferSize).order(order);
 		getNextBuffer();
 	}
 
@@ -89,6 +89,6 @@ public class DirectInput
 	 * @Override
 	 */
 	public int getMaxBufferSize() {
-		return this.bufferSize;
+		return this.maxBufferSize;
 	}
 }

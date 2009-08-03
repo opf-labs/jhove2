@@ -108,7 +108,6 @@ public interface Input
 	 */
 	public int getMaxBufferSize();
 	
-	
 	/** Get current position, as a byte offet.
 	 * @return Current position, as a byte offset
 	 */

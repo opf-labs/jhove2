@@ -50,35 +50,35 @@ public class NonDirectInput
 	extends AbstractInput
 {
 	/** Maximum buffer size, in bytes. */
-	protected int bufferSize;
+	protected int maxBufferSize;
 	
 	/** Instantiate a new <code>NonDirectInput</code> object.
-	 * @param file       Java {@link java.io.File} underlying the inputable
-	 * @param bufferSize Size of the direct buffer, in bytes
+	 * @param file          Java {@link java.io.File} underlying the inputable
+	 * @param maxBufferSize Size of the direct buffer, in bytes
 	 * @throws FileNotFoundException File not found 
 	 * @throws IOException           I/O exception instantiating input
 	 */
-	public NonDirectInput(File file, int bufferSize)
+	public NonDirectInput(File file, int maxBufferSize)
 		throws FileNotFoundException, IOException
 	{
-		super(file, ByteOrder.LITTLE_ENDIAN);
+		this(file, maxBufferSize, ByteOrder.LITTLE_ENDIAN);
 	}
 	
 	/** Instantiate a new <code>NonDirectInput</code> object.
-	 * @param file       Java {@link java.io.File} underlying the inputable
-	 * @param bufferSize Size of the direct buffer, in bytes
-	 * @param order      Byte order of the underlying buffer	
+	 * @param file          Java {@link java.io.File} underlying the inputable
+	 * @param maxBufferSize Size of the direct buffer, in bytes
+	 * @param order         Byte order of the underlying buffer	
 	 * @throws FileNotFoundException File not found 
 	 * @throws IOException           I/O exception instantiating input
 	 */
-	public NonDirectInput(File file, int bufferSize, ByteOrder order)
+	public NonDirectInput(File file, int maxBufferSize, ByteOrder order)
 		throws FileNotFoundException, IOException
 	{
 		super(file, order);
 		
 		/* Allocate direct buffer and initialize it. */
-		this.bufferSize = bufferSize;
-		this.buffer = ByteBuffer.allocate(this.bufferSize).order(order);
+		this.maxBufferSize = maxBufferSize;
+		this.buffer = ByteBuffer.allocate(this.maxBufferSize).order(order);
 		getNextBuffer();
 	}
 
@@ -88,6 +88,6 @@ public class NonDirectInput
 	 * @Override
 	 */
 	public int getMaxBufferSize() {
-		return this.bufferSize;
+		return this.maxBufferSize;
 	}
 }
