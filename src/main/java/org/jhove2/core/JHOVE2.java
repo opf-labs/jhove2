@@ -85,7 +85,7 @@ public class JHOVE2
 	public static final String VERSION = "2.0.0";
 
 	/** Framework release date. */
-	public static final String RELEASE = "2009-07-31";
+	public static final String RELEASE = "2009-08-03";
 	
 	/** Framework rights statement. */
 	public static final String RIGHTS =
@@ -125,7 +125,7 @@ public class JHOVE2
 	public static final boolean DEFAULT_DELETE_TEMP_FILES = true;
 
 	/** Default {@link org.jhove2.module.display.Displayer}. */
-	public static final String DEFAULT_DISPLAYER = "TextDisplayer";
+	public static final String DEFAULT_DISPLAYER = "Text";
 	
 	/** Default fail fast limit. */
 	public static final int DEFAULT_FAIL_FAST_LIMIT = 0;
@@ -564,18 +564,9 @@ public class JHOVE2
 			}
 		}
 		else if (value instanceof Reportable) {
-			String reportableName = value.getClass().getSimpleName();
-			/* If the reportable name is the same as the property name,
-			 * collapse the hierarchy.
-			 */
-			if (name.equals(reportableName)) {
-				display(out, (Reportable) value, level+1, order);
-			}
-			else {
-				this.displayer.startReportable(out, level+1, name, identifier, order);
-				display(out, (Reportable) value, level+2, 0);
-				this.displayer.endReportable(out, level+1, name, identifier);
-			}
+			this.displayer.startReportable(out, level+1, name, identifier, order);
+			display(out, (Reportable) value, level+2, 0);
+			this.displayer.endReportable(out, level+1, name, identifier);
 		}
 		else {
 			if (value instanceof Date) {
@@ -670,7 +661,7 @@ public class JHOVE2
 	 * @return Framework characterizer module
 	 */
 	@ReportableProperty(order=31, value="Framework characterizer module.")
-	public Characterizer getCharacterizerModule() {
+	public Characterizer getCharacterizer() {
 		return this.characterizer;
 	}
 	
@@ -685,7 +676,7 @@ public class JHOVE2
 	 * @return Framework dispatch module
 	 */
 	@ReportableProperty(order=32, value="Framework dispatcher module.")
-	public Dispatcher getDispatcherModule() {
+	public Dispatcher getDispatcher() {
 		return this.dispatcher;
 	}
 	
@@ -693,7 +684,7 @@ public class JHOVE2
 	 * @return Framework displayer module
 	 */
 	@ReportableProperty(order=33, value="Framework displayer module.")
-	public Displayer getDisplayerModule() {
+	public Displayer getDisplayer() {
 		return this.displayer;
 	}
 	
@@ -891,7 +882,7 @@ public class JHOVE2
 	 * module.
 	 * @param characterizer Framework characterizer module
 	 */
-	public void setCharacterizerModule(Characterizer characterizer) {
+	public void setCharacterizer(Characterizer characterizer) {
 		this.characterizer = characterizer;
 	}
 
@@ -905,14 +896,14 @@ public class JHOVE2
 	/** Set framework dispatcher module.
 	 * @param dispatcher Framework dispatcher module
 	 */
-	public void setDispatcherModule(Dispatcher dispatcher) {
+	public void setDispatcher(Dispatcher dispatcher) {
 		this.dispatcher = dispatcher;
 	}
 	
 	/** Set framework displayer module.
 	 * @param displayer Framework displayer module
 	 */
-	public void setDisplayerModule(Displayer displayer) {
+	public void setDisplayer(Displayer displayer) {
 		this.displayer = displayer;
 	}
 	

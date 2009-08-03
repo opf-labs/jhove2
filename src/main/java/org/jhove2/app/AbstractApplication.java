@@ -78,7 +78,7 @@ public abstract class AbstractApplication
 	protected int failFastLimit;
 
 	/** Application framework. */
-	protected JHOVE2 jhove2;
+	protected JHOVE2 framework;
 	
 	/** File system path names. */
 	protected List<String> names;
@@ -195,11 +195,11 @@ public abstract class AbstractApplication
 	
 	/** Get application framework.
 	 * @return Application framework
-	 * @see org.jhove2.app.Application#getJHOVE2()
+	 * @see org.jhove2.app.Application#getFramework()
 	 */
 	@Override
-	public JHOVE2 getJHOVE2() {
-		return this.jhove2;
+	public JHOVE2 getFramework() {
+		return this.framework;
 	}
 
 	/** Get output file.
@@ -257,11 +257,11 @@ public abstract class AbstractApplication
 	}
 	
 	/** Set application framework.
-	 * @param jhove2 Application framework
+	 * @param framework Application framework
 	 * @see org.jhove2.app.Application#setJHOVE2()
 	 */
 	@Override
-	public void setJHOVE2(JHOVE2 jhove2) {
-		this.jhove2 = jhove2;
+	public void setJHOVE2(JHOVE2 framework) {
+		this.framework = framework;
 	}
 }

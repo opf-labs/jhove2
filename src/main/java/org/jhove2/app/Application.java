@@ -83,8 +83,8 @@ public interface Application
 	 */
 	public boolean getDeleteTempFiles();
 	
-	/** Get {@link org.jhove2.core.Displayeble}.
-	 * @return AbstractDisplayer
+	/** Get {@link org.jhove2.core.Displayable} name.
+	 * @return Displayer
 	 */
 	public String getDisplayer();
 	
@@ -97,7 +97,7 @@ public interface Application
 	 * @return Application framework
 	 */
 	@ReportableProperty(order=5, value="Application framework.")
-	public JHOVE2 getJHOVE2();
+	public JHOVE2 getFramework();
 
 	/** Get output file.
 	 * @return Output file, or null if no file is specified

@@ -14,8 +14,8 @@
 
 	<!-- JHOVE2 framework bean -->
 	<bean id="JHOVE2" class="org.jhove2.core.JHOVE2" scope="prototype">
-		<property name="characterizerModule" ref="CharacterizerModule"/>
-		<property name="dispatcherModule" ref="DispatcherModule"/>
+		<property name="characterizer" ref="CharacterizerModule"/>
+		<property name="dispatcher" ref="DispatcherModule"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
@@ -162,7 +162,7 @@
 	      
 	      
  	<!-- JSON displayer bean -->
-	<bean id="JSONDisplayer" class="org.jhove2.module.display.JSONDisplayer"
+	<bean id="JSON" class="org.jhove2.module.display.JSONDisplayer"
 	      scope="prototype">
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
@@ -174,7 +174,7 @@
 	</bean>
 	      	
  	<!-- Text displayer bean -->
-	<bean id="TextDisplayer" class="org.jhove2.module.display.TextDisplayer"
+	<bean id="Text" class="org.jhove2.module.display.TextDisplayer"
 	      scope="prototype">
 	    <property name="showIdentifiers" value="false"/>
 		<property name="developers">
@@ -187,7 +187,7 @@
 	</bean>
 	      	
  	<!-- XML displayer bean -->
-	<bean id="XMLDisplayer" class="org.jhove2.module.display.XMLDisplayer"
+	<bean id="XML" class="org.jhove2.module.display.XMLDisplayer"
 	      scope="prototype">
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">

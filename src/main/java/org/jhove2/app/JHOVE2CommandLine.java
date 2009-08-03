@@ -129,7 +129,7 @@ public class JHOVE2CommandLine
 						this.commandLine += " " + args[i];
 					}
 					else if (opt == 'd' && i+1 < args.length) {
-						this.displayer = args[++i] + "Displayer";
+						this.displayer = args[++i];
 						this.commandLine += " " + args[i];
 					}
 					else if (opt == 'f' && i+1 < args.length) {
