@@ -129,7 +129,7 @@ public class UTF8Character
 	/** Parse a source unit input.  Implicitly set the start and end elapsed
 	 * time.
 	 * @param jhove2 JHOVE2 framework
-	 * @param source Source unit
+	 * @param input Input
 	 * @return Number of bytes consumed
 	 * @throws EOFException    If End-of-File is reached reading the source unit
 	 * @throws IOException     If an I/O exception is raised reading the source
@@ -253,10 +253,9 @@ public class UTF8Character
 		return consumed;
 	}
 
-	/** Validate a source unit.  Implicitly set the starting and ending elapsed
-	 * time.
+	/** Validate a source unit.
 	 * @param jhove2 JHOVE2 framework
-	 * @param source Source unit
+	 * @return Source unit validity
 	 */
 	public Validity validate(JHOVE2 jhove2) {
 		return this.isValid;
@@ -272,7 +271,7 @@ public class UTF8Character
 
 	/** Determine line ending characters.
 	 * @param prevCodePoint Previous character code point
-	 * @param currChar Current character code point
+	 * @param codePoint     Current character code point
 	 * @return The line ending characters (CR, LF, or CRLF) or null if not at
 	 *         a line ending
 	 */

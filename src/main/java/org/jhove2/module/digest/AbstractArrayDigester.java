@@ -48,6 +48,7 @@ public abstract class AbstractArrayDigester
 	protected String algorithm;
 	
 	/** Instantiate a new <code>AbstractArrayDigester</code>.
+	 * @param algorithm Message digest algorithm
 	 */
 	public AbstractArrayDigester(String algorithm) {
 		this.algorithm = algorithm;

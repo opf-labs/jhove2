@@ -57,6 +57,8 @@ public abstract class AbstractBufferDigester
 	protected MessageDigest digester;
 	
 	/** Instantiate a new <code>AbstractBufferDigester</code>
+	 * @param algorithm Message digest algorithm
+	 * @throws NoSuchAlgorithmException No such algorithm
 	 */
 	public AbstractBufferDigester(String algorithm)
 		throws NoSuchAlgorithmException

@@ -55,6 +55,7 @@ public interface Digester
 	/** Calculate message digests for a source unit.
 	 * @param jhove2 JHOVE2 framework
 	 * @param source Source unit
+	 * @throws IOException I/O exception calculating message digests
 	 */
 	public void digest(JHOVE2 jhove2, Source source)
 		throws IOException;

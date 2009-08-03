@@ -83,7 +83,7 @@ public class TextDisplayer
 	 * @param order      Ordinal position of this reportable with respect to
 	 *                   enclosing {@link org.jhove2.core.Reportable} or
 	 *                   collection
-	 * @see org.jhove2.module.display.Displayer#startReportable(java.io.PrintStream, java.lang.String, org.jhove2.core.I8R, int, boolean)
+	 * @see org.jhove2.module.display.Displayer#startReportable(java.io.PrintStream, int, java.lang.String, org.jhove2.core.I8R, int)
 	 */
 	@Override
 	public void startReportable(PrintStream out, int level, String name,
@@ -107,7 +107,7 @@ public class TextDisplayer
 	 * @param order      Ordinal position of this reportable with respect to
 	 *                   enclosing {@link org.jhove2.core.Reportable} or
 	 *                   collection
-	 * @see org.jhove2.module.display.Displayer#startCollection(java.io.PrintStream, int, java.lang.String, org.jhove2.core.I8R, int, boolean)
+	 * @see org.jhove2.module.display.Displayer#startCollection(java.io.PrintStream, int, java.lang.String, org.jhove2.core.I8R, int, int)
 	 */
 	@Override
 	public void startCollection(PrintStream out, int level, String name,
@@ -131,7 +131,7 @@ public class TextDisplayer
 	 * @param order      Ordinal position of this reportable with respect to
 	 *                   enclosing {@link org.jhove2.core.Reportable} or
 	 *                   collection
-	 * @see org.jhove2.module.display.Displayer#displayProperty(java.io.PrintStream, int, java.lang.String, org.jhove2.core.I8R, java.lang.Object, boolean)
+	 * @see org.jhove2.module.display.Displayer#displayProperty(java.io.PrintStream, int, java.lang.String, org.jhove2.core.I8R, java.lang.Object, int)
 	 */
 	@Override
 	public void displayProperty(PrintStream out, int level, String name,
@@ -152,7 +152,7 @@ public class TextDisplayer
 	 * @param name       Property collection name
 	 * @param identifier Property identifier in the JHOVE2 namespace
 	 * @param size       Property collection size
-	 * @see org.jhove2.module.display.Displayer#endCollection(java.io.PrintStream, java.lang.String, org.jhove2.core.I8R, int)
+	 * @see org.jhove2.module.display.Displayer#endCollection(java.io.PrintStream, int, java.lang.String, org.jhove2.core.I8R, int)
 	 */
 	@Override
 	public void endCollection(PrintStream out, int level, String name,
@@ -164,7 +164,7 @@ public class TextDisplayer
 	 * @param level      Nesting level
 	 * @param name       Reportable name
 	 * @param identifier Reportable in the JHOVE2 namespace
-	 * @see org.jhove2.module.display.Displayer#endReportable(java.io.PrintStream, java.lang.String, org.jhove2.core.I8R)
+	 * @see org.jhove2.module.display.Displayer#endReportable(java.io.PrintStream, int, java.lang.String, org.jhove2.core.I8R)
 	 */
 	@Override
 	public void endReportable(PrintStream out, int level, String name,

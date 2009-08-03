@@ -44,49 +44,62 @@ import java.util.List;
  * 
  * @author mstrong, slabrams
  */
-public abstract class AbstractProduct
+public class AbstractProduct
 	implements Product
 {
-	/** AbstractProduct developers. */
+	/** Product developers. */
 	protected List<Agent> developers;
 	
-	/** AbstractProduct informative note. */
+	/** Product name, based on the simple class name. */
+	protected String name;
+	
+	/** Product informative note. */
 	protected String note;
 	
-	/** AbstractProduct release date in ISO 8601 form: "YYYY-MM-DD". */
+	/** Product release date in ISO 8601 form: "YYYY-MM-DD". */
 	protected String date;
 	
-	/** AbstractProduct rights statement. */
+	/** Product rights statement. */
 	protected String rights;
 
-	/** AbstractProduct version identifier in three-part form: "M.N.P". */
+	/** Product version identifier in three-part form: "M.N.P". */
 	protected String version;
 	
 	/** Instantiate a new <code>AbstractProduct</code>.
-	 * @oaran version AbstractProduct version identifier in three-part form: "M.N.P"
-	 * @param date    AbstractProduct release date in ISO 8601 format: "YYYY-MM-DD"
-	 * @param rights  AbstractProduct rights statement
+	 * @param version Product version identifier in three-part form: "M.N.P"
+	 * @param date    Product release date in ISO 8601 format: "YYYY-MM-DD"
+	 * @param rights  Product rights statement
 	 */
 	public AbstractProduct(String version, String date, String rights) {
 		this.version = version;
 		this.date    = date;
 		this.rights  = rights;
 		
-		this.developers  = new ArrayList<Agent>();
+		this.developers = new ArrayList<Agent>();
+		this.name       = this.getClass().getSimpleName();
 	}
 
 	/** Get product developers.
-	 * @return AbstractProduct developers
-	 * @see org.jhove2.core.AbstractProduct#getDevelopers()
+	 * @return Product developers
+	 * @see org.jhove2.core.Product#getDevelopers()
 	 */
 	@Override
 	public List<Agent> getDevelopers() {
 		return this.developers;
 	}
-
+	
+	/** Get product name, based on the class simple name.
+	 * @return Product name
+	 * @see org.jhove2.core.Product#getName()
+	 */
+	@Override
+	public String getName() {
+		return this.name;
+	}
+	
 	/** Get product informative note.
-	 * @return AbstractProduct informative note
-	 * @see org.jhove2.core.AbstractProduct#getNote()
+	 * @return Product informative note
+	 * @see org.jhove2.core.Product#getNote()
 	 */
 	@Override
 	public String getNote() {
@@ -94,8 +107,8 @@ public abstract class AbstractProduct
 	}
 
 	/** Get product release date.
-	 * @return AbstractProduct release date
-	 * @see org.jhove2.core.AbstractProduct#getReleaseDate()
+	 * @return Product release date
+	 * @see org.jhove2.core.Product#getReleaseDate()
 	 */
 	@Override
 	public String getReleaseDate() {
@@ -103,8 +116,8 @@ public abstract class AbstractProduct
 	}
 
 	/** Get product rights statement.
-	 * @return AbstractProduct rights statement
-	 * @see org.jhove2.core.AbstractProduct#getRightsStatement()
+	 * @return Product rights statement
+	 * @see org.jhove2.core.Product#getRightsStatement()
 	 */
 	@Override
 	public String getRightsStatement() {
@@ -112,8 +125,8 @@ public abstract class AbstractProduct
 	}
 
 	/** Get product version.
-	 * @return AbstractProduct version
-	 * @see org.jhove2.core.AbstractProduct#getVersion()
+	 * @return Product version
+	 * @see org.jhove2.core.Product#getVersion()
 	 */
 	@Override
 	public String getVersion() {
@@ -121,21 +134,21 @@ public abstract class AbstractProduct
 	}
 	
 	/** Add product developer.
-	 * @param developer AbstractProduct developer
+	 * @param developer Product developer
 	 */
 	public void setDeveloper(Agent developer) {
 		this.developers.add(developer);
 	}
 	
 	/** Add product developers.
-	 * @param developer AbstractProduct developers
+	 * @param developers Product developers
 	 */
 	public void setDevelopers(List<Agent> developers) {
 		this.developers.addAll(developers);
 	}
 	
 	/** Set product informative note.
-	 * @param note AbstractProduct informative note
+	 * @param note Product informative note
 	 */
 	public void setNote(String note) {
 		this.note = note;

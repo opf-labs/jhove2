@@ -255,7 +255,7 @@ public class UTF8Module
 	 * @param jhove2 JHOVE2 framework
 	 * @param source UTF-8 source unit
 	 * @return UTF-8 validation status
-	 * @see org.jhove2.module.format.Validator#validate(org.jhove2.core.JHOVE2)
+	 * @see org.jhove2.module.format.Validator#validate(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
 	 */
 	@Override
 	public Validity validate(JHOVE2 jhove2, Source source) {

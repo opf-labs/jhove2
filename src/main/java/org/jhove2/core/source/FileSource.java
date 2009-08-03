@@ -80,6 +80,8 @@ public class FileSource
 	
 	/** Instantiate a new <code>FileSource</code>.
 	 * @param pathName File path name
+	 * @throws FileNotFoundException File not found
+	 * @throws IOException           I/O exception instantiating source
 	 */
 	public FileSource(String pathName)
 		throws FileNotFoundException, IOException
@@ -129,6 +131,8 @@ public class FileSource
 	 * @param bufferSize Buffer size
 	 * @param bufferType Buffer type
 	 * @return Input for the source unit
+	 * @throws FileNotFoundException File not found
+	 * @throws IOException           I/O exception getting input
 	 */
 	public Input getInput(int bufferSize, Type bufferType)
 		throws FileNotFoundException, IOException

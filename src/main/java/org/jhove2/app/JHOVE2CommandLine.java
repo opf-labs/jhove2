@@ -167,6 +167,7 @@ public class JHOVE2CommandLine
 
 	/** Get application usage statement.
 	 * @return Application usage statement
+	 * @throws JHOVE2Exception 
 	 */
 	public static String getUsage()
 		throws JHOVE2Exception

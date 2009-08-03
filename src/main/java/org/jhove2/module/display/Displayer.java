@@ -54,7 +54,7 @@ public interface Displayer
 	 */
 	public void startDisplay(PrintStream out, int level);
 	
-	/** Start the display of a {@link org.jhove2.Reportable}.
+	/** Start the display of a {@link org.jhove2.core.Reportable}.
 	 * @param out        Print stream
 	 * @param level      Nesting level
 	 * @param name       Reportable name
@@ -73,7 +73,7 @@ public interface Displayer
 	 * @param identifier Property collection identifier in the JHOVE2 namespace
 	 * @param size       Property collection size
 	 * @param order      Ordinal position of this property collection with
-	 *                   respect to its enclosing {@link org.jhove2.core.Reportable)
+	 *                   respect to its enclosing {@link org.jhove2.core.Reportable}
 	 *                   or collection
 	 */
 	public void startCollection(PrintStream out, int level, String name,

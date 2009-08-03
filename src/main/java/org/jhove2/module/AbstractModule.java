@@ -62,7 +62,7 @@ public abstract class AbstractModule
 	protected Product wrappedProduct;
 	
 	/** Instantiate a new <code>AbstractModule</code>.
-	 * @oaran version Module version identifier in three-part form: "M.N.P"
+	 * @param version Module version identifier in three-part form: "M.N.P"
 	 * @param release Module release date in ISO 8601 format: "YYYY-MM-DD"
 	 * @param rights  Module rights statement
 	 */
@@ -110,7 +110,7 @@ public abstract class AbstractModule
 	 * to the time already accounted for by an earlier abstractApplication of the
 	 * setEndTime() method.
 	 * @return Current time minus the elapsed time, in milliseconds
-	 * @see org.jhove2.core.Temporal#setReStartTime()
+	 * @see org.jhove2.core.Temporal#setRestartTime()
 	 */
 	public long setRestartTime() {
 		if (this.endTime == Duration.UNINITIALIZED) {

@@ -251,6 +251,8 @@ public class JHOVE2
 	/** Characterize file system objects (files and directories).
 	 * @param pathName  First path name
 	 * @param pathNames Remaining path names
+	 * @throws IOException 
+	 * @throws JHOVE2Exception 
 	 */
 	public void characterize(String pathName, String... pathNames)
 		throws IOException, JHOVE2Exception
@@ -267,6 +269,8 @@ public class JHOVE2
 	
 	/** Characterize file system objects (files and directories).
 	 * @param pathNames File system path names
+	 * @throws IOException 
+	 * @throws JHOVE2Exception 
 	 */
 	public void characterize(List<String> pathNames)
 		throws IOException, JHOVE2Exception
@@ -854,7 +858,7 @@ public class JHOVE2
 	 */
 	public void setApplication(Application app) {
 		this.app = app;
-		this.app.setJHOVE2(this);
+		this.app.setFramework(this);
 	}
 	
 	/** Set {@link org.jhove2.core.io.Input} buffer size.
@@ -878,7 +882,7 @@ public class JHOVE2
 		this.calcDigests = flag;
 	}
 	
-	/** Set framework {@link org.jhove.module.characterize.Characterizer}
+	/** Set framework {@link org.jhove2.module.characterize.Characterizer}
 	 * module.
 	 * @param characterizer Framework characterizer module
 	 */

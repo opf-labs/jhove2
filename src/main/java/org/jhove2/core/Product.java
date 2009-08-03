@@ -52,30 +52,36 @@ public interface Product
 	 * @return Product developers
 	 * @see org.jhove2.core.AbstractProduct#getDevelopers()
 	 */
-	@ReportableProperty(order=3, value="AbstractProduct developers.")
+	@ReportableProperty(order=4, value="Product developers.")
 	public List<Agent> getDevelopers();
+	
+	/** Get product name.
+	 * @return Product name
+	 */
+	@ReportableProperty(order=1, value="Product name.")
+	public String getName();
 	
 	/** Get product informative note.
 	 * @return Product informative note
 	 */
-	@ReportableProperty(order=5, value="AbstractProduct informative note.")
+	@ReportableProperty(order=6, value="Product informative note.")
 	public String getNote();
 
 	/** Get product release date.
 	 * @return Product release date
 	 */
-	@ReportableProperty(order=2, value="AbstractProduct release date.")
+	@ReportableProperty(order=3, value="Product release date.")
 	public String getReleaseDate();
 
 	/** Get product rights statement.
 	 * @return Product rights statement
 	 */
-	@ReportableProperty(order=4, value="AbstractProduct rights statement.")
+	@ReportableProperty(order=5, value="AbstractProduct rights statement.")
 	public String getRightsStatement();
 
 	/** Get product version.
 	 * @return Product version
 	 */
-	@ReportableProperty(order=1, value="AbstractProduct version identifier.")
+	@ReportableProperty(order=2, value="Product version identifier.")
 	public String getVersion();
 }

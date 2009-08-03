@@ -83,6 +83,8 @@ public abstract class AbstractInput
 
 	/** Instantiate a new <code>AbstractInput</code>.
 	 * @param file Java {@link java.io.File} underlying the inputable
+	 * @throws FileNotFoundException File not found
+	 * @throws IOException           I/O exception instantiating input
 	 */
 	public AbstractInput(File file)
 		throws FileNotFoundException, IOException
@@ -94,6 +96,8 @@ public abstract class AbstractInput
 	/** Instantiate a new <code>AbstractInput</code>.
 	 * @param file  Java {@link java.io.File} underlying the inputable
 	 * @param order Byte order
+	 * @throws FileNotFoundException File not found
+	 * @throws IOException           I/O exception instantiating input
 	 */
 	public AbstractInput(File file, ByteOrder order)
 		throws FileNotFoundException, IOException
@@ -239,7 +243,7 @@ public abstract class AbstractInput
 	/** Get signed byte at the current position.  This implicitly advances
 	 * the current position by one byte.
 	 * @return Signed byte at the current position, or -1 if EOF
-	 * @see org.jhove2.core.io.Input#getSignedByte()
+	 * @see org.jhove2.core.io.Input#readSignedByte()
 	 */
 	@Override
 	public byte readSignedByte()
@@ -259,7 +263,7 @@ public abstract class AbstractInput
 	/** Get unsigned (four byte) integer at the current position.  This
 	 * implicitly advances the current position by four bytes.
 	 * @return Unsigned short integer at the current position, or -1 if EOF
-	 * @see org.jhove2.core.io.Input#getUnsignedInt()
+	 * @see org.jhove2.core.io.Input#readUnsignedInt()
 	 */
 	@Override
 	public int readSignedInt()
@@ -305,6 +309,11 @@ public abstract class AbstractInput
 		return in;
 	}
 	
+	/** Get signed long integer at the current position.  This
+	 * implicitly advances the current position by eight bytes.
+	 * @return Unsigned short integer at the current position, or -1 if EOF
+	 * @see org.jhove2.core.io.Input#readSignedLong()
+	 */
 	@Override
 	public long readSignedLong() throws IOException {
 		long in = 0;
@@ -346,9 +355,12 @@ public abstract class AbstractInput
 		
 		return in;
 	}
-
 	
-
+	/** Get signed (short integer at the current position.  This
+	 * implicitly advances the current position by two bytes.
+	 * @return Unsigned short integer at the current position, or -1 if EOF
+	 * @see org.jhove2.core.io.Input#readSignedShort()
+	 */
 	@Override
 	public short readSignedShort() throws IOException {
 		{
@@ -396,7 +408,7 @@ public abstract class AbstractInput
 	/** Get unsigned byte at the current position.  This implicitly advances
 	 * the current position by one byte.
 	 * @return Unsigned byte at the current position, or -1 if EOF
-	 * @see org.jhove2.core.io.Input#getUnsignedByte()
+	 * @see org.jhove2.core.io.Input#readUnsignedByte()
 	 */
 	@Override
 	public short readUnsignedByte()
@@ -417,7 +429,7 @@ public abstract class AbstractInput
 	/** Get unsigned (four byte) integer at the current position.  This
 	 * implicitly advances the current position by four bytes.
 	 * @return Unsigned short integer at the current position, or -1 if EOF
-	 * @see org.jhove2.core.io.Input#getUnsignedInt()
+	 * @see org.jhove2.core.io.Input#readUnsignedInt()
 	 */
 	@Override
 	public long readUnsignedInt()
@@ -464,11 +476,10 @@ public abstract class AbstractInput
 		return in;
 	}
 
-
 	/** Get unsigned short (two byte) integer at the the current position.  This
 	 * implicitly advances the current position by two bytes.
 	 * @return Unsigned integer at the current position, or -1 if EOF
-	 * @see org.jhove2.core.io.Input#getUnsignedShort()
+	 * @see org.jhove2.core.io.Input#readUnsignedShort()
 	 */
 	@Override
 	public int readUnsignedShort()

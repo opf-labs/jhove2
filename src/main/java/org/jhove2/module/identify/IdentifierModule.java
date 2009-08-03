@@ -93,7 +93,7 @@ public class IdentifierModule
 	 * @throws IOException     I/O exception encountered identifying the
 	 *                         source unit
 	 * @throws JHOVE2Exception
-	 * @see org.jhove2.module.identify.Identifiler#identify(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
+	 * @see org.jhove2.module.identify.Identifier#identify(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
 	 */
 	@Override
 	public Set<FormatIdentification> identify(JHOVE2 jhove2, Source source)

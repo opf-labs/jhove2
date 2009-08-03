@@ -46,7 +46,6 @@ public class ClumpSource
 	implements AggregateSource
 {
 	/** Instantiate a new <code>ClumpSource</code>.
-	 * @param jhove2 JHOVE2 framework
 	 */
 	public ClumpSource() {
 		super();

@@ -74,16 +74,14 @@ public class ReportableInfo {
 	
 	/** Instantiate a new <code>ReportableInfo</code> utility.
 	 * @param reportable Reportable
-	 * @param mode       Information mode
 	 */
-	public ReportableInfo(Reportable reportable) //, Mode mode)
+	public ReportableInfo(Reportable reportable)
 	{
-		this(reportable.getClass()); //, mode);
+		this(reportable.getClass());
 	}
 
 	/** Instantiate a new <code>ReportableInfo</code> utility.
 	 * @param cl   Reportable class
-	 * @param mode Information mode
 	 */
 	public ReportableInfo(Class<? extends Reportable> cl) {
 		this.name  = cl.getSimpleName();

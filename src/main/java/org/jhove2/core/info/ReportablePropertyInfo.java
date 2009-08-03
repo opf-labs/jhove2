@@ -109,7 +109,7 @@ public class ReportablePropertyInfo {
 	}
 	
 	/** Get method defining the property.
-	 * @param Method defining the property
+	 * @return Method defining the property
 	 */
 	public Method getMethod() {
 		return this.method;

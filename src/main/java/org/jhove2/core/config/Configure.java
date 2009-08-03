@@ -56,6 +56,7 @@ public class Configure {
 	protected static ApplicationContext context;
 	
 	/** Get reportable by bean name.
+	 * @param <R>  Parameter type of the reportable
 	 * @param cl   Reportable class
 	 * @param name Reportable bean name
 	 * @return Reportable
@@ -79,6 +80,7 @@ public class Configure {
 	}
 	
 	/** Get reportable class by bean name.
+	 * @param <R>  Parameter type of the reportable
 	 * @param cl   Reportable class (or super class)
 	 * @param name Reportable bean name
 	 * @return Reportable
@@ -102,7 +104,7 @@ public class Configure {
 	}
 	
 	/** Get reportable names by type.
-	 * @param type Reportable type
+	 * @param reportable Reportable class
 	 * @return Reportable names
 	 * @throws JHOVE2Exception 
 	 */
@@ -128,6 +130,7 @@ public class Configure {
 	/** Get Java properties from a named properties file.
 	 * @param name Properties file base name, i.e., without an extension
 	 * @return Java properties
+	 * @throws JHOVE2Exception 
 	 */
 	public static synchronized Properties getProperties(String name)
 		throws JHOVE2Exception

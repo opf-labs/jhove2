@@ -91,7 +91,7 @@ public class AggrefierModule
 	 * @throws IOException     I/O exception encountered identifying the
 	 *                         source unit
 	 * @throws JHOVE2Exception
-	 * @see org.jhove2.module.identify.Identifier#identify(org.jhove2.core.JHOVE2, org.jhove2.core.source.AggregateSource)
+	 * @see org.jhove2.module.identify.Aggrefier#identify(org.jhove2.core.JHOVE2, org.jhove2.core.source.AggregateSource)
 	 */
 	@Override
 	public Set<FormatIdentification> identify(JHOVE2 jhove2, AggregateSource source)

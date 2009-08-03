@@ -85,7 +85,8 @@ public class DigesterModule
 	/** Calculate message digests for the source unit.
 	 * @param jhove2 JHOVE2 framework
 	 * @param source Source unit
-	 * @see org.jhove2.module.digest.Digester#digest(org.jhove2.core.JHOVE2, org.jhove2.core.io.Input)
+	 * @see org.jhove2.module.digest.Digester#digest(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
+	 * @throws IOException I/O exception calculating message digests
 	 */
 	@Override
 	public void digest(JHOVE2 jhove2, Source source)

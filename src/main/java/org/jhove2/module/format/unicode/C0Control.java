@@ -118,12 +118,16 @@ public class C0Control
 		return controls;
 	}
 	
-	/** Get the control code point. */
+	/** Get the control character code point.
+	 * @return Control character code point
+	 */
 	public int getCodePoint() {
 		return this.codePoint;
 	}
 	
-	/** Get the control mnemonic. */
+	/** Get the control character mnemonic.
+	 * @return Control character mnemonic
+	 */
 	public String getMnemonic() {
 		return this.mnemonic;
 	}

@@ -140,8 +140,7 @@ public class DispatcherModule
 	/** Dispatch a source unit to a module, adding the module to the source.
 	 * @param jhove2 JHOVE2 framework
 	 * @param source Source unit
-	 * @param Module Module
-	 * @return Module
+	 * @param module Module
 	 * @throws EOFException    End-of-file encountered parsing the source unit
 	 * @throws IOException     I/O exception encountered parsing the source unit
 	 * @throws JHOVE2Exception 
@@ -156,12 +155,12 @@ public class DispatcherModule
 	/** Dispatch a source unit to a module.
 	 * @param jhove2      JHOVE2 framework
 	 * @param source      Source unit
-	 * @param Module      Module
+	 * @param module      Module
 	 * @param disposition Module disposition
 	 * @throws EOFException    End-of-file encountered parsing the source unit
 	 * @throws IOException     I/O exception encountered parsing the source unit
 	 * @throws JHOVE2Exception 
-	 * @see org.jhove2.module.dispatch.Dispatcher#dispatch(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source, org.jhove2.module.Module, org.jhove2.module.dispatch.Disposition)
+	 * @see org.jhove2.module.dispatch.Dispatcher#dispatch(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source, org.jhove2.module.Module, org.jhove2.module.dispatch.Dispatcher.Disposition)
 	 */
 	public void dispatch(JHOVE2 jhove2, Source source, Module module,
 			             Disposition disposition)

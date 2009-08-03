@@ -94,6 +94,8 @@ public class Format
 	/** Instantiate a new <code>Format</code>.
 	 * @param name       Format canonical name
 	 * @param identifier Format canonical identifier
+	 * @param type       Format type
+	 * @param ambiguity  Format ambiguity
 	 */
 	public Format(String name, I8R identifier, Type type,
 			      Ambiguity ambiguity) {
@@ -240,7 +242,7 @@ public class Format
 	}
 
 	/** Add a List of format specifications.
-	 * @param specification Format specifications
+	 * @param specifications Format specifications
 	 */
 	public void setSpecifications(List<Document> specifications) {
 		this.specifications.addAll(specifications);

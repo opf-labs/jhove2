@@ -55,6 +55,8 @@ public class NonDirectInput
 	/** Instantiate a new <code>NonDirectInput</code> object.
 	 * @param file       Java {@link java.io.File} underlying the inputable
 	 * @param bufferSize Size of the direct buffer, in bytes
+	 * @throws FileNotFoundException File not found 
+	 * @throws IOException           I/O exception instantiating input
 	 */
 	public NonDirectInput(File file, int bufferSize)
 		throws FileNotFoundException, IOException
@@ -66,6 +68,8 @@ public class NonDirectInput
 	 * @param file       Java {@link java.io.File} underlying the inputable
 	 * @param bufferSize Size of the direct buffer, in bytes
 	 * @param order      Byte order of the underlying buffer	
+	 * @throws FileNotFoundException File not found 
+	 * @throws IOException           I/O exception instantiating input
 	 */
 	public NonDirectInput(File file, int bufferSize, ByteOrder order)
 		throws FileNotFoundException, IOException

@@ -36,10 +36,7 @@
 
 package org.jhove2.module.digest;
 
-import java.nio.ByteBuffer;
 import java.security.NoSuchAlgorithmException;
-
-import org.jhove2.core.Digest;
 
 /** JHOVE2 MD2 message digester.  The MD2 algorithm is defined by RFC 1319.
  * 
@@ -59,23 +56,4 @@ public class MD2Digester
 	{
 		super(ALGORITHM);
 	}
-
-	/* (non-Javadoc)
-	 * @see org.jhove2.module.digest.BufferDigester#update(java.nio.ByteBuffer)
-	 */
-	@Override
-	public void update(ByteBuffer buffer) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/* (non-Javadoc)
-	 * @see org.jhove2.module.digest.DigesterAlgorithm#getDigest()
-	 */
-	@Override
-	public Digest getDigest() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

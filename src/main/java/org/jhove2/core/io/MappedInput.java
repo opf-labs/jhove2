@@ -58,6 +58,8 @@ public class MappedInput
 	/** Instantiate a new <code>MappedInput</code> object.
 	 * @param file       Java {@link java.io.File} underlying the inputable
 	 * @param bufferSize Size of the mapped byte buffer, in bytes
+	 * @throws FileNotFoundException File not found 
+	 * @throws IOException           I/O exception instantiating input
 	 */
 	public MappedInput(File file, int bufferSize)
 		throws FileNotFoundException, IOException
@@ -69,6 +71,8 @@ public class MappedInput
 	 * @param file       Java {@link java.io.File} underlying the inputable
 	 * @param bufferSize Size of the mapped byte buffer, in bytes
 	 * @param order      Byte order
+	 * @throws FileNotFoundException File not found 
+	 * @throws IOException           I/O exception instantiating input
 	 */
 	public MappedInput(File file, int bufferSize, ByteOrder order)
 		throws FileNotFoundException, IOException

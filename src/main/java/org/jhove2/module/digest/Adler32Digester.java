@@ -53,8 +53,7 @@ public class Adler32Digester
 	/** Alder-32 digester. */
 	protected Adler32 digester;
 	
-	/**
-	 * @param algorithm
+	/** Instantiate a new <code>Adler32</code> digester.
 	 */
 	public Adler32Digester() {
 		super(ALGORITHM);

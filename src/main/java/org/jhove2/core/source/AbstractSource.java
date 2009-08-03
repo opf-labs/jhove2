@@ -99,7 +99,6 @@ public abstract class AbstractSource
 	}
 	
 	/** Instantiate a new <code>AbstractSource</code> backed by a file.
-	 * @param jhove2 JHOVE2 framework
 	 * @param file   File underlying the source unit
 	 */
 	public AbstractSource(File file) {
@@ -223,10 +222,9 @@ public abstract class AbstractSource
 	 * method return null.
 	 * @param bufferSize Input maximum buffer size
 	 * @param bufferType Input buffer type
-	 * @return null
-	 * @throws FileNotFound
-	 * @throws IOException
-	 * @see org.jhove2.core.source.Source#getInput(int, org.jhove2.core.input.Type)
+	 * @return Input
+	 * @throws FileNotFoundException File not found
+	 * @throws IOException           I/O exception getting input
 	 */
 	@Override
 	public Input getInput(int bufferSize, Type bufferType)
@@ -245,9 +243,8 @@ public abstract class AbstractSource
 	 * @param bufferType Input buffer type
 	 * @param order      Byte order
 	 * @return null
-	 * @throws FileNotFound
-	 * @throws IOException
-	 * @see org.jhove2.core.source.Source#getInput(int, org.jhove2.core.input.Type, java.nio.ByteOrder)
+	 * @throws FileNotFoundException File not found
+	 * @throws IOException           I/O exception getting input
 	 */
 	public Input getInput(int bufferSize, Type bufferType, ByteOrder order)
 		throws FileNotFoundException, IOException
@@ -295,8 +292,9 @@ public abstract class AbstractSource
 	
 	/** Get source unit backing file temporary status.
 	 * @return True if the source unit backing file is a temporary file
-	 * @see org.jhove2.source.Source#isTemp()
+	 * @see org.jhove2.core.source.Source#isTemp()
 	 */
+	@Override
 	public boolean isTemp() {
 		return this.isTemp;
 	}
@@ -321,7 +319,7 @@ public abstract class AbstractSource
 	
 	/** Add a module that processed the source unit.
 	 * @param module Module that processed the source unit
-	 * @see org.jhove2.core.source.Source#setModule(org.jhove2.core.Processible)
+	 * @see org.jhove2.core.source.Source#setModule(org.jhove2.module.Module)
 	 */
 	@Override
 	public void setModule(Module module) {
@@ -330,7 +328,7 @@ public abstract class AbstractSource
 	
 	/** Set the end time of the elapsed duration.
 	 * @return End time, in milliseconds
-	 * @see org.jhove2.core.Temporarl#setStartTime()
+	 * @see org.jhove2.core.Temporal#setStartTime()
 	 */
 	@Override
 	public long setEndTime() {
@@ -342,7 +340,7 @@ public abstract class AbstractSource
 	 * to the time already accounted for by an earlier abstractApplication of the
 	 * setEndTime() method.
 	 * @return Current time minus the elapsed time, in milliseconds
-	 * @see org.jhove2.core.Temporal#setReStartTime()
+	 * @see org.jhove2.core.Temporal#setRestartTime()
 	 */
 	public long setRestartTime() {
 		if (this.endTime == Duration.UNINITIALIZED) {
@@ -353,7 +351,7 @@ public abstract class AbstractSource
 	
 	/** Set the start time of the elapsed duration.
 	 * @return Start time, in milliseconds
-	 * @see org.jhove2.core.Temporaral#setStartTime()
+	 * @see org.jhove2.core.Temporal#setStartTime()
 	 */
 	@Override
 	public long setStartTime() {

@@ -38,17 +38,19 @@ package org.jhove2.module.identify;
 
 import org.jhove2.core.AbstractProduct;
 
-/** JHOVE2 {@link org.jhove2.core.AbstractProduct} product information for the
- * wrapped DROID format identification tool.
+/** DROID product information.
  * 
  * @author mstrong, slabrams
  */
 public class DROID
 	extends AbstractProduct
-{	
+{
 	/** Instantiate a new <code>DROID</code> product.
+	 * @param version DROID version identifier
+	 * @param date    DROID release date
+	 * @param rights  DROID rights statement
 	 */
-	public DROID(String version, String release, String rights) {
-		super(version, release, rights);
+	public DROID(String version, String date, String rights) {
+		super(version, date, rights);
 	}
 }

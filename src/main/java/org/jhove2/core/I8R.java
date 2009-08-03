@@ -56,13 +56,13 @@ public class I8R
 	 */
 	public static final String JHOVE2_MESSAGE_INFIX = "message";
 	
-	/** JHOVE2 namespace identifier
-	 * {@link org.jhove2.annotation.ReportableProperty) infix.
+	/** JHOVE2 reportable property identifier infix
+	 * {@link org.jhove2.annotation.ReportableProperty} infix.
 	 */
 	public static final String JHOVE2_PROPERTY_INFIX = "property";
 	
-	/** JHOVE2 namespace identifier
-	 * {@link org.jhove2.annotation.Reportable} infix.
+	/** JHOVE2 reportable identifier infix
+	 * {@link org.jhove2.core.Reportable} infix.
 	 */
 	public static final String JHOVE2_REPORTABLE_INFIX = "reportable";
 	
@@ -170,7 +170,7 @@ public class I8R
 	 * @param identifier IdentifierModule to be compared
 	 * @return -1, 0, or 1 if this identifier value is less than, equal
 	 *         to, or greater than the second
-	 * @see java.lang.comparable#compareTo(Object)
+	 * @see java.lang.Comparable#compareTo(Object)
 	 */
 	@Override
 	public int compareTo(I8R identifier) {

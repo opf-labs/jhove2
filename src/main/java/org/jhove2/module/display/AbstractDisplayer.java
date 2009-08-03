@@ -65,6 +65,7 @@ public abstract class AbstractDisplayer
 	
 	/** Get indentation appropriate for a nesting level.
 	 * @param level Nesting level
+	 * @return Indentation string
 	 */
 	public static synchronized String getIndent(int level) {
 		StringBuffer indent = new StringBuffer();

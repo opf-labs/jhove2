@@ -63,7 +63,7 @@ public interface FormatModule
 	public List<FormatProfile> getProfiles();
 	
 	/** Add a format module format profile.
-	 * @param rofile Format module format profile
+	 * @param profile Format module format profile
 	 */
-	public void setProfile(FormatProfile formatProfile);
+	public void setProfile(FormatProfile profile);
 }

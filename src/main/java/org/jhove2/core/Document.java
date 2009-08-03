@@ -237,7 +237,6 @@ public class Document
 	
 	/** Set document publisher(s).
 	 * @param publisher Document publisher(s)
-	 * @see org.jhove2.core.Documentable#setPublisher(java.lang.String)
 	 */
 	public void setPublisher(String publisher) {
 		this.publisher = publisher;

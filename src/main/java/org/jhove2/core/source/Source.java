@@ -107,6 +107,7 @@ public interface Source
 	
 	/** Get {@link java.io.InputStream} backing the source unit
 	 * @return Input stream backing the source unit
+	 * @throws FileNotFoundException File not found
 	 */
 	public InputStream getInputStream()
 		throws FileNotFoundException;

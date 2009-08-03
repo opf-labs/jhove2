@@ -52,7 +52,10 @@ public class InputFactory {
 	/** Factory to create an appropriate <code>AbstractInput</code>.
 	 * @param file       Java {java.io.File} underlying the inputable
 	 * @param bufferSize Maximum buffer size, in bytes
-	 * @return Input 
+	 * @param type       Input buffer type
+	 * @return Input
+	 * @throws FileNotFoundException File not found 
+	 * @throws IOException           I/O exception instantiating input
 	 */
 	public static Input getInput(File file, int bufferSize, Type type)
 		throws FileNotFoundException, IOException
@@ -63,8 +66,11 @@ public class InputFactory {
 	/** Factory to create an appropriate <code>AbstractInput</code>.
 	 * @param file       Java {java.io.File} underlying the inputable
 	 * @param bufferSize Maximum buffer size, in bytes
+	 * @param type       Input buffer type
 	 * @param order      ByteOrder Endianess of buffer
 	 * @return Input 
+	 * @throws FileNotFoundException File not found 
+	 * @throws IOException           I/O exception instantiating input
 	 */
 	public static Input getInput(File file, int bufferSize, Type type, ByteOrder order)
 		throws FileNotFoundException, IOException

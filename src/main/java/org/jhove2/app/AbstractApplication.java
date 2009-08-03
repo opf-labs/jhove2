@@ -101,6 +101,9 @@ public abstract class AbstractApplication
 	protected String workingDirectory;
 
 	/** Instantiate a new <code>AbstractApplication</code>.
+	 * @param version Application version identifier in three-part form: "M.N.P"
+	 * @param release Application release date in ISO 8601 format: "YYYY-MM-DD"
+	 * @param rights  Application rights statement
 	 */
 	public AbstractApplication(String version, String release, String rights) {
 		super(version, release, rights);
@@ -167,7 +170,7 @@ public abstract class AbstractApplication
 	}
 
 	/** Get delete temporary files flag.
-	 * @param Delete temporary files flag
+	 * @return Delete temporary files flag
 	 * @see org.jhove2.app.Application#getDeleteTempFiles()
 	 */
 	@Override
@@ -221,7 +224,7 @@ public abstract class AbstractApplication
 	}
 	
 	/** Get show identifiers flag.
-	 * @param Show identifiers flag
+	 * @return Show identifiers flag
 	 * @see org.jhove2.app.Application#getShowIdentifiers()
 	 */
 	@Override
@@ -258,10 +261,10 @@ public abstract class AbstractApplication
 	
 	/** Set application framework.
 	 * @param framework Application framework
-	 * @see org.jhove2.app.Application#setJHOVE2()
+	 * @see org.jhove2.app.Application#setFramework(org.jhove2.core.JHOVE2)
 	 */
 	@Override
-	public void setJHOVE2(JHOVE2 framework) {
+	public void setFramework(JHOVE2 framework) {
 		this.framework = framework;
 	}
 }

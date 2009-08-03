@@ -36,7 +36,7 @@
 
 package org.jhove2.core;
 
-/** JHOVE2 message
+/** JHOVE2 message.  A message has a severity, a context, and a textual value.
  * @author slabrams
  *
  */
@@ -64,6 +64,9 @@ public class Message {
 	protected Severity severity;
 	
 	/** Instantiate a new <code>Message</code>.
+	 * @param severity Message severity
+	 * @param context  Message context
+	 * @param message  Message text
 	 */
 	public Message(Severity severity, Context context, String message) {
 		this.severity = severity;

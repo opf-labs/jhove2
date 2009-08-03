@@ -73,9 +73,9 @@ public class URLSource
 	 * @param bufferSize Input buffer size
 	 * @param bufferType Input buffer type
 	 * @return Input
-	 * @throws FileNotFound
-	 * @throws IOException
-	 * @see org.jhove2.core.source.Source#getInput()
+	 * @throws FileNotFoundException File not found
+	 * @throws IOException           I/O exception instantiating input
+	 * @see org.jhove2.core.source.Source#getInput(int, org.jhove2.core.io.Input.Type)
 	 */
 	@Override
 	public Input getInput(int bufferSize, Type bufferType)
@@ -84,6 +84,9 @@ public class URLSource
 		return InputFactory.getInput(this.file, bufferSize, bufferType);
 	}
 	
+	/** Get URL.
+	 * @return URL
+	 */
 	@ReportableProperty("URL.")
 	public String getURL() {
 		return this.url.toString();

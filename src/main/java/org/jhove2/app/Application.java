@@ -79,11 +79,11 @@ public interface Application
 	public Date getDateTime();
 		
 	/** Get delete temporary files flag.
-	 * @param Delete temporary files flag
+	 * @return Delete temporary files flag
 	 */
 	public boolean getDeleteTempFiles();
 	
-	/** Get {@link org.jhove2.core.Displayable} name.
+	/** Get {@link org.jhove2.module.display.Displayer} name.
 	 * @return Displayer
 	 */
 	public String getDisplayer();
@@ -110,7 +110,7 @@ public interface Application
 	public List<String> getPathNames();
 	
 	/** Get show identifiers flag.
-	 * @param Show identifiers flag
+	 * @return Show identifiers flag
 	 */
 	public boolean getShowIdentifiers();
 	
@@ -132,7 +132,7 @@ public interface Application
 	public String getWorkingDirectory();
 	
 	/** Set application framework.
-	 * @param jhove2 Application framework
+	 * @param framework Application framework
 	 */
-	public void setJHOVE2(JHOVE2 jhove2);
+	public void setFramework(JHOVE2 framework);
 }

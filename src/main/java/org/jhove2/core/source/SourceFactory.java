@@ -53,8 +53,9 @@ import org.jhove2.core.JHOVE2;
 public abstract class SourceFactory {
 	/** Get source unit from a file system path name.
 	 * @param pathName File system path name
-	 * @throws IOException 
-	 * @throws FileNotFoundException 
+	 * @return Source unit
+	 * @throws FileNotFoundException File not found
+	 * @throws IOException           I/O exception instantiating source 
 	 */
 	public static synchronized Source getSource(String pathName)
 		throws FileNotFoundException, IOException
@@ -64,8 +65,9 @@ public abstract class SourceFactory {
 	
 	/** Get source unit from a Java {@link java.io.File}.
 	 * @param file Java {@link java.io.File}
-	 * @throws IOException 
-	 * @throws FileNotFoundException 
+	 * @return Source unit
+	 * @throws FileNotFoundException File not found
+	 * @throws IOException           I/O exception instantiating source
 	 */
 	public static synchronized Source getSource(File file)
 		throws FileNotFoundException, IOException
@@ -80,7 +82,8 @@ public abstract class SourceFactory {
 	/** Get source unit from a URL.
 	 * @param jhove2 JHOVE2 framework
 	 * @param url    URL
-	 * @throws IOException 
+	 * @return Source unit
+	 * @throws IOException I/O exception instantiating source 
 	 */
 	public static synchronized Source getSource(JHOVE2 jhove2, URL url)
 		throws IOException
@@ -90,8 +93,10 @@ public abstract class SourceFactory {
 	
 	/** Get source unit from a Zip file entry.
 	 * @param jhove2 JHOVE2 framework
+	 * @param zip    Zip file
 	 * @param entry  Zip file entry
-	 * @throws IOException 
+	 * @return Source unit
+	 * @throws IOException I/O exception instantiating source 
 	 */
 	public static synchronized Source getSource(JHOVE2 jhove2, ZipFile zip,
 			                                    ZipEntry entry)

@@ -62,6 +62,7 @@ public interface Input
 	public final static int UNINITIALIZED = -1;
 	
 	/** Close the input.
+	 * @throws IOException I/O exception closing input
 	 */
 	public void close()
 		throws IOException;
@@ -116,6 +117,7 @@ public interface Input
 	/** Get signed byte at the current position.  This implicitly advances
 	 * the current position by one byte.
 	 * @return Signed byte at the current position, or -1 if EOF
+	 * @throws IOException I/O exception reading byte
 	 */
 	public byte readSignedByte()
 		throws IOException;
@@ -123,6 +125,7 @@ public interface Input
 	/** read signed (four byte) integer at the the current position.  This
 	 * implicitly advances the current position by four bytes.
 	 * @return Unsigned integer at the current position, or -1 if EOF
+	 * @throws IOException I/O exception reading int
 	 */
 	int readSignedInt() 
 		throws IOException;
@@ -130,6 +133,7 @@ public interface Input
 	/** Get signed short at the current position.  This implicitly advances
 	 * the current position by two bytes.
 	 * @return Signed short at the current position, or -1 if EOF
+	 * @throws IOException I/O exception reading short
 	 */
 	public short readSignedShort()
 		throws IOException;
@@ -137,6 +141,7 @@ public interface Input
 	/** Get signed long at the current position.  This implicitly advances
 	 * the current position by eight bytes.
 	 * @return Signed long at the current position, or -1 if EOF
+	 * @throws IOException I/O exception reading long
 	 */
 	public long readSignedLong()
 		throws IOException;
@@ -144,6 +149,7 @@ public interface Input
 	/** read unsigned byte at the current position.  This implicitly advances
 	 * the current position by one byte.
 	 * @return Unsigned byte at the current position, or -1 if EOF
+	 * @throws IOException I/O exception reading byte
 	 */
 	public short readUnsignedByte()
 		throws IOException;
@@ -151,6 +157,7 @@ public interface Input
 	/** read unsigned short (two byte) integer at the current position.  This
 	 * implicitly advances the current position by two bytes.
 	 * @return Unsigned short integer at the current position, or -1 if EOF
+	 * @throws IOException I/O exception reading short
 	 */
 	public int readUnsignedShort()
 		throws IOException;
@@ -158,6 +165,7 @@ public interface Input
 	/** read unsigned (four byte) integer at the the current position.  This
 	 * implicitly advances the current position by four bytes.
 	 * @return Unsigned integer at the current position, or -1 if EOF
+	 * @throws IOException I/O exception reading int
 	 */
 	public long readUnsignedInt()
 		throws IOException;
@@ -169,11 +177,13 @@ public interface Input
 	
 	/** Set current position, as a byte offset.
 	 * @param position Position, as a byte offset
+	 * @throws IOException I/O exception setting position
 	 */
 	public void setPosition(long position)
 		throws IOException;
 
-	/** Retrieve size of Input (File or InputStream)
+	/** Get size in bytes of file underlying the Input
+	 * @return Input size, in bytes
 	 */
 	public long getSize();
 }

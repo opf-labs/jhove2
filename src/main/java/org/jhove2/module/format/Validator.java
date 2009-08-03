@@ -61,7 +61,9 @@ public interface Validator {
 			this.label = label;
 		}
 		
-		/** Get status label. */
+		/** Get status label.
+		 * @return Status
+		 */
 		public String toString() {
 			return this.label;
 		}
