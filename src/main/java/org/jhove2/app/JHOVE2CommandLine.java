@@ -192,8 +192,7 @@ public class JHOVE2CommandLine
 			if (i > 0) {
 				usage.append("|");
 			}
-			int in = displayers[i].indexOf("Displayer");
-			usage.append(displayers[i].substring(0, in));
+			usage.append(displayers[i]);
 		}
 		usage.append("]");
 		usage.append(" [-f <failFastLimit>]");
