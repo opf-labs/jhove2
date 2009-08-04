@@ -85,8 +85,8 @@ public class NonDirectInput
 	/** Get maximum buffer size, in bytes.
 	 * @return Maximum buffer size, in bytes
 	 * @see org.jhove2.core.io.Input#getMaxBufferSize()
-	 * @Override
 	 */
+	@Override
 	public int getMaxBufferSize() {
 		return this.maxBufferSize;
 	}

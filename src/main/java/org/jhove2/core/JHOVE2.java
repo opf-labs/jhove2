@@ -145,7 +145,7 @@ public class JHOVE2
 	/** {@link org.jhove2.core.io.Input} buffer size. */
 	protected int bufferSize;
 	
-	/** {@link org.jhove.core.io.Input} buffer type. */
+	/** {@link org.jhove2.core.io.Input} buffer type. */
 	protected Type bufferType;
 	
 	/** Framework message digests flag; if true, calculate digests. */
@@ -526,13 +526,14 @@ public class JHOVE2
 		this.displayer.endReportable(out, level, name, identifier);
 	}
 	
-	/** Display a {@link org.jhove2.core.Reportable}.
+	/** Display a {@link org.jhove2.annotation.ReportableProperty}.
 	 * @param out        Print stream
-	 * @param reportable Reportable
 	 * @param level      Nesting level
-	 * @param order      Ordinal position of this reportable with respect to
+	 * @param name       Property name
+	 * @param identifier Property identifier
+	 * @param value      Property value
+	 * @param order      Ordinal position of this property with respect to
 	 *                   its enclosing reportable or collection
-	 * @param prop       Reportable property
 	 */
 	protected void display(PrintStream out, int level, String name,
 			               I8R identifier, Object value, int order) {

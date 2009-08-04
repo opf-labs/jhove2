@@ -224,7 +224,7 @@ public class ReportableInfo {
 		return this.properties;
 	}
 	
-	/** Get {@link.org.jhove2.core.Reporter} qualified name.
+	/** Get {@link org.jhove2.core.Reportable} qualified name.
 	 * @return Qualified name of the reporter
 	 */
 	public String getQName() {
