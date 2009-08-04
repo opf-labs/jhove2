@@ -82,10 +82,10 @@ public class JHOVE2
 	extends AbstractModule
 {
 	/** Framework version identifier. */
-	public static final String VERSION = "2.0.0";
+	public static final String VERSION = "0.1.1";
 
 	/** Framework release date. */
-	public static final String RELEASE = "2009-08-03";
+	public static final String RELEASE = "2009-08-04";
 	
 	/** Framework rights statement. */
 	public static final String RIGHTS =

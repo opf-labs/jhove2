@@ -52,10 +52,10 @@ public class JHOVE2CommandLine
 	extends AbstractApplication
 {
 	/** JHOVE2 application version identifier. */
-	public static final String VERSION = "2.0.0";
+	public static final String VERSION = "0.1.1";
 
 	/** JHOVE2 application release date. */
-	public static final String RELEASE = "2009-07-29";
+	public static final String RELEASE = "2009-08-04";
 	
 	/** JHOVE2 application rights statement. */
 	public static final String RIGHTS =
