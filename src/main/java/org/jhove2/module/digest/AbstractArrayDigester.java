@@ -36,37 +36,42 @@
 
 package org.jhove2.module.digest;
 
-/** Abstract JHOVE2 algorithm-specific message digester that operates on a
- * byte array.
+/**
+ * Abstract JHOVE2 algorithm-specific message digester that operates on a byte
+ * array.
  * 
  * @author mstrong, slabrams
  */
-public abstract class AbstractArrayDigester
-	implements ArrayDigester
-{
+public abstract class AbstractArrayDigester implements ArrayDigester {
 	/** Message digest algorithm. */
 	protected String algorithm;
-	
-	/** Instantiate a new <code>AbstractArrayDigester</code>.
-	 * @param algorithm Message digest algorithm
+
+	/**
+	 * Instantiate a new <code>AbstractArrayDigester</code>.
+	 * 
+	 * @param algorithm
+	 *            Message digest algorithm
 	 */
 	public AbstractArrayDigester(String algorithm) {
 		this.algorithm = algorithm;
 	}
 
-	/** Format a message digest value as a hexadecimal string.
-	 * @param digest Message digest value
+	/**
+	 * Format a message digest value as a hexadecimal string.
+	 * 
+	 * @param digest
+	 *            Message digest value
 	 * @return Message digest value as a hexadecimal string
 	 */
 	public static synchronized String toHexString(long digest) {
 		StringBuffer hex = new StringBuffer();
 		String h = Long.toHexString(digest);
 		int len = h.length();
-		for (int i=len; i<8; i++) {
+		for (int i = len; i < 8; i++) {
 			hex.append("0");
 		}
 		hex.append(h);
-		
+
 		return hex.toString();
 	}
 }

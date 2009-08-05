@@ -44,41 +44,46 @@ import org.jhove2.core.info.ReportableInfo;
 import org.jhove2.core.info.ReportablePropertyInfo;
 import org.jhove2.core.info.ReportableSourceInfo;
 
-/** JHOVE2 {@link org.jhove2.core.Reportable} documentation utility.  The
+/**
+ * JHOVE2 {@link org.jhove2.core.Reportable} documentation utility. The
  * properties of the reportable (name, identifier, properties, messages) are
  * determined by reflection of the class.
  * 
  * @author mstrong, slabrams
  */
 public class JHOVE2Doc {
-	/** Main entry for JHOVE2 reportable documentation utility.
-	 * @param args Command line arguments
+	/**
+	 * Main entry for JHOVE2 reportable documentation utility.
+	 * 
+	 * @param args
+	 *            Command line arguments
 	 */
 	public static void main(String[] args) {
 		if (args.length < 1) {
-			System.out.println("usage: " + JHOVE2Doc.class.getName() + " reportable ...");
+			System.out.println("usage: " + JHOVE2Doc.class.getName()
+					+ " reportable ...");
 			System.exit(1);
 		}
-		
 
 		try {
 			int n = 0;
 			for (String arg : args) {
-				Class<? extends Reportable> cl =
-					(Class<? extends Reportable>) Class.forName(arg);
+				Class<? extends Reportable> cl = (Class<? extends Reportable>) Class
+						.forName(arg);
 				ReportableInfo info = new ReportableInfo(cl);
-				
+
 				if (n > 0) {
 					System.out.println();
 				}
-				System.out.println("Reportable: Name: "       + info.getName());
-				System.out.println("            Identifier: " + info.getIdentifier());
-				System.out.println("            Package: "    + info.getPackage());
-				
+				System.out.println("Reportable: Name: " + info.getName());
+				System.out.println("            Identifier: "
+						+ info.getIdentifier());
+				System.out.println("            Package: " + info.getPackage());
+
 				List<ReportableSourceInfo> prop2 = info.getProperties();
 				for (ReportableSourceInfo source : prop2) {
-					System.out.println(" From: " + source.getSource() +
-							                 " " + source.getName());
+					System.out.println(" From: " + source.getSource() + " "
+							+ source.getName());
 					Set<ReportablePropertyInfo> props = source.getProperties();
 					for (ReportablePropertyInfo prop : props) {
 						String name = prop.getMethod().getName();
@@ -92,37 +97,40 @@ public class JHOVE2Doc {
 						in = type.lastIndexOf('<');
 						if (in > 0) {
 							collection = type.substring(0, in);
-							type       = type.substring(in+1, type.indexOf('>'));
+							type = type.substring(in + 1, type.indexOf('>'));
 							in = collection.lastIndexOf('.');
 							if (in > 0) {
-								collection = collection.substring(in+1);
+								collection = collection.substring(in + 1);
 							}
 						}
 						in = type.lastIndexOf('.');
 						if (in > 0) {
-							type = type.substring(in+1);
+							type = type.substring(in + 1);
 						}
 
 						String description = prop.getDescription();
-						String reference   = prop.getReference();
-						
+						String reference = prop.getReference();
+
 						String label = "Property";
 						if (type.equals("Message")) {
 							label = " Message";
 						}
-						System.out.println("  " + label + ": Name: "        + name);
-						System.out.println("            Identifier: "      + prop.getIdentifier());
+						System.out.println("  " + label + ": Name: " + name);
+						System.out.println("            Identifier: "
+								+ prop.getIdentifier());
 						if (collection == null) {
-							System.out.println("            Type: "        + type);
-						}
-						else {
-							System.out.println("            Type: "        + collection + "<" + type + ">");
+							System.out.println("            Type: " + type);
+						} else {
+							System.out.println("            Type: "
+									+ collection + "<" + type + ">");
 						}
 						if (description != null) {
-							System.out.println("            Description: " + description);
+							System.out.println("            Description: "
+									+ description);
 						}
 						if (reference != null) {
-							System.out.println("            Reference: "   + reference);
+							System.out.println("            Reference: "
+									+ reference);
 						}
 					}
 				}

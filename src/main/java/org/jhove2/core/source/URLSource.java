@@ -46,45 +46,54 @@ import org.jhove2.core.io.Input;
 import org.jhove2.core.io.InputFactory;
 import org.jhove2.core.io.Input.Type;
 
-/** JHOVE2 URL source unit.
+/**
+ * JHOVE2 URL source unit.
  * 
  * @author mstrong, slabrams
  */
-public class URLSource
-	extends AbstractSource
-{
+public class URLSource extends AbstractSource {
 	/** URL backing the source unit. */
 	protected URL url;
-	
-	/** Instantiate a new <code>URLSource</code>.
-	 * @param jhove2 JHOVE framework
-	 * @param url    URL
-	 * @throws IOException 
+
+	/**
+	 * Instantiate a new <code>URLSource</code>.
+	 * 
+	 * @param jhove2
+	 *            JHOVE framework
+	 * @param url
+	 *            URL
+	 * @throws IOException
 	 */
-	public URLSource(JHOVE2 jhove2, URL url)
-		throws IOException
-	{
+	public URLSource(JHOVE2 jhove2, URL url) throws IOException {
 		super(jhove2, url.openStream());
-		
+
 		this.url = url;
 	}
-	
-	/** Get {@link org.jhove2.core.io.Input} for the source unit.
-	 * @param bufferSize Input buffer size
-	 * @param bufferType Input buffer type
+
+	/**
+	 * Get {@link org.jhove2.core.io.Input} for the source unit.
+	 * 
+	 * @param bufferSize
+	 *            Input buffer size
+	 * @param bufferType
+	 *            Input buffer type
 	 * @return Input
-	 * @throws FileNotFoundException File not found
-	 * @throws IOException           I/O exception instantiating input
-	 * @see org.jhove2.core.source.Source#getInput(int, org.jhove2.core.io.Input.Type)
+	 * @throws FileNotFoundException
+	 *             File not found
+	 * @throws IOException
+	 *             I/O exception instantiating input
+	 * @see org.jhove2.core.source.Source#getInput(int,
+	 *      org.jhove2.core.io.Input.Type)
 	 */
 	@Override
 	public Input getInput(int bufferSize, Type bufferType)
-		throws FileNotFoundException, IOException
-	{
+			throws FileNotFoundException, IOException {
 		return InputFactory.getInput(this.file, bufferSize, bufferType);
 	}
-	
-	/** Get URL.
+
+	/**
+	 * Get URL.
+	 * 
 	 * @return URL
 	 */
 	@ReportableProperty("URL.")

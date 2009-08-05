@@ -49,103 +49,140 @@ import org.jhove2.core.io.Input;
 import org.jhove2.core.io.Input.Type;
 import org.jhove2.module.Module;
 
-/** Interface for JHOVE2 source units.  A source unit is a formatted object
- * that can be characterized, which may be a file, a subset of a file, or a
- * group of files.
+/**
+ * Interface for JHOVE2 source units. A source unit is a formatted object that
+ * can be characterized, which may be a file, a subset of a file, or a group of
+ * files.
  * 
  * @author mstrong, slabrams
  */
-public interface Source
-	extends Temporal
-{
-	/** Close the source unit.  If the source unit is backed by a temporary
-	 * file, delete the file.
+public interface Source extends Temporal {
+	/**
+	 * Close the source unit. If the source unit is backed by a temporary file,
+	 * delete the file.
 	 */
 	public void close();
 
-	/** Delete child source unit.
-	 * @param child Child source unit
+	/**
+	 * Delete child source unit.
+	 * 
+	 * @param child
+	 *            Child source unit
 	 */
 	public void deleteChildSource(Source child);
-	
-	/** Get child source units.
+
+	/**
+	 * Get child source units.
+	 * 
 	 * @return Child source units
 	 */
-	@ReportableProperty(order=3, value="Child source untis.")
+	@ReportableProperty(order = 3, value = "Child source untis.")
 	public List<Source> getChildSources();
-	
-	/** Get delete temporary files flag; if true, delete files.
+
+	/**
+	 * Get delete temporary files flag; if true, delete files.
+	 * 
 	 * @return Delete temporary files flag
 	 */
 	public boolean getDeleteTempFiles();
-	
-	/** Get {@link java.io.File} backing the source unit.
+
+	/**
+	 * Get {@link java.io.File} backing the source unit.
+	 * 
 	 * @return File backing the source unit
 	 */
 	public File getFile();
-	
-	/** Get {@link org.jhove2.core.io.Input} for the source unit.
-	 * @param bufferSize Input maximum buffer size
-	 * @param bufferType Input buffer type
+
+	/**
+	 * Get {@link org.jhove2.core.io.Input} for the source unit.
+	 * 
+	 * @param bufferSize
+	 *            Input maximum buffer size
+	 * @param bufferType
+	 *            Input buffer type
 	 * @return Input for the source unit
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
 	public Input getInput(int bufferSize, Type bufferType)
-		throws FileNotFoundException, IOException;
-	
-	/** Get {@link org.jhove2.core.io.Input} for the source unit.
-	 * @param bufferSize Input maximum buffer size
-	 * @param bufferType Input buffer type
-	 * @param order      Byte order
+			throws FileNotFoundException, IOException;
+
+	/**
+	 * Get {@link org.jhove2.core.io.Input} for the source unit.
+	 * 
+	 * @param bufferSize
+	 *            Input maximum buffer size
+	 * @param bufferType
+	 *            Input buffer type
+	 * @param order
+	 *            Byte order
 	 * @return Input for the source unit
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
 	public Input getInput(int bufferSize, Type bufferType, ByteOrder order)
-		throws FileNotFoundException, IOException;
-	
-	/** Get {@link java.io.InputStream} backing the source unit
+			throws FileNotFoundException, IOException;
+
+	/**
+	 * Get {@link java.io.InputStream} backing the source unit
+	 * 
 	 * @return Input stream backing the source unit
-	 * @throws FileNotFoundException File not found
+	 * @throws FileNotFoundException
+	 *             File not found
 	 */
-	public InputStream getInputStream()
-		throws FileNotFoundException;
-	
-	/** Get modules that processed the source unit.
+	public InputStream getInputStream() throws FileNotFoundException;
+
+	/**
+	 * Get modules that processed the source unit.
+	 * 
 	 * @return Modules that processed the source unit
 	 */
-	@ReportableProperty(order=1, value="Modules that processed the source unit")
+	@ReportableProperty(order = 1, value = "Modules that processed the source unit")
 	public List<Module> getModules();
-	
-	/** Get source unit backing file temporary status.
+
+	/**
+	 * Get source unit backing file temporary status.
+	 * 
 	 * @return True if the source unit backing file is a temporary file
 	 */
 	public boolean isTemp();
 
-	/** Get number of child source units.
+	/**
+	 * Get number of child source units.
+	 * 
 	 * @return Number of child source units
 	 */
-	@ReportableProperty(order=2, value="Number of child source units.")
+	@ReportableProperty(order = 2, value = "Number of child source units.")
 	public int getNumChildSources();
-	
-	/** Get number of modules.
+
+	/**
+	 * Get number of modules.
+	 * 
 	 * @return Number of modules
 	 */
 	public int getNumModules();
 
-	/** Add a child source unit.
-	 * @param child Child source unit
+	/**
+	 * Add a child source unit.
+	 * 
+	 * @param child
+	 *            Child source unit
 	 */
 	public void setChildSource(Source child);
-	
-	/** Set delete temporary files flag; if true, delete files.
-	 * @param flag Delete temporary files flag
+
+	/**
+	 * Set delete temporary files flag; if true, delete files.
+	 * 
+	 * @param flag
+	 *            Delete temporary files flag
 	 */
 	public void setDeleteTempFiles(boolean flag);
-	
-	/** Add a module that processed the source unit.
-	 * @param module Module that processed the source unit
+
+	/**
+	 * Add a module that processed the source unit.
+	 * 
+	 * @param module
+	 *            Module that processed the source unit
 	 */
 	public void setModule(Module module);
 }

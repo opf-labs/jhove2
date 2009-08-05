@@ -38,54 +38,65 @@ package org.jhove2.core.info;
 
 import java.util.Set;
 
-/** Information about the source of JHOVE2 reportable properties, which is
- * either an interface or superclass in which the properties are defined.
+/**
+ * Information about the source of JHOVE2 reportable properties, which is either
+ * an interface or superclass in which the properties are defined.
  * 
  * @author mstrong, slabrams
  */
 public class ReportableSourceInfo {
 	/** Source types for reportable properties. */
 	public enum Source {
-		Class,
-		Interface
+		Class, Interface
 	}
-	
+
 	/** Source name. */
 	protected String name;
-	
+
 	/** Reportable properties. */
 	protected Set<ReportablePropertyInfo> props;
-	
+
 	/** Source type of the reportable properties. */
 	protected Source source;
-	
-	/** Instantiate a new <code>ReportableSourceInfo</code>.
-	 * @param name   Source name
-	 * @param source Source type
-	 * @param props  Reportable properties defined by source
+
+	/**
+	 * Instantiate a new <code>ReportableSourceInfo</code>.
+	 * 
+	 * @param name
+	 *            Source name
+	 * @param source
+	 *            Source type
+	 * @param props
+	 *            Reportable properties defined by source
 	 */
 	public ReportableSourceInfo(String name, Source source,
-			                    Set<ReportablePropertyInfo> props) {
-		this.name   = name;
+			Set<ReportablePropertyInfo> props) {
+		this.name = name;
 		this.source = source;
-		this.props  = props;
+		this.props = props;
 	}
-	
-	/** Get source name.
+
+	/**
+	 * Get source name.
+	 * 
 	 * @return Source name
 	 */
 	public String getName() {
 		return this.name;
 	}
-	
-	/** Get source reportable properties.
+
+	/**
+	 * Get source reportable properties.
+	 * 
 	 * @return Source reportable properties
 	 */
 	public Set<ReportablePropertyInfo> getProperties() {
 		return this.props;
 	}
-	
-	/** Get source type.
+
+	/**
+	 * Get source type.
+	 * 
 	 * @return Source type
 	 */
 	public Source getSource() {

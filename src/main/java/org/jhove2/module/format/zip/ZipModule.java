@@ -54,67 +54,71 @@ import org.jhove2.core.source.SourceFactory;
 import org.jhove2.module.format.AbstractFormatModule;
 import org.jhove2.module.format.Parser;
 
-/** JHOVE2 Zip module.
+/**
+ * JHOVE2 Zip module.
  * 
  * @author mstrong, slabrams
  */
-public class ZipModule
-	extends AbstractFormatModule
-	implements Parser
-{
+public class ZipModule extends AbstractFormatModule implements Parser {
 	/** Zip module version identifier. */
 	public static final String VERSION = "1.0.0";
 
 	/** Zip module release date. */
 	public static final String RELEASE = "2009-07-31";
-	
+
 	/** Zip module rights statement. */
-	public static final String RIGHTS =
-		"Copyright 2009 by The Regents of the University of California, " +
-		"Ithaka Harbors, Inc., and The Board of Trustees of the Leland " +
-		"Stanford Junior University. " +
-		"Available under the terms of the BSD license.";
+	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California, "
+			+ "Ithaka Harbors, Inc., and The Board of Trustees of the Leland "
+			+ "Stanford Junior University. "
+			+ "Available under the terms of the BSD license.";
 
-
-	/** Instantiate a new <code>ZipModule</code>.
-	 * @param format Zip format
+	/**
+	 * Instantiate a new <code>ZipModule</code>.
+	 * 
+	 * @param format
+	 *            Zip format
 	 */
 	public ZipModule(Format format) {
 		super(VERSION, RELEASE, RIGHTS, format);
 	}
 
-	/** Parse a Zip source unit.
-	 * @param source Zip ource unit
-	 * @return 0 
-	 * @throws EOFException    If End-of-File is reached reading the source unit
-	 * @throws IOException     If an I/O exception is raised reading the source
-	 *                         unit
+	/**
+	 * Parse a Zip source unit.
+	 * 
+	 * @param source
+	 *            Zip ource unit
+	 * @return 0
+	 * @throws EOFException
+	 *             If End-of-File is reached reading the source unit
+	 * @throws IOException
+	 *             If an I/O exception is raised reading the source unit
 	 * @throws JHOVE2Exception
-	 * @see org.jhove2.module.format.Parser#parse(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
+	 * @see org.jhove2.module.format.Parser#parse(org.jhove2.core.JHOVE2,
+	 *      org.jhove2.core.source.Source)
 	 */
 	@Override
-	public long parse(JHOVE2 jhove2, Source source)
-		throws EOFException, IOException, JHOVE2Exception
-	{
+	public long parse(JHOVE2 jhove2, Source source) throws EOFException,
+			IOException, JHOVE2Exception {
 		Input input = null;
 		try {
-			input = source.getInput(jhove2.getBufferSize(),
-					                jhove2.getBufferType());
+			input = source.getInput(jhove2.getBufferSize(), jhove2
+					.getBufferType());
 			if (input != null) {
-				File  file  = input.getFile();
+				File file = input.getFile();
 				ZipFile zip = new ZipFile(file, ZipFile.OPEN_READ);
-				
-				/* Zip entries are not necessarily in hierarchical order.
-				 * Build a map of directory names and source units so we can
-				 * associate file entries to their correct parent.
+
+				/*
+				 * Zip entries are not necessarily in hierarchical order. Build
+				 * a map of directory names and source units so we can associate
+				 * file entries to their correct parent.
 				 */
-				Map<String,Source> map = new TreeMap<String,Source>();
+				Map<String, Source> map = new TreeMap<String, Source>();
 				Enumeration<? extends ZipEntry> en = zip.entries();
 				while (en.hasMoreElements()) {
 					ZipEntry entry = en.nextElement();
 					if (entry.isDirectory()) {
-						Source src  = SourceFactory.getSource(jhove2, zip,
-								                              entry);
+						Source src = SourceFactory
+								.getSource(jhove2, zip, entry);
 						if (src != null) {
 							String key = entry.getName();
 							/* Remove trailing slash. */
@@ -126,8 +130,9 @@ public class ZipModule
 						}
 					}
 				}
-				
-				/* Characterize each entry and associate it with its parent
+
+				/*
+				 * Characterize each entry and associate it with its parent
 				 * source unit.
 				 */
 				en = zip.entries();
@@ -145,36 +150,35 @@ public class ZipModule
 							jhove2.characterize(src);
 
 							int in = name.lastIndexOf('/');
-							if (in > -1 && in < name.length() - 1 ) {
-								/* Directory is a child of a Zip directory
-								 * entry that can be retrieved from the map.
+							if (in > -1 && in < name.length() - 1) {
+								/*
+								 * Directory is a child of a Zip directory entry
+								 * that can be retrieved from the map.
 								 */
 								String key = name.substring(0, in);
 								Source parent = map.get(key);
 								if (parent != null) {
 									parent.setChildSource(src);
 								}
-							}
-							else {
+							} else {
 								/* Directory is a child of the Zip file. */
 								source.setChildSource(src);
 							}
 						}
-					}
-					else {
-						Source src  = SourceFactory.getSource(jhove2, zip,
-								                              entry);
+					} else {
+						Source src = SourceFactory
+								.getSource(jhove2, zip, entry);
 						if (src != null) {
 							jhove2.characterize(src);
-							
+
 							int in = name.lastIndexOf('/');
 							if (in < 0) {
 								/* File is a child of the Zip file. */
 								source.setChildSource(src);
-							}
-							else {
-								/* File is a child of a Zip file entry that
-								 * can be retrieved from the map.
+							} else {
+								/*
+								 * File is a child of a Zip file entry that can
+								 * be retrieved from the map.
 								 */
 								String key = name.substring(0, in);
 								Source parent = map.get(key);
@@ -191,7 +195,7 @@ public class ZipModule
 				input.close();
 			}
 		}
-		
+
 		return 0;
 	}
 }

@@ -52,92 +52,94 @@ import org.jhove2.core.source.NamedSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractModule;
 
-/** JHOVE2 aggregate identification module.
+/**
+ * JHOVE2 aggregate identification module.
  * 
  * @author mstrong, slabrams
  */
-public class AggrefierModule
-	extends AbstractModule
-	implements Aggrefier
-{
-	/**Identification module version identifier. */
+public class AggrefierModule extends AbstractModule implements Aggrefier {
+	/** Identification module version identifier. */
 	public static final String VERSION = "1.0.0";
 
 	/** Identification module release date. */
 	public static final String RELEASE = "2009-07-17";
-	
+
 	/** Identification module rights statement. */
-	public static final String RIGHTS =
-		"Copyright 2009 by The Regents of the University of California, " +
-		"Ithaka Harbors, Inc., and The Board of Trustees of the Leland " +
-		"Stanford Junior University. " +
-		"Available under the terms of the BSD license.";
+	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California, "
+			+ "Ithaka Harbors, Inc., and The Board of Trustees of the Leland "
+			+ "Stanford Junior University. "
+			+ "Available under the terms of the BSD license.";
 
 	/** Presumptively identified formats. */
 	protected Set<FormatIdentification> formats;
-	
-	/** Instantiate a new <code>AggrefierModule</code>.
+
+	/**
+	 * Instantiate a new <code>AggrefierModule</code>.
 	 */
 	public AggrefierModule() {
 		super(VERSION, RELEASE, RIGHTS);
-		
+
 		this.formats = new TreeSet<FormatIdentification>();
 	}
 
-	/** Presumptively identify the format of an aggregate source unit.
-	 * @param jhove2 JHOVE2 framework
-	 * @param source Aggregate source unit
+	/**
+	 * Presumptively identify the format of an aggregate source unit.
+	 * 
+	 * @param jhove2
+	 *            JHOVE2 framework
+	 * @param source
+	 *            Aggregate source unit
 	 * @return Presumptively identified formats
-	 * @throws IOException     I/O exception encountered identifying the
-	 *                         source unit
+	 * @throws IOException
+	 *             I/O exception encountered identifying the source unit
 	 * @throws JHOVE2Exception
-	 * @see org.jhove2.module.identify.Aggrefier#identify(org.jhove2.core.JHOVE2, org.jhove2.core.source.AggregateSource)
+	 * @see org.jhove2.module.identify.Aggrefier#identify(org.jhove2.core.JHOVE2,
+	 *      org.jhove2.core.source.AggregateSource)
 	 */
 	@Override
-	public Set<FormatIdentification> identify(JHOVE2 jhove2, AggregateSource source)
-		throws IOException, JHOVE2Exception
-	{
+	public Set<FormatIdentification> identify(JHOVE2 jhove2,
+			AggregateSource source) throws IOException, JHOVE2Exception {
 		List<Source> children = source.getChildSources();
-		
-		/** Presumptively-identify a shape file by looking for three files
-		 * with the names: abc.shp, abc.shx, abc.dbf
+
+		/**
+		 * Presumptively-identify a shape file by looking for three files with
+		 * the names: abc.shp, abc.shx, abc.dbf
 		 */
 		Source dbfSource = null;
 		Source shpSource = null;
 		Source shxSource = null;
 		if (children.size() > 2) {
 			for (Source src : children) {
-				if (!(src instanceof AggregateSource) &&
-					  src instanceof NamedSource) {
+				if (!(src instanceof AggregateSource)
+						&& src instanceof NamedSource) {
 					String name = ((NamedSource) src).getName();
 					if (name.equals("abc.dbf")) {
 						dbfSource = src;
-					}
-					else if (name.equals("abc.shp")) {
+					} else if (name.equals("abc.shp")) {
 						shpSource = src;
-					}
-					else if (name.equals("abc.shx")) {
+					} else if (name.equals("abc.shx")) {
 						shxSource = src;
 					}
 				}
 			}
 		}
 		if (dbfSource != null && shpSource != null && shxSource != null) {
-			FormatIdentification id =
-				new FormatIdentification(Configure.getReportable(Format.class,
-						                                         "ShapefileFormat"),
-						                 Confidence.PositiveSpecific);			
+			FormatIdentification id = new FormatIdentification(Configure
+					.getReportable(Format.class, "ShapefileFormat"),
+					Confidence.PositiveSpecific);
 			id.setSource(dbfSource);
 			id.setSource(shpSource);
 			id.setSource(shxSource);
 			this.formats.add(id);
 
 		}
-		
+
 		return this.formats;
 	}
 
-	/** Get presumptive format identifications.
+	/**
+	 * Get presumptive format identifications.
+	 * 
 	 * @return Presumptive format identifications
 	 * @see org.jhove2.module.identify.Identifier#getPresumptiveFormats()
 	 */

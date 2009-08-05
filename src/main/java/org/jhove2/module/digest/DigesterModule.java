@@ -49,72 +49,76 @@ import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractModule;
 
-/** JHOVE2 message digester module.
+/**
+ * JHOVE2 message digester module.
  * 
  * @author mstrong,slabrams
  */
-public class DigesterModule
-	extends AbstractModule
-	implements Digester
-{
+public class DigesterModule extends AbstractModule implements Digester {
 	/** Framework version identifier. */
 	public static final String VERSION = "1.0.0";
 
 	/** Framework release date. */
 	public static final String RELEASE = "2009-06-13";
-	
+
 	/** Framework rights statement. */
-	public static final String RIGHTS =
-		"Copyright 2009 by The Regents of the University of California, " +
-		"Ithaka Harbors, Inc., and The Board of Trustees of the Leland " +
-		"Stanford Junior University. " +
-		"Available under the terms of the BSD license.";
+	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California, "
+			+ "Ithaka Harbors, Inc., and The Board of Trustees of the Leland "
+			+ "Stanford Junior University. "
+			+ "Available under the terms of the BSD license.";
 
 	/** Algorithm-specific byte array digesters. */
 	protected List<ArrayDigester> arrayDigesters;
-	
+
 	/** Algorithm-specific byte buffer digesters. */
 	protected List<BufferDigester> bufferDigesters;
-	
-	/** Instantiate a new <code>DigesterModule</code>.
+
+	/**
+	 * Instantiate a new <code>DigesterModule</code>.
 	 */
 	public DigesterModule() {
 		super(VERSION, RELEASE, RIGHTS);
 	}
 
-	/** Calculate message digests for the source unit.
-	 * @param jhove2 JHOVE2 framework
-	 * @param source Source unit
-	 * @see org.jhove2.module.digest.Digester#digest(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
-	 * @throws IOException I/O exception calculating message digests
+	/**
+	 * Calculate message digests for the source unit.
+	 * 
+	 * @param jhove2
+	 *            JHOVE2 framework
+	 * @param source
+	 *            Source unit
+	 * @see org.jhove2.module.digest.Digester#digest(org.jhove2.core.JHOVE2,
+	 *      org.jhove2.core.source.Source)
+	 * @throws IOException
+	 *             I/O exception calculating message digests
 	 */
 	@Override
-	public void digest(JHOVE2 jhove2, Source source)
-		throws IOException
-	{
+	public void digest(JHOVE2 jhove2, Source source) throws IOException {
 		Input input = null;
 		try {
-			input = source.getInput(jhove2.getBufferSize(),
-				                    jhove2.getBufferType());
+			input = source.getInput(jhove2.getBufferSize(), jhove2
+					.getBufferType());
 			if (input != null) {
-				long  inputSize  = input.getSize();
-				long  bufferSize = input.getMaxBufferSize();
-				long  ptr = 0L;
+				long inputSize = input.getSize();
+				long bufferSize = input.getMaxBufferSize();
+				long ptr = 0L;
 				while (inputSize - ptr > -1L) {
 					input.setPosition(ptr);
-					if (this.arrayDigesters != null &&
-						this.arrayDigesters.size() > 0) {
-						byte [] array = input.getByteArray();
-						Iterator<ArrayDigester> iter = this.arrayDigesters.iterator();
+					if (this.arrayDigesters != null
+							&& this.arrayDigesters.size() > 0) {
+						byte[] array = input.getByteArray();
+						Iterator<ArrayDigester> iter = this.arrayDigesters
+								.iterator();
 						while (iter.hasNext()) {
 							ArrayDigester digester = iter.next();
 							digester.update(array);
 						}
 					}
-					if (this.bufferDigesters != null &&
-							this.bufferDigesters.size() > 0) {
+					if (this.bufferDigesters != null
+							&& this.bufferDigesters.size() > 0) {
 						ByteBuffer buffer = input.getBuffer();
-						Iterator<BufferDigester> iter = this.bufferDigesters.iterator();
+						Iterator<BufferDigester> iter = this.bufferDigesters
+								.iterator();
 						while (iter.hasNext()) {
 							BufferDigester digester = iter.next();
 							buffer.position(0);
@@ -131,15 +135,16 @@ public class DigesterModule
 		}
 	}
 
-	/** Get message digests.
+	/**
+	 * Get message digests.
+	 * 
 	 * @return Message digests
 	 * @see org.jhove2.module.digest.Digester#getDigests()
 	 */
 	@Override
 	public Set<Digest> getDigests() {
 		Set<Digest> set = new TreeSet<Digest>();
-		if (this.arrayDigesters != null &&
-			this.arrayDigesters.size() > 0) {
+		if (this.arrayDigesters != null && this.arrayDigesters.size() > 0) {
 			Iterator<ArrayDigester> iter = this.arrayDigesters.iterator();
 			while (iter.hasNext()) {
 				ArrayDigester digester = iter.next();
@@ -147,8 +152,7 @@ public class DigesterModule
 				set.add(digest);
 			}
 		}
-		if (this.bufferDigesters != null &&
-			this.bufferDigesters.size() > 0) {
+		if (this.bufferDigesters != null && this.bufferDigesters.size() > 0) {
 			Iterator<BufferDigester> iter = this.bufferDigesters.iterator();
 			while (iter.hasNext()) {
 				BufferDigester digester = iter.next();
@@ -156,19 +160,25 @@ public class DigesterModule
 				set.add(digest);
 			}
 		}
-		
+
 		return set;
 	}
 
-	/** Set the algorithm-specific byte array digesters.
-	 * @param digesters Algorithm-specific byte array digesters
+	/**
+	 * Set the algorithm-specific byte array digesters.
+	 * 
+	 * @param digesters
+	 *            Algorithm-specific byte array digesters
 	 */
 	public void setArrayDigesters(List<ArrayDigester> digesters) {
 		this.arrayDigesters = digesters;
 	}
-	
-	/** Set the algorithm-specific byte buffer digesters.
-	 * @param digesters Algorithm-specific byte buffer digesters
+
+	/**
+	 * Set the algorithm-specific byte buffer digesters.
+	 * 
+	 * @param digesters
+	 *            Algorithm-specific byte buffer digesters
 	 */
 	public void setBufferDigesters(List<BufferDigester> digesters) {
 		this.bufferDigesters = digesters;

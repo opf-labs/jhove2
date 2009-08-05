@@ -43,58 +43,66 @@ import java.util.TreeSet;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.config.Configure;
 
-/** A Unicode code block, a range of code points associated with a named
- * language or script system.  Code blocks are initialized from a properties
- * file formatted the same as the Unicode database (UCB) file Blocks.txt:
+/**
+ * A Unicode code block, a range of code points associated with a named language
+ * or script system. Code blocks are initialized from a properties file
+ * formatted the same as the Unicode database (UCB) file Blocks.txt:
  * 
- *   <code>start..end; name</code>
+ * <code>start..end; name</code>
  * 
  * with the starting and ending code point (in hexadecimal), and block name.
  * 
  * @author mstrong, slabrams
  */
-public class CodeBlock
-	implements Comparable<CodeBlock>
-{
+public class CodeBlock implements Comparable<CodeBlock> {
 	/** Singleton Unicode code blocks. */
 	protected static Set<CodeBlock> codeBlocks;
 
 	/** Unicode code block range ending value. */
 	protected int end;
-	
+
 	/** Unicode code block name. */
 	protected String name;
-	
+
 	/** Unicode code block range starting value. */
 	protected int start;
-	
-	/** Instantiate a <code>CodeBlock</code> object.
-	 * @param start Starting code point of the block
-	 * @param end   Ending code point of the block
-	 * @param name  Code block name
+
+	/**
+	 * Instantiate a <code>CodeBlock</code> object.
+	 * 
+	 * @param start
+	 *            Starting code point of the block
+	 * @param end
+	 *            Ending code point of the block
+	 * @param name
+	 *            Code block name
 	 */
 	public CodeBlock(int start, int end, String name) {
 		this.start = start;
-		this.end   = end;
-		this.name  = name;
+		this.end = end;
+		this.name = name;
 	}
-	
-	/** Get the code blocks.
+
+	/**
+	 * Get the code blocks.
+	 * 
 	 * @return Code blocks
 	 */
 	public static Set<CodeBlock> getCodeBlocks() {
 		return codeBlocks;
 	}
-	
-	/** Get the code block for a code point.
-	 * @param codePoint Code point
+
+	/**
+	 * Get the code block for a code point.
+	 * 
+	 * @param codePoint
+	 *            Code point
 	 * @return Code block, or null if the code point is outside of all defined
 	 *         blocks
-	 * @throws JHOVE2Exception 
+	 * @throws JHOVE2Exception
 	 */
 	public static synchronized CodeBlock getBlock(int codePoint)
-		throws JHOVE2Exception
-	{
+			throws JHOVE2Exception {
 		if (codeBlocks == null) {
 			/* Initialize the code blocks from Java Properties. */
 			codeBlocks = new TreeSet<CodeBlock>();
@@ -104,15 +112,15 @@ public class CodeBlock
 				Iterator<String> iter = set.iterator();
 				while (iter.hasNext()) {
 					String range = iter.next();
-					String name  = props.getProperty(range);
+					String name = props.getProperty(range);
 
 					int st = range.indexOf('.');
 					int en = range.indexOf(';');
-					String start = range.substring(0,    st);
-					String end   = range.substring(st+2, en);
+					String start = range.substring(0, st);
+					String end = range.substring(st + 2, en);
 
 					st = Integer.parseInt(start, 16);
-					en = Integer.parseInt(end,   16);
+					en = Integer.parseInt(end, 16);
 					CodeBlock block = new CodeBlock(st, en, name);
 					codeBlocks.add(block);
 				}
@@ -122,49 +130,58 @@ public class CodeBlock
 		Iterator<CodeBlock> iter = codeBlocks.iterator();
 		while (iter.hasNext()) {
 			CodeBlock blk = iter.next();
-			if (codePoint >= blk.getStart() &&
-				codePoint <= blk.getEnd()) {
+			if (codePoint >= blk.getStart() && codePoint <= blk.getEnd()) {
 				block = blk;
 				break;
 			}
 		}
-		
+
 		return block;
 	}
 
-	/** Get the ending code point for the block.
-	 *  @return Ending code point
+	/**
+	 * Get the ending code point for the block.
+	 * 
+	 * @return Ending code point
 	 */
 	public int getEnd() {
 		return this.end;
 	}
 
-	/** Get the code block name.
-	 *  @return Code block name
+	/**
+	 * Get the code block name.
+	 * 
+	 * @return Code block name
 	 */
 	public String getName() {
 		return this.name;
 	}
 
-	/** Get the starting code point for the block.
-	 *  @return Starting code point
+	/**
+	 * Get the starting code point for the block.
+	 * 
+	 * @return Starting code point
 	 */
 	public int getStart() {
 		return this.start;
 	}
-	
-	/** Convert the code block to a Java string.
+
+	/**
+	 * Convert the code block to a Java string.
+	 * 
 	 * @return Java string representation of the code block
 	 */
-	public String toString()
-	{
+	public String toString() {
 		return this.getName();
 	}
 
-	/** Compare Unicode code block.
-	 * @param block Unicode code block to be compared
-	 * @return -1, 0, or 1 if this block is less than, equal to, or greater
-	 *         than the second
+	/**
+	 * Compare Unicode code block.
+	 * 
+	 * @param block
+	 *            Unicode code block to be compared
+	 * @return -1, 0, or 1 if this block is less than, equal to, or greater than
+	 *         the second
 	 */
 	@Override
 	public int compareTo(CodeBlock block) {
@@ -172,11 +189,10 @@ public class CodeBlock
 		int start = block.getStart();
 		if (this.start < start) {
 			ret = -1;
-		}
-		else if (this.start > start) {
+		} else if (this.start > start) {
 			ret = 1;
 		}
-		
+
 		return ret;
 	}
 }

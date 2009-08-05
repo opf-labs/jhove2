@@ -40,138 +40,160 @@ import java.io.PrintStream;
 
 import org.jhove2.core.I8R;
 
-/** JSON displayer.  The JSON format is defined by RFC 4627.
+/**
+ * JSON displayer. The JSON format is defined by RFC 4627.
  * 
  * @author mstrong, slabrams
  */
-public class JSONDisplayer
-	extends AbstractDisplayer
-{
+public class JSONDisplayer extends AbstractDisplayer {
 	/** JSON displayer version identifier. */
 	public static final String VERSION = "1.0.0";
 
 	/** JSON displayer release date. */
 	public static final String RELEASE = "2009-07-30";
-	
-	/** JSON displayer rights statement. */
-	public static final String RIGHTS =
-		"Copyright 2009 by The Regents of the University of California, " +
-		"Ithaka Harbors, Inc., and The Board of Trustees of the Leland " +
-		"Stanford Junior University. " +
-		"Available under the terms of the BSD license.";
-	
 
-	/** Instantiate a new <code>JSON</code> displayer.
+	/** JSON displayer rights statement. */
+	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California, "
+			+ "Ithaka Harbors, Inc., and The Board of Trustees of the Leland "
+			+ "Stanford Junior University. "
+			+ "Available under the terms of the BSD license.";
+
+	/**
+	 * Instantiate a new <code>JSON</code> displayer.
 	 */
 	public JSONDisplayer() {
 		super(VERSION, RELEASE, RIGHTS);
 	}
 
-	/** Start display.
-	 * @param out   Print stream
-	 * @param level Nesting level
-	 * @see org.jhove2.module.display.Displayer#startDisplay(java.io.PrintStream, int)
+	/**
+	 * Start display.
+	 * 
+	 * @param out
+	 *            Print stream
+	 * @param level
+	 *            Nesting level
+	 * @see org.jhove2.module.display.Displayer#startDisplay(java.io.PrintStream,
+	 *      int)
 	 */
 	@Override
 	public void startDisplay(PrintStream out, int level) {
 		String indent = getIndent(level);
-		
+
 		out.println(indent + "{");
 	}
-	
-	/** Start display of a {@link org.jhove2.core.Reportable}.
-	 * @param out        Print stream
-	 * @param level      Nesting level
-	 * @param name       Reportable name
-	 * @param identifier Reportable identifier in the JHOVE2 namespace
-	 * @param order      Ordinal position of this reportable with respect to
-	 *                   enclosing {@link org.jhove2.core.Reportable} or
-	 *                   collection
-	 * @see org.jhove2.module.display.Displayer#startReportable(java.io.PrintStream, int, java.lang.String, org.jhove2.core.I8R, int)
+
+	/**
+	 * Start display of a {@link org.jhove2.core.Reportable}.
+	 * 
+	 * @param out
+	 *            Print stream
+	 * @param level
+	 *            Nesting level
+	 * @param name
+	 *            Reportable name
+	 * @param identifier
+	 *            Reportable identifier in the JHOVE2 namespace
+	 * @param order
+	 *            Ordinal position of this reportable with respect to enclosing
+	 *            {@link org.jhove2.core.Reportable} or collection
+	 * @see org.jhove2.module.display.Displayer#startReportable(java.io.PrintStream,
+	 *      int, java.lang.String, org.jhove2.core.I8R, int)
 	 */
 	@Override
 	public void startReportable(PrintStream out, int level, String name,
-			                    I8R identifier, int order) {
-		String indent = getIndent(this.showIdentifiers ? 2*level : level);
+			I8R identifier, int order) {
+		String indent = getIndent(this.showIdentifiers ? 2 * level : level);
 		StringBuffer buffer = new StringBuffer(indent);
-		
+
 		if (order == 0) {
 			buffer.append(" ");
-		}
-		else {
+		} else {
 			buffer.append(",");
 		}
 		buffer.append("\"" + name + "\": {");
 		if (this.showIdentifiers) {
-			buffer.append("\n" + indent + "  \"identifier\": " + identifier + "\"" +
-						  "\n" + indent + " ,\"value\": {");
+			buffer.append("\n" + indent + "  \"identifier\": " + identifier
+					+ "\"" + "\n" + indent + " ,\"value\": {");
 		}
 		out.println(buffer);
 	}
-	
-	/** Start display of a property collection.
-	 * @param out        Print stream
-	 * @param level      Nesting level
-	 * @param name       Property collection name
-	 * @param identifier Property collection identifier in the JHOVE2 namespace
-	 * @param size       Property collection size
-	 * @param order      Ordinal position of this reportable with respect to
-	 *                   enclosing {@link org.jhove2.core.Reportable} or
-	 *                   collection
-	 * @see org.jhove2.module.display.Displayer#startCollection(java.io.PrintStream, int, java.lang.String, org.jhove2.core.I8R, int, int)
+
+	/**
+	 * Start display of a property collection.
+	 * 
+	 * @param out
+	 *            Print stream
+	 * @param level
+	 *            Nesting level
+	 * @param name
+	 *            Property collection name
+	 * @param identifier
+	 *            Property collection identifier in the JHOVE2 namespace
+	 * @param size
+	 *            Property collection size
+	 * @param order
+	 *            Ordinal position of this reportable with respect to enclosing
+	 *            {@link org.jhove2.core.Reportable} or collection
+	 * @see org.jhove2.module.display.Displayer#startCollection(java.io.PrintStream,
+	 *      int, java.lang.String, org.jhove2.core.I8R, int, int)
 	 */
 	@Override
 	public void startCollection(PrintStream out, int level, String name,
-			                    I8R identifier, int size, int order) {
-		String indent = getIndent(this.showIdentifiers ? 2*level : level);
+			I8R identifier, int size, int order) {
+		String indent = getIndent(this.showIdentifiers ? 2 * level : level);
 		StringBuffer buffer = new StringBuffer(indent);
-		
+
 		if (order == 0) {
 			buffer.append(" ");
-		}
-		else {
+		} else {
 			buffer.append(",");
 		}
 		buffer.append("\"" + name + "\": {");
 		if (this.showIdentifiers) {
-			buffer.append("\n" + indent + "  \"identifier\": " + identifier + "\"" +
-						  "\n" + indent + " ,\"value\": {");
+			buffer.append("\n" + indent + "  \"identifier\": " + identifier
+					+ "\"" + "\n" + indent + " ,\"value\": {");
 		}
 		out.println(buffer);
 	}
-	
-	/** Display property.
-	 * @param out        Print stream
-	 * @param level      Nesting level
-	 * @param name       Property name
-	 * @param identifier Property identifier in the JHOVE2 namespace
-	 * @param value      Property value
-	 * @param order      Ordinal position of this reportable with respect to
-	 *                   enclosing {@link org.jhove2.core.Reportable} or
-	 *                   collection
-	 * @see org.jhove2.module.display.Displayer#displayProperty(java.io.PrintStream, int, java.lang.String, org.jhove2.core.I8R, java.lang.Object, int)
+
+	/**
+	 * Display property.
+	 * 
+	 * @param out
+	 *            Print stream
+	 * @param level
+	 *            Nesting level
+	 * @param name
+	 *            Property name
+	 * @param identifier
+	 *            Property identifier in the JHOVE2 namespace
+	 * @param value
+	 *            Property value
+	 * @param order
+	 *            Ordinal position of this reportable with respect to enclosing
+	 *            {@link org.jhove2.core.Reportable} or collection
+	 * @see org.jhove2.module.display.Displayer#displayProperty(java.io.PrintStream,
+	 *      int, java.lang.String, org.jhove2.core.I8R, java.lang.Object, int)
 	 */
 	@Override
 	public void displayProperty(PrintStream out, int level, String name,
-			                    I8R identifier, Object value, int order) {
-		String indent = getIndent(this.showIdentifiers ? 2*level : level);
+			I8R identifier, Object value, int order) {
+		String indent = getIndent(this.showIdentifiers ? 2 * level : level);
 		StringBuffer buffer = new StringBuffer(indent);
-		
+
 		if (order == 0) {
 			buffer.append(" ");
-		}
-		else {
+		} else {
 			buffer.append(",");
 		}
 		buffer.append("\"" + name + "\": ");
 		if (this.showIdentifiers) {
-			buffer.append("{\n" + indent + "   \"identifier\": \"" + identifier + "\"" +
-					       "\n" + indent + "  ,\"value\": ");
+			buffer.append("{\n" + indent + "   \"identifier\": \"" + identifier
+					+ "\"" + "\n" + indent + "  ,\"value\": ");
 		}
 		if (value instanceof Number) {
 			buffer.append(value);
-		}
-		else {
+		} else {
 			buffer.append("\"");
 			buffer.append(escape(value.toString()));
 			buffer.append("\"");
@@ -182,63 +204,88 @@ public class JSONDisplayer
 		out.println(buffer);
 	}
 
-	/** End display of a property collection.
-	 * @param out        Print stream
-	 * @param level      Nesting level
-	 * @param name       Property collection name
-	 * @param identifier Property identifier in the JHOVE2 namespace
-	 * @param size       Property collection size
-	 * @see org.jhove2.module.display.Displayer#endCollection(java.io.PrintStream, int, java.lang.String, org.jhove2.core.I8R, int)
+	/**
+	 * End display of a property collection.
+	 * 
+	 * @param out
+	 *            Print stream
+	 * @param level
+	 *            Nesting level
+	 * @param name
+	 *            Property collection name
+	 * @param identifier
+	 *            Property identifier in the JHOVE2 namespace
+	 * @param size
+	 *            Property collection size
+	 * @see org.jhove2.module.display.Displayer#endCollection(java.io.PrintStream,
+	 *      int, java.lang.String, org.jhove2.core.I8R, int)
 	 */
 	@Override
 	public void endCollection(PrintStream out, int level, String name,
-			                  I8R identifier, int size) {
-		String indent = getIndent(this.showIdentifiers ? (2*level)+1 : level+1);
+			I8R identifier, int size) {
+		String indent = getIndent(this.showIdentifiers ? (2 * level) + 1
+				: level + 1);
 		StringBuffer buffer = new StringBuffer(indent);
-		
-		if (this.showIdentifiers) {
-			buffer.append(" }\n" + indent);
-		}	
-		buffer.append("}");
-		out.println(buffer);
-	}
 
-	/** End display of a {@link org.jhove2.core.Reportable}.
-	 * @param out        Print stream
-	 * @param level      Nesting level
-	 * @param name       Reportable name
-	 * @param identifier Reportable in the JHOVE2 namespace
-	 * @see org.jhove2.module.display.Displayer#endReportable(java.io.PrintStream, int, java.lang.String, org.jhove2.core.I8R)
-	 */
-	@Override
-	public void endReportable(PrintStream out, int level, String name,
-			                  I8R identifier) {
-		String indent = getIndent(this.showIdentifiers ? (2*level)+1 : level+1);
-		StringBuffer buffer = new StringBuffer(indent);
-		
 		if (this.showIdentifiers) {
 			buffer.append(" }\n" + indent);
 		}
 		buffer.append("}");
 		out.println(buffer);
 	}
-	
-	/** End display.
-	 * @param out   Print stream
-	 * @param level Nesting level
-	 * @see org.jhove2.module.display.Displayer#endDisplay(java.io.PrintStream, int)
+
+	/**
+	 * End display of a {@link org.jhove2.core.Reportable}.
+	 * 
+	 * @param out
+	 *            Print stream
+	 * @param level
+	 *            Nesting level
+	 * @param name
+	 *            Reportable name
+	 * @param identifier
+	 *            Reportable in the JHOVE2 namespace
+	 * @see org.jhove2.module.display.Displayer#endReportable(java.io.PrintStream,
+	 *      int, java.lang.String, org.jhove2.core.I8R)
+	 */
+	@Override
+	public void endReportable(PrintStream out, int level, String name,
+			I8R identifier) {
+		String indent = getIndent(this.showIdentifiers ? (2 * level) + 1
+				: level + 1);
+		StringBuffer buffer = new StringBuffer(indent);
+
+		if (this.showIdentifiers) {
+			buffer.append(" }\n" + indent);
+		}
+		buffer.append("}");
+		out.println(buffer);
+	}
+
+	/**
+	 * End display.
+	 * 
+	 * @param out
+	 *            Print stream
+	 * @param level
+	 *            Nesting level
+	 * @see org.jhove2.module.display.Displayer#endDisplay(java.io.PrintStream,
+	 *      int)
 	 */
 	@Override
 	public void endDisplay(PrintStream out, int level) {
 		String indent = getIndent(level);
-		
+
 		out.println(indent + "}");
 	}
-	
-	/** Replace invalid characters with escaped values.  The escape character
-	 * is a backslash (\).  All literal backslashes (\) are replaced with (\\).
-	 * All quotes (") are replaced with (\"). 
-	 * @param value String value
+
+	/**
+	 * Replace invalid characters with escaped values. The escape character is a
+	 * backslash (\). All literal backslashes (\) are replaced with (\\). All
+	 * quotes (") are replaced with (\").
+	 * 
+	 * @param value
+	 *            String value
 	 * @return Escaped version of the string
 	 */
 	protected String escape(String value) {

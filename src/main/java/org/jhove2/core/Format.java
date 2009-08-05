@@ -43,213 +43,263 @@ import java.util.TreeSet;
 
 import org.jhove2.annotation.ReportableProperty;
 
-/** A JHOVE2 format.
+/**
+ * A JHOVE2 format.
  * 
  * @author mstrong, slabrams
  */
-public class Format
-	implements Reportable
-{
+public class Format implements Reportable {
 	/** Format ambiguities. Ambiguous formats should report their caveats. */
 	public enum Ambiguity {
-		Ambiguous,
-		Unambiguous
+		Ambiguous, Unambiguous
 	}
-	
+
 	/** Format type. */
 	public enum Type {
-		Family,
-		Format
+		Family, Format
 	}
+
 	/** Format alias identifiers. */
 	protected Set<I8R> aliasIdentifiers;
-	
+
 	/** Format alias names. */
 	protected Set<String> aliasNames;
-	
+
 	/** Format ambiguity. */
 	protected Ambiguity ambiguity;
-	
+
 	/** Format caveats. */
 	protected String caveats;
-	
+
 	/** Format canonical identifier, in the JHOVE2 namespace. */
 	protected I8R identifier;
-	
+
 	/** Format canonical name. */
 	protected String name;
-	
+
 	/** Format informative note. */
 	protected String note;
-	
+
 	/** Format specifications. */
 	protected List<Document> specifications;
-	
+
 	/** Format type. */
 	protected Type type;
-	
+
 	/** Format version. */
 	protected String version;
-	
-	/** Instantiate a new <code>Format</code>.
-	 * @param name       Format canonical name
-	 * @param identifier Format canonical identifier
-	 * @param type       Format type
-	 * @param ambiguity  Format ambiguity
+
+	/**
+	 * Instantiate a new <code>Format</code>.
+	 * 
+	 * @param name
+	 *            Format canonical name
+	 * @param identifier
+	 *            Format canonical identifier
+	 * @param type
+	 *            Format type
+	 * @param ambiguity
+	 *            Format ambiguity
 	 */
-	public Format(String name, I8R identifier, Type type,
-			      Ambiguity ambiguity) {
+	public Format(String name, I8R identifier, Type type, Ambiguity ambiguity) {
 		super();
-		
-		this.name       = name;
+
+		this.name = name;
 		this.identifier = identifier;
-		this.type       = type;
-		this.ambiguity  = ambiguity;
-		
+		this.type = type;
+		this.ambiguity = ambiguity;
+
 		this.aliasIdentifiers = new TreeSet<I8R>();
-		this.aliasNames       = new TreeSet<String>();
+		this.aliasNames = new TreeSet<String>();
 		this.specifications = new ArrayList<Document>();
 	}
 
-	/** Get format alias identifiers.
+	/**
+	 * Get format alias identifiers.
+	 * 
 	 * @return Format alias identifiers
 	 */
-	@ReportableProperty(order=5, value="Format alias identifiers.")
+	@ReportableProperty(order = 5, value = "Format alias identifiers.")
 	public Set<I8R> getAliasIdentifiers() {
 		return this.aliasIdentifiers;
 	}
 
-	/** Get format alias names.
+	/**
+	 * Get format alias names.
+	 * 
 	 * @return Format alias names
 	 */
-	@ReportableProperty(order=6, value="Format alias names.")
+	@ReportableProperty(order = 6, value = "Format alias names.")
 	public Set<String> getAliasNames() {
 		return this.aliasNames;
 	}
 
-	/** Get format ambiguity.
+	/**
+	 * Get format ambiguity.
+	 * 
 	 * @return Format ambiguity
 	 */
-	@ReportableProperty(order=8, value="Format ambiguity.")
+	@ReportableProperty(order = 8, value = "Format ambiguity.")
 	public Ambiguity getAmbiguity() {
 		return this.ambiguity;
 	}
 
-	/** Get format caveats.
+	/**
+	 * Get format caveats.
+	 * 
 	 * @return Format caveats
 	 */
-	@ReportableProperty(order=9, value="Format caveats.")
+	@ReportableProperty(order = 9, value = "Format caveats.")
 	public String getCaveats() {
 		return this.caveats;
 	}
-	
-	/** Get format canonical identifier, in the JHOVE2 namespace.
+
+	/**
+	 * Get format canonical identifier, in the JHOVE2 namespace.
+	 * 
 	 * @return Format canonical identifier
 	 */
-	@ReportableProperty(order=2, value="Format canonical identifier, in the " +
-			"JHOVE2 namespace.")
+	@ReportableProperty(order = 2, value = "Format canonical identifier, in the "
+			+ "JHOVE2 namespace.")
 	public I8R getIdentifier() {
 		return this.identifier;
 	}
-	
-	/** Get format canonical name.
+
+	/**
+	 * Get format canonical name.
+	 * 
 	 * @return Format canonical name
 	 */
-	@ReportableProperty(order=1, value="Format canonical name.")
+	@ReportableProperty(order = 1, value = "Format canonical name.")
 	public String getName() {
 		return this.name;
 	}
 
-	/** Format informative note.
+	/**
+	 * Format informative note.
+	 * 
 	 * @return Format informative note
 	 */
-	@ReportableProperty(order=10, value="Format informative note.")
+	@ReportableProperty(order = 10, value = "Format informative note.")
 	public String getNote() {
 		return this.note;
 	}
 
-	/** Get format specifications.
+	/**
+	 * Get format specifications.
+	 * 
 	 * @return Format specifications
 	 */
-	@ReportableProperty(order=7, value="Format specifications.")
+	@ReportableProperty(order = 7, value = "Format specifications.")
 	public List<Document> getSpecifications() {
 		return this.specifications;
 	}
 
-	/** Get format type.
+	/**
+	 * Get format type.
+	 * 
 	 * @return Format type
 	 */
-	@ReportableProperty(order=4, value="Format type.")
+	@ReportableProperty(order = 4, value = "Format type.")
 	public Type getType() {
 		return this.type;
 	}
 
-	/** Get format version.
+	/**
+	 * Get format version.
+	 * 
 	 * @return Format version
 	 */
-	@ReportableProperty(order=3, value="Format version.")
+	@ReportableProperty(order = 3, value = "Format version.")
 	public String getVersion() {
 		return this.version;
 	}
-	
-	/** Add format alias identifier.
-	 * @param identifier Format alias identifier
+
+	/**
+	 * Add format alias identifier.
+	 * 
+	 * @param identifier
+	 *            Format alias identifier
 	 */
 	public void setAliasIdentifier(I8R identifier) {
 		this.aliasIdentifiers.add(identifier);
 	}
-	
-	/** Add a Set of format alias identifiers.
-	 * @param identifiers Format alias identifiers
+
+	/**
+	 * Add a Set of format alias identifiers.
+	 * 
+	 * @param identifiers
+	 *            Format alias identifiers
 	 */
 	public void setAliasIdentifiers(Set<I8R> identifiers) {
 		this.aliasIdentifiers.addAll(identifiers);
 	}
-	
-	/** Add format alias name.
-	 * @param name Format alias name
+
+	/**
+	 * Add format alias name.
+	 * 
+	 * @param name
+	 *            Format alias name
 	 */
 	public void setAliasName(String name) {
 		this.aliasNames.add(name);
 	}
-	
-	/** Add a Set of format alias names.
-	 * @param names Format alias names
+
+	/**
+	 * Add a Set of format alias names.
+	 * 
+	 * @param names
+	 *            Format alias names
 	 */
 	public void setAliasNames(Set<String> names) {
 		this.aliasNames.addAll(names);
 	}
 
-	/** Set format caveats.
-	 * @param caveats Format caveats
+	/**
+	 * Set format caveats.
+	 * 
+	 * @param caveats
+	 *            Format caveats
 	 */
 	public void setCaveats(String caveats) {
 		this.caveats = caveats;
 	}
-	
-	/** Set format informative note.
-	 * @param note Format informative note
+
+	/**
+	 * Set format informative note.
+	 * 
+	 * @param note
+	 *            Format informative note
 	 */
 	public void setNote(String note) {
 		this.note = note;
 	}
-	
-	/** Add format specification.
-	 * @param specification Format specification
+
+	/**
+	 * Add format specification.
+	 * 
+	 * @param specification
+	 *            Format specification
 	 */
 	public void setSpecification(Document specification) {
 		this.specifications.add(specification);
 	}
 
-	/** Add a List of format specifications.
-	 * @param specifications Format specifications
+	/**
+	 * Add a List of format specifications.
+	 * 
+	 * @param specifications
+	 *            Format specifications
 	 */
 	public void setSpecifications(List<Document> specifications) {
 		this.specifications.addAll(specifications);
 	}
-	
-	/** Set format version.
-	 * @param version Format version
+
+	/**
+	 * Set format version.
+	 * 
+	 * @param version
+	 *            Format version
 	 */
 	public void setVersion(String version) {
 		this.version = version;

@@ -38,17 +38,18 @@ package org.jhove2.module.digest;
 
 import java.nio.ByteBuffer;
 
-
-/** Interface for JHOVE2 algorithm-specific message digesters that operate
- * on Java NIO {@link java.nio.ByteBuffer}s.
+/**
+ * Interface for JHOVE2 algorithm-specific message digesters that operate on
+ * Java NIO {@link java.nio.ByteBuffer}s.
  * 
  * @author mstrong, slabrams
  */
-public interface BufferDigester
-	extends DigesterAlgorithm
-{
-	/** Update a message digest.
-	 * @param buffer Byte buffer
+public interface BufferDigester extends DigesterAlgorithm {
+	/**
+	 * Update a message digest.
+	 * 
+	 * @param buffer
+	 *            Byte buffer
 	 */
 	public void update(ByteBuffer buffer);
 }

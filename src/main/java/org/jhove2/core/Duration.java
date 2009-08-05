@@ -36,74 +36,81 @@
 
 package org.jhove2.core;
 
-/** A JHOVE2 duration.
+/**
+ * A JHOVE2 duration.
  * 
  * @author mstrong, slabrams
  */
 public class Duration {
 	/** Indicator of an uninitialized time. */
 	public static final long UNINITIALIZED = -1L;
-	
+
 	/** Duration, in milliseconds. */
 	protected long duration;
-	
-	/** Instantiate a new <code>Duration</code>.
-	 * @param duration Duration, in milliseconds
+
+	/**
+	 * Instantiate a new <code>Duration</code>.
+	 * 
+	 * @param duration
+	 *            Duration, in milliseconds
 	 */
 	public Duration(long duration) {
 		this.duration = duration;
 	}
-	
-	/** Get duration, in milliseconds.
+
+	/**
+	 * Get duration, in milliseconds.
+	 * 
 	 * @return Duration, in milliseconds
 	 */
 	public long getDuration() {
 		return this.duration;
 	}
-	
-	/** Get {@link java.lang.String} representation of the duration, of the
-	 * form: "hh:mm:ss.msec"
+
+	/**
+	 * Get {@link java.lang.String} representation of the duration, of the form:
+	 * "hh:mm:ss.msec"
 	 */
-	 @Override
-	 public String toString() {
-		 StringBuffer buffer = new StringBuffer();
-		 
-		 int hh = 0;
-		 int mm = 0;
-		 int ss = 0;
-		 int ms = 1;
-		 if (this.duration > 0L) {
-			 hh = (int) this.duration / 3600000;
-			 long ln = this.duration % 3600000;
-			 mm = (int) ln / 60000;
-		     ln = (int) ln % 60000;
-		     ss = (int) ln / 1000;
-		     ms = (int) ln % 1000;
-		 }
-		 
-		 if (hh < 10) {
-			 buffer.append("0");
-		 }
-		 buffer.append(Integer.toString(hh));
-		 buffer.append(":");
-		 if (mm < 10) {
-			 buffer.append("0");
-		 }
-		 buffer.append(Integer.toString(mm));
-		 buffer.append(":");
-		 if (ss < 10) {
-			 buffer.append("0");
-		 }
-		 buffer.append(Integer.toString(ss));
-		 buffer.append(".");
-		 if (ms < 100) {
-			 buffer.append("0");
-			 if (ms < 10) {
-				 buffer.append("0");
-			 }
-		 }
-		 buffer.append(Integer.toString(ms));
-		 
-		 return buffer.toString();
-	 }
+	@Override
+	public String toString() {
+		StringBuffer buffer = new StringBuffer();
+
+		int hh = 0;
+		int mm = 0;
+		int ss = 0;
+		int ms = 1;
+		if (this.duration > 0L) {
+			hh = (int) this.duration / 3600000;
+			long ln = this.duration % 3600000;
+			mm = (int) ln / 60000;
+			ln = (int) ln % 60000;
+			ss = (int) ln / 1000;
+			ms = (int) ln % 1000;
+		}
+
+		if (hh < 10) {
+			buffer.append("0");
+		}
+		buffer.append(Integer.toString(hh));
+		buffer.append(":");
+		if (mm < 10) {
+			buffer.append("0");
+		}
+		buffer.append(Integer.toString(mm));
+		buffer.append(":");
+		if (ss < 10) {
+			buffer.append("0");
+		}
+		buffer.append(Integer.toString(ss));
+		buffer.append(".");
+		if (ms < 100) {
+			buffer.append("0");
+			if (ms < 10) {
+				buffer.append("0");
+			}
+		}
+		buffer.append(Integer.toString(ms));
+
+		return buffer.toString();
+	}
 }

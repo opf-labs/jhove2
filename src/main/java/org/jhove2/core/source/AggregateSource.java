@@ -36,12 +36,11 @@
 
 package org.jhove2.core.source;
 
-/** Marker interface for JHOVE2 aggregate source units, such as directories
- * and clumps.
+/**
+ * Marker interface for JHOVE2 aggregate source units, such as directories and
+ * clumps.
  * 
  * @author mstrong, slabrams
  */
-public interface AggregateSource
-	extends Source
-{
+public interface AggregateSource extends Source {
 }

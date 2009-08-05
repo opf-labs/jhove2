@@ -51,94 +51,107 @@ import org.jhove2.core.io.Input.Type;
 import org.jhove2.module.digest.AbstractArrayDigester;
 import org.jhove2.module.digest.CRC32Digester;
 
-/** JHOVE2 Zip file source unit.
+/**
+ * JHOVE2 Zip file source unit.
  * 
  * @author mstrong, slabrams
  */
-public class ZipFileSource
-	extends AbstractSource
-	implements NamedSource
-{
+public class ZipFileSource extends AbstractSource implements NamedSource {
 	/** Zip file CRC-32 message digest. */
 	protected Digest crc32;
-	
+
 	/** Zip file comment. */
 	protected String comment;
-	
+
 	/** Zip file last modified date. */
 	protected Date lastModified;
-	
+
 	/** Zip file name. */
 	protected String name;
-	
+
 	/** Zip file path. */
 	protected String path;
-	
+
 	/** Zip file size, in bytes. */
 	protected long size;
-	
-	/** Instantiate a new <code>ZipFileSource</code>.
-	 * @param jhove2 JHOVE2 framework
-	 * @param stream Input stream for the Zip file entry
-	 * @param entry  Zip file entry
-	 * @throws IOException 
+
+	/**
+	 * Instantiate a new <code>ZipFileSource</code>.
+	 * 
+	 * @param jhove2
+	 *            JHOVE2 framework
+	 * @param stream
+	 *            Input stream for the Zip file entry
+	 * @param entry
+	 *            Zip file entry
+	 * @throws IOException
 	 */
 	public ZipFileSource(JHOVE2 jhove2, InputStream stream, ZipEntry entry)
-		throws IOException
-	{
+			throws IOException {
 		super(jhove2, stream);
-		
-		this.path         = entry.getName();
-		this.name         = this.path;
+
+		this.path = entry.getName();
+		this.name = this.path;
 		int in = this.name.lastIndexOf('/');
 		if (in > -1) {
-			this.name = this.name.substring(in+1);
+			this.name = this.name.substring(in + 1);
 		}
-		this.size         = entry.getSize();
+		this.size = entry.getSize();
 		this.lastModified = new Date(entry.getTime());
-		this.crc32        = new Digest(AbstractArrayDigester.toHexString(entry.getCrc()),
-				                       CRC32Digester.ALGORITHM);
-		this.comment      = entry.getComment();
+		this.crc32 = new Digest(AbstractArrayDigester.toHexString(entry
+				.getCrc()), CRC32Digester.ALGORITHM);
+		this.comment = entry.getComment();
 	}
 
-	/** Get Zip file comment.
+	/**
+	 * Get Zip file comment.
+	 * 
 	 * @return Zip file comment
 	 */
-	@ReportableProperty(order=6, value="Zip file comment.")
+	@ReportableProperty(order = 6, value = "Zip file comment.")
 	public String getComment() {
 		return this.comment;
 	}
-	
-	/** Get Zip file CRC-32 message digest.
+
+	/**
+	 * Get Zip file CRC-32 message digest.
+	 * 
 	 * @return Zip file CRC-32 message digest
 	 */
-	@ReportableProperty(order=5, value="Zip file CRC-32 message digest.")
+	@ReportableProperty(order = 5, value = "Zip file CRC-32 message digest.")
 	public Digest getCRC32MessageDigest() {
 		return this.crc32;
 	}
-	
-	/** Get {@link org.jhove2.core.io.Input} for the Zip file.
-	 * @param bufferSize Input buffer size
-	 * @param bufferType Input buffer type
+
+	/**
+	 * Get {@link org.jhove2.core.io.Input} for the Zip file.
+	 * 
+	 * @param bufferSize
+	 *            Input buffer size
+	 * @param bufferType
+	 *            Input buffer type
 	 * @return Input for the source unit
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
 	public Input getInput(int bufferSize, Type bufferType)
-		throws FileNotFoundException, IOException
-	{
+			throws FileNotFoundException, IOException {
 		return InputFactory.getInput(this.file, bufferSize, bufferType);
 	}
-	
-	/** Get Zip file last modified date.
+
+	/**
+	 * Get Zip file last modified date.
+	 * 
 	 * @return Zip file last modified date
 	 */
-	@ReportableProperty(order=4, value="Zip file last modified date.")
+	@ReportableProperty(order = 4, value = "Zip file last modified date.")
 	public Date getLastModified() {
 		return this.lastModified;
 	}
-	
-	/** Get Zip file name.
+
+	/**
+	 * Get Zip file name.
+	 * 
 	 * @return Zip file name
 	 * @see org.jhove2.core.source.NamedSource#getName()
 	 */
@@ -146,19 +159,23 @@ public class ZipFileSource
 	public String getName() {
 		return this.name;
 	}
-	
-	/** Get Zip file path.
+
+	/**
+	 * Get Zip file path.
+	 * 
 	 * @return Zip file path
 	 */
-	@ReportableProperty(order=2, value="Zip file path.")
+	@ReportableProperty(order = 2, value = "Zip file path.")
 	public String getPath() {
 		return this.path;
 	}
-	
-	/** Get Zip file size, in bytes.
+
+	/**
+	 * Get Zip file size, in bytes.
+	 * 
 	 * @return Zip file size, in bytes
 	 */
-	@ReportableProperty(order=3, value="Zip file size, in bytes.")
+	@ReportableProperty(order = 3, value = "Zip file size, in bytes.")
 	public long getSize() {
 		return this.size;
 	}

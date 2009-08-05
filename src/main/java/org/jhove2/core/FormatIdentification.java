@@ -42,33 +42,34 @@ import java.util.List;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.source.Source;
 
-/** JHOVE2 presumptive format identification.
+/**
+ * JHOVE2 presumptive format identification.
  * 
  * @author mstrong, slabrams
  */
-public class FormatIdentification
-	implements Reportable, Comparable<FormatIdentification>
-{
+public class FormatIdentification implements Reportable,
+		Comparable<FormatIdentification> {
 	/** Identification confidence levels. */
 	public enum Confidence {
-		Negative         (6),
-		Tentative        (5),
-		Heuristic        (4),
-		PositiveGeneric  (3),
-		PositiveSpecific (2),
-		Validated        (1);
-		
+		Negative(6), Tentative(5), Heuristic(4), PositiveGeneric(3), PositiveSpecific(
+				2), Validated(1);
+
 		/** Priority order. */
 		private int order;
-		
-		/** Instantiate a new <code>Confidence</code> enum.
-		 * @param order Priority order
+
+		/**
+		 * Instantiate a new <code>Confidence</code> enum.
+		 * 
+		 * @param order
+		 *            Priority order
 		 */
 		private Confidence(int order) {
 			this.order = order;
 		}
-		
-		/** Get priority order.
+
+		/**
+		 * Get priority order.
+		 * 
 		 * @return Priority order
 		 */
 		public int getOrder() {
@@ -78,83 +79,107 @@ public class FormatIdentification
 
 	/** Identification confidence level. */
 	protected Confidence confidence;
-	
+
 	/** Presumptive format. */
 	protected Format format;
-	
+
 	/** Identification process. */
 	protected Product process;
-	
-	/** Source units associated with the format.  Defined only by aggregate
-	 * identification. */
+
+	/**
+	 * Source units associated with the format. Defined only by aggregate
+	 * identification.
+	 */
 	protected List<Source> sources;
-	
-	/** Instantiate a new <code>FormatIdentification</code>.
-	 * @param format     Presumptively identified format
-	 * @param confidence Identification confidence level
+
+	/**
+	 * Instantiate a new <code>FormatIdentification</code>.
+	 * 
+	 * @param format
+	 *            Presumptively identified format
+	 * @param confidence
+	 *            Identification confidence level
 	 */
 	public FormatIdentification(Format format, Confidence confidence) {
 		this(format, confidence, null);
-		
+
 		this.sources = new ArrayList<Source>();
 	}
-	
-	/** Instantiate a new <code>FormatIdentification</code>.
-	 * @param format     Presumptively identified format
-	 * @param confidence Identification confidence level
-	 * @param process    Identification process
+
+	/**
+	 * Instantiate a new <code>FormatIdentification</code>.
+	 * 
+	 * @param format
+	 *            Presumptively identified format
+	 * @param confidence
+	 *            Identification confidence level
+	 * @param process
+	 *            Identification process
 	 */
 	public FormatIdentification(Format format, Confidence confidence,
-			                    Product process)
-	{
-		this.process    = process;
-		this.format     = format;
+			Product process) {
+		this.process = process;
+		this.format = format;
 		this.confidence = confidence;
 	}
-	
-	/** Get identification process.
+
+	/**
+	 * Get identification process.
+	 * 
 	 * @return Identification process
 	 */
-	@ReportableProperty(order=1, value="Identification process.")
+	@ReportableProperty(order = 1, value = "Identification process.")
 	public Product getIdentificationProcess() {
 		return this.process;
 	}
 
-	/** Get identification confidence level.
+	/**
+	 * Get identification confidence level.
+	 * 
 	 * @return Identification confidence level
 	 */
-	@ReportableProperty(order=2, value="Identification confidence level.")
+	@ReportableProperty(order = 2, value = "Identification confidence level.")
 	public Confidence getConfidence() {
 		return this.confidence;
 	}
 
-	/** Get presumptively identified format.
+	/**
+	 * Get presumptively identified format.
+	 * 
 	 * @return Presumptively identified format
 	 */
-	@ReportableProperty(order=3, value="Presumptively identified format.")
+	@ReportableProperty(order = 3, value = "Presumptively identified format.")
 	public Format getPresumptiveFormat() {
 		return this.format;
 	}
 
-	/** Get source units associated with the format.  Defined only by aggregate
+	/**
+	 * Get source units associated with the format. Defined only by aggregate
 	 * identification.
+	 * 
 	 * @return Source units associated with the format
 	 */
 	public List<Source> getSources() {
 		return this.sources;
 	}
-	
-	/** Add a source unit for an aggregate format.
-	 * @param source Source unit
+
+	/**
+	 * Add a source unit for an aggregate format.
+	 * 
+	 * @param source
+	 *            Source unit
 	 */
 	public void setSource(Source source) {
 		this.sources.add(source);
 	}
-	
-	/** Lexically compare format identifications.
-	 * @param identification IdentifierModule to be compared
-	 * @return -1, 0, or 1 if this identifier value is less than, equal
-	 *         to, or greater than the second
+
+	/**
+	 * Lexically compare format identifications.
+	 * 
+	 * @param identification
+	 *            IdentifierModule to be compared
+	 * @return -1, 0, or 1 if this identifier value is less than, equal to, or
+	 *         greater than the second
 	 * @see java.lang.Comparable#compareTo(Object)
 	 */
 	@Override
@@ -163,10 +188,10 @@ public class FormatIdentification
 		int order2 = identification.getConfidence().getOrder();
 		if (order1 < order2) {
 			return -1;
-		}
-		else if (order1 > order2) {
+		} else if (order1 > order2) {
 			return 1;
 		}
-		return this.format.getName().compareToIgnoreCase(identification.getPresumptiveFormat().getName());
+		return this.format.getName().compareToIgnoreCase(
+				identification.getPresumptiveFormat().getName());
 	}
 }

@@ -52,14 +52,12 @@ import org.jhove2.module.format.Validator;
 import org.jhove2.module.format.unicode.CodeBlock;
 import org.jhove2.module.format.utf8.UTF8Module;
 
-/** ASCII profile of UTF-8.
+/**
+ * ASCII profile of UTF-8.
  * 
  * @author mstrong, slabrams
  */
-public class ASCIIProfile
-	extends AbstractFormatProfile
-	implements Validator
-{
+public class ASCIIProfile extends AbstractFormatProfile implements Validator {
 	/** Basic Latin code block. */
 	public static final String BASIC_LATIN = "Basic Latin";
 	/** ASCII profile version identifier. */
@@ -67,42 +65,49 @@ public class ASCIIProfile
 
 	/** ASCII profile release date. */
 	public static final String RELEASE = "2009-06-23";
-	
+
 	/** ASCII profile rights statement. */
-	public static final String RIGHTS =
-		"Copyright 2009 by The Regents of the University of California. " +
-		"Available under the terms of the BSD license.";
-	
+	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California. "
+			+ "Available under the terms of the BSD license.";
+
 	/** ASCII validation status. */
 	protected Validity isValid;
-	
+
 	/** Non-Basic Latin code blocks message. */
 	protected Message nonBasicLatinMessage;
-	
+
 	/** Non-Basic Latin code blocks. */
 	protected Set<CodeBlock> nonBasicLatinCodeBlocks;
-	
-	/** Instantiate a new <code>ASCIIProfile</code>.
-	 * @param format ASCII format
+
+	/**
+	 * Instantiate a new <code>ASCIIProfile</code>.
+	 * 
+	 * @param format
+	 *            ASCII format
 	 */
 	public ASCIIProfile(Format format) {
 		super(VERSION, RELEASE, RIGHTS, format);
-	
+
 		this.isValid = Validity.Undetermined;
 		this.nonBasicLatinCodeBlocks = new TreeSet<CodeBlock>();
 	}
-	
-	/** Validate an ASCII source unit.
-	 * @param jhove2 JHOVE2 framework
-	 * @param source ASCII source unit
+
+	/**
+	 * Validate an ASCII source unit.
+	 * 
+	 * @param jhove2
+	 *            JHOVE2 framework
+	 * @param source
+	 *            ASCII source unit
 	 * @return ASCII validation status
-	 * @see org.jhove2.module.format.Validator#validate(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
+	 * @see org.jhove2.module.format.Validator#validate(org.jhove2.core.JHOVE2,
+	 *      org.jhove2.core.source.Source)
 	 */
 	@Override
 	public Validity validate(JHOVE2 jhove2, Source source) {
 		if (this.module != null) {
 			this.isValid = Validity.True;
-			
+
 			Set<CodeBlock> blocks = ((UTF8Module) this.module).getCodeBlocks();
 			Iterator<CodeBlock> iter = blocks.iterator();
 			while (iter.hasNext()) {
@@ -115,24 +120,26 @@ public class ASCIIProfile
 			}
 		}
 		if (this.nonBasicLatinCodeBlocks.size() > 0) {
-			StringBuffer buffer =
-				new StringBuffer("Non-Basic Latin coded blocks: ");
+			StringBuffer buffer = new StringBuffer(
+					"Non-Basic Latin coded blocks: ");
 			Iterator<CodeBlock> iter = this.nonBasicLatinCodeBlocks.iterator();
-			for (int i=0; iter.hasNext(); i++) {
+			for (int i = 0; iter.hasNext(); i++) {
 				CodeBlock block = iter.next();
 				if (i > 0) {
 					buffer.append(",");
 				}
 				buffer.append(block);
 			}
-			this.nonBasicLatinMessage =
-				new Message(Severity.ERROR, Context.OBJECT, buffer.toString());
+			this.nonBasicLatinMessage = new Message(Severity.ERROR,
+					Context.OBJECT, buffer.toString());
 		}
-		
+
 		return this.isValid;
 	}
-	
-	/** Get non-Basic Latin code block message.
+
+	/**
+	 * Get non-Basic Latin code block message.
+	 * 
 	 * @return Non-Basic Latin code block
 	 */
 	@ReportableProperty("Non-Basic Latin code blocks message.")
@@ -140,7 +147,9 @@ public class ASCIIProfile
 		return this.nonBasicLatinMessage;
 	}
 
-	/** Get ASCII validation status.
+	/**
+	 * Get ASCII validation status.
+	 * 
 	 * @return ASCII validation status
 	 * @see org.jhove2.module.format.Validator#isValid()
 	 */

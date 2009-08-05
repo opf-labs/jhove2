@@ -40,29 +40,32 @@ import java.util.zip.CRC32;
 
 import org.jhove2.core.Digest;
 
-/** JHOVE2 CRC-32 message digester.
+/**
+ * JHOVE2 CRC-32 message digester.
  * 
  * @author mstrong, slabrams
  */
-public class CRC32Digester
-	extends AbstractArrayDigester
-{
+public class CRC32Digester extends AbstractArrayDigester {
 	/** Algorithm name. */
 	public static final String ALGORITHM = "CRC-32";
-	
+
 	/** CRC-32 digester. */
 	protected CRC32 digester;
-	
-	/** Instantiate a new <code>CRCDigester</code>.
+
+	/**
+	 * Instantiate a new <code>CRCDigester</code>.
 	 */
 	public CRC32Digester() {
 		super(ALGORITHM);
-		
+
 		this.digester = new CRC32();
 	}
 
-	/** Update a message digest.
-	 * @param array Byte array
+	/**
+	 * Update a message digest.
+	 * 
+	 * @param array
+	 *            Byte array
 	 * @see org.jhove2.module.digest.ArrayDigester#update(byte[])
 	 */
 	@Override
@@ -70,14 +73,16 @@ public class CRC32Digester
 		this.digester.update(array);
 	}
 
-	/** Get message digest value, as a hexadecimal string.
+	/**
+	 * Get message digest value, as a hexadecimal string.
+	 * 
 	 * @return Message digest value, as a hexadecimal string
 	 * @see org.jhove2.module.digest.DigesterAlgorithm#getDigest()
 	 */
 	@Override
 	public Digest getDigest() {
 		long value = this.digester.getValue();
-		
+
 		return new Digest(toHexString(value), this.algorithm);
 	}
 }

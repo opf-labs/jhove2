@@ -53,4 +53,6 @@ Reduced to simpler terms, characterization answers the following questions relev
 
 Or, more reductively, What? and So What?
 
-The JHOVE2 project is funded by the Library of Congress under its National Digital Information Infrastructure Preservation Program. 
+The JHOVE2 project is funded by the Library of Congress under its National Digital Information Infrastructure Preservation Program.
+
+All JHOVE2 software deliverables are available under the terms of the open source BSD license.

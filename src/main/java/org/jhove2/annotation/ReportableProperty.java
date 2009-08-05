@@ -43,14 +43,14 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/** JHOVE2 annotation marking reportable properties.  A reportable property is
- * a named, typed value.  Properties have two names: a short descriptive name,
- * not necessarily unique; and a formal name guaranteed unique.  The
- * descriptive name is implied by the accessor method that returns it.  For
- * example, the method <code>String getName()</code> defines a scalar
- * string-valued property named "Name".  the formal name is an identifier in
- * JHOVE2 namespace based on the name of the
- * {@link org.jhove2.core.Reportable} containing the property
+/**
+ * JHOVE2 annotation marking reportable properties. A reportable property is a
+ * named, typed value. Properties have two names: a short descriptive name, not
+ * necessarily unique; and a formal name guaranteed unique. The descriptive name
+ * is implied by the accessor method that returns it. For example, the method
+ * <code>String getName()</code> defines a scalar string-valued property named
+ * "Name". the formal name is an identifier in JHOVE2 namespace based on the
+ * name of the {@link org.jhove2.core.Reportable} containing the property
  * concatenated with the property's descriptive name.
  * 
  * @author mstrong, slabrams
@@ -58,19 +58,22 @@ import java.lang.annotation.Target;
 @Documented
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD})
+@Target( { ElementType.METHOD })
 public @interface ReportableProperty {
 	/** Default description and reference value. */
 	public static final String DEFAULT = "Not available.";
-	
-	/** Property description.*/
+
+	/** Property description. */
 	public String value() default DEFAULT;
-	
-	/** Property reference, a citation to an external source document that
-	 * defines the property. */
+
+	/**
+	 * Property reference, a citation to an external source document that
+	 * defines the property.
+	 */
 	public String ref() default DEFAULT;
-	
-	/** Ordinal position of this property relative to all properties directly
+
+	/**
+	 * Ordinal position of this property relative to all properties directly
 	 * defined in a class.
 	 */
 	public int order() default 1;

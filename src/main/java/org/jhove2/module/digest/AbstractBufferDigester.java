@@ -42,34 +42,39 @@ import java.security.NoSuchAlgorithmException;
 
 import org.jhove2.core.Digest;
 
-/** Abstract JHOVE2 algorithm-specific message digester that operates on a
- * Java NIO {@link java.nio.ByteBuffer}.
+/**
+ * Abstract JHOVE2 algorithm-specific message digester that operates on a Java
+ * NIO {@link java.nio.ByteBuffer}.
  * 
  * @author mstrong, slabrams
  */
-public abstract class AbstractBufferDigester
-	implements BufferDigester
-{
+public abstract class AbstractBufferDigester implements BufferDigester {
 	/** Message digest algorithm. */
 	protected String algorithm;
-	
+
 	/** Message digester. */
 	protected MessageDigest digester;
-	
-	/** Instantiate a new <code>AbstractBufferDigester</code>
-	 * @param algorithm Message digest algorithm
-	 * @throws NoSuchAlgorithmException No such algorithm
+
+	/**
+	 * Instantiate a new <code>AbstractBufferDigester</code>
+	 * 
+	 * @param algorithm
+	 *            Message digest algorithm
+	 * @throws NoSuchAlgorithmException
+	 *             No such algorithm
 	 */
 	public AbstractBufferDigester(String algorithm)
-		throws NoSuchAlgorithmException
-	{
+			throws NoSuchAlgorithmException {
 		this.algorithm = algorithm;
 
 		this.digester = MessageDigest.getInstance(algorithm);
 	}
-	
-	/** Update a message digest.
-	 * @param buffer Buffer
+
+	/**
+	 * Update a message digest.
+	 * 
+	 * @param buffer
+	 *            Buffer
 	 * @see org.jhove2.module.digest.BufferDigester#update(java.nio.ByteBuffer)
 	 */
 	@Override
@@ -77,24 +82,29 @@ public abstract class AbstractBufferDigester
 		this.digester.update(buffer);
 	}
 
-	/** Get message digest value, as a hexadecimal string.
+	/**
+	 * Get message digest value, as a hexadecimal string.
+	 * 
 	 * @return Message digest value, as a hexadecimal string
 	 * @see org.jhove2.module.digest.DigesterAlgorithm#getDigest()
 	 */
 	@Override
 	public Digest getDigest() {
-		byte [] value = this.digester.digest();
-		
+		byte[] value = this.digester.digest();
+
 		return new Digest(toHexString(value), this.algorithm);
 	}
-	
-	/** Format a message digest value as a hexadecimal string.
-	 * @param digest Message digest value
+
+	/**
+	 * Format a message digest value as a hexadecimal string.
+	 * 
+	 * @param digest
+	 *            Message digest value
 	 * @return Message digest value as a hexadecimal string
 	 */
-	public static synchronized String toHexString(byte [] digest) {
+	public static synchronized String toHexString(byte[] digest) {
 		StringBuffer hex = new StringBuffer();
-		for (int i=0; i<digest.length; i++) {
+		for (int i = 0; i < digest.length; i++) {
 			int in = digest[i];
 			if (in < 0) {
 				in = 256 + in;
@@ -105,7 +115,7 @@ public abstract class AbstractBufferDigester
 			String h = Integer.toHexString(in);
 			hex.append(h);
 		}
-		
+
 		return hex.toString();
 	}
 }

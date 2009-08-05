@@ -41,202 +41,224 @@ import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
 
-/** A JHOVE2 specification document.
+/**
+ * A JHOVE2 specification document.
  * 
  * @author mstrong, slabrams
  */
-public class Document
-	implements Reportable
-{
+public class Document implements Reportable {
 	/** Document intentions. */
 	public enum Intention {
-		Authoritative,
-		Informative,
-		Speculative,
-		Other,
-		Unknown
+		Authoritative, Informative, Speculative, Other, Unknown
 	}
-		                            
+
 	/** Document types. */
 	public enum Type {
-		Article,
-		Codebook,
-		Correspondance,
-		DataDictionary,
-		Dissertation,
-		Manual,
-		Memorandum,
-		Monograph,
-		Note,
-		Paper,
-		Presentation,
-		Recommendation,
-		Report,
-		Specification,
-		Standard,
-		Thesis,
-		WebSite,
-		Other,
-		Unknown
+		Article, Codebook, Correspondance, DataDictionary, Dissertation, Manual, Memorandum, Monograph, Note, Paper, Presentation, Recommendation, Report, Specification, Standard, Thesis, WebSite, Other, Unknown
 	}
+
 	/** Document identifiers. */
 	protected List<I8R> identifiers;
-	
+
 	/** Document author(s). */
 	protected String author;
-	
+
 	/** Document publication date. */
 	protected String date;
-	
+
 	/** Document edition. */
 	protected String edition;
-	
+
 	/** Document intention. */
 	protected Intention intention;
-	
+
 	/** Document informative note. */
 	protected String note;
-	
+
 	/** Document publisher(s). */
 	protected String publisher;
-	
+
 	/** Document title. */
 	protected String title;
-	
+
 	/** Document type. */
 	protected Type type;
-	
-	/** Instantiate a new <code>Document</code> object.
-	 * @param title     Document title
-	 * @param type      Document type
-	 * @param intention Document intention
+
+	/**
+	 * Instantiate a new <code>Document</code> object.
+	 * 
+	 * @param title
+	 *            Document title
+	 * @param type
+	 *            Document type
+	 * @param intention
+	 *            Document intention
 	 */
 	public Document(String title, Type type, Intention intention) {
 		super();
-		
-		this.title     = title;
-		this.type      = type;
+
+		this.title = title;
+		this.type = type;
 		this.intention = intention;
-		
+
 		this.identifiers = new ArrayList<I8R>();
 	}
-	
-	/** Get document author(s).
+
+	/**
+	 * Get document author(s).
+	 * 
 	 * @return Document author(s)
 	 */
-	@ReportableProperty(order=1, value="Document author or authors.")
+	@ReportableProperty(order = 1, value = "Document author or authors.")
 	public String getAuthor() {
 		return this.author;
 	}
 
-	/** Get document publication date.
+	/**
+	 * Get document publication date.
+	 * 
 	 * @return Document publication date
 	 */
-	@ReportableProperty(order=4, value="Document publication date.")
+	@ReportableProperty(order = 4, value = "Document publication date.")
 	public String getDate() {
 		return this.date;
 	}
 
-	/** Get document edition.
+	/**
+	 * Get document edition.
+	 * 
 	 * @return Document edition
 	 */
-	@ReportableProperty(order=3, value="Document edition or version.")
+	@ReportableProperty(order = 3, value = "Document edition or version.")
 	public String getEdition() {
 		return this.edition;
 	}
 
-	/** Get document identifiers.
+	/**
+	 * Get document identifiers.
+	 * 
 	 * @return List of document identifiers
 	 */
-	@ReportableProperty(order=6, value="List of document formal identifiers.")
+	@ReportableProperty(order = 6, value = "List of document formal identifiers.")
 	public List<I8R> getIdentifiers() {
 		return this.identifiers;
 	}
 
-	/** Get document intention
+	/**
+	 * Get document intention
+	 * 
 	 * @return Document intention
 	 */
-	@ReportableProperty(order=8, value="Document intention.")
+	@ReportableProperty(order = 8, value = "Document intention.")
 	public Intention getIntention() {
 		return this.intention;
 	}
-	
-	/** Get document informative note.
+
+	/**
+	 * Get document informative note.
+	 * 
 	 * @return Document informative note
 	 */
-	@ReportableProperty(order=9, value="Document informative note.")
+	@ReportableProperty(order = 9, value = "Document informative note.")
 	public String getNote() {
 		return this.note;
 	}
-	
-	/** Get document publisher(s).
+
+	/**
+	 * Get document publisher(s).
+	 * 
 	 * @return Document publisher(s)
 	 */
-	@ReportableProperty(order=5, value="Document publisher or publishers.")
+	@ReportableProperty(order = 5, value = "Document publisher or publishers.")
 	public String getPublisher() {
 		return this.publisher;
 	}
 
-	/** Get document title.
+	/**
+	 * Get document title.
+	 * 
 	 * @return Document title
 	 */
-	@ReportableProperty(order=2, value="Document title.")
+	@ReportableProperty(order = 2, value = "Document title.")
 	public String getTitle() {
 		return this.title;
 	}
 
-	/** Get document type.
+	/**
+	 * Get document type.
+	 * 
 	 * @return document type
 	 */
-	@ReportableProperty(order=7, value="Document type.")
+	@ReportableProperty(order = 7, value = "Document type.")
 	public Type getType() {
 		return this.type;
 	}
 
-	/** Set document author(s).
-	 * @param author Document author(2)
+	/**
+	 * Set document author(s).
+	 * 
+	 * @param author
+	 *            Document author(2)
 	 */
 	public void setAuthor(String author) {
 		this.author = author;
 	}
 
-	/** Set document publication date.
-	 * @param date Document publication date
+	/**
+	 * Set document publication date.
+	 * 
+	 * @param date
+	 *            Document publication date
 	 */
 	public void setDate(String date) {
 		this.date = date;
 	}
 
-	/** Set document edition.
-	 * @param edition Document edition
+	/**
+	 * Set document edition.
+	 * 
+	 * @param edition
+	 *            Document edition
 	 */
 	public void setEdition(String edition) {
 		this.edition = edition;
 	}
-	
-	/** Add document identifier.
-	 * @param identifier Document identifier
+
+	/**
+	 * Add document identifier.
+	 * 
+	 * @param identifier
+	 *            Document identifier
 	 */
 	public void setIdentifier(I8R identifier) {
 		this.identifiers.add(identifier);
 	}
 
-	/** Add document identifiers.
-	 * @param identifiers List of Document identifiers
+	/**
+	 * Add document identifiers.
+	 * 
+	 * @param identifiers
+	 *            List of Document identifiers
 	 */
 	public void setIdentifiers(List<I8R> identifiers) {
 		this.identifiers.addAll(identifiers);
 	}
-	
-	/** Set document informative note.
-	 * @param note Document informative note
+
+	/**
+	 * Set document informative note.
+	 * 
+	 * @param note
+	 *            Document informative note
 	 */
 	public void setNote(String note) {
 		this.note = note;
 	}
-	
-	/** Set document publisher(s).
-	 * @param publisher Document publisher(s)
+
+	/**
+	 * Set document publisher(s).
+	 * 
+	 * @param publisher
+	 *            Document publisher(s)
 	 */
 	public void setPublisher(String publisher) {
 		this.publisher = publisher;

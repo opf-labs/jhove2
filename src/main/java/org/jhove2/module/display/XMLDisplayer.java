@@ -40,283 +40,366 @@ import java.io.PrintStream;
 
 import org.jhove2.core.I8R;
 
-/** JHOVE2 XML displayer.
+/**
+ * JHOVE2 XML displayer.
  * 
  * @author mstrong, slabrams
  */
-public class XMLDisplayer
-	extends AbstractDisplayer
-{
+public class XMLDisplayer extends AbstractDisplayer {
 	/** XML displayer version identifier. */
 	public static final String VERSION = "1.0.0";
 
 	/** XML displayer release date. */
 	public static final String RELEASE = "2009-07-30";
-	
+
 	/** XML displayer rights statement. */
-	public static final String RIGHTS =
-		"Copyright 2009 by The Regents of the University of California, " +
-		"Ithaka Harbors, Inc., and The Board of Trustees of the Leland " +
-		"Stanford Junior University. " +
-		"Available under the terms of the BSD license.";
-	
+	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California, "
+			+ "Ithaka Harbors, Inc., and The Board of Trustees of the Leland "
+			+ "Stanford Junior University. "
+			+ "Available under the terms of the BSD license.";
+
 	/** Collection element. */
 	public static final String COLLECTION = "collection";
-	
+
 	/** IdentifierModule element. */
 	public static final String IDENTIFIER = "identifier";
-	
+
 	/** Name element. */
 	public static final String NAME = "name";
-	
+
 	/** Namespace attribute. */
 	public static final String NAMESPACE = "namespace";
-	
+
 	/** Properties element. */
 	public static final String PROPERTIES = "properties";
-	
+
 	/** Property element. */
 	public static final String PROPERTY = "property";
-	
+
 	/** Reportable element. */
 	public static final String REPORTABLE = "reportable";
-	
+
 	/** Root element. */
 	public static final String ROOT = "jhove2";
-	
+
 	/** Schema location attribute. */
 	public static final String SCHEMA_LOCATION = ":schemaLocation";
-	
+
 	/** Size attribute. */
 	public static final String SIZE = "size";
-	
+
 	/** Value element. */
 	public static final String VALUE = "value";
-	
+
 	/** xmlns attribute. */
 	public static final String XMLNS = "xmlns:";
-	
+
 	/** XSI attribute. */
 	public static final String XSI = "xsi";
-	
+
 	/** XSI URI. */
 	public static final String XSI_URI = "http://www.w3.org/2001/XMLSchema-instance";
-	
+
 	/** JHOVE2 namespace prefix. */
 	protected String prefix;
-	
+
 	/** JHOVE2 schema. */
 	protected String schema;
-	
+
 	/** JHOVE2 namespace URI. */
 	protected String uri;
 
-	/** Instantiate a new <code>XMLDisplayer</code>.
+	/**
+	 * Instantiate a new <code>XMLDisplayer</code>.
 	 */
 	public XMLDisplayer() {
 		super(VERSION, RELEASE, RIGHTS);
-		
+
 		this.prefix = "j2";
-		this.uri    = "http://jhove2.org/xsd/1.0.0";
+		this.uri = "http://jhove2.org/xsd/1.0.0";
 		/* TODO: Define actual schema. */
-		//this.schema = "http://jhove2.org/xsd/1.0.0/jhove2.xsd";
+		// this.schema = "http://jhove2.org/xsd/1.0.0/jhove2.xsd";
 	}
 
-	/** Start display.
-	 * @param out   Print stream
-	 * @param level Nesting level
-	 * @see org.jhove2.module.display.Displayer#startDisplay(java.io.PrintStream, int)
+	/**
+	 * Start display.
+	 * 
+	 * @param out
+	 *            Print stream
+	 * @param level
+	 *            Nesting level
+	 * @see org.jhove2.module.display.Displayer#startDisplay(java.io.PrintStream,
+	 *      int)
 	 */
 	@Override
 	public void startDisplay(PrintStream out, int level) {
 		declaration(out);
-		startTag(out, level, ROOT, XMLNS+this.prefix, this.uri,
-				                   XMLNS+XSI, XSI_URI);
-				                   /* TODO: Define actual schema. */
-				                   //,XSI+SCHEMA_LOCATION,
-		                           //this.uri + " " + this.schema);
+		startTag(out, level, ROOT, XMLNS + this.prefix, this.uri, XMLNS + XSI,
+				XSI_URI);
+		/* TODO: Define actual schema. */
+		// ,XSI+SCHEMA_LOCATION,
+		// this.uri + " " + this.schema);
 	}
-	
-	/** Start display of a {@link org.jhove2.core.Reportable}.
-	 * @param out        Print stream
-	 * @param level      Nesting level
-	 * @param name       Reportable name
-	 * @param identifier Reportable identifier in the JHOVE2 namespace
-	 * @param order      Ordinal position of this reportable with respect to
-	 *                   enclosing {@link org.jhove2.core.Reportable} or
-	 *                   collection
-	 * @see org.jhove2.module.display.Displayer#startReportable(java.io.PrintStream, int, java.lang.String, org.jhove2.core.I8R, int)
+
+	/**
+	 * Start display of a {@link org.jhove2.core.Reportable}.
+	 * 
+	 * @param out
+	 *            Print stream
+	 * @param level
+	 *            Nesting level
+	 * @param name
+	 *            Reportable name
+	 * @param identifier
+	 *            Reportable identifier in the JHOVE2 namespace
+	 * @param order
+	 *            Ordinal position of this reportable with respect to enclosing
+	 *            {@link org.jhove2.core.Reportable} or collection
+	 * @see org.jhove2.module.display.Displayer#startReportable(java.io.PrintStream,
+	 *      int, java.lang.String, org.jhove2.core.I8R, int)
 	 */
 	@Override
 	public void startReportable(PrintStream out, int level, String name,
-			                    I8R identifier, int order) {
+			I8R identifier, int order) {
 		startTag(out, level, REPORTABLE);
-		tag     (out, level+1, NAME, name);
-		tag     (out, level+1, IDENTIFIER, identifier.getValue(), NAMESPACE,
-				                           identifier.getNamespace().toString());
-		startTag(out, level+1, PROPERTIES);
+		tag(out, level + 1, NAME, name);
+		tag(out, level + 1, IDENTIFIER, identifier.getValue(), NAMESPACE,
+				identifier.getNamespace().toString());
+		startTag(out, level + 1, PROPERTIES);
 	}
-	
-	/** Start display of a property collection.
-	 * @param out        Print stream
-	 * @param level      Nesting level
-	 * @param name       Property collection name
-	 * @param identifier Property collection identifier in the JHOVE2 namespace
-	 * @param size       Property collection size
-	 * @param order      Ordinal position of this reportable with respect to
-	 *                   enclosing {@link org.jhove2.core.Reportable} or
-	 *                   collection
-	 * @see org.jhove2.module.display.Displayer#startCollection(java.io.PrintStream, int, java.lang.String, org.jhove2.core.I8R, int, int)
+
+	/**
+	 * Start display of a property collection.
+	 * 
+	 * @param out
+	 *            Print stream
+	 * @param level
+	 *            Nesting level
+	 * @param name
+	 *            Property collection name
+	 * @param identifier
+	 *            Property collection identifier in the JHOVE2 namespace
+	 * @param size
+	 *            Property collection size
+	 * @param order
+	 *            Ordinal position of this reportable with respect to enclosing
+	 *            {@link org.jhove2.core.Reportable} or collection
+	 * @see org.jhove2.module.display.Displayer#startCollection(java.io.PrintStream,
+	 *      int, java.lang.String, org.jhove2.core.I8R, int, int)
 	 */
 	@Override
 	public void startCollection(PrintStream out, int level, String name,
-			                    I8R identifier, int size, int order) {
+			I8R identifier, int size, int order) {
 		startTag(out, level, COLLECTION, SIZE, Integer.toString(size));
-		tag     (out, level+1, NAME, name);
-		tag     (out, level+1, IDENTIFIER, identifier.getValue(), NAMESPACE,
-				                           identifier.getNamespace().toString());
-		startTag(out, level+1, PROPERTIES);
+		tag(out, level + 1, NAME, name);
+		tag(out, level + 1, IDENTIFIER, identifier.getValue(), NAMESPACE,
+				identifier.getNamespace().toString());
+		startTag(out, level + 1, PROPERTIES);
 	}
-	
-	/** Display property.
-	 * @param out        Print stream
-	 * @param level      Nesting level
-	 * @param name       Property name
-	 * @param identifier Property identifier in the JHOVE2 namespace
-	 * @param value      Property value
-	 * @param order      Ordinal position of this reportable with respect to
-	 *                   enclosing {@link org.jhove2.core.Reportable} or
-	 *                   collection
-	 * @see org.jhove2.module.display.Displayer#displayProperty(java.io.PrintStream, int, java.lang.String, org.jhove2.core.I8R, java.lang.Object, int)
+
+	/**
+	 * Display property.
+	 * 
+	 * @param out
+	 *            Print stream
+	 * @param level
+	 *            Nesting level
+	 * @param name
+	 *            Property name
+	 * @param identifier
+	 *            Property identifier in the JHOVE2 namespace
+	 * @param value
+	 *            Property value
+	 * @param order
+	 *            Ordinal position of this reportable with respect to enclosing
+	 *            {@link org.jhove2.core.Reportable} or collection
+	 * @see org.jhove2.module.display.Displayer#displayProperty(java.io.PrintStream,
+	 *      int, java.lang.String, org.jhove2.core.I8R, java.lang.Object, int)
 	 */
 	@Override
 	public void displayProperty(PrintStream out, int level, String name,
-			                    I8R identifier, Object value, int order) {
-		startTag(out, level,   PROPERTY);
-		tag     (out, level+1, NAME, name);
-		tag     (out, level+1, IDENTIFIER, identifier.getValue(), NAMESPACE,
-				                           identifier.getNamespace().toString());
-		tag     (out, level+1, VALUE, value.toString());
-		endTag  (out, level,   PROPERTY);
+			I8R identifier, Object value, int order) {
+		startTag(out, level, PROPERTY);
+		tag(out, level + 1, NAME, name);
+		tag(out, level + 1, IDENTIFIER, identifier.getValue(), NAMESPACE,
+				identifier.getNamespace().toString());
+		tag(out, level + 1, VALUE, value.toString());
+		endTag(out, level, PROPERTY);
 	}
 
-	/** End display of a property collection.
-	 * @param out        Print stream
-	 * @param level      Nesting level
-	 * @param name       Property collection name
-	 * @param identifier Property identifier in the JHOVE2 namespace
-	 * @param size       Property collection size
-	 * @see org.jhove2.module.display.Displayer#endCollection(java.io.PrintStream, int, java.lang.String, org.jhove2.core.I8R, int)
+	/**
+	 * End display of a property collection.
+	 * 
+	 * @param out
+	 *            Print stream
+	 * @param level
+	 *            Nesting level
+	 * @param name
+	 *            Property collection name
+	 * @param identifier
+	 *            Property identifier in the JHOVE2 namespace
+	 * @param size
+	 *            Property collection size
+	 * @see org.jhove2.module.display.Displayer#endCollection(java.io.PrintStream,
+	 *      int, java.lang.String, org.jhove2.core.I8R, int)
 	 */
 	@Override
 	public void endCollection(PrintStream out, int level, String name,
-			                  I8R identifier, int size) {
-		endTag(out, level+1, PROPERTIES);
-		endTag(out, level,   COLLECTION);
+			I8R identifier, int size) {
+		endTag(out, level + 1, PROPERTIES);
+		endTag(out, level, COLLECTION);
 	}
 
-	/** End display of a {@link org.jhove2.core.Reportable}.
-	 * @param out        Print stream
-	 * @param level      Nesting level
-	 * @param name       Reportable name
-	 * @param identifier Reportable in the JHOVE2 namespace
-	 * @see org.jhove2.module.display.Displayer#endReportable(java.io.PrintStream, int, java.lang.String, org.jhove2.core.I8R)
+	/**
+	 * End display of a {@link org.jhove2.core.Reportable}.
+	 * 
+	 * @param out
+	 *            Print stream
+	 * @param level
+	 *            Nesting level
+	 * @param name
+	 *            Reportable name
+	 * @param identifier
+	 *            Reportable in the JHOVE2 namespace
+	 * @see org.jhove2.module.display.Displayer#endReportable(java.io.PrintStream,
+	 *      int, java.lang.String, org.jhove2.core.I8R)
 	 */
 	@Override
 	public void endReportable(PrintStream out, int level, String name,
-			                  I8R identifier) {
-		endTag(out, level+1, PROPERTIES);
-		endTag(out, level,   REPORTABLE);
+			I8R identifier) {
+		endTag(out, level + 1, PROPERTIES);
+		endTag(out, level, REPORTABLE);
 	}
-	
-	/** End display.
-	 * @param out   Print stream
-	 * @param level Nesting level
-	 * @see org.jhove2.module.display.Displayer#endDisplay(java.io.PrintStream, int)
+
+	/**
+	 * End display.
+	 * 
+	 * @param out
+	 *            Print stream
+	 * @param level
+	 *            Nesting level
+	 * @see org.jhove2.module.display.Displayer#endDisplay(java.io.PrintStream,
+	 *      int)
 	 */
 	@Override
 	public void endDisplay(PrintStream out, int level) {
 		endTag(out, level, ROOT);
 	}
-	
-	/** Display XML declaration.
+
+	/**
+	 * Display XML declaration.
+	 * 
 	 * @param out
 	 */
 	public void declaration(PrintStream out) {
-		out.println("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>");
+		out
+				.println("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>");
 	}
-	
-	/** Display start tag.
-	 * @param out   Print stream
-	 * @param level Nesting level
-	 * @param name  Tag name
+
+	/**
+	 * Display start tag.
+	 * 
+	 * @param out
+	 *            Print stream
+	 * @param level
+	 *            Nesting level
+	 * @param name
+	 *            Tag name
 	 */
 	public void startTag(PrintStream out, int level, String name) {
 		String indent = getIndent(level);
-		
+
 		out.println(indent + "<" + this.prefix + ":" + name + ">");
 	}
-	
-	/** Display start tag.
-	 * @param out   Print stream
-	 * @param level Nesting level
-	 * @param name  Tag name
-	 * @param attrs Tag attributes
+
+	/**
+	 * Display start tag.
+	 * 
+	 * @param out
+	 *            Print stream
+	 * @param level
+	 *            Nesting level
+	 * @param name
+	 *            Tag name
+	 * @param attrs
+	 *            Tag attributes
 	 */
 	public void startTag(PrintStream out, int level, String name,
-			             String... attrs) {
+			String... attrs) {
 		String indent = AbstractDisplayer.getIndent(level);
-		
+
 		out.print(indent + "<" + this.prefix + ":" + name);
-		for (int i=0; i<attrs.length; i+=2) {
-			out.print(" " + attrs[i] + "=\"" + attrs[i+1] + "\"");
+		for (int i = 0; i < attrs.length; i += 2) {
+			out.print(" " + attrs[i] + "=\"" + attrs[i + 1] + "\"");
 		}
 		out.println(">");
 	}
-	
-	/** Display tag.
-	 * @param out     Print stream
-	 * @param level   Nesting level
-	 * @param name    Tag name
-	 * @param content Tag content
+
+	/**
+	 * Display tag.
+	 * 
+	 * @param out
+	 *            Print stream
+	 * @param level
+	 *            Nesting level
+	 * @param name
+	 *            Tag name
+	 * @param content
+	 *            Tag content
 	 */
 	public void tag(PrintStream out, int level, String name, String content) {
 		String indent = AbstractDisplayer.getIndent(level);
-		
-		out.println(indent + "<"  + this.prefix + ":" + name + ">" + content +
-				             "</" + this.prefix + ":" + name + ">");
+
+		out.println(indent + "<" + this.prefix + ":" + name + ">" + content
+				+ "</" + this.prefix + ":" + name + ">");
 	}
-	/** Display tag.
-	 * @param out     Print stream
-	 * @param level   Nesting level
-	 * @param name    Tag name
-	 * @param content Tag content
-	 * @param attrs   Tag attributes
+
+	/**
+	 * Display tag.
+	 * 
+	 * @param out
+	 *            Print stream
+	 * @param level
+	 *            Nesting level
+	 * @param name
+	 *            Tag name
+	 * @param content
+	 *            Tag content
+	 * @param attrs
+	 *            Tag attributes
 	 */
 	public void tag(PrintStream out, int level, String name, String content,
-			        String... attrs) {
+			String... attrs) {
 		String indent = AbstractDisplayer.getIndent(level);
-		
-		out.print(indent + "<"  + this.prefix + ":" + name);
-		for (int i=0; i<attrs.length; i+=2) {
+
+		out.print(indent + "<" + this.prefix + ":" + name);
+		for (int i = 0; i < attrs.length; i += 2) {
 			out.print(" " + attrs[i] + "=\"" + attrs[i] + "\"");
 		}
 		out.println(">" + content + "</" + this.prefix + ":" + name + ">");
 	}
-	
-	/** Display end tag.
-	 * @param out   Print stream
-	 * @param level Nesting level
-	 * @param name  Tag name
+
+	/**
+	 * Display end tag.
+	 * 
+	 * @param out
+	 *            Print stream
+	 * @param level
+	 *            Nesting level
+	 * @param name
+	 *            Tag name
 	 */
 	public void endTag(PrintStream out, int level, String name) {
 		String indent = AbstractDisplayer.getIndent(level);
-		
+
 		out.println(indent + "</" + this.prefix + ":" + name + ">");
 	}
-	
-	/** Replace invalid characters with escaped values.
-	 * @param value String value
+
+	/**
+	 * Replace invalid characters with escaped values.
+	 * 
+	 * @param value
+	 *            String value
 	 * @return Escaped version of the string
 	 */
 	protected String escape(String value) {
@@ -324,9 +407,12 @@ public class XMLDisplayer
 		value = value.replace("<", "&lt;");
 		return value.replace(">", "&gt;");
 	}
-	
-	/** Replace invalid attribute characters with escape values.
-	 * @param value String value
+
+	/**
+	 * Replace invalid attribute characters with escape values.
+	 * 
+	 * @param value
+	 *            String value
 	 * @return Escaped version of the string
 	 */
 	protected String escapeAttr(String value) {

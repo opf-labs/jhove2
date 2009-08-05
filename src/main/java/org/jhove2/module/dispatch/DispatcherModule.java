@@ -60,40 +60,37 @@ import org.jhove2.module.format.Validator;
 import org.jhove2.module.identify.Aggrefier;
 import org.jhove2.module.identify.Identifier;
 
-/** JHOVE2 dispatcher module.  The module instantiates and invokes the module
+/**
+ * JHOVE2 dispatcher module. The module instantiates and invokes the module
  * associated with an identifier.
  * 
  * @author mstrong, slabrams
  */
-public class DispatcherModule
-	extends AbstractModule
-	implements Dispatcher
-{
+public class DispatcherModule extends AbstractModule implements Dispatcher {
 	/** Dispatcher module version identifier. */
 	public static final String VERSION = "1.0.0";
 
 	/** Dispatcher module release date. */
 	public static final String RELEASE = "2009-07-31";
-	
+
 	/** Dispatcher module rights statement. */
-	public static final String RIGHTS =
-		"Copyright 2009 by The Regents of the University of California, " +
-		"Ithaka Harbors, Inc., and The Board of Trustees of the Leland " +
-		"Stanford Junior University. " +
-		"Available under the terms of the BSD license.";
-	
+	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California, "
+			+ "Ithaka Harbors, Inc., and The Board of Trustees of the Leland "
+			+ "Stanford Junior University. "
+			+ "Available under the terms of the BSD license.";
+
 	/** Dispatch map. */
-	protected Map<String,String> dispatch;
-	
-	/** Instantiate a new <code>DispatcherModule</code>.
-	 * @throws JHOVE2Exception 
+	protected Map<String, String> dispatch;
+
+	/**
+	 * Instantiate a new <code>DispatcherModule</code>.
+	 * 
+	 * @throws JHOVE2Exception
 	 */
-	public DispatcherModule()
-		throws JHOVE2Exception
-	{
+	public DispatcherModule() throws JHOVE2Exception {
 		super(VERSION, RELEASE, RIGHTS);
-		
-		this.dispatch = new TreeMap<String,String>();
+
+		this.dispatch = new TreeMap<String, String>();
 		Properties props = Configure.getProperties("Dispatcher");
 		Set<String> keys = props.stringPropertyNames();
 		for (String key : keys) {
@@ -102,20 +99,27 @@ public class DispatcherModule
 		}
 	}
 
-	/** Dispatch a source unit to the module associated with an identifier.
-	 * @param jhove2     JHOVE2 framework
-	 * @param source     Source unit
-	 * @param identifier Module identifier
+	/**
+	 * Dispatch a source unit to the module associated with an identifier.
+	 * 
+	 * @param jhove2
+	 *            JHOVE2 framework
+	 * @param source
+	 *            Source unit
+	 * @param identifier
+	 *            Module identifier
 	 * @return Module
-	 * @throws EOFException    End-of-file encountered parsing the source unit
-	 * @throws IOException     I/O exception encountered parsing the source unit
-	 * @throws JHOVE2Exception 
-	 * @see org.jhove2.module.dispatch.Dispatcher#dispatch(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source, org.jhove2.core.I8R)
+	 * @throws EOFException
+	 *             End-of-file encountered parsing the source unit
+	 * @throws IOException
+	 *             I/O exception encountered parsing the source unit
+	 * @throws JHOVE2Exception
+	 * @see org.jhove2.module.dispatch.Dispatcher#dispatch(org.jhove2.core.JHOVE2,
+	 *      org.jhove2.core.source.Source, org.jhove2.core.I8R)
 	 */
 	@Override
 	public Module dispatch(JHOVE2 jhove2, Source source, I8R identifier)
-		throws EOFException, IOException, JHOVE2Exception
-	{
+			throws EOFException, IOException, JHOVE2Exception {
 		Module module = null;
 
 		String name = this.dispatch.get(identifier.getValue());
@@ -123,59 +127,72 @@ public class DispatcherModule
 			module = Configure.getReportable(Module.class, name);
 			if (module != null) {
 				dispatch(jhove2, source, module);
-			}
-			else {
+			} else {
 				/* TODO: module can't be instantiated. */
 				System.out.println("# CAN'T INSTANTIATE " + name);
 			}
-		}
-		else {
+		} else {
 			/* TODO: report that no dispatchable module was found. */
 			System.out.println("# CAN'T DISPATCH " + identifier);
 		}
-		
+
 		return module;
 	}
-	
-	/** Dispatch a source unit to a module, adding the module to the source.
-	 * @param jhove2 JHOVE2 framework
-	 * @param source Source unit
-	 * @param module Module
-	 * @throws EOFException    End-of-file encountered parsing the source unit
-	 * @throws IOException     I/O exception encountered parsing the source unit
-	 * @throws JHOVE2Exception 
-	 * @see org.jhove2.module.dispatch.Dispatcher#dispatch(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source, org.jhove2.module.Module)
+
+	/**
+	 * Dispatch a source unit to a module, adding the module to the source.
+	 * 
+	 * @param jhove2
+	 *            JHOVE2 framework
+	 * @param source
+	 *            Source unit
+	 * @param module
+	 *            Module
+	 * @throws EOFException
+	 *             End-of-file encountered parsing the source unit
+	 * @throws IOException
+	 *             I/O exception encountered parsing the source unit
+	 * @throws JHOVE2Exception
+	 * @see org.jhove2.module.dispatch.Dispatcher#dispatch(org.jhove2.core.JHOVE2,
+	 *      org.jhove2.core.source.Source, org.jhove2.module.Module)
 	 */
 	public void dispatch(JHOVE2 jhove2, Source source, Module module)
-		throws EOFException, IOException, JHOVE2Exception
-	{
+			throws EOFException, IOException, JHOVE2Exception {
 		dispatch(jhove2, source, module, Disposition.AddToSource);
 	}
-	
-	/** Dispatch a source unit to a module.
-	 * @param jhove2      JHOVE2 framework
-	 * @param source      Source unit
-	 * @param module      Module
-	 * @param disposition Module disposition
-	 * @throws EOFException    End-of-file encountered parsing the source unit
-	 * @throws IOException     I/O exception encountered parsing the source unit
-	 * @throws JHOVE2Exception 
-	 * @see org.jhove2.module.dispatch.Dispatcher#dispatch(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source, org.jhove2.module.Module, org.jhove2.module.dispatch.Dispatcher.Disposition)
+
+	/**
+	 * Dispatch a source unit to a module.
+	 * 
+	 * @param jhove2
+	 *            JHOVE2 framework
+	 * @param source
+	 *            Source unit
+	 * @param module
+	 *            Module
+	 * @param disposition
+	 *            Module disposition
+	 * @throws EOFException
+	 *             End-of-file encountered parsing the source unit
+	 * @throws IOException
+	 *             I/O exception encountered parsing the source unit
+	 * @throws JHOVE2Exception
+	 * @see org.jhove2.module.dispatch.Dispatcher#dispatch(org.jhove2.core.JHOVE2,
+	 *      org.jhove2.core.source.Source, org.jhove2.module.Module,
+	 *      org.jhove2.module.dispatch.Dispatcher.Disposition)
 	 */
 	public void dispatch(JHOVE2 jhove2, Source source, Module module,
-			             Disposition disposition)
-		throws EOFException, IOException, JHOVE2Exception
-	{
+			Disposition disposition) throws EOFException, IOException,
+			JHOVE2Exception {
 		module.setStartTime();
-			
-		if (module instanceof Aggrefier &&
-			source instanceof AggregateSource) {
+
+		if (module instanceof Aggrefier && source instanceof AggregateSource) {
 			((Aggrefier) module).identify(jhove2, (AggregateSource) source);
 		}
 		if (module instanceof Identifier) {
 			((Identifier) module).identify(jhove2, source);
 		}
-				
+
 		if (module instanceof FormatModule) {
 			if (module instanceof Parser) {
 				((Parser) module).parse(jhove2, source);
@@ -183,9 +200,9 @@ public class DispatcherModule
 			if (module instanceof Validator) {
 				((Validator) module).validate(jhove2, source);
 			}
-					
-			List<FormatProfile> profiles =
-				((FormatModule) module).getProfiles();
+
+			List<FormatProfile> profiles = ((FormatModule) module)
+					.getProfiles();
 			if (profiles.size() > 0) {
 				for (FormatProfile profile : profiles) {
 					if (profile instanceof Validator) {
@@ -196,12 +213,12 @@ public class DispatcherModule
 				}
 			}
 		}
-				
+
 		if (module instanceof Digester) {
 			((Digester) module).digest(jhove2, source);
 		}
 		module.setEndTime();
-		
+
 		if (disposition == Disposition.AddToSource) {
 			source.setModule(module);
 		}

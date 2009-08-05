@@ -42,45 +42,47 @@ import java.io.IOException;
 
 import org.jhove2.annotation.ReportableProperty;
 
-/** JHOVE2 file system directory source unit.
+/**
+ * JHOVE2 file system directory source unit.
  * 
  * @author mstrong, slabrams
  */
-public class DirectorySource
-	extends AbstractSource
-	implements AggregateSource, NamedSource
-{
+public class DirectorySource extends AbstractSource implements AggregateSource,
+		NamedSource {
 	/** Directory existence. */
 	protected boolean isExtant;
-	
+
 	/** Directory readability. */
 	protected boolean isReadable;
-	
+
 	/** Directory name. */
 	protected String name;
-	
+
 	/** Directory path. */
 	protected String path;
-	
-	/** Instantiate a new <code>DirectorySource</code>.
-	 * @param pathName Directory path name
-	 * @throws IOException 
-	 * @throws FileNotFoundException 
+
+	/**
+	 * Instantiate a new <code>DirectorySource</code>.
+	 * 
+	 * @param pathName
+	 *            Directory path name
+	 * @throws IOException
+	 * @throws FileNotFoundException
 	 */
-	public DirectorySource(String pathName)
-		throws FileNotFoundException, IOException
-	{
+	public DirectorySource(String pathName) throws FileNotFoundException,
+			IOException {
 		this(new File(pathName));
 	}
-	
-	/** Instantiate a new <code>DirectorySource</code>.
-	 * @param file Java {@link java.io.File} representing a directory
-	 * @throws IOException 
-	 * @throws FileNotFoundException 
+
+	/**
+	 * Instantiate a new <code>DirectorySource</code>.
+	 * 
+	 * @param file
+	 *            Java {@link java.io.File} representing a directory
+	 * @throws IOException
+	 * @throws FileNotFoundException
 	 */
-	public DirectorySource(File file)
-		throws FileNotFoundException, IOException
-	{
+	public DirectorySource(File file) throws FileNotFoundException, IOException {
 		super(file);
 
 		this.name = file.getName();
@@ -88,49 +90,57 @@ public class DirectorySource
 			this.path = file.getCanonicalPath();
 		} catch (IOException e) {
 			/* Let path stay uninitialized. */
-		}		
+		}
 		this.isExtant = file.exists();
 		if (this.isExtant) {
 			this.isReadable = file.canRead();
-			File [] list = file.listFiles();
-			for (int i=0; i<list.length; i++) {
+			File[] list = file.listFiles();
+			for (int i = 0; i < list.length; i++) {
 				Source source = SourceFactory.getSource(list[i]);
 				this.children.add(source);
 			}
 		}
 	}
-	
-	/** Get directory name.
+
+	/**
+	 * Get directory name.
+	 * 
 	 * @return Directory name
 	 * @see org.jhove2.core.source.NamedSource#getName()
 	 */
 	@Override
 	public String getName() {
 		return this.name;
-	}	
+	}
 
-	/** Get directory path.
+	/**
+	 * Get directory path.
+	 * 
 	 * @return Directory path
 	 */
-	@ReportableProperty(order=2, value="Directory path.")
+	@ReportableProperty(order = 2, value = "Directory path.")
 	public String getPath() {
 		return this.path;
-	}	
-	
-	/** Get directory existence.
+	}
+
+	/**
+	 * Get directory existence.
+	 * 
 	 * @return True if directory exists
 	 */
-	@ReportableProperty(order=4, value="Directory existence: true if the " +
-			"directory exists")
+	@ReportableProperty(order = 4, value = "Directory existence: true if the "
+			+ "directory exists")
 	public boolean isExtant() {
 		return this.isExtant;
 	}
-	
-	/** Get directory readability.
+
+	/**
+	 * Get directory readability.
+	 * 
 	 * @return True if directory is readable
 	 */
-	@ReportableProperty(order=5, value="Directory readability: true if the " +
-			"directory is readable.")
+	@ReportableProperty(order = 5, value = "Directory readability: true if the "
+			+ "directory is readable.")
 	public boolean isReadable() {
 		return this.isReadable;
 	}

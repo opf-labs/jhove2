@@ -50,21 +50,20 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-
 /**
  * @author mstrong
- *
+ * 
  */
 
 public class DirectInputTest {
 
-	int bufferSize; 
+	int bufferSize;
 	static Input abstractInput = null;
 	File testFile;
 	PrintWriter out;
 
 	@Before
-	public void setUp() throws Exception {   
+	public void setUp() throws Exception {
 		bufferSize = 100;
 		testFile = new File("src/test/resources/examples/utf8/xmas_menu.txt");
 		out = new PrintWriter(System.out, true);
@@ -72,7 +71,7 @@ public class DirectInputTest {
 
 	@After
 	public void tearDown() throws Exception {
-		//		abstractInput.close();
+		// abstractInput.close();
 	}
 
 	@Test
@@ -80,13 +79,17 @@ public class DirectInputTest {
 
 		try {
 			Source source = SourceFactory.getSource(testFile);
-			abstractInput = source.getInput(bufferSize, Type.Direct);//, ByteOrder.LITTLE_ENDIAN);			
-			assertTrue("AbstractInput Type is Direct with LITTLE_ENDIAN", abstractInput.getBuffer().order() == ByteOrder.BIG_ENDIAN);
+			abstractInput = source.getInput(bufferSize, Type.Direct);// ,
+																		// ByteOrder.LITTLE_ENDIAN);
+			assertTrue("AbstractInput Type is Direct with LITTLE_ENDIAN",
+					abstractInput.getBuffer().order() == ByteOrder.BIG_ENDIAN);
 			abstractInput.close();
 			abstractInput = InputFactory.getInput(testFile, bufferSize,
-			                                      Type.Direct);
-			assertTrue("AbstractInput Type is Direct", abstractInput.getClass().getName().equalsIgnoreCase(DirectInput.class.getName()));
-			assertTrue("AbstractInput Type is Direct with BIG_ENDIAN", abstractInput.getBuffer().order() == ByteOrder.BIG_ENDIAN);
+					Type.Direct);
+			assertTrue("AbstractInput Type is Direct", abstractInput.getClass()
+					.getName().equalsIgnoreCase(DirectInput.class.getName()));
+			assertTrue("AbstractInput Type is Direct with BIG_ENDIAN",
+					abstractInput.getBuffer().order() == ByteOrder.BIG_ENDIAN);
 		} catch (FileNotFoundException e) {
 			fail(e.getMessage());
 		} catch (IOException e) {
@@ -95,83 +98,89 @@ public class DirectInputTest {
 		}
 	}
 
-
 	@Test
 	public void testGetBuffer() {
 
 		Buffer buffer = abstractInput.getBuffer();
-		assertTrue("Buffer returned is null", buffer != null);		
+		assertTrue("Buffer returned is null", buffer != null);
 	}
-
 
 	@Test
 	public void testGetFile() {
 		File inputableFile = abstractInput.getFile();
-		assertTrue("File is not same as abstractInput", testFile.getName().equals(inputableFile.getName()));
+		assertTrue("File is not same as abstractInput", testFile.getName()
+				.equals(inputableFile.getName()));
 	}
 
 	@Test
 	public void testGetBufferOffset() {
 		try {
-			// test within the bounds of the current buffer.  Buffer Offset will
+			// test within the bounds of the current buffer. Buffer Offset will
 			// not change because you have not exceeded the buffer limit
 			abstractInput.setPosition(50);
 			long bufferOffset = abstractInput.getBufferOffset();
-			assertTrue("Buffer Offset is not set to expected value", bufferOffset==0);
+			assertTrue("Buffer Offset is not set to expected value",
+					bufferOffset == 0);
 
 			// test outside the bounds of the current buffer
-			// bufferOffset will be set to the beginning position of the buffer that 
+			// bufferOffset will be set to the beginning position of the buffer
+			// that
 			// is read into.
 			long newBufferOffset = bufferSize + 50;
 			abstractInput.setPosition(newBufferOffset);
 			bufferOffset = abstractInput.getBufferOffset();
-			assertTrue("Buffer Offset is not set to expected value", bufferOffset == newBufferOffset);
+			assertTrue("Buffer Offset is not set to expected value",
+					bufferOffset == newBufferOffset);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
 	}
 
-
 	@Test
 	public void testGetBufferSize() {
 		int bufferSize = abstractInput.getBufferSize();
-		assertTrue("Buffer size not equal to set Buffer size", bufferSize == this.bufferSize);
+		assertTrue("Buffer size not equal to set Buffer size",
+				bufferSize == this.bufferSize);
 	}
-
 
 	@Test
 	public void testGetByteArray() {
 		byte[] byteArray = abstractInput.getByteArray();
-		assertTrue("ByteArray not equal to buffersize", byteArray.length == bufferSize);
+		assertTrue("ByteArray not equal to buffersize",
+				byteArray.length == bufferSize);
 	}
 
 	@Test
 	public void testGetNextBuffer() {
 		try {
-			/* 
-			 * start at byte offset 0 of inputable, retrieve the next buffer and 
+			/*
+			 * start at byte offset 0 of inputable, retrieve the next buffer and
 			 * test that the buffer offset and position are set correctly
 			 */
 			abstractInput.setPosition(0);
 			long bytesRead = ((AbstractInput) abstractInput).getNextBuffer();
 			long position = abstractInput.getPosition();
-			assertTrue("Buffer Offset not at expected value", abstractInput.getBufferOffset() == bufferSize);
-			assertTrue("Current Position not at expected value", position == abstractInput.getBufferOffset());
+			assertTrue("Buffer Offset not at expected value", abstractInput
+					.getBufferOffset() == bufferSize);
+			assertTrue("Current Position not at expected value",
+					position == abstractInput.getBufferOffset());
 
-			/* 
+			/*
 			 * test that the last buffer read returns expected number of bytes
-			 */ 
+			 */
 			abstractInput.setPosition(0);
 			File inFile = abstractInput.getFile();
 			long size = inFile.length();
-			long lastBufferSizeChunk = size -((size/bufferSize) * bufferSize);
-			for (int i=0; i < size/bufferSize; i++) {
+			long lastBufferSizeChunk = size
+					- ((size / bufferSize) * bufferSize);
+			for (int i = 0; i < size / bufferSize; i++) {
 				bytesRead = ((AbstractInput) abstractInput).getNextBuffer();
 			}
-			assertTrue("Size of last buffer not what expected", bytesRead == lastBufferSizeChunk);
+			assertTrue("Size of last buffer not what expected",
+					bytesRead == lastBufferSizeChunk);
 
 			/*
-			 *  test getNextBuffer() returns EOF when EOF reached
+			 * test getNextBuffer() returns EOF when EOF reached
 			 */
 			abstractInput.setPosition(0);
 			while (bytesRead != Input.EOF)
@@ -188,41 +197,44 @@ public class DirectInputTest {
 	public void testGetPosition() {
 		try {
 			abstractInput.setPosition(0);
-			assertTrue("getPosition did not return value expected", abstractInput.getPosition() == 0);
+			assertTrue("getPosition did not return value expected",
+					abstractInput.getPosition() == 0);
 		} catch (IOException e) {
-			fail(e.getMessage());			
+			fail(e.getMessage());
 		}
 	}
 
-	/* 
-	 * Test that getUnsignedByte() returns 1 byte 
+	/*
+	 * Test that getUnsignedByte() returns 1 byte
 	 */
 	@Test
 	public void testReadUnsignedByte() {
 		short testValue = 0;
 		try {
 			abstractInput.setPosition(0);
-			testValue = abstractInput.readUnsignedByte(); 			
+			testValue = abstractInput.readUnsignedByte();
 			// check if high order bit is set
-			assertTrue("High Order bit not set", (testValue > 128 && testValue < 255));			
+			assertTrue("High Order bit not set",
+					(testValue > 128 && testValue < 255));
 			out.println(testValue);
-			out.printf( "0x%X\n", testValue );
-			
+			out.printf("0x%X\n", testValue);
+
 			// read signed byte
 			abstractInput.setPosition(0);
-			byte byteTestValue = abstractInput.readSignedByte(); 			
+			byte byteTestValue = abstractInput.readSignedByte();
 			// check if high order bit is set
-			assertTrue("High Order bit set", (byteTestValue > -128 && byteTestValue < 127));			
+			assertTrue("High Order bit set",
+					(byteTestValue > -128 && byteTestValue < 127));
 			out.println(byteTestValue);
-			out.printf( "0x%X\n", byteTestValue );
+			out.printf("0x%X\n", byteTestValue);
 		} catch (IOException e) {
 			fail(e.getMessage());
 			e.printStackTrace();
 		}
 	}
 
-	/* 
-	 * Test that getUnsignedShort() returns 2 bytes 
+	/*
+	 * Test that getUnsignedShort() returns 2 bytes
 	 */
 	@Test
 	public void testReadShort() {
@@ -230,29 +242,33 @@ public class DirectInputTest {
 		try {
 			abstractInput.setPosition(0);
 			testValue = abstractInput.readUnsignedShort();
-			String testStr  = Integer.toHexString(testValue);
-			assertTrue("High Order Bit not set ", testValue > 32768 && testValue < 65535);
-			assertTrue("Hex value does not match expected 'efbb'", testStr.equalsIgnoreCase("EFBB"));
+			String testStr = Integer.toHexString(testValue);
+			assertTrue("High Order Bit not set ", testValue > 32768
+					&& testValue < 65535);
+			assertTrue("Hex value does not match expected 'efbb'", testStr
+					.equalsIgnoreCase("EFBB"));
 			out.printf("%d\n", testValue);
-			out.printf( "0x%X\n", testValue );
+			out.printf("0x%X\n", testValue);
 
 			abstractInput.setPosition(0);
 			short shortTestValue = abstractInput.readSignedShort();
-			assertTrue("High Order Bit not set ", shortTestValue > -32768 && shortTestValue < 32768);
-			assertTrue("Hex value does not match expected 'efbb'", testStr.equalsIgnoreCase("EFBB"));
+			assertTrue("High Order Bit not set ", shortTestValue > -32768
+					&& shortTestValue < 32768);
+			assertTrue("Hex value does not match expected 'efbb'", testStr
+					.equalsIgnoreCase("EFBB"));
 			out.printf("%d\n", shortTestValue);
-			testStr = String.format( "%X", shortTestValue );
-			assertTrue("Hex value does not match expected 'efbb'", testStr.equalsIgnoreCase("EFBB"));
-			out.printf( "0x%X\n", shortTestValue );
+			testStr = String.format("%X", shortTestValue);
+			assertTrue("Hex value does not match expected 'efbb'", testStr
+					.equalsIgnoreCase("EFBB"));
+			out.printf("0x%X\n", shortTestValue);
 		} catch (IOException e) {
 			fail(e.getMessage());
 			e.printStackTrace();
 		}
 	}
 
-
-	/* 
-	 * Test that getUnsignedInt() returns 4 bytes 
+	/*
+	 * Test that getUnsignedInt() returns 4 bytes
 	 */
 	@Test
 	public void testReadInt() {
@@ -260,85 +276,94 @@ public class DirectInputTest {
 			// test ReadSignedInt()
 			abstractInput.setPosition(0);
 			int intTestValue = abstractInput.readSignedInt();
-			String testStr  = Integer.toHexString(intTestValue);
-			assertTrue("Value returned is not signed", (intTestValue < 0 ));
-			assertTrue("Hex value does not match expected 'efbbbf46'", testStr.equalsIgnoreCase("efbbbf46"));
+			String testStr = Integer.toHexString(intTestValue);
+			assertTrue("Value returned is not signed", (intTestValue < 0));
+			assertTrue("Hex value does not match expected 'efbbbf46'", testStr
+					.equalsIgnoreCase("efbbbf46"));
 			out.println(intTestValue);
-			out.printf( "0x%X\n", intTestValue );
-			
+			out.printf("0x%X\n", intTestValue);
+
 			// test ReadUnsignedInt()
 			abstractInput.setPosition(0);
 			long longTestValue = abstractInput.readUnsignedInt();
-			testStr  = Long.toHexString(longTestValue);
-			assertTrue("Value returned is signed", (longTestValue > 0 ));
-			assertTrue("Hex value does not match expected 'efbbbf46'", testStr.equalsIgnoreCase("efbbbf46"));
+			testStr = Long.toHexString(longTestValue);
+			assertTrue("Value returned is signed", (longTestValue > 0));
+			assertTrue("Hex value does not match expected 'efbbbf46'", testStr
+					.equalsIgnoreCase("efbbbf46"));
 			out.println(longTestValue);
-			out.printf( "0x%X\n", longTestValue );
-			
+			out.printf("0x%X\n", longTestValue);
+
 		} catch (IOException e) {
 			fail(e.getMessage());
 			e.printStackTrace();
 		}
 	}
 
-
-
-	/* 
-	 * Test that setByteOrder sets the byte order properly 
+	/*
+	 * Test that setByteOrder sets the byte order properly
 	 */
 	@Test
 	public void testSetByteOrder() {
 		long testValue = 0;
 		ByteOrder bo = abstractInput.getBuffer().order();
 		if (bo == ByteOrder.BIG_ENDIAN) {
-			abstractInput.setByteOrder(ByteOrder.LITTLE_ENDIAN);			
-			assertTrue("ByteOrder not set to LITTLE_ENDIAN correctly", (abstractInput.getBuffer().order()==ByteOrder.LITTLE_ENDIAN));
+			abstractInput.setByteOrder(ByteOrder.LITTLE_ENDIAN);
+			assertTrue(
+					"ByteOrder not set to LITTLE_ENDIAN correctly",
+					(abstractInput.getBuffer().order() == ByteOrder.LITTLE_ENDIAN));
 			// test how the byte order is returned when you set the byte order
 			try {
-				// for LITTLE ENDIAN, expect the least-significant byte to come first
+				// for LITTLE ENDIAN, expect the least-significant byte to come
+				// first
 				abstractInput.setPosition(0);
 				testValue = abstractInput.readUnsignedInt();
-				String testStr  = Long.toHexString(testValue);
-				assertTrue("Hex value does not match expected '46BFBBEF'", testStr.equalsIgnoreCase("46BFBBEF"));
+				String testStr = Long.toHexString(testValue);
+				assertTrue("Hex value does not match expected '46BFBBEF'",
+						testStr.equalsIgnoreCase("46BFBBEF"));
 				out.println(testValue);
-				out.printf( "Byte Order = %s: 0x%X\n", abstractInput.getBuffer().order(), testValue );
+				out.printf("Byte Order = %s: 0x%X\n", abstractInput.getBuffer()
+						.order(), testValue);
 
-				// for BIG ENDIAN, expect the most-significant byte to come first
-				abstractInput.setByteOrder(ByteOrder.BIG_ENDIAN);			
+				// for BIG ENDIAN, expect the most-significant byte to come
+				// first
+				abstractInput.setByteOrder(ByteOrder.BIG_ENDIAN);
 				abstractInput.setPosition(0);
 				testValue = abstractInput.readUnsignedInt();
-				testStr  = Long.toHexString(testValue);
-				assertTrue("Hex value does not match expected 'EFBBBF46'", testStr.equalsIgnoreCase("EFBBBF46"));
+				testStr = Long.toHexString(testValue);
+				assertTrue("Hex value does not match expected 'EFBBBF46'",
+						testStr.equalsIgnoreCase("EFBBBF46"));
 				out.println(testValue);
-				out.printf( "Byte Order = %s: 0x%X\n", abstractInput.getBuffer().order(), testValue );
+				out.printf("Byte Order = %s: 0x%X\n", abstractInput.getBuffer()
+						.order(), testValue);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		}
-		else if (bo == ByteOrder.LITTLE_ENDIAN) {
+		} else if (bo == ByteOrder.LITTLE_ENDIAN) {
 			abstractInput.setByteOrder(ByteOrder.BIG_ENDIAN);
-			assertTrue("ByteOrder not set to BIG_ENDIAN correctly", abstractInput.getBuffer().order()==ByteOrder.BIG_ENDIAN);
+			assertTrue("ByteOrder not set to BIG_ENDIAN correctly",
+					abstractInput.getBuffer().order() == ByteOrder.BIG_ENDIAN);
 		}
 	}
-
 
 	@Test
 	public void testSetPosition() {
 		try {
 			/*
-			 * Test the position is set correctly 
+			 * Test the position is set correctly
 			 */
 			long newPosition = 100;
-			abstractInput.setPosition(newPosition);			
+			abstractInput.setPosition(newPosition);
 			long position = abstractInput.getPosition();
-			assertTrue("Set Position not set to correct position", position == newPosition);
+			assertTrue("Set Position not set to correct position",
+					position == newPosition);
 
 			/*
 			 * Test that the value expected to be at new position is true
 			 */
 			short b = abstractInput.readUnsignedByte();
-			char byteChar = (char)(b);
-			assertTrue("Position of inputable is not where its expected to be", byteChar=='f'); 
+			char byteChar = (char) (b);
+			assertTrue("Position of inputable is not where its expected to be",
+					byteChar == 'f');
 		} catch (IOException e) {
 			fail(e.getMessage());
 			e.printStackTrace();
@@ -346,72 +371,82 @@ public class DirectInputTest {
 
 	}
 
-	/* 
+	/*
 	 * test obtaining values that partially reside outside the current buffer
 	 * are retrieved properly
 	 * 
 	 * Buffer ends at offset 100, retrieve a 4-byte int at offset 98 to force
 	 * going outside of buffer boundary
 	 * 
-	 * bytes at position 98: 0A6F663A
-	 * BIG_ENDIAN expected value = 0A6F663A
+	 * bytes at position 98: 0A6F663A BIG_ENDIAN expected value = 0A6F663A
 	 * LITTLE_ENDIAN expected value = 3A666F0A
 	 */
 	@Test
 	public void testBufferBoundaries() {
 		try {
-			// test going beyond boundary explicitly with BIG_ENDIAN byte ordering
+			// test going beyond boundary explicitly with BIG_ENDIAN byte
+			// ordering
 			abstractInput.setPosition(98);
 			long testValue = abstractInput.readUnsignedInt();
 			out.println(testValue);
-			out.printf( "Byte Order = %s: 0x%X\n", abstractInput.getBuffer().order(), testValue );
-			String testStr  = Long.toHexString(testValue);
-			assertTrue("Hex value does not match expected '0A 6F 66 3A'", testStr.equalsIgnoreCase("A6F663A"));
+			out.printf("Byte Order = %s: 0x%X\n", abstractInput.getBuffer()
+					.order(), testValue);
+			String testStr = Long.toHexString(testValue);
+			assertTrue("Hex value does not match expected '0A 6F 66 3A'",
+					testStr.equalsIgnoreCase("A6F663A"));
 
-			// test going beyond boundary explicitly with LITTLE_ENDIAN byte ordering
+			// test going beyond boundary explicitly with LITTLE_ENDIAN byte
+			// ordering
 			ByteOrder bo = abstractInput.getBuffer().order();
-			abstractInput.setByteOrder(ByteOrder.LITTLE_ENDIAN);			
+			abstractInput.setByteOrder(ByteOrder.LITTLE_ENDIAN);
 			abstractInput.setPosition(98);
 			testValue = abstractInput.readUnsignedInt();
 			out.println(testValue);
-			out.printf( "Byte Order = %s: 0x%X\n", abstractInput.getBuffer().order(), testValue );
-			testStr  = Long.toHexString(testValue);
-			assertTrue("Hex value does not match expected '3A666F0A'", testStr.equalsIgnoreCase("3A666F0A"));
+			out.printf("Byte Order = %s: 0x%X\n", abstractInput.getBuffer()
+					.order(), testValue);
+			testStr = Long.toHexString(testValue);
+			assertTrue("Hex value does not match expected '3A666F0A'", testStr
+					.equalsIgnoreCase("3A666F0A"));
 
 			/*
-			 *  test going beyond boundary without setting position explicitly beyond boundary
-			 * (setPosition() takes care of getting the next buffer properly)
+			 * test going beyond boundary without setting position explicitly
+			 * beyond boundary (setPosition() takes care of getting the next
+			 * buffer properly)
 			 */
 			abstractInput.setPosition(0);
 			abstractInput.setByteOrder(ByteOrder.BIG_ENDIAN);
 			long position = 0;
-			while ((position = abstractInput.getPosition()) < 96)				
+			while ((position = abstractInput.getPosition()) < 96)
 				testValue = abstractInput.readUnsignedInt();
 			int shortValue = abstractInput.readUnsignedShort();
 			position = abstractInput.getPosition();
 			assertTrue("Position not at value 98 as expected", position == 98);
 			testValue = abstractInput.readUnsignedInt();
 			out.println(testValue);
-			out.printf( "Byte Order = %s: 0x%X\n", abstractInput.getBuffer().order(), testValue );
-			testStr  = Long.toHexString(testValue);
-			assertTrue("Hex value does not match expected '3A666F0A'", testStr.equalsIgnoreCase("A6F663A"));
+			out.printf("Byte Order = %s: 0x%X\n", abstractInput.getBuffer()
+					.order(), testValue);
+			testStr = Long.toHexString(testValue);
+			assertTrue("Hex value does not match expected '3A666F0A'", testStr
+					.equalsIgnoreCase("A6F663A"));
 
-			/* 
+			/*
 			 * same test as above but for LITTLE_ENDIAN
 			 */
 			abstractInput.setPosition(0);
 			abstractInput.setByteOrder(ByteOrder.LITTLE_ENDIAN);
 			position = 0;
-			while ((position = abstractInput.getPosition()) < 96)				
+			while ((position = abstractInput.getPosition()) < 96)
 				testValue = abstractInput.readUnsignedInt();
 			shortValue = abstractInput.readSignedShort();
 			position = abstractInput.getPosition();
 			assertTrue("Position not at value 98 as expected", position == 98);
 			testValue = abstractInput.readUnsignedInt();
 			out.println(testValue);
-			out.printf( "Byte Order = %s: 0x%X\n", abstractInput.getBuffer().order(), testValue );
-			testStr  = Long.toHexString(testValue);
-			assertTrue("Hex value does not match expected '3A666F0A'", testStr.equalsIgnoreCase("3A666F0A"));
+			out.printf("Byte Order = %s: 0x%X\n", abstractInput.getBuffer()
+					.order(), testValue);
+			testStr = Long.toHexString(testValue);
+			assertTrue("Hex value does not match expected '3A666F0A'", testStr
+					.equalsIgnoreCase("3A666F0A"));
 
 		} catch (IOException e) {
 			fail(e.getMessage());
@@ -420,4 +455,3 @@ public class DirectInputTest {
 	}
 
 }
-

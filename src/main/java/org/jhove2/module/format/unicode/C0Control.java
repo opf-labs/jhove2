@@ -43,44 +43,49 @@ import java.util.TreeSet;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.config.Configure;
 
-/** Unicode C0 control.  Controls are initialized from a properties file in
- * the form:
+/**
+ * Unicode C0 control. Controls are initialized from a properties file in the
+ * form:
  * 
- *   <code>mnemonic codepoint</code>
+ * <code>mnemonic codepoint</code>
  * 
  * for the control mnemonic name and code point (in hexadecimal).
  * 
  * @author mstrong, slabrams
  */
-public class C0Control
-	implements Comparable<C0Control>
-{
+public class C0Control implements Comparable<C0Control> {
 	/** Singleton C0 controls. */
 	protected static Set<C0Control> controls;
-	
+
 	/** Control code point. */
 	protected int codePoint;
-	
+
 	/** Control mnemonic. */
 	protected String mnemonic;
 
-	/** Instantiate a <code>C0Control</code> object.
-	 * @param mnemonic  Control mnemonic 
-	 * @param codePoint Control code point
+	/**
+	 * Instantiate a <code>C0Control</code> object.
+	 * 
+	 * @param mnemonic
+	 *            Control mnemonic
+	 * @param codePoint
+	 *            Control code point
 	 */
 	public C0Control(String mnemonic, int codePoint) {
 		this.codePoint = codePoint;
-		this.mnemonic  = mnemonic;
+		this.mnemonic = mnemonic;
 	}
-	
-	/** Get the C0 control for a code point.
-	 * @param codePoint Code point
+
+	/**
+	 * Get the C0 control for a code point.
+	 * 
+	 * @param codePoint
+	 *            Code point
 	 * @return Control, or null if the code point is not a C0 control
-	 * @throws JHOVE2Exception 
+	 * @throws JHOVE2Exception
 	 */
 	public static synchronized C0Control getControl(int codePoint)
-		throws JHOVE2Exception
-	{
+			throws JHOVE2Exception {
 		if (controls == null) {
 			/* Initialize the controls from s Java resource bundle. */
 			controls = new TreeSet<C0Control>();
@@ -90,7 +95,7 @@ public class C0Control
 				Iterator<String> iter = set.iterator();
 				while (iter.hasNext()) {
 					String mnemonic = iter.next();
-					String value    = props.getProperty(mnemonic);
+					String value = props.getProperty(mnemonic);
 
 					int point = Integer.parseInt(value, 16);
 					C0Control control = new C0Control(mnemonic, point);
@@ -107,32 +112,40 @@ public class C0Control
 				break;
 			}
 		}
-		
+
 		return control;
 	}
-	
-	/** Get the C0 controls.
+
+	/**
+	 * Get the C0 controls.
+	 * 
 	 * @return C0 controls
 	 */
 	public static Set<C0Control> getControls() {
 		return controls;
 	}
-	
-	/** Get the control character code point.
+
+	/**
+	 * Get the control character code point.
+	 * 
 	 * @return Control character code point
 	 */
 	public int getCodePoint() {
 		return this.codePoint;
 	}
-	
-	/** Get the control character mnemonic.
+
+	/**
+	 * Get the control character mnemonic.
+	 * 
 	 * @return Control character mnemonic
 	 */
 	public String getMnemonic() {
 		return this.mnemonic;
 	}
-	
-	/** Convert the C0 control to a Java string, of the form: "mnemonic (0xHH)".
+
+	/**
+	 * Convert the C0 control to a Java string, of the form: "mnemonic (0xHH)".
+	 * 
 	 * @return Java string representation of the control
 	 */
 	public String toString() {
@@ -140,11 +153,14 @@ public class C0Control
 		if (this.codePoint < 16) {
 			hh = "0" + hh;
 		}
-		return this.getMnemonic() + " (0x" + hh +")";
+		return this.getMnemonic() + " (0x" + hh + ")";
 	}
-	
-	/** Compare C0 block.
-	 * @param control C0 control to be compared
+
+	/**
+	 * Compare C0 block.
+	 * 
+	 * @param control
+	 *            C0 control to be compared
 	 * @return -1, 0, or 1 if this control is less than, equal to, or greater
 	 *         than the second
 	 */
@@ -154,11 +170,10 @@ public class C0Control
 		int codePoint = control.getCodePoint();
 		if (this.codePoint < codePoint) {
 			ret = -1;
-		}
-		else if (this.codePoint > codePoint) {
+		} else if (this.codePoint > codePoint) {
 			ret = 1;
 		}
-		
+
 		return ret;
 	}
 }

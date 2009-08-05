@@ -44,95 +44,129 @@ import org.jhove2.core.JHOVE2;
 import org.jhove2.core.io.Input.Type;
 import org.jhove2.module.Module;
 
-/** Interface for JHOVE2 applications.
+/**
+ * Interface for JHOVE2 applications.
  * 
  * @author mstrong, slabrams
  */
 public interface Application
 	extends Module
 {
-	/** Get {@link org.jhove2.core.io.Input} buffer size.
+	/**
+	 * Get {@link org.jhove2.core.io.Input} buffer size.
+	 * 
 	 * @return Buffer size
 	 */
 	public int getBufferSize();
-	
-	/** Get {@link org.jhove2.core.io.Input} buffer type.
+
+	/**
+	 * Get {@link org.jhove2.core.io.Input} buffer type.
+	 * 
 	 * @return Input buffer type
 	 */
 	public Type getBufferType();
-	
-	/** Get message digests flag.
+
+	/**
+	 * Get message digests flag.
+	 * 
 	 * @return Message digests flag; if true, calculate message digests
 	 */
 	public boolean getCalcDigests();
-	
-	/** Get application command line.
+
+	/**
+	 * Get application command line.
+	 * 
 	 * @return Application command line
 	 */
-	@ReportableProperty(order=3, value="Application command line.")
+	@ReportableProperty(order = 3, value = "Application command line.")
 	public String getCommandLine();
-	
-	/** Get application invocation date/timestamp.
+
+	/**
+	 * Get application invocation date/timestamp.
+	 * 
 	 * @return Application invocation date/timestamp
 	 */
-	@ReportableProperty(order=2, value="Application invocation date/timestatmp.")
+	@ReportableProperty(order = 2, value = "Application invocation date/timestatmp.")
 	public Date getDateTime();
-		
-	/** Get delete temporary files flag.
+
+	/**
+	 * Get delete temporary files flag.
+	 * 
 	 * @return Delete temporary files flag
 	 */
 	public boolean getDeleteTempFiles();
-	
-	/** Get {@link org.jhove2.module.display.Displayer} name.
+
+	/**
+	 * Get {@link org.jhove2.module.display.Displayer} name.
+	 * 
 	 * @return Displayer
 	 */
 	public String getDisplayer();
-	
-	/** Get fail fast limit.
+
+	/**
+	 * Get fail fast limit.
+	 * 
 	 * @return Fail fast limit
 	 */
 	public int getFailFastLimit();
 
-	/** Get application framework.
+	/**
+	 * Get application framework.
+	 * 
 	 * @return Application framework
 	 */
-	@ReportableProperty(order=5, value="Application framework.")
+	@ReportableProperty(order = 5, value = "Application framework.")
 	public JHOVE2 getFramework();
 
-	/** Get output file.
+	/**
+	 * Get output file.
+	 * 
 	 * @return Output file, or null if no file is specified
 	 */
 	public String getOutputFile();
-	
-	/** Get file system path names.
+
+	/**
+	 * Get file system path names.
+	 * 
 	 * @return File system path names
 	 */
 	public List<String> getPathNames();
-	
-	/** Get show identifiers flag.
+
+	/**
+	 * Get show identifiers flag.
+	 * 
 	 * @return Show identifiers flag
 	 */
 	public boolean getShowIdentifiers();
-	
-	/** Get temporary directory.
+
+	/**
+	 * Get temporary directory.
+	 * 
 	 * @return Temporary directory
 	 */
 	public String getTempDirectory();
-	
-	/** Get application user name.
+
+	/**
+	 * Get application user name.
+	 * 
 	 * @return Application user name
 	 */
-	@ReportableProperty(order=1, value="Application user name.")
+	@ReportableProperty(order = 1, value = "Application user name.")
 	public String getUserName();
-	
-	/** Get application current working directory.
+
+	/**
+	 * Get application current working directory.
+	 * 
 	 * @return Appliction current working directory
 	 */
-	@ReportableProperty(order=4, value="Application current working directory.")
+	@ReportableProperty(order = 4, value = "Application current working directory.")
 	public String getWorkingDirectory();
-	
-	/** Set application framework.
-	 * @param framework Application framework
+
+	/**
+	 * Set application framework.
+	 * 
+	 * @param framework
+	 *            Application framework
 	 */
 	public void setFramework(JHOVE2 framework);
 }

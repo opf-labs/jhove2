@@ -42,28 +42,34 @@ import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.Format;
 import org.jhove2.module.Module;
 
-/** Interface for JHOVE2 format {@link org.jhove2.module.Module}s that model
- * a format or format family.
+/**
+ * Interface for JHOVE2 format {@link org.jhove2.module.Module}s that model a
+ * format or format family.
  * 
  * @author mstrong, slabrams
  */
-public interface FormatModule
-	extends Module
-{
-	/** Get format module format.
+public interface FormatModule extends Module {
+	/**
+	 * Get format module format.
+	 * 
 	 * @return Format module format
 	 */
-	@ReportableProperty(order=1, value="Format module format.")
+	@ReportableProperty(order = 1, value = "Format module format.")
 	public Format getFormat();
-	
-	/** Get format module format profiles.
+
+	/**
+	 * Get format module format profiles.
+	 * 
 	 * @return Format module format profiles.
 	 */
-	@ReportableProperty(order=2, value="Format module format profiles.")
+	@ReportableProperty(order = 2, value = "Format module format profiles.")
 	public List<FormatProfile> getProfiles();
-	
-	/** Add a format module format profile.
-	 * @param profile Format module format profile
+
+	/**
+	 * Add a format module format profile.
+	 * 
+	 * @param profile
+	 *            Format module format profile
 	 */
 	public void setProfile(FormatProfile profile);
 }

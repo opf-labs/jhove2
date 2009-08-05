@@ -46,67 +46,84 @@ import java.util.zip.ZipFile;
 
 import org.jhove2.core.JHOVE2;
 
-/** Factory for JHOVE2 file and directory source units.
+/**
+ * Factory for JHOVE2 file and directory source units.
  * 
  * @author mstrong, slabrams
  */
 public abstract class SourceFactory {
-	/** Get source unit from a file system path name.
-	 * @param pathName File system path name
+	/**
+	 * Get source unit from a file system path name.
+	 * 
+	 * @param pathName
+	 *            File system path name
 	 * @return Source unit
-	 * @throws FileNotFoundException File not found
-	 * @throws IOException           I/O exception instantiating source 
+	 * @throws FileNotFoundException
+	 *             File not found
+	 * @throws IOException
+	 *             I/O exception instantiating source
 	 */
 	public static synchronized Source getSource(String pathName)
-		throws FileNotFoundException, IOException
-	{
+			throws FileNotFoundException, IOException {
 		return getSource(new File(pathName));
 	}
-	
-	/** Get source unit from a Java {@link java.io.File}.
-	 * @param file Java {@link java.io.File}
+
+	/**
+	 * Get source unit from a Java {@link java.io.File}.
+	 * 
+	 * @param file
+	 *            Java {@link java.io.File}
 	 * @return Source unit
-	 * @throws FileNotFoundException File not found
-	 * @throws IOException           I/O exception instantiating source
+	 * @throws FileNotFoundException
+	 *             File not found
+	 * @throws IOException
+	 *             I/O exception instantiating source
 	 */
 	public static synchronized Source getSource(File file)
-		throws FileNotFoundException, IOException
-	{
+			throws FileNotFoundException, IOException {
 		if (file.isDirectory()) {
 			return new DirectorySource(file);
 		}
 
 		return new FileSource(file);
 	}
-	
-	/** Get source unit from a URL.
-	 * @param jhove2 JHOVE2 framework
-	 * @param url    URL
+
+	/**
+	 * Get source unit from a URL.
+	 * 
+	 * @param jhove2
+	 *            JHOVE2 framework
+	 * @param url
+	 *            URL
 	 * @return Source unit
-	 * @throws IOException I/O exception instantiating source 
+	 * @throws IOException
+	 *             I/O exception instantiating source
 	 */
 	public static synchronized Source getSource(JHOVE2 jhove2, URL url)
-		throws IOException
-	{
-		return new URLSource(jhove2, url); 
+			throws IOException {
+		return new URLSource(jhove2, url);
 	}
-	
-	/** Get source unit from a Zip file entry.
-	 * @param jhove2 JHOVE2 framework
-	 * @param zip    Zip file
-	 * @param entry  Zip file entry
+
+	/**
+	 * Get source unit from a Zip file entry.
+	 * 
+	 * @param jhove2
+	 *            JHOVE2 framework
+	 * @param zip
+	 *            Zip file
+	 * @param entry
+	 *            Zip file entry
 	 * @return Source unit
-	 * @throws IOException I/O exception instantiating source 
+	 * @throws IOException
+	 *             I/O exception instantiating source
 	 */
 	public static synchronized Source getSource(JHOVE2 jhove2, ZipFile zip,
-			                                    ZipEntry entry)
-		throws IOException
-	{
+			ZipEntry entry) throws IOException {
 		InputStream stream = zip.getInputStream(entry);
 		if (entry.isDirectory()) {
 			return new ZipDirectorySource(stream, entry);
 		}
-		
+
 		return new ZipFileSource(jhove2, stream, entry);
 	}
 }

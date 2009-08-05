@@ -38,23 +38,22 @@ package org.jhove2.module.digest;
 
 import java.security.NoSuchAlgorithmException;
 
-/*** JHOVE2 SHA-2384 message digester.  The SHA-384 algorithm is defined by FIPS
+/***
+ * JHOVE2 SHA-2384 message digester. The SHA-384 algorithm is defined by FIPS
  * PUB 180-2.
  * 
  * @author mstrong, slabrams
  */
-public class SHA384Digester
-	extends AbstractBufferDigester
-{
+public class SHA384Digester extends AbstractBufferDigester {
 	/** Algorithm name. */
 	public static final String ALGORITHM = "SHA-384";
-	
-	/** Instantiate a new <code>SHA384Digester</code>.
-	 * @throws NoSuchAlgorithmException 
+
+	/**
+	 * Instantiate a new <code>SHA384Digester</code>.
+	 * 
+	 * @throws NoSuchAlgorithmException
 	 */
-	public SHA384Digester()
-		throws NoSuchAlgorithmException
-	{
+	public SHA384Digester() throws NoSuchAlgorithmException {
 		super(ALGORITHM);
 	}
 }

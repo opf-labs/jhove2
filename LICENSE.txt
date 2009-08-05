@@ -1,6 +1,6 @@
 BSD License for JHOVE2
 
-Copyright (c) 2008 by The Regents of the University of California, Ithaka
+Copyright (c) 2009 by The Regents of the University of California, Ithaka
 Harbors, Inc., and The Board of Trustees of the Leland Stanford Junior University.
 All rights reserved.
 

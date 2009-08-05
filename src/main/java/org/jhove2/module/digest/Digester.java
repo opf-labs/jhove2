@@ -45,22 +45,27 @@ import org.jhove2.core.JHOVE2;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.Module;
 
-/** Interface for JHOVE2 message digesting modules.
+/**
+ * Interface for JHOVE2 message digesting modules.
  * 
  * @author mstrong, slabrams
  */
-public interface Digester
-	extends Module
-{
-	/** Calculate message digests for a source unit.
-	 * @param jhove2 JHOVE2 framework
-	 * @param source Source unit
-	 * @throws IOException I/O exception calculating message digests
+public interface Digester extends Module {
+	/**
+	 * Calculate message digests for a source unit.
+	 * 
+	 * @param jhove2
+	 *            JHOVE2 framework
+	 * @param source
+	 *            Source unit
+	 * @throws IOException
+	 *             I/O exception calculating message digests
 	 */
-	public void digest(JHOVE2 jhove2, Source source)
-		throws IOException;
-	
-	/** Get message digests.
+	public void digest(JHOVE2 jhove2, Source source) throws IOException;
+
+	/**
+	 * Get message digests.
+	 * 
 	 * @return Message digests
 	 */
 	@ReportableProperty("Get message digests.")

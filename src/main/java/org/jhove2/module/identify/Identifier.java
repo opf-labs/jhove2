@@ -46,25 +46,30 @@ import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.Module;
 
-/** Interface for JHOVE2 identification modules.
+/**
+ * Interface for JHOVE2 identification modules.
  * 
  * @author mstrong, slabrams
  */
-public interface Identifier
-	extends Module
-{
-	/** Presumptively identify the format of a source unit.
-	 * @param jhove2 JHOVE2 framework
-	 * @param source Source unit
+public interface Identifier extends Module {
+	/**
+	 * Presumptively identify the format of a source unit.
+	 * 
+	 * @param jhove2
+	 *            JHOVE2 framework
+	 * @param source
+	 *            Source unit
 	 * @return Presumptively identified formats
-	 * @throws IOException     I/O exception encountered identifying the
-	 *                         source unit
+	 * @throws IOException
+	 *             I/O exception encountered identifying the source unit
 	 * @throws JHOVE2Exception
 	 */
 	public Set<FormatIdentification> identify(JHOVE2 jhove2, Source source)
-		throws IOException, JHOVE2Exception;
-	
-	/** Get presumptive format identifications.
+			throws IOException, JHOVE2Exception;
+
+	/**
+	 * Get presumptive format identifications.
+	 * 
 	 * @return Presumptive format identifications
 	 */
 	@ReportableProperty("Presumptive format identifications.")

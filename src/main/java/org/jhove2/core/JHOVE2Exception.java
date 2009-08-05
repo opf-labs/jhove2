@@ -36,17 +36,18 @@
 
 package org.jhove2.core;
 
-/** JHOVE2 configuration exception
+/**
+ * JHOVE2 configuration exception
  * 
  * @author mstrong, slabrams
  */
-public class JHOVE2Exception
-	extends Exception
-{
+public class JHOVE2Exception extends Exception {
 	/** JHOVE2 exception serialization version identifier. */
 	private static final long serialVersionUID = 1L;
 
-	/** Instantiate a new <code>JHOVE2Exception</code>
+	/**
+	 * Instantiate a new <code>JHOVE2Exception</code>
+	 * 
 	 * @param message
 	 * @param cause
 	 */

@@ -47,7 +47,7 @@ import org.junit.Test;
 
 /**
  * @author mstrong
- *
+ * 
  */
 public class TestInitializer {
 
@@ -66,7 +66,9 @@ public class TestInitializer {
 	}
 
 	/**
-	 * Test method for {@link org.jhove2.core.config.Configure#getReportable(java.lang.Class, java.lang.String)}.
+	 * Test method for
+	 * {@link org.jhove2.core.config.Configure#getReportable(java.lang.Class, java.lang.String)}
+	 * .
 	 */
 	@Ignore
 	@Test
@@ -75,7 +77,9 @@ public class TestInitializer {
 	}
 
 	/**
-	 * Test method for {@link org.jhove2.core.config.Configure#getReportableNames(java.lang.Class)}.
+	 * Test method for
+	 * {@link org.jhove2.core.config.Configure#getReportableNames(java.lang.Class)}
+	 * .
 	 */
 	@Ignore
 	@Test
@@ -84,24 +88,25 @@ public class TestInitializer {
 	}
 
 	/**
-	 * Test method for {@link org.jhove2.core.config.Configure#getProperties(java.lang.String)}.
-	 * @throws JHOVE2Exception 
+	 * Test method for
+	 * {@link org.jhove2.core.config.Configure#getProperties(java.lang.String)}.
+	 * 
+	 * @throws JHOVE2Exception
 	 */
 	@Test
 	public void testGetProperties() throws JHOVE2Exception {
 
-
 		Properties props1 = Configure.getProperties("C0Control");
-		assertTrue("Error loading C0Control",props1 != null);
-		
+		assertTrue("Error loading C0Control", props1 != null);
+
 		Properties props2 = Configure.getProperties("C1Control");
-		assertTrue("Error loading C1Control", props2 != null); 
-		
+		assertTrue("Error loading C1Control", props2 != null);
+
 		Properties props3 = Configure.getProperties("CodeBlock");
-		assertTrue("Error loading block", props3 != null); 
+		assertTrue("Error loading block", props3 != null);
 
 		Properties props4 = Configure.getProperties("Dispatch");
-		assertTrue("Error loading block", props4 != null); 
-		
+		assertTrue("Error loading block", props4 != null);
+
 	}
 }

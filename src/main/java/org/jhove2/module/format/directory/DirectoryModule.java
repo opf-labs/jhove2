@@ -48,55 +48,61 @@ import org.jhove2.core.source.Source;
 import org.jhove2.module.format.AbstractFormatModule;
 import org.jhove2.module.format.Parser;
 
-/** JHOVE2 file system directory module.
+/**
+ * JHOVE2 file system directory module.
  * 
  * @author mstrong, slabrams
  */
-public class DirectoryModule
-	extends AbstractFormatModule
-	implements Parser
-{
+public class DirectoryModule extends AbstractFormatModule implements Parser {
 	/** Directory module version identifier. */
 	public static final String VERSION = "1.0.0";
 
 	/** Directory module release date. */
 	public static final String RELEASE = "2009-07-13";
-	
-	/** Directory module rights statement. */
-	public static final String RIGHTS =
-		"Copyright 2009 by The Regents of the University of California, " +
-		"Ithaka Harbors, Inc., and The Board of Trustees of the Leland " +
-		"Stanford Junior University. " +
-		"Available under the terms of the BSD license.";
 
-	/** Instantiate a new <code>DirectoryModule</code>.
-	 * @param format Directory format
+	/** Directory module rights statement. */
+	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California, "
+			+ "Ithaka Harbors, Inc., and The Board of Trustees of the Leland "
+			+ "Stanford Junior University. "
+			+ "Available under the terms of the BSD license.";
+
+	/**
+	 * Instantiate a new <code>DirectoryModule</code>.
+	 * 
+	 * @param format
+	 *            Directory format
 	 */
 	public DirectoryModule(Format format) {
 		super(VERSION, RELEASE, RIGHTS, format);
 	}
 
-	/** Parse a directory source unit.
-	 * @param jhove2 JHOVE2 framework
-	 * @param source Directory source unit
-	 * @return 0 
-	 * @throws EOFException    If End-of-File is reached reading the source unit
-	 * @throws IOException     If an I/O exception is raised reading the source
-	 *                         unit
+	/**
+	 * Parse a directory source unit.
+	 * 
+	 * @param jhove2
+	 *            JHOVE2 framework
+	 * @param source
+	 *            Directory source unit
+	 * @return 0
+	 * @throws EOFException
+	 *             If End-of-File is reached reading the source unit
+	 * @throws IOException
+	 *             If an I/O exception is raised reading the source unit
 	 * @throws JHOVE2Exception
-	 * @see org.jhove2.module.format.Parser#parse(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
+	 * @see org.jhove2.module.format.Parser#parse(org.jhove2.core.JHOVE2,
+	 *      org.jhove2.core.source.Source)
 	 */
 	@Override
-	public long parse(JHOVE2 jhove2, Source source)
-		throws EOFException, IOException, JHOVE2Exception
-	{
+	public long parse(JHOVE2 jhove2, Source source) throws EOFException,
+			IOException, JHOVE2Exception {
 		if (source instanceof DirectorySource) {
-			List<Source> children = ((DirectorySource) source).getChildSources();
+			List<Source> children = ((DirectorySource) source)
+					.getChildSources();
 			for (Source src : children) {
 				jhove2.characterize(src);
 			}
 		}
-		
+
 		return 0;
 	}
 }

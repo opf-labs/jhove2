@@ -39,55 +39,68 @@ package org.jhove2.module.display;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.module.AbstractModule;
 
-/** JHOVE2 displayer utility.
+/**
+ * JHOVE2 displayer utility.
  * 
  * @author mstrong, slabrams
  */
-public abstract class AbstractDisplayer
-	extends AbstractModule
-	implements Displayer
-{
-	/** Show identifiers flag: if true, show identifiers in JSON and Text
-	 * display mode.
+public abstract class AbstractDisplayer extends AbstractModule implements
+		Displayer {
+	/**
+	 * Show identifiers flag: if true, show identifiers in JSON and Text display
+	 * mode.
 	 */
 	protected boolean showIdentifiers;
-	
-	/** Instantiate a new <code>AbstractDisplayer</code>.
-	 * @param version AbstractDisplayer version identifier
-	 * @param date    AbstractDisplayer build date
-	 * @param rights  AbstractDisplayer rights statement
+
+	/**
+	 * Instantiate a new <code>AbstractDisplayer</code>.
+	 * 
+	 * @param version
+	 *            AbstractDisplayer version identifier
+	 * @param date
+	 *            AbstractDisplayer build date
+	 * @param rights
+	 *            AbstractDisplayer rights statement
 	 */
 	public AbstractDisplayer(String version, String date, String rights) {
 		super(version, date, rights);
-		
+
 		this.showIdentifiers = JHOVE2.DEFAULT_SHOW_IDENTIFIERS;
 	}
-	
-	/** Get indentation appropriate for a nesting level.
-	 * @param level Nesting level
+
+	/**
+	 * Get indentation appropriate for a nesting level.
+	 * 
+	 * @param level
+	 *            Nesting level
 	 * @return Indentation string
 	 */
 	public static synchronized String getIndent(int level) {
 		StringBuffer indent = new StringBuffer();
-		for (int i=0; i<level; i++) {
+		for (int i = 0; i < level; i++) {
 			indent.append(" ");
 		}
-		
+
 		return indent.toString();
 	}
 
-	/** Get show identifiers flag.
-	 * @return Show identifiers flag; if true, show identifiers in JSON and
-	 *         Text display mode
+	/**
+	 * Get show identifiers flag.
+	 * 
+	 * @return Show identifiers flag; if true, show identifiers in JSON and Text
+	 *         display mode
 	 * @see org.jhove2.module.display.Displayer#getShowIdentifiers()
 	 */
 	@Override
 	public boolean getShowIdentifiers() {
 		return this.showIdentifiers;
 	}
-	
-	/** Set show identifiers flag.
-	 * @param flag If true, show identifiers in JSON and Text display mode
+
+	/**
+	 * Set show identifiers flag.
+	 * 
+	 * @param flag
+	 *            If true, show identifiers in JSON and Text display mode
 	 * @see org.jhove2.module.display.Displayer#setShowIdentifiers(boolean)
 	 */
 	@Override

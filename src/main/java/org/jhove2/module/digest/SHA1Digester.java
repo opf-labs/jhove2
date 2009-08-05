@@ -38,23 +38,22 @@ package org.jhove2.module.digest;
 
 import java.security.NoSuchAlgorithmException;
 
-/** JHOVE2 SHA-1 message digester.  The SHA-1 algorithm is defined by FIPS
- * PUB 180-2.
+/**
+ * JHOVE2 SHA-1 message digester. The SHA-1 algorithm is defined by FIPS PUB
+ * 180-2.
  * 
  * @author mstrong, slabrams
  */
-public class SHA1Digester
-	extends AbstractBufferDigester
-{
+public class SHA1Digester extends AbstractBufferDigester {
 	/** Algorithm name. */
 	public static final String ALGORITHM = "SHA-1";
-	
-	/** Instantiate a new <code>SHA1Digester</code>.
-	 * @throws NoSuchAlgorithmException 
+
+	/**
+	 * Instantiate a new <code>SHA1Digester</code>.
+	 * 
+	 * @throws NoSuchAlgorithmException
 	 */
-	public SHA1Digester()
-		throws NoSuchAlgorithmException
-	{
+	public SHA1Digester() throws NoSuchAlgorithmException {
 		super(ALGORITHM);
 	}
 }

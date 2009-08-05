@@ -38,38 +38,46 @@ package org.jhove2.core;
 
 import org.jhove2.annotation.ReportableProperty;
 
-/** Interface for {@link org.jhove2.core.Reportable}s that report their
- * elapsed processing times.
+/**
+ * Interface for {@link org.jhove2.core.Reportable}s that report their elapsed
+ * processing times.
  * 
  * @author mstrong, slabrams
  */
-public interface Temporal
-	extends Reportable
-{
-	/** Get elapsed time, in milliseconds.  The reportable time will never be
-	 * less than 1 milliscond.
+public interface Temporal extends Reportable {
+	/**
+	 * Get elapsed time, in milliseconds. The reportable time will never be less
+	 * than 1 milliscond.
+	 * 
 	 * @return Elapsed time, in milliseconds
 	 */
-	@ReportableProperty("Elapsed time, milliseconds. The reported time will " +
-			"never be less than 1 millisecond.")
+	@ReportableProperty("Elapsed time, milliseconds. The reported time will "
+			+ "never be less than 1 millisecond.")
 	public Duration getElapsedTime();
-	
-	/** Set the end time of the elapsed duration.  Defaults to the time of
-	 * invocation of the {@link org.jhove2.core.Temporal#getElapsedTime()} method.
+
+	/**
+	 * Set the end time of the elapsed duration. Defaults to the time of
+	 * invocation of the {@link org.jhove2.core.Temporal#getElapsedTime()}
+	 * method.
+	 * 
 	 * @return End time, in milliseconds
 	 */
 	public long setEndTime();
-	
-	/** Set the restart time of the elapsed duration.  All subsequent time
-	 * (until the next abstractApplication of the setEndTime() method) will be added
-	 * to the time already accounted for by an earlier abstractApplication of the
+
+	/**
+	 * Set the restart time of the elapsed duration. All subsequent time (until
+	 * the next abstractApplication of the setEndTime() method) will be added to
+	 * the time already accounted for by an earlier abstractApplication of the
 	 * setEndTime() method.
+	 * 
 	 * @return Current time minus the elapsed time, in milliseconds
 	 */
 	public long setRestartTime();
-	
-	/** Set the start time of the elapsed duration.  Defaults to the time of
+
+	/**
+	 * Set the start time of the elapsed duration. Defaults to the time of
 	 * module instantiation.
+	 * 
 	 * @return Start time, in milliseconds
 	 */
 	public long setStartTime();

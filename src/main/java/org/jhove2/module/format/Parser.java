@@ -43,20 +43,26 @@ import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.source.Source;
 
-/** Interface for JHOVE2 format modules with parsing capability.
+/**
+ * Interface for JHOVE2 format modules with parsing capability.
  * 
  * @author mstrong, slabrams
  */
 public interface Parser {
-	/** Parse a source unit.
-	 * @param jhove2 JHOVE2 framework
-	 * @param source Source unit
+	/**
+	 * Parse a source unit.
+	 * 
+	 * @param jhove2
+	 *            JHOVE2 framework
+	 * @param source
+	 *            Source unit
 	 * @return Number of bytes consumed
-	 * @throws EOFException    If End-of-File is reached reading the source unit
-	 * @throws IOException     If an I/O exception is raised reading the source
-	 *                         unit
+	 * @throws EOFException
+	 *             If End-of-File is reached reading the source unit
+	 * @throws IOException
+	 *             If an I/O exception is raised reading the source unit
 	 * @throws JHOVE2Exception
 	 */
-	public long parse(JHOVE2 jhove2, Source source)
-		throws EOFException, IOException, JHOVE2Exception;
+	public long parse(JHOVE2 jhove2, Source source) throws EOFException,
+			IOException, JHOVE2Exception;
 }

@@ -44,7 +44,8 @@ import org.jhove2.core.config.Configure;
 import org.jhove2.core.io.Input.Type;
 import org.jhove2.module.display.Displayer;
 
-/** JHOVE2 command line application.
+/**
+ * JHOVE2 command line application.
  * 
  * @author mstrong, slabrams
  */
@@ -52,32 +53,35 @@ public class JHOVE2CommandLine
 	extends AbstractApplication
 {
 	/** JHOVE2 application version identifier. */
-	public static final String VERSION = "0.1.1";
+	public static final String VERSION = "0.5.2";
 
 	/** JHOVE2 application release date. */
 	public static final String RELEASE = "2009-08-04";
-	
+
 	/** JHOVE2 application rights statement. */
-	public static final String RIGHTS =
-		"Copyright 2009 by The Regents of the University of California, " +
-		"Ithaka Harbors, Inc., and The Board of Trustees of the Leland " +
-		"Stanford Junior University. " +
-		"Available under the terms of the BSD license.";
+	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California, "
+			+ "Ithaka Harbors, Inc., and The Board of Trustees of the Leland "
+			+ "Stanford Junior University. "
+			+ "Available under the terms of the BSD license.";
 
 	/** Usage statement return code. */
 	public static final int EUSAGE = 1;
-	
+
 	/** Caught exception return code. */
 	public static final int EEXCEPTION = -1;
 
-	/** Instantiate a new <code>JHOVE2CommandLine</code>.
+	/**
+	 * Instantiate a new <code>JHOVE2CommandLine</code>.
 	 */
 	public JHOVE2CommandLine() {
 		super(VERSION, RELEASE, RIGHTS);
 	}
-	
-	/** Main entry point for the JHOVE2 command line application.
-	 * @param args Command line arguments
+
+	/**
+	 * Main entry point for the JHOVE2 command line application.
+	 * 
+	 * @param args
+	 *            Command line arguments
 	 */
 	public static void main(String[] args) {
 
@@ -88,13 +92,14 @@ public class JHOVE2CommandLine
 			}
 
 			/* Parse the application command line. */
-			JHOVE2CommandLine app = Configure.getReportable(Application.class, "JHOVE2CommandLine");
+			JHOVE2CommandLine app = Configure.getReportable(Application.class,
+					"JHOVE2CommandLine");
 			List<String> pathNames = app.parse(args);
 
 			/* Initialize the JHOVE2 framework. */
 			JHOVE2 jhove2 = Configure.getReportable(JHOVE2.class, "JHOVE2");
 			jhove2.setApplication(app);
-				
+
 			/* Characterize and display all file system path names. */
 			jhove2.characterize(pathNames);
 			jhove2.display(app);
@@ -104,47 +109,43 @@ public class JHOVE2CommandLine
 			System.exit(EEXCEPTION);
 		}
 	}
-	
-	/** Parse the JHOVE2 application command line.
-	 * @param args Command line arguments
+
+	/**
+	 * Parse the JHOVE2 application command line.
+	 * 
+	 * @param args
+	 *            Command line arguments
 	 * @return File system path names
 	 */
-	public List<String> parse(String [] args) {
-		for (int i=0; i<args.length; i++) {
+	public List<String> parse(String[] args) {
+		for (int i = 0; i < args.length; i++) {
 			if (i == 0) {
 				this.commandLine = args[i];
-			}
-			else {
+			} else {
 				this.commandLine += " " + args[i];
 			}
 			if (args[i].charAt(0) == '-') {
 				if (args[i].length() > 1) {
 					char opt = Character.toLowerCase(args[i].charAt(1));
-					if      (opt == 'b' && i+1 < args.length) {
+					if (opt == 'b' && i + 1 < args.length) {
 						this.bufferSize = Integer.valueOf(args[++i]);
 						this.commandLine += " " + args[i];
-					}
-					else if (opt == 'B' && i+1 < args.length) {
+					} else if (opt == 'B' && i + 1 < args.length) {
 						this.bufferType = Type.valueOf(args[++i]);
 						this.commandLine += " " + args[i];
-					}
-					else if (opt == 'd' && i+1 < args.length) {
+					} else if (opt == 'd' && i + 1 < args.length) {
 						this.displayer = args[++i];
 						this.commandLine += " " + args[i];
-					}
-					else if (opt == 'f' && i+1 < args.length) {
+					} else if (opt == 'f' && i + 1 < args.length) {
 						this.failFastLimit = Integer.valueOf(args[++i]);
 						this.commandLine += " " + args[i];
-					}
-					else if (opt == 'o' && i+1 < args.length) {
+					} else if (opt == 'o' && i + 1 < args.length) {
 						this.outputFile = args[++i];
 						this.commandLine += " " + args[i];
-					}
-					else if (opt == 't' && i+1 < args.length) {
+					} else if (opt == 't' && i + 1 < args.length) {
 						this.tempDirectory = args[++i];
 						this.commandLine += " " + args[i];
-					}
-					else {
+					} else {
 						if (args[i].indexOf('i') > -1) {
 							this.showIdentifiers = true;
 						}
@@ -156,39 +157,38 @@ public class JHOVE2CommandLine
 						}
 					}
 				}
-			}
-			else {
+			} else {
 				this.names.add(args[i]);
 			}
 		}
-		
+
 		return this.names;
 	}
 
-	/** Get application usage statement.
+	/**
+	 * Get application usage statement.
+	 * 
 	 * @return Application usage statement
-	 * @throws JHOVE2Exception 
+	 * @throws JHOVE2Exception
 	 */
-	public static String getUsage()
-		throws JHOVE2Exception
-	{
-		Type   [] bufferTypes = Type.values();
-		String [] displayers  = Configure.getReportableNames(Displayer.class);
-		
+	public static String getUsage() throws JHOVE2Exception {
+		Type[] bufferTypes = Type.values();
+		String[] displayers = Configure.getReportableNames(Displayer.class);
+
 		StringBuffer usage = new StringBuffer("usage: ");
 		usage.append(JHOVE2CommandLine.class.getName());
 		usage.append(" [-ik]");
 		usage.append(" [-b <bufferSize>]");
 		usage.append(" [-B ");
-		for (int i=0; i<bufferTypes.length; i++) {
-			if ( i > 0) {
+		for (int i = 0; i < bufferTypes.length; i++) {
+			if (i > 0) {
 				usage.append("|");
 			}
 			usage.append(bufferTypes[i]);
 		}
 		usage.append("]");
 		usage.append(" [-d ");
-		for (int i=0; i<displayers.length; i++) {
+		for (int i = 0; i < displayers.length; i++) {
 			if (i > 0) {
 				usage.append("|");
 			}
@@ -199,7 +199,7 @@ public class JHOVE2CommandLine
 		usage.append(" [-t <tempDirectory]");
 		usage.append(" [-o <file>]");
 		usage.append(" <file> ...");
-		
+
 		return usage.toString();
 	}
 }

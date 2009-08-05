@@ -39,37 +39,42 @@ package org.jhove2.module.format;
 import org.jhove2.core.Format;
 import org.jhove2.module.AbstractModule;
 
-/** Abstract JHOVE2 format profile, which is {@link org.jhove2.module.Module}
+/**
+ * Abstract JHOVE2 format profile, which is {@link org.jhove2.module.Module}
  * that models a specific format in a format family.
  * 
  * @author mstrong, slabrams
  */
-public class AbstractFormatProfile
-	extends AbstractModule
-	implements FormatProfile
-{
+public class AbstractFormatProfile extends AbstractModule implements
+		FormatProfile {
 	/** Format profile format. */
 	protected Format format;
-	
+
 	/** Format profile format module. */
 	protected FormatModule module;
-	
-	/** Instantiate a new <code>AbstractFormatProfile</code>.
-	 * @param version Format profile version identifier in three-part form:
-	 *                "M.N.P"
-	 * @param release Format profile release date in ISO 8601 format:
-	 *                "YYYY-MM-DD"
-	 * @param rights  Format profile rights statement
-	 * @param format  Format profile format
+
+	/**
+	 * Instantiate a new <code>AbstractFormatProfile</code>.
+	 * 
+	 * @param version
+	 *            Format profile version identifier in three-part form: "M.N.P"
+	 * @param release
+	 *            Format profile release date in ISO 8601 format: "YYYY-MM-DD"
+	 * @param rights
+	 *            Format profile rights statement
+	 * @param format
+	 *            Format profile format
 	 */
 	public AbstractFormatProfile(String version, String release, String rights,
-			                     Format format) {
+			Format format) {
 		super(version, release, rights);
-		
+
 		this.format = format;
 	}
 
-	/** Get format profile format.
+	/**
+	 * Get format profile format.
+	 * 
 	 * @return Format profile format
 	 * @see org.jhove2.module.format.FormatProfile#getFormat()
 	 */
@@ -78,8 +83,11 @@ public class AbstractFormatProfile
 		return this.format;
 	}
 
-	/** Set format profile format module.
-	 * @param module Format module
+	/**
+	 * Set format profile format module.
+	 * 
+	 * @param module
+	 *            Format module
 	 * @see org.jhove2.module.format.FormatProfile#setFormatModule(org.jhove2.module.format.FormatModule)
 	 */
 	@Override

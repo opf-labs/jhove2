@@ -36,63 +36,71 @@
 
 package org.jhove2.core;
 
-/** A JHOVE2 message digest.
+/**
+ * A JHOVE2 message digest.
  * 
  * @author mstrong, slabrams
  */
-public class Digest
-	implements Comparable<Digest>
-{
+public class Digest implements Comparable<Digest> {
 	/** Message digest algorithm. */
 	protected String algorithm;
-	
+
 	/** Message digest value, hex encoded. */
 	protected String value;
-	
-	/** Instantiate a new <code>Digest</code>.
-	 * @param value     Message digest value, hex encoded
-	 * @param algorithm Message digest algorithm
+
+	/**
+	 * Instantiate a new <code>Digest</code>.
+	 * 
+	 * @param value
+	 *            Message digest value, hex encoded
+	 * @param algorithm
+	 *            Message digest algorithm
 	 */
 	public Digest(String value, String algorithm) {
-		this.value     = value;
+		this.value = value;
 		this.algorithm = algorithm;
 	}
 
-	/** Get the message digest algorithm.
+	/**
+	 * Get the message digest algorithm.
+	 * 
 	 * @return Message digest algorithm
 	 */
-	public String getAlgorithm ()
-	{
+	public String getAlgorithm() {
 		return this.algorithm;
 	}
 
-	/** Get the message digest value.
+	/**
+	 * Get the message digest value.
+	 * 
 	 * @return Message digest value, hex encoded
 	 */
-	public String getValue ()
-	{
+	public String getValue() {
 		return this.value;
 	}
 
-	/** Get a String representation of the message digest, in the form
+	/**
+	 * Get a String representation of the message digest, in the form
 	 * "algorithm:value".
+	 * 
 	 * @return String representation of the message digest
 	 */
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		return "[" + this.algorithm + "] " + value;
 	}
 
-	/** Lexically compare message digest.
-	 * @param digest Message digest to be compared
-	 * @return -1, 0, or 1 if this identifier value is less than, equal
-	 *         to, or greater than the second
+	/**
+	 * Lexically compare message digest.
+	 * 
+	 * @param digest
+	 *            Message digest to be compared
+	 * @return -1, 0, or 1 if this identifier value is less than, equal to, or
+	 *         greater than the second
 	 * @see java.lang.Comparable#compareTo(Object)
 	 */
 	@Override
-	public int compareTo(Digest digest)
-	{
+	public int compareTo(Digest digest) {
 		int ret = this.algorithm.compareToIgnoreCase(digest.getAlgorithm());
 		if (ret == 0) {
 			ret = this.value.compareToIgnoreCase(digest.getValue());

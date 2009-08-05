@@ -38,22 +38,21 @@ package org.jhove2.module.digest;
 
 import java.security.NoSuchAlgorithmException;
 
-/** JHOVE2 MD2 message digester.  The MD2 algorithm is defined by RFC 1319.
+/**
+ * JHOVE2 MD2 message digester. The MD2 algorithm is defined by RFC 1319.
  * 
  * @author mstrong, slabrams
  */
-public class MD2Digester
-	extends AbstractBufferDigester
-{
+public class MD2Digester extends AbstractBufferDigester {
 	/** Algorithm name. */
 	public static final String ALGORITHM = "MD2";
-	
-	/** Instantiate a new <code>MD2Digester</code>.
-	 * @throws NoSuchAlgorithmException 
+
+	/**
+	 * Instantiate a new <code>MD2Digester</code>.
+	 * 
+	 * @throws NoSuchAlgorithmException
 	 */
-	public MD2Digester()
-		throws NoSuchAlgorithmException
-	{
+	public MD2Digester() throws NoSuchAlgorithmException {
 		super(ALGORITHM);
 	}
 }

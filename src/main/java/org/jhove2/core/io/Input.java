@@ -41,147 +41,186 @@ import java.nio.ByteOrder;
 
 import org.jhove2.core.Reportable;
 
-/** JHOVE2 input, an I/O abstraction used for parsing the contents of source units.
+/**
+ * JHOVE2 input, an I/O abstraction used for parsing the contents of source
+ * units.
  * 
  * @author MStrong
  */
-public interface Input
-	extends Reportable
-{
+public interface Input extends Reportable {
 	/** AbstractInput buffer type. */
 	public enum Type {
-		Direct,
-		NonDirect,
-		MemoryMapped
+		Direct, NonDirect, MemoryMapped
 	};
-		
+
 	/** Marker indicating end-of-file. */
 	public final static int EOF = -1;
-	
+
 	/** Marker indicating an uninitialized value. */
 	public final static int UNINITIALIZED = -1;
-	
-	/** Close the input.
-	 * @throws IOException I/O exception closing input
+
+	/**
+	 * Close the input.
+	 * 
+	 * @throws IOException
+	 *             I/O exception closing input
 	 */
-	public void close()
-		throws IOException;
-	
-	/** Get the {@link java.nio.ByteBuffer} underlying the inputable.
+	public void close() throws IOException;
+
+	/**
+	 * Get the {@link java.nio.ByteBuffer} underlying the inputable.
+	 * 
 	 * @return Buffer underlying the inputable
 	 */
 	public ByteBuffer getBuffer();
-	
-	/** Get current buffer size, in bytes.
+
+	/**
+	 * Get current buffer size, in bytes.
+	 * 
 	 * @return Current buffer size, in bytes
 	 */
 	public int getBufferSize();
 
-	/** Get the current buffer as a <code>byte[]</code> array.
+	/**
+	 * Get the current buffer as a <code>byte[]</code> array.
+	 * 
 	 * @return Byte array
 	 */
-	public byte [] getByteArray();
-	
-	/** Get byte order.
+	public byte[] getByteArray();
+
+	/**
+	 * Get byte order.
+	 * 
 	 * @return Byte order
 	 */
 	public ByteOrder getByteOrder();
-	
-	/** Get current buffer offset from the beginning of the inputable, in
-	 * bytes.
+
+	/**
+	 * Get current buffer offset from the beginning of the inputable, in bytes.
+	 * 
 	 * @return Current buffer offset, in bytes
 	 */
 	public long getBufferOffset();
-	
-	/** Get {@link java.io.File} backing the input.
+
+	/**
+	 * Get {@link java.io.File} backing the input.
+	 * 
 	 * @return File backing the input
 	 */
 	public File getFile();
-	
-	/** Get {@link java.io.InputStream} backing the input
+
+	/**
+	 * Get {@link java.io.InputStream} backing the input
+	 * 
 	 * @return Input stream backing the input
 	 */
 	public InputStream getInputStream();
-	
-	/** Get maximum buffer size, in bytes.
+
+	/**
+	 * Get maximum buffer size, in bytes.
+	 * 
 	 * @return Maximum buffer size, in bytes
 	 */
 	public int getMaxBufferSize();
-	
-	/** Get current position, as a byte offet.
+
+	/**
+	 * Get current position, as a byte offet.
+	 * 
 	 * @return Current position, as a byte offset
 	 */
 	public long getPosition();
-	
-	/** Get signed byte at the current position.  This implicitly advances
-	 * the current position by one byte.
+
+	/**
+	 * Get signed byte at the current position. This implicitly advances the
+	 * current position by one byte.
+	 * 
 	 * @return Signed byte at the current position, or -1 if EOF
-	 * @throws IOException I/O exception reading byte
+	 * @throws IOException
+	 *             I/O exception reading byte
 	 */
-	public byte readSignedByte()
-		throws IOException;
-	
-	/** read signed (four byte) integer at the the current position.  This
+	public byte readSignedByte() throws IOException;
+
+	/**
+	 * read signed (four byte) integer at the the current position. This
 	 * implicitly advances the current position by four bytes.
+	 * 
 	 * @return Unsigned integer at the current position, or -1 if EOF
-	 * @throws IOException I/O exception reading int
+	 * @throws IOException
+	 *             I/O exception reading int
 	 */
-	int readSignedInt() 
-		throws IOException;
-	
-	/** Get signed short at the current position.  This implicitly advances
-	 * the current position by two bytes.
+	int readSignedInt() throws IOException;
+
+	/**
+	 * Get signed short at the current position. This implicitly advances the
+	 * current position by two bytes.
+	 * 
 	 * @return Signed short at the current position, or -1 if EOF
-	 * @throws IOException I/O exception reading short
+	 * @throws IOException
+	 *             I/O exception reading short
 	 */
-	public short readSignedShort()
-		throws IOException;
-	
-	/** Get signed long at the current position.  This implicitly advances
-	 * the current position by eight bytes.
+	public short readSignedShort() throws IOException;
+
+	/**
+	 * Get signed long at the current position. This implicitly advances the
+	 * current position by eight bytes.
+	 * 
 	 * @return Signed long at the current position, or -1 if EOF
-	 * @throws IOException I/O exception reading long
+	 * @throws IOException
+	 *             I/O exception reading long
 	 */
-	public long readSignedLong()
-		throws IOException;
-	
-	/** read unsigned byte at the current position.  This implicitly advances
-	 * the current position by one byte.
+	public long readSignedLong() throws IOException;
+
+	/**
+	 * read unsigned byte at the current position. This implicitly advances the
+	 * current position by one byte.
+	 * 
 	 * @return Unsigned byte at the current position, or -1 if EOF
-	 * @throws IOException I/O exception reading byte
+	 * @throws IOException
+	 *             I/O exception reading byte
 	 */
-	public short readUnsignedByte()
-		throws IOException;
-	
-	/** read unsigned short (two byte) integer at the current position.  This
+	public short readUnsignedByte() throws IOException;
+
+	/**
+	 * read unsigned short (two byte) integer at the current position. This
 	 * implicitly advances the current position by two bytes.
+	 * 
 	 * @return Unsigned short integer at the current position, or -1 if EOF
-	 * @throws IOException I/O exception reading short
+	 * @throws IOException
+	 *             I/O exception reading short
 	 */
-	public int readUnsignedShort()
-		throws IOException;
-	
-	/** read unsigned (four byte) integer at the the current position.  This
+	public int readUnsignedShort() throws IOException;
+
+	/**
+	 * read unsigned (four byte) integer at the the current position. This
 	 * implicitly advances the current position by four bytes.
+	 * 
 	 * @return Unsigned integer at the current position, or -1 if EOF
-	 * @throws IOException I/O exception reading int
+	 * @throws IOException
+	 *             I/O exception reading int
 	 */
-	public long readUnsignedInt()
-		throws IOException;
-		
-	/** Set byte order: big-endian or little-endian.
-	 * @param order Byte order
+	public long readUnsignedInt() throws IOException;
+
+	/**
+	 * Set byte order: big-endian or little-endian.
+	 * 
+	 * @param order
+	 *            Byte order
 	 */
 	public void setByteOrder(ByteOrder order);
-	
-	/** Set current position, as a byte offset.
-	 * @param position Position, as a byte offset
-	 * @throws IOException I/O exception setting position
-	 */
-	public void setPosition(long position)
-		throws IOException;
 
-	/** Get size in bytes of file underlying the Input
+	/**
+	 * Set current position, as a byte offset.
+	 * 
+	 * @param position
+	 *            Position, as a byte offset
+	 * @throws IOException
+	 *             I/O exception setting position
+	 */
+	public void setPosition(long position) throws IOException;
+
+	/**
+	 * Get size in bytes of file underlying the Input
+	 * 
 	 * @return Input size, in bytes
 	 */
 	public long getSize();

@@ -44,108 +44,122 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-/** Spring configuration utility.
+/**
+ * Spring configuration utility.
  * 
  * @author mstrong, slabrams
  */
 public class Configure {
 	/** Spring configuration classpath. */
 	public static final String CLASSPATH = "classpath*:**/*-config.xml";
-	
+
 	/** Spring application context. */
 	protected static ApplicationContext context;
-	
-	/** Get reportable by bean name.
-	 * @param <R>  Parameter type of the reportable
-	 * @param cl   Reportable class
-	 * @param name Reportable bean name
+
+	/**
+	 * Get reportable by bean name.
+	 * 
+	 * @param <R>
+	 *            Parameter type of the reportable
+	 * @param cl
+	 *            Reportable class
+	 * @param name
+	 *            Reportable bean name
 	 * @return Reportable
 	 * @throws JHOVE2Exception
 	 */
-	public static synchronized <R> R getReportable(Class<? super R> cl, String name)
-		throws JHOVE2Exception
-	{
+	public static synchronized <R> R getReportable(Class<? super R> cl,
+			String name) throws JHOVE2Exception {
 		R reportable = null;
 		try {
 			if (context == null) {
 				context = new ClassPathXmlApplicationContext(CLASSPATH);
 			}
-		
+
 			reportable = (R) context.getBean(name, cl);
 		} catch (BeansException e) {
-			throw new JHOVE2Exception("Can't instantiate reportable: " + name, e);
+			throw new JHOVE2Exception("Can't instantiate reportable: " + name,
+					e);
 		}
-		
+
 		return reportable;
 	}
-	
-	/** Get reportable class by bean name.
-	 * @param <R>  Parameter type of the reportable
-	 * @param cl   Reportable class (or super class)
-	 * @param name Reportable bean name
+
+	/**
+	 * Get reportable class by bean name.
+	 * 
+	 * @param <R>
+	 *            Parameter type of the reportable
+	 * @param cl
+	 *            Reportable class (or super class)
+	 * @param name
+	 *            Reportable bean name
 	 * @return Reportable
 	 * @throws JHOVE2Exception
 	 */
-	public static synchronized <R> Class<R> getReportableClass(Class<? super R> cl, String name)
-		throws JHOVE2Exception
-	{
+	public static synchronized <R> Class<R> getReportableClass(
+			Class<? super R> cl, String name) throws JHOVE2Exception {
 		Class<R> cls = null;
 		try {
 			if (context == null) {
 				context = new ClassPathXmlApplicationContext(CLASSPATH);
 			}
-		
+
 			cls = (Class<R>) context.getType(name);
 		} catch (BeansException e) {
-			throw new JHOVE2Exception("Can't retrieve reportable class: " + name, e);
+			throw new JHOVE2Exception("Can't retrieve reportable class: "
+					+ name, e);
 		}
-		
+
 		return cls;
 	}
-	
-	/** Get reportable names by type.
-	 * @param reportable Reportable class
+
+	/**
+	 * Get reportable names by type.
+	 * 
+	 * @param reportable
+	 *            Reportable class
 	 * @return Reportable names
-	 * @throws JHOVE2Exception 
+	 * @throws JHOVE2Exception
 	 */
-	public static synchronized String [] getReportableNames(Class<? extends Reportable> reportable)
-		throws JHOVE2Exception
-	{
-		String [] names = null;
+	public static synchronized String[] getReportableNames(
+			Class<? extends Reportable> reportable) throws JHOVE2Exception {
+		String[] names = null;
 		try {
 			if (context == null) {
 				context = new ClassPathXmlApplicationContext(CLASSPATH);
 			}
-		
+
 			names = context.getBeanNamesForType(reportable);
 		} catch (BeansException e) {
-			throw new JHOVE2Exception("Can't retrieve instantiation names " +
-					                  "for reportable: " + reportable.getName(),
-					                  e);
+			throw new JHOVE2Exception("Can't retrieve instantiation names "
+					+ "for reportable: " + reportable.getName(), e);
 		}
-		
+
 		return names;
 	}
-	
-	/** Get Java properties from a named properties file.
-	 * @param name Properties file base name, i.e., without an extension
+
+	/**
+	 * Get Java properties from a named properties file.
+	 * 
+	 * @param name
+	 *            Properties file base name, i.e., without an extension
 	 * @return Java properties
-	 * @throws JHOVE2Exception 
+	 * @throws JHOVE2Exception
 	 */
 	public static synchronized Properties getProperties(String name)
-		throws JHOVE2Exception
-	{
+			throws JHOVE2Exception {
 		Properties props = null;
 		try {
 			if (context == null) {
 				context = new ClassPathXmlApplicationContext(CLASSPATH);
 			}
-			
+
 			props = (Properties) context.getBean(name);
 		} catch (BeansException e) {
-			throw new JHOVE2Exception("Can't instantiate properties: " + name, e);	
+			throw new JHOVE2Exception("Can't instantiate properties: " + name,
+					e);
 		}
-
 
 		return props;
 	}

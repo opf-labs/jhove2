@@ -46,25 +46,30 @@ import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.source.AggregateSource;
 import org.jhove2.module.Module;
 
-/** Interface for JHOVE2 aggregate identification modules.
+/**
+ * Interface for JHOVE2 aggregate identification modules.
  * 
  * @author mstrong, slabrams
  */
-public interface Aggrefier
-	extends Module
-{
-	/** Presumptively identify the format of an aggregate source unit.
-	 * @param jhove2 JHOVE2 framework
-	 * @param source Aggregate ource unit
+public interface Aggrefier extends Module {
+	/**
+	 * Presumptively identify the format of an aggregate source unit.
+	 * 
+	 * @param jhove2
+	 *            JHOVE2 framework
+	 * @param source
+	 *            Aggregate ource unit
 	 * @return Presumptively identified formats
-	 * @throws IOException     I/O exception encountered identifying the
-	 *                         source unit
+	 * @throws IOException
+	 *             I/O exception encountered identifying the source unit
 	 * @throws JHOVE2Exception
 	 */
-	public Set<FormatIdentification> identify(JHOVE2 jhove2, AggregateSource source)
-		throws IOException, JHOVE2Exception;
-	
-	/** Get presumptive aggregate format identifications.
+	public Set<FormatIdentification> identify(JHOVE2 jhove2,
+			AggregateSource source) throws IOException, JHOVE2Exception;
+
+	/**
+	 * Get presumptive aggregate format identifications.
+	 * 
 	 * @return Presumptive aggregate format identifications
 	 */
 	@ReportableProperty("Presumptive format identifications.")

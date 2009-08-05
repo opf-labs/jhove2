@@ -46,65 +46,68 @@ import org.jhove2.core.io.Input;
 import org.jhove2.core.io.InputFactory;
 import org.jhove2.core.io.Input.Type;
 
-/** JHOVE2 file system file source unit.
+/**
+ * JHOVE2 file system file source unit.
  * 
  * @author mstrong, slabrams
  */
-public class FileSource
-	extends AbstractSource
-	implements NamedSource
-{	
+public class FileSource extends AbstractSource implements NamedSource {
 	/** File existence. */
 	protected boolean isExtant;
-	
+
 	/** File hiddeness. */
 	protected boolean isHidden;
-	
+
 	/** File readability. */
 	protected boolean isReadable;
-	
+
 	/** File specialness. */
 	protected boolean isSpecial;
-	
+
 	/** File last modified date. */
 	protected Date lastModified;
-	
+
 	/** File name. */
 	protected String name;
-	
+
 	/** File path name. */
 	protected String path;
-	
+
 	/** File size, in bytes. */
 	protected long size;
-	
-	/** Instantiate a new <code>FileSource</code>.
-	 * @param pathName File path name
-	 * @throws FileNotFoundException File not found
-	 * @throws IOException           I/O exception instantiating source
+
+	/**
+	 * Instantiate a new <code>FileSource</code>.
+	 * 
+	 * @param pathName
+	 *            File path name
+	 * @throws FileNotFoundException
+	 *             File not found
+	 * @throws IOException
+	 *             I/O exception instantiating source
 	 */
-	public FileSource(String pathName)
-		throws FileNotFoundException, IOException
-	{
+	public FileSource(String pathName) throws FileNotFoundException,
+			IOException {
 		this(new File(pathName));
 	}
-	
-	/** Instantiate a new <code>FileSource</code>.
-	 * @param file Java {@link java.io.File}
-	 * @throws IOException 
-	 * @throws FileNotFoundException 
+
+	/**
+	 * Instantiate a new <code>FileSource</code>.
+	 * 
+	 * @param file
+	 *            Java {@link java.io.File}
+	 * @throws IOException
+	 * @throws FileNotFoundException
 	 */
-	public FileSource(File file)
-		throws FileNotFoundException, IOException
-	{
+	public FileSource(File file) throws FileNotFoundException, IOException {
 		super(file);
-		
+
 		this.name = file.getName();
 		try {
 			this.path = file.getCanonicalPath();
 		} catch (IOException e) {
 			/* Let path stay uninitialized. */
-		}		
+		}
 		this.isExtant = file.exists();
 		if (this.isExtant) {
 			this.size = file.length();
@@ -112,65 +115,79 @@ public class FileSource
 			this.isReadable = file.canRead();
 			this.isSpecial = !file.isFile();
 			this.lastModified = new Date(file.lastModified());
-		}
-		else {
+		} else {
 			this.size = 0L;
 			this.isHidden = false;
 			this.isSpecial = false;
 		}
 	}
-	
-	/** Get Java {@link java.io.File}.
+
+	/**
+	 * Get Java {@link java.io.File}.
+	 * 
 	 * @return Java {@link java.io.File}
 	 */
 	public File getFile() {
 		return this.file;
 	}
-	
-	/** Get {@link org.jhove2.core.io.Input} for the source unit.
-	 * @param bufferSize Buffer size
-	 * @param bufferType Buffer type
+
+	/**
+	 * Get {@link org.jhove2.core.io.Input} for the source unit.
+	 * 
+	 * @param bufferSize
+	 *            Buffer size
+	 * @param bufferType
+	 *            Buffer type
 	 * @return Input for the source unit
-	 * @throws FileNotFoundException File not found
-	 * @throws IOException           I/O exception getting input
+	 * @throws FileNotFoundException
+	 *             File not found
+	 * @throws IOException
+	 *             I/O exception getting input
 	 */
 	public Input getInput(int bufferSize, Type bufferType)
-		throws FileNotFoundException, IOException
-	{
+			throws FileNotFoundException, IOException {
 		Input input = null;
 		if (this.file != null && this.isExtant && this.isReadable) {
 			input = InputFactory.getInput(this.file, bufferSize, bufferType);
 		}
-		
+
 		return input;
 	}
 
-	/** Get file existence.
+	/**
+	 * Get file existence.
+	 * 
 	 * @return True if file exists
 	 */
-	@ReportableProperty(order=5, value="File existence: true if the file exists")
+	@ReportableProperty(order = 5, value = "File existence: true if the file exists")
 	public boolean isExtant() {
 		return this.isExtant;
 	}
-	
-	/** Get file hiddeness.
+
+	/**
+	 * Get file hiddeness.
+	 * 
 	 * @return True if file is hidden
 	 */
-	@ReportableProperty(order=7, value="File hiddeness: True if the file is " +
-			"hidden")
+	@ReportableProperty(order = 7, value = "File hiddeness: True if the file is "
+			+ "hidden")
 	public boolean isHidden() {
 		return this.isHidden;
 	}
 
-	/** Get file last modified date.
+	/**
+	 * Get file last modified date.
+	 * 
 	 * @return File last modified date
 	 */
-	@ReportableProperty(order=4, value="File last modified date.")
+	@ReportableProperty(order = 4, value = "File last modified date.")
 	public Date getLastModified() {
 		return this.lastModified;
 	}
-	
-	/** Get file name.
+
+	/**
+	 * Get file name.
+	 * 
 	 * @return File name
 	 * @see org.jhove2.core.source.NamedSource#getName()
 	 */
@@ -178,37 +195,45 @@ public class FileSource
 	public String getName() {
 		return this.name;
 	}
-	
-	/** Get file path.
+
+	/**
+	 * Get file path.
+	 * 
 	 * @return File path
 	 */
-	@ReportableProperty(order=2, value="File path.")
+	@ReportableProperty(order = 2, value = "File path.")
 	public String getPath() {
 		return this.path;
 	}
-	
-	/** Get file readability.
+
+	/**
+	 * Get file readability.
+	 * 
 	 * @return True if file is readable
 	 */
-	@ReportableProperty(order=6, value="File readability: true if the file is " +
-			"readable.")
+	@ReportableProperty(order = 6, value = "File readability: true if the file is "
+			+ "readable.")
 	public boolean isReadable() {
 		return this.isReadable;
 	}
-	
-	/** Get file specialness.
+
+	/**
+	 * Get file specialness.
+	 * 
 	 * @return True if file is special
 	 */
-	@ReportableProperty(order=8, value="File specialness: true if the file is " +
-			"special.")
+	@ReportableProperty(order = 8, value = "File specialness: true if the file is "
+			+ "special.")
 	public boolean isSpecial() {
 		return this.isSpecial;
 	}
-	
-	/** Get file size, in bytes.
+
+	/**
+	 * Get file size, in bytes.
+	 * 
 	 * @return File size, in bytes
 	 */
-	@ReportableProperty(order=3, value="File size, in bytes.")
+	@ReportableProperty(order = 3, value = "File size, in bytes.")
 	public long getSize() {
 		return this.size;
 	}

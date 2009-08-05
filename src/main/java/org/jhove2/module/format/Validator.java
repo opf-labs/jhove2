@@ -40,43 +40,53 @@ import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.source.Source;
 
-/** Interface for JHOVE2 format modules with validation capability.
+/**
+ * Interface for JHOVE2 format modules with validation capability.
  * 
  * @author mstrong, slabrams
  */
 public interface Validator {
 	/** Validity values. */
 	public enum Validity {
-		True        ("true"),
-		False       ("false"),
-		Undetermined("undetermined");
-		
+		True("true"), False("false"), Undetermined("undetermined");
+
 		/** Status label. */
 		private String label;
-		
-		/** Instantiate a new <code>Validity</code>.
-		 * @param label Status label
+
+		/**
+		 * Instantiate a new <code>Validity</code>.
+		 * 
+		 * @param label
+		 *            Status label
 		 */
 		private Validity(String label) {
 			this.label = label;
 		}
-		
-		/** Get status label.
+
+		/**
+		 * Get status label.
+		 * 
 		 * @return Status
 		 */
 		public String toString() {
 			return this.label;
 		}
 	}
-	
-	/** Validate a source unit.
-	 * @param jhove2 JHOVE2 framework
-	 * @param source Source unit
+
+	/**
+	 * Validate a source unit.
+	 * 
+	 * @param jhove2
+	 *            JHOVE2 framework
+	 * @param source
+	 *            Source unit
 	 * @return Validation status
 	 */
 	public Validity validate(JHOVE2 jhove2, Source source);
-	
-	/** Get validation status.
+
+	/**
+	 * Get validation status.
+	 * 
 	 * @return Validation status
 	 */
 	@ReportableProperty("Validation status.")

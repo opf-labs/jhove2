@@ -42,37 +42,42 @@ import java.util.List;
 import org.jhove2.core.Format;
 import org.jhove2.module.AbstractModule;
 
-/** Abstract JHOVE2 format module.
+/**
+ * Abstract JHOVE2 format module.
  * 
  * @author mstrong, slabrams
  */
-public abstract class AbstractFormatModule
-	extends AbstractModule
-	implements FormatModule
-{
+public abstract class AbstractFormatModule extends AbstractModule implements
+		FormatModule {
 	/** Format module format. */
 	protected Format format;
 
 	/** Format module format profiles. */
 	protected List<FormatProfile> profiles;
 
-	/** Instantiate a new <code>AbstractFormatModule</code>
-	 * @param version Format module version identifier in three-part form:
-	 *                "M.N.P"
-	 * @param release Format module release date in ISO 8601 format:
-	 *                "YYYY-MM-DD"
-	 * @param rights  Format module rights statement
-	 * @param format  Format module format
+	/**
+	 * Instantiate a new <code>AbstractFormatModule</code>
+	 * 
+	 * @param version
+	 *            Format module version identifier in three-part form: "M.N.P"
+	 * @param release
+	 *            Format module release date in ISO 8601 format: "YYYY-MM-DD"
+	 * @param rights
+	 *            Format module rights statement
+	 * @param format
+	 *            Format module format
 	 */
 	public AbstractFormatModule(String version, String release, String rights,
-			                    Format format) {
+			Format format) {
 		super(version, release, rights);
 
-		this.format   = format;
+		this.format = format;
 		this.profiles = new ArrayList<FormatProfile>();
 	}
 
-	/** Get format module format.
+	/**
+	 * Get format module format.
+	 * 
 	 * @return Format module format
 	 * @see org.jhove2.module.format.FormatProfile#getFormat()
 	 */
@@ -80,8 +85,10 @@ public abstract class AbstractFormatModule
 	public Format getFormat() {
 		return this.format;
 	}
-	
-	/** Get format module format profiles.
+
+	/**
+	 * Get format module format profiles.
+	 * 
 	 * @return Format module format rofiles
 	 * @see org.jhove2.module.format.FormatModule#getProfiles()
 	 */
@@ -89,9 +96,12 @@ public abstract class AbstractFormatModule
 	public List<FormatProfile> getProfiles() {
 		return this.profiles;
 	}
-		
-	/** Set format module format profile.
-	 * @param profile Format module format profile
+
+	/**
+	 * Set format module format profile.
+	 * 
+	 * @param profile
+	 *            Format module format profile
 	 * @see org.jhove2.module.format.FormatModule#setProfile(org.jhove2.module.format.FormatProfile)
 	 */
 	@Override

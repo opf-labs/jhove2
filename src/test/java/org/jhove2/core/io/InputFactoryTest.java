@@ -30,10 +30,9 @@ public class InputFactoryTest {
 	@After
 	public void tearDown() throws Exception {
 	}
+
 	@Test
-	public void testGetInputInputStreamIntType() 
-		throws JHOVE2Exception 
-	{
+	public void testGetInputInputStreamIntType() throws JHOVE2Exception {
 		URL yahoo = null;
 		try {
 			yahoo = new URL("http://www.yahoo.com/");
@@ -44,7 +43,8 @@ public class InputFactoryTest {
 			JHOVE2 jhove2 = new JHOVE2();
 			URLSource yahooURL = new URLSource(jhove2, yahoo);
 			Input input = yahooURL.getInput(8192, Type.Direct);
-			// this closes the channel and the stream associated with any temp file created
+			// this closes the channel and the stream associated with any temp
+			// file created
 			input.close();
 			File file = input.getFile();
 			assertTrue("File doesn't exist", file.exists());
@@ -58,6 +58,5 @@ public class InputFactoryTest {
 			e.printStackTrace();
 		}
 	}
-	
 
 }

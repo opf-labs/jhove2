@@ -40,14 +40,15 @@ import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.Digest;
 import org.jhove2.core.Reportable;
 
-/** Interface for JHOVE2 algorithm-specific message digesters.
+/**
+ * Interface for JHOVE2 algorithm-specific message digesters.
  * 
  * @author mstrong, slabrams
  */
-public interface DigesterAlgorithm
-	extends Reportable
-{
-	/** Get message digest value, as a hexadecimal string.
+public interface DigesterAlgorithm extends Reportable {
+	/**
+	 * Get message digest value, as a hexadecimal string.
+	 * 
 	 * @return Message digest value, as a hexadecimal string
 	 */
 	@ReportableProperty("Get message digest value, as a hexadecimal string.")

@@ -40,20 +40,22 @@ import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.Product;
 import org.jhove2.core.Temporal;
 
-/** Interface for JHOVE2 modules.  A module is a
- * {@link org.jhove2.core.Reportable} that perform some process and report
- * their elapsed processing time.  A module generally directly performs its
- * process; however, some module implementations may be thin wrappers around
- * 3rd party tools.
+/**
+ * Interface for JHOVE2 modules. A module is a
+ * {@link org.jhove2.core.Reportable} that perform some process and report their
+ * elapsed processing time. A module generally directly performs its process;
+ * however, some module implementations may be thin wrappers around 3rd party
+ * tools.
  * 
  * @author mstrong, slabrams
  */
-public interface Module
-	extends Product, Temporal
-{
-	/** Get wrapped {@link org.jhove2.core.AbstractProduct} used to perform a process.
-	 * @return Wrapped {@link org.jhove2.core.AbstractProduct}, or null if the module
-	 *         directly performs its process
+public interface Module extends Product, Temporal {
+	/**
+	 * Get wrapped {@link org.jhove2.core.AbstractProduct} used to perform a
+	 * process.
+	 * 
+	 * @return Wrapped {@link org.jhove2.core.AbstractProduct}, or null if the
+	 *         module directly performs its process
 	 */
 	@ReportableProperty("External tool wrapped by the module.")
 	public Product getWrappedProduct();

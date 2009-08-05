@@ -43,46 +43,58 @@ import java.nio.ByteOrder;
 
 import org.jhove2.core.io.Input.Type;
 
-/** JHOVE2 {@link org.jhove2.core.io.Input} factory.
+/**
+ * JHOVE2 {@link org.jhove2.core.io.Input} factory.
  * 
  * @author mstrong, slabrams
  */
 public class InputFactory {
 
-	/** Factory to create an appropriate <code>AbstractInput</code>.
-	 * @param file       Java {java.io.File} underlying the inputable
-	 * @param bufferSize Maximum buffer size, in bytes
-	 * @param type       Input buffer type
+	/**
+	 * Factory to create an appropriate <code>AbstractInput</code>.
+	 * 
+	 * @param file
+	 *            Java {java.io.File} underlying the inputable
+	 * @param bufferSize
+	 *            Maximum buffer size, in bytes
+	 * @param type
+	 *            Input buffer type
 	 * @return Input
-	 * @throws FileNotFoundException File not found 
-	 * @throws IOException           I/O exception instantiating input
+	 * @throws FileNotFoundException
+	 *             File not found
+	 * @throws IOException
+	 *             I/O exception instantiating input
 	 */
 	public static Input getInput(File file, int bufferSize, Type type)
-		throws FileNotFoundException, IOException
-	{
+			throws FileNotFoundException, IOException {
 		return getInput(file, bufferSize, type, ByteOrder.LITTLE_ENDIAN);
 	}
 
-	/** Factory to create an appropriate <code>AbstractInput</code>.
-	 * @param file       Java {java.io.File} underlying the inputable
-	 * @param bufferSize Maximum buffer size, in bytes
-	 * @param type       Input buffer type
-	 * @param order      ByteOrder Endianess of buffer
-	 * @return Input 
-	 * @throws FileNotFoundException File not found 
-	 * @throws IOException           I/O exception instantiating input
+	/**
+	 * Factory to create an appropriate <code>AbstractInput</code>.
+	 * 
+	 * @param file
+	 *            Java {java.io.File} underlying the inputable
+	 * @param bufferSize
+	 *            Maximum buffer size, in bytes
+	 * @param type
+	 *            Input buffer type
+	 * @param order
+	 *            ByteOrder Endianess of buffer
+	 * @return Input
+	 * @throws FileNotFoundException
+	 *             File not found
+	 * @throws IOException
+	 *             I/O exception instantiating input
 	 */
-	public static Input getInput(File file, int bufferSize, Type type, ByteOrder order)
-		throws FileNotFoundException, IOException
-	{
+	public static Input getInput(File file, int bufferSize, Type type,
+			ByteOrder order) throws FileNotFoundException, IOException {
 		AbstractInput abstractInput = null;
-		if      (type.equals(Type.Direct)) {
+		if (type.equals(Type.Direct)) {
 			abstractInput = new DirectInput(file, bufferSize, order);
-		}
-		else if (type.equals(Type.NonDirect)){ 
+		} else if (type.equals(Type.NonDirect)) {
 			abstractInput = new NonDirectInput(file, bufferSize, order);
-		}
-		else if (type.equals(Type.MemoryMapped)) {
+		} else if (type.equals(Type.MemoryMapped)) {
 			abstractInput = new MappedInput(file, bufferSize, order);
 		}
 

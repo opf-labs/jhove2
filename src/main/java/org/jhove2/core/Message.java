@@ -36,45 +36,50 @@
 
 package org.jhove2.core;
 
-/** JHOVE2 message.  A message has a severity, a context, and a textual value.
+/**
+ * JHOVE2 message. A message has a severity, a context, and a textual value.
+ * 
  * @author slabrams
- *
+ * 
  */
 public class Message {
 	/** Message contexts. */
 	public enum Context {
-		PROCESS,
-		OBJECT
+		PROCESS, OBJECT
 	}
-	
+
 	/** Message severities. */
 	public enum Severity {
-		ERROR,
-		WARNING,
-		INFO
+		ERROR, WARNING, INFO
 	}
-	
+
 	/** Message code. */
 	protected String message;
-	
+
 	/** Message context. */
 	protected Context context;
-	
+
 	/** Message severity. */
 	protected Severity severity;
-	
-	/** Instantiate a new <code>Message</code>.
-	 * @param severity Message severity
-	 * @param context  Message context
-	 * @param message  Message text
+
+	/**
+	 * Instantiate a new <code>Message</code>.
+	 * 
+	 * @param severity
+	 *            Message severity
+	 * @param context
+	 *            Message context
+	 * @param message
+	 *            Message text
 	 */
 	public Message(Severity severity, Context context, String message) {
 		this.severity = severity;
-		this.context  = context;
-		this.message  = message;
+		this.context = context;
+		this.message = message;
 	}
-	
-	/** Get {@link java.lang.String} representation of the message.
+
+	/**
+	 * Get {@link java.lang.String} representation of the message.
 	 */
 	@Override
 	public String toString() {

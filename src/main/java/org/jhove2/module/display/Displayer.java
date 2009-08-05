@@ -41,90 +41,135 @@ import java.io.PrintStream;
 import org.jhove2.core.I8R;
 import org.jhove2.module.Module;
 
-/** Interface for JHOVE2 displayer modules.
+/**
+ * Interface for JHOVE2 displayer modules.
  * 
  * @author mstrong, slabrams
  */
-public interface Displayer
-	extends Module
-{
-	/** Start display.
-	 * @param out   Print stream
-	 * @param level Nesting level
+public interface Displayer extends Module {
+	/**
+	 * Start display.
+	 * 
+	 * @param out
+	 *            Print stream
+	 * @param level
+	 *            Nesting level
 	 */
 	public void startDisplay(PrintStream out, int level);
-	
-	/** Start the display of a {@link org.jhove2.core.Reportable}.
-	 * @param out        Print stream
-	 * @param level      Nesting level
-	 * @param name       Reportable name
-	 * @param identifier Property collection identifier in the JHOVE2 namespace
-	 * @param order      Ordinal position of this reportable with respect to
-	 *                   its enclosing {@link org.jhove2.core.Reportable} or
-	 *                   collection
+
+	/**
+	 * Start the display of a {@link org.jhove2.core.Reportable}.
+	 * 
+	 * @param out
+	 *            Print stream
+	 * @param level
+	 *            Nesting level
+	 * @param name
+	 *            Reportable name
+	 * @param identifier
+	 *            Property collection identifier in the JHOVE2 namespace
+	 * @param order
+	 *            Ordinal position of this reportable with respect to its
+	 *            enclosing {@link org.jhove2.core.Reportable} or collection
 	 */
 	public void startReportable(PrintStream out, int level, String name,
-			                    I8R identifier, int order);
-	
-	/** Start display of a property collection.
-	 * @param out        Print stream
-	 * @param level      Nesting level
-	 * @param name       Property collection name
-	 * @param identifier Property collection identifier in the JHOVE2 namespace
-	 * @param size       Property collection size
-	 * @param order      Ordinal position of this property collection with
-	 *                   respect to its enclosing {@link org.jhove2.core.Reportable}
-	 *                   or collection
+			I8R identifier, int order);
+
+	/**
+	 * Start display of a property collection.
+	 * 
+	 * @param out
+	 *            Print stream
+	 * @param level
+	 *            Nesting level
+	 * @param name
+	 *            Property collection name
+	 * @param identifier
+	 *            Property collection identifier in the JHOVE2 namespace
+	 * @param size
+	 *            Property collection size
+	 * @param order
+	 *            Ordinal position of this property collection with respect to
+	 *            its enclosing {@link org.jhove2.core.Reportable} or collection
 	 */
 	public void startCollection(PrintStream out, int level, String name,
-			                    I8R identifier, int size, int order);
-	
-	/** Display property.
-	 * @param out        Print stream
-	 * @param level      Nesting level
-	 * @param name       Property name
-	 * @param identifier Property identifier in the JHOVE2 namespace
-	 * @param value      Property value
-	 * @param order      Ordinal position of this property with respect to
-	 *                   its enclosing {@link org.jhove2.core.Reportable} or
-	 *                   collection
+			I8R identifier, int size, int order);
+
+	/**
+	 * Display property.
+	 * 
+	 * @param out
+	 *            Print stream
+	 * @param level
+	 *            Nesting level
+	 * @param name
+	 *            Property name
+	 * @param identifier
+	 *            Property identifier in the JHOVE2 namespace
+	 * @param value
+	 *            Property value
+	 * @param order
+	 *            Ordinal position of this property with respect to its
+	 *            enclosing {@link org.jhove2.core.Reportable} or collection
 	 */
 	public void displayProperty(PrintStream out, int level, String name,
-			                    I8R identifier, Object value, int order);
-	
-	/** End display of a property collection.
-	 * @param out        Print stream
-	 * @param level      Nesting level
-	 * @param name       Property collection name
-	 * @param identifier Property identifier in the JHOVE2 namespace
-	 * @param size       Property collection size
+			I8R identifier, Object value, int order);
+
+	/**
+	 * End display of a property collection.
+	 * 
+	 * @param out
+	 *            Print stream
+	 * @param level
+	 *            Nesting level
+	 * @param name
+	 *            Property collection name
+	 * @param identifier
+	 *            Property identifier in the JHOVE2 namespace
+	 * @param size
+	 *            Property collection size
 	 */
 	public void endCollection(PrintStream out, int level, String name,
-			                  I8R identifier, int size);
-	
-	/** End display of a {@link org.jhove2.core.Reportable}.
-	 * @param out        Print stream
-	 * @param level      Nesting level
-	 * @param name       Reportable name
-	 * @param identifier Reportable identifier in the JHOVE2 namespace
+			I8R identifier, int size);
+
+	/**
+	 * End display of a {@link org.jhove2.core.Reportable}.
+	 * 
+	 * @param out
+	 *            Print stream
+	 * @param level
+	 *            Nesting level
+	 * @param name
+	 *            Reportable name
+	 * @param identifier
+	 *            Reportable identifier in the JHOVE2 namespace
 	 */
 	public void endReportable(PrintStream out, int level, String name,
-			                  I8R identifier);
-	
-	/** End display.
-	 * @param out   Print stream
-	 * @param level Nesting level
+			I8R identifier);
+
+	/**
+	 * End display.
+	 * 
+	 * @param out
+	 *            Print stream
+	 * @param level
+	 *            Nesting level
 	 */
 	public void endDisplay(PrintStream out, int level);
-	
-	/** Get show identifiers flag.
+
+	/**
+	 * Get show identifiers flag.
+	 * 
 	 * @return Show identifier flag; if true, show identifiers in non-XML
 	 *         display modes
 	 */
 	public boolean getShowIdentifiers();
-	
-	/** Set show identifiers flag.
-	 * @param flag If true, show identifiers in non-XML display modes
+
+	/**
+	 * Set show identifiers flag.
+	 * 
+	 * @param flag
+	 *            If true, show identifiers in non-XML display modes
 	 */
 	public void setShowIdentifiers(boolean flag);
 }

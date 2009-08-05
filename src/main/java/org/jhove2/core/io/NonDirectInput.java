@@ -42,47 +42,59 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-/** JHOVE2 non direct inputable.  
+/**
+ * JHOVE2 non direct inputable.
  * 
  * @author mstrong, slabrams
  */
-public class NonDirectInput
-	extends AbstractInput
-{
+public class NonDirectInput extends AbstractInput {
 	/** Maximum buffer size, in bytes. */
 	protected int maxBufferSize;
-	
-	/** Instantiate a new <code>NonDirectInput</code> object.
-	 * @param file          Java {@link java.io.File} underlying the inputable
-	 * @param maxBufferSize Size of the direct buffer, in bytes
-	 * @throws FileNotFoundException File not found 
-	 * @throws IOException           I/O exception instantiating input
+
+	/**
+	 * Instantiate a new <code>NonDirectInput</code> object.
+	 * 
+	 * @param file
+	 *            Java {@link java.io.File} underlying the inputable
+	 * @param maxBufferSize
+	 *            Size of the direct buffer, in bytes
+	 * @throws FileNotFoundException
+	 *             File not found
+	 * @throws IOException
+	 *             I/O exception instantiating input
 	 */
 	public NonDirectInput(File file, int maxBufferSize)
-		throws FileNotFoundException, IOException
-	{
+			throws FileNotFoundException, IOException {
 		this(file, maxBufferSize, ByteOrder.LITTLE_ENDIAN);
 	}
-	
-	/** Instantiate a new <code>NonDirectInput</code> object.
-	 * @param file          Java {@link java.io.File} underlying the inputable
-	 * @param maxBufferSize Size of the direct buffer, in bytes
-	 * @param order         Byte order of the underlying buffer	
-	 * @throws FileNotFoundException File not found 
-	 * @throws IOException           I/O exception instantiating input
+
+	/**
+	 * Instantiate a new <code>NonDirectInput</code> object.
+	 * 
+	 * @param file
+	 *            Java {@link java.io.File} underlying the inputable
+	 * @param maxBufferSize
+	 *            Size of the direct buffer, in bytes
+	 * @param order
+	 *            Byte order of the underlying buffer
+	 * @throws FileNotFoundException
+	 *             File not found
+	 * @throws IOException
+	 *             I/O exception instantiating input
 	 */
 	public NonDirectInput(File file, int maxBufferSize, ByteOrder order)
-		throws FileNotFoundException, IOException
-	{
+			throws FileNotFoundException, IOException {
 		super(file, order);
-		
+
 		/* Allocate direct buffer and initialize it. */
 		this.maxBufferSize = maxBufferSize;
 		this.buffer = ByteBuffer.allocate(this.maxBufferSize).order(order);
 		getNextBuffer();
 	}
 
-	/** Get maximum buffer size, in bytes.
+	/**
+	 * Get maximum buffer size, in bytes.
+	 * 
 	 * @return Maximum buffer size, in bytes
 	 * @see org.jhove2.core.io.Input#getMaxBufferSize()
 	 */

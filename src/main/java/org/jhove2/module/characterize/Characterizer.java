@@ -43,20 +43,23 @@ import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.Module;
 
-/** Interface for JHOVE2 characterization modules.
+/**
+ * Interface for JHOVE2 characterization modules.
  * 
  * @author mstrong, slabrams
  */
-public interface Characterizer
-	extends Module
-{
-	/** Characterize a source unit.
-	 * @param jhove2 JHOVE2 framework
-	 * @param source Source unit
-	 * @throws IOException     I/O exception encountered characterizing the
-	 *                         source unit
+public interface Characterizer extends Module {
+	/**
+	 * Characterize a source unit.
+	 * 
+	 * @param jhove2
+	 *            JHOVE2 framework
+	 * @param source
+	 *            Source unit
+	 * @throws IOException
+	 *             I/O exception encountered characterizing the source unit
 	 * @throws JHOVE2Exception
 	 */
-	public void characterize(JHOVE2 jhove2, Source source)
-		throws IOException, JHOVE2Exception;
+	public void characterize(JHOVE2 jhove2, Source source) throws IOException,
+			JHOVE2Exception;
 }

@@ -40,41 +40,47 @@ import org.jhove2.core.Duration;
 import org.jhove2.core.AbstractProduct;
 import org.jhove2.core.Product;
 
-/** An abstract JHOVE2 module, a {@link org.jhove2.core.AbstractProduct} that reports
- * its elapsed processing time.
+/**
+ * An abstract JHOVE2 module, a {@link org.jhove2.core.AbstractProduct} that
+ * reports its elapsed processing time.
  * 
  * @author mstrong, slabrams
  */
-public abstract class AbstractModule
-	extends AbstractProduct
-	implements Module
-{	
+public abstract class AbstractModule extends AbstractProduct implements Module {
 	/** Module elapsed end time. */
 	protected long endTime;
-	
+
 	/** Module elapsed start time. */
 	protected long startTime;
-	
-	/** Module wrapped product.  This field should be defined if the module
-	 * does not directly perform its own processing, but rather invokes
-	 * an external tool.
+
+	/**
+	 * Module wrapped product. This field should be defined if the module does
+	 * not directly perform its own processing, but rather invokes an external
+	 * tool.
 	 */
 	protected Product wrappedProduct;
-	
-	/** Instantiate a new <code>AbstractModule</code>.
-	 * @param version Module version identifier in three-part form: "M.N.P"
-	 * @param release Module release date in ISO 8601 format: "YYYY-MM-DD"
-	 * @param rights  Module rights statement
+
+	/**
+	 * Instantiate a new <code>AbstractModule</code>.
+	 * 
+	 * @param version
+	 *            Module version identifier in three-part form: "M.N.P"
+	 * @param release
+	 *            Module release date in ISO 8601 format: "YYYY-MM-DD"
+	 * @param rights
+	 *            Module rights statement
 	 */
 	public AbstractModule(String version, String release, String rights) {
 		super(version, release, rights);
-		
+
 		this.startTime = System.currentTimeMillis();
-		this.endTime   = Duration.UNINITIALIZED;
+		this.endTime = Duration.UNINITIALIZED;
 	}
-	
-	/** Get elapsed time, in milliseconds.  The reported time will never be
-	 * less than 1 milliscond.
+
+	/**
+	 * Get elapsed time, in milliseconds. The reported time will never be less
+	 * than 1 milliscond.
+	 * 
 	 * @return Elapsed time, in milliseconds
 	 * @see org.jhove2.core.Temporal#getElapsedTime()
 	 */
@@ -83,11 +89,13 @@ public abstract class AbstractModule
 		if (this.endTime == Duration.UNINITIALIZED) {
 			this.endTime = System.currentTimeMillis();
 		}
-		
+
 		return new Duration(this.endTime - this.startTime);
 	}
 
-	/** Get wrapped {@link org.jhove2.core.AbstractProduct}.
+	/**
+	 * Get wrapped {@link org.jhove2.core.AbstractProduct}.
+	 * 
 	 * @return Wrapped {@link org.jhove2.core.AbstractProduct}
 	 * @see org.jhove2.module.Module#getWrappedProduct()
 	 */
@@ -95,8 +103,10 @@ public abstract class AbstractModule
 	public Product getWrappedProduct() {
 		return this.wrappedProduct;
 	}
-	
-	/** Set the end time of the elapsed duration.
+
+	/**
+	 * Set the end time of the elapsed duration.
+	 * 
 	 * @return End time, in millieconds
 	 * @see org.jhove2.core.Temporal#setEndTime()
 	 */
@@ -104,11 +114,13 @@ public abstract class AbstractModule
 	public long setEndTime() {
 		return this.endTime = System.currentTimeMillis();
 	}
-	
-	/** Set the restart time of the elapsed duration.  All subsequent time
-	 * (until the next abstractApplication of the setEndTime() method) will be added
-	 * to the time already accounted for by an earlier abstractApplication of the
+
+	/**
+	 * Set the restart time of the elapsed duration. All subsequent time (until
+	 * the next abstractApplication of the setEndTime() method) will be added to
+	 * the time already accounted for by an earlier abstractApplication of the
 	 * setEndTime() method.
+	 * 
 	 * @return Current time minus the elapsed time, in milliseconds
 	 * @see org.jhove2.core.Temporal#setRestartTime()
 	 */
@@ -116,10 +128,13 @@ public abstract class AbstractModule
 		if (this.endTime == Duration.UNINITIALIZED) {
 			return this.startTime = System.currentTimeMillis();
 		}
-		return this.startTime = System.currentTimeMillis() - this.endTime + this.startTime;
+		return this.startTime = System.currentTimeMillis() - this.endTime
+				+ this.startTime;
 	}
-	
-	/** Set the start time of the elapsed duration.
+
+	/**
+	 * Set the start time of the elapsed duration.
+	 * 
 	 * @return Start time, in milliseconds
 	 * @see org.jhove2.core.Temporal#setStartTime()
 	 */
@@ -128,8 +143,11 @@ public abstract class AbstractModule
 		return this.startTime = System.currentTimeMillis();
 	}
 
-	/** Set wrapped product.
-	 * @param product Wrapped product
+	/**
+	 * Set wrapped product.
+	 * 
+	 * @param product
+	 *            Wrapped product
 	 */
 	public void setWrappedProduct(Product product) {
 		this.wrappedProduct = product;

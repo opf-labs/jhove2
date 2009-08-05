@@ -45,53 +45,73 @@ import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.Module;
 
-/** Interface for JHOVE2 dispatcher modules.  A dispatcher module instantiates
- * and invokes the module associated with an identifier.
+/**
+ * Interface for JHOVE2 dispatcher modules. A dispatcher module instantiates and
+ * invokes the module associated with an identifier.
  * 
  * @author mstrong, slabrams
  */
-public interface Dispatcher
-	extends Module
-{
+public interface Dispatcher extends Module {
 	/** Disposition directives. */
 	public enum Disposition {
-		AddToSource,
-		DontAddToSource
+		AddToSource, DontAddToSource
 	}
-	
-	/** Dispatch a source unit to the module associated with an identifier.
-	 * @param jhove2     JHOVE2 framework
-	 * @param source     Source unit
-	 * @param identifier Module identifier
+
+	/**
+	 * Dispatch a source unit to the module associated with an identifier.
+	 * 
+	 * @param jhove2
+	 *            JHOVE2 framework
+	 * @param source
+	 *            Source unit
+	 * @param identifier
+	 *            Module identifier
 	 * @return Module
-	 * @throws EOFException    End-of-file encountered parsing the source unit
-	 * @throws IOException     I/O exception encountered parsing the source unit
+	 * @throws EOFException
+	 *             End-of-file encountered parsing the source unit
+	 * @throws IOException
+	 *             I/O exception encountered parsing the source unit
 	 * @throws JHOVE2Exception
 	 */
 	public Module dispatch(JHOVE2 jhove2, Source source, I8R identifier)
-		throws EOFException, IOException, JHOVE2Exception;
+			throws EOFException, IOException, JHOVE2Exception;
 
-	/** Dispatch a source unit to a module, adding the module to the source.
-	 * @param jhove2 JHOVE2 framework
-	 * @param source Source unit
-	 * @param module Module 
-	 * @throws EOFException    End-of-file encountered parsing the source unit
-	 * @throws IOException     I/O exception encountered parsing the source unit
+	/**
+	 * Dispatch a source unit to a module, adding the module to the source.
+	 * 
+	 * @param jhove2
+	 *            JHOVE2 framework
+	 * @param source
+	 *            Source unit
+	 * @param module
+	 *            Module
+	 * @throws EOFException
+	 *             End-of-file encountered parsing the source unit
+	 * @throws IOException
+	 *             I/O exception encountered parsing the source unit
 	 * @throws JHOVE2Exception
 	 */
 	public void dispatch(JHOVE2 jhove2, Source source, Module module)
-		throws EOFException, IOException, JHOVE2Exception;
+			throws EOFException, IOException, JHOVE2Exception;
 
-	/** Dispatch a source unit to a module.
-	 * @param jhove2      JHOVE2 framework
-	 * @param source      Source unit
-	 * @param module      Module 
-	 * @param disposition Module disposition
-	 * @throws EOFException    End-of-file encountered parsing the source unit
-	 * @throws IOException     I/O exception encountered parsing the source unit
+	/**
+	 * Dispatch a source unit to a module.
+	 * 
+	 * @param jhove2
+	 *            JHOVE2 framework
+	 * @param source
+	 *            Source unit
+	 * @param module
+	 *            Module
+	 * @param disposition
+	 *            Module disposition
+	 * @throws EOFException
+	 *             End-of-file encountered parsing the source unit
+	 * @throws IOException
+	 *             I/O exception encountered parsing the source unit
 	 * @throws JHOVE2Exception
 	 */
 	public void dispatch(JHOVE2 jhove2, Source source, Module module,
-			             Disposition disposition)
-		throws EOFException, IOException, JHOVE2Exception;
+			Disposition disposition) throws EOFException, IOException,
+			JHOVE2Exception;
 }

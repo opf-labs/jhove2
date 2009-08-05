@@ -58,101 +58,110 @@ import org.jhove2.core.io.InputFactory;
 import org.jhove2.core.io.Input.Type;
 import org.jhove2.module.Module;
 
-/** An abstract JHOVE2 source unit.  A source unit is a formatted object that
- * can be characterized, which may be a file, a subset of a file, or a group
- * of files.
+/**
+ * An abstract JHOVE2 source unit. A source unit is a formatted object that can
+ * be characterized, which may be a file, a subset of a file, or a group of
+ * files.
  * 
  * @author mstrong, slabrams
  */
-public abstract class AbstractSource
-	implements Source
-{	
+public abstract class AbstractSource implements Source {
 	/** Child source units. */
 	protected List<Source> children;
-	
+
 	/** Delete temporary files flag; if true, delete files. */
 	protected boolean deleteTempFiles;
-	
+
 	/** Module elapsed time, end. */
 	protected long endTime;
-	
+
 	/** Source unit backing file. */
 	protected File file;
-	
-	/** Source unit backing file temporary status: true if the source unit
+
+	/**
+	 * Source unit backing file temporary status: true if the source unit
 	 * backing file is a temporary file.
 	 */
 	protected boolean isTemp;
 
 	/** Modules that processed the source unit. */
 	protected List<Module> modules;
-	
+
 	/** Module elapsed time, start. */
 	protected long startTime;
-	
-	/** Instantiate a new <code>AbstractSource</code>.
+
+	/**
+	 * Instantiate a new <code>AbstractSource</code>.
 	 */
 	protected AbstractSource() {
-		this.children        = new ArrayList<Source>();
+		this.children = new ArrayList<Source>();
 		this.deleteTempFiles = JHOVE2.DEFAULT_DELETE_TEMP_FILES;
-		this.modules         = new ArrayList<Module>();
+		this.modules = new ArrayList<Module>();
 	}
-	
-	/** Instantiate a new <code>AbstractSource</code> backed by a file.
-	 * @param file   File underlying the source unit
+
+	/**
+	 * Instantiate a new <code>AbstractSource</code> backed by a file.
+	 * 
+	 * @param file
+	 *            File underlying the source unit
 	 */
 	public AbstractSource(File file) {
 		this();
-		
-		this.file   = file;
+
+		this.file = file;
 		this.isTemp = false;
 	}
-	
-	/** Instantiate a new <code>AbstractSource</code> backed by an input
-	 * stream.
-	 * @param jhove2 JHOVE2 framework
-	 * @param stream Input stream underlying the source unit
-	 * @throws IOException 
+
+	/**
+	 * Instantiate a new <code>AbstractSource</code> backed by an input stream.
+	 * 
+	 * @param jhove2
+	 *            JHOVE2 framework
+	 * @param stream
+	 *            Input stream underlying the source unit
+	 * @throws IOException
 	 */
-	public AbstractSource(JHOVE2 jhove2, InputStream stream)
-		throws IOException
-	{
+	public AbstractSource(JHOVE2 jhove2, InputStream stream) throws IOException {
 		this();
-		
-		this.file   = createTempFile(jhove2, stream);
+
+		this.file = createTempFile(jhove2, stream);
 		this.isTemp = true;
 	}
 
-	/** Close the source unit.  If the source unit is backed by a temporary
-	 * file, delete the file.
+	/**
+	 * Close the source unit. If the source unit is backed by a temporary file,
+	 * delete the file.
 	 */
 	public void close() {
 		if (this.file != null && this.isTemp && this.deleteTempFiles) {
 			this.file.delete();
 		}
 	}
-	
-	/** Create a temporary backing file from an input stream.
-	 * @param jhove2   JHOVE2 framework
-	 * @param inStream Input stream
+
+	/**
+	 * Create a temporary backing file from an input stream.
+	 * 
+	 * @param jhove2
+	 *            JHOVE2 framework
+	 * @param inStream
+	 *            Input stream
 	 * @return file Temporary backing file
 	 * @throws IOException
 	 */
 	protected File createTempFile(JHOVE2 jhove2, InputStream inStream)
-		throws IOException
-	{
-		File tempFile = File.createTempFile(jhove2.getTempPrefix(),
-				                            jhove2.getTempSuffix());
-		OutputStream outStream  = new FileOutputStream(tempFile);
-		ReadableByteChannel in  = Channels.newChannel(inStream);
+			throws IOException {
+		File tempFile = File.createTempFile(jhove2.getTempPrefix(), jhove2
+				.getTempSuffix());
+		OutputStream outStream = new FileOutputStream(tempFile);
+		ReadableByteChannel in = Channels.newChannel(inStream);
 		WritableByteChannel out = Channels.newChannel(outStream);
-		final ByteBuffer buffer =
-			ByteBuffer.allocateDirect(jhove2.getBufferSize());
-		
+		final ByteBuffer buffer = ByteBuffer.allocateDirect(jhove2
+				.getBufferSize());
+
 		while ((in.read(buffer)) > 0) {
 			buffer.flip();
 			out.write(buffer);
-			buffer.compact();  /* in case write was incomplete. */
+			buffer.compact(); /* in case write was incomplete. */
 		}
 		buffer.flip();
 		while (buffer.hasRemaining()) {
@@ -162,11 +171,13 @@ public abstract class AbstractSource
 		/* Closing the channel implicitly closes the stream. */
 		in.close();
 		out.close();
-		
+
 		return tempFile;
 	}
 
-	/** Get child source units.
+	/**
+	 * Get child source units.
+	 * 
 	 * @return Child source units
 	 * @see org.jhove2.core.source.Source#getChildSources()
 	 */
@@ -174,16 +185,21 @@ public abstract class AbstractSource
 	public List<Source> getChildSources() {
 		return this.children;
 	}
-	
-	/** Delete child source unit.
-	 * @param child Child source unit
+
+	/**
+	 * Delete child source unit.
+	 * 
+	 * @param child
+	 *            Child source unit
 	 * @see org.jhove2.core.source.Source#deleteChildSource(Source)
 	 */
 	public void deleteChildSource(Source child) {
 		this.children.remove(child);
 	}
-	
-	/** Get delete temporary files flag; if true, delete files.
+
+	/**
+	 * Get delete temporary files flag; if true, delete files.
+	 * 
 	 * @return Delete temporary files flag
 	 * @see org.jhove2.core.source.Source#getDeleteTempFiles()
 	 */
@@ -191,9 +207,11 @@ public abstract class AbstractSource
 	public boolean getDeleteTempFiles() {
 		return this.deleteTempFiles;
 	}
-	
-	/** Get elapsed time, in milliseconds.  The shortest reportable
-	 * elapsed time is 1 milliscond.
+
+	/**
+	 * Get elapsed time, in milliseconds. The shortest reportable elapsed time
+	 * is 1 milliscond.
+	 * 
 	 * @return Elapsed time, in milliseconds
 	 * @see org.jhove2.core.Temporal#getElapsedTime()
 	 */
@@ -202,68 +220,83 @@ public abstract class AbstractSource
 		if (this.endTime == Duration.UNINITIALIZED) {
 			this.endTime = System.currentTimeMillis();
 		}
-		
+
 		return new Duration(this.endTime - this.startTime);
 	}
-	
-	/** Get {@link java.io.File} backing the source unit.
+
+	/**
+	 * Get {@link java.io.File} backing the source unit.
+	 * 
 	 * @return File backing the source unit
 	 * @see org.jhove2.core.source.Source#getFile()
 	 */
 	public File getFile() {
 		return this.file;
 	}
-	
-	/** Get {@link org.jhove2.core.io.Input} for the source unit.  Concrete
-	 * classes extending this abstract class must provide an implementation of 
-	 * this method if they are are based on parsable input.  Classes without
+
+	/**
+	 * Get {@link org.jhove2.core.io.Input} for the source unit. Concrete
+	 * classes extending this abstract class must provide an implementation of
+	 * this method if they are are based on parsable input. Classes without
 	 * parsable input (e.g. {@link org.jhove2.core.source.ClumpSource} or
 	 * {@link org.jhove2.core.source.DirectorySource} can let this inherited
 	 * method return null.
-	 * @param bufferSize Input maximum buffer size
-	 * @param bufferType Input buffer type
+	 * 
+	 * @param bufferSize
+	 *            Input maximum buffer size
+	 * @param bufferType
+	 *            Input buffer type
 	 * @return Input
-	 * @throws FileNotFoundException File not found
-	 * @throws IOException           I/O exception getting input
+	 * @throws FileNotFoundException
+	 *             File not found
+	 * @throws IOException
+	 *             I/O exception getting input
 	 */
 	@Override
 	public Input getInput(int bufferSize, Type bufferType)
-		throws FileNotFoundException, IOException
-	{
+			throws FileNotFoundException, IOException {
 		return getInput(bufferSize, bufferType, ByteOrder.LITTLE_ENDIAN);
 	}
-	
-	/** Get {@link org.jhove2.core.io.Input} for the source unit.  Concrete
-	 * classes extending this abstract class must provide an implementation of 
-	 * this method if they are are based on parsable input.  Classes without
+
+	/**
+	 * Get {@link org.jhove2.core.io.Input} for the source unit. Concrete
+	 * classes extending this abstract class must provide an implementation of
+	 * this method if they are are based on parsable input. Classes without
 	 * parsable input (e.g. {@link org.jhove2.core.source.ClumpSource} or
 	 * {@link org.jhove2.core.source.DirectorySource} can let this inherited
 	 * method return null.
-	 * @param bufferSize Input maximum buffer size, in bytes
-	 * @param bufferType Input buffer type
-	 * @param order      Byte order
+	 * 
+	 * @param bufferSize
+	 *            Input maximum buffer size, in bytes
+	 * @param bufferType
+	 *            Input buffer type
+	 * @param order
+	 *            Byte order
 	 * @return null
-	 * @throws FileNotFoundException File not found
-	 * @throws IOException           I/O exception getting input
+	 * @throws FileNotFoundException
+	 *             File not found
+	 * @throws IOException
+	 *             I/O exception getting input
 	 */
 	public Input getInput(int bufferSize, Type bufferType, ByteOrder order)
-		throws FileNotFoundException, IOException
-	{
+			throws FileNotFoundException, IOException {
 		return InputFactory.getInput(this.file, bufferSize, bufferType, order);
 	}
-	
-	/** Get {@link java.io.InputStream} backing the source unit
+
+	/**
+	 * Get {@link java.io.InputStream} backing the source unit
+	 * 
 	 * @return Input stream backing the source unit
-	 * @throws FileNotFoundException 
+	 * @throws FileNotFoundException
 	 * @see org.jhove2.core.source.Source#getInputStream()
 	 */
-	public InputStream getInputStream()
-		throws FileNotFoundException
-	{
+	public InputStream getInputStream() throws FileNotFoundException {
 		return new FileInputStream(this.file);
 	}
-	
-	/** Get modules that processed the source unit.
+
+	/**
+	 * Get modules that processed the source unit.
+	 * 
 	 * @return Modules that processed the source unit
 	 * @see org.jhove2.core.source.Source#getModules()
 	 */
@@ -271,8 +304,10 @@ public abstract class AbstractSource
 	public List<Module> getModules() {
 		return this.modules;
 	}
-	
-	/** Get number of child source units.
+
+	/**
+	 * Get number of child source units.
+	 * 
 	 * @return Number of child source units
 	 * @see org.jhove2.core.source.Source#getNumChildSources()
 	 */
@@ -280,8 +315,10 @@ public abstract class AbstractSource
 	public int getNumChildSources() {
 		return this.children.size();
 	}
-	
-	/** Get number of modules.
+
+	/**
+	 * Get number of modules.
+	 * 
 	 * @return Number of modules
 	 * @see org.jhove2.core.source.Source#getNumModules()
 	 */
@@ -289,8 +326,10 @@ public abstract class AbstractSource
 	public int getNumModules() {
 		return this.modules.size();
 	}
-	
-	/** Get source unit backing file temporary status.
+
+	/**
+	 * Get source unit backing file temporary status.
+	 * 
 	 * @return True if the source unit backing file is a temporary file
 	 * @see org.jhove2.core.source.Source#isTemp()
 	 */
@@ -298,35 +337,46 @@ public abstract class AbstractSource
 	public boolean isTemp() {
 		return this.isTemp;
 	}
-	
-	/** Add a child source unit.
-	 * @param child Child source unit
+
+	/**
+	 * Add a child source unit.
+	 * 
+	 * @param child
+	 *            Child source unit
 	 * @see org.jhove2.core.source.Source#setChildSource(org.jhove2.core.source.Source)
 	 */
 	@Override
 	public void setChildSource(Source child) {
 		this.children.add(child);
 	}
-	
-	/** Set delete temporary files flag; if true, delete files.
-	 * @param flag Delete temporary files flag
+
+	/**
+	 * Set delete temporary files flag; if true, delete files.
+	 * 
+	 * @param flag
+	 *            Delete temporary files flag
 	 * @see org.jhove2.core.source.Source#setDeleteTempFiles(boolean)
 	 */
 	@Override
 	public void setDeleteTempFiles(boolean flag) {
 		this.deleteTempFiles = flag;
 	}
-	
-	/** Add a module that processed the source unit.
-	 * @param module Module that processed the source unit
+
+	/**
+	 * Add a module that processed the source unit.
+	 * 
+	 * @param module
+	 *            Module that processed the source unit
 	 * @see org.jhove2.core.source.Source#setModule(org.jhove2.module.Module)
 	 */
 	@Override
 	public void setModule(Module module) {
 		this.modules.add(module);
 	}
-	
-	/** Set the end time of the elapsed duration.
+
+	/**
+	 * Set the end time of the elapsed duration.
+	 * 
 	 * @return End time, in milliseconds
 	 * @see org.jhove2.core.Temporal#setStartTime()
 	 */
@@ -334,11 +384,13 @@ public abstract class AbstractSource
 	public long setEndTime() {
 		return this.endTime = System.currentTimeMillis();
 	}
-	
-	/** Set the restart time of the elapsed duration.  All subsequent time
-	 * (until the next abstractApplication of the setEndTime() method) will be added
-	 * to the time already accounted for by an earlier abstractApplication of the
+
+	/**
+	 * Set the restart time of the elapsed duration. All subsequent time (until
+	 * the next abstractApplication of the setEndTime() method) will be added to
+	 * the time already accounted for by an earlier abstractApplication of the
 	 * setEndTime() method.
+	 * 
 	 * @return Current time minus the elapsed time, in milliseconds
 	 * @see org.jhove2.core.Temporal#setRestartTime()
 	 */
@@ -346,10 +398,13 @@ public abstract class AbstractSource
 		if (this.endTime == Duration.UNINITIALIZED) {
 			return this.startTime = System.currentTimeMillis();
 		}
-		return this.startTime = System.currentTimeMillis() - this.endTime - this.startTime;
+		return this.startTime = System.currentTimeMillis() - this.endTime
+				- this.startTime;
 	}
-	
-	/** Set the start time of the elapsed duration.
+
+	/**
+	 * Set the start time of the elapsed duration.
+	 * 
 	 * @return Start time, in milliseconds
 	 * @see org.jhove2.core.Temporal#setStartTime()
 	 */

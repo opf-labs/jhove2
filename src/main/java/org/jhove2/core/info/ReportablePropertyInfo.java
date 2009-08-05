@@ -42,56 +42,66 @@ import java.lang.reflect.Type;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.I8R;
 
-/** A reportable property discovered by introspection.
+/**
+ * A reportable property discovered by introspection.
  * 
  * @author mstrong, slabrams
  */
 public class ReportablePropertyInfo {
-	/** Property description, as defined by the
+	/**
+	 * Property description, as defined by the
 	 * {@link org.jhove2.annotation.ReportableProperty} annotation
 	 * <code>value</code> argument.
 	 */
 	protected String description;
-	
-	/** Property generic type, as defined by the generic return type of the
-	 * method.  For collection types, this represents the entire nested type.
+
+	/**
+	 * Property generic type, as defined by the generic return type of the
+	 * method. For collection types, this represents the entire nested type.
 	 */
 	protected Type genericType;
-	
+
 	/** Property identifier in the JHOVE2 namespace. */
 	protected I8R identifier;
-	
+
 	/** Method defining the property. */
 	protected Method method;
 
-	/** Property reference, as defined by the
+	/**
+	 * Property reference, as defined by the
 	 * {@link org.jhove2.annotation.ReportableProperty} annotation
 	 * <code>ref</code> argument.
 	 */
 	protected String reference;
-	
-	/** Instantiate a new <code>ReportablePropertyInfo</code>.
-	 * @param identifier  Property identifier in the JHOVE2 namespace
-	 * @param method      Method defining the property
-	 * @param description Property description, as defined by the
-	 *                    {@link org.jhove2.annotation.ReportableProperty}
-	 *                    annotation
-	 * @param reference   Property reference, as defined by the
-	 *                    {@link org.jhove2.annotation.ReportableProperty}
-	 *                    annotation
+
+	/**
+	 * Instantiate a new <code>ReportablePropertyInfo</code>.
+	 * 
+	 * @param identifier
+	 *            Property identifier in the JHOVE2 namespace
+	 * @param method
+	 *            Method defining the property
+	 * @param description
+	 *            Property description, as defined by the
+	 *            {@link org.jhove2.annotation.ReportableProperty} annotation
+	 * @param reference
+	 *            Property reference, as defined by the
+	 *            {@link org.jhove2.annotation.ReportableProperty} annotation
 	 */
 	public ReportablePropertyInfo(I8R identifier, Method method,
-			                      String description, String reference) {
-		this.identifier  = identifier;
-		this.method      = method;
+			String description, String reference) {
+		this.identifier = identifier;
+		this.method = method;
 		this.genericType = method.getGenericReturnType();
 		this.description = description;
-		this.reference   = reference;
+		this.reference = reference;
 	}
-	
-	/** Get property description, as defined by the
+
+	/**
+	 * Get property description, as defined by the
 	 * {@link org.jhove2.annotation.ReportableProperty} annotation
 	 * <code>value</code> argument.
+	 * 
 	 * @return Property description, or null if not defined
 	 */
 	public String getDescription() {
@@ -100,33 +110,40 @@ public class ReportablePropertyInfo {
 		}
 		return this.description;
 	}
-	
-	/** Get property identifier in the JHOVE2 namespace.
+
+	/**
+	 * Get property identifier in the JHOVE2 namespace.
+	 * 
 	 * @return Property identifier in the JHOVE2 namespace
 	 */
 	public I8R getIdentifier() {
 		return this.identifier;
 	}
-	
-	/** Get method defining the property.
+
+	/**
+	 * Get method defining the property.
+	 * 
 	 * @return Method defining the property
 	 */
 	public Method getMethod() {
 		return this.method;
 	}
-	
-	/** Get property generic type, as defined by the generic return type of
-	 * the method.  For collection types this represents the entire nested
-	 * type.
+
+	/**
+	 * Get property generic type, as defined by the generic return type of the
+	 * method. For collection types this represents the entire nested type.
+	 * 
 	 * @return Property generic type
 	 */
 	public Type getGenericType() {
 		return this.genericType;
 	}
-	
-	/** Get property reference, as defined by the
+
+	/**
+	 * Get property reference, as defined by the
 	 * {@link org.jhove2.annotation.ReportableProperty} annotation
 	 * <code>value</code> argument.
+	 * 
 	 * @return Property description, or null if not defined
 	 */
 	public String getReference() {

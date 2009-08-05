@@ -36,145 +36,158 @@
 
 package org.jhove2.core;
 
-/** A JHOVE2 identifier.  Note that this class is named "I8R", not "IdentifierModule"
- * to avoid confusion between "identifier" as a label and "identifier" as a
- * process that determines a format.
+/**
+ * A JHOVE2 identifier. Note that this class is named "I8R", not
+ * "IdentifierModule" to avoid confusion between "identifier" as a label and
+ * "identifier" as a process that determines a format.
  * 
  * @author mstrong, slabrams
  */
-public class I8R
-	implements Comparable<I8R>
-{
+public class I8R implements Comparable<I8R> {
 	/** JHOVE2 namespace identifier prefix. */
 	public static final String JHOVE2_PREFIX = "info:jhove2";
-	
+
 	/** JHOVE2 namespace identifier format infix. */
 	public static final String JHOVE2_FORMAT_INFIX = "format";
-	
-	/** JHOVE2 namespace identifier
-	 * {@link org.jhove2.core.Message} infix.
+
+	/**
+	 * JHOVE2 namespace identifier {@link org.jhove2.core.Message} infix.
 	 */
 	public static final String JHOVE2_MESSAGE_INFIX = "message";
-	
-	/** JHOVE2 reportable property identifier infix
+
+	/**
+	 * JHOVE2 reportable property identifier infix
 	 * {@link org.jhove2.annotation.ReportableProperty} infix.
 	 */
 	public static final String JHOVE2_PROPERTY_INFIX = "property";
-	
-	/** JHOVE2 reportable identifier infix
-	 * {@link org.jhove2.core.Reportable} infix.
+
+	/**
+	 * JHOVE2 reportable identifier infix {@link org.jhove2.core.Reportable}
+	 * infix.
 	 */
 	public static final String JHOVE2_REPORTABLE_INFIX = "reportable";
-	
+
 	/** IdentifierModule types, or namespaces. */
 	public enum Namespace {
-		AFNOR,      /* AFNOR standard */
-		AIIM,       /* AIIM standard */
-		ANSI,       /* ANSI standard */
-		ARK,        /* ARK identifier */
-		BCP,        /* IETF Best Community Practice */
-		BSI,        /* BSI standard */
+		AFNOR, /* AFNOR standard */
+		AIIM, /* AIIM standard */
+		ANSI, /* ANSI standard */
+		ARK, /* ARK identifier */
+		BCP, /* IETF Best Community Practice */
+		BSI, /* BSI standard */
 		CallNumber, /* Call number */
-		CCITT,      /* CCITT standard */
-		Charset,    /* IANA charset */
-		DDC,        /* Dewey Decimal Classification */
-		DOI,        /* Digital Object IdentifierModule */
-		ECMA,       /* ECMA standard */
-		FDD,        /* Library of Congress FDD identifier */
-		FIPS,       /* FIPS standard */
-		FourCC,     /* 4CC Standard */
-		GUID,       /* Globally Unique IdentifierModule */
-		Handle,     /* Handle */
-		I3A,        /* I3A standard */
-		IEC,        /* IEC standard */
-		ISBN,       /* International Standard Book Number */
-		ISO,        /* ISO standard */
-		ISSN,       /* International Standard Serial Nummber */
-		ITU,        /* ITU standard */
-		JEITA,      /* JEITA standard */
-		JHOVE2,     /* JHOVE2 identifier */
-		LCC,        /* Library of Congress Classification */
-		LCCN,       /* Library of Congress Control Number */
-		MIME,       /* MIME media type */
-		NISO,       /* NISO standard */
-		OCLC,       /* OCLC number */
-		PII,        /* Publisher Item IdentifierModule */
-		PUID,       /* PRONOM Unique IdentifierModule */
-		PURL,       /* Persistent URL */
-		RFC,        /* IETF Request for Comments */
-		Shelfmark,  /* Shelfmark */
-		SICI,       /* Serial Item and Contribution IdentifierModule */
-		SMPTE,      /* SMPTE standard */
-		SN,         /* Serial number */
-		STD,        /* IETF standard */
-		TOM,        /* TOM identifier */
-		UUID,       /* Universally Unique IdentifierModule */
-		URI,        /* W3C Uniform Resource IdentifierModule */
-		URL,        /* W3C Uniform Resource Locator */
-		URN,        /* W3C Uniform Resource Name */
-		UTI,        /* Apple Uniform Type IdentifierModule */
+		CCITT, /* CCITT standard */
+		Charset, /* IANA charset */
+		DDC, /* Dewey Decimal Classification */
+		DOI, /* Digital Object IdentifierModule */
+		ECMA, /* ECMA standard */
+		FDD, /* Library of Congress FDD identifier */
+		FIPS, /* FIPS standard */
+		FourCC, /* 4CC Standard */
+		GUID, /* Globally Unique IdentifierModule */
+		Handle, /* Handle */
+		I3A, /* I3A standard */
+		IEC, /* IEC standard */
+		ISBN, /* International Standard Book Number */
+		ISO, /* ISO standard */
+		ISSN, /* International Standard Serial Nummber */
+		ITU, /* ITU standard */
+		JEITA, /* JEITA standard */
+		JHOVE2, /* JHOVE2 identifier */
+		LCC, /* Library of Congress Classification */
+		LCCN, /* Library of Congress Control Number */
+		MIME, /* MIME media type */
+		NISO, /* NISO standard */
+		OCLC, /* OCLC number */
+		PII, /* Publisher Item IdentifierModule */
+		PUID, /* PRONOM Unique IdentifierModule */
+		PURL, /* Persistent URL */
+		RFC, /* IETF Request for Comments */
+		Shelfmark, /* Shelfmark */
+		SICI, /* Serial Item and Contribution IdentifierModule */
+		SMPTE, /* SMPTE standard */
+		SN, /* Serial number */
+		STD, /* IETF standard */
+		TOM, /* TOM identifier */
+		UUID, /* Universally Unique IdentifierModule */
+		URI, /* W3C Uniform Resource IdentifierModule */
+		URL, /* W3C Uniform Resource Locator */
+		URN, /* W3C Uniform Resource Name */
+		UTI, /* Apple Uniform Type IdentifierModule */
 		Other
 	}
 
 	/** IdentifierModule namespace. */
 	protected Namespace namespace;
-	
+
 	/** IdentifierModule value. */
 	protected String value;
 
-	/** Instantiate a <code>I8R</code> identifier in the JHOVE2 namespace. 
-	 * @param value IdentifierModule value
+	/**
+	 * Instantiate a <code>I8R</code> identifier in the JHOVE2 namespace.
+	 * 
+	 * @param value
+	 *            IdentifierModule value
 	 */
-	public I8R(String value)
-	{
+	public I8R(String value) {
 		this(value, Namespace.JHOVE2);
 	}
-	
-	/** Instantiate a new <code>I8R</code>. 
-	 * @param value     IdentifierModule value
-	 * @param namespace IdentifierModule namespace
+
+	/**
+	 * Instantiate a new <code>I8R</code>.
+	 * 
+	 * @param value
+	 *            IdentifierModule value
+	 * @param namespace
+	 *            IdentifierModule namespace
 	 */
-	public I8R(String value, Namespace namespace)
-	{
-		this.value     = value;
+	public I8R(String value, Namespace namespace) {
+		this.value = value;
 		this.namespace = namespace;
 	}
 
-	/** Get the identifier namespace.
+	/**
+	 * Get the identifier namespace.
+	 * 
 	 * @return IdentifierModule namespace
 	 */
-	public Namespace getNamespace ()
-	{
+	public Namespace getNamespace() {
 		return this.namespace;
 	}
 
-	/** Get the identifier value.
+	/**
+	 * Get the identifier value.
+	 * 
 	 * @return IdentifierModule value
 	 */
-	public String getValue ()
-	{
+	public String getValue() {
 		return this.value;
 	}
-	
-	/** Get a String representation of the identifier, in the form
+
+	/**
+	 * Get a String representation of the identifier, in the form
 	 * "namespace:identifier".
+	 * 
 	 * @return String representation of the identifier
 	 */
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		return "[" + this.namespace.toString() + "] " + value;
 	}
 
-	/** Lexically compare identifier.
-	 * @param identifier IdentifierModule to be compared
-	 * @return -1, 0, or 1 if this identifier value is less than, equal
-	 *         to, or greater than the second
+	/**
+	 * Lexically compare identifier.
+	 * 
+	 * @param identifier
+	 *            IdentifierModule to be compared
+	 * @return -1, 0, or 1 if this identifier value is less than, equal to, or
+	 *         greater than the second
 	 * @see java.lang.Comparable#compareTo(Object)
 	 */
 	@Override
 	public int compareTo(I8R identifier) {
-		int ret = this.namespace.toString().compareToIgnoreCase(identifier.getNamespace().toString());
+		int ret = this.namespace.toString().compareToIgnoreCase(
+				identifier.getNamespace().toString());
 		if (ret == 0) {
 			ret = this.value.compareToIgnoreCase(identifier.getValue());
 		}

@@ -38,17 +38,21 @@ package org.jhove2.module.identify;
 
 import org.jhove2.core.AbstractProduct;
 
-/** DROID product information.
+/**
+ * DROID product information.
  * 
  * @author mstrong, slabrams
  */
-public class DROID
-	extends AbstractProduct
-{
-	/** Instantiate a new <code>DROID</code> product.
-	 * @param version DROID version identifier
-	 * @param date    DROID release date
-	 * @param rights  DROID rights statement
+public class DROID extends AbstractProduct {
+	/**
+	 * Instantiate a new <code>DROID</code> product.
+	 * 
+	 * @param version
+	 *            DROID version identifier
+	 * @param date
+	 *            DROID release date
+	 * @param rights
+	 *            DROID rights statement
 	 */
 	public DROID(String version, String date, String rights) {
 		super(version, date, rights);

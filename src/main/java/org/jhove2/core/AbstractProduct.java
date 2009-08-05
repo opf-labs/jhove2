@@ -39,47 +39,53 @@ package org.jhove2.core;
 import java.util.ArrayList;
 import java.util.List;
 
-/** JHOVE2 product, an independently distributable and configurable
+/**
+ * JHOVE2 product, an independently distributable and configurable
  * {@link org.jhove2.core.Reportable}.
  * 
  * @author mstrong, slabrams
  */
-public class AbstractProduct
-	implements Product
-{
+public class AbstractProduct implements Product {
 	/** Product developers. */
 	protected List<Agent> developers;
-	
+
 	/** Product name, based on the simple class name. */
 	protected String name;
-	
+
 	/** Product informative note. */
 	protected String note;
-	
+
 	/** Product release date in ISO 8601 form: "YYYY-MM-DD". */
 	protected String date;
-	
+
 	/** Product rights statement. */
 	protected String rights;
 
 	/** Product version identifier in three-part form: "M.N.P". */
 	protected String version;
-	
-	/** Instantiate a new <code>AbstractProduct</code>.
-	 * @param version Product version identifier in three-part form: "M.N.P"
-	 * @param date    Product release date in ISO 8601 format: "YYYY-MM-DD"
-	 * @param rights  Product rights statement
+
+	/**
+	 * Instantiate a new <code>AbstractProduct</code>.
+	 * 
+	 * @param version
+	 *            Product version identifier in three-part form: "M.N.P"
+	 * @param date
+	 *            Product release date in ISO 8601 format: "YYYY-MM-DD"
+	 * @param rights
+	 *            Product rights statement
 	 */
 	public AbstractProduct(String version, String date, String rights) {
 		this.version = version;
-		this.date    = date;
-		this.rights  = rights;
-		
+		this.date = date;
+		this.rights = rights;
+
 		this.developers = new ArrayList<Agent>();
-		this.name       = this.getClass().getSimpleName();
+		this.name = this.getClass().getSimpleName();
 	}
 
-	/** Get product developers.
+	/**
+	 * Get product developers.
+	 * 
 	 * @return Product developers
 	 * @see org.jhove2.core.Product#getDevelopers()
 	 */
@@ -87,8 +93,10 @@ public class AbstractProduct
 	public List<Agent> getDevelopers() {
 		return this.developers;
 	}
-	
-	/** Get product name, based on the class simple name.
+
+	/**
+	 * Get product name, based on the class simple name.
+	 * 
 	 * @return Product name
 	 * @see org.jhove2.core.Product#getName()
 	 */
@@ -96,8 +104,10 @@ public class AbstractProduct
 	public String getName() {
 		return this.name;
 	}
-	
-	/** Get product informative note.
+
+	/**
+	 * Get product informative note.
+	 * 
 	 * @return Product informative note
 	 * @see org.jhove2.core.Product#getNote()
 	 */
@@ -106,7 +116,9 @@ public class AbstractProduct
 		return this.note;
 	}
 
-	/** Get product release date.
+	/**
+	 * Get product release date.
+	 * 
 	 * @return Product release date
 	 * @see org.jhove2.core.Product#getReleaseDate()
 	 */
@@ -115,7 +127,9 @@ public class AbstractProduct
 		return this.date;
 	}
 
-	/** Get product rights statement.
+	/**
+	 * Get product rights statement.
+	 * 
 	 * @return Product rights statement
 	 * @see org.jhove2.core.Product#getRightsStatement()
 	 */
@@ -124,7 +138,9 @@ public class AbstractProduct
 		return this.rights;
 	}
 
-	/** Get product version.
+	/**
+	 * Get product version.
+	 * 
 	 * @return Product version
 	 * @see org.jhove2.core.Product#getVersion()
 	 */
@@ -132,23 +148,32 @@ public class AbstractProduct
 	public String getVersion() {
 		return this.version;
 	}
-	
-	/** Add product developer.
-	 * @param developer Product developer
+
+	/**
+	 * Add product developer.
+	 * 
+	 * @param developer
+	 *            Product developer
 	 */
 	public void setDeveloper(Agent developer) {
 		this.developers.add(developer);
 	}
-	
-	/** Add product developers.
-	 * @param developers Product developers
+
+	/**
+	 * Add product developers.
+	 * 
+	 * @param developers
+	 *            Product developers
 	 */
 	public void setDevelopers(List<Agent> developers) {
 		this.developers.addAll(developers);
 	}
-	
-	/** Set product informative note.
-	 * @param note Product informative note
+
+	/**
+	 * Set product informative note.
+	 * 
+	 * @param note
+	 *            Product informative note
 	 */
 	public void setNote(String note) {
 		this.note = note;

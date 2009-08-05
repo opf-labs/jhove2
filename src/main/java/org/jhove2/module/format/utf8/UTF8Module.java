@@ -61,112 +61,120 @@ import org.jhove2.module.format.unicode.CodeBlock;
 import org.jhove2.module.format.unicode.Unicode;
 import org.jhove2.module.format.unicode.Unicode.EOL;
 
-/** JHOVE2 UTF-8 module.
+/**
+ * JHOVE2 UTF-8 module.
  * 
  * @author mstrong, slabrams
  */
-public class UTF8Module
-	extends AbstractFormatModule
-	implements Parser, Validator
-{
+public class UTF8Module extends AbstractFormatModule implements Parser,
+		Validator {
 	/** UTF-8 module version identifier. */
 	public static final String VERSION = "1.0.0";
 
 	/** UTF-8 module release date. */
 	public static final String RELEASE = "2009-06-23";
-	
+
 	/** UTF-8 module rights statement. */
-	public static final String RIGHTS =
-		"Copyright 2009 by The Regents of the University of California. " +
-		"Available under the terms of the BSD license.";
-	
+	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California. "
+			+ "Available under the terms of the BSD license.";
+
 	/** Byte Order Mark (BOM) message. */
 	protected Message bomMessage;
-	
-	/** Non-line ending C0 control characters. CR and LF are therefore
-	 * <em>not</em> found in this set. */
+
+	/**
+	 * Non-line ending C0 control characters. CR and LF are therefore
+	 * <em>not</em> found in this set.
+	 */
 	protected Set<C0Control> c0Characters;
-	
+
 	/** C1 control characters. */
 	protected Set<C1Control> c1Characters;
-	
+
 	/** Unicode code blocks. */
 	protected Set<CodeBlock> codeBlocks;
-	
+
 	/** End-of-Line (EOL) characters. */
 	protected Set<EOL> eolCharacters;
-	
+
 	/** Fail fast message. */
 	protected Message failFastMessage;
-	
+
 	/** Invalid UTF-8 characters. */
 	protected List<UTF8Character> invalidCharacters;
 
 	/** Number of characters. */
 	protected long numCharacters;
-	
-	/** Number of lines.  A line is terminated by a CR, CRLF, LF, or EOF. */
+
+	/** Number of lines. A line is terminated by a CR, CRLF, LF, or EOF. */
 	protected long numLines;
-	
+
 	/** Number of non-characters. */
 	protected long numNonCharacters;
-	
+
 	/** UTF-8 validity status. */
 	protected Validity isValid;
 
-	/** Instantiate a new <code>UTF8Module</code>.
-	 * @param format UTF-8 format
+	/**
+	 * Instantiate a new <code>UTF8Module</code>.
+	 * 
+	 * @param format
+	 *            UTF-8 format
 	 */
 	public UTF8Module(Format format) {
 		super(VERSION, RELEASE, RIGHTS, format);
-		
-		this.c0Characters      = new TreeSet<C0Control>();
-		this.c1Characters      = new TreeSet<C1Control>();
-		this.codeBlocks        = new TreeSet<CodeBlock>();
-		this.eolCharacters     = new TreeSet<EOL>();
+
+		this.c0Characters = new TreeSet<C0Control>();
+		this.c1Characters = new TreeSet<C1Control>();
+		this.codeBlocks = new TreeSet<CodeBlock>();
+		this.eolCharacters = new TreeSet<EOL>();
 		this.invalidCharacters = new ArrayList<UTF8Character>();
-		this.isValid           = Validity.Undetermined;
-		this.numCharacters     = 0L;
-		this.numLines          = 0L;
-		this.numNonCharacters  = 0L;
+		this.isValid = Validity.Undetermined;
+		this.numCharacters = 0L;
+		this.numLines = 0L;
+		this.numNonCharacters = 0L;
 	}
 
-	/** Parse a source unit.
-	 * @param jhove2 JHOVE2 framework
-	 * @param source UTF-8 source unit
-	 * @return 0 
-	 * @throws EOFException    If End-of-File is reached reading the source unit
-	 * @throws IOException     If an I/O exception is raised reading the source
-	 *                         unit
+	/**
+	 * Parse a source unit.
+	 * 
+	 * @param jhove2
+	 *            JHOVE2 framework
+	 * @param source
+	 *            UTF-8 source unit
+	 * @return 0
+	 * @throws EOFException
+	 *             If End-of-File is reached reading the source unit
+	 * @throws IOException
+	 *             If an I/O exception is raised reading the source unit
 	 * @throws JHOVE2Exception
-	 * @see org.jhove2.module.format.Parser#parse(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
+	 * @see org.jhove2.module.format.Parser#parse(org.jhove2.core.JHOVE2,
+	 *      org.jhove2.core.source.Source)
 	 */
 	@Override
-	public long parse(JHOVE2 jhove2, Source source)
-		throws EOFException, IOException, JHOVE2Exception
-	{
+	public long parse(JHOVE2 jhove2, Source source) throws EOFException,
+			IOException, JHOVE2Exception {
 		setStartTime();
-		
+
 		long consumed = 0L;
-		this.isValid  = Validity.Undetermined;
+		this.isValid = Validity.Undetermined;
 		int numErrors = 0;
 		Input input = null;
 		try {
-			input = source.getInput(jhove2.getBufferSize(),
-					                jhove2.getBufferType());
-			long start    = 0L;
-			long end      = 0L;
+			input = source.getInput(jhove2.getBufferSize(), jhove2
+					.getBufferType());
+			long start = 0L;
+			long end = 0L;
 			if (source instanceof FileSource) {
 				end = ((FileSource) source).getSize();
-			}
-			else if (source instanceof ZipFileSource) {
+			} else if (source instanceof ZipFileSource) {
 				end = ((ZipFileSource) source).getSize();
-			};
+			}
+			;
 			input.setPosition(start);
 
-			EOL  eol = null;
+			EOL eol = null;
 			long position = start;
-			int  prevCodePoint = UTF8Character.UNINITIALIZED;
+			int prevCodePoint = UTF8Character.UNINITIALIZED;
 			this.isValid = Validity.True;
 			while (end == 0 || position < end) {
 				UTF8Character ch = new UTF8Character();
@@ -182,21 +190,21 @@ public class UTF8Module
 				consumed += n;
 				int codePoint = ch.getCodePoint();
 				this.numCharacters++;
-			
-				Validity isValid  = ch.isValid();
+
+				Validity isValid = ch.isValid();
 				if (isValid == Validity.False) {
 					this.isValid = isValid;
 					if (jhove2.failFast(++numErrors)) {
-						this.failFastMessage =
-							new Message(Severity.INFO, Context.PROCESS,
-								    "Fail fast limit exceeded; additional " +
-								    "errors may exist but will not be " +
-								    "reported");
+						this.failFastMessage = new Message(Severity.INFO,
+								Context.PROCESS,
+								"Fail fast limit exceeded; additional "
+										+ "errors may exist but will not be "
+										+ "reported");
 						break;
 					}
 					this.invalidCharacters.add(ch);
 				}
-			
+
 				/* Determine character properties. */
 				eol = UTF8Character.getEOL(prevCodePoint, codePoint);
 				if (eol != null) {
@@ -209,8 +217,8 @@ public class UTF8Module
 				}
 
 				C0Control c0 = ch.getC0Control();
-				if (c0 != null && !c0.getMnemonic().equals("CR") &&
-						          !c0.getMnemonic().equals("LF")) {
+				if (c0 != null && !c0.getMnemonic().equals("CR")
+						&& !c0.getMnemonic().equals("LF")) {
 					this.c0Characters.add(c0);
 				}
 				C1Control c1 = ch.getC1Control();
@@ -218,10 +226,9 @@ public class UTF8Module
 					this.c1Characters.add(c1);
 				}
 				if (position == start && ch.isByteOrderMark()) {
-					this.bomMessage =
-						new Message(Severity.INFO, Context.OBJECT,
-							    "Byte Order Mark (BOM) at byte offset: " +
-							    position);
+					this.bomMessage = new Message(Severity.INFO,
+							Context.OBJECT,
+							"Byte Order Mark (BOM) at byte offset: " + position);
 				}
 				if (ch.isNonCharacter()) {
 					this.numNonCharacters++;
@@ -229,16 +236,16 @@ public class UTF8Module
 				if (ch.isValid() == Validity.False) {
 					this.isValid = Validity.False;
 				}
-			
+
 				prevCodePoint = codePoint;
 				position += n;
 			}
-			eol = UTF8Character.getEOL(prevCodePoint, UTF8Character.UNINITIALIZED);
+			eol = UTF8Character.getEOL(prevCodePoint,
+					UTF8Character.UNINITIALIZED);
 			if (eol != null) {
 				this.numLines++;
 				this.eolCharacters.add(eol);
-			}
-			else if (prevCodePoint != Unicode.LF) {
+			} else if (prevCodePoint != Unicode.LF) {
 				this.numLines++;
 			}
 		} finally {
@@ -247,105 +254,132 @@ public class UTF8Module
 			}
 		}
 		setEndTime();
-		
+
 		return consumed;
 	}
 
-	/** Validate a UTF-8 source unit.
-	 * @param jhove2 JHOVE2 framework
-	 * @param source UTF-8 source unit
+	/**
+	 * Validate a UTF-8 source unit.
+	 * 
+	 * @param jhove2
+	 *            JHOVE2 framework
+	 * @param source
+	 *            UTF-8 source unit
 	 * @return UTF-8 validation status
-	 * @see org.jhove2.module.format.Validator#validate(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
+	 * @see org.jhove2.module.format.Validator#validate(org.jhove2.core.JHOVE2,
+	 *      org.jhove2.core.source.Source)
 	 */
 	@Override
 	public Validity validate(JHOVE2 jhove2, Source source) {
 		return this.isValid;
 	}
-	
-	/** Get Byte Order Mark (BOM) message.
+
+	/**
+	 * Get Byte Order Mark (BOM) message.
+	 * 
 	 * @return Byte Order Mark (BOM) message
 	 */
-	@ReportableProperty(order=11, value="Byte Order Mark (BOM) message.")
+	@ReportableProperty(order = 11, value = "Byte Order Mark (BOM) message.")
 	public Message getByteOrderMark() {
 		return this.bomMessage;
 	}
 
-	/** Get non-line ending C0 control characters.  Therefore CR and LF will
+	/**
+	 * Get non-line ending C0 control characters. Therefore CR and LF will
 	 * <em>not</em> be reported in this set.
+	 * 
 	 * @return Set of non-line ending C0 control characters
 	 */
-	@ReportableProperty(order=5, value="Set of non-line-ending C0 control " +
-			"characters.  Thus, CR and LF are not included in this set.")
+	@ReportableProperty(order = 5, value = "Set of non-line-ending C0 control "
+			+ "characters.  Thus, CR and LF are not included in this set.")
 	public Set<C0Control> getC0Characters() {
 		return this.c0Characters;
 	}
-	
-	/** Get C1 control characters.
+
+	/**
+	 * Get C1 control characters.
+	 * 
 	 * @return Set of C1 control characters
 	 */
-	@ReportableProperty(order=6, value="Set of C1 control characters.")
+	@ReportableProperty(order = 6, value = "Set of C1 control characters.")
 	public Set<C1Control> getC1Characters() {
 		return this.c1Characters;
 	}
-	
-	/** Get code blocks.
+
+	/**
+	 * Get code blocks.
+	 * 
 	 * @return Set of code blocks
 	 */
-	@ReportableProperty(order=4, value="Set of Unicode code blocks.")
+	@ReportableProperty(order = 4, value = "Set of Unicode code blocks.")
 	public Set<CodeBlock> getCodeBlocks() {
 		return this.codeBlocks;
 	}
-	
-	/** Get End-of-Line (EOL) characters.
+
+	/**
+	 * Get End-of-Line (EOL) characters.
+	 * 
 	 * @return Set of EOL characters
 	 */
-	@ReportableProperty(order=3, value="Set of End-of-Line (EOL) characters.")
+	@ReportableProperty(order = 3, value = "Set of End-of-Line (EOL) characters.")
 	public Set<EOL> getEOLCharacters() {
 		return this.eolCharacters;
 	}
-	
-	/** Get fail fast message.
+
+	/**
+	 * Get fail fast message.
+	 * 
 	 * @return Fail fast message
 	 */
-	@ReportableProperty(order=13, value="Fail fast message.")
+	@ReportableProperty(order = 13, value = "Fail fast message.")
 	public Message getFailFast() {
 		return this.failFastMessage;
 	}
-	
-	/** Get invalid UTF-8 characters.
+
+	/**
+	 * Get invalid UTF-8 characters.
+	 * 
 	 * @return Invalid UTF-8 characters
 	 */
-	@ReportableProperty(order=12, value="Invalid UTF-8 characters.")
+	@ReportableProperty(order = 12, value = "Invalid UTF-8 characters.")
 	public List<UTF8Character> getInvalidCharacters() {
 		return this.invalidCharacters;
 	}
-	
-	/** Get number of characters.
+
+	/**
+	 * Get number of characters.
+	 * 
 	 * @return Number of characters
 	 */
-	@ReportableProperty(order=1, value="Number of UTF-8 characters.")
+	@ReportableProperty(order = 1, value = "Number of UTF-8 characters.")
 	public long getNumCharacters() {
 		return this.numCharacters;
 	}
-	
-	/** Get number of lines.  A line is terminated by a CR, CRLF, LF, or EOF
+
+	/**
+	 * Get number of lines. A line is terminated by a CR, CRLF, LF, or EOF
+	 * 
 	 * @return Number of lines
 	 */
-	@ReportableProperty(order=2, value="Number of lines.  A line is " +
-			"terminated by a CR, CRLF, LF, or End-of-File (EOF).")
+	@ReportableProperty(order = 2, value = "Number of lines.  A line is "
+			+ "terminated by a CR, CRLF, LF, or End-of-File (EOF).")
 	public long getNumLines() {
 		return this.numLines;
 	}
-	
-	/** Get number of non-characters.
+
+	/**
+	 * Get number of non-characters.
+	 * 
 	 * @return Number of non-characters
 	 */
-	@ReportableProperty(order=7, value="Number of UTF-8 non-characters.")
+	@ReportableProperty(order = 7, value = "Number of UTF-8 non-characters.")
 	public long getNumNonCharacters() {
 		return this.numNonCharacters;
 	}
 
-	/** Get UTF-8 validation status.
+	/**
+	 * Get UTF-8 validation status.
+	 * 
 	 * @return UTF-8 validation status
 	 * @see org.jhove2.module.format.Validator#isValid()
 	 */

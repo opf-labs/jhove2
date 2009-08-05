@@ -43,66 +43,77 @@ import java.nio.ByteOrder;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 
-/** JHOVE2 mapped inputable.  A direct byte buffer whose content 
- * is a memory-mapped region of a file. Use of a direct buffer 
- * permits the JVM to use native I/O for increased performance. 
+/**
+ * JHOVE2 mapped inputable. A direct byte buffer whose content is a
+ * memory-mapped region of a file. Use of a direct buffer permits the JVM to use
+ * native I/O for increased performance.
  * 
  * @author mstrong, slabrams
  */
-public class MappedInput
-	extends AbstractInput
-{
+public class MappedInput extends AbstractInput {
 	/** Maximum buffer size, in bytes. */
 	protected int maxBufferSize;
-	
-	/** Instantiate a new <code>MappedInput</code> object.
-	 * @param file          Java {@link java.io.File} underlying the inputable
-	 * @param maxBufferSize Size of the mapped byte buffer, in bytes
-	 * @throws FileNotFoundException File not found 
-	 * @throws IOException           I/O exception instantiating input
+
+	/**
+	 * Instantiate a new <code>MappedInput</code> object.
+	 * 
+	 * @param file
+	 *            Java {@link java.io.File} underlying the inputable
+	 * @param maxBufferSize
+	 *            Size of the mapped byte buffer, in bytes
+	 * @throws FileNotFoundException
+	 *             File not found
+	 * @throws IOException
+	 *             I/O exception instantiating input
 	 */
 	public MappedInput(File file, int maxBufferSize)
-		throws FileNotFoundException, IOException
-	{
+			throws FileNotFoundException, IOException {
 		this(file, maxBufferSize, ByteOrder.LITTLE_ENDIAN);
 	}
-	
-	/** Instantiate a new <code>MappedInput</code> object.
-	 * @param file          Java {@link java.io.File} underlying the inputable
-	 * @param maxBufferSize Size of the mapped byte buffer, in bytes
-	 * @param order         Byte order
-	 * @throws FileNotFoundException File not found 
-	 * @throws IOException           I/O exception instantiating input
+
+	/**
+	 * Instantiate a new <code>MappedInput</code> object.
+	 * 
+	 * @param file
+	 *            Java {@link java.io.File} underlying the inputable
+	 * @param maxBufferSize
+	 *            Size of the mapped byte buffer, in bytes
+	 * @param order
+	 *            Byte order
+	 * @throws FileNotFoundException
+	 *             File not found
+	 * @throws IOException
+	 *             I/O exception instantiating input
 	 */
 	public MappedInput(File file, int maxBufferSize, ByteOrder order)
-		throws FileNotFoundException, IOException
-	{
+			throws FileNotFoundException, IOException {
 		super(file, order);
-		
+
 		/* Allocate memory mapped buffer and initialize it. */
 		if (maxBufferSize > this.channel.size())
 			maxBufferSize = (int) this.channel.size();
 		this.maxBufferSize = maxBufferSize;
 		this.buffer = (MappedByteBuffer) buffer;
-		/* TODO: fix Access Denied problem 
-		 * java.io.IOException: Access is denied
-				at sun.nio.ch.FileChannelImpl.truncate0(Native Method)
-				at sun.nio.ch.FileChannelImpl.map(FileChannelImpl.java:731)
-	    this works if maxBuffersize set to 0
-	    */
-		
+		/*
+		 * TODO: fix Access Denied problem java.io.IOException: Access is denied
+		 * at sun.nio.ch.FileChannelImpl.truncate0(Native Method) at
+		 * sun.nio.ch.FileChannelImpl.map(FileChannelImpl.java:731) this works
+		 * if maxBuffersize set to 0
+		 */
+
 		try {
-		this.buffer = this.channel.map(FileChannel.MapMode.READ_ONLY, 0,
-					                   maxBufferSize);
-		} catch(IOException e) {
+			this.buffer = this.channel.map(FileChannel.MapMode.READ_ONLY, 0,
+					maxBufferSize);
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		
+
 		// getNextBuffer();
 	}
 
-	/** Get maximum buffer size, in bytes.
+	/**
+	 * Get maximum buffer size, in bytes.
+	 * 
 	 * @return Maximum buffer size, in bytes
 	 * @see org.jhove2.core.io.Input#getMaxBufferSize()
 	 */
@@ -110,22 +121,22 @@ public class MappedInput
 	public int getMaxBufferSize() {
 		return this.bufferSize;
 	}
-	
-	/** Get the next buffer's worth of data from the channel.
-	 * @return Number of bytes actually read, possibly 0 or -1 if EOF 
-	 * @throws IOException 
+
+	/**
+	 * Get the next buffer's worth of data from the channel.
+	 * 
+	 * @return Number of bytes actually read, possibly 0 or -1 if EOF
+	 * @throws IOException
 	 */
 	@Override
-	protected long getNextBuffer()
-		throws IOException
-	{
+	protected long getNextBuffer() throws IOException {
 		this.buffer.clear();
-		//int n = this.channel.read(this.buffer);
+		// int n = this.channel.read(this.buffer);
 		this.buffer.flip();
-		this.bufferOffset      = this.channel.position() - buffer.capacity();
-		this.bufferSize        = buffer.capacity();
+		this.bufferOffset = this.channel.position() - buffer.capacity();
+		this.bufferSize = buffer.capacity();
 		this.inputablePosition = this.bufferOffset + this.buffer.position();
-		
+
 		return this.bufferSize;
 	}
 }

@@ -40,49 +40,60 @@ import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
 
-/** Interface for JHOVE2 products.  A product is an independently
- * distributable and configurable {@link org.jhove2.core.Reportable}.
+/**
+ * Interface for JHOVE2 products. A product is an independently distributable
+ * and configurable {@link org.jhove2.core.Reportable}.
  * 
  * @author mstrong, slabrams
  */
-public interface Product
-	extends Reportable
-{
-	/** Get product developers.
+public interface Product extends Reportable {
+	/**
+	 * Get product developers.
+	 * 
 	 * @return Product developers
 	 * @see org.jhove2.core.AbstractProduct#getDevelopers()
 	 */
-	@ReportableProperty(order=4, value="Product developers.")
+	@ReportableProperty(order = 4, value = "Product developers.")
 	public List<Agent> getDevelopers();
-	
-	/** Get product name.
+
+	/**
+	 * Get product name.
+	 * 
 	 * @return Product name
 	 */
-	@ReportableProperty(order=1, value="Product name, based on the class " +
-			"simple name.")
+	@ReportableProperty(order = 1, value = "Product name, based on the class "
+			+ "simple name.")
 	public String getName();
-	
-	/** Get product informative note.
+
+	/**
+	 * Get product informative note.
+	 * 
 	 * @return Product informative note
 	 */
-	@ReportableProperty(order=6, value="Product informative note.")
+	@ReportableProperty(order = 6, value = "Product informative note.")
 	public String getNote();
 
-	/** Get product release date.
+	/**
+	 * Get product release date.
+	 * 
 	 * @return Product release date
 	 */
-	@ReportableProperty(order=3, value="Product release date.")
+	@ReportableProperty(order = 3, value = "Product release date.")
 	public String getReleaseDate();
 
-	/** Get product rights statement.
+	/**
+	 * Get product rights statement.
+	 * 
 	 * @return Product rights statement
 	 */
-	@ReportableProperty(order=5, value="AbstractProduct rights statement.")
+	@ReportableProperty(order = 5, value = "AbstractProduct rights statement.")
 	public String getRightsStatement();
 
-	/** Get product version.
+	/**
+	 * Get product version.
+	 * 
 	 * @return Product version
 	 */
-	@ReportableProperty(order=2, value="Product version identifier.")
+	@ReportableProperty(order = 2, value = "Product version identifier.")
 	public String getVersion();
 }

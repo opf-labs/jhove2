@@ -46,13 +46,12 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
 
-/** Abstract JHOVE2 inputter.
+/**
+ * Abstract JHOVE2 inputter.
  * 
  * @author mstrong, slabrams
  */
-public abstract class AbstractInput
-	implements Input
-{
+public abstract class AbstractInput implements Input {
 	/** Buffer to hold data from channel. */
 	protected ByteBuffer buffer;
 
@@ -62,68 +61,79 @@ public abstract class AbstractInput
 	/** Current buffer size. */
 	protected int bufferSize;
 
-	/** Current byte order of buffer.*/ 
+	/** Current byte order of buffer. */
 	protected ByteOrder byteOrder;
 
 	/** AbstractInput channel. */
 	protected FileChannel channel;
-	
+
 	/** File underlying the inputable. */
 	protected File file;
 
 	/** InputStream underlying the inputable. */
 	protected InputStream stream;
 
-	/** Current position relative to the beginning of the inputable, as a byte offset. 
-	 * equal to buffer offset + buffer position */
+	/**
+	 * Current position relative to the beginning of the inputable, as a byte
+	 * offset. equal to buffer offset + buffer position
+	 */
 	protected long inputablePosition;
-	
+
 	/** Size, in bytes. */
 	protected long fileSize;
 
-	/** Instantiate a new <code>AbstractInput</code>.
-	 * @param file Java {@link java.io.File} underlying the inputable
-	 * @throws FileNotFoundException File not found
-	 * @throws IOException           I/O exception instantiating input
+	/**
+	 * Instantiate a new <code>AbstractInput</code>.
+	 * 
+	 * @param file
+	 *            Java {@link java.io.File} underlying the inputable
+	 * @throws FileNotFoundException
+	 *             File not found
+	 * @throws IOException
+	 *             I/O exception instantiating input
 	 */
-	public AbstractInput(File file)
-		throws FileNotFoundException, IOException
-	{
+	public AbstractInput(File file) throws FileNotFoundException, IOException {
 		this(file, ByteOrder.LITTLE_ENDIAN);
 	}
-	
 
-	/** Instantiate a new <code>AbstractInput</code>.
-	 * @param file  Java {@link java.io.File} underlying the inputable
-	 * @param order Byte order
-	 * @throws FileNotFoundException File not found
-	 * @throws IOException           I/O exception instantiating input
+	/**
+	 * Instantiate a new <code>AbstractInput</code>.
+	 * 
+	 * @param file
+	 *            Java {@link java.io.File} underlying the inputable
+	 * @param order
+	 *            Byte order
+	 * @throws FileNotFoundException
+	 *             File not found
+	 * @throws IOException
+	 *             I/O exception instantiating input
 	 */
 	public AbstractInput(File file, ByteOrder order)
-		throws FileNotFoundException, IOException
-	{
-		this.file              = file;
-		this.byteOrder         = order;
-		this.stream            = (InputStream) new FileInputStream(file); 
-		this.fileSize          = file.length();
+			throws FileNotFoundException, IOException {
+		this.file = file;
+		this.byteOrder = order;
+		this.stream = (InputStream) new FileInputStream(file);
+		this.fileSize = file.length();
 		this.inputablePosition = 0L;
 
 		RandomAccessFile raf = new RandomAccessFile(file, "r");
 		this.channel = raf.getChannel();
 	}
 
-	/** Close the inputable.
+	/**
+	 * Close the inputable.
+	 * 
 	 * @see org.jhove2.core.io.Input#close()
 	 */
 	@Override
-	public void close()
-		throws IOException
-	{
+	public void close() throws IOException {
 		this.stream.close();
 		this.channel.close();
 	}
-	
-	/** Get the {@link java.nio.ByteBuffer} underlying the inputable.
+
+	/**
+	 * Get the {@link java.nio.ByteBuffer} underlying the inputable.
+	 * 
 	 * @return Buffer underlying the inputable
 	 * @see org.jhove2.core.io.Input#getBuffer()
 	 */
@@ -131,15 +141,19 @@ public abstract class AbstractInput
 	public ByteBuffer getBuffer() {
 		return this.buffer;
 	}
-	
-	/** Get byte order.
+
+	/**
+	 * Get byte order.
+	 * 
 	 * @return Byte order
 	 */
 	public ByteOrder getByteOrder() {
 		return this.byteOrder;
 	}
-	
-	/** Get {@link java.io.File} backing the input.
+
+	/**
+	 * Get {@link java.io.File} backing the input.
+	 * 
 	 * @return File backing the input
 	 * @see org.jhove2.core.io.Input#getFile()
 	 */
@@ -147,23 +161,27 @@ public abstract class AbstractInput
 	public File getFile() {
 		return this.file;
 	}
-	
-	/** Get {@link java.io.InputStream} backing the input.
+
+	/**
+	 * Get {@link java.io.InputStream} backing the input.
+	 * 
 	 * @return Input stream backing the input
 	 * @see org.jhove2.core.io.Input#getInputStream()
-	 */	
+	 */
 	@Override
 	public InputStream getInputStream() {
 		return this.stream;
 	}
 
-	/** Get current buffer offset from the beginning of the inputable, in
-	 * bytes.  This offset is the beginning of the buffer.
+	/**
+	 * Get current buffer offset from the beginning of the inputable, in bytes.
+	 * This offset is the beginning of the buffer.
 	 * 
 	 * Buffer Offset = channel position - buffer size
 	 * 
-	 * Note: the channel position is the location in the inputable
-	 * where data will next be read from or written to.
+	 * Note: the channel position is the location in the inputable where data
+	 * will next be read from or written to.
+	 * 
 	 * @return Current buffer offset, in bytes
 	 * @see org.jhove2.core.io.Input#getBufferOffset()
 	 */
@@ -171,8 +189,10 @@ public abstract class AbstractInput
 	public long getBufferOffset() {
 		return this.bufferOffset;
 	}
-	
-	/** Get current buffer size, in bytes.
+
+	/**
+	 * Get current buffer size, in bytes.
+	 * 
 	 * @return Current buffer size, in bytes
 	 * @see org.jhove2.core.io.Input#getBufferSize()
 	 */
@@ -181,49 +201,55 @@ public abstract class AbstractInput
 		return this.bufferSize;
 	}
 
-	/** Get the current buffer as a <code>byte[]</code> array.
+	/**
+	 * Get the current buffer as a <code>byte[]</code> array.
+	 * 
 	 * @return Byte array
 	 * @see org.jhove2.core.io.Input#getByteArray()
 	 */
 	@Override
 	public byte[] getByteArray() {
-		byte [] buffer;
-		if (this.buffer.hasArray()) 
+		byte[] buffer;
+		if (this.buffer.hasArray())
 			buffer = this.buffer.array();
 		else {
 			buffer = new byte[this.buffer.limit()]; // capacity()];
 			this.buffer.position(0);
 			this.buffer.get(buffer);
 		}
-		
+
 		return buffer;
 	}
-	
-	/** Get maximum buffer size, in bytes.
+
+	/**
+	 * Get maximum buffer size, in bytes.
+	 * 
 	 * @return Maximum buffer size, in bytes
 	 * @see org.jhove2.core.io.Input#getMaxBufferSize()
 	 */
 	@Override
 	public abstract int getMaxBufferSize();
 
-	/** Get the next buffer's worth of data from the channel.
-	 * @return Number of bytes actually read, possibly 0 or -1 if EOF 
-	 * @throws IOException 
+	/**
+	 * Get the next buffer's worth of data from the channel.
+	 * 
+	 * @return Number of bytes actually read, possibly 0 or -1 if EOF
+	 * @throws IOException
 	 */
-	protected long getNextBuffer()
-		throws IOException
-	{
+	protected long getNextBuffer() throws IOException {
 		this.buffer.clear();
 		int n = this.channel.read(this.buffer);
 		this.buffer.flip();
-		this.bufferOffset      = this.channel.position() - n;
-		this.bufferSize        = n;
+		this.bufferOffset = this.channel.position() - n;
+		this.bufferSize = n;
 		this.inputablePosition = this.bufferOffset + this.buffer.position();
-		
+
 		return this.bufferSize;
 	}
-	
-	/** Get the current position in the inputable, as a byte offset.
+
+	/**
+	 * Get the current position in the inputable, as a byte offset.
+	 * 
 	 * @return Current position, as a byte offset
 	 * @see org.jhove2.core.io.Input#getPosition()
 	 */
@@ -232,7 +258,9 @@ public abstract class AbstractInput
 		return this.inputablePosition;
 	}
 
-	/** Get size, in bytes.
+	/**
+	 * Get size, in bytes.
+	 * 
 	 * @return Size
 	 */
 	@Override
@@ -240,15 +268,15 @@ public abstract class AbstractInput
 		return this.fileSize;
 	}
 
-	/** Get signed byte at the current position.  This implicitly advances
-	 * the current position by one byte.
+	/**
+	 * Get signed byte at the current position. This implicitly advances the
+	 * current position by one byte.
+	 * 
 	 * @return Signed byte at the current position, or -1 if EOF
 	 * @see org.jhove2.core.io.Input#readSignedByte()
 	 */
 	@Override
-	public byte readSignedByte()
-		throws IOException
-	{
+	public byte readSignedByte() throws IOException {
 		if (this.buffer.position() >= this.buffer.limit()) {
 			if (getNextBuffer() == EOF) {
 				return EOF;
@@ -256,61 +284,63 @@ public abstract class AbstractInput
 		}
 		byte b = this.buffer.get();
 		this.inputablePosition += 1;
-		
+
 		return b;
 	}
-	
-	/** Get unsigned (four byte) integer at the current position.  This
-	 * implicitly advances the current position by four bytes.
+
+	/**
+	 * Get unsigned (four byte) integer at the current position. This implicitly
+	 * advances the current position by four bytes.
+	 * 
 	 * @return Unsigned short integer at the current position, or -1 if EOF
 	 * @see org.jhove2.core.io.Input#readUnsignedInt()
 	 */
 	@Override
-	public int readSignedInt()
-		throws IOException
-	{
+	public int readSignedInt() throws IOException {
 		int in = 0;
 		int byteValue = 0;
 		int remaining = this.buffer.limit() - this.buffer.position();
 		if (remaining < 4) {
-			for (int i=0; i<remaining; i++) {
-				/* LITTLE_ENDIAN - shift byte value then add to accumlative value */
+			for (int i = 0; i < remaining; i++) {
+				/*
+				 * LITTLE_ENDIAN - shift byte value then add to accumlative
+				 * value
+				 */
 				if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
-					byteValue = (((int) this.buffer.get()& 0xff));
-					byteValue <<=(8*i);
+					byteValue = (((int) this.buffer.get() & 0xff));
+					byteValue <<= (8 * i);
 					in += byteValue;
-				}
-				else {
+				} else {
 					/* BIG_ENDIAN - shift accumulative value then add byte value */
-				  in <<= 8;
-				  in += (((int) this.buffer.get()& 0xff));
+					in <<= 8;
+					in += (((int) this.buffer.get() & 0xff));
 				}
 			}
 			if (getNextBuffer() == EOF) {
 				return EOF;
 			}
-			for (int i=remaining; i<4; i++) {
+			for (int i = remaining; i < 4; i++) {
 				if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
-					byteValue = (((int) this.buffer.get()& 0xff));
-					byteValue <<= (8*i);
+					byteValue = (((int) this.buffer.get() & 0xff));
+					byteValue <<= (8 * i);
 					in += byteValue;
-				}
-				else {
-				  in <<=8;
-				  in += (((int) this.buffer.get()& 0xff));
+				} else {
+					in <<= 8;
+					in += (((int) this.buffer.get() & 0xff));
 				}
 			}
-		}
-		else {
+		} else {
 			in = this.buffer.getInt();
 		}
 		this.inputablePosition += 4L;
-		
+
 		return in;
 	}
-	
-	/** Get signed long integer at the current position.  This
-	 * implicitly advances the current position by eight bytes.
+
+	/**
+	 * Get signed long integer at the current position. This implicitly advances
+	 * the current position by eight bytes.
+	 * 
 	 * @return Unsigned short integer at the current position, or -1 if EOF
 	 * @see org.jhove2.core.io.Input#readSignedLong()
 	 */
@@ -320,44 +350,46 @@ public abstract class AbstractInput
 		int byteValue = 0;
 		int remaining = this.buffer.limit() - this.buffer.position();
 		if (remaining < 8) {
-			for (int i=0; i<remaining; i++) {
-				/* LITTLE_ENDIAN - shift byte value then add to accumlative value */
+			for (int i = 0; i < remaining; i++) {
+				/*
+				 * LITTLE_ENDIAN - shift byte value then add to accumlative
+				 * value
+				 */
 				if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
-					byteValue = (((int) this.buffer.get()& 0xff));
-					byteValue <<=(8*i);
+					byteValue = (((int) this.buffer.get() & 0xff));
+					byteValue <<= (8 * i);
 					in += byteValue;
-				}
-				else {
+				} else {
 					/* BIG_ENDIAN - shift accumulative value then add byte value */
-				  in <<= 8;
-				  in += (((int) this.buffer.get()& 0xff));
+					in <<= 8;
+					in += (((int) this.buffer.get() & 0xff));
 				}
 			}
 			if (getNextBuffer() == EOF) {
 				return EOF;
 			}
-			for (int i=remaining; i<8; i++) {
+			for (int i = remaining; i < 8; i++) {
 				if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
-					byteValue = (((int) this.buffer.get()& 0xff));
-					byteValue <<= (8*i);
+					byteValue = (((int) this.buffer.get() & 0xff));
+					byteValue <<= (8 * i);
 					in += byteValue;
-				}
-				else {
-				  in <<=8;
-				  in += (((int) this.buffer.get()& 0xff));
+				} else {
+					in <<= 8;
+					in += (((int) this.buffer.get() & 0xff));
 				}
 			}
-		}
-		else {
+		} else {
 			in = this.buffer.getShort();
 		}
 		this.inputablePosition += 8L;
-		
+
 		return in;
 	}
-	
-	/** Get signed (short integer at the current position.  This
-	 * implicitly advances the current position by two bytes.
+
+	/**
+	 * Get signed (short integer at the current position. This implicitly
+	 * advances the current position by two bytes.
+	 * 
 	 * @return Unsigned short integer at the current position, or -1 if EOF
 	 * @see org.jhove2.core.io.Input#readSignedShort()
 	 */
@@ -368,52 +400,55 @@ public abstract class AbstractInput
 			int byteValue = 0;
 			int remaining = this.buffer.limit() - this.buffer.position();
 			if (remaining < 2) {
-				for (int i=0; i<remaining; i++) {
-					/* LITTLE_ENDIAN - shift byte value then add to accumlative value */
+				for (int i = 0; i < remaining; i++) {
+					/*
+					 * LITTLE_ENDIAN - shift byte value then add to accumlative
+					 * value
+					 */
 					if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
-						byteValue = (((int) this.buffer.get()& 0xff));
-						byteValue <<=(8*i);
+						byteValue = (((int) this.buffer.get() & 0xff));
+						byteValue <<= (8 * i);
 						in += byteValue;
-					}
-					else {
-						/* BIG_ENDIAN - shift accumulative value then add byte value */
-					  in <<= 8;
-					  in += (((int) this.buffer.get()& 0xff));
+					} else {
+						/*
+						 * BIG_ENDIAN - shift accumulative value then add byte
+						 * value
+						 */
+						in <<= 8;
+						in += (((int) this.buffer.get() & 0xff));
 					}
 				}
 				if (getNextBuffer() == EOF) {
 					return EOF;
 				}
-				for (int i=remaining; i<2; i++) {
+				for (int i = remaining; i < 2; i++) {
 					if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
-						byteValue = (((int) this.buffer.get()& 0xff));
-						byteValue <<= (8*i);
+						byteValue = (((int) this.buffer.get() & 0xff));
+						byteValue <<= (8 * i);
 						in += byteValue;
-					}
-					else {
-					  in <<=8;
-					  in += (((int) this.buffer.get()& 0xff));
+					} else {
+						in <<= 8;
+						in += (((int) this.buffer.get() & 0xff));
 					}
 				}
-			}
-			else {
+			} else {
 				in = this.buffer.getShort();
 			}
 			this.inputablePosition += 2L;
-			
+
 			return in;
 		}
 	}
 
-	/** Get unsigned byte at the current position.  This implicitly advances
-	 * the current position by one byte.
+	/**
+	 * Get unsigned byte at the current position. This implicitly advances the
+	 * current position by one byte.
+	 * 
 	 * @return Unsigned byte at the current position, or -1 if EOF
 	 * @see org.jhove2.core.io.Input#readUnsignedByte()
 	 */
 	@Override
-	public short readUnsignedByte()
-		throws IOException
-	{
+	public short readUnsignedByte() throws IOException {
 		if (this.buffer.position() >= this.buffer.limit()) {
 			if (getNextBuffer() == EOF) {
 				return EOF;
@@ -422,112 +457,115 @@ public abstract class AbstractInput
 		short b = this.buffer.get();
 		b &= 0xffL;
 		this.inputablePosition += 1L;
-		
+
 		return b;
 	}
 
-	/** Get unsigned (four byte) integer at the current position.  This
-	 * implicitly advances the current position by four bytes.
+	/**
+	 * Get unsigned (four byte) integer at the current position. This implicitly
+	 * advances the current position by four bytes.
+	 * 
 	 * @return Unsigned short integer at the current position, or -1 if EOF
 	 * @see org.jhove2.core.io.Input#readUnsignedInt()
 	 */
 	@Override
-	public long readUnsignedInt()
-		throws IOException
-	{
+	public long readUnsignedInt() throws IOException {
 		long in = 0L;
 		long byteValue = 0L;
 		int remaining = this.buffer.limit() - this.buffer.position();
 		if (remaining < 4) {
-			for (int i=0; i<remaining; i++) {
-				/* LITTLE_ENDIAN - shift byte value then add to accumlative value */
+			for (int i = 0; i < remaining; i++) {
+				/*
+				 * LITTLE_ENDIAN - shift byte value then add to accumlative
+				 * value
+				 */
 				if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
-					byteValue = (((long) this.buffer.get()& 0xffL));
-					byteValue <<=(8*i);
+					byteValue = (((long) this.buffer.get() & 0xffL));
+					byteValue <<= (8 * i);
 					in += byteValue;
-				}
-				else {
+				} else {
 					/* BIG_ENDIAN - shift accumulative value then add byte value */
-				  in <<= 8;
-				  in += (((long) this.buffer.get()& 0xffL));
+					in <<= 8;
+					in += (((long) this.buffer.get() & 0xffL));
 				}
 			}
 			if (getNextBuffer() == EOF) {
 				return EOF;
 			}
-			for (int i=remaining; i<4; i++) {
+			for (int i = remaining; i < 4; i++) {
 				if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
-					byteValue = (((long) this.buffer.get()& 0xffL));
-					byteValue <<= (8*i);
+					byteValue = (((long) this.buffer.get() & 0xffL));
+					byteValue <<= (8 * i);
 					in += byteValue;
-				}
-				else {
-				  in <<=8;
-				  in += (((long) this.buffer.get()& 0xffL));
+				} else {
+					in <<= 8;
+					in += (((long) this.buffer.get() & 0xffL));
 				}
 			}
-		}
-		else {
+		} else {
 			in = this.buffer.getInt();
 			in &= 0xffffffffL;
 		}
 		this.inputablePosition += 4L;
-		
+
 		return in;
 	}
 
-	/** Get unsigned short (two byte) integer at the the current position.  This
+	/**
+	 * Get unsigned short (two byte) integer at the the current position. This
 	 * implicitly advances the current position by two bytes.
+	 * 
 	 * @return Unsigned integer at the current position, or -1 if EOF
 	 * @see org.jhove2.core.io.Input#readUnsignedShort()
 	 */
 	@Override
-	public int readUnsignedShort()
-		throws IOException
-	{
+	public int readUnsignedShort() throws IOException {
 		int sh = 0;
 		int byteValue = 0;
 		int remaining = this.buffer.limit() - this.buffer.position();
 		if (remaining < 2) {
-			for (int i=0; i<remaining; i++) {
-				/* LITTLE_ENDIAN - shift byte value then add to accumlative value */
+			for (int i = 0; i < remaining; i++) {
+				/*
+				 * LITTLE_ENDIAN - shift byte value then add to accumlative
+				 * value
+				 */
 				if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
 					byteValue = (((int) this.buffer.get() & 0xff));
-					byteValue <<=(8*i);
+					byteValue <<= (8 * i);
 					sh += byteValue;
-				}
-				else {
+				} else {
 					/* BIG_ENDIAN - shift accumulative value then add byte value */
 					sh <<= 8;
-				  sh += (((int) this.buffer.get()& 0xffL));
+					sh += (((int) this.buffer.get() & 0xffL));
 				}
 			}
 			if (getNextBuffer() == EOF) {
 				return EOF;
 			}
-			for (int i=remaining; i<4; i++) {
+			for (int i = remaining; i < 4; i++) {
 				if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
 					byteValue = (((int) this.buffer.get() & 0xff));
-					byteValue <<= (8*i);
+					byteValue <<= (8 * i);
 					sh += byteValue;
-				}
-				else {
+				} else {
 					sh <<= 8;
-				  sh += (((int) this.buffer.get()& 0xffL));
+					sh += (((int) this.buffer.get() & 0xffL));
 				}
 			}
-		}
-		else {
+		} else {
 			sh = this.buffer.getShort();
 			sh &= 0xffffL;
 		}
 		this.inputablePosition += 2L;
-		
+
 		return sh;
 	}
-	
-	/** Set byte order: big-endian or little-endian.
-	 * @param order Byte order
+
+	/**
+	 * Set byte order: big-endian or little-endian.
+	 * 
+	 * @param order
+	 *            Byte order
 	 * @see org.jhove2.core.io.Input#setByteOrder(ByteOrder)
 	 */
 	@Override
@@ -536,28 +574,28 @@ public abstract class AbstractInput
 		this.byteOrder = this.buffer.order();
 	}
 
-	/** Set the current position, as a byte offset
-	 * @param position Current position, as a byte offset
-	 * @throws IOException 
+	/**
+	 * Set the current position, as a byte offset
+	 * 
+	 * @param position
+	 *            Current position, as a byte offset
+	 * @throws IOException
 	 * @see org.jhove2.core.io.Input#setPosition(long)
 	 */
 	@Override
-	public void setPosition(long position)
-		throws IOException
-	{
+	public void setPosition(long position) throws IOException {
 		/* Determine if the new position is within the current buffer. */
-		int  pos = this.buffer.position();
-		int  lim = this.buffer.limit();
+		int pos = this.buffer.position();
+		int lim = this.buffer.limit();
 		long del = position - this.inputablePosition;
 		if (-del > pos || del > lim - pos) {
 			this.channel.position(position);
 			getNextBuffer();
-		}
-		else {
+		} else {
 			this.buffer.position(pos + (int) del);
 			this.inputablePosition = position;
 		}
-		
+
 	}
-	
+
 }

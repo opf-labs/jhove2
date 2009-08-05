@@ -38,17 +38,17 @@ package org.jhove2.core.source;
 
 import org.jhove2.annotation.ReportableProperty;
 
-/** Interface for named JHOVE2 source units.  In general, only files have
- * names.
+/**
+ * Interface for named JHOVE2 source units. In general, only files have names.
  * 
  * @author mstrong, slabrams
  */
-public interface NamedSource
-	extends Source
-{
-	/** Get source name.
+public interface NamedSource extends Source {
+	/**
+	 * Get source name.
+	 * 
 	 * @return Source name
 	 */
-	@ReportableProperty(order=1, value="Source name.")
+	@ReportableProperty(order = 1, value = "Source name.")
 	public String getName();
 }

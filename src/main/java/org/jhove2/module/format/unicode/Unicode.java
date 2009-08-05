@@ -36,21 +36,20 @@
 
 package org.jhove2.module.format.unicode;
 
-/** Interface for common JHOVE2 Unicode properties.
+/**
+ * Interface for common JHOVE2 Unicode properties.
  * 
  * @author mstrong, slabrams
  */
 public interface Unicode {
 	/** End-of-line (EOL) characters. */
 	public enum EOL {
-		CR,
-		CRLF,
-		LF
+		CR, CRLF, LF
 	}
-	
+
 	/** Carriage return (CR) code point. */
 	public static final int CR = 0x0D;
-	
+
 	/** Line feed (LF) code point. */
 	public static final int LF = 0x0A;
 }
