@@ -39,9 +39,7 @@ package org.jhove2.app;
 import java.util.List;
 import java.util.Set;
 
-import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Reportable;
-import org.jhove2.core.config.Configure;
 import org.jhove2.core.info.ReportableInfo;
 import org.jhove2.core.info.ReportablePropertyInfo;
 import org.jhove2.core.info.ReportableSourceInfo;
@@ -58,21 +56,20 @@ public class JHOVE2Doc {
 	 * Main entry for JHOVE2 reportable documentation utility.
 	 * 
 	 * @param args
-	 *            Command line arguments: Spring bean names of the reportables
+	 *            Command line arguments: package-qualified reportable class names
 	 */
 	public static void main(String[] args) {
 		if (args.length < 1) {
 			System.out.println("usage: " + JHOVE2Doc.class.getName()
-					+ " bean ...");
+					+ " reportable ...");
 			System.exit(1);
 		}
 
 		try {
 			int n = 0;
 			for (String arg : args) {
-				Reportable reportable =
-					Configure.getReportable(Reportable.class, arg);
-				Class<? extends Reportable> cl = reportable.getClass();
+				Class<? extends Reportable> cl =
+					(Class<? extends Reportable>) Class.forName(arg);
 				
 				ReportableInfo info = new ReportableInfo(cl);
 
@@ -140,7 +137,7 @@ public class JHOVE2Doc {
 				}
 				n++;
 			}
-		} catch (JHOVE2Exception e) {
+		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 	}

@@ -290,21 +290,11 @@ public class UTF8Character implements Reportable {
 	}
 
 	/**
-	 * Get encoded size, in bytes.
-	 * 
-	 * @return Encoded size, in bytes
-	 */
-	@ReportableProperty(order = 2, value = "Encoded size, in bytes")
-	public int getSize() {
-		return this.size;
-	}
-
-	/**
 	 * Get Unicode code block.
 	 * 
 	 * @return Unicode code block, or null if not in any code block
 	 */
-	@ReportableProperty(order = 3, value = "Code block")
+	@ReportableProperty(order = 3, value = "Code block.")
 	public CodeBlock getCodeBlock() {
 		return this.codeBlock;
 	}
@@ -314,7 +304,7 @@ public class UTF8Character implements Reportable {
 	 * 
 	 * @return C0 control or null if not a C0 control
 	 */
-	@ReportableProperty(order = 4, value = "C0 Control")
+	@ReportableProperty(order = 5, value = "C0 control character.")
 	public C0Control getC0Control() {
 		return this.c0control;
 	}
@@ -324,7 +314,7 @@ public class UTF8Character implements Reportable {
 	 * 
 	 * @return C1 control or null if not a c1 control
 	 */
-	@ReportableProperty(order = 5, value = "C1 Control")
+	@ReportableProperty(order = 7, value = "C1 control character.")
 	public C1Control getC1Control() {
 		return this.c1control;
 	}
@@ -350,11 +340,21 @@ public class UTF8Character implements Reportable {
 	}
 
 	/**
+	 * Get encoded size, in bytes.
+	 * 
+	 * @return Encoded size, in bytes
+	 */
+	@ReportableProperty(order = 2, value = "Encoded size, in bytes.")
+	public int getSize() {
+		return this.size;
+	}
+	
+	/**
 	 * Get Byte Order Mark (BOM) status.
 	 * 
 	 * @return True if a BOM
 	 */
-	@ReportableProperty(order = 6, value = "Byte Order Mark (BOM) status: true if a BOM")
+	@ReportableProperty(order = 8, value = "Byte Order Mark (BOM) status: true if a BOM.")
 	public boolean isByteOrderMark() {
 		return this.isBOM;
 	}
@@ -364,7 +364,7 @@ public class UTF8Character implements Reportable {
 	 * 
 	 * @return True if C0 control
 	 */
-	@ReportableProperty(order = 4, value = "C0 control status: true if a C0 control")
+	@ReportableProperty(order = 4, value = "C0 control status: true if a C0 control character.")
 	public boolean isC0Control() {
 		return this.isC0Control;
 	}
@@ -374,7 +374,7 @@ public class UTF8Character implements Reportable {
 	 * 
 	 * @return True if C1 control
 	 */
-	@ReportableProperty(order = 5, value = "C1 control status: true if a C1 control")
+	@ReportableProperty(order = 6, value = "C1 control status: true if a C1 control character.")
 	public boolean isC1Control() {
 		return this.isC1Control;
 	}
@@ -384,7 +384,7 @@ public class UTF8Character implements Reportable {
 	 * 
 	 * @return True if not a character
 	 */
-	@ReportableProperty(order = 7, value = "Non-character status: true if not a character")
+	@ReportableProperty(order = 9, value = "Non-character status: true if not a character.")
 	public boolean isNonCharacter() {
 		return this.isNonCharacter;
 	}

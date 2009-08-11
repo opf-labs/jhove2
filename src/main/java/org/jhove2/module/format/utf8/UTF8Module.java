@@ -298,7 +298,7 @@ public class UTF8Module
 	 * 
 	 * @return Set of non-line ending C0 control characters
 	 */
-	@ReportableProperty(order = 5, value = "Set of non-line-ending C0 control "
+	@ReportableProperty(order = 5, value = "Set of unique non-line-ending C0 control "
 			+ "characters.  Thus, CR and LF are not included in this set.")
 	public Set<C0Control> getC0Characters() {
 		return this.c0Characters;
@@ -309,7 +309,7 @@ public class UTF8Module
 	 * 
 	 * @return Set of C1 control characters
 	 */
-	@ReportableProperty(order = 6, value = "Set of C1 control characters.")
+	@ReportableProperty(order = 6, value = "Set of unique C1 control characters.")
 	public Set<C1Control> getC1Characters() {
 		return this.c1Characters;
 	}
@@ -319,7 +319,7 @@ public class UTF8Module
 	 * 
 	 * @return Set of code blocks
 	 */
-	@ReportableProperty(order = 4, value = "Set of Unicode code blocks.")
+	@ReportableProperty(order = 4, value = "Set of unique Unicode code blocks.")
 	public Set<CodeBlock> getCodeBlocks() {
 		return this.codeBlocks;
 	}
@@ -337,7 +337,7 @@ public class UTF8Module
 	 * 
 	 * @return Set of EOL characters
 	 */
-	@ReportableProperty(order = 3, value = "Set of End-of-Line (EOL) characters.")
+	@ReportableProperty(order = 3, value = "Set of unique End-of-Line (EOL) characters.")
 	public Set<EOL> getEOLCharacters() {
 		return this.eolCharacters;
 	}

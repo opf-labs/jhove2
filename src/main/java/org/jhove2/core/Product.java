@@ -86,7 +86,7 @@ public interface Product extends Reportable {
 	 * 
 	 * @return Product rights statement
 	 */
-	@ReportableProperty(order = 5, value = "AbstractProduct rights statement.")
+	@ReportableProperty(order = 5, value = "Product rights statement.")
 	public String getRightsStatement();
 
 	/**
