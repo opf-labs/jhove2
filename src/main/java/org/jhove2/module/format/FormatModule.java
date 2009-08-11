@@ -41,6 +41,7 @@ import java.util.List;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.Format;
 import org.jhove2.module.Module;
+import org.jhove2.module.format.Validator.Coverage;
 
 /**
  * Interface for JHOVE2 format {@link org.jhove2.module.Module}s that model a
@@ -48,7 +49,9 @@ import org.jhove2.module.Module;
  * 
  * @author mstrong, slabrams
  */
-public interface FormatModule extends Module {
+public interface FormatModule
+	extends Module
+{
 	/**
 	 * Get format module format.
 	 * 

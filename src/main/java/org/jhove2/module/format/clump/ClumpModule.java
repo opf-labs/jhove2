@@ -40,6 +40,7 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.util.List;
 
+import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.Format;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
@@ -48,6 +49,7 @@ import org.jhove2.core.source.Source;
 import org.jhove2.module.format.AbstractFormatModule;
 import org.jhove2.module.format.Parser;
 import org.jhove2.module.format.Validator;
+import org.jhove2.module.format.Validator.Coverage;
 
 /**
  * JHOVE2 Clump module. A Clump is an aggregation of source units that
@@ -55,19 +57,24 @@ import org.jhove2.module.format.Validator;
  * 
  * @author mstrong, slabrams
  */
-public class ClumpModule extends AbstractFormatModule implements Parser,
-		Validator {
+public class ClumpModule
+	extends AbstractFormatModule
+	implements Parser, Validator
+{
 	/** Clump module version identifier. */
-	public static final String VERSION = "1.0.0";
+	public static final String VERSION = "0.1.2";
 
 	/** Clump module release date. */
-	public static final String RELEASE = "2009-07-13";
+	public static final String RELEASE = "2009-08-11";
 
 	/** Clump module rights statement. */
 	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California, "
 			+ "Ithaka Harbors, Inc., and The Board of Trustees of the Leland "
 			+ "Stanford Junior University. "
 			+ "Available under the terms of the BSD license.";
+	
+	/** Clump module validation coverage. */
+	public static final Coverage COVERAGE = Coverage.Exhaustive;
 
 	/** Clump validation status. */
 	protected Validity isValid;
@@ -101,8 +108,9 @@ public class ClumpModule extends AbstractFormatModule implements Parser,
 	 *      org.jhove2.core.source.Source)
 	 */
 	@Override
-	public long parse(JHOVE2 jhove2, Source source) throws EOFException,
-			IOException, JHOVE2Exception {
+	public long parse(JHOVE2 jhove2, Source source)
+		throws EOFException, IOException, JHOVE2Exception
+	{
 		if (source instanceof ClumpSource) {
 			List<Source> children = ((ClumpSource) source).getChildSources();
 			for (Source src : children) {
@@ -129,6 +137,14 @@ public class ClumpModule extends AbstractFormatModule implements Parser,
 		return this.isValid;
 	}
 
+	/** Get clump module validation coverage.
+	 * @return Clump module validation coverage
+	 */
+	@Override
+	public Coverage getCoverage() {
+		return COVERAGE;
+	}
+	
 	/**
 	 * Get Clump validation status.
 	 * 

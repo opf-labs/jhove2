@@ -49,6 +49,7 @@ import org.jhove2.core.Message.Severity;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.AbstractFormatProfile;
 import org.jhove2.module.format.Validator;
+import org.jhove2.module.format.Validator.Coverage;
 import org.jhove2.module.format.unicode.CodeBlock;
 import org.jhove2.module.format.utf8.UTF8Module;
 
@@ -57,18 +58,25 @@ import org.jhove2.module.format.utf8.UTF8Module;
  * 
  * @author mstrong, slabrams
  */
-public class ASCIIProfile extends AbstractFormatProfile implements Validator {
+public class ASCIIProfile
+	extends AbstractFormatProfile
+	implements Validator
+{
 	/** Basic Latin code block. */
 	public static final String BASIC_LATIN = "Basic Latin";
 	/** ASCII profile version identifier. */
-	public static final String VERSION = "1.0.0";
+	public static final String VERSION = "0.1.2";
 
 	/** ASCII profile release date. */
-	public static final String RELEASE = "2009-06-23";
+	public static final String RELEASE = "2009-08-11";
 
 	/** ASCII profile rights statement. */
-	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California. "
-			+ "Available under the terms of the BSD license.";
+	public static final String RIGHTS =
+		"Copyright 2009 by The Regents of the University of California. " +
+		"Available under the terms of the BSD license.";
+	
+	/** ASCII profile validation coverage. */
+	public static final Coverage COVERAGE = Coverage.Exhaustive;
 
 	/** ASCII validation status. */
 	protected Validity isValid;
@@ -137,6 +145,14 @@ public class ASCIIProfile extends AbstractFormatProfile implements Validator {
 		return this.isValid;
 	}
 
+	/** Get ASCII profile validation coverage.
+	 * @return ASCII profile validation coverage
+	 */
+	@Override
+	public Coverage getCoverage() {
+		return COVERAGE;
+	}
+	
 	/**
 	 * Get non-Basic Latin code block message.
 	 * 

@@ -53,24 +53,29 @@ import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
 import org.jhove2.module.format.AbstractFormatModule;
 import org.jhove2.module.format.Parser;
+import org.jhove2.module.format.Validator.Coverage;
 
 /**
  * JHOVE2 Zip module.
  * 
  * @author mstrong, slabrams
  */
-public class ZipModule extends AbstractFormatModule implements Parser {
+public class ZipModule
+	extends AbstractFormatModule
+	implements Parser
+{
 	/** Zip module version identifier. */
-	public static final String VERSION = "1.0.0";
+	public static final String VERSION = "0.1.2";
 
 	/** Zip module release date. */
-	public static final String RELEASE = "2009-07-31";
+	public static final String RELEASE = "2009-08-11";
 
 	/** Zip module rights statement. */
-	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California, "
-			+ "Ithaka Harbors, Inc., and The Board of Trustees of the Leland "
-			+ "Stanford Junior University. "
-			+ "Available under the terms of the BSD license.";
+	public static final String RIGHTS =
+		"Copyright 2009 by The Regents of the University of California, " +
+		"Ithaka Harbors, Inc., and The Board of Trustees of the Leland " +
+		"Stanford Junior University. " +
+		"Available under the terms of the BSD license.";
 
 	/**
 	 * Instantiate a new <code>ZipModule</code>.
@@ -97,8 +102,9 @@ public class ZipModule extends AbstractFormatModule implements Parser {
 	 *      org.jhove2.core.source.Source)
 	 */
 	@Override
-	public long parse(JHOVE2 jhove2, Source source) throws EOFException,
-			IOException, JHOVE2Exception {
+	public long parse(JHOVE2 jhove2, Source source)
+		throws EOFException, IOException, JHOVE2Exception
+	{
 		Input input = null;
 		try {
 			input = source.getInput(jhove2.getBufferSize(), jhove2

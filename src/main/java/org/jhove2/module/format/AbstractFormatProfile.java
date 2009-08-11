@@ -36,6 +36,7 @@
 
 package org.jhove2.module.format;
 
+import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.Format;
 import org.jhove2.module.AbstractModule;
 
@@ -45,8 +46,10 @@ import org.jhove2.module.AbstractModule;
  * 
  * @author mstrong, slabrams
  */
-public class AbstractFormatProfile extends AbstractModule implements
-		FormatProfile {
+public class AbstractFormatProfile
+	extends AbstractModule
+	implements FormatProfile
+{
 	/** Format profile format. */
 	protected Format format;
 
@@ -64,12 +67,13 @@ public class AbstractFormatProfile extends AbstractModule implements
 	 *            Format profile rights statement
 	 * @param format
 	 *            Format profile format
+	 * @param coverage
 	 */
 	public AbstractFormatProfile(String version, String release, String rights,
 			Format format) {
 		super(version, release, rights);
 
-		this.format = format;
+		this.format   = format;
 	}
 
 	/**

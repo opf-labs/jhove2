@@ -55,6 +55,7 @@ import org.jhove2.core.source.ZipFileSource;
 import org.jhove2.module.format.AbstractFormatModule;
 import org.jhove2.module.format.Parser;
 import org.jhove2.module.format.Validator;
+import org.jhove2.module.format.Validator.Coverage;
 import org.jhove2.module.format.unicode.C0Control;
 import org.jhove2.module.format.unicode.C1Control;
 import org.jhove2.module.format.unicode.CodeBlock;
@@ -66,17 +67,23 @@ import org.jhove2.module.format.unicode.Unicode.EOL;
  * 
  * @author mstrong, slabrams
  */
-public class UTF8Module extends AbstractFormatModule implements Parser,
-		Validator {
+public class UTF8Module
+	extends AbstractFormatModule
+	implements Parser, Validator
+{
 	/** UTF-8 module version identifier. */
-	public static final String VERSION = "1.0.0";
+	public static final String VERSION = "0.1.2";
 
 	/** UTF-8 module release date. */
-	public static final String RELEASE = "2009-06-23";
+	public static final String RELEASE = "2009-08-11";
 
 	/** UTF-8 module rights statement. */
-	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California. "
-			+ "Available under the terms of the BSD license.";
+	public static final String RIGHTS =
+		"Copyright 2009 by The Regents of the University of California. " +
+		"Available under the terms of the BSD license.";
+	
+	/** UTF-8 module validation coverage. */
+	public static final Coverage COVERAGE = Coverage.Exhaustive;
 
 	/** Byte Order Mark (BOM) message. */
 	protected Message bomMessage;
@@ -151,8 +158,9 @@ public class UTF8Module extends AbstractFormatModule implements Parser,
 	 *      org.jhove2.core.source.Source)
 	 */
 	@Override
-	public long parse(JHOVE2 jhove2, Source source) throws EOFException,
-			IOException, JHOVE2Exception {
+	public long parse(JHOVE2 jhove2, Source source)
+		throws EOFException, IOException, JHOVE2Exception
+	{
 		setStartTime();
 
 		long consumed = 0L;
@@ -316,6 +324,14 @@ public class UTF8Module extends AbstractFormatModule implements Parser,
 		return this.codeBlocks;
 	}
 
+	/** Get UTF-8 module validation coverage.
+	 * @return UTF-8 module validation coverage
+	 */
+	@Override
+	public Coverage getCoverage() {
+		return COVERAGE;
+	}
+	
 	/**
 	 * Get End-of-Line (EOL) characters.
 	 * 

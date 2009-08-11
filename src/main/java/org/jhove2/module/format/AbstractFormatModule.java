@@ -47,8 +47,10 @@ import org.jhove2.module.AbstractModule;
  * 
  * @author mstrong, slabrams
  */
-public abstract class AbstractFormatModule extends AbstractModule implements
-		FormatModule {
+public abstract class AbstractFormatModule
+	extends AbstractModule
+	implements FormatModule
+{
 	/** Format module format. */
 	protected Format format;
 
@@ -71,7 +73,7 @@ public abstract class AbstractFormatModule extends AbstractModule implements
 			Format format) {
 		super(version, release, rights);
 
-		this.format = format;
+		this.format   = format;
 		this.profiles = new ArrayList<FormatProfile>();
 	}
 

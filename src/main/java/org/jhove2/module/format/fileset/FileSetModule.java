@@ -53,12 +53,15 @@ import org.jhove2.module.format.Parser;
  * 
  * @author mstrong, slabrams
  */
-public class FileSetModule extends AbstractFormatModule implements Parser {
+public class FileSetModule
+	extends AbstractFormatModule
+	implements Parser
+{
 	/** Pseudo-directory module version identifier. */
-	public static final String VERSION = "1.0.0";
+	public static final String VERSION = "0.1.2";
 
 	/** Pseudo-directory module release date. */
-	public static final String RELEASE = "2009-07-16";
+	public static final String RELEASE = "2009-08-11";
 
 	/** Pseudo-directory module rights statement. */
 	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California, "
@@ -93,8 +96,9 @@ public class FileSetModule extends AbstractFormatModule implements Parser {
 	 *      org.jhove2.core.source.Source)
 	 */
 	@Override
-	public long parse(JHOVE2 jhove2, Source source) throws EOFException,
-			IOException, JHOVE2Exception {
+	public long parse(JHOVE2 jhove2, Source source)
+		throws EOFException, IOException, JHOVE2Exception
+	{
 		if (source instanceof FileSetSource) {
 			List<Source> children = ((FileSetSource) source).getChildSources();
 			for (Source src : children) {

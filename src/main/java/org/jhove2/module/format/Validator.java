@@ -46,9 +46,18 @@ import org.jhove2.core.source.Source;
  * @author mstrong, slabrams
  */
 public interface Validator {
+	/** Validation coverage. */
+	public enum Coverage {
+		Exhaustive,
+		Selective,
+		None
+	}
+	
 	/** Validity values. */
 	public enum Validity {
-		True("true"), False("false"), Undetermined("undetermined");
+		True        ("true"),
+		False       ("false"),
+		Undetermined("undetermined");
 
 		/** Status label. */
 		private String label;
@@ -84,11 +93,17 @@ public interface Validator {
 	 */
 	public Validity validate(JHOVE2 jhove2, Source source);
 
+	/** Get validation coverage.
+	 * @return Validation coverage
+	 */
+	@ReportableProperty(order=2, value="Format module validation coverage.")
+	public Coverage getCoverage();
+	
 	/**
 	 * Get validation status.
 	 * 
 	 * @return Validation status
 	 */
-	@ReportableProperty("Validation status.")
+	@ReportableProperty(order=1, value="Validation status.")
 	public Validity isValid();
 }

@@ -47,13 +47,14 @@ import org.jhove2.module.Module;
  * 
  * @author mstrong, slabrams
  */
-public interface FormatProfile extends Module {
+public interface FormatProfile
+	extends Module
+{
 	/**
 	 * Get format profile format.
-	 * 
 	 * @return Format profile format
 	 */
-	@ReportableProperty(order = 1, value = "Format profile format.")
+	@ReportableProperty("Format profile format.")
 	public Format getFormat();
 
 	/**
