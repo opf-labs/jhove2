@@ -53,10 +53,10 @@ public class JHOVE2CommandLine
 	extends AbstractApplication
 {
 	/** JHOVE2 application version identifier. */
-	public static final String VERSION = "0.5.2";
+	public static final String VERSION = "0.5.3";
 
 	/** JHOVE2 application release date. */
-	public static final String RELEASE = "2009-08-04";
+	public static final String RELEASE = "2009-08-13";
 
 	/** JHOVE2 application rights statement. */
 	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California, "
@@ -126,7 +126,7 @@ public class JHOVE2CommandLine
 			}
 			if (args[i].charAt(0) == '-') {
 				if (args[i].length() > 1) {
-					char opt = Character.toLowerCase(args[i].charAt(1));
+					char opt = args[i].charAt(1);
 					if (opt == 'b' && i + 1 < args.length) {
 						this.bufferSize = Integer.valueOf(args[++i]);
 						this.commandLine += " " + args[i];
