@@ -14,8 +14,8 @@
 
 	<!-- JHOVE2 framework bean -->
 	<bean id="JHOVE2" class="org.jhove2.core.JHOVE2" scope="prototype">
-		<property name="characterizer" ref="CharacterizerModule"/>
-		<property name="dispatcher" ref="DispatcherModule"/>
+		<property name="characterizer" ref="Characterizer"/>
+		<property name="dispatcher" ref="Dispatcher"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
@@ -28,8 +28,7 @@
 		
 		
  	<!-- Characterizer module bean -->
-	<bean id="CharacterizerModule" 
-	      class="org.jhove2.module.characterize.CharacterizerModule"
+	<bean id="Characterizer" class="org.jhove2.module.characterize.CharacterizerModule"
 	      scope="prototype">
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
@@ -43,8 +42,7 @@
 	      
 	      
 	<!-- Identifier module bean -->
-	<bean id="IdentifierModule"
-	      class="org.jhove2.module.identify.IdentifierModule"
+	<bean id="Identifier" class="org.jhove2.module.identify.IdentifierModule"
 	      scope="prototype">
 	    <property name="wrappedProduct" ref="DROIDProduct"/>
 		<property name="developers">
@@ -74,8 +72,7 @@
 	   
 	      
 	<!-- Dispatcher module bean -->
-	<bean id="DispatcherModule"
-	      class="org.jhove2.module.dispatch.DispatcherModule"
+	<bean id="Dispatcher" class="org.jhove2.module.dispatch.DispatcherModule"
 	      scope="prototype">
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
@@ -89,8 +86,7 @@
 	      
 	      
 	<!-- Aggrefier module bean -->
-	<bean id="AggrefierModule"
-	      class="org.jhove2.module.identify.AggrefierModule"
+	<bean id="Aggrefier" class="org.jhove2.module.identify.AggrefierModule"
 	      scope="prototype">
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
@@ -104,7 +100,7 @@
 	      
 	      
 	<!--  Message digester module bean -->
-	<bean id="DigesterModule"
+	<bean id="Digester"
 	      class="org.jhove2.module.digest.DigesterModule"
 	      scope="prototype">
 		<property name="arrayDigesters">
@@ -594,12 +590,12 @@
 	<util:properties id="CodeBlock"	
 		             location="classpath:properties/unicode/codeblock.properties"/>
 		
-	<!-- Displayer properties bean -->
-	<util:properties id="Displayer"
+	<!-- Display visbility properties bean -->
+	<util:properties id="DisplayVisibility"
 	                 location="classpath:properties/displayer.properties"/>
 
-	<!-- Dispatcher properties bean -->
-	<util:properties id="Dispatcher"	
+	<!-- Dispatch map properties bean -->
+	<util:properties id="DispatchMap"	
 		             location="classpath:properties/dispatcher.properties"/>
 		
 </beans>

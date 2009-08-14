@@ -66,18 +66,22 @@ import org.jhove2.module.identify.Identifier;
  * 
  * @author mstrong, slabrams
  */
-public class DispatcherModule extends AbstractModule implements Dispatcher {
+public class DispatcherModule
+	extends	AbstractModule
+	implements Dispatcher
+{
 	/** Dispatcher module version identifier. */
-	public static final String VERSION = "1.0.0";
+	public static final String VERSION = "0.1.2";
 
 	/** Dispatcher module release date. */
-	public static final String RELEASE = "2009-07-31";
+	public static final String RELEASE = "2009-08-14";
 
 	/** Dispatcher module rights statement. */
-	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California, "
-			+ "Ithaka Harbors, Inc., and The Board of Trustees of the Leland "
-			+ "Stanford Junior University. "
-			+ "Available under the terms of the BSD license.";
+	public static final String RIGHTS =
+		"Copyright 2009 by The Regents of the University of California, " +
+		"Ithaka Harbors, Inc., and The Board of Trustees of the Leland " +
+		"Stanford Junior University. " +
+		"Available under the terms of the BSD license.";
 
 	/** Dispatch map. */
 	protected Map<String, String> dispatch;
@@ -91,7 +95,7 @@ public class DispatcherModule extends AbstractModule implements Dispatcher {
 		super(VERSION, RELEASE, RIGHTS);
 
 		this.dispatch = new TreeMap<String, String>();
-		Properties props = Configure.getProperties("Dispatcher");
+		Properties props = Configure.getProperties("DispatchMap");
 		Set<String> keys = props.stringPropertyNames();
 		for (String key : keys) {
 			String value = props.getProperty(key);

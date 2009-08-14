@@ -125,7 +125,7 @@ public class JHOVE2CommandLine
 				this.commandLine += " " + args[i];
 			}
 			if (args[i].charAt(0) == '-') {
-				if (args[i].length() > 1) {
+				if (args[i].length() > 1) { 
 					char opt = args[i].charAt(1);
 					if (opt == 'b' && i + 1 < args.length) {
 						this.bufferSize = Integer.valueOf(args[++i]);

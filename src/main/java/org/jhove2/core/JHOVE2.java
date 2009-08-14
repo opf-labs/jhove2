@@ -229,7 +229,7 @@ public class JHOVE2
 
 		/* Initialize the displayer displayVisbilities map. */
 		this.visbilities = new TreeMap<String, DisplayVisbility>();
-		Properties props = Configure.getProperties("Displayer");
+		Properties props = Configure.getProperties("DisplayVisibility");
 		if (props != null) {
 			Set<String> keys = props.stringPropertyNames();
 			for (String key : keys) {
