@@ -96,7 +96,7 @@
 			</list>
 		</property>
 		<property name="recognizers">
-			<list value-type="org.jhove2.module.identify.Recognizer">
+			<list value-type="org.jhove2.module.identify.Identifier">
 				<ref bean="ShapeFileRecognizer"/>
 			</list>
 		</property>

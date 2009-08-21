@@ -68,7 +68,7 @@ public class AggrefierModule extends AbstractModule implements Identifier{
 	/** Presumptively identified presumptiveFormatIds. */
 	protected Set<FormatIdentification> presumptiveFormatIds;
 	/** list of configured Recognizers that can detect instances of a format */
-	protected List<Recognizer> recognizers;
+	protected List<Identifier> recognizers;
 
 	/**
 	 * Instantiate a new <code>AggrefierModule</code>.
@@ -95,7 +95,7 @@ public class AggrefierModule extends AbstractModule implements Identifier{
 	@Override
 	public Set<FormatIdentification> identify(JHOVE2 jhove2,
 			Source source) throws IOException, JHOVE2Exception {
-		for (Recognizer recognizer:this.recognizers){
+		for (Identifier recognizer:this.recognizers){
 			this.presumptiveFormatIds.addAll(recognizer.identify(jhove2, source));
 		}	
 		return this.presumptiveFormatIds;
@@ -112,11 +112,11 @@ public class AggrefierModule extends AbstractModule implements Identifier{
 		return this.presumptiveFormatIds;
 	}
 
-	public List<Recognizer> getRecognizers() {
+	public List<Identifier> getRecognizers() {
 		return recognizers;
 	}
 
-	public void setRecognizers(List<Recognizer> recognizers) {
+	public void setRecognizers(List<Identifier> recognizers) {
 		this.recognizers = recognizers;
 	}
 	
