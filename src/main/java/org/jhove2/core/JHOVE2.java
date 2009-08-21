@@ -287,7 +287,7 @@ public class JHOVE2
 			while (iter.hasNext()) {
 				String pathName = iter.next();
 				Source src = SourceFactory.getSource(pathName);
-				((FileSetSource) this.source).setChildSource(src);
+				((FileSetSource) this.source).addChildSource(src);
 			}
 			characterize(this.source);
 		}

@@ -33,45 +33,25 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.jhove2.module.identify;
 
-import java.io.IOException;
+import java.util.List;
 import java.util.Set;
 
-import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.FormatIdentification;
-import org.jhove2.core.JHOVE2;
+import org.jhove2.core.source.Source;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.source.AggregateSource;
-import org.jhove2.module.Module;
+import org.jhove2.core.FormatIdentification;
 
 /**
- * Interface for JHOVE2 aggregate identification modules.
- * 
- * @author mstrong, slabrams
+ * Interface for classes capable of recognizing one or more instances of a 
+ * single multi-file format
+ * @author smorrissey
+ *
  */
-public interface Aggrefier extends Module {
-	/**
-	 * Presumptively identify the format of an aggregate source unit.
-	 * 
-	 * @param jhove2
-	 *            JHOVE2 framework
-	 * @param source
-	 *            Aggregate ource unit
-	 * @return Presumptively identified formats
-	 * @throws IOException
-	 *             I/O exception encountered identifying the source unit
-	 * @throws JHOVE2Exception
-	 */
-	public Set<FormatIdentification> identify(JHOVE2 jhove2,
-			AggregateSource source) throws IOException, JHOVE2Exception;
+public interface Recognizer extends Identifier {
 
-	/**
-	 * Get presumptive aggregate format identifications.
-	 * 
-	 * @return Presumptive aggregate format identifications
-	 */
-	@ReportableProperty("Presumptive format identifications.")
-	public Set<FormatIdentification> getPresumptiveFormats();
+	public List<List<Source>> groupSources(Source source) throws JHOVE2Exception;
+	
+	public Set<FormatIdentification> recognizeGroupedSources() throws JHOVE2Exception;
+	
 }

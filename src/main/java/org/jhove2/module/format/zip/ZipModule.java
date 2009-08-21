@@ -164,11 +164,11 @@ public class ZipModule
 								String key = name.substring(0, in);
 								Source parent = map.get(key);
 								if (parent != null) {
-									parent.setChildSource(src);
+									parent.addChildSource(src);
 								}
 							} else {
 								/* Directory is a child of the Zip file. */
-								source.setChildSource(src);
+								source.addChildSource(src);
 							}
 						}
 					} else {
@@ -180,7 +180,7 @@ public class ZipModule
 							int in = name.lastIndexOf('/');
 							if (in < 0) {
 								/* File is a child of the Zip file. */
-								source.setChildSource(src);
+								source.addChildSource(src);
 							} else {
 								/*
 								 * File is a child of a Zip file entry that can
@@ -189,7 +189,7 @@ public class ZipModule
 								String key = name.substring(0, in);
 								Source parent = map.get(key);
 								if (parent != null) {
-									parent.setChildSource(src);
+									parent.addChildSource(src);
 								}
 							}
 						}

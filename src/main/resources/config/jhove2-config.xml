@@ -95,6 +95,11 @@
 				<ref bean="StanfordAgent"/>
 			</list>
 		</property>
+		<property name="recognizers">
+			<list value-type="org.jhove2.module.identify.Recognizer">
+				<ref bean="ShapeFileRecognizer"/>
+			</list>
+		</property>
 	</bean>
 	      
 	      
@@ -399,7 +404,26 @@
 		<constructor-arg type="java.lang.String" value="info:jhove2/format/shapefile"/>
 	</bean>
 			
-	
+	<!-- Shapefile recognizer bean -->
+	<bean id="ShapeFileRecognizer" class="org.jhove2.module.identify.FilePathGlobbingRecognizer"
+	 scope="prototype">
+	 	<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+				<ref bean="PorticoAgent"/>
+				<ref bean="StanfordAgent"/>
+			</list>
+		</property>
+	 	<property name="format" ref="ShapefileFormat"/>
+	 	<property name="fileGroupingToken" value="(.*[\\/]\w+).((?i:shp\.)?\w{3})"/>
+	 	<property name="mustHaveToken" value="^((?i:shp)|(?i:shx)|(?i:dbf))$"/>
+	 	<property name="mayHaveToken" 
+	 	          value="^((?i:shp.xml)|(?i:prj)|(?i:sbn)|(?i:sbx)|(?i:atx)|(?i:qix)|(?i:fix)|(?i:grx))$"/>
+	 	<property name="mustHaveCaptureGroupIndex" value="2"/>
+	 	<property name="mayHaveCaptureGroupIndex" value="2"/>
+	 	<property name="minMustHavesToIdentify" value="3"/>
+	  	<property name="includeUnmatchedFromGroup" value="true"/>
+	</bean>
 	
 	<!-- UTF-8 module bean -->
 	<bean id="UTF8Module" class="org.jhove2.module.format.utf8.UTF8Module"

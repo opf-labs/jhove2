@@ -57,7 +57,7 @@ import org.jhove2.module.format.FormatModule;
 import org.jhove2.module.format.FormatProfile;
 import org.jhove2.module.format.Parser;
 import org.jhove2.module.format.Validator;
-import org.jhove2.module.identify.Aggrefier;
+//import org.jhove2.module.identify.Aggrefier;
 import org.jhove2.module.identify.Identifier;
 
 /**
@@ -190,9 +190,9 @@ public class DispatcherModule
 			JHOVE2Exception {
 		module.setStartTime();
 
-		if (module instanceof Aggrefier && source instanceof AggregateSource) {
-			((Aggrefier) module).identify(jhove2, (AggregateSource) source);
-		}
+//		if (module instanceof Identifier && source instanceof AggregateSource) {
+//			((Identifier) module).identify(jhove2,source);
+//		}
 		if (module instanceof Identifier) {
 			((Identifier) module).identify(jhove2, source);
 		}

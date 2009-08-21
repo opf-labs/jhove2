@@ -59,7 +59,7 @@ public interface Identifier extends Module {
 	 *            JHOVE2 framework
 	 * @param source
 	 *            Source unit
-	 * @return Presumptively identified formats
+	 * @return Presumptively identified presumptiveFormatIds
 	 * @throws IOException
 	 *             I/O exception encountered identifying the source unit
 	 * @throws JHOVE2Exception
@@ -73,5 +73,5 @@ public interface Identifier extends Module {
 	 * @return Presumptive format identifications
 	 */
 	@ReportableProperty("Presumptive format identifications.")
-	public Set<FormatIdentification> getPresumptiveFormats();
+	public Set<FormatIdentification> getPresumptiveFormatIds();
 }

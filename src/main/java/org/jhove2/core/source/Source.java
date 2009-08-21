@@ -168,7 +168,7 @@ public interface Source extends Temporal {
 	 * @param child
 	 *            Child source unit
 	 */
-	public void setChildSource(Source child);
+	public void addChildSource(Source child);
 
 	/**
 	 * Set delete temporary files flag; if true, delete files.

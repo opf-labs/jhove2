@@ -41,28 +41,23 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.jhove2.core.Format;
 import org.jhove2.core.FormatIdentification;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.FormatIdentification.Confidence;
-import org.jhove2.core.config.Configure;
-import org.jhove2.core.source.AggregateSource;
-import org.jhove2.core.source.NamedSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractModule;
 
 /**
  * JHOVE2 aggregate identification module.
  * 
- * @author mstrong, slabrams
+ * @author smorrissey
  */
-public class AggrefierModule extends AbstractModule implements Aggrefier {
+public class AggrefierModule extends AbstractModule implements Identifier{
 	/** Identification module version identifier. */
 	public static final String VERSION = "1.0.0";
 
 	/** Identification module release date. */
-	public static final String RELEASE = "2009-07-17";
+	public static final String RELEASE = "2009-08-21";
 
 	/** Identification module rights statement. */
 	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California, "
@@ -70,16 +65,17 @@ public class AggrefierModule extends AbstractModule implements Aggrefier {
 			+ "Stanford Junior University. "
 			+ "Available under the terms of the BSD license.";
 
-	/** Presumptively identified formats. */
-	protected Set<FormatIdentification> formats;
+	/** Presumptively identified presumptiveFormatIds. */
+	protected Set<FormatIdentification> presumptiveFormatIds;
+	/** list of configured Recognizers that can detect instances of a format */
+	protected List<Recognizer> recognizers;
 
 	/**
 	 * Instantiate a new <code>AggrefierModule</code>.
 	 */
 	public AggrefierModule() {
 		super(VERSION, RELEASE, RIGHTS);
-
-		this.formats = new TreeSet<FormatIdentification>();
+		this.presumptiveFormatIds = new TreeSet<FormatIdentification>();
 	}
 
 	/**
@@ -89,7 +85,7 @@ public class AggrefierModule extends AbstractModule implements Aggrefier {
 	 *            JHOVE2 framework
 	 * @param source
 	 *            Aggregate source unit
-	 * @return Presumptively identified formats
+	 * @return Presumptively identified presumptiveFormatIds
 	 * @throws IOException
 	 *             I/O exception encountered identifying the source unit
 	 * @throws JHOVE2Exception
@@ -98,53 +94,31 @@ public class AggrefierModule extends AbstractModule implements Aggrefier {
 	 */
 	@Override
 	public Set<FormatIdentification> identify(JHOVE2 jhove2,
-			AggregateSource source) throws IOException, JHOVE2Exception {
-		List<Source> children = source.getChildSources();
-
-		/**
-		 * Presumptively-identify a shape file by looking for three files with
-		 * the names: abc.shp, abc.shx, abc.dbf
-		 */
-		Source dbfSource = null;
-		Source shpSource = null;
-		Source shxSource = null;
-		if (children.size() > 2) {
-			for (Source src : children) {
-				if (!(src instanceof AggregateSource)
-						&& src instanceof NamedSource) {
-					String name = ((NamedSource) src).getName();
-					if (name.equals("abc.dbf")) {
-						dbfSource = src;
-					} else if (name.equals("abc.shp")) {
-						shpSource = src;
-					} else if (name.equals("abc.shx")) {
-						shxSource = src;
-					}
-				}
-			}
-		}
-		if (dbfSource != null && shpSource != null && shxSource != null) {
-			FormatIdentification id = new FormatIdentification(Configure
-					.getReportable(Format.class, "ShapefileFormat"),
-					Confidence.PositiveSpecific);
-			id.setSource(dbfSource);
-			id.setSource(shpSource);
-			id.setSource(shxSource);
-			this.formats.add(id);
-
-		}
-
-		return this.formats;
+			Source source) throws IOException, JHOVE2Exception {
+		for (Recognizer recognizer:this.recognizers){
+			this.presumptiveFormatIds.addAll(recognizer.identify(jhove2, source));
+		}	
+		return this.presumptiveFormatIds;
 	}
 
 	/**
 	 * Get presumptive format identifications.
 	 * 
 	 * @return Presumptive format identifications
-	 * @see org.jhove2.module.identify.Identifier#getPresumptiveFormats()
+	 * @see org.jhove2.module.identify.Identifier#getPresumptiveFormatIds()
 	 */
 	@Override
-	public Set<FormatIdentification> getPresumptiveFormats() {
-		return this.formats;
+	public Set<FormatIdentification> getPresumptiveFormatIds() {
+		return this.presumptiveFormatIds;
 	}
+
+	public List<Recognizer> getRecognizers() {
+		return recognizers;
+	}
+
+	public void setRecognizers(List<Recognizer> recognizers) {
+		this.recognizers = recognizers;
+	}
+	
+
 }

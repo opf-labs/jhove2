@@ -343,10 +343,10 @@ public abstract class AbstractSource implements Source {
 	 * 
 	 * @param child
 	 *            Child source unit
-	 * @see org.jhove2.core.source.Source#setChildSource(org.jhove2.core.source.Source)
+	 * @see org.jhove2.core.source.Source#addChildSource(org.jhove2.core.source.Source)
 	 */
 	@Override
-	public void setChildSource(Source child) {
+	public void addChildSource(Source child) {
 		this.children.add(child);
 	}
 

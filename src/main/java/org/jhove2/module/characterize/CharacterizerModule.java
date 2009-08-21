@@ -52,7 +52,7 @@ import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractModule;
 import org.jhove2.module.digest.Digester;
 import org.jhove2.module.dispatch.Dispatcher.Disposition;
-import org.jhove2.module.identify.Aggrefier;
+//import org.jhove2.module.identify.Aggrefier;
 import org.jhove2.module.identify.Identifier;
 
 /**
@@ -61,7 +61,7 @@ import org.jhove2.module.identify.Identifier;
  * unit to the module associated with the format for parsing, feature
  * extraction, and validation; (3) perform assessment on the source based on its
  * extracted reportable properties and validation status; (4) if an aggregate
- * source unit, (a) presumptively-identify any formats found amongst its child
+ * source unit, (a) presumptively-identify any presumptiveFormatIds found amongst its child
  * source units, and if so, (b) gather those source units into a Clump, and (c)
  * dispatch the Clump to the appropriate format module; and (d) to the Assessor
  * module; (5) if a non-aggregate source unit, optionally calculate message
@@ -99,7 +99,7 @@ public class CharacterizerModule
 	 * source unit to the module associated with the format for parsing, feature
 	 * extraction, and validation; (3) perform assessment on the source based on
 	 * its extracted reportable properties and validation status; (4) if an
-	 * aggregate source unit, (a) presumptively-identify any formats found
+	 * aggregate source unit, (a) presumptively-identify any presumptiveFormatIds found
 	 * amongst its child source units, and if so, (b) gather those source units
 	 * into a Clump, and (c) dispatch to the module associated with the format
 	 * for feature extraction and validation; (5) if a non-aggregate source
@@ -124,7 +124,7 @@ public class CharacterizerModule
 		Identifier identifier = Configure.getReportable(Identifier.class,
 				                                       "Identifier");
 		jhove2.dispatch(source, identifier);
-		formats = identifier.getPresumptiveFormats();
+		formats = identifier.getPresumptiveFormatIds();
 
 		/*
 		 * (2) Dispatch the source unit to the module associated with format for
@@ -146,25 +146,25 @@ public class CharacterizerModule
 		// jhove2.dispatch(source, assessor);
 		/*
 		 * (4) For aggregate source units, (a) presumptively-identify any
-		 * formats found amongst the child source units; and, if so, (b) gather
+		 * presumptiveFormatIds found amongst the child source units; and, if so, (b) gather
 		 * the the children into a new Clump source unit that is a child of the
 		 * aggregate; (c) dispatch the Clump to the appropriate format module;
 		 * and (d) to the assessor module.
 		 */
 		if (source instanceof AggregateSource) {
-			Aggrefier aggrefier = Configure.getReportable(Aggrefier.class,
+			Identifier aggrefier = Configure.getReportable(Identifier.class,
 					                                     "Aggrefier");
 			jhove2.dispatch(source, aggrefier, Disposition.DontAddToSource);
-			formats = aggrefier.getPresumptiveFormats();
+			formats = aggrefier.getPresumptiveFormatIds();
 			for (FormatIdentification fid : formats) {
 				ClumpSource clump = new ClumpSource();
 				List<Source> sources = fid.getSources();
 				for (Source src : sources) {
-					clump.setChildSource(src);
+					clump.addChildSource(src);
 					source.deleteChildSource(src);
 				}
 				clump.setModule(aggrefier);
-				source.setChildSource(clump);
+				source.addChildSource(clump);
 
 				Format format = fid.getPresumptiveFormat();
 				I8R id = format.getIdentifier();

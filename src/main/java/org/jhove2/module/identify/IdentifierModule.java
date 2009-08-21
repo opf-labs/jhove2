@@ -72,7 +72,7 @@ public class IdentifierModule extends AbstractModule implements Identifier {
 			+ "Stanford Junior University. "
 			+ "Available under the terms of the BSD license.";
 
-	/** Presumptively identified formats. */
+	/** Presumptively identified presumptiveFormatIds. */
 	protected Set<FormatIdentification> formats;
 
 	/**
@@ -91,7 +91,7 @@ public class IdentifierModule extends AbstractModule implements Identifier {
 	 *            JHOVE2 framework
 	 * @param source
 	 *            Source unit
-	 * @return Presumptively identified formats
+	 * @return Presumptively identified presumptiveFormatIds
 	 * @throws IOException
 	 *             I/O exception encountered identifying the source unit
 	 * @throws JHOVE2Exception
@@ -163,10 +163,10 @@ public class IdentifierModule extends AbstractModule implements Identifier {
 	 * Get presumptive format identifications.
 	 * 
 	 * @return Presumptive format identifications
-	 * @see org.jhove2.module.identify.Identifier#getPresumptiveFormats()
+	 * @see org.jhove2.module.identify.Identifier#getPresumptiveFormatIds()
 	 */
 	@Override
-	public Set<FormatIdentification> getPresumptiveFormats() {
+	public Set<FormatIdentification> getPresumptiveFormatIds() {
 		return this.formats;
 	}
 }
