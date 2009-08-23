@@ -101,8 +101,6 @@ public class FormatIdentification implements Reportable,
 	 *            Identification confidence level
 	 */
 	public FormatIdentification(Format format, Confidence confidence) {
-		this(format, confidence, null);
-
 		this.sources = new ArrayList<Source>();
 	}
 
@@ -118,9 +116,8 @@ public class FormatIdentification implements Reportable,
 	 */
 	public FormatIdentification(Format format, Confidence confidence,
 			Product process) {
+		this(format, confidence);
 		this.process = process;
-		this.format = format;
-		this.confidence = confidence;
 	}
 
 	/**
