@@ -37,11 +37,9 @@ package org.jhove2.module.identify;
 
 
 import static org.junit.Assert.*;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.*;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -49,9 +47,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.TreeSet;
 import java.util.Collection;
+import java.util.HashMap;
 
 import javax.annotation.Resource;
 
+import org.jhove2.core.FormatIdentification.Confidence;
 import org.jhove2.core.config.Configure;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.Format;
@@ -76,6 +76,9 @@ public class GlobPathRecognizerTest{
 	private Integer expectedGroupCount;// expect the same number of groups for strict and relaxed
 	private ArrayList<String> failStrictKeys;
 	private ArrayList<String> failRelaxedKeys;
+	private HashMap<String, String> strictKeyCountMap;
+	private HashMap<String, String> relaxedKeyCountMap;
+	private JHOVE2 JHOVE2;
 
 	/**
 	 * Test method for {@link org.jhove2.module.identify.GlobPathRecognizer#groupSources(org.jhove2.core.source.Source)}.
@@ -137,6 +140,12 @@ public class GlobPathRecognizerTest{
 			for (String failKey:failStrictKeys){
 				fullFailKeys.add(testDirPath.concat(failKey));
 			}
+			HashMap<String, Integer> fullKeyCountMap = new HashMap<String, Integer>();
+			for (String key:strictKeyCountMap.keySet()){
+				String newKey = testDirPath.concat(key);
+				Integer newValue = Integer.valueOf(strictKeyCountMap.get(key));
+				fullKeyCountMap.put(newKey, newValue);
+			}
 			strictShapeFileRecognizer.compilePatterns();
 			Collection <GlobPathMatchInfoGroup> gInfoGroupStrict = 
 				strictShapeFileRecognizer.groupSources(fsSource);
@@ -148,12 +157,23 @@ public class GlobPathRecognizerTest{
 				}
 				else {
 					assertFalse(fullFailKeys.contains(infoGroup.groupKey));
+					assertEquals(strictShapeFileRecognizer.getFormat(),
+							fi.getPresumptiveFormat());
+					assertEquals(fi.getConfidence(),Confidence.PositiveGeneric);
+					assertEquals(fullKeyCountMap.get(infoGroup.groupKey).intValue(),
+							fi.getSources().size());
 				}
 			}
 			// now test relaxed recognizer
 			fullFailKeys = new ArrayList<String>();
 			for (String failKey:failRelaxedKeys){
 				fullFailKeys.add(testDirPath.concat(failKey));
+			}
+			fullKeyCountMap = new HashMap<String, Integer>();
+			for (String key:relaxedKeyCountMap.keySet()){
+				String newKey = testDirPath.concat(key);
+				Integer newValue = Integer.valueOf(relaxedKeyCountMap.get(key));
+				fullKeyCountMap.put(newKey, newValue);
 			}
 			relaxedShapeFileRecognizer.compilePatterns();
 			gInfoGroupStrict = 
@@ -166,6 +186,11 @@ public class GlobPathRecognizerTest{
 				}
 				else {
 					assertFalse(fullFailKeys.contains(infoGroup.groupKey));
+					assertEquals(relaxedShapeFileRecognizer.getFormat(),
+							fi.getPresumptiveFormat());
+					assertEquals(fi.getConfidence(),Confidence.PositiveGeneric);
+					assertEquals(fullKeyCountMap.get(infoGroup.groupKey).intValue(),
+							fi.getSources().size());
 				}
 			}
 		}
@@ -179,7 +204,19 @@ public class GlobPathRecognizerTest{
 	 */
 	@Test
 	public void testIdentify() {
-		fail("Not yet implemented");
+//		try {
+//			FileSetSource fsSource = new FileSetSource();
+//			for (String fileName:this.getTestFileList()){
+//				String testFilePath = testDirPath.concat(fileName);
+//				FileSource fs = new FileSource(new File(testFilePath));
+//				fsSource.addChildSource(fs);
+//				//			...
+//			}
+//		}
+//		catch (Exception e){
+//			fail("Exceptpion thrown:" + e.getMessage());		
+//		}
+		fail("not finished yet");
 	}
 
 	public GlobPathRecognizer getStrictShapeFileRecognizer() {
@@ -246,5 +283,29 @@ public class GlobPathRecognizerTest{
 	@Resource
 	public void setFailRelaxedKeys(ArrayList<String> failRelaxedKeys) {
 		this.failRelaxedKeys = failRelaxedKeys;
+	}
+
+	public HashMap<String, String> getStrictKeyCountMap() {
+		return strictKeyCountMap;
+	}
+	@Resource
+	public void setStrictKeyCountMap(HashMap<String, String> strictKeyCountMap) {
+		this.strictKeyCountMap = strictKeyCountMap;
+	}
+
+	public HashMap<String, String> getRelaxedKeyCountMap() {
+		return relaxedKeyCountMap;
+	}
+	@Resource
+	public void setRelaxedKeyCountMap(HashMap<String, String> relaxedKeyCountMap) {
+		this.relaxedKeyCountMap = relaxedKeyCountMap;
+	}
+
+	public JHOVE2 getJHOVE2() {
+		return JHOVE2;
+	}
+	@Resource
+	public void setJHOVE2(JHOVE2 jHOVE2) {
+		JHOVE2 = jHOVE2;
 	}
 }

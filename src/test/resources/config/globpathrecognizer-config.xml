@@ -172,7 +172,7 @@
 	<bean id="groupKeys" class="java.util.ArrayList">
 		<constructor-arg type="java.util.Collection">
 			<list>
-				<value>abc</value><!-- passes relaxed, fails strict (unrecognized file extension) -->
+				<value>abc</value><!-- passes relaxed,passes strict (but not all files included in format Identification source) -->
 				<value>def</value><!-- passes relaxed, passes strict -->
 				<value>ghi</value><!-- passes relaxed, fails strict (missing required file extension) -->
 			</list>
@@ -186,7 +186,6 @@
 	<bean id="failStrictKeys" class="java.util.ArrayList">
 	<constructor-arg type="java.util.Collection">
 			<list>
-				<value>abc</value><!-- passes relaxed, fails strict (unrecognized file extension) -->
 				<value>ghi</value><!-- passes relaxed, fails strict (missing required file extension) -->
 			</list>
 	 	</constructor-arg>
@@ -197,6 +196,25 @@
 			<list>
 			</list>
 	 	</constructor-arg>
+	</bean>
+	
+	<bean id="strictKeyCountMap" class="java.util.HashMap">
+		<constructor-arg type="java.util.Map">
+			<map>
+				<entry key="abc" value="4"/>
+				<entry key="def" value="3"/>
+			</map>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="relaxedKeyCountMap" class="java.util.HashMap">
+		<constructor-arg type="java.util.Map">
+			<map >
+				<entry key="abc" value="5"/>
+				<entry key="def" value="3"/>
+				<entry key="ghi" value="3"/>
+			</map>
+		</constructor-arg>
 	</bean>
 	
 </beans>

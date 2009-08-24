@@ -252,7 +252,7 @@ public class GlobPathRecognizer extends AbstractModule implements
 				if ((sourceInfo.isMustHave() || sourceInfo.isMayHave()) ||
 				    (this.includeUnmatchedFromGroup)) {
 					fi.getSources().add(sourceInfo.getSource());
-				}				
+				}	
 			}
 		}
 		return fi;
