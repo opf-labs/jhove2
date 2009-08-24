@@ -73,6 +73,9 @@ public class GlobPathRecognizerTest{
 	private String testDirPath;
 	private ArrayList<String> testFileList;
 	private ArrayList<String> groupKeys;
+	private Integer expectedGroupCount;// expect the same number of groups for strict and relaxed
+	private ArrayList<String> failStrictKeys;
+	private ArrayList<String> failRelaxedKeys;
 
 	/**
 	 * Test method for {@link org.jhove2.module.identify.GlobPathRecognizer#groupSources(org.jhove2.core.source.Source)}.
@@ -89,7 +92,7 @@ public class GlobPathRecognizerTest{
 			strictShapeFileRecognizer.compilePatterns();
 			Collection <GlobPathMatchInfoGroup> gInfoGroupStrict = 
 				strictShapeFileRecognizer.groupSources(fsSource);
-			assertEquals(3, gInfoGroupStrict.size());
+			assertEquals(expectedGroupCount.intValue(), gInfoGroupStrict.size());
 			TreeSet<String> expectedKeys = new TreeSet<String>(this.getGroupKeys());		
 			TreeSet<String> actualKeys = new TreeSet<String>();
 			for (GlobPathMatchInfoGroup group:gInfoGroupStrict){
@@ -102,15 +105,15 @@ public class GlobPathRecognizerTest{
 			relaxedShapeFileRecognizer.compilePatterns();
 			gInfoGroupStrict = 
 				relaxedShapeFileRecognizer.groupSources(fsSource);
-			assertEquals(3, gInfoGroupStrict.size());
+			assertEquals(expectedGroupCount.intValue(), gInfoGroupStrict.size());
 			expectedKeys = new TreeSet<String>(this.getGroupKeys());		
 			actualKeys = new TreeSet<String>();
 			for (GlobPathMatchInfoGroup group:gInfoGroupStrict){
 				actualKeys.add(group.getGroupKey());
 			}
 			for (String key:expectedKeys){			;
-				String newKey = this.getTestDirPath().concat(key);
-				assertTrue(actualKeys.contains(newKey));
+			String newKey = this.getTestDirPath().concat(key);
+			assertTrue(actualKeys.contains(newKey));
 			}
 		}
 		catch (Exception e){
@@ -123,7 +126,52 @@ public class GlobPathRecognizerTest{
 	 */
 	@Test
 	public void testRecognizeGroupedSource() {
-				fail("Not yet implemented");
+		try{
+			FileSetSource fsSource = new FileSetSource();
+			for (String fileName:this.getTestFileList()){
+				String testFilePath = testDirPath.concat(fileName);
+				FileSource fs = new FileSource(new File(testFilePath));
+				fsSource.addChildSource(fs);
+			}
+			ArrayList<String> fullFailKeys = new ArrayList<String>();
+			for (String failKey:failStrictKeys){
+				fullFailKeys.add(testDirPath.concat(failKey));
+			}
+			strictShapeFileRecognizer.compilePatterns();
+			Collection <GlobPathMatchInfoGroup> gInfoGroupStrict = 
+				strictShapeFileRecognizer.groupSources(fsSource);
+			for (GlobPathMatchInfoGroup infoGroup:gInfoGroupStrict){
+				FormatIdentification fi = 
+					strictShapeFileRecognizer.recognizeGroupedSource(infoGroup);
+				if (fi==null){
+					assertTrue(fullFailKeys.contains(infoGroup.groupKey));
+				}
+				else {
+					assertFalse(fullFailKeys.contains(infoGroup.groupKey));
+				}
+			}
+			// now test relaxed recognizer
+			fullFailKeys = new ArrayList<String>();
+			for (String failKey:failRelaxedKeys){
+				fullFailKeys.add(testDirPath.concat(failKey));
+			}
+			relaxedShapeFileRecognizer.compilePatterns();
+			gInfoGroupStrict = 
+				relaxedShapeFileRecognizer.groupSources(fsSource);
+			for (GlobPathMatchInfoGroup infoGroup:gInfoGroupStrict){
+				FormatIdentification fi = 
+					relaxedShapeFileRecognizer.recognizeGroupedSource(infoGroup);
+				if (fi==null){
+					assertTrue(fullFailKeys.contains(infoGroup.groupKey));
+				}
+				else {
+					assertFalse(fullFailKeys.contains(infoGroup.groupKey));
+				}
+			}
+		}
+		catch (Exception e){
+			fail("Exceptpion thrown:" + e.getMessage());
+		}
 	}
 
 	/**
@@ -131,7 +179,7 @@ public class GlobPathRecognizerTest{
 	 */
 	@Test
 	public void testIdentify() {
-				fail("Not yet implemented");
+		fail("Not yet implemented");
 	}
 
 	public GlobPathRecognizer getStrictShapeFileRecognizer() {
@@ -174,5 +222,29 @@ public class GlobPathRecognizerTest{
 	@Resource
 	public void setGroupKeys(ArrayList<String> groupKeys) {
 		this.groupKeys = groupKeys;
+	}
+
+	public int getExpectedGroupCount() {
+		return expectedGroupCount;
+	}
+	@Resource
+	public void setExpectedGroupCount(Integer expectedGroupCount) {
+		this.expectedGroupCount = expectedGroupCount;
+	}
+
+	public ArrayList<String> getFailStrictKeys() {
+		return failStrictKeys;
+	}
+	@Resource
+	public void setFailStrictKeys(ArrayList<String> failStrictKeys) {
+		this.failStrictKeys = failStrictKeys;
+	}
+
+	public ArrayList<String> getFailRelaxedKeys() {
+		return failRelaxedKeys;
+	}
+	@Resource
+	public void setFailRelaxedKeys(ArrayList<String> failRelaxedKeys) {
+		this.failRelaxedKeys = failRelaxedKeys;
 	}
 }

@@ -164,7 +164,7 @@
 				<value>ghi.dbf</value>
 				<value>ghi.shp</value>
 				<value>ghi.shp.xml</value>
-				<value>something-else.txt</value>
+				<value>something-else.txt</value> <!--  will not be grouped; does not match grouping expression -->
 			</list>
 		</constructor-arg>
 	</bean>
@@ -172,12 +172,31 @@
 	<bean id="groupKeys" class="java.util.ArrayList">
 		<constructor-arg type="java.util.Collection">
 			<list>
-				<value>abc</value>
-				<value>def</value>
-				<value>ghi</value>
+				<value>abc</value><!-- passes relaxed, fails strict (unrecognized file extension) -->
+				<value>def</value><!-- passes relaxed, passes strict -->
+				<value>ghi</value><!-- passes relaxed, fails strict (missing required file extension) -->
 			</list>
-	 		</constructor-arg>
+	 	</constructor-arg>
 	</bean> 
 
+	<bean id="expectedGroupCount" class="java.lang.Integer">
+		<constructor-arg type="java.lang.String" value="3"/>
+	</bean>
+	
+	<bean id="failStrictKeys" class="java.util.ArrayList">
+	<constructor-arg type="java.util.Collection">
+			<list>
+				<value>abc</value><!-- passes relaxed, fails strict (unrecognized file extension) -->
+				<value>ghi</value><!-- passes relaxed, fails strict (missing required file extension) -->
+			</list>
+	 	</constructor-arg>
+	</bean>
+	
+	<bean id="failRelaxedKeys" class="java.util.ArrayList">
+		<constructor-arg type="java.util.Collection">
+			<list>
+			</list>
+	 	</constructor-arg>
+	</bean>
 	
 </beans>
