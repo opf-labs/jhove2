@@ -35,10 +35,22 @@
  */
 package org.jhove2.module.identify;
 
-import static org.junit.Assert.*;
 
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.junit4.*;
+import org.springframework.test.context.ContextConfiguration;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.TreeSet;
+import java.util.Collection;
+
+import javax.annotation.Resource;
 
 import org.jhove2.core.config.Configure;
 import org.jhove2.core.JHOVE2;
@@ -47,33 +59,63 @@ import org.jhove2.core.FormatIdentification;
 import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.FileSetSource;
 
+
 /**
  * @author Sheila Morrissey
  *
  */
-public class GlobPathRecognizerTest {
-	
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@Before
-	public void setUp() throws Exception {
-	}
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations={"classpath*:**/globpathrecognizer-config.xml"})
+public class GlobPathRecognizerTest{
 
-	/**
-	 * Test method for {@link org.jhove2.module.identify.GlobPathRecognizer#identify(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)}.
-	 */
-	@Test
-	public void testIdentify() {
-		fail("Not yet implemented");
-	}
+	private GlobPathRecognizer strictShapeFileRecognizer;
+	private GlobPathRecognizer relaxedShapeFileRecognizer;
+	private String testDirPath;
+	private ArrayList<String> testFileList;
+	private ArrayList<String> groupKeys;
 
 	/**
 	 * Test method for {@link org.jhove2.module.identify.GlobPathRecognizer#groupSources(org.jhove2.core.source.Source)}.
 	 */
 	@Test
-	public void testGroupSources() {
-		fail("Not yet implemented");
+	public void testGroupSources() {		
+		try {			
+			FileSetSource fsSource = new FileSetSource();
+			for (String fileName:this.getTestFileList()){
+				String testFilePath = testDirPath.concat(fileName);
+				FileSource fs = new FileSource(new File(testFilePath));
+				fsSource.addChildSource(fs);
+			}
+			strictShapeFileRecognizer.compilePatterns();
+			Collection <GlobPathMatchInfoGroup> gInfoGroupStrict = 
+				strictShapeFileRecognizer.groupSources(fsSource);
+			assertEquals(3, gInfoGroupStrict.size());
+			TreeSet<String> expectedKeys = new TreeSet<String>(this.getGroupKeys());		
+			TreeSet<String> actualKeys = new TreeSet<String>();
+			for (GlobPathMatchInfoGroup group:gInfoGroupStrict){
+				actualKeys.add(group.getGroupKey());
+			}
+			for (String key:expectedKeys){			
+				String newKey = this.getTestDirPath().concat(key);
+				assertTrue(actualKeys.contains(newKey));
+			}
+			relaxedShapeFileRecognizer.compilePatterns();
+			gInfoGroupStrict = 
+				relaxedShapeFileRecognizer.groupSources(fsSource);
+			assertEquals(3, gInfoGroupStrict.size());
+			expectedKeys = new TreeSet<String>(this.getGroupKeys());		
+			actualKeys = new TreeSet<String>();
+			for (GlobPathMatchInfoGroup group:gInfoGroupStrict){
+				actualKeys.add(group.getGroupKey());
+			}
+			for (String key:expectedKeys){			;
+				String newKey = this.getTestDirPath().concat(key);
+				assertTrue(actualKeys.contains(newKey));
+			}
+		}
+		catch (Exception e){
+			fail("Exceptpion thrown:" + e.getMessage());
+		}
 	}
 
 	/**
@@ -81,7 +123,56 @@ public class GlobPathRecognizerTest {
 	 */
 	@Test
 	public void testRecognizeGroupedSource() {
-		fail("Not yet implemented");
+				fail("Not yet implemented");
 	}
 
+	/**
+	 * Test method for {@link org.jhove2.module.identify.GlobPathRecognizer#identify(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)}.
+	 */
+	@Test
+	public void testIdentify() {
+				fail("Not yet implemented");
+	}
+
+	public GlobPathRecognizer getStrictShapeFileRecognizer() {
+		return strictShapeFileRecognizer;
+	}
+	@Resource
+	public void setStrictShapeFileRecognizer(
+			GlobPathRecognizer strictShapeFileRecognizer) {
+		this.strictShapeFileRecognizer = strictShapeFileRecognizer;
+	}
+
+	public GlobPathRecognizer getRelaxedShapeFileRecognizer() {
+		return relaxedShapeFileRecognizer;
+	}
+	@Resource
+	public void setRelaxedShapeFileRecognizer(
+			GlobPathRecognizer relaxedShapeFileRecognizer) {
+		this.relaxedShapeFileRecognizer = relaxedShapeFileRecognizer;
+	}
+
+	public String getTestDirPath() {
+		return testDirPath;
+	}
+	@Resource
+	public void setTestDirPath(String testDirPath) {
+		this.testDirPath = testDirPath;
+	}
+
+	public ArrayList<String> getTestFileList() {
+		return testFileList;
+	}
+	@Resource
+	public void setTestFileList(ArrayList<String> testFileList) {
+		this.testFileList = testFileList;
+	}
+
+	public ArrayList<String> getGroupKeys() {
+		return groupKeys;
+	}
+	@Resource
+	public void setGroupKeys(ArrayList<String> groupKeys) {
+		this.groupKeys = groupKeys;
+	}
 }

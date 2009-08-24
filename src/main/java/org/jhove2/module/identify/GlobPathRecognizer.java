@@ -102,7 +102,7 @@ public class GlobPathRecognizer extends AbstractModule implements
 	/**
 	 * Instantiate a new <code>FilePathGlobbingRecognizer</code>.
 	 */
-	public GlobPathRecognizer(String version, String release, String rights) {
+	public GlobPathRecognizer() {
 		super(VERSION, RELEASE, RIGHTS);
 		this.presumptiveFormatIds = new TreeSet<FormatIdentification>();
 	}
@@ -134,7 +134,7 @@ public class GlobPathRecognizer extends AbstractModule implements
 			int mayHaveCaptureGroupIndex, 
 			int minMustHavesToIdentify, 
 			boolean includeUnmatchedFromGroup) {
-		this(VERSION, RELEASE, RIGHTS);
+		this();
 		this.format = format;
 		this.fileGroupingExpr = fileGroupingExpr;
 		this.mustHaveExpr = mustHaveExpr;
@@ -315,7 +315,7 @@ public class GlobPathRecognizer extends AbstractModule implements
 	public boolean isIncludeUnmatchedFromGroup() {
 		return includeUnmatchedFromGroup;
 	}
-	public void setIncludedUnmatchedFromGroup(boolean includeUnmatchedFromGroup) {
+	public void setIncludeUnmatchedFromGroup(boolean includeUnmatchedFromGroup) {
 		this.includeUnmatchedFromGroup = includeUnmatchedFromGroup;
 	}
 	public int getMustHaveCaptureGroupIndex() {
