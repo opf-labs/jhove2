@@ -168,7 +168,7 @@ public class FormatIdentification implements Reportable,
 	 * @param source
 	 *            Source unit
 	 */
-	public void setSource(Source source) {
+	public void addSource(Source source) {
 		this.sources.add(source);
 	}
 

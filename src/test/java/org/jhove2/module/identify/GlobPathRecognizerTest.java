@@ -45,6 +45,7 @@ import org.springframework.test.context.ContextConfiguration;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Set;
 import java.util.TreeSet;
 import java.util.Collection;
 import java.util.HashMap;
@@ -204,19 +205,33 @@ public class GlobPathRecognizerTest{
 	 */
 	@Test
 	public void testIdentify() {
-//		try {
-//			FileSetSource fsSource = new FileSetSource();
-//			for (String fileName:this.getTestFileList()){
-//				String testFilePath = testDirPath.concat(fileName);
-//				FileSource fs = new FileSource(new File(testFilePath));
-//				fsSource.addChildSource(fs);
-//				//			...
-//			}
-//		}
-//		catch (Exception e){
-//			fail("Exceptpion thrown:" + e.getMessage());		
-//		}
-		fail("not finished yet");
+		try {
+			FileSetSource fsSource = new FileSetSource();
+			for (String fileName:this.getTestFileList()){
+				String testFilePath = testDirPath.concat(fileName);
+				FileSource fs = new FileSource(new File(testFilePath));
+				fsSource.addChildSource(fs);
+			}
+			Set<FormatIdentification> fiSet = 
+				strictShapeFileRecognizer.identify(JHOVE2, fsSource);
+			assertEquals(strictKeyCountMap.size(), fiSet.size());
+			for (FormatIdentification fi:fiSet){
+				assertEquals(strictShapeFileRecognizer.getFormat(),
+						fi.getPresumptiveFormat());
+				assertEquals(fi.getConfidence(),Confidence.PositiveGeneric);
+			}
+			fiSet = 
+				relaxedShapeFileRecognizer.identify(JHOVE2, fsSource);
+			assertEquals(strictKeyCountMap.size(), fiSet.size());
+			for (FormatIdentification fi:fiSet){
+				assertEquals(relaxedShapeFileRecognizer.getFormat(),
+						fi.getPresumptiveFormat());
+				assertEquals(fi.getConfidence(),Confidence.PositiveGeneric);
+			}
+		}
+		catch (Exception e){
+			fail("Exceptpion thrown:" + e.getMessage());		
+		}
 	}
 
 	public GlobPathRecognizer getStrictShapeFileRecognizer() {
