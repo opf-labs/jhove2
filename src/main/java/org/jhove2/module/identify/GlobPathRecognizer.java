@@ -47,6 +47,7 @@ import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.FormatIdentification;
 import org.jhove2.core.FormatIdentification.Confidence;
 import org.jhove2.core.source.Source;
+import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.Format;
 import org.jhove2.module.AbstractModule;
 
@@ -248,10 +249,12 @@ public class GlobPathRecognizer extends AbstractModule implements
 		FormatIdentification fi = null;
 		if (fileGroup.getMustHaveCount() >= this.minMustHavesToIdentify){
 			fi = new FormatIdentification(this.format, Confidence.PositiveGeneric, this);
+			ClumpSource clumpSource = new ClumpSource();
+			fi.addSource(clumpSource);
 			for (GlobPathMatchInfo sourceInfo:fileGroup.getSourceMatchInfoList()){
 				if ((sourceInfo.isMustHave() || sourceInfo.isMayHave()) ||
 				    (this.includeUnmatchedFromGroup)) {
-					fi.addSource(sourceInfo.getSource());
+					clumpSource.addChildSource(sourceInfo.getSource());
 				}	
 			}
 		}

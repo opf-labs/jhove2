@@ -38,6 +38,7 @@ package org.jhove2.core;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeSet;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.source.Source;
@@ -190,6 +191,25 @@ public class FormatIdentification implements Reportable,
 		} else if (order1 > order2) {
 			return 1;
 		}
+		List<Source> sourceList1 = this.getSources();
+		List<Source> sourceList2 = identification.getSources();
+		if (sourceList1.size() < sourceList2.size()){
+			return -1;
+		}
+		else if (sourceList1.size() > sourceList2.size()){
+			return 1;
+		}
+		TreeSet<Source> sourceSet1 = new TreeSet<Source>(sourceList1);
+		TreeSet<Source> sourceSet2 = new TreeSet<Source>(sourceList2);
+		if (sourceSet1.size() < sourceSet2.size()){
+			return -1;
+		}
+		else if (sourceSet1.size() > sourceSet2.size()){
+			return 1;
+		}
+//		for (int i=0; i<sourceSet1.size(); i++){
+//			if (source)
+//		}
 		return this.format.getName().compareToIgnoreCase(
 				identification.getPresumptiveFormat().getName());
 	}

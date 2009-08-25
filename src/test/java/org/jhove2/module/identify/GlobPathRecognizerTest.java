@@ -162,7 +162,7 @@ public class GlobPathRecognizerTest{
 							fi.getPresumptiveFormat());
 					assertEquals(fi.getConfidence(),Confidence.PositiveGeneric);
 					assertEquals(fullKeyCountMap.get(infoGroup.groupKey).intValue(),
-							fi.getSources().size());
+							fi.getSources().get(0).getChildSources().size());
 				}
 			}
 			// now test relaxed recognizer
@@ -191,7 +191,7 @@ public class GlobPathRecognizerTest{
 							fi.getPresumptiveFormat());
 					assertEquals(fi.getConfidence(),Confidence.PositiveGeneric);
 					assertEquals(fullKeyCountMap.get(infoGroup.groupKey).intValue(),
-							fi.getSources().size());
+							fi.getSources().get(0).getChildSources().size());
 				}
 			}
 		}
