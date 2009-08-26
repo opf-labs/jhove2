@@ -202,11 +202,18 @@ Identifier {
 				//   is one of the files considered optional by the format definition
 				String mayHaveString = m.group(this.mayHaveCaptureGroupIndex);
 				GlobPathMatchInfo fileInfo = new GlobPathMatchInfo(childSource);
-				Matcher m2 = this.mustHavePattern.matcher(mustHaveString);
-				boolean matchesMustHaves = m2.matches();
+				boolean matchesMustHaves = false;
+				Matcher m2 = null;
+				if (this.mustHavePattern != null){
+					m2 = this.mustHavePattern.matcher(mustHaveString);
+				    matchesMustHaves = m2.matches();
+				}
 				fileInfo.setMustHave(matchesMustHaves);
-				m2 = this.mayHavePattern.matcher(mayHaveString);
-				boolean matchesMayHaves = m2.matches();
+				boolean matchesMayHaves = false;
+				if (this.mayHavePattern != null){
+					m2 = this.mayHavePattern.matcher(mayHaveString);
+					matchesMayHaves = m2.matches();
+				}
 				fileInfo.setMayHave(matchesMayHaves);
 				GlobPathMatchInfoGroup infoGroup;
 				//is this the first occurrence of grouping key?
@@ -278,7 +285,7 @@ Identifier {
 						+ this.mustHaveExpr, e);
 			}
 		}
-		if (this.mayHavePattern != null){
+		if (this.mayHaveExpr != null){
 			try {
 				this.mayHavePattern = Pattern.compile(this.mayHaveExpr);
 			}
