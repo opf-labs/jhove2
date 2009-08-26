@@ -56,16 +56,16 @@ import org.jhove2.module.AbstractModule;
  *
  */
 public class GlobPathRecognizer extends AbstractModule implements
-		Identifier {
+Identifier {
 	/** Identification module version identifier. */
 	public static final String VERSION = "1.0.0";
 	/** Identification module release date. */
 	public static final String RELEASE = "2009-08-21";
 	/** Identification module rights statement. */
 	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California, "
-			+ "Ithaka Harbors, Inc., and The Board of Trustees of the Leland "
-			+ "Stanford Junior University. "
-			+ "Available under the terms of the BSD license.";
+		+ "Ithaka Harbors, Inc., and The Board of Trustees of the Leland "
+		+ "Stanford Junior University. "
+		+ "Available under the terms of the BSD license.";
 	/** Presumptively identified presumptiveFormatIds. */
 	protected Set<FormatIdentification> presumptiveFormatIds;
 	/** Format which this recognizer can detect*/
@@ -99,7 +99,7 @@ public class GlobPathRecognizer extends AbstractModule implements
 	protected Pattern mustHavePattern;
 	/** Pattern constructed from mayHaveExpr */
 	protected Pattern mayHavePattern;
-	
+
 	/**
 	 * Instantiate a new <code>FilePathGlobbingRecognizer</code>.
 	 */
@@ -152,7 +152,7 @@ public class GlobPathRecognizer extends AbstractModule implements
 	 */
 	@Override
 	public Set<FormatIdentification> identify(JHOVE2 jhove2, Source source)
-			throws IOException, JHOVE2Exception {
+	throws IOException, JHOVE2Exception {
 		this.compilePatterns();
 		Collection<GlobPathMatchInfoGroup> sourceGroups = this.groupSources(source);
 		for (GlobPathMatchInfoGroup sourceGroup:sourceGroups){
@@ -182,7 +182,7 @@ public class GlobPathRecognizer extends AbstractModule implements
 	 * @throws JHOVE2Exception
 	 */
 	protected Collection <GlobPathMatchInfoGroup> groupSources(Source source)
-			throws JHOVE2Exception {
+	throws JHOVE2Exception {
 		HashMap<String,  GlobPathMatchInfoGroup> groupMap = 
 			new HashMap<String, GlobPathMatchInfoGroup>();
 		for (Source childSource:source.getChildSources()){
@@ -245,7 +245,7 @@ public class GlobPathRecognizer extends AbstractModule implements
 	 * @throws JHOVE2Exception
 	 */
 	protected FormatIdentification recognizeGroupedSource(GlobPathMatchInfoGroup fileGroup)
-			throws JHOVE2Exception {
+	throws JHOVE2Exception {
 		FormatIdentification fi = null;
 		if (fileGroup.getMustHaveCount() >= this.minMustHavesToIdentify){
 			fi = new FormatIdentification(this.format, Confidence.PositiveGeneric, this);
@@ -253,14 +253,14 @@ public class GlobPathRecognizer extends AbstractModule implements
 			fi.setSource(clumpSource);
 			for (GlobPathMatchInfo sourceInfo:fileGroup.getSourceMatchInfoList()){
 				if ((sourceInfo.isMustHave() || sourceInfo.isMayHave()) ||
-				    (this.includeUnmatchedFromGroup)) {
+						(this.includeUnmatchedFromGroup)) {
 					clumpSource.addChildSource(sourceInfo.getSource());
 				}	
 			}
 		}
 		return fi;
 	}
-	
+
 	protected void compilePatterns() throws JHOVE2Exception{
 		try {
 			this.fileGroupingPattern = Pattern.compile(this.fileGroupingExpr);
@@ -269,19 +269,23 @@ public class GlobPathRecognizer extends AbstractModule implements
 			throw new JHOVE2Exception("Exception thrown compiling fileGroupingToken: " 
 					+ this.fileGroupingExpr, e);
 		}
-		try {
-			this.mustHavePattern = Pattern.compile(this.mustHaveExpr);
+		if (this.mustHaveExpr != null){
+			try {
+				this.mustHavePattern = Pattern.compile(this.mustHaveExpr);
+			}
+			catch (PatternSyntaxException e){
+				throw new JHOVE2Exception("Exception thrown compiling mustHaveToken: " 
+						+ this.mustHaveExpr, e);
+			}
 		}
-		catch (PatternSyntaxException e){
-			throw new JHOVE2Exception("Exception thrown compiling mustHaveToken: " 
-					+ this.mustHaveExpr, e);
-		}
-		try {
-			this.mayHavePattern = Pattern.compile(this.mayHaveExpr);
-		}
-		catch (PatternSyntaxException e){
-			throw new JHOVE2Exception("Exception thrown compiling mayHaveToken: " 
-					+ this.fileGroupingExpr, e);
+		if (this.mayHavePattern != null){
+			try {
+				this.mayHavePattern = Pattern.compile(this.mayHaveExpr);
+			}
+			catch (PatternSyntaxException e){
+				throw new JHOVE2Exception("Exception thrown compiling mayHaveToken: " 
+						+ this.fileGroupingExpr, e);
+			}
 		}
 		return;
 	}

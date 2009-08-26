@@ -216,5 +216,39 @@
 			</map>
 		</constructor-arg>
 	</bean>
+<!-- Quicken format bean -->
+	<bean id="QuickenFormat" class="org.jhove2.core.Format" scope="singleton">
+		<constructor-arg type="java.lang.String" value="Quicken"/>
+		<constructor-arg ref="QuickenIdentifier"/>
+		<constructor-arg type="org.jhove2.core.Format$Type" value="Format"/>
+		<constructor-arg type="org.jhove2.core.Format$Ambiguity" value="Unambiguous"/>
+	</bean>
 	
+		<!-- Quicken identifier bean -->  
+	<bean id="QuickenIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="info:jhove2/format/shapefile"/>
+	</bean>
+	
+		<!-- Quicken recognizer bean 
+	     Must have all 3 required files; does NOT accept files with unrecognized extensions -->
+	<bean id="quickenFileRecognizer" class="org.jhove2.module.identify.GlobPathRecognizer"
+	 scope="prototype">
+	 	<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+				<ref bean="PorticoAgent"/>
+				<ref bean="StanfordAgent"/>
+			</list>
+		</property>
+	 	<property name="format" ref="QuickenFormat"/>
+	 	<property name="fileGroupingExpr" value="(.*[\\/]\w+).((?i:shp\.)?\w{3})"/>
+	 	<property name="mustHaveExpr" value="^((?i:shp)|(?i:shx)|(?i:dbf))$"/>
+	 	<property name="mayHaveExpr" 
+	 	          value="^((?i:shp.xml)|(?i:prj)|(?i:sbn)|(?i:sbx)|(?i:atx)|(?i:qix)|(?i:fix)|(?i:grx))$"/>
+	 	<property name="fileGroupingCaptureGroupIndex" value="1" />
+	 	<property name="mustHaveCaptureGroupIndex" value="2"/>
+	 	<property name="mayHaveCaptureGroupIndex" value="2"/>
+	 	<property name="minMustHavesToIdentify" value="3"/>
+	  	<property name="includeUnmatchedFromGroup" value="false"/>
+	</bean>
 </beans>
