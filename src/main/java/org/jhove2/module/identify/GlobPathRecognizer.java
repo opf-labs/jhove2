@@ -250,7 +250,7 @@ public class GlobPathRecognizer extends AbstractModule implements
 		if (fileGroup.getMustHaveCount() >= this.minMustHavesToIdentify){
 			fi = new FormatIdentification(this.format, Confidence.PositiveGeneric, this);
 			ClumpSource clumpSource = new ClumpSource();
-			fi.addSource(clumpSource);
+			fi.setSource(clumpSource);
 			for (GlobPathMatchInfo sourceInfo:fileGroup.getSourceMatchInfoList()){
 				if ((sourceInfo.isMustHave() || sourceInfo.isMayHave()) ||
 				    (this.includeUnmatchedFromGroup)) {

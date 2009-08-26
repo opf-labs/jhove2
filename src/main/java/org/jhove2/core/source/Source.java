@@ -56,7 +56,7 @@ import org.jhove2.module.Module;
  * 
  * @author mstrong, slabrams
  */
-public interface Source extends Temporal {
+public interface Source extends Temporal, Comparable<Source> {
 	/**
 	 * Close the source unit. If the source unit is backed by a temporary file,
 	 * delete the file.
@@ -184,5 +184,5 @@ public interface Source extends Temporal {
 	 * @param module
 	 *            Module that processed the source unit
 	 */
-	public void setModule(Module module);
+	public void addModule(Module module);
 }

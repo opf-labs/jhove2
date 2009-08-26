@@ -105,7 +105,7 @@ public class TestInitializer {
 		Properties props3 = Configure.getProperties("CodeBlock");
 		assertTrue("Error loading block", props3 != null);
 
-		Properties props4 = Configure.getProperties("Dispatch");
+		Properties props4 = Configure.getProperties("DispatchMap");
 		assertTrue("Error loading block", props4 != null);
 
 	}

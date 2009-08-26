@@ -65,7 +65,7 @@ import org.jhove2.module.Module;
  * 
  * @author mstrong, slabrams
  */
-public abstract class AbstractSource implements Source {
+public abstract class AbstractSource implements Source, Comparable<Source> {
 	/** Child source units. */
 	protected List<Source> children;
 
@@ -367,10 +367,10 @@ public abstract class AbstractSource implements Source {
 	 * 
 	 * @param module
 	 *            Module that processed the source unit
-	 * @see org.jhove2.core.source.Source#setModule(org.jhove2.module.Module)
+	 * @see org.jhove2.core.source.Source#addModule(org.jhove2.module.Module)
 	 */
 	@Override
-	public void setModule(Module module) {
+	public void addModule(Module module) {
 		this.modules.add(module);
 	}
 
@@ -411,5 +411,23 @@ public abstract class AbstractSource implements Source {
 	@Override
 	public long setStartTime() {
 		return this.startTime = System.currentTimeMillis();
+	}
+	@Override
+	/**
+	 * Lexically compare format identifications.
+	 * 
+	 * @param Source sourceto be compared
+	 * @return -1, 0, or 1 if this Source value is less than, equal to, or
+	 *         greater than the second
+	 * @see java.lang.Comparable#compareTo(Object)
+	 */
+	public int compareTo(Source source){
+		if (this == source){
+			return 0;
+		}
+		else {
+			return this.toString().compareToIgnoreCase(
+					source.toString());
+		}
 	}
 }

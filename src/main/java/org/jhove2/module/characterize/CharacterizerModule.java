@@ -144,11 +144,13 @@ public class CharacterizerModule
 		// Assessor assessor = Configure.getReportable(Assessor.class,
 		// "AssessorModule");
 		// jhove2.dispatch(source, assessor);
+		
+		
 		/*
 		 * (4) For aggregate source units, (a) presumptively-identify any
-		 * presumptiveFormatIds found amongst the child source units; and, if so, (b) gather
-		 * the the children into a new Clump source unit that is a child of the
-		 * aggregate; (c) dispatch the Clump to the appropriate format module;
+		 * presumptiveFormatIds found amongst the child source units; and, if so, (b)
+		 * the aggregate identifier will gather the children into a new Clump source unit 
+		 * that is a child of the aggregate; (c) dispatch the Clump to the appropriate format module;
 		 * and (d) to the assessor module.
 		 */
 		if (source instanceof AggregateSource) {
@@ -156,22 +158,25 @@ public class CharacterizerModule
 					                                     "Aggrefier");
 			jhove2.dispatch(source, aggrefier, Disposition.DontAddToSource);
 			formats = aggrefier.getPresumptiveFormatIds();
+//			if (formats.size()>0){
+//				// the clump source will have the actual recognizer module attached to it
+//				// by the aggrefier; the aggrefier gets attached to original source
+//				source.addModule(aggrefier);
+//			}
+		
 			for (FormatIdentification fid : formats) {
-				ClumpSource clump = new ClumpSource();
-				List<Source> sources = fid.getSources();
-				for (Source src : sources) {
-					clump.addChildSource(src);
-					source.deleteChildSource(src);
-				}
-				clump.setModule(aggrefier);
-				source.addChildSource(clump);
 
+                source.addChildSource(fid.getSource());
+				// ???? DO WE REALLY WANT TO DO THIS?  THIS IS ONLY A PUTATIVE ID????
+                for (Source src : fid.getSource().getChildSources()){
+                	source.deleteChildSource(src);              	
+                }
 				Format format = fid.getPresumptiveFormat();
 				I8R id = format.getIdentifier();
-				jhove2.dispatch(clump, id);
+				jhove2.dispatch(fid.getSource(), id);
 
 				/* TODO: implement characterization assessment */
-				// jhove2.dispatch(clump, assessor);
+				// jhove2.dispatch(fid.getSource(), assessor);
 			}
 		} else {
 			/*

@@ -224,7 +224,7 @@ public class DispatcherModule
 		module.setEndTime();
 
 		if (disposition == Disposition.AddToSource) {
-			source.setModule(module);
+			source.addModule(module);
 		}
 	}
 }

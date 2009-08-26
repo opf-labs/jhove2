@@ -88,10 +88,10 @@ public class FormatIdentification implements Reportable,
 	protected Product process;
 
 	/**
-	 * Source units associated with the format. Defined only by aggregate
+	 * Source unit associated with the format. Defined only by aggregate
 	 * identification.
 	 */
-	protected List<Source> sources;
+	protected Source source;
 
 	/**
 	 * Instantiate a new <code>FormatIdentification</code>.
@@ -104,7 +104,6 @@ public class FormatIdentification implements Reportable,
 	public FormatIdentification(Format format, Confidence confidence) {
 		this.format = format;
 		this.confidence = confidence;
-		this.sources = new ArrayList<Source>();
 	}
 
 	/**
@@ -154,13 +153,13 @@ public class FormatIdentification implements Reportable,
 	}
 
 	/**
-	 * Get source units associated with the format. Defined only by aggregate
+	 * Get aggregegate source associated with the format. Set only by aggregate
 	 * identification.
 	 * 
 	 * @return Source units associated with the format
 	 */
-	public List<Source> getSources() {
-		return this.sources;
+	public Source getSource() {
+		return this.source;
 	}
 
 	/**
@@ -169,8 +168,8 @@ public class FormatIdentification implements Reportable,
 	 * @param source
 	 *            Source unit
 	 */
-	public void addSource(Source source) {
-		this.sources.add(source);
+	public void setSource(Source source) {
+		this.source = source;
 	}
 
 	/**
@@ -191,25 +190,11 @@ public class FormatIdentification implements Reportable,
 		} else if (order1 > order2) {
 			return 1;
 		}
-		List<Source> sourceList1 = this.getSources();
-		List<Source> sourceList2 = identification.getSources();
-		if (sourceList1.size() < sourceList2.size()){
-			return -1;
-		}
-		else if (sourceList1.size() > sourceList2.size()){
-			return 1;
-		}
-		TreeSet<Source> sourceSet1 = new TreeSet<Source>(sourceList1);
-		TreeSet<Source> sourceSet2 = new TreeSet<Source>(sourceList2);
-		if (sourceSet1.size() < sourceSet2.size()){
-			return -1;
-		}
-		else if (sourceSet1.size() > sourceSet2.size()){
-			return 1;
-		}
-//		for (int i=0; i<sourceSet1.size(); i++){
-//			if (source)
-//		}
+		int compareSource = this.source.compareTo(identification.getSource());
+		
+		if (compareSource != 0){
+			return compareSource;
+		}	
 		return this.format.getName().compareToIgnoreCase(
 				identification.getPresumptiveFormat().getName());
 	}

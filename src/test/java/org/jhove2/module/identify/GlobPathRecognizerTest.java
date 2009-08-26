@@ -162,7 +162,7 @@ public class GlobPathRecognizerTest{
 							fi.getPresumptiveFormat());
 					assertEquals(fi.getConfidence(),Confidence.PositiveGeneric);
 					assertEquals(fullKeyCountMap.get(infoGroup.groupKey).intValue(),
-							fi.getSources().get(0).getChildSources().size());
+							fi.getSource().getChildSources().size());
 				}
 			}
 			// now test relaxed recognizer
@@ -191,7 +191,7 @@ public class GlobPathRecognizerTest{
 							fi.getPresumptiveFormat());
 					assertEquals(fi.getConfidence(),Confidence.PositiveGeneric);
 					assertEquals(fullKeyCountMap.get(infoGroup.groupKey).intValue(),
-							fi.getSources().get(0).getChildSources().size());
+							fi.getSource().getChildSources().size());
 				}
 			}
 		}
@@ -222,7 +222,7 @@ public class GlobPathRecognizerTest{
 			}
 			fiSet = 
 				relaxedShapeFileRecognizer.identify(JHOVE2, fsSource);
-			assertEquals(strictKeyCountMap.size(), fiSet.size());
+			assertEquals(relaxedKeyCountMap.size(), fiSet.size());
 			for (FormatIdentification fi:fiSet){
 				assertEquals(relaxedShapeFileRecognizer.getFormat(),
 						fi.getPresumptiveFormat());
