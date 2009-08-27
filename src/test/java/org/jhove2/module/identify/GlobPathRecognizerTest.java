@@ -54,7 +54,6 @@ import javax.annotation.Resource;
 
 import org.jhove2.core.FormatIdentification.Confidence;
 import org.jhove2.core.JHOVE2;
-import org.jhove2.core.Format;
 import org.jhove2.core.FormatIdentification;
 import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.FileSetSource;
