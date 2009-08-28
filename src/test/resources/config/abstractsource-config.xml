@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:util="http://www.springframework.org/schema/util"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans 
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-2.5.xsd
+		   http://www.springframework.org/schema/util 
+		   http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+		   
+	<!-- JHOVE2 framework bean -->
+	<bean id="JHOVE2" class="org.jhove2.core.JHOVE2" scope="prototype">
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+				<ref bean="PorticoAgent"/>
+				<ref bean="StanfordAgent"/>
+			</list>
+		</property>
+	</bean>
+
+	<!-- CDL agent bean -->
+	<bean id="CDLAgent" class="org.jhove2.core.Agent" scope="singleton">
+		<constructor-arg type="java.lang.String" value="California Digital Library"/>
+		<constructor-arg type="org.jhove2.core.Agent$Type" value="Corporate"/>
+		<property name="URI" value="http://www.cdlib.org/"/>
+	</bean>
+		
+	<!-- Portico agent bean -->
+	<bean id="PorticoAgent" class="org.jhove2.core.Agent" scope="singleton">
+		<constructor-arg type="java.lang.String" value="Portico"/>
+		<constructor-arg type="org.jhove2.core.Agent$Type" value="Corporate"/>
+		<property name="URI" value="http://www.portico.org/"/>
+	</bean>
+		
+	<!-- Stanford agent bean -->
+	<bean id="StanfordAgent" class="org.jhove2.core.Agent" scope="singleton">
+		<constructor-arg type="java.lang.String" value="Stanford University"/>
+		<constructor-arg type="org.jhove2.core.Agent$Type" value="Corporate"/>
+		<property name="URI" value="http://www.stanford.edu/"/>
+	</bean>
+		      
+	<!-- Aggrefier module bean -->
+	<bean id="Aggrefier" class="org.jhove2.module.identify.AggrefierModule"
+	      scope="prototype">
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+				<ref bean="PorticoAgent"/>
+				<ref bean="StanfordAgent"/>
+			</list>
+		</property>
+<!--		<property name="recognizers">-->
+<!--			<list value-type="org.jhove2.module.identify.Identifier">-->
+<!--				<ref bean="strictShapeFileRecognizer"/>-->
+<!--				<ref bean="quickenFileRecognizer"/>-->
+<!--			</list>-->
+<!--		</property>-->
+	</bean>
+	      
+	
+	<!-- File set format bean -->
+	<bean id="FileSetFormat" class="org.jhove2.core.Format" scope="singleton">
+		<constructor-arg type="java.lang.String" value="FileSet"/>
+		<constructor-arg ref="FileSetIdentifier"/>
+		<constructor-arg type="org.jhove2.core.Format$Type" value="Format"/>
+		<constructor-arg type="org.jhove2.core.Format$Ambiguity" value="Unambiguous"/>
+	</bean>
+				
+	<!-- File set identifier bean -->  
+	<bean id="FileSetIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="info:jhove2/format/file-set"/>
+	</bean>
+
+
+	
+	<!--  you will need to edit the testDirPath property to run on your machine -->
+	<bean id="dirPath" class="java.lang.String" >
+	<constructor-arg type="java.lang.String" 
+	        value="C:\portico\jhove2\svn-repository\prototype\jhove2\trunk\src\test\resources\examples\shapefiles\"/>
+	</bean>
+	
+	<bean id="fileList" class="java.util.ArrayList">
+		<constructor-arg type="java.util.Collection">
+			<list>
+				<value>abc.dbf</value>
+				<value>abc.shp</value>
+				<value>abc.shp.xml</value>
+				<value>abc.shx</value>
+				<value>abc.zzz</value>
+				<value>def.dbf</value>
+				<value>def.shp</value>
+				<value>def.shx</value>
+				<value>ghi.dbf</value>
+				<value>ghi.shp</value>
+				<value>ghi.shp.xml</value>
+				<value>something-else.txt</value> <!--  will not be grouped; does not match grouping expression -->
+			</list>
+		</constructor-arg>
+	</bean>
+
+	
+</beans>

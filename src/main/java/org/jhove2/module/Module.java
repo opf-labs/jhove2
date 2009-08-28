@@ -37,6 +37,7 @@
 package org.jhove2.module;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.I8R;
 import org.jhove2.core.Product;
 import org.jhove2.core.Temporal;
 
@@ -59,4 +60,10 @@ public interface Module extends Product, Temporal {
 	 */
 	@ReportableProperty("External tool wrapped by the module.")
 	public Product getWrappedProduct();
+	
+	/**
+	 * Return the JHOVE2 namespace identifier for this Module
+	 * @return
+	 */
+	public I8R getIdentifer();
 }

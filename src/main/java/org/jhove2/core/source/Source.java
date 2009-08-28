@@ -44,6 +44,7 @@ import java.nio.ByteOrder;
 import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.I8R;
 import org.jhove2.core.Temporal;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.io.Input.Type;
@@ -185,4 +186,9 @@ public interface Source extends Temporal, Comparable<Source> {
 	 *            Module that processed the source unit
 	 */
 	public void addModule(Module module);
+	/**
+	 * Return the JHOVE2 namespace identifier for this Source
+	 * @return
+	 */
+	public I8R getIdentifer();
 }

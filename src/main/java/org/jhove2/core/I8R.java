@@ -186,11 +186,61 @@ public class I8R implements Comparable<I8R> {
 	 */
 	@Override
 	public int compareTo(I8R identifier) {
+		if (identifier==null){
+			return 1;
+		}
+		if (this==identifier){
+			return 0;
+		}
 		int ret = this.namespace.toString().compareToIgnoreCase(
 				identifier.getNamespace().toString());
-		if (ret == 0) {
-			ret = this.value.compareToIgnoreCase(identifier.getValue());
+		if (ret > 0){
+			return 1;
 		}
-		return ret;
+		else if (ret < 0){
+			return -1;
+		}
+		ret = this.value.compareToIgnoreCase(identifier.getValue());
+		if (ret > 0){
+			return 1;
+		}
+		else if (ret < 0){
+			return -1;
+		}
+		else return ret;
+	}
+	@Override
+	public boolean equals(Object obj){
+		if (obj == null){
+			return false;
+		}
+		if (this == obj){
+			return true;
+		}
+		if (!(obj instanceof I8R)){
+			return false;
+		}
+		I8R id = (I8R)obj;
+		int ret = this.namespace.toString().compareToIgnoreCase(
+				id.getNamespace().toString());
+		if (ret != 0){
+			return false;
+		}
+		ret = this.value.compareToIgnoreCase(id.getValue());
+		boolean equals = (ret==0);
+		return equals;
+	}
+	/**
+	 * 
+	 * @param r
+	 * @return
+	 */
+	public static I8R makeReportableI8R (Reportable r){
+		Class<? extends Reportable> c1 = r.getClass();
+		String qName = c1.getName();
+		I8R identifier = new I8R(I8R.JHOVE2_PREFIX + "/"
+				+ I8R.JHOVE2_REPORTABLE_INFIX + "/"
+				+ qName.replace('.', '/'));
+		return identifier;
 	}
 }

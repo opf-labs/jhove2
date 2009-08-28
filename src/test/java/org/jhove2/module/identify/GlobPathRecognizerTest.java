@@ -220,6 +220,7 @@ public class GlobPathRecognizerTest{
 			}
 			fiSet = 
 				relaxedShapeFileRecognizer.identify(JHOVE2, fsSource);
+			
 			assertEquals(relaxedKeyCountMap.size(), fiSet.size());
 			for (FormatIdentification fi:fiSet){
 				assertEquals(relaxedShapeFileRecognizer.getFormat(),

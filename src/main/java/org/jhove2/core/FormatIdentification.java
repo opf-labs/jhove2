@@ -40,7 +40,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeSet;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.source.AbstractSource;
 import org.jhove2.core.source.Source;
 
 /**
@@ -153,11 +156,12 @@ public class FormatIdentification implements Reportable,
 	}
 
 	/**
-	 * Get aggregegate source associated with the format. Set only by aggregate
+	 * Get source associated with the format. Set only by aggregate
 	 * identification.
 	 * 
 	 * @return Source units associated with the format
 	 */
+	@ReportableProperty(order = 4, value = "Source associated with this presumptive identification.")
 	public Source getSource() {
 		return this.source;
 	}
@@ -183,6 +187,17 @@ public class FormatIdentification implements Reportable,
 	 */
 	@Override
 	public int compareTo(FormatIdentification identification) {
+		if (identification==null){
+			return 1;
+		}
+		if (this==identification){
+			return 0;
+		}
+		int compareFormat = this.getFormat().getIdentifier().compareTo(
+				identification.getFormat().getIdentifier());
+		if (compareFormat != 0){
+			return compareFormat;
+		}
 		int order1 = this.confidence.getOrder();
 		int order2 = identification.getConfidence().getOrder();
 		if (order1 < order2) {
@@ -191,11 +206,63 @@ public class FormatIdentification implements Reportable,
 			return 1;
 		}
 		int compareSource = this.source.compareTo(identification.getSource());
-		
-		if (compareSource != 0){
-			return compareSource;
-		}	
-		return this.format.getName().compareToIgnoreCase(
-				identification.getPresumptiveFormat().getName());
+		return compareSource;
+	}
+	
+	
+	@Override
+	public boolean equals (Object obj){
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
+			return true;
+		}
+		if (! (obj instanceof FormatIdentification)){
+			return false;
+		}
+		FormatIdentification fiObj = (FormatIdentification) obj;
+	
+		boolean equals = (this.getFormat().getIdentifier().compareTo
+				            (fiObj.getFormat().getIdentifier())==0);
+		if (!equals){
+			return equals;
+		}
+		equals = this.getConfidence().getOrder()== fiObj.getConfidence().getOrder();
+		if (!equals){
+			return equals;
+		}
+		equals = this.source.equals(fiObj.getSource());
+		return equals;
+	}
+
+//	@Override
+//	public int hashCode(){
+//		return new HashCodeBuilder()
+//			.append(this.getFormat().getIdentifier())
+//			.append(this.getConfidence().getOrder())
+//			.append(this.getSource())
+//			.toHashCode();
+//	}
+	
+	
+	public Format getFormat() {
+		return format;
+	}
+
+	public void setFormat(Format format) {
+		this.format = format;
+	}
+
+	public Product getProcess() {
+		return process;
+	}
+
+	public void setProcess(Product process) {
+		this.process = process;
+	}
+
+	public void setConfidence(Confidence confidence) {
+		this.confidence = confidence;
 	}
 }

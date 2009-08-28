@@ -50,8 +50,14 @@ import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Comparator;
+
+import org.apache.commons.lang.builder.CompareToBuilder;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import org.jhove2.core.Duration;
+import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.io.InputFactory;
@@ -99,6 +105,7 @@ public abstract class AbstractSource implements Source, Comparable<Source> {
 		this.modules = new ArrayList<Module>();
 	}
 
+
 	/**
 	 * Instantiate a new <code>AbstractSource</code> backed by a file.
 	 * 
@@ -107,7 +114,6 @@ public abstract class AbstractSource implements Source, Comparable<Source> {
 	 */
 	public AbstractSource(File file) {
 		this();
-
 		this.file = file;
 		this.isTemp = false;
 	}
@@ -123,7 +129,6 @@ public abstract class AbstractSource implements Source, Comparable<Source> {
 	 */
 	public AbstractSource(JHOVE2 jhove2, InputStream stream) throws IOException {
 		this();
-
 		this.file = createTempFile(jhove2, stream);
 		this.isTemp = true;
 	}
@@ -149,7 +154,7 @@ public abstract class AbstractSource implements Source, Comparable<Source> {
 	 * @throws IOException
 	 */
 	protected File createTempFile(JHOVE2 jhove2, InputStream inStream)
-			throws IOException {
+	throws IOException {
 		File tempFile = File.createTempFile(jhove2.getTempPrefix(), jhove2
 				.getTempSuffix());
 		OutputStream outStream = new FileOutputStream(tempFile);
@@ -254,7 +259,7 @@ public abstract class AbstractSource implements Source, Comparable<Source> {
 	 */
 	@Override
 	public Input getInput(int bufferSize, Type bufferType)
-			throws FileNotFoundException, IOException {
+	throws FileNotFoundException, IOException {
 		return getInput(bufferSize, bufferType, ByteOrder.LITTLE_ENDIAN);
 	}
 
@@ -279,7 +284,7 @@ public abstract class AbstractSource implements Source, Comparable<Source> {
 	 *             I/O exception getting input
 	 */
 	public Input getInput(int bufferSize, Type bufferType, ByteOrder order)
-			throws FileNotFoundException, IOException {
+	throws FileNotFoundException, IOException {
 		return InputFactory.getInput(this.file, bufferSize, bufferType, order);
 	}
 
@@ -399,7 +404,7 @@ public abstract class AbstractSource implements Source, Comparable<Source> {
 			return this.startTime = System.currentTimeMillis();
 		}
 		return this.startTime = System.currentTimeMillis() - this.endTime
-				- this.startTime;
+		- this.startTime;
 	}
 
 	/**
@@ -412,22 +417,130 @@ public abstract class AbstractSource implements Source, Comparable<Source> {
 	public long setStartTime() {
 		return this.startTime = System.currentTimeMillis();
 	}
+
+	@Override
+	public boolean equals (Object obj){
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
+			return true;
+		}
+		if (! (obj instanceof AbstractSource)){
+			return false;
+		}
+		//same class?
+		AbstractSource absObj = (AbstractSource) obj;
+		if(!(this.getIdentifer().equals(absObj.getIdentifer()))){
+			return false;
+		}
+		int thisChildSize = this.getChildSources().size();
+		int srcChildSize = absObj.getChildSources().size();		
+		if (thisChildSize != srcChildSize){
+			return false;
+		}
+		int containsCount = 0;
+		if (thisChildSize > 0){	
+			for (Source src : this.getChildSources()){
+				AbstractSource childSource = (AbstractSource)src;
+				if (absObj.getChildSources().contains(childSource)){
+					containsCount++;
+				}
+			}			
+		}
+		if (thisChildSize != containsCount){
+			return false;
+		}		
+		thisChildSize = this.getModules().size();
+		srcChildSize = absObj.getModules().size();
+		if (thisChildSize != srcChildSize){
+			return false;
+		}
+		containsCount = 0;
+		
+		for (Module module : this.getModules()){
+			if (absObj.getModules().contains(module)){
+				containsCount++;
+			}
+		}
+
+		return (thisChildSize == containsCount);
+	}
 	@Override
 	/**
 	 * Lexically compare format identifications.
 	 * 
-	 * @param Source sourceto be compared
+	 * @param Source source to be compared
 	 * @return -1, 0, or 1 if this Source value is less than, equal to, or
 	 *         greater than the second
 	 * @see java.lang.Comparable#compareTo(Object)
 	 */
-	public int compareTo(Source source){
-		if (this == source){
+	public int compareTo(Source src){
+		if (src==null){
+			return 1;
+		}
+		if (this == src){
 			return 0;
 		}
-		else {
-			return this.toString().compareToIgnoreCase(
-					source.toString());
+		//same class?
+		AbstractSource absObj = (AbstractSource) src;
+		int idCompare = 
+			this.getIdentifer().compareTo(absObj.getIdentifer());
+	    if (idCompare != 0){
+	    	return idCompare;
+	    }
+		int thisChildSize = this.getChildSources().size();
+		int srcChildSize = absObj.getChildSources().size();
+		if (thisChildSize < srcChildSize){
+			return -1;
 		}
+		else if (thisChildSize > srcChildSize){
+			return 1;
+		}
+
+		int containsCount = 0;
+		for (Source childsrc : this.getChildSources()){
+			AbstractSource childSource = (AbstractSource)childsrc;
+			if (absObj.getChildSources().contains(childSource)){
+				containsCount++;
+			}
+		}
+		if (thisChildSize < containsCount){
+			return -1;
+		}
+		else if (thisChildSize > containsCount){
+			return 1;
+		}
+		
+		thisChildSize = this.getModules().size();
+		srcChildSize = absObj.getModules().size();
+		if (thisChildSize < srcChildSize){
+			return -1;
+		}
+		else if (thisChildSize > srcChildSize){
+			return 1;
+		}
+		containsCount = 0;
+		for (Module module : this.getModules()){
+			if (absObj.getModules().contains(module)){
+				containsCount++;
+			}
+		}	
+		if (thisChildSize < containsCount){
+			return -1;
+		}
+		else if (thisChildSize > containsCount){
+			return 1;
+		}		
+		return 0;
+	}
+
+	private I8R myI8R = null;
+
+	public I8R getIdentifer() {
+		if (myI8R == null){
+			myI8R = I8R.makeReportableI8R(this);
+		}
+		return myI8R;
 	}
 }

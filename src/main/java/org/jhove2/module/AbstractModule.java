@@ -38,6 +38,7 @@ package org.jhove2.module;
 
 import org.jhove2.core.Duration;
 import org.jhove2.core.AbstractProduct;
+import org.jhove2.core.I8R;
 import org.jhove2.core.Product;
 
 /**
@@ -151,5 +152,14 @@ public abstract class AbstractModule extends AbstractProduct implements Module {
 	 */
 	public void setWrappedProduct(Product product) {
 		this.wrappedProduct = product;
+	}
+	
+	private I8R myI8R = null;
+	
+	public I8R getIdentifer() {
+		if (myI8R == null){
+			myI8R = I8R.makeReportableI8R(this);
+		}
+		return myI8R;
 	}
 }
