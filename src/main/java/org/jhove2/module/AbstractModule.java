@@ -154,12 +154,4 @@ public abstract class AbstractModule extends AbstractProduct implements Module {
 		this.wrappedProduct = product;
 	}
 	
-	private I8R myI8R = null;
-	
-	public I8R getIdentifer() {
-		if (myI8R == null){
-			myI8R = I8R.makeReportableI8R(this);
-		}
-		return myI8R;
-	}
 }

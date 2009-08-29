@@ -190,5 +190,5 @@ public interface Source extends Temporal, Comparable<Source> {
 	 * Return the JHOVE2 namespace identifier for this Source
 	 * @return
 	 */
-	public I8R getIdentifer();
+	public I8R getJhove2Identifer();
 }

@@ -178,4 +178,13 @@ public class AbstractProduct implements Product {
 	public void setNote(String note) {
 		this.note = note;
 	}
+	
+	private I8R myI8R = null;
+	@Override
+	public I8R getJhove2Identifer() {
+		if (myI8R == null){
+			myI8R = I8R.makeJhove2I8R(this);
+		}
+		return myI8R;
+	}
 }

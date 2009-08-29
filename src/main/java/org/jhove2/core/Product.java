@@ -95,5 +95,11 @@ public interface Product extends Reportable {
 	 * @return Product version
 	 */
 	@ReportableProperty(order = 2, value = "Product version identifier.")
+	
 	public String getVersion();
+	/**
+	 * Get JHOVE2 namespace identifier for a product
+	 * @return I8R with  JHOVE2 namespace identifier for a product
+	 */
+	public I8R getJhove2Identifer();
 }

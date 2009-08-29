@@ -231,11 +231,11 @@ public class I8R implements Comparable<I8R> {
 		return equals;
 	}
 	/**
-	 * 
-	 * @param r
-	 * @return
+	 * Creates a JHOVE2 namespace identifier for a Reportable object
+	 * @param r Reportable object for which we want JHOVE2 namespace Identifier
+	 * @return I8R object containing JHOVE2 namespace identifier for a Reportable object
 	 */
-	public static I8R makeReportableI8R (Reportable r){
+	public static I8R makeJhove2I8R (Reportable r){
 		Class<? extends Reportable> c1 = r.getClass();
 		String qName = c1.getName();
 		I8R identifier = new I8R(I8R.JHOVE2_PREFIX + "/"

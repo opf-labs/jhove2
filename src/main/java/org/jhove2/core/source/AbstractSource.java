@@ -50,11 +50,6 @@ import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Comparator;
-
-import org.apache.commons.lang.builder.CompareToBuilder;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import org.jhove2.core.Duration;
 import org.jhove2.core.I8R;
@@ -431,7 +426,7 @@ public abstract class AbstractSource implements Source, Comparable<Source> {
 		}
 		//same class?
 		AbstractSource absObj = (AbstractSource) obj;
-		if(!(this.getIdentifer().equals(absObj.getIdentifer()))){
+		if(!(this.getJhove2Identifer().equals(absObj.getJhove2Identifer()))){
 			return false;
 		}
 		File thisFile = this.getFile();
@@ -498,7 +493,7 @@ public abstract class AbstractSource implements Source, Comparable<Source> {
 		//same class?
 		AbstractSource absObj = (AbstractSource) src;
 		int idCompare = 
-			this.getIdentifer().compareTo(absObj.getIdentifer());
+			this.getJhove2Identifer().compareTo(absObj.getJhove2Identifer());
 	    if (idCompare != 0){
 	    	return idCompare;
 	    }
@@ -565,10 +560,10 @@ public abstract class AbstractSource implements Source, Comparable<Source> {
 	}
 
 	private I8R myI8R = null;
-
-	public I8R getIdentifer() {
+	@Override
+	public I8R getJhove2Identifer() {
 		if (myI8R == null){
-			myI8R = I8R.makeReportableI8R(this);
+			myI8R = I8R.makeJhove2I8R(this);
 		}
 		return myI8R;
 	}

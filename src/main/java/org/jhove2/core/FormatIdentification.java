@@ -36,14 +36,9 @@
 
 package org.jhove2.core;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.TreeSet;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.source.AbstractSource;
 import org.jhove2.core.source.Source;
 
 /**
@@ -85,14 +80,13 @@ public class FormatIdentification implements Reportable,
 	protected Confidence confidence;
 
 	/** Presumptive format. */
-	protected Format format;
+	protected Format presumptiveFormat;
 
-	/** Identification process. */
-	protected Product process;
+	/** Identification product. */
+	protected Product identifierProduct;
 
 	/**
-	 * Source unit associated with the format. Defined only by aggregate
-	 * identification.
+	 * Source unit associated with the format.
 	 */
 	protected Source source;
 
@@ -105,7 +99,7 @@ public class FormatIdentification implements Reportable,
 	 *            Identification confidence level
 	 */
 	public FormatIdentification(Format format, Confidence confidence) {
-		this.format = format;
+		this.presumptiveFormat = format;
 		this.confidence = confidence;
 	}
 
@@ -122,7 +116,7 @@ public class FormatIdentification implements Reportable,
 	public FormatIdentification(Format format, Confidence confidence,
 			Product process) {
 		this(format, confidence);
-		this.process = process;
+		this.identifierProduct = process;
 	}
 
 	/**
@@ -130,9 +124,9 @@ public class FormatIdentification implements Reportable,
 	 * 
 	 * @return Identification process
 	 */
-	@ReportableProperty(order = 1, value = "Identification process.")
-	public Product getIdentificationProcess() {
-		return this.process;
+	@ReportableProperty(order = 1, value = "Identifier product.")
+	public Product getIdentifierProduct() {
+		return this.identifierProduct;
 	}
 
 	/**
@@ -152,22 +146,23 @@ public class FormatIdentification implements Reportable,
 	 */
 	@ReportableProperty(order = 3, value = "Presumptively identified format.")
 	public Format getPresumptiveFormat() {
-		return this.format;
+		return this.presumptiveFormat;
 	}
 
 	/**
 	 * Get source associated with the format. Set only by aggregate
 	 * identification.
 	 * 
-	 * @return Source units associated with the format
+	 * @return Source associated with the format
 	 */
 	@ReportableProperty(order = 4, value = "Source associated with this presumptive identification.")
 	public Source getSource() {
 		return this.source;
 	}
 
+	
 	/**
-	 * Add a source unit for an aggregate format.
+	 * Set source unit.
 	 * 
 	 * @param source
 	 *            Source unit
@@ -193,10 +188,25 @@ public class FormatIdentification implements Reportable,
 		if (this==identification){
 			return 0;
 		}
-		int compareFormat = this.getFormat().getIdentifier().compareTo(
-				identification.getFormat().getIdentifier());
+		int compareFormat = this.getPresumptiveFormat().getIdentifier().compareTo(
+				identification.getPresumptiveFormat().getIdentifier());
 		if (compareFormat != 0){
 			return compareFormat;
+		}
+		if (this.getIdentifierProduct()==null){
+			if (identification.getIdentifierProduct()!= null){
+				return -1;
+			}
+		}
+		else if (identification.getIdentifierProduct()==null){
+			return 1;
+		}
+		else {
+			int compareProduct = this.getIdentifierProduct().getJhove2Identifer().compareTo
+						(identification.getIdentifierProduct().getJhove2Identifer());
+			if (compareProduct != 0){
+				return compareProduct;
+			}
 		}
 		int order1 = this.confidence.getOrder();
 		int order2 = identification.getConfidence().getOrder();
@@ -221,38 +231,45 @@ public class FormatIdentification implements Reportable,
 		if (! (obj instanceof FormatIdentification)){
 			return false;
 		}
-		FormatIdentification fiObj = (FormatIdentification) obj;
-	
-		boolean equals = (this.getFormat().getIdentifier().compareTo
-				            (fiObj.getFormat().getIdentifier())==0);
+		FormatIdentification fiObj = (FormatIdentification) obj;	
+		boolean equals = (this.getPresumptiveFormat().getIdentifier().equals
+				            (fiObj.getPresumptiveFormat().getIdentifier()));
 		if (!equals){
 			return equals;
+		}		
+		if (this.getIdentifierProduct()==null){
+			if (fiObj.getIdentifierProduct() != null){
+				return false;
+			}
 		}
+		else if (fiObj.getIdentifierProduct()==null){
+			return false;
+		}
+		else {
+			equals = this.getIdentifierProduct().getJhove2Identifer().equals(fiObj.getIdentifierProduct()
+					.getJhove2Identifer());
+			if (!equals){
+				return equals;
+			}
+		}			
 		equals = this.getConfidence().getOrder()== fiObj.getConfidence().getOrder();
 		if (!equals){
 			return equals;
-		}
+		}		
 		equals = this.source.equals(fiObj.getSource());
 		return equals;
 	}
 	
-	public Format getFormat() {
-		return format;
-	}
-
-	public void setFormat(Format format) {
-		this.format = format;
-	}
-
-	public Product getProcess() {
-		return process;
-	}
-
-	public void setProcess(Product process) {
-		this.process = process;
-	}
 
 	public void setConfidence(Confidence confidence) {
 		this.confidence = confidence;
+	}
+
+	public void setPresumptiveFormat(Format presumptiveFormat) {
+		this.presumptiveFormat = presumptiveFormat;
+	}
+
+	public void setIdentifierProduct(Product identifierProduct) {
+		this.identifierProduct = identifierProduct;
 	}
 }
