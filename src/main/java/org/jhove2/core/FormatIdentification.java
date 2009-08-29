@@ -235,16 +235,6 @@ public class FormatIdentification implements Reportable,
 		equals = this.source.equals(fiObj.getSource());
 		return equals;
 	}
-
-//	@Override
-//	public int hashCode(){
-//		return new HashCodeBuilder()
-//			.append(this.getFormat().getIdentifier())
-//			.append(this.getConfidence().getOrder())
-//			.append(this.getSource())
-//			.toHashCode();
-//	}
-	
 	
 	public Format getFormat() {
 		return format;

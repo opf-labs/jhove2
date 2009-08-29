@@ -434,6 +434,19 @@ public abstract class AbstractSource implements Source, Comparable<Source> {
 		if(!(this.getIdentifer().equals(absObj.getIdentifer()))){
 			return false;
 		}
+		File thisFile = this.getFile();
+		File objFile = absObj.getFile();
+		if (thisFile==null){
+			if (objFile != null){
+				return false;
+			}
+		}
+		else if (objFile==null){
+			return false;
+		}
+		else if (!(this.getFile().equals(absObj.getFile()))){
+			return false;
+		}
 		int thisChildSize = this.getChildSources().size();
 		int srcChildSize = absObj.getChildSources().size();		
 		if (thisChildSize != srcChildSize){
@@ -488,6 +501,22 @@ public abstract class AbstractSource implements Source, Comparable<Source> {
 			this.getIdentifer().compareTo(absObj.getIdentifer());
 	    if (idCompare != 0){
 	    	return idCompare;
+	    }
+	    File thisFile = this.getFile();
+	    File objFile = absObj.getFile();
+	    if (thisFile==null){
+	    	if (objFile != null){
+	    		return -1;
+	    	}
+	    }
+	    else if (objFile == null){
+	    		return 1;
+	    }
+	    else {
+	    	int fileCompare = thisFile.compareTo(objFile);
+	    	if (fileCompare != 0){
+	    		return fileCompare;
+	    	}
 	    }
 		int thisChildSize = this.getChildSources().size();
 		int srcChildSize = absObj.getChildSources().size();
