@@ -211,7 +211,7 @@ public class JHOVE2
 	public JHOVE2() throws JHOVE2Exception {
 		super(VERSION, RELEASE, RIGHTS);
 
-		this.installation = new Installation();
+		this.installation = Installation.getInstance();
 
 		this.bufferSize = DEFAULT_BUFFER_SIZE;
 		this.bufferType = DEFAULT_BUFFER_TYPE;

@@ -97,7 +97,69 @@ public class URLSource extends AbstractSource {
 	 * @return URL
 	 */
 	@ReportableProperty("URL.")
-	public String getURL() {
+	public String getURLString() {
 		return this.url.toString();
+	}
+	
+	public URL getURL(){
+		return this.url;
+	}
+	@Override
+	public boolean equals(Object obj){
+		if (obj == null){
+			return false;
+		}
+		if (this == obj){
+			return true;
+		}
+		if (!(obj instanceof URLSource)){
+			return false;
+		}
+		URLSource uObj = (URLSource)obj;
+		if (this.getURL()==null){
+			if (uObj.getURL()!= null){
+				return false;
+			}
+		}
+		else if (uObj.getURL()==null){
+			return false;
+		}
+		boolean equals = this.getURLString().equalsIgnoreCase(uObj.getURLString());
+		if (!equals){
+			return false;
+		}
+		return super.equals(obj);
+	}
+	@Override
+	public int compareTo(Source source){
+		if (source==null){
+			return 1;
+		}
+		if (this==source){
+			return 0;
+		}
+		if (!(source instanceof URLSource)){
+			int compareSource = this.getJhove2Identifer().compareTo(source.getJhove2Identifer());
+			return compareSource;
+		}
+		URLSource uObj = (URLSource)source;
+		if (this.getURL()==null){
+			if (uObj.getURL()!= null){
+				return -1;
+			}
+		}
+		else if (uObj.getURL()==null){
+			return 1;
+		}
+		else {			
+			int stCompare = this.getURLString().compareToIgnoreCase(uObj.getURLString());
+			if (stCompare < 0){
+				return -1;
+			}
+			else if (stCompare > 0){
+				return 1;
+			}
+		}
+		return super.compareTo(source);
 	}
 }

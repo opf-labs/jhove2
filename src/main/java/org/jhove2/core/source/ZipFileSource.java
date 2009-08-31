@@ -57,6 +57,8 @@ import org.jhove2.module.digest.CRC32Digester;
  * @author mstrong, slabrams
  */
 public class ZipFileSource extends AbstractSource implements NamedSource {
+	/** CRC message digest value recorded in the ZipEntry. */
+	protected long crc;
 	/** Zip file CRC-32 message digest. */
 	protected Digest crc32;
 
@@ -98,8 +100,8 @@ public class ZipFileSource extends AbstractSource implements NamedSource {
 		}
 		this.size = entry.getSize();
 		this.lastModified = new Date(entry.getTime());
-		this.crc32 = new Digest(AbstractArrayDigester.toHexString(entry
-				.getCrc()), CRC32Digester.ALGORITHM);
+		this.crc = entry.getCrc();
+		this.crc32 = new Digest(AbstractArrayDigester.toHexString(this.crc), CRC32Digester.ALGORITHM);
 		this.comment = entry.getComment();
 	}
 
@@ -178,5 +180,152 @@ public class ZipFileSource extends AbstractSource implements NamedSource {
 	@ReportableProperty(order = 3, value = "Zip file size, in bytes.")
 	public long getSize() {
 		return this.size;
+	}
+	/**
+	 * CRC value recorded in ZipEntry
+	 * @return
+	 */
+	public long getCrc() {
+		return crc;
+	}
+	
+	@Override
+	public boolean equals(Object obj){
+		boolean equals = false;
+		if (obj==null){
+			return false;
+		}
+		if (this == obj){
+			return true;
+		}
+		equals = obj instanceof ZipFileSource;
+		if (!equals){
+			return false;
+		}
+		ZipFileSource zObj = (ZipFileSource)obj;
+		if (this.getPath()==null){
+			if (zObj.getPath() != null){
+				return false;
+			}
+		}
+		else if (zObj.getPath()==null){
+			return false;
+		}
+		equals = this.getPath().equalsIgnoreCase(zObj.getPath());
+		if (!equals){
+			return false;
+		}
+		if (this.getLastModified()==null){
+			if (zObj.getLastModified()!= null){
+				return false;
+			}
+		}
+		else if (zObj.getLastModified()==null){
+			return false;
+		}
+		equals = this.getLastModified().equals(zObj.getLastModified());
+		if (!equals){
+			return false;
+		}
+		if (this.getComment()==null){
+			if (zObj.getComment()!= null){
+				return false;
+			}
+		}
+		else if (zObj.getComment()==null){
+			return false;
+		}
+		equals = this.getComment().equalsIgnoreCase(zObj.getComment());
+		if (!equals){
+			return false;
+		}
+		equals = this.getCrc()==zObj.getCrc();
+		if (!equals){
+			return false;
+		}
+		equals = this.getSize()==zObj.getSize();
+		if (!equals){
+			return false;
+		}
+		return super.equals(obj);
+	}
+	@Override
+	public int compareTo(Source source){
+		int comp = 0;
+		if (source==null){
+			return 1;
+		}
+		if (this==source){
+			return 0;
+		}
+		if (!(source instanceof ZipFileSource)){
+			int compareSource = this.getJhove2Identifer().compareTo(source.getJhove2Identifer());
+			return compareSource;
+		}
+		ZipFileSource zObj = (ZipFileSource)source;
+		if (this.getPath()==null){
+			if (zObj.getPath()!= null){
+				return -1;
+			}
+		}
+		else if (zObj.getPath()==null){
+			return 1;
+		}
+		else {
+			comp = this.getPath().compareToIgnoreCase(zObj.getPath());
+			if (comp < 0){
+				return -1;
+			}
+			else if (comp > 0){
+				return 1;
+			}
+		}
+		if (this.getLastModified()==null){
+			if (zObj.getLastModified()!= null){
+				return -1;
+			}
+		}
+		else if (zObj.getLastModified()==null){
+			return 1;
+		}
+		else {
+			comp = this.getLastModified().compareTo(zObj.getLastModified());
+			if (comp < 0){
+				return -1;
+			}
+			else if (comp > 0){
+				return 1;
+			}
+		}
+		if (this.getComment()==null){
+			if (zObj.getComment()!= null){
+				return -1;
+			}
+		}
+		else if (zObj.getComment()==null){
+			return 1;
+		}
+		else {
+			comp = this.getComment().compareToIgnoreCase(zObj.getComment());
+			if (comp < 0){
+				return -1;
+			}
+			else if (comp > 0){
+				return 1;
+			}
+		}
+		if (this.getCrc()< zObj.getCrc()){
+			return -1;
+		}
+		else if (this.getCrc()>zObj.getCrc()){
+			return 1;
+		}
+		if (this.getSize()< zObj.getSize()){
+			return -1;
+		}
+		else if (this.getSize()> zObj.getSize()){
+			return 1;
+		}
+		return super.compareTo(source);
 	}
 }

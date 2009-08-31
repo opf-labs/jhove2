@@ -127,4 +127,126 @@ public class ZipDirectorySource extends AbstractSource implements
 	public String getPath() {
 		return this.path;
 	}
+	
+	@Override
+	public boolean equals(Object obj){
+		boolean equals = false;		
+		if (obj==null){
+			return false;
+		}
+		if (this == obj){
+			return true;
+		}
+		equals = obj instanceof ZipDirectorySource;
+		if (!equals){
+			return false;
+		}
+		ZipDirectorySource zObj = (ZipDirectorySource)obj;
+		if (this.getPath()==null){
+			if (zObj.getPath()!= null){
+				return false;
+			}
+		}
+		else if (zObj.getPath()==null){
+			return false;
+		}
+		equals = this.getPath().equalsIgnoreCase(zObj.getPath());
+		if (!equals){
+			return false;
+		}
+		// won't bother to check name; it is constructed from path
+		if (this.getLastModified()==null){
+			if (zObj.getLastModified()!= null){
+				return false;
+			}
+		}
+		else if (zObj.getLastModified()==null){
+			return false;
+		}
+		equals = this.getLastModified().equals(zObj.getLastModified());
+		if (!equals){
+			return false;
+		}
+		if (this.getComment()==null){
+			if (zObj.getComment()!= null){
+				return false;
+			}
+		}
+		else if (zObj.getComment()==null){
+			return false;
+		}
+		equals = this.getComment().equalsIgnoreCase(zObj.getComment());
+		if (!equals){
+			return false;
+		}
+		return super.equals(obj);
+	}
+	
+	@Override
+	public int compareTo(Source source){
+		int comp = 0;
+		if (source==null){
+			return 1;
+		}
+		if (this==source){
+			return 0;
+		}
+		if (!(source instanceof ZipDirectorySource)){
+			int compareSource = this.getJhove2Identifer().compareTo(source.getJhove2Identifer());
+			return compareSource;
+		}
+		ZipDirectorySource zObj = (ZipDirectorySource)source;
+		if (this.getPath()==null){
+			if (zObj.getPath()!= null){
+				return -1;
+			}
+		}
+		else if (zObj.getPath()==null){
+			return 1;
+		}
+		else {
+			comp = this.getPath().compareToIgnoreCase(zObj.getPath());
+			if (comp < 0){
+				return -1;
+			}
+			else if (comp > 0){
+				return 1;
+			}
+		}
+		if (this.getLastModified()==null){
+			if (zObj.getLastModified()!= null){
+				return -1;
+			}
+		}
+		else if (zObj.getLastModified()==null){
+			return 1;
+		}
+		else {
+			comp = this.getLastModified().compareTo(zObj.getLastModified());
+			if (comp < 0){
+				return -1;
+			}
+			else if (comp > 0){
+				return 1;
+			}
+		}
+		if (this.getComment()==null){
+			if (zObj.getComment()!= null){
+				return -1;
+			}
+		}
+		else if (zObj.getComment()==null){
+			return 1;
+		}
+		else {
+			comp = this.getComment().compareToIgnoreCase(zObj.getComment());
+			if (comp < 0){
+				return -1;
+			}
+			else if (comp > 0){
+				return 1;
+			}
+		}		
+		return super.compareTo(source);
+	}
 }

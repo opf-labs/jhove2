@@ -89,11 +89,26 @@ public class Installation
 
 	/** Operating system version. */
 	protected String osVersion;
+	
+	/** private Installation member for static getInstance() method */
+	private static Installation installation = null;
 
+	/**
+	 * Static method to set installation member values
+	 * Along with private constructor, enables us to get these values once 
+	 * and then reuse
+	 * @return Installation with all member set
+	 */
+	public static Installation getInstance(){
+		if (installation==null){
+			installation = new Installation();
+		}
+		return installation;
+	}
 	/**
 	 * Instantiate a new <code>Installation</code> reportable.
 	 */
-	public Installation() {
+	private Installation() {
 		Runtime rt = Runtime.getRuntime();
 		this.maxMemory = rt.maxMemory();
 		this.numProcessors = rt.availableProcessors();
