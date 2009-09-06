@@ -48,10 +48,10 @@ import javax.annotation.Resource;
 import org.jhove2.core.Format;
 import org.jhove2.core.FormatIdentification;
 import org.jhove2.core.JHOVE2;
-import org.jhove2.core.FormatIdentification.Confidence;
 import org.jhove2.core.source.FileSetSource;
 import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.Source;
+import org.jhove2.module.identify.GlobPathRecognizer;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -99,7 +99,7 @@ public class AggrefierModuleTest {
 			assertEquals(shapeStrictKeyCountMap.entrySet().size() + 
 					quickenStrictKeyCountMap.entrySet().size(), fiSet.size());
 			for (FormatIdentification fi:fiSet){
-				assertEquals(fi.getConfidence(),Confidence.PositiveGeneric);
+				assertEquals(fi.getConfidence(),GlobPathRecognizer.GLOB_PATH_CONFIDENCE);
 				Format format = fi.getPresumptiveFormat();	
 				if (format.equals(strictShapeFileRecognizer.getFormat())){
 					String sourceKey = getSourceKey(fi.getSource());
