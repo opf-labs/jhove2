@@ -50,7 +50,9 @@ import org.jhove2.core.Temporal;
  * 
  * @author mstrong, slabrams
  */
-public interface Module extends Product, Temporal {
+public interface Module
+	extends Product, Temporal
+{
 	/**
 	 * Get wrapped {@link org.jhove2.core.AbstractProduct} used to perform a
 	 * process.
@@ -62,8 +64,8 @@ public interface Module extends Product, Temporal {
 	public Product getWrappedProduct();
 	
 	/**
-	 * Return the JHOVE2 namespace identifier for this Module
-	 * @return
+	 * Return the identifier (in the JHOVE2 namespace) for the module
+	 * @return Identifier for the module
 	 */
 	public I8R getJhove2Identifer();
 }

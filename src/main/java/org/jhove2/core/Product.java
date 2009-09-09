@@ -46,7 +46,9 @@ import org.jhove2.annotation.ReportableProperty;
  * 
  * @author mstrong, slabrams
  */
-public interface Product extends Reportable {
+public interface Product
+	extends Reportable
+{
 	/**
 	 * Get product developers.
 	 * 

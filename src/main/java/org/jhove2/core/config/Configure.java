@@ -68,8 +68,9 @@ public class Configure {
 	 * @return Reportable
 	 * @throws JHOVE2Exception
 	 */
-	public static synchronized <R> R getReportable(Class<? super R> cl,
-			String name) throws JHOVE2Exception {
+	public static synchronized <R extends Reportable> R getReportable(Class<? super R> cl,String name)
+		throws JHOVE2Exception
+	{
 		R reportable = null;
 		try {
 			if (context == null) {
@@ -86,35 +87,6 @@ public class Configure {
 	}
 
 	/**
-	 * Get reportable class by bean name.
-	 * 
-	 * @param <R>
-	 *            Parameter type of the reportable
-	 * @param cl
-	 *            Reportable class (or super class)
-	 * @param name
-	 *            Reportable bean name
-	 * @return Reportable
-	 * @throws JHOVE2Exception
-	 */
-	public static synchronized <R> Class<R> getReportableClass(
-			Class<? super R> cl, String name) throws JHOVE2Exception {
-		Class<R> cls = null;
-		try {
-			if (context == null) {
-				context = new ClassPathXmlApplicationContext(CLASSPATH);
-			}
-
-			cls = (Class<R>) context.getType(name);
-		} catch (BeansException e) {
-			throw new JHOVE2Exception("Can't retrieve reportable class: "
-					+ name, e);
-		}
-
-		return cls;
-	}
-
-	/**
 	 * Get reportable names by type.
 	 * 
 	 * @param reportable
@@ -122,8 +94,9 @@ public class Configure {
 	 * @return Reportable names
 	 * @throws JHOVE2Exception
 	 */
-	public static synchronized String[] getReportableNames(
-			Class<? extends Reportable> reportable) throws JHOVE2Exception {
+	public static synchronized String[] getReportableNames(Class<? extends Reportable> reportable)
+		throws JHOVE2Exception
+	{
 		String[] names = null;
 		try {
 			if (context == null) {
@@ -163,5 +136,4 @@ public class Configure {
 
 		return props;
 	}
-
 }
