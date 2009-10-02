@@ -42,10 +42,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteOrder;
 import java.util.List;
+import java.util.Set;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.I8R;
-import org.jhove2.core.Temporal;
+import org.jhove2.core.FormatIdentification;
+import org.jhove2.core.Reportable;
+import org.jhove2.core.TimerInfo;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.io.Input.Type;
 import org.jhove2.module.Module;
@@ -55,9 +57,9 @@ import org.jhove2.module.Module;
  * can be characterized, which may be a file, a subset of a file, or a group of
  * files.
  * 
- * @author mstrong, slabrams
+ * @author mstrong, slabrams, smorrissey
  */
-public interface Source extends Temporal, Comparable<Source> {
+public interface Source extends Reportable, Comparable<Source>{
 	/**
 	 * Close the source unit. If the source unit is backed by a temporary file,
 	 * delete the file.
@@ -190,5 +192,32 @@ public interface Source extends Temporal, Comparable<Source> {
 	 * Return the JHOVE2 namespace identifier for this Source
 	 * @return
 	 */
-	public I8R getJhove2Identifer();
+
+	@ReportableProperty(value="Timer info for this Source.")
+	public TimerInfo getTimerInfo();
+	
+	/**
+	 * Return list of presumptive identifications returned by identifer(s)
+	 * @return List of presumptive format identfications
+	 */
+	@ReportableProperty(value="Presumptive identifications for this Source.")
+	public Set<FormatIdentification> getPresumptiveFormatIdentifications();
+	
+	/**
+	 * Mutator for set of presumptive  FormatIdentifications attached to Source
+	 * @param fi presumptive FormatIdentifications
+	 */
+	public void setPresumptiveFormatIdentifications(Set<FormatIdentification> fi);
+	
+	/**
+	 * Add FormatIdentification to set of FormatIdentifications attached to Source
+	 * @param fi FormatIdentifications
+	 */
+	public void addPresumptiveFormatIdentification(FormatIdentification fi);
+	
+	/**
+	 * Add set of FormatIdentifications to set of FormatIdentifications attached to Source
+	 * @param fis set of FormatIdentifications
+	 */
+	public void addPresumptiveFormatIdentifications(Set<FormatIdentification> fis);
 }

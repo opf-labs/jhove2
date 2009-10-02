@@ -36,7 +36,6 @@
 
 package org.jhove2.module.format;
 
-import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.Format;
 import org.jhove2.module.AbstractModule;
 

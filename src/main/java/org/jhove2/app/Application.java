@@ -37,12 +37,12 @@
 package org.jhove2.app;
 
 import java.util.Date;
-import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.AppConfigInfo;
 import org.jhove2.core.JHOVE2;
-import org.jhove2.core.io.Input.Type;
 import org.jhove2.module.Module;
+import org.jhove2.module.display.Displayer;
 
 /**
  * Interface for JHOVE2 applications.
@@ -53,25 +53,10 @@ public interface Application
 	extends Module
 {
 	/**
-	 * Get {@link org.jhove2.core.io.Input} buffer size.
 	 * 
-	 * @return Buffer size
+	 * @return
 	 */
-	public int getBufferSize();
-
-	/**
-	 * Get {@link org.jhove2.core.io.Input} buffer type.
-	 * 
-	 * @return Input buffer type
-	 */
-	public Type getBufferType();
-
-	/**
-	 * Get message digests flag.
-	 * 
-	 * @return Message digests flag; if true, calculate message digests
-	 */
-	public boolean getCalcDigests();
+	public AppConfigInfo getAppConfigInfo();
 
 	/**
 	 * Get application command line.
@@ -89,78 +74,14 @@ public interface Application
 	@ReportableProperty(order = 2, value = "Application invocation date/timestatmp.")
 	public Date getDateTime();
 
-	/**
-	 * Get delete temporary files flag.
-	 * 
-	 * @return Delete temporary files flag
-	 */
-	public boolean getDeleteTempFiles();
-
-	/**
-	 * Get {@link org.jhove2.module.display.Displayer} name.
-	 * 
-	 * @return Displayer
-	 */
-	public String getDisplayer();
-
-	/**
-	 * Get fail fast limit.
-	 * 
-	 * @return Fail fast limit
-	 */
-	public int getFailFastLimit();
 
 	/**
 	 * Get application framework.
 	 * 
 	 * @return Application framework
 	 */
-	@ReportableProperty(order = 5, value = "Application framework.")
 	public JHOVE2 getFramework();
 
-	/**
-	 * Get output file.
-	 * 
-	 * @return Output file, or null if no file is specified
-	 */
-	public String getOutputFile();
-
-	/**
-	 * Get file system path names.
-	 * 
-	 * @return File system path names
-	 */
-	public List<String> getPathNames();
-
-	/**
-	 * Get show identifiers flag.
-	 * 
-	 * @return Show identifiers flag
-	 */
-	public boolean getShowIdentifiers();
-
-	/**
-	 * Get temporary directory.
-	 * 
-	 * @return Temporary directory
-	 */
-	public String getTempDirectory();
-
-	/**
-	 * Get application user name.
-	 * 
-	 * @return Application user name
-	 */
-	@ReportableProperty(order = 1, value = "Application user name.")
-	public String getUserName();
-
-	/**
-	 * Get application current working directory.
-	 * 
-	 * @return Appliction current working directory
-	 */
-	@ReportableProperty(order = 4, value = "Application current working directory.")
-	public String getWorkingDirectory();
 
 	/**
 	 * Set application framework.
@@ -169,4 +90,18 @@ public interface Application
 	 *            Application framework
 	 */
 	public void setFramework(JHOVE2 framework);
+	
+	/**
+	 * get application displayer
+	 * @return
+	 *       Application displayer
+	 */
+	@ReportableProperty(order = 4, value = "Framework displayer module.")
+	public Displayer getDisplayer();
+	
+	/**
+	 * Mutator for displayer to be used to serialize JHOVE2 output
+	 * @param displayer
+	 */
+	public void setDisplayer(Displayer displayer);
 }

@@ -49,6 +49,6 @@ public interface NamedSource extends Source {
 	 * 
 	 * @return Source name
 	 */
-	@ReportableProperty(order = 1, value = "Source name.")
+	@ReportableProperty(order = 0, value = "Source name.")
 	public String getName();
 }

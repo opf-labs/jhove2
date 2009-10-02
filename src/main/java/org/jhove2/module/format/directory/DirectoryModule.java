@@ -45,8 +45,7 @@ import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.source.DirectorySource;
 import org.jhove2.core.source.Source;
-import org.jhove2.module.format.AbstractFormatModule;
-import org.jhove2.module.format.Parser;
+import org.jhove2.module.format.BaseFormatModuleCommand;
 
 /**
  * JHOVE2 file system directory module.
@@ -54,8 +53,8 @@ import org.jhove2.module.format.Parser;
  * @author mstrong, slabrams
  */
 public class DirectoryModule
-	extends AbstractFormatModule
-	implements Parser
+	extends BaseFormatModuleCommand
+
 {
 	/** Directory module version identifier. */
 	public static final String VERSION = "0.1.2";
@@ -106,7 +105,6 @@ public class DirectoryModule
 				jhove2.characterize(src);
 			}
 		}
-
 		return 0;
 	}
 }

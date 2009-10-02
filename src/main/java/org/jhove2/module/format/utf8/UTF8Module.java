@@ -52,15 +52,14 @@ import org.jhove2.core.io.Input;
 import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.ZipFileSource;
-import org.jhove2.module.format.AbstractFormatModule;
-import org.jhove2.module.format.Parser;
+import org.jhove2.module.format.BaseFormatModuleCommand;
 import org.jhove2.module.format.Validator;
 import org.jhove2.module.format.Validator.Coverage;
-import org.jhove2.module.format.unicode.C0Control;
-import org.jhove2.module.format.unicode.C1Control;
-import org.jhove2.module.format.unicode.CodeBlock;
-import org.jhove2.module.format.unicode.Unicode;
-import org.jhove2.module.format.unicode.Unicode.EOL;
+import org.jhove2.module.format.utf8.unicode.C0Control;
+import org.jhove2.module.format.utf8.unicode.C1Control;
+import org.jhove2.module.format.utf8.unicode.CodeBlock;
+import org.jhove2.module.format.utf8.unicode.Unicode;
+import org.jhove2.module.format.utf8.unicode.Unicode.EOL;
 
 /**
  * JHOVE2 UTF-8 module.
@@ -68,14 +67,14 @@ import org.jhove2.module.format.unicode.Unicode.EOL;
  * @author mstrong, slabrams
  */
 public class UTF8Module
-	extends AbstractFormatModule
-	implements Parser, Validator
+	extends BaseFormatModuleCommand
+	implements Validator
 {
 	/** UTF-8 module version identifier. */
-	public static final String VERSION = "0.1.2";
+	public static final String VERSION = "0.1.3";
 
 	/** UTF-8 module release date. */
-	public static final String RELEASE = "2009-08-11";
+	public static final String RELEASE = "2009-09-05";
 
 	/** UTF-8 module rights statement. */
 	public static final String RIGHTS =
@@ -161,15 +160,13 @@ public class UTF8Module
 	public long parse(JHOVE2 jhove2, Source source)
 		throws EOFException, IOException, JHOVE2Exception
 	{
-		setStartTime();
-
 		long consumed = 0L;
 		this.isValid = Validity.Undetermined;
 		int numErrors = 0;
 		Input input = null;
 		try {
-			input = source.getInput(jhove2.getBufferSize(), jhove2
-					.getBufferType());
+			input = source.getInput(jhove2.getAppConfigInfo().getBufferSize(), 
+					jhove2.getAppConfigInfo().getBufferType());
 			long start = 0L;
 			long end = 0L;
 			if (source instanceof FileSource) {
@@ -205,9 +202,7 @@ public class UTF8Module
 					if (jhove2.failFast(++numErrors)) {
 						this.failFastMessage = new Message(Severity.INFO,
 								Context.PROCESS,
-								"Fail fast limit exceeded; additional "
-										+ "errors may exist but will not be "
-										+ "reported");
+								"org.jhove2.module.format.utf8.UTF8Module.failFastMessage");
 						break;
 					}
 					this.invalidCharacters.add(ch);
@@ -234,9 +229,11 @@ public class UTF8Module
 					this.c1Characters.add(c1);
 				}
 				if (position == start && ch.isByteOrderMark()) {
+					Object[] messageParms = new Object[]{position};
 					this.bomMessage = new Message(Severity.INFO,
 							Context.OBJECT,
-							"Byte Order Mark (BOM) at byte offset: " + position);
+							"org.jhove2.module.format.utf8.UTF8Module.bomMessage",
+							messageParms);
 				}
 				if (ch.isNonCharacter()) {
 					this.numNonCharacters++;
@@ -261,7 +258,6 @@ public class UTF8Module
 				input.close();
 			}
 		}
-		setEndTime();
 
 		return consumed;
 	}
@@ -278,7 +274,7 @@ public class UTF8Module
 	 *      org.jhove2.core.source.Source)
 	 */
 	@Override
-	public Validity validate(JHOVE2 jhove2, Source source) {
+	public Validity validate(JHOVE2 jhove2, Source source) throws JHOVE2Exception {
 		return this.isValid;
 	}
 

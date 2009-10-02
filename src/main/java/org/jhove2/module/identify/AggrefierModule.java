@@ -37,52 +37,60 @@
 package org.jhove2.module.identify;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.jhove2.core.FormatIdentification;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractModule;
 
 /**
  * JHOVE2 aggregate identification module.
+ * Identifies presumptive instances of Clump formats (e.g. ShapeFiles) in
+ * an aggregate Source, and performs callback to JHOVE2 framework 
+ * to characterize those Clump format instances
  * 
  * @author smorrissey
  */
-public class AggrefierModule extends AbstractModule implements Identifier{
+public class AggrefierModule extends AbstractModule 
+	implements AggregateIdentifier {
+	
 	/** Identification module version identifier. */
 	public static final String VERSION = "1.0.0";
 	/** Identification module release date. */
 	public static final String RELEASE = "2009-08-21";
 	/** Identification module rights statement. */
 	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California, "
-			+ "Ithaka Harbors, Inc., and The Board of Trustees of the Leland "
-			+ "Stanford Junior University. "
-			+ "Available under the terms of the BSD license.";
-	/** Presumptively identified presumptiveFormatIds. */
-	protected Set<FormatIdentification> presumptiveFormatIds;
-	/** list of configured Identifier that can detect instances of an aggregate format */
-	protected List<Identifier> recognizers;
+		+ "Ithaka Harbors, Inc., and The Board of Trustees of the Leland "
+		+ "Stanford Junior University. "
+		+ "Available under the terms of the BSD license.";
+
+	/** list of configured AggregateIdentifiers that can detect instances 
+	 * of an aggregate format.  Each identifier recognizes exactly one format.
+     */
+	protected List<AggregateIdentifier> recognizers;
 
 	/**
 	 * Instantiate a new <code>AggrefierModule</code>.
 	 */
 	public AggrefierModule() {
 		super(VERSION, RELEASE, RIGHTS);
-		this.presumptiveFormatIds = new TreeSet<FormatIdentification>();
 	}
 
+	
 	/**
-	 * Presumptively identify the format of an aggregate source unit.
-	 * 
+	 * Detect presumptive instances of a clump format in a source unit, and identify
+	 * Note that the child sources of the Source being inspected for the presence of
+	 * aggregates may be presumptively assigned to more than one clump format
 	 * @param jhove2
 	 *            JHOVE2 framework
 	 * @param source
 	 *            Aggregate source unit
-	 * @return Presumptively identified presumptiveFormatIds
+	 * @return Presumptively identified Clump sources
 	 * @throws IOException
 	 *             I/O exception encountered identifying the source unit
 	 * @throws JHOVE2Exception
@@ -90,30 +98,33 @@ public class AggrefierModule extends AbstractModule implements Identifier{
 	 *      org.jhove2.core.source.AggregateSource)
 	 */
 	@Override
-	public Set<FormatIdentification> identify(JHOVE2 jhove2,
+	public Set<ClumpSource>  identify(JHOVE2 jhove2,
 			Source source) throws IOException, JHOVE2Exception {
-		for (Identifier recognizer:this.recognizers){
-			this.presumptiveFormatIds.addAll(recognizer.identify(jhove2, source));
+		Set<ClumpSource> clumpSources = 
+			new TreeSet<ClumpSource>();
+		for (AggregateIdentifier recognizer:this.recognizers){	
+			recognizer.getTimerInfo().setStartTime();
+			clumpSources.addAll((Collection<? extends ClumpSource>) recognizer.identify(jhove2, source));
+			recognizer.getTimerInfo().setEndTime();
+			source.addModule(recognizer);
 		}	
-		return this.presumptiveFormatIds;
+		return clumpSources;
 	}
 
 	/**
-	 * Get presumptive format identifications.
-	 * @return Presumptive format identifications
-	 * @see org.jhove2.module.identify.Identifier#getPresumptiveFormatIds()
+	 * Accessor for clump format instance identifiers
+	 * @return
 	 */
-	@Override
-	public Set<FormatIdentification> getPresumptiveFormatIds() {
-		return this.presumptiveFormatIds;
-	}
-
-	public List<Identifier> getRecognizers() {
+	public List<AggregateIdentifier> getRecognizers() {
 		return recognizers;
 	}
 
-	public void setRecognizers(List<Identifier> recognizers) {
+	/**
+	 * Mutator for clump format instance identifiers
+	 * @param recognizers
+	 */
+	public void setRecognizers(List<AggregateIdentifier> recognizers) {
 		this.recognizers = recognizers;
 	}
-	
+
 }

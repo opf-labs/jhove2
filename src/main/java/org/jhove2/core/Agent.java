@@ -43,7 +43,7 @@ import org.jhove2.annotation.ReportableProperty;
  * 
  * @author mstrong, slabrams
  */
-public class Agent implements Reportable {
+public class Agent extends AbstractReportable {
 	/** Agent types. */
 	public enum Type {
 		Corporate, Personal

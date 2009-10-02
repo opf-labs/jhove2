@@ -1,25 +1,21 @@
 package org.jhove2.core.io;
 
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.zip.ZipException;
-import java.util.zip.ZipFile;
 
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.io.Input.Type;
 import org.jhove2.core.source.URLSource;
-import org.jhove2.core.source.ZipFileSource;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
 
 public class InputFactoryTest {
 
@@ -41,7 +37,9 @@ public class InputFactoryTest {
 		}
 		try {
 			JHOVE2 jhove2 = new JHOVE2();
-			URLSource yahooURL = new URLSource(jhove2, yahoo);
+			URLSource yahooURL = new URLSource(jhove2.getAppConfigInfo().getTempPrefix(), 
+					jhove2.getAppConfigInfo().getTempSuffix(), jhove2.getAppConfigInfo().getBufferSize(),
+					yahoo);
 			Input input = yahooURL.getInput(8192, Type.Direct);
 			// this closes the channel and the stream associated with any temp
 			// file created

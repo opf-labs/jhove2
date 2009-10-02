@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:util="http://www.springframework.org/schema/util"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans 
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-2.5.xsd
+		   http://www.springframework.org/schema/util 
+		   http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+		   
+	<bean id="propertyConfigurer" 
+    	class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    	<property name="locations">
+    		<list>
+    			<value>properties/filepath.properties</value>
+    			<value>properties/droidconfig.properties</value>
+    		</list>
+    	</property>
+    </bean>
+    
+	<bean id="IdentifierCommand" class="org.jhove2.module.identify.IdentifierCommand"
+	 	scope="prototype">
+	</bean>
+
+		<!-- Identifier module bean -->
+	<bean id="testIdentifier" class="org.jhove2.module.identify.IdentifierModule"
+	      scope="prototype">
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+				<ref bean="PorticoAgent"/>
+				<ref bean="StanfordAgent"/>
+			</list>
+		</property>
+		<property name="fileSourceIdentifier"  ref="testDroidIdentifier"/>
+	</bean>
+	
+	<!-- DROID identifier bean -->
+	<bean id="testDroidIdentifier" class="org.jhove2.module.identify.DroidIdentifier"
+	      scope="prototype">	
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+				<ref bean="PorticoAgent"/>
+				<ref bean="StanfordAgent"/>
+			</list>
+		</property>
+		<property name="configFilePath"  ref="droidConfigFilePath"/>
+		<property name="sigFilePath" ref="droidSigFilePath" />
+	</bean>
+	   
+	 
+			<!--  you will need to edit the droidConfigFilePath property to run on your machine -->
+	<bean id="droidConfigFilePath" class="java.lang.String" >
+		<constructor-arg type="java.lang.String" 
+	        value="${file.droid.config}"/>
+	</bean>   
+	<!--  you will need to edit the droidSigFilePath property to run on your machine -->
+	<bean id="droidSigFilePath" class="java.lang.String" >
+		<constructor-arg type="java.lang.String" 
+	        value="${file.droid.sig}"/>
+	</bean> 
+	
+
+		             
+	<!--  DROID PUID to JHOVE2 identifier properties bean -->
+		<util:properties id="DroidMap"	
+		             location="classpath:properties/droid2jhove.properties"/>	
+		             
+		<!-- Aggrefier Command Bean -->
+	<bean id="AggrefierCommand" class="org.jhove2.module.identify.AggrefierCommand"
+		scope="prototype" />   	             
+		             
+	<!-- Aggrefier module bean -->
+	<bean id="Aggrefier" class="org.jhove2.module.identify.AggrefierModule"
+	      scope="prototype">
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+				<ref bean="PorticoAgent"/>
+				<ref bean="StanfordAgent"/>
+			</list>
+		</property>
+		<property name="recognizers">
+			<list value-type="org.jhove2.module.identify.AggregateIdentifier">
+				<ref bean="testStrictShapeFileRecognizer"/>
+			</list>
+		</property>
+	</bean>
+	      
+			
+	<!-- Strict Shapefile recognizer bean 
+	     Must have all 3 required files; does NOT accept files with unrecognized extensions -->
+	<bean id="testStrictShapeFileRecognizer" class="org.jhove2.module.identify.GlobPathRecognizer"
+	 scope="prototype">
+	 	<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+				<ref bean="PorticoAgent"/>
+				<ref bean="StanfordAgent"/>
+			</list>
+		</property>
+<!--	 	<property name="format" ref="ShapefileFormat"/>-->
+	 	<property name="formatIdentifier" ref="ShapefileIdentifier"/>
+	 	<property name="fileGroupingExpr" value="(.*[\\/]\w+).((?i:shp\.)?\w{3})"/>
+	 	<property name="mustHaveExpr" value="^((?i:shp)|(?i:shx)|(?i:dbf))$"/>
+	 	<property name="mayHaveExpr" 
+	 	          value="^((?i:shp.xml)|(?i:prj)|(?i:sbn)|(?i:sbx)|(?i:atx)|(?i:qix)|(?i:fix)|(?i:grx))$"/>
+	 	<property name="fileGroupingCaptureGroupIndex" value="1" />
+	 	<property name="mustHaveCaptureGroupIndex" value="2"/>
+	 	<property name="mayHaveCaptureGroupIndex" value="2"/>
+	 	<property name="minMustHavesToIdentify" value="3"/>
+	  	<property name="includeUnmatchedFromGroup" value="false"/>
+	</bean>
+	
+		<!-- Relaxed Shapefile recognizer bean
+		    Only need 2 out of 3 required files; accepts u files with unrecognized extensions -->
+	<bean id="relaxedShapeFileRecognizer" class="org.jhove2.module.identify.GlobPathRecognizer"
+	 scope="prototype">
+	 	<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+				<ref bean="PorticoAgent"/>
+				<ref bean="StanfordAgent"/>
+			</list>
+		</property>
+<!--	 	<property name="format" ref="ShapefileFormat"/>-->
+	 	<property name="formatIdentifier" ref="ShapefileIdentifier"/>
+	 	<property name="fileGroupingExpr" value="(.*[\\/]\w+).((?i:shp\.)?\w{3})"/>
+	 	<property name="mustHaveExpr" value="^((?i:shp)|(?i:shx)|(?i:dbf))$"/>
+	 	<property name="mayHaveExpr" 
+	 	          value="^((?i:shp.xml)|(?i:prj)|(?i:sbn)|(?i:sbx)|(?i:atx)|(?i:qix)|(?i:fix)|(?i:grx))$"/>
+	 	<property name="fileGroupingCaptureGroupIndex" value="1" />
+	 	<property name="mustHaveCaptureGroupIndex" value="2"/>
+	 	<property name="mayHaveCaptureGroupIndex" value="2"/>
+	 	<property name="minMustHavesToIdentify" value="2"/>
+	  	<property name="includeUnmatchedFromGroup" value="true"/>
+	</bean>
+
+
+		<!-- Quicken recognizer bean 
+	     Must have all 3 required files; does NOT accept files with unrecognized extensions -->
+	<bean id="quickenFileRecognizer" class="org.jhove2.module.identify.GlobPathRecognizer"
+	 scope="prototype">
+	 	<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+				<ref bean="PorticoAgent"/>
+				<ref bean="StanfordAgent"/>
+			</list>
+		</property>
+<!--	 	<property name="format" ref="QuickenFormat"/>-->
+	 	<property name="formatIdentifier" ref="QuickenIdentifier"/>
+	 	<property name="fileGroupingExpr" value="(.*[\\/]\w+).(\w{3})"/>
+	 	<property name="mustHaveExpr" value="^((?i:idx)|(?i:qel)|(?i:qph)|(?i:qdf)|(?i:ptx))$"/>
+	 	<property name="fileGroupingCaptureGroupIndex" value="1" />
+	 	<property name="mustHaveCaptureGroupIndex" value="2"/>
+	 	<property name="minMustHavesToIdentify" value="5"/>
+	  	<property name="includeUnmatchedFromGroup" value="false"/>
+	</bean>
+		
+
+</beans>

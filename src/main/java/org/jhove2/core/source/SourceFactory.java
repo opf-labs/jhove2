@@ -41,17 +41,21 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import org.jhove2.core.JHOVE2;
+import org.jhove2.core.JHOVE2Exception;
+
 
 /**
  * Factory for JHOVE2 file and directory source units.
  * 
- * @author mstrong, slabrams
+ * @author mstrong, slabrams, smorrissey
  */
-public abstract class SourceFactory {
+public class SourceFactory {
 	/**
 	 * Get source unit from a file system path name.
 	 * 
@@ -99,9 +103,10 @@ public abstract class SourceFactory {
 	 * @throws IOException
 	 *             I/O exception instantiating source
 	 */
-	public static synchronized Source getSource(JHOVE2 jhove2, URL url)
+	public static synchronized Source getSource(String tmpPrefix, String tmpSuffix,
+			int bufferSize, URL url)
 			throws IOException {
-		return new URLSource(jhove2, url);
+		return new URLSource(tmpSuffix, tmpSuffix, bufferSize, url);
 	}
 
 	/**
@@ -117,13 +122,67 @@ public abstract class SourceFactory {
 	 * @throws IOException
 	 *             I/O exception instantiating source
 	 */
-	public static synchronized Source getSource(JHOVE2 jhove2, ZipFile zip,
+	public static synchronized Source getSource(String tmpPrefix, String tmpSuffix,
+			int bufferSize, ZipFile zip,
 			ZipEntry entry) throws IOException {
 		InputStream stream = zip.getInputStream(entry);
 		if (entry.isDirectory()) {
 			return new ZipDirectorySource(stream, entry);
 		}
 
-		return new ZipFileSource(jhove2, stream, entry);
+		return new ZipFileSource(tmpSuffix, tmpSuffix, bufferSize, stream, entry);
 	}
+	
+	
+
+	/**
+	 * Make Source from sequence of file system objects (files and directories).
+	 * 
+	 * @param pathName
+	 *            First path name
+	 * @param pathNames
+	 *            Remaining path names
+	 * @return Source
+	 * @throws IOException
+	 * @throws JHOVE2Exception
+	 */
+	public static synchronized Source getSource(String pathName, String... pathNames)
+	throws IOException, JHOVE2Exception {
+		List<String> list = new ArrayList<String>();
+		list.add(pathName);
+		if (pathNames != null && pathNames.length > 0) {
+			for (int i = 0; i < pathNames.length; i++) {
+				list.add(pathNames[i]);
+			}
+		}
+		return SourceFactory.getSource(list);
+	}
+
+	/**
+	 * Make Source from list of file system objects (files and directories).
+	 * 
+	 * @param pathNames
+	 *            File system path names
+	 * @return Source
+	 * @throws IOException
+	 * @throws JHOVE2Exception
+	 */
+	public static synchronized Source getSource(List<String> pathNames) throws IOException,
+	JHOVE2Exception {
+		Source source = null;
+		Iterator<String> iter = pathNames.iterator();
+		if (pathNames.size() == 1) {
+			String pathName = iter.next();
+			source = SourceFactory.getSource(pathName);
+		} else {
+			source = new FileSetSource();
+			while (iter.hasNext()) {
+				String pathName = iter.next();
+				Source src = SourceFactory.getSource(pathName);
+				((FileSetSource) source).addChildSource(src);
+			}
+		}
+		return source;
+	}
+	
 }

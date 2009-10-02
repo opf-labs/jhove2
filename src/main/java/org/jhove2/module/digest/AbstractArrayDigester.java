@@ -36,13 +36,15 @@
 
 package org.jhove2.module.digest;
 
+import org.jhove2.core.AbstractReportable;
+
 /**
  * Abstract JHOVE2 algorithm-specific message digester that operates on a byte
  * array.
  * 
  * @author mstrong, slabrams
  */
-public abstract class AbstractArrayDigester implements ArrayDigester {
+public abstract class AbstractArrayDigester extends AbstractReportable implements ArrayDigester {
 	/** Message digest algorithm. */
 	protected String algorithm;
 

@@ -43,6 +43,7 @@ import java.util.TreeSet;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.Format;
 import org.jhove2.core.JHOVE2;
+import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
@@ -50,8 +51,8 @@ import org.jhove2.core.source.Source;
 import org.jhove2.module.format.AbstractFormatProfile;
 import org.jhove2.module.format.Validator;
 import org.jhove2.module.format.Validator.Coverage;
-import org.jhove2.module.format.unicode.CodeBlock;
 import org.jhove2.module.format.utf8.UTF8Module;
+import org.jhove2.module.format.utf8.unicode.CodeBlock;
 
 /**
  * ASCII profile of UTF-8.
@@ -112,7 +113,7 @@ public class ASCIIProfile
 	 *      org.jhove2.core.source.Source)
 	 */
 	@Override
-	public Validity validate(JHOVE2 jhove2, Source source) {
+	public Validity validate(JHOVE2 jhove2, Source source) throws JHOVE2Exception {
 		if (this.module != null) {
 			this.isValid = Validity.True;
 
@@ -128,8 +129,7 @@ public class ASCIIProfile
 			}
 		}
 		if (this.nonBasicLatinCodeBlocks.size() > 0) {
-			StringBuffer buffer = new StringBuffer(
-					"Non-Basic Latin coded blocks: ");
+			StringBuffer buffer = new StringBuffer();
 			Iterator<CodeBlock> iter = this.nonBasicLatinCodeBlocks.iterator();
 			for (int i = 0; iter.hasNext(); i++) {
 				CodeBlock block = iter.next();
@@ -138,8 +138,11 @@ public class ASCIIProfile
 				}
 				buffer.append(block);
 			}
+			Object[]messageArgs = new Object[]{buffer.toString()};
 			this.nonBasicLatinMessage = new Message(Severity.ERROR,
-					Context.OBJECT, buffer.toString());
+					Context.OBJECT, 
+					"org.jhove2.module.format.utf8.ASCIIProfile.nonBasicLatinMessage",
+					messageArgs);
 		}
 
 		return this.isValid;

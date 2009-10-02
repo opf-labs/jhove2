@@ -52,20 +52,22 @@ import org.jhove2.module.AbstractModule;
 /**
  * JHOVE2 message digester module.
  * 
- * @author mstrong,slabrams
+ * @author mstrong, slabrams
  */
-public class DigesterModule extends AbstractModule implements Digester {
+public class DigesterModule extends AbstractModule 
+	implements Digester {
 	/** Framework version identifier. */
 	public static final String VERSION = "1.0.0";
 
 	/** Framework release date. */
-	public static final String RELEASE = "2009-06-13";
+	public static final String RELEASE = "2009-09-05";
 
 	/** Framework rights statement. */
 	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California, "
-			+ "Ithaka Harbors, Inc., and The Board of Trustees of the Leland "
-			+ "Stanford Junior University. "
-			+ "Available under the terms of the BSD license.";
+		+ "Ithaka Harbors, Inc., and The Board of Trustees of the Leland "
+		+ "Stanford Junior University. "
+		+ "Available under the terms of the BSD license.";
+
 
 	/** Algorithm-specific byte array digesters. */
 	protected List<ArrayDigester> arrayDigesters;
@@ -96,8 +98,8 @@ public class DigesterModule extends AbstractModule implements Digester {
 	public void digest(JHOVE2 jhove2, Source source) throws IOException {
 		Input input = null;
 		try {
-			input = source.getInput(jhove2.getBufferSize(), jhove2
-					.getBufferType());
+			input = source.getInput(jhove2.getAppConfigInfo().getBufferSize(), 
+					jhove2.getAppConfigInfo().getBufferType());
 			if (input != null) {
 				long inputSize = input.getSize();
 				long bufferSize = input.getMaxBufferSize();
@@ -108,7 +110,7 @@ public class DigesterModule extends AbstractModule implements Digester {
 							&& this.arrayDigesters.size() > 0) {
 						byte[] array = input.getByteArray();
 						Iterator<ArrayDigester> iter = this.arrayDigesters
-								.iterator();
+						.iterator();
 						while (iter.hasNext()) {
 							ArrayDigester digester = iter.next();
 							digester.update(array);
@@ -118,7 +120,7 @@ public class DigesterModule extends AbstractModule implements Digester {
 							&& this.bufferDigesters.size() > 0) {
 						ByteBuffer buffer = input.getBuffer();
 						Iterator<BufferDigester> iter = this.bufferDigesters
-								.iterator();
+						.iterator();
 						while (iter.hasNext()) {
 							BufferDigester digester = iter.next();
 							buffer.position(0);

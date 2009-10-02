@@ -71,7 +71,7 @@ public class JHOVE2Doc {
 				Class<? extends Reportable> cl =
 					(Class<? extends Reportable>) Class.forName(arg);
 				
-				ReportableInfo info = new ReportableInfo(cl);
+				ReportableInfo info = new ReportableInfo(cl.newInstance());
 
 				if (n > 0) {
 					System.out.println();
@@ -138,6 +138,12 @@ public class JHOVE2Doc {
 				n++;
 			}
 		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		  catch (IllegalAccessException e){
+			e.printStackTrace();
+		}
+		  catch (InstantiationException e){
 			e.printStackTrace();
 		}
 	}

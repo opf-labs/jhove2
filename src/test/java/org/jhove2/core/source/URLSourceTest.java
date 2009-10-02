@@ -55,7 +55,7 @@ import javax.annotation.Resource;
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath*:**/abstractsource-config.xml"})
+@ContextConfiguration(locations={"classpath*:**/test-config.xml"})
 public class URLSourceTest {
 
 	private String ptcUrlString = "http://portico.org/index.html";
@@ -73,9 +73,13 @@ public class URLSourceTest {
 		try {
 			ptcURL = new URL(ptcUrlString);
 			cdlURL = new URL(cdlUrlString);
-			URLSource uPtc = new URLSource(jhove2, ptcURL);
-			URLSource uPtc2 = new URLSource(jhove2, ptcURL);
-			URLSource uCdl = new URLSource(jhove2, cdlURL);
+			URLSource uPtc = new URLSource(jhove2.getAppConfigInfo().getTempPrefix(), 
+					jhove2.getAppConfigInfo().getTempSuffix(), jhove2.getAppConfigInfo().getBufferSize(),
+					ptcURL);
+			URLSource uPtc2 = new URLSource(jhove2.getAppConfigInfo().getTempPrefix(), 
+					jhove2.getAppConfigInfo().getTempSuffix(), jhove2.getAppConfigInfo().getBufferSize(), ptcURL);
+			URLSource uCdl = new URLSource(jhove2.getAppConfigInfo().getTempPrefix(), 
+					jhove2.getAppConfigInfo().getTempSuffix(), jhove2.getAppConfigInfo().getBufferSize(), cdlURL);
 			assertEquals(uPtc,uPtc);
 			// this will fail, because the temp file underlying each URL will be different
 			assertFalse(uPtc.equals(uPtc2));
@@ -107,8 +111,10 @@ public class URLSourceTest {
 		try {
 			ptcURL = new URL(ptcUrlString);
 			cdlURL = new URL(cdlUrlString);
-			URLSource uPtc = new URLSource(jhove2, ptcURL);
-			URLSource uPtc2 = new URLSource(jhove2, ptcURL);
+			URLSource uPtc = new URLSource(jhove2.getAppConfigInfo().getTempPrefix(), 
+					jhove2.getAppConfigInfo().getTempSuffix(), jhove2.getAppConfigInfo().getBufferSize(), ptcURL);
+			URLSource uPtc2 = new URLSource(jhove2.getAppConfigInfo().getTempPrefix(), 
+					jhove2.getAppConfigInfo().getTempSuffix(), jhove2.getAppConfigInfo().getBufferSize(), ptcURL);
 			assertEquals(0,uPtc.compareTo(uPtc));
 			assertEquals(1, uPtc.compareTo(null));
 			boolean notEq = uPtc.compareTo(uPtc2)!=0;

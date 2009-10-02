@@ -36,10 +36,15 @@
 
 package org.jhove2.core;
 
+import java.util.Locale;
+
+import org.jhove2.core.config.Configure;
+
 /**
  * JHOVE2 message. A message has a severity, a context, and a textual value.
+ * Messages are localized.
  * 
- * @author slabrams
+ * @author slabrams, smorrissey
  * 
  */
 public class Message {
@@ -47,14 +52,15 @@ public class Message {
 	public enum Context {
 		PROCESS, OBJECT
 	}
-
 	/** Message severities. */
 	public enum Severity {
 		ERROR, WARNING, INFO
 	}
-
 	/** Message code. */
-	protected String message;
+	protected String messageCode;
+
+	/** Localized Message Text */
+	protected String localizedMessageText;
 
 	/** Message context. */
 	protected Context context;
@@ -62,27 +68,156 @@ public class Message {
 	/** Message severity. */
 	protected Severity severity;
 
+	/** Message Locale. */
+	protected Locale locale;
+
+	/** Default Locale */
+	private static Locale defaultLocale;
+
+		static {
+			defaultLocale = Locale.getDefault();
+		}
+
 	/**
-	 * Instantiate a new <code>Message</code>.
+	 * Instantiate a new Localized <code>Message</code>.
 	 * 
 	 * @param severity
 	 *            Message severity
 	 * @param context
 	 *            Message context
-	 * @param message
-	 *            Message text
+	 * @param messageCode
+	 *            Key to message text in localized property file
+	 * @throws JHOVE2Exception 
 	 */
-	public Message(Severity severity, Context context, String message) {
-		this.severity = severity;
-		this.context = context;
-		this.message = message;
+	public Message(Severity severity, Context context, String messageCode) throws JHOVE2Exception {
+		this(severity, context, messageCode, new Object[0], defaultLocale);
+	}
+	
+	
+	/**
+	 * Instantiate a new Localized <code>Message</code>.
+	 * 
+	 * @param severity
+	 *            Message severity
+	 * @param context
+	 *            Message context
+	 * @param messageCode
+	 *            Key to message text in localized property file
+	 * @param messageArgs
+	 * 	          Arguments to message format template
+	 * @throws JHOVE2Exception
+	 */
+	public Message(Severity severity, Context context, String messageCode, Object[] messageArgs) 
+	throws JHOVE2Exception {
+		this(severity, context, messageCode, messageArgs, defaultLocale);
 	}
 
+	/**
+	 * Instantiate a new Localized <code>Message</code>.
+	 * 
+	 * @param severity
+	 *            Message severity
+	 * @param context
+	 *            Message context
+	 * @param messageCode
+	 *            Key to message text in localized property file
+	 * @param messageArgs
+	 * 	          Arguments to message format template
+	 * @param locale
+	 * 			  Locale for message text
+	 * @throws JHOVE2Exception
+	 */
+	public Message(Severity severity, Context context, String messageCode, 
+			Object[] messageArgs, Locale locale) throws JHOVE2Exception {
+		this.severity = severity;
+		this.context = context;
+		this.locale = locale;
+		this.messageCode = messageCode;
+		this.localizedMessageText = this.localizeMessageText(messageCode, messageArgs, locale);
+	}
+
+	/**
+	 * Resolves message code and produces localized message text
+	 * @param messageCode
+	 *            Key to message text in localized property file
+	 * @param messageArgs
+	 * 			  Arguments to message format template
+	 * @param locale
+	 *             Locale for message text
+	 * @return  
+	 *         Localized formatted message text
+	 * @throws JHOVE2Exception
+	 */
+	protected String localizeMessageText(String messageCode, Object[] messageArgs, Locale locale) 
+	throws JHOVE2Exception{
+		String localizedMessage = null;
+		localizedMessage = Configure.getLocalizedMessageText(messageCode, 
+				messageArgs, locale);
+		return localizedMessage;
+	}
 	/**
 	 * Get {@link java.lang.String} representation of the message.
 	 */
 	@Override
 	public String toString() {
-		return "[" + this.severity + "/" + this.context + "] " + this.message;
+		return "[" + this.severity + "/" + this.context + "] " + this.localizedMessageText;
 	}
+
+	/**
+	 * @return the message
+	 */
+	public String getMessageCode() {
+		return messageCode;
+	}
+
+	/**
+	 * @param message the message to set
+	 */
+	public void setMessageCode(String messageCode) {
+		this.messageCode = messageCode;
+	}
+
+	/**
+	 * @return the context
+	 */
+	public Context getContext() {
+		return context;
+	}
+
+	/**
+	 * @param context the context to set
+	 */
+	public void setContext(Context context) {
+		this.context = context;
+	}
+
+	/**
+	 * @return the severity
+	 */
+	public Severity getSeverity() {
+		return severity;
+	}
+
+	/**
+	 * @param severity the severity to set
+	 */
+	public void setSeverity(Severity severity) {
+		this.severity = severity;
+	}
+
+
+	/**
+	 * @return the localizedMessageText
+	 */
+	public String getLocalizedMessageText() {
+		return localizedMessageText;
+	}
+
+	/**
+	 * @param localizedMessageText the localizedMessageText to set
+	 */
+	public void setLocalizedMessageText(String localizedMessageText) {
+		this.localizedMessageText = localizedMessageText;
+	}
+
 }

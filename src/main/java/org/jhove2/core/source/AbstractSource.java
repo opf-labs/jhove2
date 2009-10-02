@@ -50,10 +50,13 @@ import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
-import org.jhove2.core.Duration;
-import org.jhove2.core.I8R;
-import org.jhove2.core.JHOVE2;
+import org.jhove2.core.AbstractReportable;
+import org.jhove2.core.AppConfigInfo;
+import org.jhove2.core.FormatIdentification;
+import org.jhove2.core.TimerInfo;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.io.InputFactory;
 import org.jhove2.core.io.Input.Type;
@@ -64,21 +67,24 @@ import org.jhove2.module.Module;
  * be characterized, which may be a file, a subset of a file, or a group of
  * files.
  * 
- * @author mstrong, slabrams
+ * @author mstrong, slabrams, smorrissey
  */
-public abstract class AbstractSource implements Source, Comparable<Source> {
+public abstract class AbstractSource extends AbstractReportable
+implements Source, Comparable<Source> {
 	/** Child source units. */
 	protected List<Source> children;
 
 	/** Delete temporary files flag; if true, delete files. */
 	protected boolean deleteTempFiles;
 
-	/** Module elapsed time, end. */
-	protected long endTime;
-
 	/** Source unit backing file. */
 	protected File file;
-
+	
+	/**
+	 * Timer info  used to track elapsed time for running of this module
+	 */
+	protected TimerInfo timerInfo;
+	
 	/**
 	 * Source unit backing file temporary status: true if the source unit
 	 * backing file is a temporary file.
@@ -87,19 +93,20 @@ public abstract class AbstractSource implements Source, Comparable<Source> {
 
 	/** Modules that processed the source unit. */
 	protected List<Module> modules;
-
-	/** Module elapsed time, start. */
-	protected long startTime;
+	
+	/** Presumptive identifications for the source unit. */
+	protected Set<FormatIdentification> presumptiveFormatIdentifications;
 
 	/**
 	 * Instantiate a new <code>AbstractSource</code>.
 	 */
 	protected AbstractSource() {
 		this.children = new ArrayList<Source>();
-		this.deleteTempFiles = JHOVE2.DEFAULT_DELETE_TEMP_FILES;
+		this.deleteTempFiles = AppConfigInfo.DEFAULT_DELETE_TEMP_FILES;
 		this.modules = new ArrayList<Module>();
+		this.timerInfo = new TimerInfo();
+		this.presumptiveFormatIdentifications = new TreeSet<FormatIdentification>();
 	}
-
 
 	/**
 	 * Instantiate a new <code>AbstractSource</code> backed by a file.
@@ -116,15 +123,17 @@ public abstract class AbstractSource implements Source, Comparable<Source> {
 	/**
 	 * Instantiate a new <code>AbstractSource</code> backed by an input stream.
 	 * 
-	 * @param jhove2
-	 *            JHOVE2 framework
+     * @param String temporary file prefix
+     * @param String temporary file suffix
+     * @param int buffer size 
 	 * @param stream
 	 *            Input stream underlying the source unit
 	 * @throws IOException
 	 */
-	public AbstractSource(JHOVE2 jhove2, InputStream stream) throws IOException {
+	public AbstractSource(String tmpPrefix, String tmpSuffix,
+			int bufferSize, InputStream stream)  throws IOException {
 		this();
-		this.file = createTempFile(jhove2, stream);
+		this.file = createTempFile(tmpPrefix, tmpSuffix, bufferSize, stream);
 		this.isTemp = true;
 	}
 
@@ -141,22 +150,23 @@ public abstract class AbstractSource implements Source, Comparable<Source> {
 	/**
 	 * Create a temporary backing file from an input stream.
 	 * 
-	 * @param jhove2
-	 *            JHOVE2 framework
+     * @param String temporary file prefix
+     * @param String temporary file suffix
+     * @param int buffer size 
 	 * @param inStream
 	 *            Input stream
 	 * @return file Temporary backing file
 	 * @throws IOException
 	 */
-	protected File createTempFile(JHOVE2 jhove2, InputStream inStream)
+	protected File createTempFile(String tmpPrefix, String tmpSuffix,
+			int bufferSize, InputStream inStream)
 	throws IOException {
-		File tempFile = File.createTempFile(jhove2.getTempPrefix(), jhove2
-				.getTempSuffix());
+		File tempFile = File.createTempFile(tmpPrefix, tmpSuffix);
 		OutputStream outStream = new FileOutputStream(tempFile);
 		ReadableByteChannel in = Channels.newChannel(inStream);
 		WritableByteChannel out = Channels.newChannel(outStream);
-		final ByteBuffer buffer = ByteBuffer.allocateDirect(jhove2
-				.getBufferSize());
+		final ByteBuffer buffer = ByteBuffer.allocateDirect(bufferSize);
+
 
 		while ((in.read(buffer)) > 0) {
 			buffer.flip();
@@ -208,21 +218,6 @@ public abstract class AbstractSource implements Source, Comparable<Source> {
 		return this.deleteTempFiles;
 	}
 
-	/**
-	 * Get elapsed time, in milliseconds. The shortest reportable elapsed time
-	 * is 1 milliscond.
-	 * 
-	 * @return Elapsed time, in milliseconds
-	 * @see org.jhove2.core.Temporal#getElapsedTime()
-	 */
-	@Override
-	public Duration getElapsedTime() {
-		if (this.endTime == Duration.UNINITIALIZED) {
-			this.endTime = System.currentTimeMillis();
-		}
-
-		return new Duration(this.endTime - this.startTime);
-	}
 
 	/**
 	 * Get {@link java.io.File} backing the source unit.
@@ -374,44 +369,6 @@ public abstract class AbstractSource implements Source, Comparable<Source> {
 		this.modules.add(module);
 	}
 
-	/**
-	 * Set the end time of the elapsed duration.
-	 * 
-	 * @return End time, in milliseconds
-	 * @see org.jhove2.core.Temporal#setStartTime()
-	 */
-	@Override
-	public long setEndTime() {
-		return this.endTime = System.currentTimeMillis();
-	}
-
-	/**
-	 * Set the restart time of the elapsed duration. All subsequent time (until
-	 * the next abstractApplication of the setEndTime() method) will be added to
-	 * the time already accounted for by an earlier abstractApplication of the
-	 * setEndTime() method.
-	 * 
-	 * @return Current time minus the elapsed time, in milliseconds
-	 * @see org.jhove2.core.Temporal#setRestartTime()
-	 */
-	public long setRestartTime() {
-		if (this.endTime == Duration.UNINITIALIZED) {
-			return this.startTime = System.currentTimeMillis();
-		}
-		return this.startTime = System.currentTimeMillis() - this.endTime
-		- this.startTime;
-	}
-
-	/**
-	 * Set the start time of the elapsed duration.
-	 * 
-	 * @return Start time, in milliseconds
-	 * @see org.jhove2.core.Temporal#setStartTime()
-	 */
-	@Override
-	public long setStartTime() {
-		return this.startTime = System.currentTimeMillis();
-	}
 
 	@Override
 	public boolean equals (Object obj){
@@ -426,7 +383,7 @@ public abstract class AbstractSource implements Source, Comparable<Source> {
 		}
 		//same class?
 		AbstractSource absObj = (AbstractSource) obj;
-		if(!(this.getJhove2Identifer().equals(absObj.getJhove2Identifer()))){
+		if(!(this.getJhove2Identifier().equals(absObj.getJhove2Identifier()))){
 			return false;
 		}
 		File thisFile = this.getFile();
@@ -493,7 +450,7 @@ public abstract class AbstractSource implements Source, Comparable<Source> {
 		//same class?
 		AbstractSource absObj = (AbstractSource) src;
 		int idCompare = 
-			this.getJhove2Identifer().compareTo(absObj.getJhove2Identifer());
+			this.getJhove2Identifier().compareTo(absObj.getJhove2Identifier());
 	    if (idCompare != 0){
 	    	return idCompare;
 	    }
@@ -558,13 +515,33 @@ public abstract class AbstractSource implements Source, Comparable<Source> {
 		}		
 		return 0;
 	}
-
-	private I8R myI8R = null;
+	
+	
 	@Override
-	public I8R getJhove2Identifer() {
-		if (myI8R == null){
-			myI8R = I8R.makeJhove2I8R(this);
+	public TimerInfo getTimerInfo() {
+		return timerInfo;
+	}
+	
+	@Override
+	public Set<FormatIdentification> getPresumptiveFormatIdentifications() {
+		return presumptiveFormatIdentifications;
+	}
+	
+	@Override
+	public void setPresumptiveFormatIdentifications(
+			Set<FormatIdentification> formatIdentifications) {
+		this.presumptiveFormatIdentifications = formatIdentifications;
+	}
+	
+	@Override
+	public void addPresumptiveFormatIdentification(FormatIdentification fi){
+		this.presumptiveFormatIdentifications.add(fi);
+	}
+	
+	@Override
+	public void addPresumptiveFormatIdentifications(Set<FormatIdentification> fis){
+		for (FormatIdentification fi:fis){
+			this.addPresumptiveFormatIdentification(fi);
 		}
-		return myI8R;
 	}
 }

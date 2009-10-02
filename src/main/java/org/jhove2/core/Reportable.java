@@ -40,7 +40,28 @@ package org.jhove2.core;
  * Marker interface for JHOVE2 reportables. A reportable is a collection of
  * reportable properties.
  * 
- * @author mstrong, slabrams
+ * @author mstrong, slabrams, smorrissey
  */
 public interface Reportable {
+	/**
+	 * 
+	 * @return
+	 */
+	public I8R getJhove2Identifier();
+	
+	/**
+	 * Get object's simple name (may be configure by user)
+	 * 
+	 * @return String containing object name
+	 */
+	public String getName();
+	
+	/**
+	 * Set the object's simple name 
+	 * @param name
+	 */
+	public void setName(String name);
+	
 }
+
+

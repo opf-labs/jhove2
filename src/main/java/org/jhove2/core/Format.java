@@ -46,9 +46,9 @@ import org.jhove2.annotation.ReportableProperty;
 /**
  * A JHOVE2 format.
  * 
- * @author mstrong, slabrams
+ * @author mstrong, slabrams, smmorrissey
  */
-public class Format implements Reportable {
+public class Format extends AbstractReportable implements Comparable<Format> {
 	/** Format ambiguities. Ambiguous presumptiveFormatIds should report their caveats. */
 	public enum Ambiguity {
 		Ambiguous, Unambiguous
@@ -303,5 +303,30 @@ public class Format implements Reportable {
 	 */
 	public void setVersion(String version) {
 		this.version = version;
+	}
+
+	@Override
+	public boolean equals(Object obj){
+		if (obj==null){
+			return false;
+		}
+		if (this==obj){
+			return true;
+		}
+		if (!(obj instanceof Format)){
+			return false;
+		}
+		Format fObjt = (Format)obj;
+		return this.getIdentifier().equals(fObjt.getIdentifier());
+	}
+	@Override
+	public int compareTo(Format format) {
+		if (format==null){
+			return +1;
+		}
+		if (this == format){
+			return 0;
+		}
+		return this.getIdentifier().compareTo(format.getIdentifier());
 	}
 }

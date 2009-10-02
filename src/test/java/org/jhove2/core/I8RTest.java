@@ -80,12 +80,12 @@ public class I8RTest {
 		sb.append("/");
 		sb.append(classString);
 		moduleI8rString = sb.toString();
-		sourceI8r = I8R.makeJhove2I8R(source);
-		moduleI8r = I8R.makeJhove2I8R(module);	
+		sourceI8r = I8R.makeReportableTypeI8R(source);
+		moduleI8r = I8R.makeReportableTypeI8R(module);	
 	}
 
 	/**
-	 * Test method for {@link org.jhove2.core.I8R#makeJhove2I8R(org.jhove2.core.Reportable)}.
+	 * Test method for {@link org.jhove2.core.I8R#makeReportableTypeI8R(org.jhove2.core.Reportable)}.
 	 */
 	@Test
 	public void testMakeReportableI8R() {		
@@ -125,5 +125,10 @@ public class I8RTest {
 	    otherNs =  new I8R(sourceI8r.getValue(),sourceI8r.getNamespace());
 	    assertEquals(otherNs, sourceI8r);
 	    assertEquals(sourceI8r, otherNs);
+	}
+	@Test
+	public void testNamespaceToString(){
+		assertEquals("JHOVE2", sourceI8r.getNamespace().toString());
+		assertEquals("JHOVE2", moduleI8r.getNamespace().toString());
 	}
 }

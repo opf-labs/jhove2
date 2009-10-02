@@ -41,7 +41,6 @@ import java.io.IOException;
 import java.net.URL;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.JHOVE2;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.io.InputFactory;
 import org.jhove2.core.io.Input.Type;
@@ -58,15 +57,17 @@ public class URLSource extends AbstractSource {
 	/**
 	 * Instantiate a new <code>URLSource</code>.
 	 * 
-	 * @param jhove2
-	 *            JHOVE framework
+     * @param String temporary file prefix
+     * @param String temporary file suffix
+     * @param int buffer size 
 	 * @param url
 	 *            URL
 	 * @throws IOException
 	 */
-	public URLSource(JHOVE2 jhove2, URL url) throws IOException {
-		super(jhove2, url.openStream());
 
+	public URLSource(String tmpPrefix, String tmpSuffix,
+			int bufferSize, URL url) throws IOException {
+		super(tmpPrefix, tmpSuffix, bufferSize, url.openStream());
 		this.url = url;
 	}
 
@@ -139,7 +140,8 @@ public class URLSource extends AbstractSource {
 			return 0;
 		}
 		if (!(source instanceof URLSource)){
-			int compareSource = this.getJhove2Identifer().compareTo(source.getJhove2Identifer());
+			int compareSource = this.getJhove2Identifier().
+				compareTo(source.getJhove2Identifier());
 			return compareSource;
 		}
 		URLSource uObj = (URLSource)source;

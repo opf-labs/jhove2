@@ -8,14 +8,24 @@
            http://www.springframework.org/schema/context/spring-context-2.5.xsd
 		   http://www.springframework.org/schema/util 
 		   http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+	<bean id="propertyConfigurer" 
+    	class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    	<property name="locations">
+    		<list>
+    			<value>properties/droidconfig.properties</value>
+    			<value>properties/filepath.properties</value>
+    		</list>
+    	</property>
+    </bean>
+    	
 		   
 	<!-- JHOVE2 command line application bean -->
-	<bean id="JHOVE2CommandLine" class="org.jhove2.app.JHOVE2CommandLine" scope="prototype"/>
+	<bean id="JHOVE2CommandLine" class="org.jhove2.app.JHOVE2CommandLine"
+	    scope="prototype"/>
 
 	<!-- JHOVE2 framework bean -->
 	<bean id="JHOVE2" class="org.jhove2.core.JHOVE2" scope="prototype">
-		<property name="characterizer" ref="Characterizer"/>
-		<property name="dispatcher" ref="Dispatcher"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
@@ -23,28 +33,23 @@
 				<ref bean="StanfordAgent"/>
 			</list>
 		</property>
-	</bean>
-		
-		
-		
- 	<!-- Characterizer module bean -->
-	<bean id="Characterizer" class="org.jhove2.module.characterize.CharacterizerModule"
-	      scope="prototype">
-		<property name="developers">
-			<list value-type="org.jhove2.core.Agent">
-				<ref bean="CDLAgent"/>
-				<ref bean="PorticoAgent"/>
-				<ref bean="StanfordAgent"/>
+				<property name="commands">
+			<list value-type="org.jhove2.core.JHOVE2Command">
+				<ref bean="IdentifierCommand"/>
+				<ref bean="FeatureExtractorCommand"/>
+				<ref bean="AggrefierCommand"/>
+				<ref bean="DigesterCommand"/>
 			</list>
 		</property>
 	</bean>
-	      
-	      
-	      
+	
+	<bean id="IdentifierCommand" class="org.jhove2.module.identify.IdentifierCommand"
+	 	scope="singleton">
+	</bean>
+		
 	<!-- Identifier module bean -->
 	<bean id="Identifier" class="org.jhove2.module.identify.IdentifierModule"
 	      scope="prototype">
-	    <property name="wrappedProduct" ref="DROIDProduct"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
@@ -52,15 +57,42 @@
 				<ref bean="StanfordAgent"/>
 			</list>
 		</property>
+		<property name="fileSourceIdentifier" ref="droidIdentifier"/>
 	</bean>
 	      
-	<!-- DROID product information bean -->
-	<bean id="DROIDProduct" class="org.jhove2.module.identify.DROID"
+	<!-- DROID identifier bean -->
+	<bean id="droidIdentifier" class="org.jhove2.module.identify.DroidIdentifier"
+	      scope="prototype">	
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+				<ref bean="PorticoAgent"/>
+				<ref bean="StanfordAgent"/>
+			</list>
+		</property>
+		<property name="configFilePath"  ref="droidConfigFilePath"/>
+		<property name="sigFilePath" ref="droidSigFilePath" />
+	</bean>
+	    
+	 <!-- DROID config file location bean -->
+	<!--  you will need to edit the droidConfigFilePath property to run on your machine -->
+	<bean id="droidConfigFilePath" class="java.lang.String" >
+		<constructor-arg type="java.lang.String" 
+	        value="${file.droid.config}"/>
+	</bean>   
+	
+	<!-- DROID signature file location bean -->
+	<!--  you will need to edit the droidSigFilePath property to run on your machine -->
+	<bean id="droidSigFilePath" class="java.lang.String" >		
+		<constructor-arg type="java.lang.String" 
+	        value="${file.droid.sig}"/>
+	</bean> 	   
+	      
+
+		<!-- Format Feature extraction module bean -->
+	<bean id="FeatureExtractorCommand" class="org.jhove2.module.format.FeatureExtractorCommand"
 	      scope="singleton">
-		<constructor-arg type="java.lang.String" value="4.0"/>
-		<constructor-arg type="java.lang.String" value="2009-06-09"/>
-		<constructor-arg type="java.lang.String" value="Copyright 2008 by the National Archives. Available under the terms of the BSD license."/>
-		<property name="developers">
+	    <property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
 				<ref bean="PorticoAgent"/>
@@ -68,26 +100,14 @@
 			</list>
 		</property>
 	</bean>
-	   
-	   
-	      
-	<!-- Dispatcher module bean -->
-	<bean id="Dispatcher" class="org.jhove2.module.dispatch.DispatcherModule"
-	      scope="prototype">
-		<property name="developers">
-			<list value-type="org.jhove2.core.Agent">
-				<ref bean="CDLAgent"/>
-				<ref bean="PorticoAgent"/>
-				<ref bean="StanfordAgent"/>
-			</list>
-		</property>
-	</bean>
-	      	      
-	      
-	      
+	
+	<!-- Aggrefier Command Bean -->
+	<bean id="AggrefierCommand" class="org.jhove2.module.identify.AggrefierCommand"
+		scope="singleton" />    
+	
 	<!-- Aggrefier module bean -->
 	<bean id="Aggrefier" class="org.jhove2.module.identify.AggrefierModule"
-	      scope="prototype">
+	      scope="singleton">
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
@@ -96,14 +116,18 @@
 			</list>
 		</property>
 		<property name="recognizers">
-			<list value-type="org.jhove2.module.identify.Identifier">
+			<list value-type="org.jhove2.module.identify.AggregateIdentifier">
 				<ref bean="ShapeFileRecognizer"/>
 			</list>
 		</property>
 	</bean>
-	      
-	      
-	      
+	            
+	<!--  DigesterCommand module bean -->  
+	<bean id="DigesterCommand"
+		  class="org.jhove2.module.digest.DigesterCommand"
+		  scope="singleton"/>
+		  
+		  
 	<!--  Message digester module bean -->
 	<bean id="Digester"
 	      class="org.jhove2.module.digest.DigesterModule"
@@ -205,7 +229,11 @@
 	<bean id="ASCIIProfile" class="org.jhove2.module.format.utf8.ascii.ASCIIProfile"
 	      scope="prototype">
 	    <constructor-arg ref="ASCIIFormat"/>
-	    <property name="developer" ref="CDLAgent"/>
+	    <property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+			</list>
+		</property>
 	</bean>
 	
 	<!-- ASCII format bean -->
@@ -295,12 +323,10 @@
 		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="MIME"/>
 	</bean>
 	
-	
-	
-	<!-- Clump module bean -->
-	<bean id="ClumpModule" class="org.jhove2.module.format.clump.ClumpModule"
-	      scope="prototype">
-	    <constructor-arg ref="ClumpFormat"/>
+	<!--  BytestreamModule -->
+	<bean id="BytestreamModule" class="org.jhove2.module.format.bytestream.Bytestream" 
+		scope="prototype">
+		<constructor-arg ref="BytestreamFormat"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
@@ -308,24 +334,8 @@
 				<ref bean="StanfordAgent"/>
 			</list>
 		</property>
-	    <property name="note" value="A Clump is JHOVE2-defined format that is a set of files presumed to collectively form a single logical object."/>
 	</bean>
-			  
-	<!-- Clump format bean -->
-	<bean id="ClumpFormat" class="org.jhove2.core.Format" scope="singleton">
-		<constructor-arg type="java.lang.String" value="Clump"/>
-		<constructor-arg ref="ClumpIdentifier"/>
-		<constructor-arg type="org.jhove2.core.Format$Type" value="Format"/>
-		<constructor-arg type="org.jhove2.core.Format$Ambiguity" value="Unambiguous"/>
-	</bean>
-	
-   <!-- Clump identifier bean -->  
-   <bean id="ClumpIdentifier" class="org.jhove2.core.I8R" scope="singleton">
-		<constructor-arg type="java.lang.String" value="info:jhove2/format/clump"/>
-   </bean>
-     	
-     	
-     	
+
 	<!-- Directory module bean -->
 	<bean id="DirectoryModule" class="org.jhove2.module.format.directory.DirectoryModule"
 	      scope="prototype">
@@ -388,7 +398,11 @@
 	<bean id="ShapefileModule" class="org.jhove2.module.format.shapefile.ShapefileModule"
 	      scope="prototype">
 	    <constructor-arg ref="ShapefileFormat"/>
-	    <property name="developer" ref="StanfordAgent"/>
+	    	 <property name="developers">
+				<list value-type="org.jhove2.core.Agent">
+					<ref bean="StanfordAgent"/>
+				</list>
+			</property>
 	</bean>
       
     <!-- Shapefile format bean -->
@@ -414,7 +428,7 @@
 				<ref bean="StanfordAgent"/>
 			</list>
 		</property>
-	 	<property name="format" ref="ShapefileFormat"/>
+	 	<property name="formatIdentifier" ref="ShapefileIdentifier"/>
 	 	<property name="fileGroupingExpr" value="(.*[\\/]\w+).((?i:shp\.)?\w{3})"/>
 	 	<property name="mustHaveExpr" value="^((?i:shp)|(?i:shx)|(?i:dbf))$"/>
 	 	<property name="mayHaveExpr" 
@@ -431,7 +445,11 @@
 	      scope="prototype">
 	    <constructor-arg ref="UTF8Format"/>
 	    <property name="profile" ref="ASCIIProfile"/>
-	    <property name="developer" ref="CDLAgent"/>
+	     <property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+			</list>
+		</property>
 	</bean>
    
 	<!-- UTF-8 format bean -->
@@ -550,8 +568,100 @@
 		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="URL"/>
 	</bean>
 			     	
-     	
-  	
+	<!-- XML module bean -->
+	<bean id="XmlModule" class="org.jhove2.module.format.xml.XmlModule"
+	      scope="prototype">
+	    <constructor-arg ref="XmlFormat"/>
+	    <!-- property name="profile" ref="XmlProfileXYZ"/ -->
+	     <property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="StanfordAgent"/>
+			</list>
+		</property>
+	</bean>
+   
+	<!-- XML format bean -->
+	<bean id="XmlFormat" class="org.jhove2.core.Format" scope="singleton">
+		<constructor-arg type="java.lang.String" value="XML"/>
+		<constructor-arg ref="XmlIdentifier"/>
+		<constructor-arg type="org.jhove2.core.Format$Type" value="Format"/>
+		<constructor-arg type="org.jhove2.core.Format$Ambiguity" value="Unambiguous"/>
+		<property name="aliasIdentifiers">
+			<set value-type="org.jhove2.core.I8R">
+				<ref bean="XmlMIMEType"/>
+				<ref bean="XmlRFC3023"/>
+				<ref bean="XmlUTI"/>
+			</set>
+		</property>
+		<property name="aliasNames">
+			<set>
+				<value>Extensible Markup Language (XML)</value>
+			</set>
+		</property>
+		<property name="specifications">
+			<list value-type="org.jhove2.core.Document">
+				<ref bean="XML10Specification"/>
+				<ref bean="XML11Specification"/>
+			</list>
+		</property>
+	</bean>
+
+	<!-- XML identifier bean -->  
+	<bean id="XmlIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="info:jhove2/format/xml"/>
+	</bean>
+	<!-- XML MIME type bean -->
+	<bean id="XmlMIMEType" class="org.jhove2.core.I8R" scope="singleton">
+	    <constructor-arg type="java.lang.String" value="application/xml"/>
+	    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="MIME"/>
+	</bean>
+	<!--  XML RFC 3023 bean -->
+	<bean id="XmlRFC3023" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="RFC 3023"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="RFC"/>
+	</bean>
+	<!-- XML UTI bean -->
+	<bean id="XmlUTI" class="org.jhove2.core.I8R" scope="singleton">
+	    <constructor-arg type="java.lang.String" value="public.xml"/>
+	    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="UTI"/>
+	</bean>
+	
+	<!-- XML 1.0 specification bean -->
+	<bean id="XML10Specification" class="org.jhove2.core.Document" scope="singleton">
+		<constructor-arg type="java.lang.String" value="Extensible Markup Language (XML) 1.0 (Fifth Edition)"/>
+		<constructor-arg type="org.jhove2.core.Document$Type" value="Specification"/>
+		<constructor-arg type="org.jhove2.core.Document$Intention" value="Authoritative"/>
+		<property name="author" value="W3C"/>
+		<property name="date" value="2008"/>
+		<property name="edition" value="REC-xml-20081126"/>
+		<property name="identifier" ref="XML10SpecificationURI"/>
+		<property name="publisher" value="W3C"/>
+	</bean>
+	
+	<!-- XML 1.0 specification URI bean -->
+	<bean id="XML10SpecificationURI" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="http://www.w3.org/TR/2008/REC-xml-20081126"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="URI"/>
+	</bean>
+
+	<!-- XML 1.1 specification bean -->
+	<bean id="XML11Specification" class="org.jhove2.core.Document" scope="singleton">
+		<constructor-arg type="java.lang.String" value="Extensible Markup Language (XML) 1.1 (Second Edition)"/>
+		<constructor-arg type="org.jhove2.core.Document$Type" value="Specification"/>
+		<constructor-arg type="org.jhove2.core.Document$Intention" value="Authoritative"/>
+		<property name="author" value="W3C"/>
+		<property name="date" value="2006"/>
+		<property name="edition" value="REC-xml-20081126"/>
+		<property name="identifier" ref="XML11SpecificationURI"/>
+		<property name="publisher" value="W3C"/>
+	</bean>
+	
+	<!-- XML 1.1 specification URI bean -->
+	<bean id="XML11SpecificationURI" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="http://www.w3.org/TR/2006/REC-xml11-20060816"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="URI"/>
+	</bean>
+	     	
 	<!-- Zip module bean -->
 	<bean id="ZipModule" class="org.jhove2.module.format.zip.ZipModule"
 	      scope="prototype">
@@ -577,9 +687,8 @@
 	<bean id="ZipIdentifier" class="org.jhove2.core.I8R" scope="singleton">
 		<constructor-arg type="java.lang.String" value="info:jhove2/format/zip"/>
 	</bean>
-	
-	
-	
+
+
 	<!-- CDL agent bean -->
 	<bean id="CDLAgent" class="org.jhove2.core.Agent" scope="singleton">
 		<constructor-arg type="java.lang.String" value="California Digital Library"/>
@@ -622,5 +731,24 @@
 	<!-- Dispatch map properties bean -->
 	<util:properties id="DispatchMap"	
 		             location="classpath:properties/dispatcher.properties"/>
-		
+		             
+	<!--  DROID PUID to JHOVE2 identifier properties bean -->
+		<util:properties id="DroidMap"	
+		             location="classpath:properties/droid2jhove.properties"/>	
+		             
+		             
+    <!--  JHOVE2 identifier to Format Bean Name properties bean -->
+		<util:properties id="FormatBeanMap"	
+		             location="classpath:properties/format2bean.properties"/>	
+		             
+    <!--  BEAN for message properties files (used for I18N ) -->
+    <!--    NOTE  BEAN MUST HAVE id "messageSource" -->
+    <bean id="messageSource" 
+          class="org.springframework.context.support.ResourceBundleMessageSource">
+          <property name="basename">
+          <!--  base name for localized message template properties files -->
+          	<value>messages</value>
+          </property>
+    </bean>
+    
 </beans>

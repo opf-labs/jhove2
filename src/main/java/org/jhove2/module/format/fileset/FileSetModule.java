@@ -45,8 +45,7 @@ import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.source.FileSetSource;
 import org.jhove2.core.source.Source;
-import org.jhove2.module.format.AbstractFormatModule;
-import org.jhove2.module.format.Parser;
+import org.jhove2.module.format.BaseFormatModuleCommand;
 
 /**
  * JHOVE2 file set module. A file set is a set of unrelated files.
@@ -54,8 +53,8 @@ import org.jhove2.module.format.Parser;
  * @author mstrong, slabrams
  */
 public class FileSetModule
-	extends AbstractFormatModule
-	implements Parser
+	extends BaseFormatModuleCommand
+
 {
 	/** Pseudo-directory module version identifier. */
 	public static final String VERSION = "0.1.2";
@@ -105,7 +104,6 @@ public class FileSetModule
 				jhove2.characterize(src);
 			}
 		}
-
 		return 0;
 	}
 }

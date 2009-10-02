@@ -63,6 +63,7 @@ public class TextDisplayer extends AbstractDisplayer {
 	 */
 	public TextDisplayer() {
 		super(VERSION, RELEASE, RIGHTS);
+		this.setShouldIndent(true);
 	}
 
 	/**
@@ -99,16 +100,32 @@ public class TextDisplayer extends AbstractDisplayer {
 	@Override
 	public void startReportable(PrintStream out, int level, String name,
 			I8R identifier, int order) {
-		StringBuffer buffer = new StringBuffer(getIndent(level));
+		this.startReportable(out, level, name, identifier, order, null);
+	}
+
+	@Override
+	public void startReportable(PrintStream out, int level, String name,
+			I8R identifier, int order, I8R typeIdentifier) {
+		StringBuffer buffer = new StringBuffer(getIndent(level, 
+				this.getShouldIndent()));
 
 		buffer.append(name);
-		if (this.showIdentifiers) {
+		if (this.getShowIdentifiers()) {
 			buffer.append(" [" + identifier + "]");
+		}
+		if (typeIdentifier != null){
+			String typeName = typeIdentifier.getValue();
+			int i = typeName.lastIndexOf("/");
+			if (i > -1 ){
+				buffer.append(" [ ");
+				typeName = typeName.substring(i+1);
+				buffer.append(typeName);
+				buffer.append(" ]");
+			}
 		}
 		buffer.append(":");
 		out.println(buffer);
 	}
-
 	/**
 	 * Start display of a property collection.
 	 * 
@@ -131,10 +148,11 @@ public class TextDisplayer extends AbstractDisplayer {
 	@Override
 	public void startCollection(PrintStream out, int level, String name,
 			I8R identifier, int size, int order) {
-		StringBuffer buffer = new StringBuffer(getIndent(level));
+		StringBuffer buffer = new StringBuffer(getIndent(level,
+				this.getShouldIndent()));
 
 		buffer.append(name);
-		if (this.showIdentifiers) {
+		if (this.getShowIdentifiers()) {
 			buffer.append(" [" + identifier + "]");
 		}
 		buffer.append(":");
@@ -163,10 +181,9 @@ public class TextDisplayer extends AbstractDisplayer {
 	@Override
 	public void displayProperty(PrintStream out, int level, String name,
 			I8R identifier, Object value, int order) {
-		StringBuffer buffer = new StringBuffer(getIndent(level));
-
+		StringBuffer buffer = new StringBuffer(getIndent(level,this.getShouldIndent()));
 		buffer.append(name);
-		if (this.showIdentifiers) {
+		if (this.getShowIdentifiers()) {
 			buffer.append(" [" + identifier + "]");
 		}
 		buffer.append(": " + value);
@@ -226,4 +243,5 @@ public class TextDisplayer extends AbstractDisplayer {
 	@Override
 	public void endDisplay(PrintStream out, int level) {
 	}
+
 }

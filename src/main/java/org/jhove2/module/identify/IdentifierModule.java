@@ -40,13 +40,11 @@ import java.io.IOException;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.jhove2.core.Format;
 import org.jhove2.core.FormatIdentification;
+import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.FormatIdentification.Confidence;
-import org.jhove2.core.config.Configure;
-import org.jhove2.core.io.Input;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.DirectorySource;
 import org.jhove2.core.source.FileSetSource;
@@ -55,34 +53,37 @@ import org.jhove2.core.source.ZipDirectorySource;
 import org.jhove2.module.AbstractModule;
 
 /**
- * JHOVE2 identification module.
- * 
- * @author mstrong, slabrams
+ * JHOVE2 identification module for non-Clump sources
+ * @author mstrong, slabrams, smorrissey
  */
-public class IdentifierModule extends AbstractModule implements Identifier {
+public class IdentifierModule extends AbstractModule 
+implements Identifier {
 	/** Identification module version identifier. */
 	public static final String VERSION = "1.0.0";
 
 	/** Identification module release date. */
-	public static final String RELEASE = "2009-07-16";
+	public static final String RELEASE = "2009-09-09";
 
 	/** Identification module rights statement. */
 	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California, "
-			+ "Ithaka Harbors, Inc., and The Board of Trustees of the Leland "
-			+ "Stanford Junior University. "
-			+ "Available under the terms of the BSD license.";
-
-	/** Presumptively identified presumptiveFormatIds. */
-	protected Set<FormatIdentification> formats;
-
+		+ "Ithaka Harbors, Inc., and The Board of Trustees of the Leland "
+		+ "Stanford Junior University. "
+		+ "Available under the terms of the BSD license.";
+	
+	/** bean name for identifier for non-clump, directory, zip etc. sources  (for example, DROID)
+	 *  We will need a new instance of the identifier for each source, so we do not have
+	 *  an Identifier member here; instead we use the bean name to instantiate a
+	 *  new Identifier as needed */
+	
+	protected Identifier fileSourceIdentifier;
+	
 	/**
 	 * Instantiate a new <code>IdentifierModule</code>.
 	 */
 	public IdentifierModule() {
 		super(VERSION, RELEASE, RIGHTS);
-
-		this.formats = new TreeSet<FormatIdentification>();
 	}
+
 
 	/**
 	 * Presumptively identify the format of a source unit.
@@ -100,73 +101,50 @@ public class IdentifierModule extends AbstractModule implements Identifier {
 	 */
 	@Override
 	public Set<FormatIdentification> identify(JHOVE2 jhove2, Source source)
-			throws IOException, JHOVE2Exception {
+	throws IOException, JHOVE2Exception {
+		Set<FormatIdentification> presumptiveFormatIds = 
+			new TreeSet<FormatIdentification>();
 		if (source instanceof ClumpSource) {
-			FormatIdentification id = new FormatIdentification(Configure
-					.getReportable(Format.class, "ClumpFormat"),
-					Confidence.PositiveSpecific);
-			this.formats.add(id);
+			// ClumpSources are only created when identified as instances
+			// of a particular clump format, so should have identifications
+			// already
+			;
 		} else if (source instanceof DirectorySource
 				|| source instanceof ZipDirectorySource) {
-			FormatIdentification id = new FormatIdentification(Configure
-					.getReportable(Format.class, "DirectoryFormat"),
-					Confidence.PositiveSpecific);
-			this.formats.add(id);
+			FormatIdentification id = new FormatIdentification(
+					new I8R("info:jhove2/format/directory"),
+					Confidence.PositiveSpecific, this.getJhove2Identifier());
+			presumptiveFormatIds.add(id);
 		} else if (source instanceof FileSetSource) {
-			FormatIdentification id = new FormatIdentification(Configure
-					.getReportable(Format.class, "FileSetFormat"),
-					Confidence.PositiveSpecific);
-			this.formats.add(id);
+			FormatIdentification id = new FormatIdentification(
+					new I8R("info:jhove2/format/file-set"),
+					Confidence.PositiveSpecific, this.getJhove2Identifier());
+			presumptiveFormatIds.add(id);
 		} else {
-			/* Identify file source unit. */
-			/* TODO: implement DROID. */
-			Input input = null;
-			try {
-				input = source.getInput(jhove2.getBufferSize(), jhove2
-						.getBufferType());
-				/* Test for Zip. */
-				if (input != null) {
-					byte[] zip = new byte[] { 0x50, 0x4b, 0x03, 0x04 };
-					boolean isZip = true;
-					for (int i = 0; i < 4; i++) {
-						short b = input.readUnsignedByte();
-						if (b != zip[i]) {
-							isZip = false;
-							break;
-						}
-					}
-
-					FormatIdentification id = null;
-					if (isZip) {
-						id = new FormatIdentification(Configure.getReportable(
-								Format.class, "ZipFormat"),
-								Confidence.PositiveGeneric, this.wrappedProduct);
-					} else {
-						/* Default to UTF-8. */
-						id = new FormatIdentification(Configure.getReportable(
-								Format.class, "UTF8Format"),
-								Confidence.PositiveGeneric, this.wrappedProduct);
-					}
-					this.formats.add(id);
-				}
-			} finally {
-				if (input != null) {
-					input.close();
-				}
-			}
+			/* Identify file source unit. */						
+			fileSourceIdentifier.getTimerInfo().setStartTime();
+			presumptiveFormatIds.addAll(
+					fileSourceIdentifier.identify(jhove2, source));
+			fileSourceIdentifier.getTimerInfo().setEndTime();
+			source.addModule(fileSourceIdentifier);
 		}
-
-		return this.formats;
+		return presumptiveFormatIds;
 	}
 
 	/**
-	 * Get presumptive format identifications.
-	 * 
-	 * @return Presumptive format identifications
-	 * @see org.jhove2.module.identify.Identifier#getPresumptiveFormatIds()
+	 * Accessor for fileSourceIdentifierBeanName
+	 * @return fileSourceIdentifierBeanName
 	 */
-	@Override
-	public Set<FormatIdentification> getPresumptiveFormatIds() {
-		return this.formats;
+	public Identifier getFileSourceIdentifier() {
+		return fileSourceIdentifier;
 	}
+
+	/**
+	 * Mutator for fileSourceIdentifierBeanName
+	 * @param fileSourceIdentifierBeanName
+	 */
+	public void setFileSourceIdentifier(Identifier fileSourceIdentifier) {
+		this.fileSourceIdentifier = fileSourceIdentifier;
+	}
+
 }

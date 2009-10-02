@@ -37,7 +37,6 @@
 package org.jhove2.core.info;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,7 +46,6 @@ import java.util.TreeSet;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.I8R;
-import org.jhove2.core.Message;
 import org.jhove2.core.Reportable;
 import org.jhove2.core.info.ReportableSourceInfo.Source;
 
@@ -55,7 +53,7 @@ import org.jhove2.core.info.ReportableSourceInfo.Source;
  * JHOVE2 introspection utility for retrieving the properties of
  * {@link org.jhove2.core.Reportable}s.
  * 
- * @author mstrong, slabrams
+ * @author mstrong, slabrams, smorrissey
  */
 public class ReportableInfo {
 	/** Reportable identifier. */
@@ -80,27 +78,17 @@ public class ReportableInfo {
 	 *            Reportable
 	 */
 	public ReportableInfo(Reportable reportable) {
-		this(reportable.getClass());
-	}
-
-	/**
-	 * Instantiate a new <code>ReportableInfo</code> utility.
-	 * 
-	 * @param cl
-	 *            Reportable class
-	 */
-	public ReportableInfo(Class<? extends Reportable> cl) {
-		this.name = cl.getSimpleName();
+		Class<? extends Reportable> cl = reportable.getClass();
 		this.qName = cl.getName();
 		int in = this.qName.lastIndexOf('.');
 		if (in > -1) {
 			this.packageName = this.qName.substring(0, in);
 		} else {
 			this.packageName = this.qName;
-		}
-		this.identifier = new I8R(I8R.JHOVE2_PREFIX + "/"
-				+ I8R.JHOVE2_REPORTABLE_INFIX + "/"
-				+ this.qName.replace('.', '/'));
+		}	
+		// get the type identifier for the Reportable object
+		this.identifier = reportable.getJhove2Identifier();
+		this.name = reportable.getName();
 		this.properties = new ArrayList<ReportableSourceInfo>();
 		Map<String, String> idMap = new HashMap<String, String>();
 		ReportablePropertyComparator comparator = new ReportablePropertyComparator();
@@ -116,24 +104,14 @@ public class ReportableInfo {
 				ReportableProperty annot = methods[j]
 						.getAnnotation(ReportableProperty.class);
 				if (annot != null) {
-					String name = methods[j].getName();
-					in = name.indexOf("get");
-					if (in == 0) {
-						name = name.substring(3);
-					}
-					String id = I8R.JHOVE2_PREFIX + "/";
-					Type type = methods[j].getGenericReturnType();
-					if (isMessage(type)) {
-						id += I8R.JHOVE2_MESSAGE_INFIX;
-					} else {
-						id += I8R.JHOVE2_PROPERTY_INFIX;
-					}
-					id += "/" + cl.getName().replace('.', '/') + "/" + name;
-					if (idMap.get(id) == null) {
-						idMap.put(id, id);
+					// construct an I8R for each reportable field using
+					// the field's accessor method
+					I8R featureId = I8R.makeFeatureI8RFromMethod(methods[j], cl);
+					if (idMap.get(featureId.getValue()) == null) {
+						idMap.put(featureId.getValue(), featureId.getValue());
 						ReportablePropertyInfo prop = new ReportablePropertyInfo(
-								new I8R(id), methods[j], annot.value(), annot
-										.ref());
+								featureId, methods[j], annot.value(), 
+								annot.ref());
 						set.add(prop);
 					}
 				}
@@ -173,24 +151,15 @@ public class ReportableInfo {
 				ReportableProperty annot = methods[j]
 						.getAnnotation(ReportableProperty.class);
 				if (annot != null) {
-					String name = methods[j].getName();
-					int in = name.indexOf("get");
-					if (in == 0) {
-						name = name.substring(3);
-					}
-					String id = I8R.JHOVE2_PREFIX + "/";
-					Type type = methods[j].getGenericReturnType();
-					if (isMessage(type)) {
-						id += I8R.JHOVE2_MESSAGE_INFIX;
-					} else {
-						id += I8R.JHOVE2_PROPERTY_INFIX;
-					}
-					id += "/" + ifs[i].getName().replace('.', '/') + "/" + name;
-					if (idMap.get(id) == null) {
-						idMap.put(id, id);
+					// construct an I8R for each reportable field using
+					// the field's accessor method
+					Class<? extends Reportable> repClass = (Class<? extends Reportable>)ifs[i];
+ 					I8R featureId = I8R.makeFeatureI8RFromMethod(methods[j], repClass);
+ 					if (idMap.get(featureId.getValue()) == null) {
+						idMap.put(featureId.getValue(), featureId.getValue());
 						ReportablePropertyInfo prop = new ReportablePropertyInfo(
-								new I8R(id), methods[j], annot.value(), annot
-										.ref());
+								featureId, methods[j], annot.value(), 
+								annot.ref());
 						set.add(prop);
 					}
 				}
@@ -250,24 +219,4 @@ public class ReportableInfo {
 		return this.qName;
 	}
 
-	/**
-	 * Get property message status.
-	 * 
-	 * @param type
-	 *            Property type
-	 * @return True if the property is a message; otherwise, false
-	 */
-	protected static synchronized boolean isMessage(Type type) {
-		String name = type.toString();
-		int in = name.lastIndexOf('<');
-		if (in > 0) {
-			name = name.substring(in + 1, name.indexOf('>'));
-		}
-		in = name.lastIndexOf('.');
-		if (in > 0) {
-			name = name.substring(in + 1);
-		}
-
-		return name.equals(Message.class.getSimpleName()) ? true : false;
-	}
 }

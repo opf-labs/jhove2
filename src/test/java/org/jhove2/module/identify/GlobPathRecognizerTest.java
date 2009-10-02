@@ -52,11 +52,13 @@ import java.util.HashMap;
 
 import javax.annotation.Resource;
 
-import org.jhove2.core.FormatIdentification.Confidence;
+
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.FormatIdentification;
+import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.FileSetSource;
+import org.jhove2.core.source.Source;
 
 
 /**
@@ -64,7 +66,8 @@ import org.jhove2.core.source.FileSetSource;
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath*:**/globpathrecognizer-config.xml"})
+@ContextConfiguration(locations={"classpath*:**/globpathrecognizer-config.xml",
+		"classpath*:**/test-config.xml"})
 public class GlobPathRecognizerTest{
 
 	private GlobPathRecognizer strictShapeFileRecognizer;
@@ -149,18 +152,20 @@ public class GlobPathRecognizerTest{
 			Collection <GlobPathMatchInfoGroup> gInfoGroupStrict = 
 				strictShapeFileRecognizer.groupSources(fsSource);
 			for (GlobPathMatchInfoGroup infoGroup:gInfoGroupStrict){
-				FormatIdentification fi = 
+				Source clumpSource = 
 					strictShapeFileRecognizer.recognizeGroupedSource(infoGroup);
-				if (fi==null){
+				if (clumpSource==null){
 					assertTrue(fullFailKeys.contains(infoGroup.groupKey));
 				}
 				else {
-					assertFalse(fullFailKeys.contains(infoGroup.groupKey));
-					assertEquals(strictShapeFileRecognizer.getFormat(),
-							fi.getPresumptiveFormat());
-					assertEquals(fi.getConfidence(),GlobPathRecognizer.GLOB_PATH_CONFIDENCE);
 					assertEquals(fullKeyCountMap.get(infoGroup.groupKey).intValue(),
-							fi.getSource().getChildSources().size());
+							clumpSource.getChildSources().size());
+					for (FormatIdentification fi: clumpSource.getPresumptiveFormatIdentifications()){				
+						assertFalse(fullFailKeys.contains(infoGroup.groupKey));
+						assertEquals(strictShapeFileRecognizer.getFormatIdentifier(),
+								fi.getJhove2Identification());
+						assertEquals(fi.getConfidence(),GlobPathRecognizer.GLOB_PATH_CONFIDENCE);
+					}
 				}
 			}
 			// now test relaxed recognizer
@@ -178,18 +183,20 @@ public class GlobPathRecognizerTest{
 			gInfoGroupStrict = 
 				relaxedShapeFileRecognizer.groupSources(fsSource);
 			for (GlobPathMatchInfoGroup infoGroup:gInfoGroupStrict){
-				FormatIdentification fi = 
+				Source clumpSource = 
 					relaxedShapeFileRecognizer.recognizeGroupedSource(infoGroup);
-				if (fi==null){
+				if (clumpSource==null){
 					assertTrue(fullFailKeys.contains(infoGroup.groupKey));
 				}
 				else {
-					assertFalse(fullFailKeys.contains(infoGroup.groupKey));
-					assertEquals(relaxedShapeFileRecognizer.getFormat(),
-							fi.getPresumptiveFormat());
-					assertEquals(fi.getConfidence(),GlobPathRecognizer.GLOB_PATH_CONFIDENCE);
 					assertEquals(fullKeyCountMap.get(infoGroup.groupKey).intValue(),
-							fi.getSource().getChildSources().size());
+							clumpSource.getChildSources().size());
+					for (FormatIdentification fi : clumpSource.getPresumptiveFormatIdentifications()){
+						assertFalse(fullFailKeys.contains(infoGroup.groupKey));
+						assertEquals(relaxedShapeFileRecognizer.getFormatIdentifier(),
+								fi.getJhove2Identification());
+						assertEquals(fi.getConfidence(),GlobPathRecognizer.GLOB_PATH_CONFIDENCE);
+					}
 				}
 			}
 		}
@@ -210,22 +217,28 @@ public class GlobPathRecognizerTest{
 				FileSource fs = new FileSource(new File(testFilePath));
 				fsSource.addChildSource(fs);
 			}
-			Set<FormatIdentification> fiSet = 
+			Set<ClumpSource> sources = 
 				strictShapeFileRecognizer.identify(JHOVE2, fsSource);
-			assertEquals(strictKeyCountMap.size(), fiSet.size());
-			for (FormatIdentification fi:fiSet){
-				assertEquals(strictShapeFileRecognizer.getFormat(),
-						fi.getPresumptiveFormat());
-				assertEquals(fi.getConfidence(),GlobPathRecognizer.GLOB_PATH_CONFIDENCE);
+			assertEquals(strictKeyCountMap.size(), sources.size());
+			for (ClumpSource cSource:sources){
+				Set<FormatIdentification> fiSet = cSource.getPresumptiveFormatIdentifications();
+				for (FormatIdentification fi:fiSet){
+					assertEquals(strictShapeFileRecognizer.getFormatIdentifier(),
+							fi.getJhove2Identification());
+					assertEquals(fi.getConfidence(),GlobPathRecognizer.GLOB_PATH_CONFIDENCE);
+				}
 			}
-			fiSet = 
-				relaxedShapeFileRecognizer.identify(JHOVE2, fsSource);
-			
-			assertEquals(relaxedKeyCountMap.size(), fiSet.size());
-			for (FormatIdentification fi:fiSet){
-				assertEquals(relaxedShapeFileRecognizer.getFormat(),
-						fi.getPresumptiveFormat());
-				assertEquals(fi.getConfidence(),GlobPathRecognizer.GLOB_PATH_CONFIDENCE);
+			sources = relaxedShapeFileRecognizer.identify(JHOVE2, fsSource);
+
+			assertEquals(relaxedKeyCountMap.size(), sources.size());
+			for (Source cSource:sources){
+				Set<FormatIdentification> fiSet = cSource.getPresumptiveFormatIdentifications();
+
+				for (FormatIdentification fi:fiSet){
+					assertEquals(relaxedShapeFileRecognizer.getFormatIdentifier(),
+							fi.getJhove2Identification());
+					assertEquals(fi.getConfidence(),GlobPathRecognizer.GLOB_PATH_CONFIDENCE);
+				}
 			}
 		}
 		catch (Exception e){
@@ -236,7 +249,7 @@ public class GlobPathRecognizerTest{
 	public GlobPathRecognizer getStrictShapeFileRecognizer() {
 		return strictShapeFileRecognizer;
 	}
-	@Resource
+	@Resource(name="testStrictShapeFileRecognizer")
 	public void setStrictShapeFileRecognizer(
 			GlobPathRecognizer strictShapeFileRecognizer) {
 		this.strictShapeFileRecognizer = strictShapeFileRecognizer;
@@ -245,7 +258,7 @@ public class GlobPathRecognizerTest{
 	public GlobPathRecognizer getRelaxedShapeFileRecognizer() {
 		return relaxedShapeFileRecognizer;
 	}
-	@Resource
+	@Resource(name="relaxedShapeFileRecognizer")
 	public void setRelaxedShapeFileRecognizer(
 			GlobPathRecognizer relaxedShapeFileRecognizer) {
 		this.relaxedShapeFileRecognizer = relaxedShapeFileRecognizer;

@@ -36,12 +36,15 @@
 
 package org.jhove2.core;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
+
 /**
  * A JHOVE2 identifier. Note that this class is named "I8R", not
  * "IdentifierModule" to avoid confusion between "identifier" as a label and
  * "identifier" as a process that determines a format.
  * 
- * @author mstrong, slabrams
+ * @author mstrong, slabrams, smorrissey
  */
 public class I8R implements Comparable<I8R> {
 	/** JHOVE2 namespace identifier prefix. */
@@ -66,6 +69,9 @@ public class I8R implements Comparable<I8R> {
 	 * infix.
 	 */
 	public static final String JHOVE2_REPORTABLE_INFIX = "reportable";
+	
+	/** Fully qualified class for a JHOVE2 message */
+	public static final String MESSAGE_CLASS_NAME = "org.jhove2.core.Message";
 
 	/** IdentifierModule types, or namespaces. */
 	public enum Namespace {
@@ -116,7 +122,9 @@ public class I8R implements Comparable<I8R> {
 		UTI, /* Apple Uniform Type IdentifierModule */
 		Other
 	}
-
+	/** Class object for a JHOVE2 Message */
+	protected static Class<?> messageClass = null;
+	
 	/** IdentifierModule namespace. */
 	protected Namespace namespace;
 
@@ -209,6 +217,7 @@ public class I8R implements Comparable<I8R> {
 		}
 		else return ret;
 	}
+	
 	@Override
 	public boolean equals(Object obj){
 		if (obj == null){
@@ -230,17 +239,80 @@ public class I8R implements Comparable<I8R> {
 		boolean equals = (ret==0);
 		return equals;
 	}
+	
 	/**
 	 * Creates a JHOVE2 namespace identifier for a Reportable object
 	 * @param r Reportable object for which we want JHOVE2 namespace Identifier
 	 * @return I8R object containing JHOVE2 namespace identifier for a Reportable object
 	 */
-	public static I8R makeJhove2I8R (Reportable r){
+	public static I8R makeReportableTypeI8R (Reportable r){
 		Class<? extends Reportable> c1 = r.getClass();
 		String qName = c1.getName();
 		I8R identifier = new I8R(I8R.JHOVE2_PREFIX + "/"
 				+ I8R.JHOVE2_REPORTABLE_INFIX + "/"
 				+ qName.replace('.', '/'));
 		return identifier;
+	}
+	
+	/**
+	 *  A reportable instance has an I8R field, but that I8R
+	 *	 is for the instance as a whole
+	 *	 for each (reportable) field in the instance,
+	 *	 we have to construct an I8R
+	 * @param method accessor method for the reportable field
+	 * @param reportableClass Class instance for the reportable
+	 * @return I8R for the reportable field in a reportable object
+	 */
+	public static I8R makeFeatureI8RFromMethod(Method method, 
+			Class <? extends Reportable> reportableClass){
+		
+		I8R featureI8R = null;			
+		String name = method.getName();
+		int i = name.indexOf("get");
+		if (i == 0) {
+			name = name.substring(3);
+		}		
+		String featureId = I8R.JHOVE2_PREFIX + "/";
+		Type type = method.getGenericReturnType();
+		boolean isMessage = false;
+		try {
+			isMessage = isMessage(type);
+		}
+		catch(ClassNotFoundException e){}
+		if (isMessage) {
+			featureId += I8R.JHOVE2_MESSAGE_INFIX;
+		} else {
+			featureId += I8R.JHOVE2_PROPERTY_INFIX;
+		}
+		featureId += "/" + reportableClass.getName().
+			replace('.', '/') + "/" + name;		
+		featureI8R = new I8R(featureId);		
+		return featureI8R;		
+	}
+	
+	/**
+	 * Determine if Type is a JHOVE2 Message
+	 * 
+	 * @param type
+	 *            Property type
+	 * @return True if the Type is a message; otherwise, false
+	 * @throws ClassNotFoundException 
+	 */
+	public static synchronized boolean isMessage(Type type) 
+		throws ClassNotFoundException {
+		boolean isMessage = type.getClass().equals(getMessageClass());
+		return isMessage;
+	}
+
+	/**
+	 * Get the Class for JHOVE2 Message
+	 * @return Class for JHOVE2 Message
+	 * @throws ClassNotFoundException
+	 */
+	public static Class<?> getMessageClass() throws ClassNotFoundException {
+		if (messageClass==null){
+			messageClass = Class.forName(MESSAGE_CLASS_NAME);
+		}
+		return messageClass;
 	}
 }

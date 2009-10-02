@@ -38,58 +38,103 @@ package org.jhove2.module.identify;
 import java.util.List;
 import java.util.ArrayList;
 /**
- * @author Sheila Morrissey
+ * Convenience class for managing information about a group of possibly 
+ * related sources.  Used by {@org.jhove2.GlobPathRecognizer}
+ * 
+ * @author smmorrissey
  *
  */
 public class GlobPathMatchInfoGroup {
 	
 	protected List<GlobPathMatchInfo> sourceMatchInfoList;
+	/** count of sources that match the mustHave token */
 	protected int mustHaveCount;
+	/** count of sources that match the mayHave token */
 	protected int mayHaveCount;
+	/** count of sources that match neither mustHave nor mayHave token */
 	protected int unmatchedCount;
+	/** key that all sources in group match */
 	protected String groupKey;
 	
+	/**
+	 * Constructor
+	 */
 	public GlobPathMatchInfoGroup (){
 		this.sourceMatchInfoList = new ArrayList<GlobPathMatchInfo>();
 		this.mayHaveCount = 0;
 		this.mustHaveCount = 0;
 		this.unmatchedCount = 0;
 	}
-	
+	/**
+	 * Get the sourceMatchInfoList
+	 * @return sourceMatchInfoList
+	 */
 	public List<GlobPathMatchInfo> getSourceMatchInfoList() {
 		return sourceMatchInfoList;
 	}
+	/**
+	 * Set the sourceMatchInfoList
+	 * @param sourceMatchInfoList
+	 */
 	public void setSourceMatchInfoList(List<GlobPathMatchInfo> sourceMatchInfoList) {
 		this.sourceMatchInfoList = sourceMatchInfoList;
 	}
+	/**
+	 * Get the count of sources that match the mustHave token
+	 * @return count of sources that match the mustHave token
+	 */
 	public int getMustHaveCount() {
 		return mustHaveCount;
 	}
+	/**
+	 * Set the count of sources that match the mustHave token
+	 * @param count of sources that match the mustHave token
+	 */
 	public void setMustHaveCount(int mustHaveCount) {
 		this.mustHaveCount = mustHaveCount;
 	}
+	/**
+	 * get the count of sources that match the mayHave token 
+	 * @return count of sources that match the mayHave token 
+	 */
 	public int getMayHaveCount() {
 		return mayHaveCount;
 	}
+	/**
+	 * Set the count of sources that match the mayHave token 
+	 * @param count of sources that match the mayHave token 
+	 */
 	public void setMayHaveCount(int mayHaveCount) {
 		this.mayHaveCount = mayHaveCount;
 	}
+	/**
+	 * Get count of sources that match neither mustHave nor mayHave token
+	 * @return
+	 */
 	public int getUnmatchedCount() {
 		return unmatchedCount;
 	}
+	/**
+	 * Set count of sources that match neither mustHave nor mayHave token
+	 * @param unmatchedCount
+	 */
 	public void setUnmatchedCount(int unmatchedCount) {
 		this.unmatchedCount = unmatchedCount;
 	}
-
+	/**
+	 * Get key that all sources in group match
+	 * @return
+	 */
 	public String getGroupKey() {
 		return groupKey;
 	}
-
+	/**
+	 * Set key that all sources in group match
+	 * @param groupKey
+	 */
 	public void setGroupKey(String groupKey) {
 		this.groupKey = groupKey;
 	}
-	
-	
 	
 }
 

@@ -36,10 +36,13 @@
 
 package org.jhove2.module;
 
+import java.util.List;
+
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.I8R;
-import org.jhove2.core.Product;
-import org.jhove2.core.Temporal;
+import org.jhove2.core.Agent;
+import org.jhove2.core.WrappedProductInfo;
+import org.jhove2.core.Reportable;
+import org.jhove2.core.TimerInfo;
 
 /**
  * Interface for JHOVE2 modules. A module is a
@@ -48,24 +51,69 @@ import org.jhove2.core.Temporal;
  * however, some module implementations may be thin wrappers around 3rd party
  * tools.
  * 
- * @author mstrong, slabrams
+ * @author mstrong, slabrams, smorrissey
  */
-public interface Module
-	extends Product, Temporal
-{
+public interface Module extends Reportable {
 	/**
-	 * Get wrapped {@link org.jhove2.core.AbstractProduct} used to perform a
-	 * process.
+	 * Get product developers.
 	 * 
-	 * @return Wrapped {@link org.jhove2.core.AbstractProduct}, or null if the
-	 *         module directly performs its process
+	 * @return Product developers
 	 */
-	@ReportableProperty("External tool wrapped by the module.")
-	public Product getWrappedProduct();
+	@ReportableProperty(order = 4, value = "Product developers.")
+	public List<Agent> getDevelopers();
+	
+
+	/**
+	 * Get product informative note.
+	 * 
+	 * @return Product informative note
+	 */
+	@ReportableProperty(order = 6, value = "Product informative note.")
+	public String getNote();
 	
 	/**
-	 * Return the identifier (in the JHOVE2 namespace) for the module
-	 * @return Identifier for the module
+	 * Get product release date.
+	 * 
+	 * @return Product release date
 	 */
-	public I8R getJhove2Identifer();
+	@ReportableProperty(order = 3, value = "Product release date.")
+	public String getReleaseDate();
+	
+
+	/**
+	 * Get product rights statement.
+	 * 
+	 * @return Product rights statement
+	 */
+	@ReportableProperty(order = 5, value = "Product rights statement.")
+	public String getRightsStatement();
+	/**
+	 * Get product version.
+	 * 
+	 * @return Product version
+	 */
+	@ReportableProperty(order = 2, value = "Product version identifier.")
+	public String getVersion();
+	
+	/**
+	 * Get metadata about any tool wrapped by a Module, and used to perform a
+	 * process.
+	 * 
+	 * @return Wrapped {@link org.jhove2.core.WrappedProductInfo}, or null if the
+	 *         module directly performs its process
+	 */
+	@ReportableProperty(order = 7, value = "External tool wrapped by the module.")
+	public WrappedProductInfo getWrappedProduct();
+	/**
+	 * Get metadata about this module
+	 * @return ProductInfo {@link org.jhove2.core.ProductInfo}
+	 */
+
+	/**
+	 * Get object which maintains timer information about the running of this module
+	 * @return TimerInfo with timer information about the running of this module
+	 */
+	@ReportableProperty(order = 8, value = "Timer info for this module.")
+	public TimerInfo getTimerInfo();
+	
 }

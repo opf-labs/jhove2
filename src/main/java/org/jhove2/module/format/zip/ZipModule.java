@@ -51,8 +51,7 @@ import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
-import org.jhove2.module.format.AbstractFormatModule;
-import org.jhove2.module.format.Parser;
+import org.jhove2.module.format.BaseFormatModuleCommand;
 import org.jhove2.module.format.Validator.Coverage;
 
 /**
@@ -61,14 +60,14 @@ import org.jhove2.module.format.Validator.Coverage;
  * @author mstrong, slabrams
  */
 public class ZipModule
-	extends AbstractFormatModule
-	implements Parser
+	extends BaseFormatModuleCommand
+
 {
 	/** Zip module version identifier. */
-	public static final String VERSION = "0.1.2";
+	public static final String VERSION = "0.1.3";
 
 	/** Zip module release date. */
-	public static final String RELEASE = "2009-08-11";
+	public static final String RELEASE = "2009-09-05";
 
 	/** Zip module rights statement. */
 	public static final String RIGHTS =
@@ -107,7 +106,7 @@ public class ZipModule
 	{
 		Input input = null;
 		try {
-			input = source.getInput(jhove2.getBufferSize(), jhove2
+			input = source.getInput(jhove2.getAppConfigInfo().getBufferSize(), jhove2.getAppConfigInfo()
 					.getBufferType());
 			if (input != null) {
 				File file = input.getFile();
@@ -124,7 +123,10 @@ public class ZipModule
 					ZipEntry entry = en.nextElement();
 					if (entry.isDirectory()) {
 						Source src = SourceFactory
-								.getSource(jhove2, zip, entry);
+								.getSource(jhove2.getAppConfigInfo().getTempPrefix(),
+										jhove2.getAppConfigInfo().getTempSuffix(),
+										jhove2.getAppConfigInfo().getBufferSize(),
+										zip, entry);
 						if (src != null) {
 							String key = entry.getName();
 							/* Remove trailing slash. */
@@ -173,7 +175,9 @@ public class ZipModule
 						}
 					} else {
 						Source src = SourceFactory
-								.getSource(jhove2, zip, entry);
+								.getSource(jhove2.getAppConfigInfo().getTempPrefix(),
+										jhove2.getAppConfigInfo().getTempSuffix(),
+										jhove2.getAppConfigInfo().getBufferSize(), zip, entry);
 						if (src != null) {
 							jhove2.characterize(src);
 

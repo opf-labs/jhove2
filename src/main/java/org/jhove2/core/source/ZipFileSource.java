@@ -44,7 +44,6 @@ import java.util.zip.ZipEntry;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.Digest;
-import org.jhove2.core.JHOVE2;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.io.InputFactory;
 import org.jhove2.core.io.Input.Type;
@@ -80,18 +79,19 @@ public class ZipFileSource extends AbstractSource implements NamedSource {
 	/**
 	 * Instantiate a new <code>ZipFileSource</code>.
 	 * 
-	 * @param jhove2
-	 *            JHOVE2 framework
+     * @param String temporary file prefix
+     * @param String temporary file suffix
+     * @param int buffer size 
 	 * @param stream
 	 *            Input stream for the Zip file entry
 	 * @param entry
 	 *            Zip file entry
 	 * @throws IOException
 	 */
-	public ZipFileSource(JHOVE2 jhove2, InputStream stream, ZipEntry entry)
+	public ZipFileSource(String tmpPrefix, String tmpSuffix,
+			int bufferSize, InputStream stream, ZipEntry entry)
 			throws IOException {
-		super(jhove2, stream);
-
+		super(tmpPrefix, tmpSuffix, bufferSize, stream);
 		this.path = entry.getName();
 		this.name = this.path;
 		int in = this.name.lastIndexOf('/');
@@ -259,7 +259,8 @@ public class ZipFileSource extends AbstractSource implements NamedSource {
 			return 0;
 		}
 		if (!(source instanceof ZipFileSource)){
-			int compareSource = this.getJhove2Identifer().compareTo(source.getJhove2Identifer());
+			int compareSource = this.getJhove2Identifier().
+				compareTo(source.getJhove2Identifier());
 			return compareSource;
 		}
 		ZipFileSource zObj = (ZipFileSource)source;

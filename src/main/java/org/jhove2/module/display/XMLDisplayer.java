@@ -43,7 +43,7 @@ import org.jhove2.core.I8R;
 /**
  * JHOVE2 XML displayer.
  * 
- * @author mstrong, slabrams
+ * @author mstrong, slabrams, smorrissey
  */
 public class XMLDisplayer extends AbstractDisplayer {
 	/** XML displayer version identifier. */
@@ -54,51 +54,39 @@ public class XMLDisplayer extends AbstractDisplayer {
 
 	/** XML displayer rights statement. */
 	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California, "
-			+ "Ithaka Harbors, Inc., and The Board of Trustees of the Leland "
-			+ "Stanford Junior University. "
-			+ "Available under the terms of the BSD license.";
+		+ "Ithaka Harbors, Inc., and The Board of Trustees of the Leland "
+		+ "Stanford Junior University. "
+		+ "Available under the terms of the BSD license.";
 
-	/** Collection element. */
-	public static final String COLLECTION = "collection";
 
-	/** IdentifierModule element. */
-	public static final String IDENTIFIER = "identifier";
-
-	/** Name element. */
-	public static final String NAME = "name";
-
-	/** Namespace attribute. */
-	public static final String NAMESPACE = "namespace";
-
-	/** Properties element. */
-	public static final String PROPERTIES = "properties";
-
-	/** Property element. */
-	public static final String PROPERTY = "property";
-
-	/** Reportable element. */
-	public static final String REPORTABLE = "reportable";
-
+	/** Name attribute. */
+	public static final String ATTNAME = "name";
+	/** I8R value for feature in a Reportable) */
+	public static final String ATTIDENTIFIER = "fid";  
+	/** I8R namepsace for feature in a Reportable. */
+	public static final String ATTIDNAMESPACE = "fidns";	
+	/** I8R value for type of a Reportable. */
+	public static final String ATTTYPEID = "ftid";
+	/** I8R namespace for type of a Reportable. */
+	public static final String ATTTYPEIDNAMESPACE = "ftidns";	
 	/** Root element. */
-	public static final String ROOT = "jhove2";
+	public static final String ELEROOT = "jhove2";
+	/** feature element. */
+	public static final String ELEFEATURE = "feature";
+	/** features element. */
+	public static final String ELEFEATURES = "features";	
+	/** Value element. */
+	public static final String ELEVALUE = "value";
 
 	/** Schema location attribute. */
 	public static final String SCHEMA_LOCATION = ":schemaLocation";
-
-	/** Size attribute. */
-	public static final String SIZE = "size";
-
-	/** Value element. */
-	public static final String VALUE = "value";
-
 	/** xmlns attribute. */
 	public static final String XMLNS = "xmlns:";
-
 	/** XSI attribute. */
 	public static final String XSI = "xsi";
-
 	/** XSI URI. */
 	public static final String XSI_URI = "http://www.w3.org/2001/XMLSchema-instance";
+
 
 	/** JHOVE2 namespace prefix. */
 	protected String prefix;
@@ -109,12 +97,13 @@ public class XMLDisplayer extends AbstractDisplayer {
 	/** JHOVE2 namespace URI. */
 	protected String uri;
 
+
 	/**
 	 * Instantiate a new <code>XMLDisplayer</code>.
 	 */
 	public XMLDisplayer() {
 		super(VERSION, RELEASE, RIGHTS);
-
+		this.setShouldIndent(false);
 		this.prefix = "j2";
 		this.uri = "http://jhove2.org/xsd/1.0.0";
 		/* TODO: Define actual schema. */
@@ -134,7 +123,7 @@ public class XMLDisplayer extends AbstractDisplayer {
 	@Override
 	public void startDisplay(PrintStream out, int level) {
 		declaration(out);
-		startTag(out, level, ROOT, XMLNS + this.prefix, this.uri, XMLNS + XSI,
+		startTag(out, level, ELEROOT, XMLNS + this.prefix, this.uri, XMLNS + XSI,
 				XSI_URI);
 		/* TODO: Define actual schema. */
 		// ,XSI+SCHEMA_LOCATION,
@@ -161,11 +150,44 @@ public class XMLDisplayer extends AbstractDisplayer {
 	@Override
 	public void startReportable(PrintStream out, int level, String name,
 			I8R identifier, int order) {
-		startTag(out, level, REPORTABLE);
-		tag(out, level + 1, NAME, name);
-		tag(out, level + 1, IDENTIFIER, identifier.getValue(), NAMESPACE,
-				identifier.getNamespace().toString());
-		startTag(out, level + 1, PROPERTIES);
+		this.startReportable(out, level, name, identifier, order, null);
+	}
+
+	/**
+	 * Start display of a {@link org.jhove2.core.Reportable}.
+	 * 
+	 * @param out
+	 *            Print stream
+	 * @param level
+	 *            Nesting level
+	 * @param name
+	 *            Reportable name
+	 * @param identifier
+	 *            Reportable identifier in the JHOVE2 namespace
+	 * @param order
+	 *            Ordinal position of this reportable with respect to enclosing
+	 *            {@link org.jhove2.core.Reportable} or collection
+	 * @see org.jhove2.module.display.Displayer#startReportable(java.io.PrintStream,
+	 *      int, java.lang.String, org.jhove2.core.I8R, int)
+	 */
+
+	public void startReportable(PrintStream out, int level, String name,
+			I8R identifier, int order, I8R typeIdentifier) {
+		if (typeIdentifier != null){
+			startTag(out, level, ELEFEATURE,
+					ATTNAME, name,
+					ATTIDENTIFIER, identifier.getValue(),
+					ATTIDNAMESPACE, identifier.getNamespace().toString(),
+					ATTTYPEID, typeIdentifier.getValue(),
+					ATTTYPEIDNAMESPACE, typeIdentifier.getNamespace().toString());
+		}
+		else {
+			startTag(out, level, ELEFEATURE,
+					ATTNAME, name,
+					ATTIDENTIFIER, identifier.getValue(),
+					ATTIDNAMESPACE, identifier.getNamespace().toString());
+		}
+		startTag(out, level + 1, ELEFEATURES);
 	}
 
 	/**
@@ -190,11 +212,10 @@ public class XMLDisplayer extends AbstractDisplayer {
 	@Override
 	public void startCollection(PrintStream out, int level, String name,
 			I8R identifier, int size, int order) {
-		startTag(out, level, COLLECTION, SIZE, Integer.toString(size));
-		tag(out, level + 1, NAME, name);
-		tag(out, level + 1, IDENTIFIER, identifier.getValue(), NAMESPACE,
-				identifier.getNamespace().toString());
-		startTag(out, level + 1, PROPERTIES);
+		startTag(out, level, ELEFEATURE, ATTNAME, name,
+				ATTIDENTIFIER, identifier.getValue(),
+				ATTIDNAMESPACE,identifier.getNamespace().toString());
+		startTag(out, level + 1, ELEFEATURES);
 	}
 
 	/**
@@ -219,12 +240,12 @@ public class XMLDisplayer extends AbstractDisplayer {
 	@Override
 	public void displayProperty(PrintStream out, int level, String name,
 			I8R identifier, Object value, int order) {
-		startTag(out, level, PROPERTY);
-		tag(out, level + 1, NAME, name);
-		tag(out, level + 1, IDENTIFIER, identifier.getValue(), NAMESPACE,
-				identifier.getNamespace().toString());
-		tag(out, level + 1, VALUE, value.toString());
-		endTag(out, level, PROPERTY);
+		startTag(out, level, ELEFEATURE,
+				ATTNAME, name,
+				ATTIDENTIFIER, identifier.getValue(), 
+				ATTIDNAMESPACE,identifier.getNamespace().toString());
+		tag(out, level + 1, ELEVALUE, value.toString());
+		endTag(out, level, ELEFEATURE);
 	}
 
 	/**
@@ -246,8 +267,8 @@ public class XMLDisplayer extends AbstractDisplayer {
 	@Override
 	public void endCollection(PrintStream out, int level, String name,
 			I8R identifier, int size) {
-		endTag(out, level + 1, PROPERTIES);
-		endTag(out, level, COLLECTION);
+		endTag(out, level + 1, ELEFEATURES);
+		endTag(out, level, ELEFEATURE);
 	}
 
 	/**
@@ -267,8 +288,8 @@ public class XMLDisplayer extends AbstractDisplayer {
 	@Override
 	public void endReportable(PrintStream out, int level, String name,
 			I8R identifier) {
-		endTag(out, level + 1, PROPERTIES);
-		endTag(out, level, REPORTABLE);
+		endTag(out, level + 1, ELEFEATURES);
+		endTag(out, level, ELEFEATURE);
 	}
 
 	/**
@@ -283,7 +304,7 @@ public class XMLDisplayer extends AbstractDisplayer {
 	 */
 	@Override
 	public void endDisplay(PrintStream out, int level) {
-		endTag(out, level, ROOT);
+		endTag(out, level, ELEROOT);
 	}
 
 	/**
@@ -292,8 +313,7 @@ public class XMLDisplayer extends AbstractDisplayer {
 	 * @param out
 	 */
 	public void declaration(PrintStream out) {
-		out
-				.println("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>");
+		out.println("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>");
 	}
 
 	/**
@@ -307,9 +327,9 @@ public class XMLDisplayer extends AbstractDisplayer {
 	 *            Tag name
 	 */
 	public void startTag(PrintStream out, int level, String name) {
-		String indent = getIndent(level);
-
-		out.println(indent + "<" + this.prefix + ":" + name + ">");
+		String indent = getIndent(level, 
+				this.getShouldIndent());
+		out.print(indent + "<" + this.prefix + ":" + name + ">" + this.getLineEnd());
 	}
 
 	/**
@@ -326,13 +346,13 @@ public class XMLDisplayer extends AbstractDisplayer {
 	 */
 	public void startTag(PrintStream out, int level, String name,
 			String... attrs) {
-		String indent = AbstractDisplayer.getIndent(level);
-
+		String indent = AbstractDisplayer.getIndent(level, 
+				this.getShouldIndent());
 		out.print(indent + "<" + this.prefix + ":" + name);
 		for (int i = 0; i < attrs.length; i += 2) {
-			out.print(" " + attrs[i] + "=\"" + attrs[i + 1] + "\"");
+			out.print(" " + attrs[i] + "=\"" + escapeAttr(attrs[i + 1]) + "\"");
 		}
-		out.println(">");
+		out.print(">" + this.getLineEnd());
 	}
 
 	/**
@@ -348,10 +368,10 @@ public class XMLDisplayer extends AbstractDisplayer {
 	 *            Tag content
 	 */
 	public void tag(PrintStream out, int level, String name, String content) {
-		String indent = AbstractDisplayer.getIndent(level);
-
-		out.println(indent + "<" + this.prefix + ":" + name + ">" + content
-				+ "</" + this.prefix + ":" + name + ">");
+		String indent = AbstractDisplayer.getIndent(level, 
+				this.getShouldIndent());
+		out.print(indent + "<" + this.prefix + ":" + name + ">" + escape(content)
+				+ "</" + this.prefix + ":" + name + ">" + this.getLineEnd());
 	}
 
 	/**
@@ -370,13 +390,11 @@ public class XMLDisplayer extends AbstractDisplayer {
 	 */
 	public void tag(PrintStream out, int level, String name, String content,
 			String... attrs) {
-		String indent = AbstractDisplayer.getIndent(level);
-
+		String indent = AbstractDisplayer.getIndent(level, 
+				this.getShouldIndent());
 		out.print(indent + "<" + this.prefix + ":" + name);
-		for (int i = 0; i < attrs.length; i += 2) {
-			out.print(" " + attrs[i] + "=\"" + attrs[i] + "\"");
-		}
-		out.println(">" + content + "</" + this.prefix + ":" + name + ">");
+		out.print(makeAttributes(attrs));
+		out.print(">" + escape(content) + "</" + this.prefix + ":" + name + ">" + this.getLineEnd());
 	}
 
 	/**
@@ -390,9 +408,21 @@ public class XMLDisplayer extends AbstractDisplayer {
 	 *            Tag name
 	 */
 	public void endTag(PrintStream out, int level, String name) {
-		String indent = AbstractDisplayer.getIndent(level);
+		String indent = AbstractDisplayer.getIndent(level, 
+				this.getShouldIndent());
+		out.print(indent + "</" + this.prefix + ":" + name + ">" + this.getLineEnd());
+	}
 
-		out.println(indent + "</" + this.prefix + ":" + name + ">");
+	public String makeAttributes(String...attrs){
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < attrs.length; i += 2) {
+			sb.append(" " );
+			sb.append(attrs[i]);
+			sb.append("=\"" );
+			sb.append(escapeAttr(attrs[i+1]));
+			sb.append("\"");
+		}
+		return sb.toString();
 	}
 
 	/**
@@ -403,9 +433,52 @@ public class XMLDisplayer extends AbstractDisplayer {
 	 * @return Escaped version of the string
 	 */
 	protected String escape(String value) {
-		value = value.replace("&", "&amp;");
-		value = value.replace("<", "&lt;");
-		return value.replace(">", "&gt;");
+		return encodeContent(value);
+	}
+
+	/**
+	 *   Encodes a content String in XML-clean form, converting characters
+     *   to entities as necessary and removing control characters disallowed
+     *   by XML.  The null string will be converted to an empty string.
+	 *   Developed by:  Jhove - JSTOR/Harvard Object Validation Environment
+     *   Copyright 2003 by JSTOR and the President and Fellows of Harvard College
+     *   Please see JHOVE(1)-LICENSE.txt file for license information
+     * 
+	 * @param content String to be encoded
+	 * @return
+	 */
+	protected static String encodeContent (String content)
+	{
+		if (content == null) {
+			content = "";
+		}
+		StringBuffer buffer = new StringBuffer (content);
+		/* Remove disallowed control characters from the content string. */
+		int n = buffer.length ();
+		for (int i=0; i<n; i++) {
+			char ch = buffer.charAt (i);
+			if ((0x00 <= ch && ch <= 0x08) || (0x0b <= ch && ch <= 0x0c) ||
+					(0x0e <= ch && ch <= 0x1f) ||  0x7f == ch) {
+				buffer.deleteCharAt (i--);
+				n--;
+			}
+		}
+		n = 0;
+		while ((n = buffer.indexOf ("&", n)) > -1) {
+			buffer.insert (n+1, "amp;");
+			n +=5;
+		}
+		n = 0;
+		while ((n = buffer.indexOf ("<", n)) > -1) {
+			buffer.replace (n, n+1, "&lt;");
+			n += 4;
+		}
+		n = 0;
+		while ((n = buffer.indexOf (">", n)) > -1) {
+			buffer.replace (n, n+1, "&gt;");
+			n += 4;
+		}
+		return buffer.toString ();
 	}
 
 	/**
@@ -418,5 +491,10 @@ public class XMLDisplayer extends AbstractDisplayer {
 	protected String escapeAttr(String value) {
 		value = escape(value);
 		return value.replace("\"", "&quot;");
+	}
+
+	protected String getLineEnd(){
+		String lineEnd = this.getShouldIndent()? "\n" : "";
+		return lineEnd;
 	}
 }

@@ -37,7 +37,7 @@
 package org.jhove2.core;
 
 /**
- * JHOVE2 configuration exception
+ * JHOVE2 exception
  * 
  * @author mstrong, slabrams
  */

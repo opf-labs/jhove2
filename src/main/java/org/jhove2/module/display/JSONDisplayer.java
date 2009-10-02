@@ -43,7 +43,7 @@ import org.jhove2.core.I8R;
 /**
  * JSON displayer. The JSON format is defined by RFC 4627.
  * 
- * @author mstrong, slabrams
+ * @author mstrong, slabrams, smorrissey
  */
 public class JSONDisplayer extends AbstractDisplayer {
 	/** JSON displayer version identifier. */
@@ -54,15 +54,16 @@ public class JSONDisplayer extends AbstractDisplayer {
 
 	/** JSON displayer rights statement. */
 	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California, "
-			+ "Ithaka Harbors, Inc., and The Board of Trustees of the Leland "
-			+ "Stanford Junior University. "
-			+ "Available under the terms of the BSD license.";
+		+ "Ithaka Harbors, Inc., and The Board of Trustees of the Leland "
+		+ "Stanford Junior University. "
+		+ "Available under the terms of the BSD license.";
 
 	/**
 	 * Instantiate a new <code>JSON</code> displayer.
 	 */
 	public JSONDisplayer() {
 		super(VERSION, RELEASE, RIGHTS);
+		this.setShouldIndent(true);
 	}
 
 	/**
@@ -77,7 +78,8 @@ public class JSONDisplayer extends AbstractDisplayer {
 	 */
 	@Override
 	public void startDisplay(PrintStream out, int level) {
-		String indent = getIndent(level);
+		String indent = getIndent(level, 
+				this.getShouldIndent());
 
 		out.println(indent + "{");
 	}
@@ -102,7 +104,15 @@ public class JSONDisplayer extends AbstractDisplayer {
 	@Override
 	public void startReportable(PrintStream out, int level, String name,
 			I8R identifier, int order) {
-		String indent = getIndent(this.showIdentifiers ? 2 * level : level);
+		this.startReportable(out, level, name, identifier, order, null);
+	}
+
+
+	@Override
+	public void startReportable(PrintStream out, int level, String name,
+			I8R identifier, int order, I8R typeIdentifier) {
+		String indent = getIndent(this.getShowIdentifiers() ? 2 * level : level, 
+				this.getShouldIndent());
 		StringBuffer buffer = new StringBuffer(indent);
 
 		if (order == 0) {
@@ -111,11 +121,29 @@ public class JSONDisplayer extends AbstractDisplayer {
 			buffer.append(",");
 		}
 		buffer.append("\"" + name + "\": {");
-		if (this.showIdentifiers) {
-			buffer.append("\n" + indent + "  \"identifier\": " + identifier
-					+ "\"" + "\n" + indent + " ,\"value\": {");
+		if (typeIdentifier != null){
+			String typeName = typeIdentifier.getValue();
+			int i = typeName.lastIndexOf("/");
+			if (i > -1 ){
+				typeName = typeName.substring(i+1);		
+				buffer.append("\n" + indent + "  \"type\": \"" + typeName
+						+ "\"" + "\n" + indent + ",");
+				if (this.getShowIdentifiers()){
+					buffer.append("\"identifier\": \"" + identifier
+					+ "\"" + "\n" + indent + ",");
+				}
+				out.print(buffer);
+			}
 		}
-		out.println(buffer);
+		else if (this.getShowIdentifiers())  {			 
+				buffer.append("\n" + indent + "  \"identifier\": \"" + identifier
+				+ "\"" + "\n" + indent + ",");				out.println(buffer);
+			 
+		}
+		else{
+			out.println(buffer);
+		}
+		
 	}
 
 	/**
@@ -140,7 +168,8 @@ public class JSONDisplayer extends AbstractDisplayer {
 	@Override
 	public void startCollection(PrintStream out, int level, String name,
 			I8R identifier, int size, int order) {
-		String indent = getIndent(this.showIdentifiers ? 2 * level : level);
+		String indent = getIndent(this.getShowIdentifiers() ? 2 * level : level, 
+				this.getShouldIndent());
 		StringBuffer buffer = new StringBuffer(indent);
 
 		if (order == 0) {
@@ -149,8 +178,8 @@ public class JSONDisplayer extends AbstractDisplayer {
 			buffer.append(",");
 		}
 		buffer.append("\"" + name + "\": {");
-		if (this.showIdentifiers) {
-			buffer.append("\n" + indent + "  \"identifier\": " + identifier
+		if (this.getShowIdentifiers()) {
+			buffer.append("\n" + indent + "  \"identifier\": \"" + identifier
 					+ "\"" + "\n" + indent + " ,\"value\": {");
 		}
 		out.println(buffer);
@@ -178,7 +207,8 @@ public class JSONDisplayer extends AbstractDisplayer {
 	@Override
 	public void displayProperty(PrintStream out, int level, String name,
 			I8R identifier, Object value, int order) {
-		String indent = getIndent(this.showIdentifiers ? 2 * level : level);
+		String indent = getIndent((this.getShowIdentifiers() ? 2 * level : level), 
+				this.getShouldIndent());
 		StringBuffer buffer = new StringBuffer(indent);
 
 		if (order == 0) {
@@ -187,7 +217,7 @@ public class JSONDisplayer extends AbstractDisplayer {
 			buffer.append(",");
 		}
 		buffer.append("\"" + name + "\": ");
-		if (this.showIdentifiers) {
+		if (this.getShowIdentifiers()) {
 			buffer.append("{\n" + indent + "   \"identifier\": \"" + identifier
 					+ "\"" + "\n" + indent + "  ,\"value\": ");
 		}
@@ -198,7 +228,7 @@ public class JSONDisplayer extends AbstractDisplayer {
 			buffer.append(escape(value.toString()));
 			buffer.append("\"");
 		}
-		if (this.showIdentifiers) {
+		if (this.getShowIdentifiers()) {
 			buffer.append("\n" + indent + " }");
 		}
 		out.println(buffer);
@@ -223,11 +253,12 @@ public class JSONDisplayer extends AbstractDisplayer {
 	@Override
 	public void endCollection(PrintStream out, int level, String name,
 			I8R identifier, int size) {
-		String indent = getIndent(this.showIdentifiers ? (2 * level) + 1
-				: level + 1);
+		String indent = getIndent(this.getShowIdentifiers() ? (2 * level) + 1
+				: level + 1, 
+				this.getShouldIndent());
 		StringBuffer buffer = new StringBuffer(indent);
 
-		if (this.showIdentifiers) {
+		if (this.getShowIdentifiers()) {
 			buffer.append(" }\n" + indent);
 		}
 		buffer.append("}");
@@ -251,13 +282,10 @@ public class JSONDisplayer extends AbstractDisplayer {
 	@Override
 	public void endReportable(PrintStream out, int level, String name,
 			I8R identifier) {
-		String indent = getIndent(this.showIdentifiers ? (2 * level) + 1
-				: level + 1);
+		String indent = getIndent(this.getShowIdentifiers() ? (2 * level) + 1
+				: level + 1, 
+				this.getShouldIndent());
 		StringBuffer buffer = new StringBuffer(indent);
-
-		if (this.showIdentifiers) {
-			buffer.append(" }\n" + indent);
-		}
 		buffer.append("}");
 		out.println(buffer);
 	}
@@ -274,7 +302,8 @@ public class JSONDisplayer extends AbstractDisplayer {
 	 */
 	@Override
 	public void endDisplay(PrintStream out, int level) {
-		String indent = getIndent(level);
+		String indent = getIndent(level, 
+				this.getShouldIndent());
 
 		out.println(indent + "}");
 	}
@@ -292,4 +321,5 @@ public class JSONDisplayer extends AbstractDisplayer {
 		value = value.replace("\\", "\\\\");
 		return value.replace("\"", "\\\"");
 	}
+
 }

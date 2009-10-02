@@ -192,7 +192,8 @@ public class ZipDirectorySource extends AbstractSource implements
 			return 0;
 		}
 		if (!(source instanceof ZipDirectorySource)){
-			int compareSource = this.getJhove2Identifer().compareTo(source.getJhove2Identifer());
+			int compareSource = this.getJhove2Identifier().
+				compareTo(source.getJhove2Identifier());
 			return compareSource;
 		}
 		ZipDirectorySource zObj = (ZipDirectorySource)source;

@@ -37,7 +37,6 @@ package org.jhove2.core.source;
 
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
 
 import javax.annotation.Resource;
 
@@ -53,11 +52,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath*:**/abstractsource-config.xml"})
+@ContextConfiguration(locations={"classpath*:**/test-config.xml"})
 public class AbstractSourceTest {
 	
-	private String dirPath;
-	private ArrayList<String> fileList;
 	private AggrefierModule Aggrefier;
 	private JHOVE2 JHOVE2;
 
@@ -162,21 +159,6 @@ public class AbstractSourceTest {
 		assertEquals(0, fsSource1.compareTo(fsSource2));
 	}
 
-	public String getDirPath() {
-		return dirPath;
-	}
-	@Resource
-	public void setDirPath(String dirPath) {
-		this.dirPath = dirPath;
-	}
-
-	public ArrayList<String> getFileList() {
-		return fileList;
-	}
-	@Resource
-	public void setFileList(ArrayList<String> fileList) {
-		this.fileList = fileList;
-	}
 
 	public AggrefierModule getAggrefier() {
 		return Aggrefier;

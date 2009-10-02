@@ -36,27 +36,22 @@
 
 package org.jhove2.app;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.Properties;
 
+import org.jhove2.core.AppConfigInfo;
 import org.jhove2.core.JHOVE2;
-import org.jhove2.core.io.Input.Type;
+import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.config.Configure;
 import org.jhove2.module.AbstractModule;
+import org.jhove2.module.display.Displayer;
 
 /**
  * Abstract JHOVE2 application .
  * 
- * @author mstrong, slabrams
+ * @author mstrong, slabrams, smorrissey
  */
 public abstract class AbstractApplication extends AbstractModule implements
 		Application {
-	/** {@link org.jhove2.core.io.Input} buffer size. */
-	protected int bufferSize;
-
-	/** Message digests flag; if true, calculate message digests. */
-	protected boolean calcDigests;
 
 	/** Application command line. */
 	protected String commandLine;
@@ -64,41 +59,14 @@ public abstract class AbstractApplication extends AbstractModule implements
 	/** Application invocation date/timestamp. */
 	protected Date dateTime;
 
-	/** {@link org.jhove2.core.io.Input} buffer type. */
-	protected Type bufferType;
-
-	/** Delete temporary files flag. */
-	protected boolean deleteTempFiles;
-
-	/** {@link org.jhove2.module.display.Displayer}. */
-	protected String displayer;
-
-	/** Fail fast limit. */
-	protected int failFastLimit;
-
+	/** Application configuration settings  */
+	protected AppConfigInfo appConfigInfo;
+	
 	/** Application framework. */
 	protected JHOVE2 framework;
-
-	/** File system path names. */
-	protected List<String> names;
-
-	/** Output file. */
-	protected String outputFile;
-
-	/**
-	 * Show identifiers flag; tf true, show identifiers in non-XML display
-	 * modes.
-	 */
-	protected boolean showIdentifiers;
-
-	/** Temporary directory. */
-	protected String tempDirectory;
-
-	/** Application user name. */
-	protected String userName;
-
-	/** Application current working directory. */
-	protected String workingDirectory;
+	
+	/** Application displayer */
+	protected Displayer displayer;
 
 	/**
 	 * Instantiate a new <code>AbstractApplication</code>.
@@ -109,57 +77,24 @@ public abstract class AbstractApplication extends AbstractModule implements
 	 *            Application release date in ISO 8601 format: "YYYY-MM-DD"
 	 * @param rights
 	 *            Application rights statement
+	 * @throws JHOVE2Exception 
 	 */
-	public AbstractApplication(String version, String release, String rights) {
+	public AbstractApplication(String version, String release, String rights) throws JHOVE2Exception {
 		super(version, release, rights);
-
-		this.bufferSize = JHOVE2.DEFAULT_BUFFER_SIZE;
-		this.bufferType = JHOVE2.DEFAULT_BUFFER_TYPE;
-		this.calcDigests = JHOVE2.DEFAULT_CALC_DIGESTS;
-		this.dateTime = new Date();
-		this.deleteTempFiles = JHOVE2.DEFAULT_DELETE_TEMP_FILES;
-		this.displayer = JHOVE2.DEFAULT_DISPLAYER;
-		this.failFastLimit = JHOVE2.DEFAULT_FAIL_FAST_LIMIT;
-		this.names = new ArrayList<String>();
-		this.outputFile = null;
-		this.showIdentifiers = JHOVE2.DEFAULT_SHOW_IDENTIFIERS;
-		Properties props = System.getProperties();
-		this.tempDirectory = props.getProperty("java.io.tmpdir");
-		this.userName = props.getProperty("user.name");
-		this.workingDirectory = props.getProperty("user.dir");
-	}
-
-	/**
-	 * Get {@link org.jhove2.core.io.Input} buffer size.
-	 * 
-	 * @return Buffer size
-	 * @see org.jhove2.app.Application#getBufferSize()
-	 */
-	@Override
-	public int getBufferSize() {
-		return this.bufferSize;
-	}
-
-	/**
-	 * Get {@link org.jhove2.core.io.Input} buffer type.
-	 * 
-	 * @return Input buffer type
-	 * @see org.jhove2.app.Application#getBufferType()
-	 */
-	@Override
-	public Type getBufferType() {
-		return this.bufferType;
-	}
-
-	/**
-	 * Get message digests flag.
-	 * 
-	 * @return Message digests flag; if true, calculate message digests
-	 * @see org.jhove2.app.Application#getCalcDigests()
-	 */
-	@Override
-	public boolean getCalcDigests() {
-		return this.calcDigests;
+		// uses application defaults
+		this.setAppConfigInfo(new AppConfigInfo()); 
+		try {
+			this.displayer = Configure.getReportable(Displayer.class,
+					Displayer.DEFAULT_DISPLAYER_TYPE);
+		}
+		catch (JHOVE2Exception e){
+			try {
+				this.displayer = (Displayer)(Class.forName(Displayer.DEFAULT_DISPLAYER_CLASS).newInstance());
+			}
+			catch (Exception ex){
+				throw new JHOVE2Exception("Fail to instantiate default displayer", ex);
+			}
+		}
 	}
 
 	/**
@@ -183,40 +118,7 @@ public abstract class AbstractApplication extends AbstractModule implements
 	public Date getDateTime() {
 		return this.dateTime;
 	}
-
-	/**
-	 * Get delete temporary files flag.
-	 * 
-	 * @return Delete temporary files flag
-	 * @see org.jhove2.app.Application#getDeleteTempFiles()
-	 */
-	@Override
-	public boolean getDeleteTempFiles() {
-		return this.deleteTempFiles;
-	}
-
-	/**
-	 * Get displayer.
-	 * 
-	 * @return Displayer
-	 * @see org.jhove2.app.Application#getDisplayer()
-	 */
-	@Override
-	public String getDisplayer() {
-		return this.displayer;
-	}
-
-	/**
-	 * Get fail fast limit.
-	 * 
-	 * @return Fail fast limit
-	 * @see org.jhove2.app.Application#getFailFastLimit()
-	 */
-	@Override
-	public int getFailFastLimit() {
-		return this.failFastLimit;
-	}
-
+	
 	/**
 	 * Get application framework.
 	 * 
@@ -229,72 +131,6 @@ public abstract class AbstractApplication extends AbstractModule implements
 	}
 
 	/**
-	 * Get output file.
-	 * 
-	 * @return Output file, or null if no file is specified
-	 * @see org.jhove2.app.Application#getOutputFile()
-	 */
-	@Override
-	public String getOutputFile() {
-		return this.outputFile;
-	}
-
-	/**
-	 * Get file system path names.
-	 * 
-	 * @return File system path names
-	 * @see org.jhove2.app.Application#getPathNames()
-	 */
-	@Override
-	public List<String> getPathNames() {
-		return this.names;
-	}
-
-	/**
-	 * Get show identifiers flag.
-	 * 
-	 * @return Show identifiers flag
-	 * @see org.jhove2.app.Application#getShowIdentifiers()
-	 */
-	@Override
-	public boolean getShowIdentifiers() {
-		return this.showIdentifiers;
-	}
-
-	/**
-	 * Get temporary directory.
-	 * 
-	 * @return Temporary directory
-	 * @see org.jhove2.app.Application#getTempDirectory()
-	 */
-	@Override
-	public String getTempDirectory() {
-		return this.tempDirectory;
-	}
-
-	/**
-	 * Get application user name.
-	 * 
-	 * @return Application user name
-	 * @see org.jhove2.app.Application#getUserName()
-	 */
-	@Override
-	public String getUserName() {
-		return this.userName;
-	}
-
-	/**
-	 * Get application working directory.
-	 * 
-	 * @return Application working directory
-	 * @see org.jhove2.app.Application#getWorkingDirectory()
-	 */
-	@Override
-	public String getWorkingDirectory() {
-		return this.workingDirectory;
-	}
-
-	/**
 	 * Set application framework.
 	 * 
 	 * @param framework
@@ -304,5 +140,31 @@ public abstract class AbstractApplication extends AbstractModule implements
 	@Override
 	public void setFramework(JHOVE2 framework) {
 		this.framework = framework;
+	}
+
+	public AppConfigInfo getAppConfigInfo() {
+		return appConfigInfo;
+	}
+
+	public void setAppConfigInfo(AppConfigInfo appConfigInfo) {
+		this.appConfigInfo = appConfigInfo;
+	}
+
+	public void setCommandLine(String commandLine) {
+		this.commandLine = commandLine;
+	}
+
+	public void setDateTime(Date dateTime) {
+		this.dateTime = dateTime;
+	}
+
+	@Override
+	public Displayer getDisplayer() {
+		return displayer;
+	}
+
+	@Override
+	public void setDisplayer(Displayer displayer) {
+		this.displayer = displayer;
 	}
 }

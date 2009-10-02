@@ -40,6 +40,7 @@ import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import org.jhove2.core.AbstractReportable;
 import org.jhove2.core.Digest;
 
 /**
@@ -48,7 +49,8 @@ import org.jhove2.core.Digest;
  * 
  * @author mstrong, slabrams
  */
-public abstract class AbstractBufferDigester implements BufferDigester {
+public abstract class AbstractBufferDigester extends AbstractReportable
+implements BufferDigester {
 	/** Message digest algorithm. */
 	protected String algorithm;
 

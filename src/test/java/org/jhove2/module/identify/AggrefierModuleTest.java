@@ -45,9 +45,10 @@ import java.util.Set;
 
 import javax.annotation.Resource;
 
-import org.jhove2.core.Format;
 import org.jhove2.core.FormatIdentification;
+import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2;
+import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.FileSetSource;
 import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.Source;
@@ -63,10 +64,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath*:**/aggrefier-config.xml"})
+@ContextConfiguration(locations={"classpath*:**/aggrefier-config.xml",
+		"classpath*:**/test-config.xml"})
 public class AggrefierModuleTest {
 
-	private AggrefierModule Aggrefier;
+	private AggrefierModule TestAggrefier;
 	private GlobPathRecognizer strictShapeFileRecognizer;
 	private String shapeDirPath;
 	private ArrayList<String> shapeFileList;
@@ -94,29 +96,31 @@ public class AggrefierModuleTest {
 				FileSource fs = new FileSource(new File(testFilePath));
 				fsSource.addChildSource(fs);
 			}
-			Set<FormatIdentification> fiSet = 
-				Aggrefier.identify(JHOVE2, fsSource);
+			Set<ClumpSource> clumpSources = 
+				TestAggrefier.identify(JHOVE2, fsSource);
 			assertEquals(shapeStrictKeyCountMap.entrySet().size() + 
-					quickenStrictKeyCountMap.entrySet().size(), fiSet.size());
-			for (FormatIdentification fi:fiSet){
-				assertEquals(fi.getConfidence(),GlobPathRecognizer.GLOB_PATH_CONFIDENCE);
-				Format format = fi.getPresumptiveFormat();	
-				if (format.equals(strictShapeFileRecognizer.getFormat())){
-					String sourceKey = getSourceKey(fi.getSource());
-					assertTrue(shapeStrictKeyCountMap.containsKey(sourceKey));
-					int expectedSourceCount = 
-						Integer.parseInt(shapeStrictKeyCountMap.get(sourceKey));
-					assertEquals(expectedSourceCount, fi.getSource().getChildSources().size());
-				}
-				else if (format.equals(quickenFileRecognizer.getFormat())){
-					String sourceKey = getSourceKey(fi.getSource());
-					assertTrue(quickenStrictKeyCountMap.containsKey(sourceKey));
-					int expectedSourceCount = 
-						Integer.parseInt(quickenStrictKeyCountMap.get(sourceKey));
-					assertEquals(expectedSourceCount, fi.getSource().getChildSources().size());
-				}
-				else {
-					fail("Unmatched format: " + format.getName());
+					quickenStrictKeyCountMap.entrySet().size(), clumpSources.size());
+			for (ClumpSource clumpSource:clumpSources){
+				for (FormatIdentification fi:clumpSource.getPresumptiveFormatIdentifications()){
+					assertEquals(fi.getConfidence(),GlobPathRecognizer.GLOB_PATH_CONFIDENCE);
+					I8R format = fi.getJhove2Identification();
+					if (format.equals(strictShapeFileRecognizer.getFormatIdentifier())){
+						String sourceKey = getSourceKey(clumpSource);
+						assertTrue(shapeStrictKeyCountMap.containsKey(sourceKey));
+						int expectedSourceCount = 
+							Integer.parseInt(shapeStrictKeyCountMap.get(sourceKey));
+						assertEquals(expectedSourceCount, clumpSource.getChildSources().size());
+					}
+					else if (format.equals(quickenFileRecognizer.getFormatIdentifier())){
+						String sourceKey = getSourceKey(clumpSource);
+						assertTrue(quickenStrictKeyCountMap.containsKey(sourceKey));
+						int expectedSourceCount = 
+							Integer.parseInt(quickenStrictKeyCountMap.get(sourceKey));
+						assertEquals(expectedSourceCount, clumpSource.getChildSources().size());
+					}
+					else {
+						fail("Unmatched format: " + format.getValue());
+					}
 				}
 			}
 		}
@@ -134,20 +138,20 @@ public class AggrefierModuleTest {
 		}
 		return fileName.substring(0, i);
 	}
-	
-	
-	public AggrefierModule getAggrefier() {
-		return Aggrefier;
+
+
+	public AggrefierModule getTestAggrefier() {
+		return TestAggrefier;
 	}
-	@Resource
-	public void setAggrefier(AggrefierModule aggrefier) {
-		Aggrefier = aggrefier;
+	@Resource(name="TestAggrefier")
+	public void setTestAggrefier(AggrefierModule aggrefier) {
+		TestAggrefier = aggrefier;
 	}
 
 	public GlobPathRecognizer getStrictShapeFileRecognizer() {
 		return strictShapeFileRecognizer;
 	}
-	@Resource
+	@Resource(name="testStrictShapeFileRecognizer")
 	public void setStrictShapeFileRecognizer(
 			GlobPathRecognizer strictShapeFileRecognizer) {
 		this.strictShapeFileRecognizer = strictShapeFileRecognizer;

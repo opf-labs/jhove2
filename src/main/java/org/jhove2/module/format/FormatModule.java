@@ -36,21 +36,28 @@
 
 package org.jhove2.module.format;
 
+import java.io.EOFException;
+import java.io.IOException;
 import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.Format;
+import org.jhove2.core.JHOVE2;
+import org.jhove2.core.JHOVE2Command;
+import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.source.Source;
 import org.jhove2.module.Module;
-import org.jhove2.module.format.Validator.Coverage;
+import org.jhove2.module.format.FormatProfile;
+
 
 /**
  * Interface for JHOVE2 format {@link org.jhove2.module.Module}s that model a
  * format or format family.
  * 
- * @author mstrong, slabrams
+ * @author mstrong, slabrams, smorrissey
  */
 public interface FormatModule
-	extends Module
+	extends Module, JHOVE2Command
 {
 	/**
 	 * Get format module format.
@@ -60,6 +67,9 @@ public interface FormatModule
 	@ReportableProperty(order = 1, value = "Format module format.")
 	public Format getFormat();
 
+	
+	public void setFormat(Format format);
+	
 	/**
 	 * Get format module format profiles.
 	 * 
@@ -75,4 +85,22 @@ public interface FormatModule
 	 *            Format module format profile
 	 */
 	public void setProfile(FormatProfile profile);
+	
+	/**
+	 * Parse a source unit.
+	 * 
+	 * @param jhove2
+	 *            JHOVE2 framework
+	 * @param source
+	 *            Source unit
+	 * @return Number of bytes consumed
+	 * @throws EOFException
+	 *             If End-of-File is reached reading the source unit
+	 * @throws IOException
+	 *             If an I/O exception is raised reading the source unit
+	 * @throws JHOVE2Exception
+	 */
+	public long parse(JHOVE2 jhove2, Source source) throws EOFException,
+			IOException, JHOVE2Exception;
+
 }

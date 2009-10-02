@@ -47,8 +47,7 @@ import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.NamedSource;
 import org.jhove2.core.source.Source;
-import org.jhove2.module.format.AbstractFormatModule;
-import org.jhove2.module.format.Parser;
+import org.jhove2.module.format.BaseFormatModuleCommand;
 import org.jhove2.module.format.Validator;
 import org.jhove2.module.format.Validator.Coverage;
 
@@ -58,8 +57,8 @@ import org.jhove2.module.format.Validator.Coverage;
  * @author mstrong, slabrams
  */
 public class ShapefileModule
-	extends AbstractFormatModule
-	implements Parser, Validator
+	extends BaseFormatModuleCommand
+	implements  Validator
 {
 	/** Shapefile module version identifier. */
 	public static final String VERSION = "0.1.2";
@@ -144,7 +143,7 @@ public class ShapefileModule
 	 *      org.jhove2.core.source.Source)
 	 */
 	@Override
-	public Validity validate(JHOVE2 jhove2, Source source) {
+	public Validity validate(JHOVE2 jhove2, Source source) throws JHOVE2Exception {
 		return this.isValid;
 	}
 

@@ -79,38 +79,41 @@ public class Duration {
 		int mm = 0;
 		int ss = 0;
 		int ms = 1;
-		if (this.duration > 0L) {
+
+		if (this.duration >= 0L) {
 			hh = (int) this.duration / 3600000;
 			long ln = this.duration % 3600000;
 			mm = (int) ln / 60000;
 			ln = (int) ln % 60000;
 			ss = (int) ln / 1000;
 			ms = (int) ln % 1000;
-		}
 
-		if (hh < 10) {
-			buffer.append("0");
-		}
-		buffer.append(Integer.toString(hh));
-		buffer.append(":");
-		if (mm < 10) {
-			buffer.append("0");
-		}
-		buffer.append(Integer.toString(mm));
-		buffer.append(":");
-		if (ss < 10) {
-			buffer.append("0");
-		}
-		buffer.append(Integer.toString(ss));
-		buffer.append(".");
-		if (ms < 100) {
-			buffer.append("0");
-			if (ms < 10) {
+			if (hh < 10) {
 				buffer.append("0");
 			}
+			buffer.append(Integer.toString(hh));
+			buffer.append(":");
+			if (mm < 10) {
+				buffer.append("0");
+			}
+			buffer.append(Integer.toString(mm));
+			buffer.append(":");
+			if (ss < 10) {
+				buffer.append("0");
+			}
+			buffer.append(Integer.toString(ss));
+			buffer.append(".");
+			if (ms < 100) {
+				buffer.append("0");
+				if (ms < 10) {
+					buffer.append("0");
+				}
+			}
+			buffer.append(Integer.toString(ms));
 		}
-		buffer.append(Integer.toString(ms));
-
+		else {
+			buffer.append(Long.toString(this.duration));
+		}
 		return buffer.toString();
 	}
 }

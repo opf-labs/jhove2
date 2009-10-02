@@ -42,31 +42,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.AbstractReportable;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
-import org.jhove2.core.Reportable;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.io.Input;
 import org.jhove2.module.format.Validator.Validity;
-import org.jhove2.module.format.unicode.C0Control;
-import org.jhove2.module.format.unicode.C1Control;
-import org.jhove2.module.format.unicode.CodeBlock;
-import org.jhove2.module.format.unicode.Unicode;
-import org.jhove2.module.format.unicode.Unicode.EOL;
+import org.jhove2.module.format.utf8.unicode.C0Control;
+import org.jhove2.module.format.utf8.unicode.C1Control;
+import org.jhove2.module.format.utf8.unicode.CodeBlock;
+import org.jhove2.module.format.utf8.unicode.Unicode;
+import org.jhove2.module.format.utf8.unicode.Unicode.EOL;
 
 /**
  * JHOVE2 UTF-8 character modeling class.
  * 
  * @author mstrong, slabrams
  */
-public class UTF8Character implements Reportable {
+public class UTF8Character extends AbstractReportable {
 	/** Byte Order Mark (BOM). */
 	public static final int BOM = 0xFEFF;
-
-	/** Encoded byte places. */
-	public static final String[] PLACE = { "2nd", "3rd", "4th" };
 
 	/** Marker that the character code point is uninitialized or unknown. */
 	public static final int UNINITIALIZED = -1;
@@ -166,9 +163,11 @@ public class UTF8Character implements Reportable {
 		} else if ((0x80 <= b[0] && b[0] <= 0xC1)
 				|| (0xF5 <= b[0] && b[0] <= 0xFF)) {
 			this.isValid = Validity.False;
+			Object[]messageArgs = new Object[]{0, input.getPosition(), b[0]};
 			this.invalidByteValueMessages.add(new Message(Severity.ERROR,
-					Context.OBJECT, "Invalid first byte value at offset "
-							+ input.getPosition() + ": " + b[0]));
+					Context.OBJECT,
+					"org.jhove2.module.format.utf8.UTF8Character.invalidByteValueMessages",
+					messageArgs));
 		}
 
 		/* Read the remaining bytes. */
@@ -183,10 +182,11 @@ public class UTF8Character implements Reportable {
 			if ((i == 2 && ((this.size == 3 && ((b[0] == 0xE0 && (0x0A > b[i] || b[i] > 0xBF)) || (b[0] == 0xED && (0x80 > b[i] || b[i] > 0x9F)))) || (this.size == 4 && ((b[0] == 0xF0 && (0x90 > b[i] || b[i] > 0xBF)) || (b[0] == 0xF4 && (0x80 > b[i] || b[i] > 0x8F))))))
 					|| (0x80 > b[i] || b[i] > 0xBF)) {
 				this.isValid = Validity.False;
+				Object[]messageArgs = new Object[]{i, input.getPosition(), b[i]};
 				this.invalidByteValueMessages.add(new Message(Severity.ERROR,
-						Context.OBJECT, "Invalid " + PLACE[i - 1] + " byte "
-								+ "value at offset " + input.getPosition()
-								+ ": " + b[i]));
+						Context.OBJECT, 
+						"org.jhove2.module.format.utf8.UTF8Character.invalidByteValueMessages",
+						messageArgs));
 			}
 		}
 
@@ -217,10 +217,11 @@ public class UTF8Character implements Reportable {
 				|| (0xD7FF < this.codePoint && this.codePoint < 0xE000)
 				|| this.codePoint > 0x10FFFF) {
 			this.isValid = Validity.False;
+			Object[] messageArgs = new Object[]{(input.getPosition() - consumed), this.codePoint};
 			this.codePointOutOfRangeMessage = new Message(Severity.ERROR,
-					Context.OBJECT, "Code point out of range at offset "
-							+ (input.getPosition() - consumed) + ": "
-							+ this.codePoint);
+					Context.OBJECT, 
+					"org.jhove2.module.format.utf8.UTF8Character.codePointOutOfRangeMessage",
+					messageArgs);
 		}
 
 		/* Check if code point is a non-character [Unicode, D14] */

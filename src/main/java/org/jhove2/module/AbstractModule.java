@@ -36,30 +36,52 @@
 
 package org.jhove2.module;
 
-import org.jhove2.core.Duration;
-import org.jhove2.core.AbstractProduct;
-import org.jhove2.core.I8R;
-import org.jhove2.core.Product;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.jhove2.core.Agent;
+import org.jhove2.core.WrappedProductInfo;
+import org.jhove2.core.TimerInfo;
+import org.jhove2.core.AbstractReportable;
 
 /**
  * An abstract JHOVE2 module, a {@link org.jhove2.core.AbstractProduct} that
  * reports its elapsed processing time.
  * 
- * @author mstrong, slabrams
+ * @author mstrong, slabrams, smorrissey
  */
-public abstract class AbstractModule extends AbstractProduct implements Module {
-	/** Module elapsed end time. */
-	protected long endTime;
+public abstract class AbstractModule extends AbstractReportable
+implements Module 
+ {
 
-	/** Module elapsed start time. */
-	protected long startTime;
+	/** Product developers. */
+	protected List<Agent> developers;
 
+	/** Product name, based on the simple class name. */
+	protected String name;
+
+	/** Product informative note. */
+	protected String note;
+
+	/** Product release date in ISO 8601 form: "YYYY-MM-DD". */
+	protected String releaseDate;
+
+	/** Product rights statement. */
+	protected String rights;
+
+	/** Product version identifier in three-part form: "M.N.P". */
+	protected String version;
 	/**
 	 * Module wrapped product. This field should be defined if the module does
 	 * not directly perform its own processing, but rather invokes an external
 	 * tool.
 	 */
-	protected Product wrappedProduct;
+	protected WrappedProductInfo wrappedProduct;
+	/**
+	 * Timer info  used to track elapsed time for running of this module
+	 */
+	protected TimerInfo timerInfo;
+	
 
 	/**
 	 * Instantiate a new <code>AbstractModule</code>.
@@ -71,29 +93,96 @@ public abstract class AbstractModule extends AbstractProduct implements Module {
 	 * @param rights
 	 *            Module rights statement
 	 */
-	public AbstractModule(String version, String release, String rights) {
-		super(version, release, rights);
-
-		this.startTime = System.currentTimeMillis();
-		this.endTime = Duration.UNINITIALIZED;
+	public AbstractModule(String version, String release, String rights) {	
+		super();
+		this.version = version;
+		this.releaseDate = release;
+		this.rights = rights;
+		this.developers = new ArrayList<Agent>();		
+		this.timerInfo = new TimerInfo();
+		this.name = this.getClass().getSimpleName();
 	}
 
 	/**
-	 * Get elapsed time, in milliseconds. The reported time will never be less
-	 * than 1 milliscond.
+	 * Get product developers.
 	 * 
-	 * @return Elapsed time, in milliseconds
-	 * @see org.jhove2.core.Temporal#getElapsedTime()
+	 * @return Product developers
 	 */
 	@Override
-	public Duration getElapsedTime() {
-		if (this.endTime == Duration.UNINITIALIZED) {
-			this.endTime = System.currentTimeMillis();
-		}
-
-		return new Duration(this.endTime - this.startTime);
+	public List<Agent> getDevelopers() {
+		return this.developers;
 	}
 
+	/**
+	 * Get product informative note.
+	 * 
+	 * @return Product informative note
+	 */
+	@Override
+	public String getNote() {
+		return this.note;
+	}
+
+	/**
+	 * Get product release date.
+	 * 
+	 * @return Product release date
+	 */
+	@Override
+	public String getReleaseDate() {
+		return this.releaseDate;
+	}
+
+	/**
+	 * Get product rights statement.
+	 * 
+	 * @return Product rights statement
+	 */
+	@Override
+	public String getRightsStatement() {
+		return this.rights;
+	}
+
+	/**
+	 * Get product version.
+	 * 
+	 * @return Product version
+	 */
+	@Override
+	public String getVersion() {
+		return this.version;
+	}
+
+	/**
+	 * Add product developer.
+	 * 
+	 * @param developer
+	 *            Product developer
+	 */
+	public void addDeveloper(Agent developer) {
+		this.developers.add(developer);
+	}
+
+	/**
+	 * Add product developers.
+	 * 
+	 * @param developers
+	 *            Product developers
+	 */
+	public void setDevelopers(List<Agent> developers) {
+		this.developers.addAll(developers);
+	}
+
+	/**
+	 * Set product informative note.
+	 * 
+	 * @param note
+	 *            Product informative note
+	 */
+	public void setNote(String note) {
+		this.note = note;
+	}
+	
 	/**
 	 * Get wrapped {@link org.jhove2.core.AbstractProduct}.
 	 * 
@@ -101,57 +190,21 @@ public abstract class AbstractModule extends AbstractProduct implements Module {
 	 * @see org.jhove2.module.Module#getWrappedProduct()
 	 */
 	@Override
-	public Product getWrappedProduct() {
+	public WrappedProductInfo getWrappedProduct() {
 		return this.wrappedProduct;
 	}
-
-	/**
-	 * Set the end time of the elapsed duration.
-	 * 
-	 * @return End time, in millieconds
-	 * @see org.jhove2.core.Temporal#setEndTime()
-	 */
-	@Override
-	public long setEndTime() {
-		return this.endTime = System.currentTimeMillis();
-	}
-
-	/**
-	 * Set the restart time of the elapsed duration. All subsequent time (until
-	 * the next abstractApplication of the setEndTime() method) will be added to
-	 * the time already accounted for by an earlier abstractApplication of the
-	 * setEndTime() method.
-	 * 
-	 * @return Current time minus the elapsed time, in milliseconds
-	 * @see org.jhove2.core.Temporal#setRestartTime()
-	 */
-	public long setRestartTime() {
-		if (this.endTime == Duration.UNINITIALIZED) {
-			return this.startTime = System.currentTimeMillis();
-		}
-		return this.startTime = System.currentTimeMillis() - this.endTime
-				+ this.startTime;
-	}
-
-	/**
-	 * Set the start time of the elapsed duration.
-	 * 
-	 * @return Start time, in milliseconds
-	 * @see org.jhove2.core.Temporal#setStartTime()
-	 */
-	@Override
-	public long setStartTime() {
-		return this.startTime = System.currentTimeMillis();
-	}
-
 	/**
 	 * Set wrapped product.
 	 * 
 	 * @param product
 	 *            Wrapped product
 	 */
-	public void setWrappedProduct(Product product) {
+	public void setWrappedProduct(WrappedProductInfo product) {
 		this.wrappedProduct = product;
 	}
 	
+	@Override
+	public TimerInfo getTimerInfo() {
+		return timerInfo;
+	}
 }

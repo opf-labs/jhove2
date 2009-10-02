@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ConfigFile xmlns="http://www.nationalarchives.gov.uk/pronom/ConfigFile">
+  <SigFile>C:\portico\jhove2\svn-repository\prototype\jhove2\trunk\src\main\resources\droid\DROID_SignatureFile_V20.xml</SigFile>
+  <SigFileVersion>20</SigFileVersion>
+  <SigFileURL>http://www.nationalarchives.gov.uk/pronom/SignatureFile/proSignatureFileProvider.asp</SigFileURL>
+  <ProxyHost />
+  <ProxyPort />
+  <PuidResolution>http://www.nationalarchives.gov.uk/PRONOM/</PuidResolution>
+  <BrowserPath>C:\Program Files\Mozilla Firefox</BrowserPath>
+  <SigFileCheckFreq>30</SigFileCheckFreq>
+  <DateLastDownload>2008-11-28T10:26:13</DateLastDownload>
+  <ProfileDatabasePath>C:\</ProfileDatabasePath>
+  <ProfileReportPath>C:</ProfileReportPath>
+  <ReportTemporaryDir>C:\tmp</ReportTemporaryDir>
+  <StartMode>Profiling</StartMode>
+  <PauseFrequency>0</PauseFrequency>
+  <PauseLength>0</PauseLength>
+</ConfigFile>
+

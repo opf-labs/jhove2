@@ -1,10 +1,11 @@
 JHOVE2 -- Next-generation architecture for format-aware characterization
 
-JHOVE2 is a collaborative project of the California Digital Library, Portico, and Stanford University.  The goals of the project are: 
+JHOVE2 is a collaborative project of the California Digital Library, Portico, and Stanford University.  
+The goals of the project are: 
 
     * To refactor the existing JHOVE architecture and API in order to:
           o Rectify known inefficiencies and idiosyncrasies of design and implementation
-          o Simplify the process of integrating JHOVE2 technologyinto other systems, services, and workflows
+          o Simplify the process of integrating JHOVE2 technology into other systems, services, and workflows
           o Encourage third-party extensions to the baseline JHOVE2 functionality
 
     * To support enhancements to existing JHOVE functionality, including:
@@ -17,7 +18,11 @@ JHOVE2 is a collaborative project of the California Digital Library, Portico, an
     * To develop JHOVE2 modules supporting a number of important preservation-related processes
       Digital preservation is the set of intentions, strategies, and activities aimed at ensuring the continuing 
       usability of digital objects over time. However, since digital objects rely on explicit technological mediation 
-      in order to be useful, they are inherently fragile with respect to technological change. Over any significant time period, a gap inevitably arises in the ability of a digital object to function in contemporaneous technological contexts. Put most simply, digital preservation is concerned with effectively managing the consequences of this gap, which is achievable only to the extent to which the gap is quantifiable. The necessary quantification comes, in part, from characterization.
+      in order to be useful, they are inherently fragile with respect to technological change. Over any significant 
+      time period, a gap inevitably arises in the ability of a digital object to function in contemporaneous 
+      technological contexts. Put most simply, digital preservation is concerned with effectively managing the 
+      consequences of this gap, which is achievable only to the extent to which the gap is quantifiable. 
+      The necessary quantification comes, in part, from characterization.
       Characterization exposes the significant properties of a digital object and provides a stable starting point 
       for iterative preservation planning and action. The JHOVE2 project defines characterization in terms of four aspects:
 
@@ -37,7 +42,10 @@ JHOVE2 is a collaborative project of the California Digital Library, Portico, an
     * Feature extraction. Feature extraction is the process of reporting the intrinsic properties of a digital 
       object significant to preservation planning and action. These features can function in many contexts as a 
       surrogate for the object itself for purposes of evaluation and decision making. Note that since digital 
-      preservation is concerned with planning for future activities, potentially in response to unforeseeable circumstances, predicting which properties will one day be significant can be problematic. Prudence therefore suggests reporting the most inclusive set of properties possible, while providing sufficiently fine granularity of control to allow for appropriate localized configuration.
+      preservation is concerned with planning for future activities, potentially in response to unforeseeable 
+      circumstances, predicting which properties will one day be significant can be problematic. 
+      Prudence therefore suggests reporting the most inclusive set of properties possible, 
+      while providing sufficiently fine granularity of control to allow for appropriate localized configuration.
 
     * Assessment. Assessment is the process of determining the level of acceptability of a digital object for a 
       specific use on the basis of locally-defined policies. Assessments can be used to select appropriate 

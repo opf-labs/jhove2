@@ -43,10 +43,10 @@ import org.jhove2.annotation.ReportableProperty;
 /**
  * JHOVE2 installation properties.
  * 
- * @author mstrong, slabrams
+ * @author mstrong, slabrams, smorrissey
  */
 public class Installation
-	implements Reportable
+extends AbstractReportable
 {
 	/** Platform architecture. */
 	protected String architecture;

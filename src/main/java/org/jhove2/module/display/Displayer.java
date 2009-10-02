@@ -36,17 +36,73 @@
 
 package org.jhove2.module.display;
 
+import java.io.FileNotFoundException;
 import java.io.PrintStream;
+import java.text.SimpleDateFormat;
 
+import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.I8R;
+import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.Reportable;
 import org.jhove2.module.Module;
 
 /**
  * Interface for JHOVE2 displayer modules.
  * 
- * @author mstrong, slabrams
+ * @author mstrong, slabrams, smorrissey
  */
 public interface Displayer extends Module {
+	
+	/** ISO 8601 date/time format. */
+	public static final SimpleDateFormat ISO8601 = new SimpleDateFormat(
+			"yyyy-MM-ss'T'hh:mm:ssZ");
+	
+	/** Default show identifiers flag: don't show identifiers. */
+	public static final boolean DEFAULT_SHOW_IDENTIFIERS = false;
+	
+	/** Default {@link org.jhove2.module.display.Displayer}. */
+	public static final String DEFAULT_DISPLAYER_TYPE = "Text";
+
+	/** Default {@link org.jhove2.module.display.Displayer}. */
+	public static final String DEFAULT_DISPLAYER_CLASS = "org.jhove2.module.display.TextDisplayer";
+
+	/**
+	 * Display {@link org.jhove2.core.Reportable} to the standard output stream.
+	 * 
+	 * @param reportable
+	 *            Reportable
+	 * @throws FileNotFoundException
+	 *             Can't create output file
+	 * @throws JHOVE2Exception
+	 *             Can't instantiate displayer
+	 */
+	public void display(Reportable reportable) throws FileNotFoundException,
+			JHOVE2Exception;
+	/**
+	 * 
+	 * @param reportable
+	 *            Reportable
+	 * @param outputFilePath
+	 * 			path for output file
+	 * @throws FileNotFoundException
+	 *             Can't create output file
+	 * @throws JHOVE2Exception
+	 *             Can't instantiate displayer
+	 */
+	public void display(Reportable reportable, String outputFilePath)throws FileNotFoundException,
+	JHOVE2Exception;
+	/**
+	 * Display {@link org.jhove2.core.Reportable}.
+	 * 
+	 * @param reportable
+	 *            Reportable
+	 * @param out
+	 *            Print stream
+	 * @throws JHOVE2Exception
+	 *             Can't instantiate displayer
+	 */
+	public void display(Reportable reportable, PrintStream out)
+			throws JHOVE2Exception;
 	/**
 	 * Start display.
 	 * 
@@ -75,6 +131,8 @@ public interface Displayer extends Module {
 	public void startReportable(PrintStream out, int level, String name,
 			I8R identifier, int order);
 
+	public void startReportable(PrintStream out, int level, String name,
+			I8R identifier, int order, I8R typeIdentifier) ;
 	/**
 	 * Start display of a property collection.
 	 * 
@@ -163,6 +221,8 @@ public interface Displayer extends Module {
 	 * @return Show identifier flag; if true, show identifiers in non-XML
 	 *         display modes
 	 */
+	@ReportableProperty(order = 6, value = "Displayer show identifiers flag; "
+		+ "if true, show identifiers in non-XML display modes.")
 	public boolean getShowIdentifiers();
 
 	/**
@@ -172,4 +232,21 @@ public interface Displayer extends Module {
 	 *            If true, show identifiers in non-XML display modes
 	 */
 	public void setShowIdentifiers(boolean flag);
+	
+	/**
+	 * @return the outputFilePath
+	 */
+	@ReportableProperty(order = 7, value = "Displayer out file path ")
+	public String getOutputFilePath();
+
+	/**
+	 * @param outputFilePath the outputFilePath to set
+	 */
+	public void setOutputFilePath(String outputFilePath);
+	
+	@ReportableProperty(order = 6, value = "Displayer indent output flag "
+		+ "if true, indent output.")
+	public boolean getShouldIndent();
+	
+	public void setShouldIndent(boolean shouldIndent);
 }

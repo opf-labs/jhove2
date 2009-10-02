@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:util="http://www.springframework.org/schema/util"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans 
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-2.5.xsd
+		   http://www.springframework.org/schema/util 
+		   http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+    
+    <bean id="messageSource" 
+          class="org.springframework.context.support.ResourceBundleMessageSource">
+          <property name="basename">
+          <!--  base name for localized message template properties files -->
+          	<value>messages</value>
+          </property>
+    </bean>
+
+	
+	<bean id="ASCIIProfilenonBasicLatinMessage" class="java.lang.String" >
+	<constructor-arg type="java.lang.String" 
+	        value="Non-Basic Latin coded blocks: "/>
+	</bean>
+	
+	<bean id="ASCIIProfilenonBasicLatinMessageparm" class="java.lang.String" >
+	<constructor-arg type="java.lang.String" 
+	        value="ASCIIProfilenonBasicLatinMessageparm Some text here"/>
+	</bean>
+	
+	<bean id="UTF8ModuleFailFastMessage" class="java.lang.String" >
+	<constructor-arg type="java.lang.String" 
+	        value="Fail fast limit exceeded; additional errors may exist but will not be reported"/>
+	</bean>
+
+	<bean id="FeatureExtractorCommandmoduleNotFoundMessage" class="java.lang.String" >
+	<constructor-arg type="java.lang.String" 
+	        value="No module name found for Identifier "/>
+	</bean>
+	
+	<bean id="FeatureExtractorCommandmoduleNotFoundMessageParam" class="java.lang.String">
+	<constructor-arg type="java.lang.String" 
+	        value="info:/some.ficitious.id"/>
+	</bean>
+	
+	<bean id="FeatureExtractorCommandmoduleNotFormatModuleMessagePRE" class="java.lang.String">
+	<constructor-arg type="java.lang.String" 
+	        value="Module returned for Identifier "/>
+	</bean>
+		<bean id="FeatureExtractorCommandmoduleNotFormatModuleMessagePOST" class="java.lang.String">
+	<constructor-arg type="java.lang.String" 
+	        value=" is not a format module"/>
+	</bean>
+
+	<bean id="UTF8CharacterinvalidByteValueMessages01" class="java.lang.String">
+	<constructor-arg type="java.lang.String" 
+	        value="Invalid byte value for byte number "/>
+	</bean>
+		<bean id="UTF8CharacterinvalidByteValueMessages02" class="java.lang.String">
+	<constructor-arg type="java.lang.String" 
+	        value=" at offset "/>
+	</bean>	
+	<bean id="UTF8CharacterinvalidByteValueMessages03" class="java.lang.String">
+	<constructor-arg type="java.lang.String" 
+	        value=" : "/>
+	</bean>	
+	
+<!--	-->
+<!--		<bean id="" class="java.lang.String">-->
+<!--	<constructor-arg type="java.lang.String" -->
+<!--	        value=""/>-->
+<!--	</bean>-->
+<!--		<bean id="" class="java.lang.String">-->
+<!--	<constructor-arg type="java.lang.String" -->
+<!--	        value=""/>-->
+<!--	</bean>-->
+<!--	-->
+<!--		<bean id="" class="java.lang.String">-->
+<!--	<constructor-arg type="java.lang.String" -->
+<!--	        value=""/>-->
+<!--	</bean>-->
+<!--		<bean id="" class="java.lang.String">-->
+<!--	<constructor-arg type="java.lang.String" -->
+<!--	        value=""/>-->
+<!--	</bean>-->
+<!--	-->
+<!--		<bean id="" class="java.lang.String">-->
+<!--	<constructor-arg type="java.lang.String" -->
+<!--	        value=""/>-->
+<!--	</bean>-->
+<!--		<bean id="" class="java.lang.String">-->
+<!--	<constructor-arg type="java.lang.String" -->
+<!--	        value=""/>-->
+<!--	</bean>-->
+<!--	-->
+<!--		<bean id="" class="java.lang.String">-->
+<!--	<constructor-arg type="java.lang.String" -->
+<!--	        value=""/>-->
+<!--	</bean>-->
+<!--		<bean id="" class="java.lang.String">-->
+<!--	<constructor-arg type="java.lang.String" -->
+<!--	        value=""/>-->
+<!--	</bean>-->
+<!--	-->
+<!--		<bean id="" class="java.lang.String">-->
+<!--	<constructor-arg type="java.lang.String" -->
+<!--	        value=""/>-->
+<!--	</bean>-->
+<!--		<bean id="" class="java.lang.String">-->
+<!--	<constructor-arg type="java.lang.String" -->
+<!--	        value=""/>-->
+<!--	</bean>-->
+<!--	-->
+<!--		<bean id="" class="java.lang.String">-->
+<!--	<constructor-arg type="java.lang.String" -->
+<!--	        value=""/>-->
+<!--	</bean>-->
+<!--		<bean id="" class="java.lang.String">-->
+<!--	<constructor-arg type="java.lang.String" -->
+<!--	        value=""/>-->
+<!--	</bean>-->
+<!--	-->
+<!--		<bean id="" class="java.lang.String">-->
+<!--	<constructor-arg type="java.lang.String" -->
+<!--	        value=""/>-->
+<!--	</bean>-->
+<!--		<bean id="" class="java.lang.String">-->
+<!--	<constructor-arg type="java.lang.String" -->
+<!--	        value=""/>-->
+<!--	</bean>-->
+<!--	-->
+<!--		<bean id="" class="java.lang.String">-->
+<!--	<constructor-arg type="java.lang.String" -->
+<!--	        value=""/>-->
+<!--	</bean>-->
+<!--		<bean id="" class="java.lang.String">-->
+<!--	<constructor-arg type="java.lang.String" -->
+<!--	        value=""/>-->
+<!--	</bean>	-->
+	
+	
+	
+	
+	
+	
+	
+</beans>

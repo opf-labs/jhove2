@@ -36,18 +36,21 @@
 
 package org.jhove2.core.config;
 
+import java.util.Locale;
 import java.util.Properties;
 
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Reportable;
+
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+
 /**
  * Spring configuration utility.
  * 
- * @author mstrong, slabrams
+ * @author mstrong, slabrams, smorrissey
  */
 public class Configure {
 	/** Spring configuration classpath. */
@@ -135,5 +138,27 @@ public class Configure {
 		}
 
 		return props;
+	}
+	/**
+	 * Resolves message code to localized message text
+	 * @param messageCode  Key to message template in properties file
+	 * @param messageArgs Arguments for message template
+	 * @param locale  Locale to be used in constructing message text
+	 * @return String containing formatted localized message text
+	 * @throws JHOVE2Exception
+	 */
+	public static synchronized String getLocalizedMessageText(String messageCode, 
+			Object[] messageArgs, Locale locale) throws JHOVE2Exception{
+		String messageText = null;
+		try {
+			if (context == null) {
+				context = new ClassPathXmlApplicationContext(CLASSPATH);
+			}
+			messageText = context.getMessage(messageCode, messageArgs, locale);
+		} catch (BeansException e) {
+			throw new JHOVE2Exception("Can't retrieve localized message for messageCode " +
+					messageCode, e);
+		}
+		return messageText;
 	}
 }
