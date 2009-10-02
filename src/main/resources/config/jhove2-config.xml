@@ -745,10 +745,11 @@
     <!--    NOTE  BEAN MUST HAVE id "messageSource" -->
     <bean id="messageSource" 
           class="org.springframework.context.support.ResourceBundleMessageSource">
-          <property name="basename">
-          <!--  base name for localized message template properties files -->
-          	<value>messages</value>
+          <property name="basename" >
+ <!--             base name for localized message template properties files -->
+          	<value>properties.messages</value>
           </property>
     </bean>
+
     
 </beans>
