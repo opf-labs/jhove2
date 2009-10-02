@@ -69,9 +69,9 @@ public class I8R implements Comparable<I8R> {
 	 * infix.
 	 */
 	public static final String JHOVE2_REPORTABLE_INFIX = "reportable";
-	
-	/** Fully qualified class for a JHOVE2 message */
-	public static final String MESSAGE_CLASS_NAME = "org.jhove2.core.Message";
+
+
+	protected static String messageClassName = null;
 
 	/** IdentifierModule types, or namespaces. */
 	public enum Namespace {
@@ -299,20 +299,27 @@ public class I8R implements Comparable<I8R> {
 	 * @throws ClassNotFoundException 
 	 */
 	public static synchronized boolean isMessage(Type type) 
-		throws ClassNotFoundException {
-		boolean isMessage = type.getClass().equals(getMessageClass());
+	throws ClassNotFoundException {
+		boolean isMessage = false;
+		String tname = type.toString();
+		if (tname != null){
+			int i = tname.lastIndexOf("<");
+			if (i>0){
+				tname = tname.substring(i+1);
+				int j = tname.indexOf(">");
+				tname = tname.substring(0, j);
+			}
+			String messageCn = getMessageClassName();
+			isMessage = tname.endsWith(messageCn);
+		}
 		return isMessage;
 	}
 
-	/**
-	 * Get the Class for JHOVE2 Message
-	 * @return Class for JHOVE2 Message
-	 * @throws ClassNotFoundException
-	 */
-	public static Class<?> getMessageClass() throws ClassNotFoundException {
-		if (messageClass==null){
-			messageClass = Class.forName(MESSAGE_CLASS_NAME);
+
+	protected static String getMessageClassName() throws ClassNotFoundException{
+		if (messageClassName==null){
+			messageClassName = Message.class.getName();
 		}
-		return messageClass;
+		return messageClassName;
 	}
 }
