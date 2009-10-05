@@ -47,20 +47,20 @@ public interface Reportable {
 	 * 
 	 * @return
 	 */
-	public I8R getJhove2Identifier();
+	public I8R getReportableIdentifier();
 	
 	/**
 	 * Get object's simple name (may be configure by user)
 	 * 
 	 * @return String containing object name
 	 */
-	public String getName();
+	public String getReportableName();
 	
 	/**
 	 * Set the object's simple name 
 	 * @param name
 	 */
-	public void setName(String name);
+	public void setReportableName(String name);
 	
 }
 

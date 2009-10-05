@@ -45,7 +45,7 @@ import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.source.DirectorySource;
 import org.jhove2.core.source.Source;
-import org.jhove2.module.format.BaseFormatModuleCommand;
+import org.jhove2.module.format.BaseFormatModule;
 
 /**
  * JHOVE2 file system directory module.
@@ -53,7 +53,7 @@ import org.jhove2.module.format.BaseFormatModuleCommand;
  * @author mstrong, slabrams
  */
 public class DirectoryModule
-	extends BaseFormatModuleCommand
+	extends BaseFormatModule
 
 {
 	/** Directory module version identifier. */

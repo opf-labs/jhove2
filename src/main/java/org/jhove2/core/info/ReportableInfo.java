@@ -87,8 +87,8 @@ public class ReportableInfo {
 			this.packageName = this.qName;
 		}	
 		// get the type identifier for the Reportable object
-		this.identifier = reportable.getJhove2Identifier();
-		this.name = reportable.getName();
+		this.identifier = reportable.getReportableIdentifier();
+		this.name = reportable.getReportableName();
 		this.properties = new ArrayList<ReportableSourceInfo>();
 		Map<String, String> idMap = new HashMap<String, String>();
 		ReportablePropertyComparator comparator = new ReportablePropertyComparator();

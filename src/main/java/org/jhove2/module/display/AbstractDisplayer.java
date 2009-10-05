@@ -261,7 +261,7 @@ Displayer {
 			}
 		} else if (value instanceof Reportable) {
 			this.startReportable(out, level + 1, name, identifier,
-					order, ((Reportable)value).getJhove2Identifier());
+					order, ((Reportable)value).getReportableIdentifier());
 			display(out, (Reportable) value, level + 2, 0, false);
 			this.endReportable(out, level + 1, name, identifier);
 		} else {

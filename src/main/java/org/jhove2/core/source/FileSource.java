@@ -189,10 +189,10 @@ public class FileSource extends AbstractSource implements NamedSource {
 	 * Get file name.
 	 * 
 	 * @return File name
-	 * @see org.jhove2.core.source.NamedSource#getName()
+	 * @see org.jhove2.core.source.NamedSource#getReportableName()
 	 */
 	@Override
-	public String getName() {
+	public String getReportableName() {
 		return this.name;
 	}
 

@@ -45,7 +45,7 @@ import org.jhove2.core.Format;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.source.Source;
-import org.jhove2.module.format.BaseFormatModuleCommand;
+import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.module.format.Validator;
 
 import org.xml.sax.*;
@@ -58,7 +58,7 @@ import org.xml.sax.helpers.*;
  * @author rnanders
  */
 public class XmlModule 
-	extends BaseFormatModuleCommand
+	extends BaseFormatModule
 	implements Validator {
 
 	/** Module version identifier. */

@@ -52,7 +52,7 @@ import org.jhove2.core.io.Input;
 import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.ZipFileSource;
-import org.jhove2.module.format.BaseFormatModuleCommand;
+import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.module.format.Validator;
 import org.jhove2.module.format.Validator.Coverage;
 import org.jhove2.module.format.utf8.unicode.C0Control;
@@ -67,7 +67,7 @@ import org.jhove2.module.format.utf8.unicode.Unicode.EOL;
  * @author mstrong, slabrams
  */
 public class UTF8Module
-	extends BaseFormatModuleCommand
+	extends BaseFormatModule
 	implements Validator
 {
 	/** UTF-8 module version identifier. */

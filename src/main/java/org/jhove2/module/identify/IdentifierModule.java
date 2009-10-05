@@ -113,12 +113,12 @@ implements Identifier {
 				|| source instanceof ZipDirectorySource) {
 			FormatIdentification id = new FormatIdentification(
 					new I8R("info:jhove2/format/directory"),
-					Confidence.PositiveSpecific, this.getJhove2Identifier());
+					Confidence.PositiveSpecific, this.getReportableIdentifier());
 			presumptiveFormatIds.add(id);
 		} else if (source instanceof FileSetSource) {
 			FormatIdentification id = new FormatIdentification(
 					new I8R("info:jhove2/format/file-set"),
-					Confidence.PositiveSpecific, this.getJhove2Identifier());
+					Confidence.PositiveSpecific, this.getReportableIdentifier());
 			presumptiveFormatIds.add(id);
 		} else {
 			/* Identify file source unit. */						

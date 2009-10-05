@@ -383,7 +383,7 @@ implements Source, Comparable<Source> {
 		}
 		//same class?
 		AbstractSource absObj = (AbstractSource) obj;
-		if(!(this.getJhove2Identifier().equals(absObj.getJhove2Identifier()))){
+		if(!(this.getReportableIdentifier().equals(absObj.getReportableIdentifier()))){
 			return false;
 		}
 		File thisFile = this.getFile();
@@ -450,7 +450,7 @@ implements Source, Comparable<Source> {
 		//same class?
 		AbstractSource absObj = (AbstractSource) src;
 		int idCompare = 
-			this.getJhove2Identifier().compareTo(absObj.getJhove2Identifier());
+			this.getReportableIdentifier().compareTo(absObj.getReportableIdentifier());
 	    if (idCompare != 0){
 	    	return idCompare;
 	    }

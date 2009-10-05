@@ -57,7 +57,7 @@ public class AbstractReportable implements Reportable {
 	 * @see org.jhove2.core.Reportable#getJhove2Identifier()
 	 */
 	@Override
-	public I8R getJhove2Identifier() {
+	public I8R getReportableIdentifier() {
 		if (myI8R == null){
 			myI8R = I8R.makeReportableTypeI8R(this);
 		}
@@ -70,7 +70,7 @@ public class AbstractReportable implements Reportable {
 	@Override
 	@ReportableProperty(order = 2, value = "Object name (can be configured by user) "
 		+ "simple name.")
-	public String getName(){
+	public String getReportableName(){
 		if (this.name==null) {
 			this.name = this.getClass().getSimpleName();
 		}
@@ -82,7 +82,7 @@ public class AbstractReportable implements Reportable {
 	 * @param name
 	 */
 	@Override
-	public void setName(String name){
+	public void setReportableName(String name){
 		this.name = name;
 	}
 	

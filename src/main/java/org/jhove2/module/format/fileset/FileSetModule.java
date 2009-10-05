@@ -45,7 +45,7 @@ import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.source.FileSetSource;
 import org.jhove2.core.source.Source;
-import org.jhove2.module.format.BaseFormatModuleCommand;
+import org.jhove2.module.format.BaseFormatModule;
 
 /**
  * JHOVE2 file set module. A file set is a set of unrelated files.
@@ -53,7 +53,7 @@ import org.jhove2.module.format.BaseFormatModuleCommand;
  * @author mstrong, slabrams
  */
 public class FileSetModule
-	extends BaseFormatModuleCommand
+	extends BaseFormatModule
 
 {
 	/** Pseudo-directory module version identifier. */

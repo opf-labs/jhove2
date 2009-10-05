@@ -47,7 +47,7 @@ import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.NamedSource;
 import org.jhove2.core.source.Source;
-import org.jhove2.module.format.BaseFormatModuleCommand;
+import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.module.format.Validator;
 import org.jhove2.module.format.Validator.Coverage;
 
@@ -57,7 +57,7 @@ import org.jhove2.module.format.Validator.Coverage;
  * @author mstrong, slabrams
  */
 public class ShapefileModule
-	extends BaseFormatModuleCommand
+	extends BaseFormatModule
 	implements  Validator
 {
 	/** Shapefile module version identifier. */
@@ -117,7 +117,7 @@ public class ShapefileModule
 
 			List<Source> sources = source.getChildSources();
 			for (Source src : sources) {
-				this.prefix = ((NamedSource) src).getName();
+				this.prefix = ((NamedSource) src).getReportableName();
 				int in = this.prefix.indexOf('.');
 				if (in > -1) {
 					this.prefix = this.prefix.substring(0, in);

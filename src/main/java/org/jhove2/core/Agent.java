@@ -137,7 +137,7 @@ public class Agent extends AbstractReportable {
 	 * @return Agent name
 	 */
 	@ReportableProperty(order = 1, value = "Agent name.")
-	public String getName() {
+	public String getReportableName() {
 		return this.name;
 	}
 

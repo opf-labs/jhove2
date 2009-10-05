@@ -57,7 +57,7 @@ import org.jhove2.module.AbstractModule;
  * 
  * @author mstrong, slabrams, smorrissey
  */
-public class BaseFormatModuleCommand
+public class BaseFormatModule
 	extends AbstractModule
 	implements FormatModule
 {
@@ -92,7 +92,7 @@ public class BaseFormatModuleCommand
 	/**
 	 * Constructor
 	 */
-	public BaseFormatModuleCommand(){
+	public BaseFormatModule(){
 		this(VERSION, RELEASE, RIGHTS, null);
 	}
 
@@ -108,7 +108,7 @@ public class BaseFormatModuleCommand
 	 * @param format
 	 *            Format module format
 	 */
-	public BaseFormatModuleCommand(String version, String release, String rights,
+	public BaseFormatModule(String version, String release, String rights,
 			Format format) {
 		super(version, release, rights);
 		this.format   = format;

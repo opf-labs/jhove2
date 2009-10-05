@@ -111,10 +111,10 @@ public class ZipDirectorySource extends AbstractSource implements
 	 * Get Zip directory name.
 	 * 
 	 * @return Zip directory name
-	 * @see org.jhove2.core.source.NamedSource#getName()
+	 * @see org.jhove2.core.source.NamedSource#getReportableName()
 	 */
 	@Override
-	public String getName() {
+	public String getReportableName() {
 		return this.name;
 	}
 
@@ -192,8 +192,8 @@ public class ZipDirectorySource extends AbstractSource implements
 			return 0;
 		}
 		if (!(source instanceof ZipDirectorySource)){
-			int compareSource = this.getJhove2Identifier().
-				compareTo(source.getJhove2Identifier());
+			int compareSource = this.getReportableIdentifier().
+				compareTo(source.getReportableIdentifier());
 			return compareSource;
 		}
 		ZipDirectorySource zObj = (ZipDirectorySource)source;

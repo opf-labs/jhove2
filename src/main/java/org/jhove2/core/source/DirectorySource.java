@@ -106,10 +106,10 @@ public class DirectorySource extends AbstractSource implements AggregateSource,
 	 * Get directory name.
 	 * 
 	 * @return Directory name
-	 * @see org.jhove2.core.source.NamedSource#getName()
+	 * @see org.jhove2.core.source.NamedSource#getReportableName()
 	 */
 	@Override
-	public String getName() {
+	public String getReportableName() {
 		return this.name;
 	}
 

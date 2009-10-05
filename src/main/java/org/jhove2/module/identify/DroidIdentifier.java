@@ -245,7 +245,7 @@ public class DroidIdentifier extends AbstractModule implements Identifier {
 						jhoveId = new I8R(jhoveFormatId);
 					}
 					FormatIdentification fi = new FormatIdentification(jhoveId, jhoveConfidence,
-							this.getJhove2Identifier(), droidId, idMessages);
+							this.getReportableIdentifier(), droidId, idMessages);
 					presumptiveFormatIds.add(fi);					
 				}
 			}

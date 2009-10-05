@@ -155,10 +155,10 @@ public class ZipFileSource extends AbstractSource implements NamedSource {
 	 * Get Zip file name.
 	 * 
 	 * @return Zip file name
-	 * @see org.jhove2.core.source.NamedSource#getName()
+	 * @see org.jhove2.core.source.NamedSource#getReportableName()
 	 */
 	@Override
-	public String getName() {
+	public String getReportableName() {
 		return this.name;
 	}
 
@@ -259,8 +259,8 @@ public class ZipFileSource extends AbstractSource implements NamedSource {
 			return 0;
 		}
 		if (!(source instanceof ZipFileSource)){
-			int compareSource = this.getJhove2Identifier().
-				compareTo(source.getJhove2Identifier());
+			int compareSource = this.getReportableIdentifier().
+				compareTo(source.getReportableIdentifier());
 			return compareSource;
 		}
 		ZipFileSource zObj = (ZipFileSource)source;

@@ -268,7 +268,7 @@ public class GlobPathRecognizer extends AbstractModule implements
 		ClumpSource clumpSource = null;
 		if (fileGroup.getMustHaveCount() >= this.minMustHavesToIdentify){
 			fi = new FormatIdentification(this.formatIdentifier, GLOB_PATH_CONFIDENCE, 
-					this.getJhove2Identifier());
+					this.getReportableIdentifier());
 			clumpSource = new ClumpSource();
 			clumpSource.addPresumptiveFormatIdentification(fi);
 			for (GlobPathMatchInfo sourceInfo:fileGroup.getSourceMatchInfoList()){

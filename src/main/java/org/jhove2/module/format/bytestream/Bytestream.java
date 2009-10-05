@@ -43,7 +43,7 @@ import org.jhove2.core.Format;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.source.Source;
-import org.jhove2.module.format.BaseFormatModuleCommand;
+import org.jhove2.module.format.BaseFormatModule;
 
 /**
  * THIS is a placeholder for the bytestream module
@@ -51,7 +51,7 @@ import org.jhove2.module.format.BaseFormatModuleCommand;
  * @author mstrong, slabrams, smmorrissey
  */
 public class Bytestream
-	extends BaseFormatModuleCommand
+	extends BaseFormatModule
 
 {
 	/** Bytestream module version identifier. */

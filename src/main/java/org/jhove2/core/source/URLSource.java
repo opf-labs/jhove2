@@ -140,8 +140,8 @@ public class URLSource extends AbstractSource {
 			return 0;
 		}
 		if (!(source instanceof URLSource)){
-			int compareSource = this.getJhove2Identifier().
-				compareTo(source.getJhove2Identifier());
+			int compareSource = this.getReportableIdentifier().
+				compareTo(source.getReportableIdentifier());
 			return compareSource;
 		}
 		URLSource uObj = (URLSource)source;

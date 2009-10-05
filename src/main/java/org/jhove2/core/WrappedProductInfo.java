@@ -127,7 +127,7 @@ public class WrappedProductInfo extends AbstractReportable {
 	 */
 	@ReportableProperty(order = 1, value = "Product name, based on the class "
 		+ "simple name.")
-	public String getName() {
+	public String getReportableName() {
 		return this.name;
 	}
 
@@ -225,7 +225,7 @@ public class WrappedProductInfo extends AbstractReportable {
 		this.productConstraints = productConstraints;
 	}
 
-	public void setName(String name) {
+	public void setReportableName(String name) {
 		this.name = name;
 	}
 

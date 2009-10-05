@@ -139,7 +139,7 @@ implements JHOVE2Command {
 			Format format = jhoveFormats.get(id);			
 			Module module = this.getModuleFromIdentifier(id);
 			if (module == null){
-				BaseFormatModuleCommand bFormatModule = new BaseFormatModuleCommand();
+				BaseFormatModule bFormatModule = new BaseFormatModule();
 				String[]parms = new String[]{id.getValue()};
 				bFormatModule.setModuleNotFoundMessage(
 						new Message(Severity.ERROR,
@@ -150,7 +150,7 @@ implements JHOVE2Command {
 				source.addModule(bFormatModule);
 			}
 			else if (!(module instanceof FormatModule)){
-				BaseFormatModuleCommand bFormatModule = new BaseFormatModuleCommand();
+				BaseFormatModule bFormatModule = new BaseFormatModule();
 				String[]parms = new String[]{id.getValue()};
 				bFormatModule.setModuleNotFormatModuleMessage(
 						new Message(Severity.ERROR,
@@ -165,8 +165,8 @@ implements JHOVE2Command {
 				if (formatModule.getFormat()==null){
 					formatModule.setFormat(format);
 				}
-				if (!visitedModules.contains(formatModule.getJhove2Identifier())){
-					visitedModules.add(formatModule.getJhove2Identifier());
+				if (!visitedModules.contains(formatModule.getReportableIdentifier())){
+					visitedModules.add(formatModule.getReportableIdentifier());
 					formatModule.execute(source, jhove2);
 				}// end if we have not already run this module
 			}// end if this is a non-null instance of a FormatModule

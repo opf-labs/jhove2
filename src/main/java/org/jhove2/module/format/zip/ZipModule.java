@@ -51,7 +51,7 @@ import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
-import org.jhove2.module.format.BaseFormatModuleCommand;
+import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.module.format.Validator.Coverage;
 
 /**
@@ -60,7 +60,7 @@ import org.jhove2.module.format.Validator.Coverage;
  * @author mstrong, slabrams
  */
 public class ZipModule
-	extends BaseFormatModuleCommand
+	extends BaseFormatModule
 
 {
 	/** Zip module version identifier. */
