@@ -125,7 +125,7 @@ public class BaseFormatModule
 	 * @see org.jhove2.core.JHOVE2Command#execute(org.jhove2.core.source.Source, org.jhove2.core.JHOVE2)
 	 */
 	@Override
-	public void execute(Source source, JHOVE2 jhove2)
+	public void execute(JHOVE2 jhove2, Source source)
 	   throws JHOVE2Exception {
 		source.addModule(this);
 		this.getTimerInfo().setStartTime();

@@ -60,6 +60,6 @@ public interface JHOVE2Command extends Module {
 	 * @param jhove2 JHOVE2 application framework for configuration information and callback
 	 * @throws JHOVE2Exception
 	 */
-	public void execute(Source source, JHOVE2 jhove2)
+	public void execute(JHOVE2 jhove2, Source source)
 	   throws JHOVE2Exception;
 }

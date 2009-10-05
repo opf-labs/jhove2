@@ -59,7 +59,7 @@ public class IdentifierCommand extends AbstractModule implements JHOVE2Command {
 	 * @see org.jhove2.module.identify.Identifier#identify(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
 	 */
 	@Override
-	public void execute(Source source, JHOVE2 jhove2) throws JHOVE2Exception {	
+	public void execute(JHOVE2 jhove2, Source source) throws JHOVE2Exception {	
 		source.addModule(this);
 		try {		
 			Identifier identifier = 

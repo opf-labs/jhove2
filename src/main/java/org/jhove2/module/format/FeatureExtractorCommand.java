@@ -113,7 +113,7 @@ implements JHOVE2Command {
 	 * @see org.jhove2.core.JHOVE2Command#execute(org.jhove2.core.source.Source, org.jhove2.core.JHOVE2)
 	 */
 	@Override
-	public void execute(Source source, JHOVE2 jhove2) throws JHOVE2Exception {
+	public void execute(JHOVE2 jhove2, Source source) throws JHOVE2Exception {
 		source.addModule(this);
 		// Sometimes more than one format identification will match to the same 
 		// JHOVE2 format; eliminate duplicates from list of JHOVE2 format modules
@@ -167,7 +167,7 @@ implements JHOVE2Command {
 				}
 				if (!visitedModules.contains(formatModule.getReportableIdentifier())){
 					visitedModules.add(formatModule.getReportableIdentifier());
-					formatModule.execute(source, jhove2);
+					formatModule.execute(jhove2, source);
 				}// end if we have not already run this module
 			}// end if this is a non-null instance of a FormatModule
 		}// end for each JHOVE2 format

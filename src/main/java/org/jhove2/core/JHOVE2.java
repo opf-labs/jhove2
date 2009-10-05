@@ -113,7 +113,7 @@ extends AbstractModule
 		this.sourceCounter.incrementSourceCounter(source);				
 		try {
 			for (JHOVE2Command command:this.commands){
-				command.execute(source, this);
+				command.execute(this, source);
 			}
 		} finally {
 			source.close();
