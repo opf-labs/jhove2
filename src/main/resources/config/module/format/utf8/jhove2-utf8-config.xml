@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:util="http://www.springframework.org/schema/util"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans 
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-2.5.xsd
+		   http://www.springframework.org/schema/util 
+		   http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+	
+	  
+  	<!-- ASCII profile bean -->
+	<bean id="ASCIIProfile" class="org.jhove2.module.format.utf8.ascii.ASCIIProfile"
+	      scope="prototype">
+	    <constructor-arg ref="ASCIIFormat"/>
+	    <property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- ASCII format bean -->
+	<bean id="ASCIIFormat" class="org.jhove2.core.Format" scope="singleton">
+		<constructor-arg type="java.lang.String" value="ASCII"/>
+		<constructor-arg ref="ASCIIIdentifier"/>
+		<constructor-arg type="org.jhove2.core.Format$Type" value="Format"/>
+		<constructor-arg type="org.jhove2.core.Format$Ambiguity" value="Unambiguous"/>
+		<property name="aliasIdentifiers">
+			<set value-type="org.jhove2.core.I8R">
+				<ref bean="ASCIIANSIX34"/>
+				<ref bean="ASCIICharset"/>
+				<ref bean="ASCIICharsetUS"/>
+				<ref bean="ASCIIECMA6"/>
+				<ref bean="ASCIIISO646"/>
+				<ref bean="ASCIIITUT50"/>
+				<ref bean="ASCIIMIMEType"/>
+				<ref bean="ASCIIRFC1345"/>
+			</set>
+		</property>
+	</bean>		
+	<!-- ASCII identifier bean -->  
+	<bean id="ASCIIIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="info:jhove2/format/ascii"/>
+	</bean>
+	<!-- ASCII ANSI X3.4-1968 bean  -->
+	<bean id="ASCIIANSIX34" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="ANSI X3.4-1968"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="ANSI"/>
+	</bean>
+	<!-- ASCII Charset bean  -->
+	<bean id="ASCIICharset" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="ASCII"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="Charset"/>
+	</bean>
+	<!-- ASCII Charset bean  -->
+	<bean id="ASCIICharsetUS" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="US-ASCII"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="Charset"/>
+	</bean>
+	<!-- ASCII ECMA-6 -->
+	<bean id="ASCIIECMA6" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="ECMA-6"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="ECMA"/>
+	</bean>
+	<!-- ASCII ISO 646 -->
+	<bean id="ASCIIISO646" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="ISO/IEC 646:1991"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="ISO"/>
+	</bean>
+	<!-- ASCII ITU-T T.50 -->
+	<bean id="ASCIIITUT50" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="ITU-T T.50"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="ITU"/>
+	</bean>
+	<!-- ASCII MIME type bean -->
+	<bean id="ASCIIMIMEType" class="org.jhove2.core.I8R" scope="singleton">
+	    <constructor-arg type="java.lang.String" value="text/plain; charset=&quot;US-ASCII&quot;"/>
+	    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="MIME"/>
+	</bean>	
+	<!--  ASCII RFC 1345 bean -->
+	<bean id="ASCIIRFC1345" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="RFC 1345"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="RFC"/>
+	</bean>
+
+
+	<!-- UTF-8 format bean -->
+	<bean id="UTF8Format" class="org.jhove2.core.Format" scope="singleton">
+		<constructor-arg type="java.lang.String" value="UTF-8"/>
+		<constructor-arg ref="UTF8Identifier"/>
+		<constructor-arg type="org.jhove2.core.Format$Type" value="Family"/>
+		<constructor-arg type="org.jhove2.core.Format$Ambiguity" value="Unambiguous"/>
+		<property name="aliasIdentifiers">
+			<set value-type="org.jhove2.core.I8R">
+				<ref bean="UTF8Charset"/>
+				<ref bean="UTF8MIMEType"/>
+				<ref bean="UTF8RFC3629"/>
+				<ref bean="UTF8UTI"/>
+			</set>
+		</property>
+		<property name="aliasNames">
+			<set>
+				<value>UCS Transformation Format, 8 bit</value>
+				<value>Unicode Transformation Format, 8 bit</value>
+			</set>
+		</property>
+		<property name="specifications">
+			<list value-type="org.jhove2.core.Document">
+				<ref bean="UnicodeSpecification"/>
+				<ref bean="ISO10646Standard"/>
+				<ref bean="RFC3629RFC"/>
+			</list>
+		</property>
+	</bean>
+	<!-- UTF-8 identifier bean -->  
+	<bean id="UTF8Identifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="info:jhove2/format/utf-8"/>
+	</bean>
+	<!-- UTF-8 charset bean -->  
+	<bean id="UTF8Charset" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="UTF-8"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="Charset"/>
+	</bean>
+	<!-- UTF-8 MIME type bean -->
+	<bean id="UTF8MIMEType" class="org.jhove2.core.I8R" scope="singleton">
+	    <constructor-arg type="java.lang.String" value="text/plain; charset=&quot;UTF-8&quot;"/>
+	    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="MIME"/>
+	</bean>
+	<!--  UTF-8 RFC 3629 bean -->
+	<bean id="UTF8RFC3629" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="RFC 3629"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="RFC"/>
+	</bean>
+	<!-- UTF-8 UTI bean -->
+	<bean id="UTF8UTI" class="org.jhove2.core.I8R" scope="singleton">
+	    <constructor-arg type="java.lang.String" value="public.utf8-plain-text"/>
+	    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="UTI"/>
+	</bean>	
+	<!-- Unicode specification bean -->
+	<bean id="UnicodeSpecification" class="org.jhove2.core.Document" scope="singleton">
+		<constructor-arg type="java.lang.String" value="Unicode 5.0 Standard – Electronic edition"/>
+		<constructor-arg type="org.jhove2.core.Document$Type" value="Specification"/>
+		<constructor-arg type="org.jhove2.core.Document$Intention" value="Authoritative"/>
+		<property name="author" value="Unicode Consortium"/>
+		<property name="date" value="2007"/>
+		<property name="edition" value="Version 5.1.0"/>
+		<property name="identifier" ref="UnicodeSpecificationURI"/>
+		<property name="publisher" value="Addison-Wesley"/>
+	</bean>	
+	<!-- Unicode specification URI bean -->
+	<bean id="UnicodeSpecificationURI" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="http://www.unicode.org/versions/Unicode5.1.0/"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="URI"/>
+	</bean>	
+	<!-- ISO 10646 standard bean -->
+	<bean id="ISO10646Standard" class="org.jhove2.core.Document" scope="singleton">
+		<constructor-arg type="java.lang.String" value="Information technology – Universal Multiple-Octet Coded Character Set (UCS)"/>
+		<constructor-arg type="org.jhove2.core.Document$Type" value="Standard"/>
+		<constructor-arg type="org.jhove2.core.Document$Intention" value="Informative"/>
+		<property name="date" value="2003"/>
+		<property name="identifier" ref="ISO10646"/>
+		<property name="publisher" value="ISO"/>
+	</bean>	
+	<!-- ISO 10646 identifier bean -->
+	<bean id="ISO10646" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="ISO 10646:2003"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="ISO"/>
+	</bean>		
+	<!-- RFC 3629 bean -->
+	<bean id="RFC3629RFC" class="org.jhove2.core.Document" scope="singleton">
+		<constructor-arg type="java.lang.String" value="UTF-8, a transformation format of ISO 10646"/>
+		<constructor-arg type="org.jhove2.core.Document$Type" value="Other"/>
+		<constructor-arg type="org.jhove2.core.Document$Intention" value="Informative"/>
+		<property name="author" value="F. Yergeau"/>
+		<property name="date" value="November 2003"/>
+		<property name="identifiers">
+			<list value-type="org.jhove2.core.I8R">
+				<ref bean="RFC3629"/>
+				<ref bean="RFC3629URL"/>
+			</list>
+		</property>
+		<property name="publisher" value="IETF"/>
+	</bean>	
+	<!-- RFC 3629 identifier bean -->
+	<bean id="RFC3629" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="RFC 3629"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="RFC"/>
+	</bean>		
+	<!-- RFC 3629 URL bean -->
+	<bean id="RFC3629URL" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="http://www.ietf.org/rfc/rfc3629.txt"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="URL"/>
+	</bean>
+	
+		
+	<!-- UTF-8 module bean -->
+	<bean id="UTF8Module" class="org.jhove2.module.format.utf8.UTF8Module"
+	      scope="prototype">
+	    <constructor-arg ref="UTF8Format"/>
+	    <property name="profile" ref="ASCIIProfile"/>
+	     <property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+			</list>
+		</property>
+	</bean>
+	
+	
+	
+	<!-- C0 Control properties bean -->
+	<util:properties id="C0Control"	
+		             location="classpath:properties/unicode/c0control.properties"/>
+	
+	<!-- C1 Control properties bean -->
+	<util:properties id="C1Control"	
+		             location="classpath:properties/unicode/c1control.properties"/>
+
+	<!-- Codeblock properties bean -->
+	<util:properties id="CodeBlock"	
+		             location="classpath:properties/unicode/codeblock.properties"/>
+		
+	
+	   
+</beans>		   

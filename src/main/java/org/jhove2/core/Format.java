@@ -171,7 +171,7 @@ public class Format extends AbstractReportable implements Comparable<Format> {
 	 * @return Format canonical name
 	 */
 	@ReportableProperty(order = 1, value = "Format canonical name.")
-	public String getFileName() {
+	public String getName() {
 		return this.name;
 	}
 

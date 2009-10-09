@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:util="http://www.springframework.org/schema/util"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans 
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-2.5.xsd
+		   http://www.springframework.org/schema/util 
+		   http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+	
+	
+	<!-- Bytestream format bean -->
+	<bean id="BytestreamFormat" class="org.jhove2.core.Format" scope="singleton">
+		<constructor-arg type="java.lang.String" value="Bytestream"/>
+		<constructor-arg ref="BytestreamIdentifier"/>
+		<constructor-arg type="org.jhove2.core.Format$Type" value="Format"/>
+		<constructor-arg type="org.jhove2.core.Format$Ambiguity" value="Unambiguous"/>
+		<property name="aliasIdentifiers" ref="BytestreamMIMEType"/>
+		<property name="note" value="A Bytestream is a JHOVE2-defined format representing arbitrary data."/>
+	</bean>		
+	<!-- Bytestream identifier bean -->  
+	<bean id="BytestreamIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="info:jhove2/format/bytestream"/>
+	</bean>
+	<!-- Bytestream MIME type bean -->
+	<bean id="BytestreamMIMEType" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="application/octet-stream"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="MIME"/>
+	</bean>
+	
+	
+	<!--  BytestreamModule -->
+	<bean id="BytestreamModule" class="org.jhove2.module.format.bytestream.Bytestream" 
+		scope="prototype">
+		<constructor-arg ref="BytestreamFormat"/>
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+				<ref bean="PorticoAgent"/>
+				<ref bean="StanfordAgent"/>
+			</list>
+		</property>
+	</bean>
+	   			   
+</beans>		   
