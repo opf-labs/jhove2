@@ -111,10 +111,10 @@ public class ZipDirectorySource extends AbstractSource implements
 	 * Get Zip directory name.
 	 * 
 	 * @return Zip directory name
-	 * @see org.jhove2.core.source.NamedSource#getReportableName()
+	 * @see org.jhove2.core.source.NamedSource#getFileName()
 	 */
 	@Override
-	public String getReportableName() {
+	public String getFileName() {
 		return this.name;
 	}
 

@@ -61,6 +61,7 @@ public interface Reportable {
 	 * @param name
 	 */
 	public void setReportableName(String name);
+
 	
 }
 

@@ -79,6 +79,7 @@ public class ShapefileModule
 
 	/** File prefix shared by the Shapefile main, index, and dBASE files. */
 	protected String prefix;
+	;
 
 	/**
 	 * Instantiate a new <code>ShapefileModule</code>.
@@ -88,7 +89,6 @@ public class ShapefileModule
 	 */
 	public ShapefileModule(Format format) {
 		super(VERSION, RELEASE, RIGHTS, format);
-
 		this.isValid = Validity.Undetermined;
 	}
 
@@ -117,7 +117,7 @@ public class ShapefileModule
 
 			List<Source> sources = source.getChildSources();
 			for (Source src : sources) {
-				this.prefix = ((NamedSource) src).getReportableName();
+				this.prefix = ((NamedSource) src).getFileName();
 				int in = this.prefix.indexOf('.');
 				if (in > -1) {
 					this.prefix = this.prefix.substring(0, in);

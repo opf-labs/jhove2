@@ -48,12 +48,12 @@ import java.lang.annotation.Target;
  * named, typed value. Properties have two names: a short descriptive name, not
  * necessarily unique; and a formal name guaranteed unique. The descriptive name
  * is implied by the accessor method that returns it. For example, the method
- * <code>String getName()</code> defines a scalar string-valued property named
+ * <code>String getReportableName()</code> defines a scalar string-valued property named
  * "Name". the formal name is an identifier in JHOVE2 namespace based on the
  * name of the {@link org.jhove2.core.Reportable} containing the property
  * concatenated with the property's descriptive name.
  * 
- * @author mstrong, slabrams
+ * @author mstrong, slabrams, smorrissey
  */
 @Documented
 @Inherited

@@ -127,7 +127,7 @@ public class WrappedProductInfo extends AbstractReportable {
 	 */
 	@ReportableProperty(order = 1, value = "Product name, based on the class "
 		+ "simple name.")
-	public String getReportableName() {
+	public String getFileName() {
 		return this.name;
 	}
 

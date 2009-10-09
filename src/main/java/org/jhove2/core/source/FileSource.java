@@ -68,7 +68,7 @@ public class FileSource extends AbstractSource implements NamedSource {
 	protected Date lastModified;
 
 	/** File name. */
-	protected String name;
+	protected String fileName;
 
 	/** File path name. */
 	protected String path;
@@ -102,7 +102,7 @@ public class FileSource extends AbstractSource implements NamedSource {
 	public FileSource(File file) throws FileNotFoundException, IOException {
 		super(file);
 
-		this.name = file.getName();
+		this.fileName = file.getName();
 		try {
 			this.path = file.getCanonicalPath();
 		} catch (IOException e) {
@@ -189,11 +189,12 @@ public class FileSource extends AbstractSource implements NamedSource {
 	 * Get file name.
 	 * 
 	 * @return File name
-	 * @see org.jhove2.core.source.NamedSource#getReportableName()
+	 * @see org.jhove2.core.source.NamedSource#getFileName()
 	 */
 	@Override
-	public String getReportableName() {
-		return this.name;
+	@ReportableProperty(order = 1, value = "File name.")
+	public String getFileName() {
+		return this.fileName;
 	}
 
 	/**
@@ -233,7 +234,7 @@ public class FileSource extends AbstractSource implements NamedSource {
 	 * 
 	 * @return File size, in bytes
 	 */
-	@ReportableProperty(order = 3, value = "File size, in bytes.")
+	@ReportableProperty(order = 3, value = "File size, in bytes.", unitOfMeasure = "bytes")
 	public long getSize() {
 		return this.size;
 	}

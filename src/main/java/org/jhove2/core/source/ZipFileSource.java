@@ -155,10 +155,10 @@ public class ZipFileSource extends AbstractSource implements NamedSource {
 	 * Get Zip file name.
 	 * 
 	 * @return Zip file name
-	 * @see org.jhove2.core.source.NamedSource#getReportableName()
+	 * @see org.jhove2.core.source.NamedSource#getFileName()
 	 */
 	@Override
-	public String getReportableName() {
+	public String getFileName() {
 		return this.name;
 	}
 
@@ -177,7 +177,7 @@ public class ZipFileSource extends AbstractSource implements NamedSource {
 	 * 
 	 * @return Zip file size, in bytes
 	 */
-	@ReportableProperty(order = 3, value = "Zip file size, in bytes.")
+	@ReportableProperty(order = 3, value = "Zip file size, in bytes.", unitOfMeasure = "bytes")
 	public long getSize() {
 		return this.size;
 	}

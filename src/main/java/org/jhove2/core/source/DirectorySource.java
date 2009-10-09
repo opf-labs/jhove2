@@ -56,7 +56,7 @@ public class DirectorySource extends AbstractSource implements AggregateSource,
 	protected boolean isReadable;
 
 	/** Directory name. */
-	protected String name;
+	protected String directoryName;
 
 	/** Directory path. */
 	protected String path;
@@ -85,7 +85,7 @@ public class DirectorySource extends AbstractSource implements AggregateSource,
 	public DirectorySource(File file) throws FileNotFoundException, IOException {
 		super(file);
 
-		this.name = file.getName();
+		this.directoryName = file.getName();
 		try {
 			this.path = file.getCanonicalPath();
 		} catch (IOException e) {
@@ -106,11 +106,11 @@ public class DirectorySource extends AbstractSource implements AggregateSource,
 	 * Get directory name.
 	 * 
 	 * @return Directory name
-	 * @see org.jhove2.core.source.NamedSource#getReportableName()
+	 * @see org.jhove2.core.source.NamedSource#getFileName()
 	 */
 	@Override
-	public String getReportableName() {
-		return this.name;
+	public String getFileName() {
+		return this.directoryName;
 	}
 
 	/**

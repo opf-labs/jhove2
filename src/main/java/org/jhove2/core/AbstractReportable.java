@@ -46,12 +46,12 @@ import org.jhove2.annotation.ReportableProperty;
  * @author smorrissey
  *
  */
-public class AbstractReportable implements Reportable {
+public abstract class AbstractReportable implements Reportable {
     /** Object's unique JHOVE2 identifier  cannot be set by user */
 	protected I8R myI8R = null;
 	
 	/** Object's simple name;  may be configure by user */
-	protected String name = null;
+	protected String reportableName = null;
 	
 	/* (non-Javadoc)
 	 * @see org.jhove2.core.Reportable#getJhove2Identifier()
@@ -71,10 +71,10 @@ public class AbstractReportable implements Reportable {
 	@ReportableProperty(order = 2, value = "Object name (can be configured by user) "
 		+ "simple name.")
 	public String getReportableName(){
-		if (this.name==null) {
-			this.name = this.getClass().getSimpleName();
+		if (this.reportableName==null) {
+			this.reportableName = this.getClass().getSimpleName();
 		}
-		return name;
+		return reportableName;
 	}
 	
 	/**
@@ -83,7 +83,7 @@ public class AbstractReportable implements Reportable {
 	 */
 	@Override
 	public void setReportableName(String name){
-		this.name = name;
+		this.reportableName = name;
 	}
 	
 }

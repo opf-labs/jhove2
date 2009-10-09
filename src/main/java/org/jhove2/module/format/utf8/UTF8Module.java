@@ -399,4 +399,5 @@ public class UTF8Module
 	public Validity isValid() {
 		return this.isValid;
 	}
+
 }

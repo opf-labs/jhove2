@@ -38,6 +38,7 @@ package org.jhove2.module.display;
 
 import java.io.PrintStream;
 
+import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.I8R;
 
 /**
@@ -69,6 +70,8 @@ public class XMLDisplayer extends AbstractDisplayer {
 	public static final String ATTTYPEID = "ftid";
 	/** I8R namespace for type of a Reportable. */
 	public static final String ATTTYPEIDNAMESPACE = "ftidns";	
+	/** unit of measure for value of element, where applicable */
+	public static final String ATTUNITOFMEASURE = "funit";
 	/** Root element. */
 	public static final String ELEROOT = "jhove2";
 	/** feature element. */
@@ -167,10 +170,12 @@ public class XMLDisplayer extends AbstractDisplayer {
 	 * @param order
 	 *            Ordinal position of this reportable with respect to enclosing
 	 *            {@link org.jhove2.core.Reportable} or collection
+	 * @param typeIdentifier 
+	 * 			  Reportable type identifier in the JHOVE2 namespace
 	 * @see org.jhove2.module.display.Displayer#startReportable(java.io.PrintStream,
-	 *      int, java.lang.String, org.jhove2.core.I8R, int)
+	 *      int, java.lang.String, org.jhove2.core.I8R, int, java.lang.String, org.jhove2.core.I8R)
 	 */
-
+	@Override
 	public void startReportable(PrintStream out, int level, String name,
 			I8R identifier, int order, I8R typeIdentifier) {
 		if (typeIdentifier != null){
@@ -235,15 +240,24 @@ public class XMLDisplayer extends AbstractDisplayer {
 	 *            Ordinal position of this reportable with respect to enclosing
 	 *            {@link org.jhove2.core.Reportable} or collection
 	 * @see org.jhove2.module.display.Displayer#displayProperty(java.io.PrintStream,
-	 *      int, java.lang.String, org.jhove2.core.I8R, java.lang.Object, int)
+	 *      int, java.lang.String, org.jhove2.core.I8R, java.lang.Object, int, java.lang.String)
 	 */
 	@Override
 	public void displayProperty(PrintStream out, int level, String name,
-			I8R identifier, Object value, int order) {
+			I8R identifier, Object value, int order, String unitOfMeasure) {
+		if (unitOfMeasure.equals(ReportableProperty.NOT_APPLICABLE)){
 		startTag(out, level, ELEFEATURE,
 				ATTNAME, name,
 				ATTIDENTIFIER, identifier.getValue(), 
 				ATTIDNAMESPACE,identifier.getNamespace().toString());
+		}
+		else {
+			startTag(out, level, ELEFEATURE,
+					ATTNAME, name,
+					ATTIDENTIFIER, identifier.getValue(), 
+					ATTIDNAMESPACE,identifier.getNamespace().toString(),
+					ATTUNITOFMEASURE,unitOfMeasure) ;
+		}
 		tag(out, level + 1, ELEVALUE, value.toString());
 		endTag(out, level, ELEFEATURE);
 	}
@@ -375,29 +389,6 @@ public class XMLDisplayer extends AbstractDisplayer {
 	}
 
 	/**
-	 * Display tag.
-	 * 
-	 * @param out
-	 *            Print stream
-	 * @param level
-	 *            Nesting level
-	 * @param name
-	 *            Tag name
-	 * @param content
-	 *            Tag content
-	 * @param attrs
-	 *            Tag attributes
-	 */
-	public void tag(PrintStream out, int level, String name, String content,
-			String... attrs) {
-		String indent = AbstractDisplayer.getIndent(level, 
-				this.getShouldIndent());
-		out.print(indent + "<" + this.prefix + ":" + name);
-		out.print(makeAttributes(attrs));
-		out.print(">" + escape(content) + "</" + this.prefix + ":" + name + ">" + this.getLineEnd());
-	}
-
-	/**
 	 * Display end tag.
 	 * 
 	 * @param out
@@ -411,18 +402,6 @@ public class XMLDisplayer extends AbstractDisplayer {
 		String indent = AbstractDisplayer.getIndent(level, 
 				this.getShouldIndent());
 		out.print(indent + "</" + this.prefix + ":" + name + ">" + this.getLineEnd());
-	}
-
-	public String makeAttributes(String...attrs){
-		StringBuffer sb = new StringBuffer();
-		for (int i = 0; i < attrs.length; i += 2) {
-			sb.append(" " );
-			sb.append(attrs[i]);
-			sb.append("=\"" );
-			sb.append(escapeAttr(attrs[i+1]));
-			sb.append("\"");
-		}
-		return sb.toString();
 	}
 
 	/**
@@ -492,7 +471,10 @@ public class XMLDisplayer extends AbstractDisplayer {
 		value = escape(value);
 		return value.replace("\"", "&quot;");
 	}
-
+	/**
+	 * Determines EOL character
+	 * @return "\n" if shouldIndent; else ""
+	 */
 	protected String getLineEnd(){
 		String lineEnd = this.getShouldIndent()? "\n" : "";
 		return lineEnd;

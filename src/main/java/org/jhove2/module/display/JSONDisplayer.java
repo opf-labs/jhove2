@@ -38,6 +38,7 @@ package org.jhove2.module.display;
 
 import java.io.PrintStream;
 
+import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.I8R;
 
 /**
@@ -107,7 +108,25 @@ public class JSONDisplayer extends AbstractDisplayer {
 		this.startReportable(out, level, name, identifier, order, null);
 	}
 
-
+	/**
+	 * Start display of a {@link org.jhove2.core.Reportable}.
+	 * 
+	 * @param out
+	 *            Print stream
+	 * @param level
+	 *            Nesting level
+	 * @param name
+	 *            Reportable name
+	 * @param identifier
+	 *            Reportable identifier in the JHOVE2 namespace
+	 * @param order
+	 *            Ordinal position of this reportable with respect to enclosing
+	 *            {@link org.jhove2.core.Reportable} or collection
+	 * @param typeIdentifier 
+	 * 			  Reportable type identifier in the JHOVE2 namespace
+	 * @see org.jhove2.module.display.Displayer#startReportable(java.io.PrintStream,
+	 *      int, java.lang.String, org.jhove2.core.I8R, int, java.lang.String, org.jhove2.core.I8R)
+	 */
 	@Override
 	public void startReportable(PrintStream out, int level, String name,
 			I8R identifier, int order, I8R typeIdentifier) {
@@ -130,20 +149,20 @@ public class JSONDisplayer extends AbstractDisplayer {
 						+ "\"" + "\n" + indent + ",");
 				if (this.getShowIdentifiers()){
 					buffer.append("\"identifier\": \"" + identifier
-					+ "\"" + "\n" + indent + ",");
+							+ "\"" + "\n" + indent + ",");
 				}
 				out.print(buffer);
 			}
 		}
 		else if (this.getShowIdentifiers())  {			 
-				buffer.append("\n" + indent + "  \"identifier\": \"" + identifier
-				+ "\"" + "\n" + indent + ",");				out.println(buffer);
-			 
+			buffer.append("\n" + indent + "  \"identifier\": \"" + identifier
+					+ "\"" + "\n" + indent + ",");				out.println(buffer);
+
 		}
 		else{
 			out.println(buffer);
 		}
-		
+
 	}
 
 	/**
@@ -202,11 +221,11 @@ public class JSONDisplayer extends AbstractDisplayer {
 	 *            Ordinal position of this reportable with respect to enclosing
 	 *            {@link org.jhove2.core.Reportable} or collection
 	 * @see org.jhove2.module.display.Displayer#displayProperty(java.io.PrintStream,
-	 *      int, java.lang.String, org.jhove2.core.I8R, java.lang.Object, int)
+	 *      int, java.lang.String, org.jhove2.core.I8R, java.lang.Object, int, java.lang.String)
 	 */
 	@Override
 	public void displayProperty(PrintStream out, int level, String name,
-			I8R identifier, Object value, int order) {
+			I8R identifier, Object value, int order, String unitOfMeasure) {
 		String indent = getIndent((this.getShowIdentifiers() ? 2 * level : level), 
 				this.getShouldIndent());
 		StringBuffer buffer = new StringBuffer(indent);
@@ -217,9 +236,25 @@ public class JSONDisplayer extends AbstractDisplayer {
 			buffer.append(",");
 		}
 		buffer.append("\"" + name + "\": ");
-		if (this.getShowIdentifiers()) {
-			buffer.append("{\n" + indent + "   \"identifier\": \"" + identifier
-					+ "\"" + "\n" + indent + "  ,\"value\": ");
+		boolean mustShowUnits = (!unitOfMeasure.equals(ReportableProperty.NOT_APPLICABLE));
+		boolean mustBracket = (this.getShowIdentifiers() || (mustShowUnits));
+		if (mustBracket){
+			if (this.getShowIdentifiers()) {
+				buffer.append("{\n" + indent + "   \"identifier\": \"" + identifier);
+//						+ "\"" + "\n" + indent + "  ,\"value\": ");
+				if (mustShowUnits){
+					// have to show units as well as value
+					buffer.append("\"" + "\n" + indent + "   ,\"unit of measure\": \"" + unitOfMeasure);
+				}	
+				buffer.append("\"" + "\n" + indent);
+			}
+			else {
+				// just show units and value, not the identifier
+				buffer.append("{\n" + indent + "   \"unit of measure\": \"" + unitOfMeasure);
+				buffer.append("\"" + "\n" + indent);
+			}
+			// now  show value
+			buffer.append("  ,\"value\": ");
 		}
 		if (value instanceof Number) {
 			buffer.append(value);
@@ -228,7 +263,8 @@ public class JSONDisplayer extends AbstractDisplayer {
 			buffer.append(escape(value.toString()));
 			buffer.append("\"");
 		}
-		if (this.getShowIdentifiers()) {
+//		if (this.getShowIdentifiers()) {
+		if (mustBracket) {
 			buffer.append("\n" + indent + " }");
 		}
 		out.println(buffer);

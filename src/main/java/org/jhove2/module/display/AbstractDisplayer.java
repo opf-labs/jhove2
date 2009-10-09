@@ -144,7 +144,21 @@ Displayer {
 			int order) throws JHOVE2Exception {
 		this.display(out, reportable, level, order, true);
 	}
-	
+	/**
+	 * Display a {@link org.jhove2.core.Reportable}.
+	 * 
+	 * @param out
+	 *            Print stream
+	 * @param reportable
+	 *            Reportable
+	 * @param level
+	 *            Nesting level
+	 * @param order
+	 *            Ordinal position of this reportable with respect to its
+	 *            enclosing reportable or collection
+	 * @param shouldNestReportable
+	 * 			boolean indicating new level of reportable hierarchy
+	 */
 	protected void display(PrintStream out, Reportable reportable, int level,
 			int order, boolean shouldNestReportable) throws JHOVE2Exception {
 		ReportableInfo reportableInfo = new ReportableInfo(reportable);
@@ -165,9 +179,9 @@ Displayer {
 					continue;
 				}
 				Method method = prop.getMethod();
-				String nm = method.getName();
-				if (nm.indexOf("get") == 0) {
-					nm = nm.substring(3);
+				String propertyName = method.getName();
+				if (propertyName.indexOf("get") == 0) {
+					propertyName = propertyName.substring(3);
 				}
 				try {
 					Object value = method.invoke(reportable);
@@ -191,7 +205,7 @@ Displayer {
 								}
 							}
 						}
-						display(out, level, nm, id, value, or++);
+						display(out, level, propertyName, id, value, or++, prop.getUnitOfMeasure());
 					}
 				} catch (IllegalArgumentException e) {
 					throw new JHOVE2Exception(
@@ -228,18 +242,18 @@ Displayer {
 	 *            enclosing reportable or collection
 	 */
 	protected void display(PrintStream out, int level, String name,
-			I8R identifier, Object value, int order) throws JHOVE2Exception {
+			I8R identifier, Object value, int order, String unitOfMeasure) throws JHOVE2Exception {
 		if (value instanceof List<?>) {
-			List<?> lst = (List<?>) value;
-			int size = lst.size();
+			List<?> valueList = (List<?>) value;
+			int size = valueList.size();
 			if (size > 0) {
 				this.startCollection(out, level + 1, name,
 						identifier, size, order);
-				String nm = singularName(name);
-				I8R id = singularIdentifier(identifier);
+				String singularName = I8R.singularName(name);
+				I8R id = I8R.singularIdentifier(identifier);
 				int i = 0;
-				for (Object prop : lst) {
-					this.display(out, level + 1, nm, id, prop, i++);
+				for (Object prop : valueList) {
+					this.display(out, level + 1, singularName, id, prop, i++, unitOfMeasure);
 				}
 				this.endCollection(out, level + 1, name, identifier,
 						size);
@@ -250,11 +264,11 @@ Displayer {
 			if (size > 0) {
 				this.startCollection(out, level + 1, name,
 						identifier, size, order);
-				String nm = singularName(name);
-				I8R id = singularIdentifier(identifier);
+				String singularName = I8R.singularName(name);
+				I8R id = I8R.singularIdentifier(identifier);
 				int i = 0;
 				for (Object prop : set) {
-					display(out, level + 1, nm, id, prop, i++);
+					display(out, level + 1, singularName, id, prop, i++, unitOfMeasure);
 				}
 				this.endCollection(out, level + 1, name, identifier,
 						size);
@@ -269,7 +283,7 @@ Displayer {
 				value = ISO8601.format(value);
 			}
 			this.displayProperty(out, level + 1, name, identifier,
-					value, order);
+					value, order, unitOfMeasure);
 		}
 	}
 
@@ -290,46 +304,6 @@ Displayer {
 		return indent.toString();
 	}
 
-
-	/**
-	 * Get the singular form of a plural property name.
-	 * 
-	 * @param name
-	 *            Property name
-	 * @return Singular form of a property name
-	 */
-	public static String singularName(String name) {
-		String singular = null;
-		int len = name.length();
-		if (name.substring(len - 3).equals("ies")) {
-			singular = name.substring(0, len - 3) + "y";
-		} else {
-			singular = name.substring(0, len - 1);
-		}
-
-		return singular;
-	}
-
-	/**
-	 * Get the singular form of a plural property identifier.
-	 * 
-	 * @param identifier
-	 *            Property identifier
-	 * @return Singular form of a property identifier
-	 */
-	public static I8R singularIdentifier(I8R identifier) {
-		I8R singular = null;
-		String value = identifier.getValue();
-		int in = value.lastIndexOf('/') + 1;
-		int len = value.length();
-		if (value.substring(len - 3).equals("ies")) {
-			singular = new I8R(value + "/" + value.substring(in, len - 3) + "y");
-		} else {
-			singular = new I8R(value + "/" + value.substring(in, len - 1));
-		}
-
-		return singular;
-	}
 
 	/**
 	 * Utility method to get user-specified restrictions on display visibility of Reportable properties

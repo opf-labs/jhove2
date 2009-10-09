@@ -345,7 +345,7 @@ public class UTF8Character extends AbstractReportable {
 	 * 
 	 * @return Encoded size, in bytes
 	 */
-	@ReportableProperty(order = 2, value = "Encoded size, in bytes.")
+	@ReportableProperty(order = 2, value = "Encoded size, in bytes.", unitOfMeasure = "bytes")
 	public int getSize() {
 		return this.size;
 	}

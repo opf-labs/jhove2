@@ -38,6 +38,7 @@ package org.jhove2.module.display;
 
 import java.io.PrintStream;
 
+import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.I8R;
 
 /**
@@ -102,7 +103,25 @@ public class TextDisplayer extends AbstractDisplayer {
 			I8R identifier, int order) {
 		this.startReportable(out, level, name, identifier, order, null);
 	}
-
+	/**
+	 * Start display of a {@link org.jhove2.core.Reportable}.
+	 * 
+	 * @param out
+	 *            Print stream
+	 * @param level
+	 *            Nesting level
+	 * @param name
+	 *            Reportable name
+	 * @param identifier
+	 *            Reportable identifier in the JHOVE2 namespace
+	 * @param order
+	 *            Ordinal position of this reportable with respect to enclosing
+	 *            {@link org.jhove2.core.Reportable} or collection
+	 * @param typeIdentifier 
+	 * 			  Reportable type identifier in the JHOVE2 namespace
+	 * @see org.jhove2.module.display.Displayer#startReportable(java.io.PrintStream,
+	 *      int, java.lang.String, org.jhove2.core.I8R, int, java.lang.String, org.jhove2.core.I8R)
+	 */
 	@Override
 	public void startReportable(PrintStream out, int level, String name,
 			I8R identifier, int order, I8R typeIdentifier) {
@@ -176,17 +195,23 @@ public class TextDisplayer extends AbstractDisplayer {
 	 *            Ordinal position of this reportable with respect to enclosing
 	 *            {@link org.jhove2.core.Reportable} or collection
 	 * @see org.jhove2.module.display.Displayer#displayProperty(java.io.PrintStream,
-	 *      int, java.lang.String, org.jhove2.core.I8R, java.lang.Object, int)
+	 *      int, java.lang.String, org.jhove2.core.I8R, java.lang.Object, int, java.lang.String)
 	 */
 	@Override
 	public void displayProperty(PrintStream out, int level, String name,
-			I8R identifier, Object value, int order) {
+			I8R identifier, Object value, int order, String unitOfMeasure) {
 		StringBuffer buffer = new StringBuffer(getIndent(level,this.getShouldIndent()));
 		buffer.append(name);
 		if (this.getShowIdentifiers()) {
 			buffer.append(" [" + identifier + "]");
 		}
-		buffer.append(": " + value);
+		if (unitOfMeasure.equals(ReportableProperty.NOT_APPLICABLE)){
+			buffer.append(": " + value);
+		}
+		else {
+			buffer.append(" [unit of measure: " + unitOfMeasure + "] ");
+			buffer.append(": " + value);
+		}
 		out.println(buffer);
 	}
 

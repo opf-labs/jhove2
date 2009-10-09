@@ -71,6 +71,7 @@ import org.jhove2.module.Module;
  */
 public abstract class AbstractSource extends AbstractReportable
 implements Source, Comparable<Source> {
+
 	/** Child source units. */
 	protected List<Source> children;
 
@@ -544,4 +545,5 @@ implements Source, Comparable<Source> {
 			this.addPresumptiveFormatIdentification(fi);
 		}
 	}
+
 }

@@ -241,6 +241,46 @@ public class I8R implements Comparable<I8R> {
 	}
 	
 	/**
+	 * Get the singular form of a plural property name.
+	 * 
+	 * @param name
+	 *            Property name
+	 * @return Singular form of a property name
+	 */
+	public static String singularName(String name) {
+		String singular = null;
+		int len = name.length();
+		if (name.substring(len - 3).equals("ies")) {
+			singular = name.substring(0, len - 3) + "y";
+		} else {
+			singular = name.substring(0, len - 1);
+		}
+	
+		return singular;
+	}
+
+	/**
+	 * Get the singular form of a plural property identifier.
+	 * 
+	 * @param identifier
+	 *            Property identifier
+	 * @return Singular form of a property identifier
+	 */
+	public static I8R singularIdentifier(I8R identifier) {
+		I8R singular = null;
+		String value = identifier.getValue();
+		int in = value.lastIndexOf('/') + 1;
+		int len = value.length();
+		if (value.substring(len - 3).equals("ies")) {
+			singular = new I8R(value + "/" + value.substring(in, len - 3) + "y");
+		} else {
+			singular = new I8R(value + "/" + value.substring(in, len - 1));
+		}
+	
+		return singular;
+	}
+
+	/**
 	 * Creates a JHOVE2 namespace identifier for a Reportable object
 	 * @param r Reportable object for which we want JHOVE2 namespace Identifier
 	 * @return I8R object containing JHOVE2 namespace identifier for a Reportable object

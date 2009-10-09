@@ -73,6 +73,13 @@ public class ReportablePropertyInfo {
 	 * <code>ref</code> argument.
 	 */
 	protected String reference;
+	/**
+	 * Property unit of measure, as defined by the
+	 * {@link org.jhove2.annotation.ReportableProperty} annotation
+	 * <code>ref</code> argument.
+	 */
+	protected String unitOfMeasure;
+
 
 	/**
 	 * Instantiate a new <code>ReportablePropertyInfo</code>.
@@ -87,14 +94,18 @@ public class ReportablePropertyInfo {
 	 * @param reference
 	 *            Property reference, as defined by the
 	 *            {@link org.jhove2.annotation.ReportableProperty} annotation
+	 * @param unitOfMeasure
+	 * 			Unit of measure for a property, as defined by the 
+	 * {@link org.jhove2.annotation.ReportableProperty} annotation
 	 */
 	public ReportablePropertyInfo(I8R identifier, Method method,
-			String description, String reference) {
+			String description, String reference, String unitOfMeasure){
 		this.identifier = identifier;
 		this.method = method;
 		this.genericType = method.getGenericReturnType();
 		this.description = description;
 		this.reference = reference;
+		this.unitOfMeasure = unitOfMeasure;
 	}
 
 	/**
@@ -151,5 +162,12 @@ public class ReportablePropertyInfo {
 			return null;
 		}
 		return this.reference;
+	}
+
+	/**
+	 * @return the unitOfMeasure
+	 */
+	public String getUnitOfMeasure() {
+		return unitOfMeasure;
 	}
 }
