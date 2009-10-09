@@ -35,6 +35,7 @@
  */
 package org.jhove2.module.identify;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Set;
@@ -58,61 +59,61 @@ import org.jhove2.module.AbstractModule;
  * @author smorrissey
  */
 public class GlobPathRecognizer extends AbstractModule implements
-	AggregateIdentifier {
+AggregateIdentifier {
 	/** Identification module version identifier. */
 	public static final String VERSION = "1.0.0";
-	
+
 	/** Identification module release date. */
 	public static final String RELEASE = "2009-08-21";
-	
+
 	/** Identification module rights statement. */
 	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California, "
 		+ "Ithaka Harbors, Inc., and The Board of Trustees of the Leland "
 		+ "Stanford Junior University. "
 		+ "Available under the terms of the BSD license.";
-	
+
 	public static final Confidence GLOB_PATH_CONFIDENCE = Confidence.Tentative;
-	
+
 	/** Format which this recognizer can detect*/
 	protected I8R formatIdentifier;
-	
+
 	/** String containing regular expression to group candidate files */
 	protected String fileGroupingExpr;
-	
+
 	/** String containing regular expression to identify required candidate files */
 	protected String mustHaveExpr;
-	
+
 	/** String containing regular expression to identify optional candidate files */
 	protected String mayHaveExpr;
-	
+
 	/** Capture group index in fileGroupingToken which captures the part of
 	 *  the file path which indicates related files */
 	protected int fileGroupingCaptureGroupIndex;
-	
+
 	/** Capture group index in fileGroupingToken which captures the part of
 	 *  the file path which we will be comparing for "must-have" files */
 	protected int mustHaveCaptureGroupIndex;
-	
+
 	/** Capture group index in fileGroupingToken which captures the part of
 	 *  the file path which we will be comparing for "may-have" files */
 	protected int mayHaveCaptureGroupIndex;
-	
+
 	/** Minimum number of files that must match the mustHaveExpr in order for 
 	 * a set of Sources to be considered an instance of an aggregate Format.  
 	 * Allows us to identify potentially defective instances of a format */
 	protected int minMustHavesToIdentify;
-	
+
 	/** Indicates whether or not to include in the Source that is part of the 
 	 *  FormatIdentification returned by this class any files which match the grouping expression, 
 	 *  but do not match either must mustHaveExpr or mayHaveExpr */
 	protected boolean includeUnmatchedFromGroup;
-	
+
 	/** Pattern compiled from the fileGroupingExpr */
 	protected Pattern fileGroupingPattern;
-	
+
 	/** Pattern constructed from mustHaveExpr */
 	protected Pattern mustHavePattern;
-	
+
 	/** Pattern constructed from mayHaveExpr */
 	protected Pattern mayHavePattern;
 
@@ -169,7 +170,7 @@ public class GlobPathRecognizer extends AbstractModule implements
 	public Set<ClumpSource> identify(JHOVE2 jhove2, Source source)
 	throws IOException, JHOVE2Exception {
 		Set<ClumpSource> clumpSources = 
-			 new TreeSet<ClumpSource>();
+			new TreeSet<ClumpSource>();
 		this.compilePatterns();
 		Collection<GlobPathMatchInfoGroup> sourceGroups = this.groupSources(source);
 		for (GlobPathMatchInfoGroup sourceGroup:sourceGroups){
@@ -197,60 +198,63 @@ public class GlobPathRecognizer extends AbstractModule implements
 		HashMap<String,  GlobPathMatchInfoGroup> groupMap = 
 			new HashMap<String, GlobPathMatchInfoGroup>();
 		for (Source childSource:source.getChildSources()){
-			String filePath = childSource.getFile().getPath();
-			// does the Source file path match the pattern that indicates a related file?
-			Matcher m = this.fileGroupingPattern.matcher(filePath);
-			if (m.matches()){
-				// might have more than one instance of a format in the Source, so
-				// we have to group related files together
-				// get the value of the capture group which is the key to a format instance
-				//  (group of files)
-				String groupString = m.group(this.fileGroupingCaptureGroupIndex);
-				// get the value of the capture group that indicates a file in the group
-				//   is one of the files required by the format definition
-				String mustHaveString = m.group(this.mustHaveCaptureGroupIndex);
-				// get the value of the capture group that indicates a file in the group
-				//   is one of the files considered optional by the format definition
-				String mayHaveString = m.group(this.mayHaveCaptureGroupIndex);
-				GlobPathMatchInfo fileInfo = new GlobPathMatchInfo(childSource);
-				boolean matchesMustHaves = false;
-				Matcher m2 = null;
-				if (this.mustHavePattern != null){
-					m2 = this.mustHavePattern.matcher(mustHaveString);
-				    matchesMustHaves = m2.matches();
-				}
-				fileInfo.setMustHave(matchesMustHaves);
-				boolean matchesMayHaves = false;
-				if (this.mayHavePattern != null){
-					m2 = this.mayHavePattern.matcher(mayHaveString);
-					matchesMayHaves = m2.matches();
-				}
-				fileInfo.setMayHave(matchesMayHaves);
-				GlobPathMatchInfoGroup infoGroup;
-				//is this the first occurrence of grouping key?
-				if (!(groupMap.containsKey(groupString))){
-					//if so, add grouping key and new GlobPathMatchInfoGroup to groupMaP
-					infoGroup = new GlobPathMatchInfoGroup();
-					infoGroup.setGroupKey(groupString);
-					groupMap.put(groupString, infoGroup);
-				}
-				else {
-					// otherwise just retrieve 
-					infoGroup = groupMap.get(groupString);
-				}
-				// add information about current Source to list associated with this grouping key 
-				infoGroup.getSourceMatchInfoList().add(fileInfo);
-				// increment counter information associated with this grouping key
-				if (matchesMustHaves){
-					infoGroup.setMustHaveCount(infoGroup.getMustHaveCount()+1);
-				}
-				if (matchesMayHaves){
-					infoGroup.setMayHaveCount(infoGroup.getMayHaveCount()+1);
-				}
-				if (!matchesMustHaves && !matchesMayHaves){
-					infoGroup.setUnmatchedCount(infoGroup.getUnmatchedCount()+1);
-				}
-			}// end if (m.matches()){
+			File sourceFile = childSource.getFile();
+			if (sourceFile !=  null){
+			String filePath = childSource.getFile().getPath();			
+				// does the Source file path match the pattern that indicates a related file?
+				Matcher m = this.fileGroupingPattern.matcher(filePath);
+				if (m.matches()){
+					// might have more than one instance of a format in the Source, so
+					// we have to group related files together
+					// get the value of the capture group which is the key to a format instance
+					//  (group of files)
+					String groupString = m.group(this.fileGroupingCaptureGroupIndex);
+					// get the value of the capture group that indicates a file in the group
+					//   is one of the files required by the format definition
+					String mustHaveString = m.group(this.mustHaveCaptureGroupIndex);
+					// get the value of the capture group that indicates a file in the group
+					//   is one of the files considered optional by the format definition
+					String mayHaveString = m.group(this.mayHaveCaptureGroupIndex);
+					GlobPathMatchInfo fileInfo = new GlobPathMatchInfo(childSource);
+					boolean matchesMustHaves = false;
+					Matcher m2 = null;
+					if (this.mustHavePattern != null){
+						m2 = this.mustHavePattern.matcher(mustHaveString);
+						matchesMustHaves = m2.matches();
+					}
+					fileInfo.setMustHave(matchesMustHaves);
+					boolean matchesMayHaves = false;
+					if (this.mayHavePattern != null){
+						m2 = this.mayHavePattern.matcher(mayHaveString);
+						matchesMayHaves = m2.matches();
+					}
+					fileInfo.setMayHave(matchesMayHaves);
+					GlobPathMatchInfoGroup infoGroup;
+					//is this the first occurrence of grouping key?
+					if (!(groupMap.containsKey(groupString))){
+						//if so, add grouping key and new GlobPathMatchInfoGroup to groupMaP
+						infoGroup = new GlobPathMatchInfoGroup();
+						infoGroup.setGroupKey(groupString);
+						groupMap.put(groupString, infoGroup);
+					}
+					else {
+						// otherwise just retrieve 
+						infoGroup = groupMap.get(groupString);
+					}
+					// add information about current Source to list associated with this grouping key 
+					infoGroup.getSourceMatchInfoList().add(fileInfo);
+					// increment counter information associated with this grouping key
+					if (matchesMustHaves){
+						infoGroup.setMustHaveCount(infoGroup.getMustHaveCount()+1);
+					}
+					if (matchesMayHaves){
+						infoGroup.setMayHaveCount(infoGroup.getMayHaveCount()+1);
+					}
+					if (!matchesMustHaves && !matchesMayHaves){
+						infoGroup.setUnmatchedCount(infoGroup.getUnmatchedCount()+1);
+					}
+				}// end if (m.matches()){
+			}//end if sourceFile != null
 		}// end for (Source childSource:source.getChildSources())
 		// we don't need the keys to the map any more; just return the values
 		return groupMap.values();	

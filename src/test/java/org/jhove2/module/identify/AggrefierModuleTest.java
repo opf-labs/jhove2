@@ -49,9 +49,11 @@ import org.jhove2.core.FormatIdentification;
 import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.source.ClumpSource;
+import org.jhove2.core.source.DirectorySource;
 import org.jhove2.core.source.FileSetSource;
 import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.Source;
+import org.jhove2.core.source.SourceFactory;
 import org.jhove2.module.identify.GlobPathRecognizer;
 
 import org.junit.Test;
@@ -78,6 +80,7 @@ public class AggrefierModuleTest {
 	private String quickenDirPath;
 	private List<String> quickenFileList;
 	private HashMap<String, String> quickenStrictKeyCountMap;
+	private String emptyDirPath;
 
 	/**
 	 * Test method for {@link org.jhove2.module.identify.AggrefierModule#identify(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)}.
@@ -123,6 +126,14 @@ public class AggrefierModuleTest {
 					}
 				}
 			}
+			DirectorySource dSource = (DirectorySource) SourceFactory.getSource(
+					new File(this.getEmptyDirPath())); 
+			for (ClumpSource clumpSource:clumpSources){
+				dSource.addChildSource(clumpSource);
+			}
+			Set<ClumpSource> newClumpSources = TestAggrefier.identify(JHOVE2, dSource);
+			assertEquals(0, newClumpSources.size());
+			
 		}
 		catch (Exception e){
 			fail("Exception thrown: " + e.getMessage());
@@ -221,6 +232,14 @@ public class AggrefierModuleTest {
 	public void setQuickenStrictKeyCountMap(
 			HashMap<String, String> quickenStrictKeyCountMap) {
 		this.quickenStrictKeyCountMap = quickenStrictKeyCountMap;
+	}
+
+	public String getEmptyDirPath() {
+		return emptyDirPath;
+	}
+	@Resource
+	public void setEmptyDirPath(String emptyDirPath) {
+		this.emptyDirPath = emptyDirPath;
 	}
 
 }

@@ -105,4 +105,9 @@
 			</map>
 		</constructor-arg>
 	</bean>
+	
+		<bean id="emptyDirPath" class="java.lang.String" >
+		<constructor-arg type="java.lang.String" 
+	        value="${dir.example.empty}"/>
+	</bean>
 </beans>

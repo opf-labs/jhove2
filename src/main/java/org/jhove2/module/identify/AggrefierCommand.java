@@ -71,7 +71,7 @@ public class AggrefierCommand extends AbstractModule implements JHOVE2Command {
 	public AggrefierCommand(){
 		this(VERSION, RELEASE, RIGHTS);
 	}
-	
+
 	/**
 	 * Constructor
 	 * @param version Version of this module
@@ -99,25 +99,36 @@ public class AggrefierCommand extends AbstractModule implements JHOVE2Command {
 			try {
 				AggregateIdentifier aggrefier = 
 					Configure.getReportable(AggregateIdentifier.class, "Aggrefier");
-				aggrefier.getTimerInfo().setStartTime();
-				Set<ClumpSource> clumpSources = aggrefier.identify(jhove2, source);
-				aggrefier.getTimerInfo().setEndTime();
 				source.addModule(aggrefier);
-				for (ClumpSource clumpSource : clumpSources){
-					// make clump child of source, and remove clump's children
-					// as direct children of source
-					source.addChildSource(clumpSource);				
-					for (Source src:clumpSource.getChildSources()){
-						source.deleteChildSource(src);					
+				aggrefier.getTimerInfo().setStartTime();
+				Set<ClumpSource> clumpSources = null;
+				clumpSources = aggrefier.identify(jhove2, source);
+				do{									
+					for (ClumpSource clumpSource : clumpSources){
+						// make clump child of source, and remove clump's children
+						// as direct children of source
+						source.addChildSource(clumpSource);				
+						for (Source src:clumpSource.getChildSources()){
+							source.deleteChildSource(src);					
+						}
+						// now characterize the ClumpSource
+						jhove2.characterize(clumpSource);
 					}
-					// now characterize the ClumpSource
-					jhove2.characterize(clumpSource);
-				}
+					//now see if addition of clump sources at this level results
+					// in new possible clump sources
+					if (clumpSources.size()>0){
+						// do aggregate identification again on this source,
+						// with its new child sources
+						clumpSources = aggrefier.identify(jhove2, source);
+					}
+				} while (clumpSources.size()>0);
+				aggrefier.getTimerInfo().setEndTime();
+
 			} catch (IOException e) {
 				throw new JHOVE2Exception("AggrefierModule: IO exception", e);
 			}
 		}	
 		return;
 	}
-	
+
 }
