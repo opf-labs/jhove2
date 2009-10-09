@@ -89,13 +89,18 @@ public class XMLDisplayer extends AbstractDisplayer {
 	public static final String XSI = "xsi";
 	/** XSI URI. */
 	public static final String XSI_URI = "http://www.w3.org/2001/XMLSchema-instance";
-
+	/** default namespace prefix */
+	public static final String JHOVE2_PREFIX = "j2";
+	/** default JHOVE2 Schema URI */
+	public static final String JHOVE2_URI = "http://jhove2.org/xsd/1.0.0";
+	/** default JHOVE2 Schema location */
+	public static final String JHOVE2_SCHEMA_LOC = "http://jhove2.org/xsd/1.0.0/jhove2.xsd";
 
 	/** JHOVE2 namespace prefix. */
 	protected String prefix;
 
 	/** JHOVE2 schema. */
-	protected String schema;
+	protected String schemaLoc;
 
 	/** JHOVE2 namespace URI. */
 	protected String uri;
@@ -107,10 +112,9 @@ public class XMLDisplayer extends AbstractDisplayer {
 	public XMLDisplayer() {
 		super(VERSION, RELEASE, RIGHTS);
 		this.setShouldIndent(false);
-		this.prefix = "j2";
-		this.uri = "http://jhove2.org/xsd/1.0.0";
-		/* TODO: Define actual schema. */
-		// this.schema = "http://jhove2.org/xsd/1.0.0/jhove2.xsd";
+		this.prefix = JHOVE2_PREFIX;
+		this.uri = JHOVE2_URI;
+		this.schemaLoc = JHOVE2_SCHEMA_LOC;
 	}
 
 	/**
@@ -128,9 +132,8 @@ public class XMLDisplayer extends AbstractDisplayer {
 		declaration(out);
 		startTag(out, level, ELEROOT, XMLNS + this.prefix, this.uri, XMLNS + XSI,
 				XSI_URI);
-		/* TODO: Define actual schema. */
 		// ,XSI+SCHEMA_LOCATION,
-		// this.uri + " " + this.schema);
+		// this.uri + " " + schemaLoc);
 	}
 
 	/**

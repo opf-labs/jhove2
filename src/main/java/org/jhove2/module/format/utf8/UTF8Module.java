@@ -54,7 +54,6 @@ import org.jhove2.core.source.Source;
 import org.jhove2.core.source.ZipFileSource;
 import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.module.format.Validator;
-import org.jhove2.module.format.Validator.Coverage;
 import org.jhove2.module.format.utf8.unicode.C0Control;
 import org.jhove2.module.format.utf8.unicode.C1Control;
 import org.jhove2.module.format.utf8.unicode.CodeBlock;
@@ -188,8 +187,6 @@ public class UTF8Module
 					n = ch.parse(jhove2, input);
 				} catch (EOFException e) {
 					this.isValid = Validity.False;
-
-					/* TODO: EndOfFile. */
 					break;
 				}
 				consumed += n;

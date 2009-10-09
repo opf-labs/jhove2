@@ -50,7 +50,6 @@ import org.jhove2.core.Message.Severity;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.AbstractFormatProfile;
 import org.jhove2.module.format.Validator;
-import org.jhove2.module.format.Validator.Coverage;
 import org.jhove2.module.format.utf8.UTF8Module;
 import org.jhove2.module.format.utf8.unicode.CodeBlock;
 

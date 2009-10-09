@@ -49,7 +49,6 @@ import org.jhove2.core.source.NamedSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.module.format.Validator;
-import org.jhove2.module.format.Validator.Coverage;
 
 /**
  * JHOVE2 Shapefile module.
