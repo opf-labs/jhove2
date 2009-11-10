@@ -14,7 +14,7 @@
     	<property name="locations">
     		<list>
     			<value>properties/filepath.properties</value>
-    			<value>properties/droidconfig.properties</value>
+<!--    			<value>properties/droidconfig.properties</value>-->
     		</list>
     	</property>
     </bean>
@@ -46,27 +46,31 @@
 				<ref bean="StanfordAgent"/>
 			</list>
 		</property>
-		<property name="configFilePath"  ref="droidConfigFilePath"/>
-		<property name="sigFilePath" ref="droidSigFilePath" />
+<!--		<property name="configFilePath"  ref="droidConfigFilePath"/>-->
+<!--		<property name="sigFilePath" ref="droidSigFilePath" />-->
 	</bean>
 	   
 	 
 			<!--  you will need to edit the droidConfigFilePath property to run on your machine -->
-	<bean id="droidConfigFilePath" class="java.lang.String" >
-		<constructor-arg type="java.lang.String" 
-	        value="${file.droid.config}"/>
-	</bean>   
+<!--	<bean id="droidConfigFilePath" class="java.lang.String" >-->
+<!--		<constructor-arg type="java.lang.String" -->
+<!--	        value="${file.droid.config}"/>-->
+<!--	</bean>   -->
 	<!--  you will need to edit the droidSigFilePath property to run on your machine -->
-	<bean id="droidSigFilePath" class="java.lang.String" >
-		<constructor-arg type="java.lang.String" 
-	        value="${file.droid.sig}"/>
-	</bean> 
+<!--	<bean id="droidSigFilePath" class="java.lang.String" >-->
+<!--		<constructor-arg type="java.lang.String" -->
+<!--	        value="${file.droid.sig}"/>-->
+<!--	</bean> -->
 	
 
 		             
 	<!--  DROID PUID to JHOVE2 identifier properties bean -->
 		<util:properties id="DroidMap"	
 		             location="classpath:properties/droid2jhove.properties"/>	
+		             
+	<!--  Droid configuration properties bean -->
+		<util:properties id="DroidConfigMap"	
+		             location="classpath:properties/droidconfig.properties"/>
 		             
 		<!-- Aggrefier Command Bean -->
 	<bean id="AggrefierCommand" class="org.jhove2.module.identify.AggrefierCommand"

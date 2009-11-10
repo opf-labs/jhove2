@@ -13,7 +13,6 @@
     	class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
     	<property name="locations">
     		<list>
-    			<value>properties/droidconfig.properties</value>
     			<value>properties/filepath.properties</value>
     		</list>
     	</property>
@@ -119,12 +118,7 @@
 
 	<!-- Dispatch map properties bean -->
 	<util:properties id="DispatchMap"	
-		             location="classpath:properties/dispatcher.properties"/>
-		             
-	<!--  DROID PUID to JHOVE2 identifier properties bean -->
-		<util:properties id="DroidMap"	
-		             location="classpath:properties/droid2jhove.properties"/>	
-		             
+		             location="classpath:properties/dispatcher.properties"/>		             
 		             
     <!--  JHOVE2 identifier to Format Bean Name properties bean -->
 		<util:properties id="FormatBeanMap"	

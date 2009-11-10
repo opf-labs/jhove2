@@ -14,7 +14,7 @@
     	<property name="locations">
     		<list>
     			<value>properties/filepath.properties</value>
-    			<value>properties/droidconfig.properties</value>
+<!--    			<value>properties/droidconfig.properties</value>-->
     		</list>
     	</property>
     </bean>

@@ -52,6 +52,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
+ * Note that you must set the jhove2.home environment variable in order to run this
+ * test successfully
  * @author Sheila Morrissey
  *
  */
@@ -85,7 +87,7 @@ public class DroidIdentifierTest {
 			assertTrue(DroidIdentifier.getPuidToJhoveId().containsKey(zipPuid));
 			assertEquals(zipJhoveId, DroidIdentifier.getPuidToJhoveId().get(zipPuid));
 		} catch (JHOVE2Exception e) {
-			fail("exception");
+			fail("exception" + e.getMessage());
 		}		
 	}
 

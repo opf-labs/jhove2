@@ -50,6 +50,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
+ * Note that you must set the jhove2.home environment variable in order to run this
+ * test successfully
  * @author Sheila Morrissey
  *
  */

@@ -72,7 +72,10 @@ public class AppConfigInfo extends AbstractReportable {
 
 	/** Default {@link org.jhove2.core.io.Input} buffer size. */
 	public static final int DEFAULT_BUFFER_SIZE = 131072;
-
+	
+	/** environment variable name fro JHOVE2 home directory */
+	public static final String JHOVE2_HOME_VARNAME = "jhove2.home";
+	
 	/** {@link org.jhove2.core.io.Input} buffer size. */
 	protected int bufferSize;
 
@@ -106,6 +109,9 @@ public class AppConfigInfo extends AbstractReportable {
 
 	/** Application current working directory. */
 	protected String workingDirectory;
+	
+	/** JHOVE2 home directory (from environment; defaults to user directory */
+	protected String jhove2Home;
 
 
 	/**
@@ -124,6 +130,7 @@ public class AppConfigInfo extends AbstractReportable {
 		this.tempDirectory = props.getProperty("java.io.tmpdir");
 		this.userName = props.getProperty("user.name");
 		this.workingDirectory = props.getProperty("user.dir");
+		this.jhove2Home = getJhove2HomeFromEnv(props);
 		
 		this.bufferSize = DEFAULT_BUFFER_SIZE;
 		this.bufferType = DEFAULT_BUFFER_TYPE;
@@ -299,5 +306,27 @@ public class AppConfigInfo extends AbstractReportable {
 	public void setTempSuffix(String tempSuffix) {
 		this.tempSuffix = tempSuffix;
 	}
+	/**
+	 * Accessor for JHOVE2 home directory
+	 * @return String containing JHOVE2 home directory
+	 */
+	@ReportableProperty(order = 10, value = "JHOVE2 home directory.")
+	public String getJhove2Home() {
+		return jhove2Home;
+	}
+	/**
+	 * Mutator for JHOVE2 home directory
+	 * @param jhove2Home setting for JHOVE2 home directory
+	 */
+	public void setJhove2Home(String jhove2Home) {
+		this.jhove2Home = jhove2Home;
+	}
 
+	public static String getJhove2HomeFromEnv(Properties props){
+		String jhove2Home = System.getenv(JHOVE2_HOME_VARNAME);
+		if (jhove2Home==null){
+			jhove2Home = props.getProperty("user.dir");
+		}
+		return jhove2Home;
+	}
 }

@@ -32,26 +32,16 @@
 				<ref bean="StanfordAgent"/>
 			</list>
 		</property>
-		<property name="configFilePath"  ref="droidConfigFilePath"/>
-		<property name="sigFilePath" ref="droidSigFilePath" />
 	</bean>
-	    
-	 <!-- DROID config file location bean -->
-	<!--  you will need to edit the droidConfigFilePath property to run on your machine -->
-	<bean id="droidConfigFilePath" class="java.lang.String" >
-		<constructor-arg type="java.lang.String" 
-	        value="${file.droid.config}"/>
-	</bean>   
-	
-	<!-- DROID signature file location bean -->
-	<!--  you will need to edit the droidSigFilePath property to run on your machine -->
-	<bean id="droidSigFilePath" class="java.lang.String" >		
-		<constructor-arg type="java.lang.String" 
-	        value="${file.droid.sig}"/>
-	</bean> 	   
+
 	      	
+<!--  DROID PUID to JHOVE2 identifier properties bean -->
+		<util:properties id="DroidMap"	
+ 		             location="classpath:properties/droid2jhove.properties"/>
 
-
+  <!--  DROID configuration files properties bean -->
+		<util:properties id="DroidConfigMap"	
+		             location="classpath:properties/droidconfig.properties"/>	
 	
 	<!-- Aggrefier module bean -->
 	<bean id="Aggrefier" class="org.jhove2.module.identify.AggrefierModule"
@@ -71,7 +61,6 @@
 	</bean>
 	            
 		  
-
 	<!-- Shapefile recognizer bean -->
 	<bean id="ShapeFileRecognizer" class="org.jhove2.module.identify.GlobPathRecognizer"
 	 scope="prototype">
