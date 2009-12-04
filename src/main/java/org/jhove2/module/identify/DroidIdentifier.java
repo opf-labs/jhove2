@@ -485,6 +485,7 @@ public class DroidIdentifier extends AbstractModule implements Identifier {
 				droidHome.append(separator);
 			}
 			else {
+				droidHome.append(dHome);
 				if (dHome.lastIndexOf(separator) != dHome.length()-1){
 					droidHome.append(separator);
 				}
