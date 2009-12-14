@@ -20,6 +20,8 @@
 				<ref bean="StanfordAgent"/>
 			</list>
 		</property>
+		<!-- Optionally provide an explicit specification of XML parser to be used -->
+		<property name="saxParser" value="org.apache.xerces.parsers.SAXParser"/>
 	</bean>
    
 	<!-- XML format bean -->

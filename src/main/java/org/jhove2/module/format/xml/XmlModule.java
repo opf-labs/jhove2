@@ -121,7 +121,10 @@ public class XmlModule
 		super(VERSION, RELEASE, RIGHTS, format);
 	}
 	
-	protected String saxParser = "org.apache.xerces.parsers.SAXParser";
+	/**
+	 * The implementation of the SAX2 XMLReader class used to parse XML instances
+	 */
+	protected String saxParser;
 	protected XmlDeclaration xmlDeclaration = new XmlDeclaration();
 	protected String xmlRootElementName;
 	protected List<XmlDTD> xmlDTDs;
@@ -134,6 +137,13 @@ public class XmlModule
 	protected XmlValidationResults xmlValidationResults = new XmlValidationResults();
 	protected boolean wellFormed = false;
 
+	/**
+	 * This property is optionally set by the Spring config file that instantiates the module 
+	 * @param saxParser
+	 */
+	public void setSaxParser(String saxParser) {
+		this.saxParser = saxParser;
+	}
 	/**
 	 * @return saxParser
 	 */
@@ -253,9 +263,19 @@ public class XmlModule
 	@Override
 	public long parse(JHOVE2 jhove2, Source source) 
 		throws EOFException, IOException, JHOVE2Exception {
+		// The XMLReader does the parsing of the XML
         XMLReader xmlReader;
 		try {
-			xmlReader = XMLReaderFactory.createXMLReader(saxParser);
+			if (saxParser != null) {
+				// Sax Parser class name has been specified in the Spring config file
+				xmlReader = XMLReaderFactory.createXMLReader(saxParser);				
+			} else {
+				// Sax Parser class name will be determined from value of org.xml.sax.driver
+				// set as an environmental variable or a META-INF value from a jar file in the classpath
+				xmlReader = XMLReaderFactory.createXMLReader();	
+				this.setSaxParser(xmlReader.getClass().getName());
+			}
+			// Specify that validation should occur  when the XML entity is parsed
 			final String validationFeature = "http://xml.org/sax/features/validation";
 			xmlReader.setFeature(validationFeature, true);
 			final String schemaFeature = "http://apache.org/xml/features/validation/schema";
@@ -267,7 +287,12 @@ public class XmlModule
         xmlReader.setContentHandler(contentHandler);
         XmlParserErrortHandler xmlParserErrortHandler= new XmlParserErrortHandler(this);
         xmlReader.setErrorHandler(xmlParserErrortHandler);
+        // Create the InputSource object containing the XML entity to be parsed
         InputSource saxInputSource = new InputSource(source.getInputStream());
+        // Provide the path of the source file, in case relative paths need to be resolved
+        if (source.getFile() != null) {
+            saxInputSource.setSystemId(source.getFile().getAbsolutePath());       	
+        }
         try {
 			xmlReader.parse(saxInputSource);
 			wellFormed = true;
