@@ -1,5 +1,8 @@
 package org.jhove2.module.format.xml;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
@@ -47,14 +50,17 @@ public class XmlParserContentHandler extends DefaultHandler {
     }
 
 	 /**
-     * Receive notification of the beginning of the document.
+     * Receive notification of the end of the document.
      */
 	@Override
     public void endDocument() {
          try {
+        	// http://www.saxproject.org/apidoc/org/xml/sax/package-summary.html
+        	// May be examined only during a parse, after the startDocument() callback has been completed; read-only.
+        	// The value is true if the document specified standalone="yes" in its XML declaration, 
+        	// and otherwise is false. 
         	boolean isStandalone = xmlReader.getFeature("http://xml.org/sax/features/is-standalone");
-			xmlModule.xmlDeclaration.standalone = Boolean.toString(isStandalone);
-			 		
+			xmlModule.xmlDeclaration.standalone = (isStandalone) ? "yes" : "no" ;			 		
 		} catch (SAXException e) {
 			xmlModule.xmlDeclaration.standalone = null;
 		}
@@ -69,13 +75,25 @@ public class XmlParserContentHandler extends DefaultHandler {
     {
         // The first element we encounter is the root.
         // Save it.
-        if (xmlModule.xmlRootElementName == null) {
+        if (xmlModule.rootElementName == null) {
             if (qName.equals("")) {
-            	xmlModule.xmlRootElementName = localName;
+            	xmlModule.rootElementName = localName;
             } else {
-            	xmlModule.xmlRootElementName = qName;            	
+            	xmlModule.rootElementName = qName;            	
             }
         }
     }   
+	
+	@Override
+	public void processingInstruction (String target, String data) throws SAXException {
+		List<ProcessingInstruction> piList = this.xmlModule.processingInstructions;
+		if (piList == null)
+			this.xmlModule.processingInstructions = new ArrayList<ProcessingInstruction>();
+			piList = this.xmlModule.processingInstructions;
+		ProcessingInstruction pi = new ProcessingInstruction();
+		pi.target = target;
+		pi.data = data;
+		piList.add(pi);
+	}
 	
 }

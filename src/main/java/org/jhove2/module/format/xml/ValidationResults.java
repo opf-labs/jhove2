@@ -9,33 +9,33 @@ import org.jhove2.module.format.Validator.Validity;
 import org.xml.sax.SAXParseException;
 
 /** A data structure to hold warning and error messages capture during XML validation */
-public class XmlValidationResults extends AbstractReportable {
+public class ValidationResults extends AbstractReportable {
 	
 	/** XML validity status. */
 	protected Validity isValid = Validity.True;
 	
 	/** Warnings found during XML parsing */
-	protected XmlValidationMessageList parserWarnings = new XmlValidationMessageList();
+	protected ValidationMessageList parserWarnings = new ValidationMessageList();
 	/** Errors found during XML parsing */
-	protected XmlValidationMessageList parserErrors = new XmlValidationMessageList();
+	protected ValidationMessageList parserErrors = new ValidationMessageList();
 	/** Fatal errors found during XML parsing */
-	protected XmlValidationMessageList fatalParserErrors = new XmlValidationMessageList();
+	protected ValidationMessageList fatalParserErrors = new ValidationMessageList();
 	
 	/** Warnings found during XML parsing */
 	@ReportableProperty(order = 1, value = "Warnings found during XML parsing")
-	public XmlValidationMessageList getParserWarnings() {
+	public ValidationMessageList getParserWarnings() {
 		return parserWarnings;
 	}
 	
 	/** Errors found during XML parsing */
 	@ReportableProperty(order = 2, value = "Errors found during XML parsing")
-	public XmlValidationMessageList getParserErrors() {
+	public ValidationMessageList getParserErrors() {
 		return parserErrors;
 	}
 	
 	/** Fatal errors found during XML parsing */
 	@ReportableProperty(order = 3, value = "Fatal errors found during XML parsing")
-	public XmlValidationMessageList getFatalParserErrors() {
+	public ValidationMessageList getFatalParserErrors() {
 		return fatalParserErrors;
 	}
 			
@@ -59,14 +59,14 @@ public class XmlValidationResults extends AbstractReportable {
 	}
 
 	/** A data structure to hold the list of messages of a specific message type */
-	public class XmlValidationMessageList extends AbstractReportable {
-		protected List<XmlValidationMessage> validationMessages;
+	public class ValidationMessageList extends AbstractReportable {
+		protected List<ValidationMessage> validationMessages;
 		
 		protected void addMessage(SAXParseException spe) {
 			if (validationMessages == null) {
-				validationMessages = new ArrayList<XmlValidationMessage>();				
+				validationMessages = new ArrayList<ValidationMessage>();				
 			}
-			validationMessages.add(new XmlValidationMessage(spe));
+			validationMessages.add(new ValidationMessage(spe));
 		}
 		
 		@ReportableProperty(order = 1, value = "Number of messages")
@@ -79,13 +79,13 @@ public class XmlValidationResults extends AbstractReportable {
 		}
 
 		@ReportableProperty(order = 2, value = "List of messages")
-		public List<XmlValidationMessage> getValidationMessages() {
+		public List<ValidationMessage> getValidationMessages() {
 			return validationMessages;
 		}		
 	}
 	
 	/** A data structure to hold a single message */
-	public class XmlValidationMessage extends AbstractReportable {
+	public class ValidationMessage extends AbstractReportable {
 		/** 
 		 * detail message from the SAXParseException
 		 */
@@ -102,7 +102,7 @@ public class XmlValidationResults extends AbstractReportable {
 		protected int columnNumber;
 		
 
-		public XmlValidationMessage(SAXParseException spe) {
+		public ValidationMessage(SAXParseException spe) {
 			this.message = spe.getMessage();
 			this.lineNumber = spe.getLineNumber();
 			this.columnNumber = spe.getColumnNumber();

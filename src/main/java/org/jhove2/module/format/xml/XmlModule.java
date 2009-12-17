@@ -95,7 +95,7 @@ public class XmlModule
 	 */
 	@Override
 	public Validity isValid() {
-		return xmlValidationResults.getValidity();
+		return validationResults.getValidity();
 	}
 
 	/**
@@ -112,7 +112,7 @@ public class XmlModule
 	@Override
 	public Validity validate(JHOVE2 jhove2, Source source)
 			throws JHOVE2Exception {
-		return xmlValidationResults.getValidity();
+		return validationResults.getValidity();
 	}
 	
 
@@ -126,15 +126,15 @@ public class XmlModule
 	 */
 	protected String saxParser;
 	protected XmlDeclaration xmlDeclaration = new XmlDeclaration();
-	protected String xmlRootElementName;
+	protected String rootElementName;
 	protected List<XmlDTD> xmlDTDs;
 	protected HashMap<String,XmlNamespace> xmlNamespaceMap;
 	protected List<XmlNotation> xmlNotations;
 	protected List<String> xmlCharacterReferences;
 	protected List<XmlEntity> xmlEntitys;
-	protected List<XmlProcessingInstruction> xmlProcessingInstructions;
+	protected List<ProcessingInstruction> processingInstructions;
 	protected List<String> xmlComments;
-	protected XmlValidationResults xmlValidationResults = new XmlValidationResults();
+	protected ValidationResults validationResults = new ValidationResults();
 	protected boolean wellFormed = false;
 
 	/**
@@ -164,8 +164,8 @@ public class XmlModule
 	 * @return xmlRootElementName
 	 */
 	@ReportableProperty(order = 3, value = "Name of the document's root element")
-	public String getXmlRootElementName() {
-		return xmlRootElementName;
+	public String getRootElementName() {
+		return rootElementName;
 	}
 
 	/**
@@ -215,9 +215,9 @@ public class XmlModule
 	/**
 	 * @return xmlProcessingInstructions
 	 */
-	@ReportableProperty(order = 9, value = "List of Processing Instructions")
-	public List<XmlProcessingInstruction> getXmlProcessingInstructions() {
-		return xmlProcessingInstructions;
+	@ReportableProperty(order = 9, value = "Processing Instructions")
+	public List<ProcessingInstruction> getProcessingInstructions() {
+		return processingInstructions;
 	}
 
 	/**
@@ -232,8 +232,8 @@ public class XmlModule
 	 * @return xmlValidationResults
 	 */
 	@ReportableProperty(order = 11, value = "Warning or error messages generated during XML Validation")
-	public XmlValidationResults getXmlValidationResults() {
-		return xmlValidationResults;
+	public ValidationResults getValidationResults() {
+		return validationResults;
 	}
 
 	/**
@@ -285,7 +285,7 @@ public class XmlModule
 		}
         XmlParserContentHandler contentHandler = new XmlParserContentHandler(xmlReader, this);
         xmlReader.setContentHandler(contentHandler);
-        XmlParserErrortHandler xmlParserErrortHandler= new XmlParserErrortHandler(this);
+        XmlParserErrorHandler xmlParserErrortHandler= new XmlParserErrorHandler(this);
         xmlReader.setErrorHandler(xmlParserErrortHandler);
         // Create the InputSource object containing the XML entity to be parsed
         InputSource saxInputSource = new InputSource(source.getInputStream());
