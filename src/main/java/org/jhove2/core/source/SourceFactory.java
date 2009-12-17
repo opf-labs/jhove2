@@ -69,6 +69,7 @@ public class SourceFactory {
 	 */
 	public static synchronized Source getSource(String pathName)
 			throws FileNotFoundException, IOException {
+		// TODO: check if file exists and if not, throw FileNotFound exception
 		return getSource(new File(pathName));
 	}
 
@@ -171,6 +172,7 @@ public class SourceFactory {
 	JHOVE2Exception {
 		Source source = null;
 		Iterator<String> iter = pathNames.iterator();
+		// TODO: handle FileNotFound exception in getSource()
 		if (pathNames.size() == 1) {
 			String pathName = iter.next();
 			source = SourceFactory.getSource(pathName);
