@@ -36,9 +36,12 @@ package org.jhove2.module.format.xml;
 
 import java.io.EOFException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.Format;
@@ -128,11 +131,11 @@ public class XmlModule
 	protected XmlDeclaration xmlDeclaration = new XmlDeclaration();
 	protected String rootElementName;
 	protected List<XmlDTD> xmlDTDs;
-	protected HashMap<String,XmlNamespace> xmlNamespaceMap;
+	protected Map<String,Namespace> namespaces = new TreeMap<String,Namespace>();
 	protected List<XmlNotation> xmlNotations;
 	protected List<String> xmlCharacterReferences;
 	protected List<XmlEntity> xmlEntitys;
-	protected List<ProcessingInstruction> processingInstructions;
+	protected List<ProcessingInstruction> processingInstructions  = new ArrayList<ProcessingInstruction>();
 	protected List<String> xmlComments;
 	protected ValidationResults validationResults = new ValidationResults();
 	protected boolean wellFormed = false;
@@ -180,9 +183,9 @@ public class XmlModule
 	 * @return xmlNamespaceMap
 	 */
 	@ReportableProperty(order = 5, value = "List of XML Namespaces")
-	public Collection<XmlNamespace> getXmlNamespaceMap() {
-		if (xmlNamespaceMap != null) {
-			return xmlNamespaceMap.values();			
+	public ArrayList<Namespace> getNamespaces() {
+		if (namespaces != null) {
+			return new ArrayList<Namespace>(namespaces.values());			
 		} else {
 			return null;
 		}

@@ -1,7 +1,10 @@
 package org.jhove2.module.format.xml;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
@@ -84,16 +87,34 @@ public class XmlParserContentHandler extends DefaultHandler {
         }
     }   
 	
+	public void startPrefixMapping (String prefix, String uri)
+	throws SAXException
+    {
+		Map<String,Namespace> nsMap = this.xmlModule.namespaces;
+		// Constructing a map key to ensure that unique combinations
+		// of prefix and uri are only listed one time
+		String key;
+		if (prefix.length() < 1) {
+			// make sure the default namespace heads the list
+			key = " " + uri;		
+		} else {
+			key = prefix + uri;		
+		}
+		// only add the prefix/uri combination if not already present
+		if (! nsMap.containsKey(key)) {
+			Namespace ns = new Namespace();
+			ns.prefix = prefix;
+			ns.uri = uri;
+			nsMap.put(key, ns);
+		}
+    }
+	
 	@Override
 	public void processingInstruction (String target, String data) throws SAXException {
-		List<ProcessingInstruction> piList = this.xmlModule.processingInstructions;
-		if (piList == null)
-			this.xmlModule.processingInstructions = new ArrayList<ProcessingInstruction>();
-			piList = this.xmlModule.processingInstructions;
 		ProcessingInstruction pi = new ProcessingInstruction();
 		pi.target = target;
 		pi.data = data;
-		piList.add(pi);
+		this.xmlModule.processingInstructions.add(pi);
 	}
 	
 }
