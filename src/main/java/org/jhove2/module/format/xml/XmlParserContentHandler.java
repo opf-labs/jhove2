@@ -87,6 +87,7 @@ public class XmlParserContentHandler extends DefaultHandler {
         }
     }   
 	
+	@Override
 	public void startPrefixMapping (String prefix, String uri)
 	throws SAXException
     {

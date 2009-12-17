@@ -132,9 +132,9 @@ public class XmlModule
 	protected String rootElementName;
 	protected List<XmlDTD> xmlDTDs;
 	protected Map<String,Namespace> namespaces = new TreeMap<String,Namespace>();
-	protected List<XmlNotation> xmlNotations;
+	protected List<Notation> notations = new ArrayList<Notation>();
 	protected List<String> xmlCharacterReferences;
-	protected List<XmlEntity> xmlEntitys;
+	protected List<Entity> entities = new ArrayList<Entity>();
 	protected List<ProcessingInstruction> processingInstructions  = new ArrayList<ProcessingInstruction>();
 	protected List<String> xmlComments;
 	protected ValidationResults validationResults = new ValidationResults();
@@ -195,8 +195,8 @@ public class XmlModule
 	 * @return xmlNotations
 	 */
 	@ReportableProperty(order = 6, value = "List of Notations found in the XML document")
-	public List<XmlNotation> getXmlNotations() {
-		return xmlNotations;
+	public List<Notation> getNotations() {
+		return notations;
 	}
 
 	/**
@@ -211,14 +211,14 @@ public class XmlModule
 	 * @return xmlEntities
 	 */
 	@ReportableProperty(order = 8, value = "List of Entities")
-	public List<XmlEntity> getXmlEntitys() {
-		return xmlEntitys;
+	public List<Entity> getEntities() {
+		return entities;
 	}
 
 	/**
 	 * @return xmlProcessingInstructions
 	 */
-	@ReportableProperty(order = 9, value = "Processing Instructions")
+	@ReportableProperty(order = 9, value = "List of Processing Instructions")
 	public List<ProcessingInstruction> getProcessingInstructions() {
 		return processingInstructions;
 	}
@@ -288,6 +288,8 @@ public class XmlModule
 		}
         XmlParserContentHandler contentHandler = new XmlParserContentHandler(xmlReader, this);
         xmlReader.setContentHandler(contentHandler);
+        XmlParserDtdHandler dtdHandler = new XmlParserDtdHandler(this);
+        xmlReader.setDTDHandler(dtdHandler);
         XmlParserErrorHandler xmlParserErrortHandler= new XmlParserErrorHandler(this);
         xmlReader.setErrorHandler(xmlParserErrortHandler);
         // Create the InputSource object containing the XML entity to be parsed
