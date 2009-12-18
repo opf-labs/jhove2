@@ -41,7 +41,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.TreeMap;
+import java.util.Map.Entry;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.Format;
@@ -127,7 +129,7 @@ public class XmlModule
 	/**
 	 * The implementation of the SAX2 XMLReader class used to parse XML instances
 	 */
-	protected String saxParser;
+	protected SaxParser saxParser;
 	protected XmlDeclaration xmlDeclaration = new XmlDeclaration();
 	protected String rootElementName;
 	protected List<XmlDTD> xmlDTDs;
@@ -144,17 +146,17 @@ public class XmlModule
 	 * This property is optionally set by the Spring config file that instantiates the module 
 	 * @param saxParser
 	 */
-	public void setSaxParser(String saxParser) {
+	public void setSaxParser(SaxParser saxParser) {
 		this.saxParser = saxParser;
 	}
 	/**
 	 * @return saxParser
 	 */
-	@ReportableProperty(order = 1, value = "Java class used to parse the XML")
-	public String getSaxParser() {
+	@ReportableProperty(order = 1, value = "XML Parser name, features, properties")
+	public SaxParser getSaxParser() {
 		return saxParser;
 	}
-
+	
 	/**
 	 * @return xmlDeclaration
 	 */
@@ -266,33 +268,12 @@ public class XmlModule
 	@Override
 	public long parse(JHOVE2 jhove2, Source source) 
 		throws EOFException, IOException, JHOVE2Exception {
+		if ((saxParser == null))
+			saxParser = new SaxParser();
+		saxParser.setXmlModule(this);
 		// The XMLReader does the parsing of the XML
-        XMLReader xmlReader;
-		try {
-			if (saxParser != null) {
-				// Sax Parser class name has been specified in the Spring config file
-				xmlReader = XMLReaderFactory.createXMLReader(saxParser);				
-			} else {
-				// Sax Parser class name will be determined from value of org.xml.sax.driver
-				// set as an environmental variable or a META-INF value from a jar file in the classpath
-				xmlReader = XMLReaderFactory.createXMLReader();	
-				this.setSaxParser(xmlReader.getClass().getName());
-			}
-			// Specify that validation should occur  when the XML entity is parsed
-			final String validationFeature = "http://xml.org/sax/features/validation";
-			xmlReader.setFeature(validationFeature, true);
-			final String schemaFeature = "http://apache.org/xml/features/validation/schema";
-			xmlReader.setFeature(schemaFeature, true);
-		} catch (SAXException e) {
-			throw new JHOVE2Exception("Could not create a SAX parser", e);
-		}
-        XmlParserContentHandler contentHandler = new XmlParserContentHandler(xmlReader, this);
-        xmlReader.setContentHandler(contentHandler);
-        XmlParserDtdHandler dtdHandler = new XmlParserDtdHandler(this);
-        xmlReader.setDTDHandler(dtdHandler);
-        XmlParserErrorHandler xmlParserErrortHandler= new XmlParserErrorHandler(this);
-        xmlReader.setErrorHandler(xmlParserErrortHandler);
-        // Create the InputSource object containing the XML entity to be parsed
+        XMLReader xmlReader = saxParser.getXmlReader();
+         // Create the InputSource object containing the XML entity to be parsed
         InputSource saxInputSource = new InputSource(source.getInputStream());
         // Provide the path of the source file, in case relative paths need to be resolved
         if (source.getFile() != null) {
