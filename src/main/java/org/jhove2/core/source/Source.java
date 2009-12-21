@@ -59,7 +59,9 @@ import org.jhove2.module.Module;
  * 
  * @author mstrong, slabrams, smorrissey
  */
-public interface Source extends Reportable, Comparable<Source>{
+public interface Source
+	extends Reportable, Comparable<Source>
+{
 	/**
 	 * Close the source unit. If the source unit is backed by a temporary file,
 	 * delete the file.
@@ -188,19 +190,19 @@ public interface Source extends Reportable, Comparable<Source>{
 	 *            Module that processed the source unit
 	 */
 	public void addModule(Module module);
+	
 	/**
-	 * Return the JHOVE2 namespace identifier for this Source
-	 * @return
+	 * Get elapsed time processing this source unit.
+	 * @return Elapsed time
 	 */
-
-	@ReportableProperty(value="Timer info for this Source.")
+	@ReportableProperty(order = 4, value="Timer info for this Source.")
 	public TimerInfo getTimerInfo();
 	
 	/**
 	 * Return list of presumptive identifications returned by identifer(s)
 	 * @return List of presumptive format identfications
 	 */
-	@ReportableProperty(value="Presumptive identifications for this Source.")
+	@ReportableProperty(order = 3, value="Presumptive identifications for this Source.")
 	public Set<FormatIdentification> getPresumptiveFormatIdentifications();
 	
 	/**

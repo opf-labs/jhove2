@@ -76,23 +76,27 @@ public interface Displayer extends Module {
 	 * @throws JHOVE2Exception
 	 *             Can't instantiate displayer
 	 */
-	public void display(Reportable reportable) throws FileNotFoundException,
-			JHOVE2Exception;
+	public void display(Reportable reportable)
+		throws FileNotFoundException, JHOVE2Exception;
+	
 	/**
-	 * 
+	 * Display {@link org.jhove2.core.Reportable} to a named file.
+	 *  
 	 * @param reportable
 	 *            Reportable
-	 * @param outputFilePath
-	 * 			path for output file
+	 * @param outputFile
+	 * 			Output file pathname
 	 * @throws FileNotFoundException
 	 *             Can't create output file
 	 * @throws JHOVE2Exception
 	 *             Can't instantiate displayer
 	 */
-	public void display(Reportable reportable, String outputFilePath)throws FileNotFoundException,
-	JHOVE2Exception;
+	public void display(Reportable reportable, String outputFile)
+		throws FileNotFoundException, JHOVE2Exception;
+	
 	/**
-	 * Display {@link org.jhove2.core.Reportable}.
+	 * Display {@link org.jhove2.core.Reportable} to a
+	 * {@link java.io.PrintStream}.
 	 * 
 	 * @param reportable
 	 *            Reportable
@@ -102,7 +106,8 @@ public interface Displayer extends Module {
 	 *             Can't instantiate displayer
 	 */
 	public void display(Reportable reportable, PrintStream out)
-			throws JHOVE2Exception;
+		throws JHOVE2Exception;
+	
 	/**
 	 * Start display.
 	 * 
@@ -129,7 +134,8 @@ public interface Displayer extends Module {
 	 *            enclosing {@link org.jhove2.core.Reportable} or collection
 	 */
 	public void startReportable(PrintStream out, int level, String name,
-			I8R identifier, int order);
+			                    I8R identifier, int order);
+	
 	/**
 	 * Start display of a {@link org.jhove2.core.Reportable}.
 	 * 
@@ -146,11 +152,10 @@ public interface Displayer extends Module {
 	 *            {@link org.jhove2.core.Reportable} or collection
 	 * @param typeIdentifier 
 	 * 			  Reportable type identifier in the JHOVE2 namespace
-	 * @see org.jhove2.module.display.Displayer#startReportable(java.io.PrintStream,
-	 *      int, java.lang.String, org.jhove2.core.I8R, int, java.lang.String, org.jhove2.core.I8R)
 	 */
 	public void startReportable(PrintStream out, int level, String name,
-			I8R identifier, int order, I8R typeIdentifier) ;
+			                    I8R identifier, int order, I8R typeIdentifier);
+	
 	/**
 	 * Start display of a property collection.
 	 * 
@@ -169,7 +174,7 @@ public interface Displayer extends Module {
 	 *            its enclosing {@link org.jhove2.core.Reportable} or collection
 	 */
 	public void startCollection(PrintStream out, int level, String name,
-			I8R identifier, int size, int order);
+			                    I8R identifier, int size, int order);
 
 	/**
 	 * Display property.
@@ -187,9 +192,12 @@ public interface Displayer extends Module {
 	 * @param order
 	 *            Ordinal position of this property with respect to its
 	 *            enclosing {@link org.jhove2.core.Reportable} or collection
+	 * @param unitOfMeasure
+	 *            Unit of measure in which the value is expressed
 	 */
 	public void displayProperty(PrintStream out, int level, String name,
-			I8R identifier, Object value, int order, String unitOfMeasure);
+			                    I8R identifier, Object value, int order,
+			                    String unitOfMeasure);
 
 	/**
 	 * End display of a property collection.
@@ -206,7 +214,7 @@ public interface Displayer extends Module {
 	 *            Property collection size
 	 */
 	public void endCollection(PrintStream out, int level, String name,
-			I8R identifier, int size);
+			                  I8R identifier, int size);
 
 	/**
 	 * End display of a {@link org.jhove2.core.Reportable}.
@@ -221,7 +229,7 @@ public interface Displayer extends Module {
 	 *            Reportable identifier in the JHOVE2 namespace
 	 */
 	public void endReportable(PrintStream out, int level, String name,
-			I8R identifier);
+			                  I8R identifier);
 
 	/**
 	 * End display.
@@ -239,8 +247,8 @@ public interface Displayer extends Module {
 	 * @return Show identifier flag; if true, show identifiers in non-XML
 	 *         display modes
 	 */
-	@ReportableProperty(order = 6, value = "Displayer show identifiers flag; "
-		+ "if true, show identifiers in non-XML display modes.")
+	@ReportableProperty(order = 6, value = "Displayer show identifiers flag; " +
+		"if true, show identifiers in non-XML display modes.")
 	public boolean getShowIdentifiers();
 
 	/**
@@ -251,20 +259,31 @@ public interface Displayer extends Module {
 	 */
 	public void setShowIdentifiers(boolean flag);
 	
-	/**
-	 * @return the outputFilePath
+	/** Get the output file pathname
+	 * @return Output file pathname
 	 */
-	@ReportableProperty(order = 7, value = "Displayer out file path ")
-	public String getOutputFilePath();
+	@ReportableProperty(order = 7, value = "Displayer output file pathname.")
+	public String getFilePathname();
 
-	/**
-	 * @param outputFilePath the outputFilePath to set
+	/** Set the output file pathname
+	 * @param filePathname Output file pathname
 	 */
-	public void setOutputFilePath(String outputFilePath);
+	public void setFilePathname(String filePathname);
 	
-	@ReportableProperty(order = 6, value = "Displayer indent output flag "
-		+ "if true, indent output.")
+	/**
+	 * Get indentation flag.  If true, displayed output is indented to indicate
+	 * subsidiarity relationships.
+	 * 
+	 * @return Identation flag
+	 */
+	@ReportableProperty(order = 6, value = "Displayer indentation flag; " +
+		"if true, output is indented to indicate subsidiarity relationships.")
 	public boolean getShouldIndent();
 	
+	/**
+	 * Set indentation flag.  If true, displayed output is indented to indicate
+	 * subsidiarity relationships.
+	 * @param shouldIndent Indentation flag
+	 */
 	public void setShouldIndent(boolean shouldIndent);
 }

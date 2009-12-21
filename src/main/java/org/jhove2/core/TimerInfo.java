@@ -44,32 +44,38 @@ import org.jhove2.annotation.ReportableProperty;
  * 
  * @author mstrong, slabrams, smorrissey
  */
-public class TimerInfo extends AbstractReportable {
+public class TimerInfo
+	extends AbstractReportable
+{
 	/**  end time. */
 	protected long endTime;
 
 	/**  start time. */
 	protected long startTime;
 	
+	/** Instantiate a new <code>TimerInfo</code> object.
+	 */
 	public TimerInfo(){
 		this.startTime = System.currentTimeMillis();
-		this.endTime = Duration.UNINITIALIZED;
+		this.endTime   = Duration.UNINITIALIZED;
 	}
 	
 	/**
 	 * Get elapsed time, in milliseconds. The reportable time will never be less
-	 * than 1 milliscond.
+	 * than 1 millisecond.
 	 * 
 	 * @return Elapsed time, in milliseconds
 	 */
 	@ReportableProperty(value="Elapsed time, milliseconds.")
 	public Duration getElapsedTime(){
 		if (this.endTime == Duration.UNINITIALIZED) {
-			return new Duration(Duration.UNINITIALIZED);
+			setEndTime();
 		}
-		else {
-			return new Duration(this.endTime - this.startTime);
+		long duration = this.endTime - this.startTime;
+		if (duration < 1L) {
+			duration = 1L;
 		}
+		return new Duration(duration);
 	}
 
 	/**
@@ -82,7 +88,6 @@ public class TimerInfo extends AbstractReportable {
 	public long setEndTime(){
 		return this.endTime = System.currentTimeMillis();
 	}
-
 
 	/**
 	 * Set the start time of the elapsed duration. Defaults to the time of

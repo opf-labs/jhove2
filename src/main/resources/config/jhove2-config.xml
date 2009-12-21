@@ -112,7 +112,7 @@
 	</bean>
 	
 	
-	<!-- Display visbility properties bean -->
+	<!-- Display visibility properties bean -->
 	<util:properties id="DisplayVisibility"
 	                 location="classpath:properties/displayer.properties"/>
 

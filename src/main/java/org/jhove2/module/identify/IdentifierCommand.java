@@ -11,14 +11,18 @@ import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractModule;
 
 /**
- * JHOVE2Command to execute identification on Sources
- * Does not detect Clump format instances. 
+ * {@link org.jhove2.core.JHOVE2Command} to perform identification on
+ * {@link org.jhove2.core.source.Source}s.
+ * Note that this module does not detect
+ * {@link org.jhove2.core.source.ClumpSource} format instances. 
  * 
  * @author smorrissey
  *
  */
-public class IdentifierCommand extends AbstractModule implements JHOVE2Command {
-
+public class IdentifierCommand
+	extends AbstractModule
+	implements JHOVE2Command
+{
 	/** IdentifierCommand module version identifier. */
 	public static final String VERSION = "1.0.0";
 
@@ -31,23 +35,21 @@ public class IdentifierCommand extends AbstractModule implements JHOVE2Command {
 		+ "Stanford Junior University. "
 		+ "Available under the terms of the BSD license.";
 	
-	/**
-	 * Constructor
+	/** Instantiate a new <code>IdentifierCommand</code> module.
 	 */
 	public IdentifierCommand(){
 		this(VERSION, RELEASE, RIGHTS);
 	}
 	
 	/**
-	 * Constructor
-	 * @param version of this module	
-	 * @param release of this module	
-	 * @param rights of this module	
+	 * Instantiate a new <code>IdentifierCommand</code> module.
+	 * @param version Module version	
+	 * @param release Module release date	
+	 * @param rights  Module rights statement	
 	 */
 	public IdentifierCommand(String version, String release, String rights) {
 		super(version, release, rights);
 	}
-
 
 	/**
 	 * Instantiates Identifier and executes its identify method, attaching any resulting
@@ -55,11 +57,13 @@ public class IdentifierCommand extends AbstractModule implements JHOVE2Command {
 	 * @param source Source to be identified
 	 * @param jhove2 JHOVE2 framework object
 	 * @throws JHOVE2Exception
-	 * @see org.jhove2.core.JHOVE2Command#execute(org.jhove2.core.source.Source, org.jhove2.core.JHOVE2)
+	 * @see org.jhove2.core.JHOVE2Command#execute(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
 	 * @see org.jhove2.module.identify.Identifier#identify(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
 	 */
 	@Override
-	public void execute(JHOVE2 jhove2, Source source) throws JHOVE2Exception {	
+	public void execute(JHOVE2 jhove2, Source source)
+		throws JHOVE2Exception
+	{	
 		source.addModule(this);
 		try {		
 			Identifier identifier = 

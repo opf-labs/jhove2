@@ -37,10 +37,12 @@
 package org.jhove2.app;
 
 import java.util.Date;
+import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.AppConfigInfo;
 import org.jhove2.core.JHOVE2;
+import org.jhove2.core.source.Source;
 import org.jhove2.module.Module;
 import org.jhove2.module.display.Displayer;
 
@@ -53,9 +55,10 @@ public interface Application
 	extends Module
 {
 	/**
-	 * 
-	 * @return
+	 * Get the {@link org.jhove2.core.AppConfigInfo} object. 
+	 * @return Application configuration information object
 	 */
+	@ReportableProperty(order = 1, value = "Application configuration infromation.")
 	public AppConfigInfo getAppConfigInfo();
 
 	/**
@@ -71,37 +74,45 @@ public interface Application
 	 * 
 	 * @return Application invocation date/timestamp
 	 */
-	@ReportableProperty(order = 2, value = "Application invocation date/timestatmp.")
+	@ReportableProperty(order = 2, value = "Application invocation date/timestamp.")
 	public Date getDateTime();
-
-
-	/**
-	 * Get application framework.
-	 * 
-	 * @return Application framework
-	 */
-	public JHOVE2 getFramework();
-
-
-	/**
-	 * Set application framework.
-	 * 
-	 * @param framework
-	 *            Application framework
-	 */
-	public void setFramework(JHOVE2 framework);
 	
 	/**
-	 * get application displayer
-	 * @return
-	 *       Application displayer
+	 * Get application displayer.
+	 * @return Application displayer
 	 */
-	@ReportableProperty(order = 4, value = "Framework displayer module.")
+	@ReportableProperty(order = 4, value = "Application displayer module.")
 	public Displayer getDisplayer();
 	
 	/**
-	 * Mutator for displayer to be used to serialize JHOVE2 output
-	 * @param displayer
+	 * Get application JHOVE2 framework.
+	 * 
+	 * @return Application JHOVE2 framework
+	 */
+	public JHOVE2 getFramework();
+	
+	/** Get application {@link org.jhove2.core.source.Source} units.
+	 * @return Application source units
+	 */
+	@ReportableProperty(order = 5, value = "Application source units.")
+	public List<Source> getSources();
+	
+	/**
+	 * Set application displayer
+	 * @param displayer Application displayer
 	 */
 	public void setDisplayer(Displayer displayer);
+	
+	/**
+	 * Set application JHOVE2 framework.
+	 * 
+	 * @param framework
+	 *            Application JHOVE2 framework
+	 */
+	public void setFramework(JHOVE2 framework);
+	
+	/** Add an application source unit.
+	 * @param source Source unit to be added
+	 */
+	public void setSource(Source source);
 }

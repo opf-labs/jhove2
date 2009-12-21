@@ -36,7 +36,6 @@
 
 package org.jhove2.core;
 
-
 import java.util.Properties;
 
 import org.jhove2.annotation.ReportableProperty;
@@ -73,8 +72,8 @@ public class AppConfigInfo extends AbstractReportable {
 	/** Default {@link org.jhove2.core.io.Input} buffer size. */
 	public static final int DEFAULT_BUFFER_SIZE = 131072;
 	
-	/** environment variable name fro JHOVE2 home directory */
-	public static final String JHOVE2_HOME_VARNAME = "jhove2.home";
+	/** Environment variable name from JHOVE2 home directory */
+	public static final String JHOVE2_HOME_ENV = "jhove2.home";
 	
 	/** {@link org.jhove2.core.io.Input} buffer size. */
 	protected int bufferSize;
@@ -82,10 +81,10 @@ public class AppConfigInfo extends AbstractReportable {
 	/** {@link org.jhove2.core.io.Input} buffer type. */
 	protected Type bufferType;
 	
-	/** Message digests flag; if true, calculate message digests. */
+	/** Message digests flag: if true, calculate message digests. */
 	protected boolean calcDigests;
 
-	/** Delete temporary files flag. */
+	/** Delete temporary files flag: if true, delete temporary files. */
 	protected boolean deleteTempFiles;
 	
 	/** Framework temporary file prefix. */
@@ -116,29 +115,21 @@ public class AppConfigInfo extends AbstractReportable {
 
 	/**
 	 * Instantiate a new <code>AbstractApplication</code>.
-	 * 
-	 * @param version
-	 *            Application version identifier in three-part form: "M.N.P"
-	 * @param release
-	 *            Application release date in ISO 8601 format: "YYYY-MM-DD"
-	 * @param rights
-	 *            Application rights statement
-	 * @throws JHOVE2Exception 
 	 */
 	public AppConfigInfo() {
 		Properties props = System.getProperties();
-		this.tempDirectory = props.getProperty("java.io.tmpdir");
-		this.userName = props.getProperty("user.name");
+		this.tempDirectory    = props.getProperty("java.io.tmpdir");
+		this.userName         = props.getProperty("user.name");
 		this.workingDirectory = props.getProperty("user.dir");
-		this.jhove2Home = getJhove2HomeFromEnv(props);
+		this.jhove2Home       = getJHOVE2HomeFromEnv(props);
 		
-		this.bufferSize = DEFAULT_BUFFER_SIZE;
-		this.bufferType = DEFAULT_BUFFER_TYPE;
-		this.calcDigests = DEFAULT_CALC_DIGESTS;
-		this.deleteTempFiles = DEFAULT_DELETE_TEMP_FILES;
-		this.tempPrefix = DEFAULT_TEMP_PREFIX;
-		this.tempSuffix = DEFAULT_TEMP_SUFFIX;
-		this.failFastLimit = DEFAULT_FAIL_FAST_LIMIT;	
+		this.bufferSize       = DEFAULT_BUFFER_SIZE;
+		this.bufferType       = DEFAULT_BUFFER_TYPE;
+		this.calcDigests      = DEFAULT_CALC_DIGESTS;
+		this.deleteTempFiles  = DEFAULT_DELETE_TEMP_FILES;
+		this.tempPrefix       = DEFAULT_TEMP_PREFIX;
+		this.tempSuffix       = DEFAULT_TEMP_SUFFIX;
+		this.failFastLimit    = DEFAULT_FAIL_FAST_LIMIT;	
 	}
 
 	/**
@@ -146,7 +137,7 @@ public class AppConfigInfo extends AbstractReportable {
 	 * 
 	 * @return Buffer size
 	 */
-	@ReportableProperty(order = 1, value = "Input buffer size.")
+	@ReportableProperty(order = 10, value = "Input buffer size.")
 	public int getBufferSize() {
 		return this.bufferSize;
 	}
@@ -156,29 +147,33 @@ public class AppConfigInfo extends AbstractReportable {
 	 * 
 	 * @return Input buffer type
 	 */
-	@ReportableProperty(order = 2, value = "Input buffer type.")
+	@ReportableProperty(order = 11, value = "Input buffer type.")
 	public Type getBufferType() {
 		return this.bufferType;
 	}
+	
 	/**
-	 * Get message digests flag.
+	 * Get message digests flag: if true, calculate message digests.
 	 * 
 	 * @return Message digests flag; if true, calculate message digests
 	 */
-	@ReportableProperty(order = 3, value = "Framework message digests flag; if "
+	@ReportableProperty(order = 9, value = "Message digests flag: if "
 		+ "true, calculate digests.")
 	public boolean getCalcDigests() {
 		return this.calcDigests;
 	}
+	
 	/**
-	 * Get delete temporary files flag.
+	 * Get delete temporary files flag: if true, delete temporary files.
 	 * 
 	 * @return Delete temporary files flag
 	 */
-
+	@ReportableProperty(order = 7, value="Temporary file deletion flag; if" +
+			"true, delete temporary files.")
 	public boolean getDeleteTempFiles() {
 		return this.deleteTempFiles;
 	}
+	
 	/**
 	 * Get framework fail fast limit. Processing of a given source unit is
 	 * terminated once the number of detected errors exceeds the limit. A limit
@@ -186,119 +181,158 @@ public class AppConfigInfo extends AbstractReportable {
 	 * 
 	 * @return Fail fast limit
 	 */
-	@ReportableProperty(order = 5, value = "Framework fail fast limit.")
+	@ReportableProperty(order = 8, value = "Fail fast limit.")
 	public int getFailFastLimit() {
 		return this.failFastLimit;
 	}
+	
+	/**
+	 * Get JHOVE2 home directory
+	 * @return JHOVE2 home directory
+	 */
+	@ReportableProperty(order = 1, value = "JHOVE2 home directory.")
+	public String getJHOVE2Home() {
+		return jhove2Home;
+	}
+
+	/** Get JHOVE2 home directory from the "jhove2.home" environmental
+	 * variable.  If the variable isn't set, the value of "user.dir" is
+	 * used.
+	 * @param props Environment properties
+	 * @return JHOVE2 home directory
+	 */
+	public static String getJHOVE2HomeFromEnv(Properties props){
+		String jhove2Home = System.getenv(JHOVE2_HOME_ENV);
+		if (jhove2Home == null){
+			jhove2Home = props.getProperty("user.dir");
+		}
+		return jhove2Home;
+	}
+	
 	/**
 	 * Get temporary directory.
 	 * 
 	 * @return Temporary directory
 	 */
-	@ReportableProperty(order = 7, value = "Temporary directory.")
+	@ReportableProperty(order = 4, value = "Temporary directory.")
 	public String getTempDirectory() {
 		return this.tempDirectory;
 	}
+
+	/**
+	 * Get temporary file prefix.
+	 * 
+	 * @return Temporary file prefix
+	 */
+	@ReportableProperty(order = 5, value = "Temporary file prefix.")
+	public String getTempPrefix() {
+		return tempPrefix;
+	}
+	
+	/**
+	 * Get temporary file suffix.
+	 * 
+	 * @return Temporary file suffix
+	 */
+	@ReportableProperty(order = 6, value = "Temporary file suffix.")
+	public String getTempSuffix() {
+		return tempSuffix;
+	}
+	
 	/**
 	 * Get application user name.
 	 * 
 	 * @return Application user name
 	 */
-	@ReportableProperty(order = 1, value = "Application user name.")
+	@ReportableProperty(order = 2, value = "Application user name.")
 	public String getUserName() {
 		return this.userName;
 	}
+	
 	/**
 	 * Get application working directory.
 	 * 
 	 * @return Application working directory
 	 */
-	@ReportableProperty(order = 4, value = "Application current working directory.")
+	@ReportableProperty(order = 3, value = "Application current working directory.")
 	public String getWorkingDirectory() {
 		return this.workingDirectory;
 	}
+	
 	/**
-	 * Mutator for input bufferSize
-	 * @param bufferSize
+	 * Set input buffer size
+	 * @param bufferSize Input buffer size
 	 */
 	public void setBufferSize(int bufferSize) {
 		this.bufferSize = bufferSize;
 	}
 	/**
-	 * Mutator for calcDigests flag
-	 * @param calcDigests boolean indicating whether to calculate message digests (checksums)
+	 * Set message digest calculation flag.
+	 * @param calcDigests Message digest calculation flag: if true, calculate
+	 *                    message digests
 	 */
 	public void setCalcDigests(boolean calcDigests) {
 		this.calcDigests = calcDigests;
 	}
+	
 	/**
-	 * Mutator for Input buffer type
-	 * @param bufferType
+	 * Set Input buffer type.
+	 * @param bufferType Input buffer type
 	 */
 	public void setBufferType(Type bufferType) {
 		this.bufferType = bufferType;
 	}
 	/**
-	 * Mutator for deleteTempFiles flag
-	 * @param deleteTempFiles
+	 * Set temporary file deletion flag.
+	 * @param deleteTempFiles Temporary file deletion flag: if true, delete
+	 *                        temporary files
 	 */
 	public void setDeleteTempFiles(boolean deleteTempFiles) {
 		this.deleteTempFiles = deleteTempFiles;
 	}
+	
 	/**
-	 * Mutator for failFastLimit  A value of 0 means there will be no failFast
-	 * @param failFastLimit
+	 * Set fail fast limit.  A value of 0 means there will be no fast failure.
+	 * In other words, JHOVE2 will continue to process regardless of the number
+	 * of errors.
+	 * @param failFastLimit Fail fast limit
 	 */
 	public void setFailFastLimit(int failFastLimit) {
 		this.failFastLimit = failFastLimit;
 	}
+	
 	/**
-	 * Mutator for path to directory where JHOVE2 temporary files will be created
-	 * @param tempDirectory
+	 * Set temporary directory.
+	 * @param tempDirectory Temporary directory
 	 */
 	public void setTempDirectory(String tempDirectory) {
 		this.tempDirectory = tempDirectory;
 	}
+	
 	/**
-	 * Mutator for user name
-	 * @param userName
+	 * Set user name.
+	 * @param userName User name
 	 */
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
+	
 	/**
-	 * Mutator for working directory
-	 * @param workingDirectory
+	 * Set current working directory.
+	 * @param workingDirectory Current working directory
 	 */
 	public void setWorkingDirectory(String workingDirectory) {
 		this.workingDirectory = workingDirectory;
 	}
-
+	
 	/**
-	 * Get framework temporary file prefix.
-	 * 
-	 * @return Framework temporary file prefix
-	 */
-	@ReportableProperty(order = 8, value = "Framework temporary file prefix.")
-	public String getTempPrefix() {
-		return tempPrefix;
-	}
-	/**
-	 * Mutator for prefix for JHOVE2 temporary files
-	 * @param tempPrefix
+	 * Set temporary file prefix.
+	 * @param tempPrefix Temporary file prefix
 	 */
 	public void setTempPrefix(String tempPrefix) {
 		this.tempPrefix = tempPrefix;
 	}
-	/**
-	 * Get framework temporary file suffix.
-	 * 
-	 * @return Framework temporary file suffix
-	 */
-	@ReportableProperty(order = 9, value = "Framework temporary file suffix.")
-	public String getTempSuffix() {
-		return tempSuffix;
-	}
+
 	/**
 	 * Mutator for framework temporary file name suffix
 	 * @param tempSuffix
@@ -306,27 +340,12 @@ public class AppConfigInfo extends AbstractReportable {
 	public void setTempSuffix(String tempSuffix) {
 		this.tempSuffix = tempSuffix;
 	}
-	/**
-	 * Accessor for JHOVE2 home directory
-	 * @return String containing JHOVE2 home directory
-	 */
-	@ReportableProperty(order = 10, value = "JHOVE2 home directory.")
-	public String getJhove2Home() {
-		return jhove2Home;
-	}
+
 	/**
 	 * Mutator for JHOVE2 home directory
 	 * @param jhove2Home setting for JHOVE2 home directory
 	 */
-	public void setJhove2Home(String jhove2Home) {
+	public void setJHOVE2Home(String jhove2Home) {
 		this.jhove2Home = jhove2Home;
-	}
-
-	public static String getJhove2HomeFromEnv(Properties props){
-		String jhove2Home = System.getenv(JHOVE2_HOME_VARNAME);
-		if (jhove2Home==null){
-			jhove2Home = props.getProperty("user.dir");
-		}
-		return jhove2Home;
 	}
 }

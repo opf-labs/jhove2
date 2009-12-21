@@ -102,10 +102,10 @@ implements Source, Comparable<Source> {
 	 * Instantiate a new <code>AbstractSource</code>.
 	 */
 	protected AbstractSource() {
-		this.children = new ArrayList<Source>();
+		this.children        = new ArrayList<Source>();
 		this.deleteTempFiles = AppConfigInfo.DEFAULT_DELETE_TEMP_FILES;
-		this.modules = new ArrayList<Module>();
-		this.timerInfo = new TimerInfo();
+		this.modules         = new ArrayList<Module>();
+		this.timerInfo       = new TimerInfo();
 		this.presumptiveFormatIdentifications = new TreeSet<FormatIdentification>();
 	}
 
@@ -117,24 +117,27 @@ implements Source, Comparable<Source> {
 	 */
 	public AbstractSource(File file) {
 		this();
-		this.file = file;
+		this.file   = file;
 		this.isTemp = false;
 	}
 
 	/**
-	 * Instantiate a new <code>AbstractSource</code> backed by an input stream.
+	 * Instantiate a new <code>AbstractSource</code> backed by an input stream
+	 * by creating a temporary file.
 	 * 
-     * @param String temporary file prefix
-     * @param String temporary file suffix
-     * @param int buffer size 
+     * @param tmpPrefix Temporary file prefix
+     * @param tmpSuffix Temporary file suffix
+     * @param bufferSize Buffer size used during transfer to a temporary file 
 	 * @param stream
-	 *            Input stream underlying the source unit
+	 *            Input stream backing the source unit
 	 * @throws IOException
 	 */
 	public AbstractSource(String tmpPrefix, String tmpSuffix,
-			int bufferSize, InputStream stream)  throws IOException {
+			              int bufferSize, InputStream stream)
+		throws IOException
+	{
 		this();
-		this.file = createTempFile(tmpPrefix, tmpSuffix, bufferSize, stream);
+		this.file   = createTempFile(tmpPrefix, tmpSuffix, bufferSize, stream);
 		this.isTemp = true;
 	}
 
@@ -151,9 +154,9 @@ implements Source, Comparable<Source> {
 	/**
 	 * Create a temporary backing file from an input stream.
 	 * 
-     * @param String temporary file prefix
-     * @param String temporary file suffix
-     * @param int buffer size 
+     * @param tmpPrefix Temporary file prefix
+     * @param tmpSuffix Temporary file suffix
+     * @param  bufferSize Buffer size used during transfer to temporary file 
 	 * @param inStream
 	 *            Input stream
 	 * @return file Temporary backing file
@@ -219,7 +222,6 @@ implements Source, Comparable<Source> {
 		return this.deleteTempFiles;
 	}
 
-
 	/**
 	 * Get {@link java.io.File} backing the source unit.
 	 * 
@@ -250,7 +252,8 @@ implements Source, Comparable<Source> {
 	 */
 	@Override
 	public Input getInput(int bufferSize, Type bufferType)
-	throws FileNotFoundException, IOException {
+		throws FileNotFoundException, IOException
+	{
 		return getInput(bufferSize, bufferType, ByteOrder.LITTLE_ENDIAN);
 	}
 
@@ -275,7 +278,8 @@ implements Source, Comparable<Source> {
 	 *             I/O exception getting input
 	 */
 	public Input getInput(int bufferSize, Type bufferType, ByteOrder order)
-	throws FileNotFoundException, IOException {
+		throws FileNotFoundException, IOException
+	{
 		return InputFactory.getInput(this.file, bufferSize, bufferType, order);
 	}
 
@@ -286,7 +290,9 @@ implements Source, Comparable<Source> {
 	 * @throws FileNotFoundException
 	 * @see org.jhove2.core.source.Source#getInputStream()
 	 */
-	public InputStream getInputStream() throws FileNotFoundException {
+	public InputStream getInputStream()
+		throws FileNotFoundException
+	{
 		return new FileInputStream(this.file);
 	}
 
@@ -370,7 +376,11 @@ implements Source, Comparable<Source> {
 		this.modules.add(module);
 	}
 
-
+	/**
+	 * Test for equality.
+	 * @param obj Object to test equality against
+	 * @return True if equal; otherwise false
+	 */
 	@Override
 	public boolean equals (Object obj){
 		if (obj == null) {
@@ -432,7 +442,7 @@ implements Source, Comparable<Source> {
 
 		return (thisChildSize == containsCount);
 	}
-	@Override
+	
 	/**
 	 * Lexically compare format identifications.
 	 * 
@@ -441,6 +451,7 @@ implements Source, Comparable<Source> {
 	 *         greater than the second
 	 * @see java.lang.Comparable#compareTo(Object)
 	 */
+	@Override
 	public int compareTo(Source src){
 		if (src==null){
 			return 1;
@@ -517,33 +528,48 @@ implements Source, Comparable<Source> {
 		return 0;
 	}
 	
-	
+	/**
+	 * Get elapsed time processing the source unit.
+	 * @return Elapsed time
+	 */
 	@Override
 	public TimerInfo getTimerInfo() {
 		return timerInfo;
 	}
 	
+	/**
+	 * Get set of presumptively-identified formats.
+	 * @return Presumptively-identified formats
+	 */
 	@Override
 	public Set<FormatIdentification> getPresumptiveFormatIdentifications() {
 		return presumptiveFormatIdentifications;
 	}
 	
+	/**
+	 * Set presumptive format identifications for this source unit.
+	 * @param formatIdentifications Presumptive format identifications
+	 */
 	@Override
-	public void setPresumptiveFormatIdentifications(
-			Set<FormatIdentification> formatIdentifications) {
+	public void setPresumptiveFormatIdentifications(Set<FormatIdentification> formatIdentifications) {
 		this.presumptiveFormatIdentifications = formatIdentifications;
 	}
 	
+	/** Add a presumptively-identified format for this source unit.
+	 * @param fi Presumptively-identified format
+	 */
 	@Override
 	public void addPresumptiveFormatIdentification(FormatIdentification fi){
 		this.presumptiveFormatIdentifications.add(fi);
 	}
 	
+	/** Add set of presumptively-identified formats for this source unit.
+	 * @param fis Presumptively-identified formats
+	 */
 	@Override
 	public void addPresumptiveFormatIdentifications(Set<FormatIdentification> fis){
 		for (FormatIdentification fi:fis){
 			this.addPresumptiveFormatIdentification(fi);
 		}
 	}
-
 }

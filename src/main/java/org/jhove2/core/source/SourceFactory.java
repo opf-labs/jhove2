@@ -49,13 +49,13 @@ import java.util.zip.ZipFile;
 
 import org.jhove2.core.JHOVE2Exception;
 
-
 /**
  * Factory for JHOVE2 file and directory source units.
  * 
  * @author mstrong, slabrams, smorrissey
  */
-public class SourceFactory {
+public class SourceFactory
+{
 	/**
 	 * Get source unit from a file system path name.
 	 * 
@@ -68,7 +68,8 @@ public class SourceFactory {
 	 *             I/O exception instantiating source
 	 */
 	public static synchronized Source getSource(String pathName)
-			throws FileNotFoundException, IOException {
+		throws FileNotFoundException, IOException
+	{
 		// TODO: check if file exists and if not, throw FileNotFound exception
 		return getSource(new File(pathName));
 	}
@@ -85,7 +86,8 @@ public class SourceFactory {
 	 *             I/O exception instantiating source
 	 */
 	public static synchronized Source getSource(File file)
-			throws FileNotFoundException, IOException {
+		throws FileNotFoundException, IOException
+	{
 		if (file.isDirectory()) {
 			return new DirectorySource(file);
 		}
@@ -94,27 +96,37 @@ public class SourceFactory {
 	}
 
 	/**
-	 * Get source unit from a URL.
+	 * Get source unit from a URL by creating a local temporary file.
 	 * 
-	 * @param jhove2
-	 *            JHOVE2 framework
+	 * @param tmpPrefix
+	 *            Temporary file prefix
+	 * @param tmpSuffix
+	 *            Temporary file suffix
+	 * @param bufferSize
+	 *            Buffer size for transfer to temporary file
 	 * @param url
 	 *            URL
 	 * @return Source unit
 	 * @throws IOException
 	 *             I/O exception instantiating source
 	 */
-	public static synchronized Source getSource(String tmpPrefix, String tmpSuffix,
-			int bufferSize, URL url)
-			throws IOException {
+	public static synchronized Source getSource(String tmpPrefix,
+			                                    String tmpSuffix,
+			                                    int bufferSize, URL url)
+		throws IOException
+	{
 		return new URLSource(tmpSuffix, tmpSuffix, bufferSize, url);
 	}
 
 	/**
-	 * Get source unit from a Zip file entry.
+	 * Get source unit from a Zip file entry by creating a temporary file.
 	 * 
-	 * @param jhove2
-	 *            JHOVE2 framework
+	 * @param tmpPrefix
+	 *            Temporary file prefix
+	 * @param tmpSuffix
+	 *            Temporary file suffix
+	 * @param bufferSize
+	 *            Buffer size during transfer to temporary file
 	 * @param zip
 	 *            Zip file
 	 * @param entry
@@ -123,21 +135,23 @@ public class SourceFactory {
 	 * @throws IOException
 	 *             I/O exception instantiating source
 	 */
-	public static synchronized Source getSource(String tmpPrefix, String tmpSuffix,
-			int bufferSize, ZipFile zip,
-			ZipEntry entry) throws IOException {
+	public static synchronized Source getSource(String tmpPrefix,
+			                                    String tmpSuffix,
+			                                    int bufferSize, ZipFile zip,
+			                                    ZipEntry entry)
+		throws IOException
+	{
 		InputStream stream = zip.getInputStream(entry);
 		if (entry.isDirectory()) {
 			return new ZipDirectorySource(stream, entry);
 		}
 
 		return new ZipFileSource(tmpSuffix, tmpSuffix, bufferSize, stream, entry);
-	}
-	
-	
+	}	
 
 	/**
-	 * Make Source from sequence of file system objects (files and directories).
+	 * Get source unit from sequence of file system objects (files and
+	 * directories).
 	 * 
 	 * @param pathName
 	 *            First path name
@@ -168,15 +182,17 @@ public class SourceFactory {
 	 * @throws IOException
 	 * @throws JHOVE2Exception
 	 */
-	public static synchronized Source getSource(List<String> pathNames) throws IOException,
-	JHOVE2Exception {
+	public static synchronized Source getSource(List<String> pathNames)
+		throws IOException, JHOVE2Exception
+	{
 		Source source = null;
 		Iterator<String> iter = pathNames.iterator();
 		// TODO: handle FileNotFound exception in getSource()
 		if (pathNames.size() == 1) {
 			String pathName = iter.next();
 			source = SourceFactory.getSource(pathName);
-		} else {
+		}
+		else {
 			source = new FileSetSource();
 			while (iter.hasNext()) {
 				String pathName = iter.next();
@@ -186,5 +202,4 @@ public class SourceFactory {
 		}
 		return source;
 	}
-	
 }

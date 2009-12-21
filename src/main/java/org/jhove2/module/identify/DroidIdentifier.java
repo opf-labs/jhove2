@@ -67,7 +67,6 @@ import uk.gov.nationalarchives.droid.signatureFile.FileFormat;
 import uk.gov.nationalarchives.droid.ConfigFile;
 import uk.gov.nationalarchives.droid.signatureFile.FFSignatureFile;
 
-
 /**
  * Identifier that wraps the DROID identification tool
  * Note that this wrapper is using a "light" version of DROID --
@@ -78,7 +77,10 @@ import uk.gov.nationalarchives.droid.signatureFile.FFSignatureFile;
  * 
  * @author smorrissey
  */
-public class DroidIdentifier extends AbstractModule implements Identifier {
+public class DroidIdentifier
+	extends AbstractModule
+	implements Identifier
+{
 	/** Framework version identifier. */
 	public static final String VERSION = "1.0.0";
 
@@ -90,20 +92,21 @@ public class DroidIdentifier extends AbstractModule implements Identifier {
 		+ "Ithaka Harbors, Inc., and The Board of Trustees of the Leland "
 		+ "Stanford Junior University. "
 		+ "Available under the terms of the BSD license.";
+	
 	/** DROID product name */
 	public static final String DROID_NAME = "DROID (Digital Record Object Identification)";
 
-	/** Bean name for bean for properties file mapping PUIDs to JHOVE2 format ids */
+	/** Bean name for bean for properties file mapping PUIDs to JHOVE2 format identifiers */
 	public static final String PUIDMAP_BEANNAME = "DroidMap";
 
-	/** Bean name for bean for properties file mapping JHOVE2 format ids to JHOVE2 format bean names */
+	/** Bean name for bean for properties file mapping JHOVE2 format identifiers to JHOVE2 format bean names */
 	public static final String JHOVE2BEANMAP_BEANNAME = "FormatBeanMap";
 
-	/** Bean name for bean for properties file mapping PUIDs to JHOVE2 format ids */
+	/** Bean name for bean for properties file mapping PUIDs to JHOVE2 format identifiers */
 	public static final String DROIDCONFIG_BEANNAME = "DroidConfigMap";
 	
 	/** System property name for DROID home directory path */
-	public static final String DROID_HOME_VARNAME = "droid.home";
+	public static final String DROID_HOME_ENV = "droid.home";
 
 	/** default DROID directory name */
 	public static final String DEFAULT_DROID_DIRNAME = "droid";
@@ -141,17 +144,40 @@ public class DroidIdentifier extends AbstractModule implements Identifier {
 
 	/** static member to cache parsed droid signature file */
 	private static FFSignatureFile cachedSigFile = null;
-	
+
+	/**Instantiate a new <code>DROIDIdentifier</code> module.
+	 * Uses static values for version, release date, and rights Strings
+	 */
+	public DroidIdentifier(){
+		this(VERSION, RELEASE, RIGHTS);		
+	}
 
 	/**
-	 * If DROID config file has not yet been parsed, parses and returns it;
+	 * Instantiate a new <code>DROID</code> module.
+	 * 
+	 * @param version
+	 *            DROID version identifier
+	 * @param date
+	 *            DROID release date
+	 * @param rights
+	 *            DROID rights statement
+	 */
+	public DroidIdentifier(String version, String date, String rights) {
+		super(version, date, rights);	
+		this.setWrappedProduct(new WrappedProductInfo(DROID_NAME));
+	}
+
+	/**
+	 * If DROID config file has not yet been parsed, parse and return it;
 	 * Otherwise simply returns parsed config file
 	 * @param configFilePath path to DROID confi file
 	 * @return parsed config file object
 	 * @throws Exception
 	 */
-	private static synchronized ConfigFile getCachedConfigFile(String configFilePath) throws Exception {
-		if (cachedConfigFile == null){
+	private static synchronized ConfigFile getCachedConfigFile(String configFilePath)
+		throws Exception
+	{
+		if (cachedConfigFile == null) {
 			cachedConfigFile = DroidWrappedProduct.parseConfigFile(configFilePath);
 		}
 		return cachedConfigFile;
@@ -165,36 +191,15 @@ public class DroidIdentifier extends AbstractModule implements Identifier {
 	 * @return parsed signature file contents
 	 * @throws Exception
 	 */
-	private static synchronized FFSignatureFile getCachedSignatureFile(ConfigFile configFile, String sigFilePath)
-	throws Exception {
-		if (cachedSigFile==null){
+	private static synchronized FFSignatureFile getCachedSignatureFile(ConfigFile configFile,
+			                                                           String sigFilePath)
+		throws Exception
+	{
+		if (cachedSigFile==null) {
 			cachedSigFile = DroidWrappedProduct.parseSignatureFile(configFile,
 					sigFilePath);
 		}
 		return cachedSigFile;
-	}
-
-	/**
-	 * No-argument constructor
-	 * Uses static values for version, release date, and rights Strings
-	 */
-	public DroidIdentifier(){
-		this(VERSION, RELEASE, RIGHTS);		
-	}
-
-	/**
-	 * Instantiate a new <code>DROID</code> product.
-	 * 
-	 * @param version
-	 *            DROID version identifier
-	 * @param date
-	 *            DROID release date
-	 * @param rights
-	 *            DROID rights statement
-	 */
-	public DroidIdentifier(String version, String date, String rights) {
-		super(version, date, rights);	
-		this.setWrappedProduct(new WrappedProductInfo(DROID_NAME));
 	}
 
 	@Override
@@ -275,7 +280,7 @@ public class DroidIdentifier extends AbstractModule implements Identifier {
 	}
 
 	/**
-	 * Loads DROID PUID to JHOVE2 Format Identifier map from properties file if map 
+	 * Load DROID PUID to JHOVE2 Format Identifier map from properties file if map 
 	 * is not already populated and returns map; otherwise just returns map
 	 * @return DROID PUID to JHOVE2 Format Identifier map
 	 * @throws JHOVE2Exception
@@ -295,8 +300,10 @@ public class DroidIdentifier extends AbstractModule implements Identifier {
 		return puidToJhoveId;
 	}
 	
-	private static ConcurrentMap<String,String> getDroidFilePaths() throws JHOVE2Exception {
-		if (droidFilePaths==null){
+	private static ConcurrentMap<String,String> getDroidFilePaths()
+		throws JHOVE2Exception
+	{
+		if (droidFilePaths == null){
 			ConcurrentHashMap<String, String> map = new ConcurrentHashMap<String, String>();
 			Properties props = null;
 			props = Configure.getProperties(DROIDCONFIG_BEANNAME);
@@ -319,7 +326,9 @@ public class DroidIdentifier extends AbstractModule implements Identifier {
 	 * @return true if DROID able to identify file; otherwise false
 	 * @throws JHOVE2Exception 
 	 */
-	protected boolean matchFound(IdentificationFile idf) throws JHOVE2Exception{
+	protected boolean matchFound(IdentificationFile idf)
+		throws JHOVE2Exception
+	{
 		boolean matchFound = false;
 		int classification = idf.getClassification();
 		String msgText = null;
@@ -363,12 +372,13 @@ public class DroidIdentifier extends AbstractModule implements Identifier {
 		}// end switch
 		return matchFound;
 	}
+	
 	/**
 	 * Map from DROID confidence levels to JHOVE2 confidence levels
 	 * @param ffh File format hit containing DROID confidence level
 	 * @return JHOVE2 confidence level for this identification
 	 */
-	protected Confidence getJhoveConfidence(FileFormatHit ffh){
+	protected Confidence getJhoveConfidence(FileFormatHit ffh) {
 		int droidConfidence = ffh.getHitType();
 		Confidence jhoveConfidence;
 		switch (droidConfidence){
@@ -399,6 +409,7 @@ public class DroidIdentifier extends AbstractModule implements Identifier {
 	public Message getFileNotIdentifiedMessage() {
 		return this.fileNotIdentifiedMessage;
 	}
+	
 	/**
 	 * Get DROID File Not run message.
 	 * 
@@ -408,6 +419,7 @@ public class DroidIdentifier extends AbstractModule implements Identifier {
 	public Message getFileNotRunMessage() {
 		return fileNotRunMessage;
 	}
+	
 	/**
 	 * Get DROID File error message.
 	 * 
@@ -439,9 +451,6 @@ public class DroidIdentifier extends AbstractModule implements Identifier {
 	public void setFileErrorMessage(Message fileErrorMessage) {
 		this.fileErrorMessage = fileErrorMessage;
 	}
-
-	
-	
 	
 	private static synchronized String getConfigFileName() {
 		if (configFileName == null){
@@ -466,17 +475,17 @@ public class DroidIdentifier extends AbstractModule implements Identifier {
 	}
 
 	private static synchronized String getDroidHomePath() {
-		if (droidHomePath==null){
+		if (droidHomePath == null){
 			String separator = System.getProperty("file.separator");
 			StringBuffer droidHome = new StringBuffer();
 			String dHome;
 			try {
-				dHome = getDroidFilePaths().get(DROID_HOME_VARNAME);
+				dHome = getDroidFilePaths().get(DROID_HOME_ENV);
 			} catch (JHOVE2Exception e) {
 				dHome = null;
 			}	
-			if (dHome==null){				
-				dHome = AppConfigInfo.getJhove2HomeFromEnv(System.getProperties());	
+			if (dHome == null){				
+				dHome = AppConfigInfo.getJHOVE2HomeFromEnv(System.getProperties());	
 				droidHome.append(dHome);
 				if (dHome.lastIndexOf(separator) != dHome.length()-1){
 					droidHome.append(separator);
@@ -494,6 +503,4 @@ public class DroidIdentifier extends AbstractModule implements Identifier {
 		}		
 		return droidHomePath;
 	}
-
-
 }

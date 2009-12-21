@@ -68,21 +68,24 @@ Displayer {
 	public enum DisplayVisibility {
 		Always, IfFalse, IfNegative, IfNonNegative, IfNonPositive, IfNonZero, IfPositive, IfTrue, IfZero, Never
 	}
+	
 	/**
 	 * Show identifiers flag: if true, show identifiers in JSON and Text display
 	 * mode.
 	 */
 	protected boolean showIdentifiers;
 
-	/**
-	 * Path to output file, if System.out is not being used
-	 */
-	protected String outputFilePath;
+	/** Output file pathname, if System.out is not being used. */
+	protected String filePathname;
 
-	/** Displayer display displayVisbilities (configured by user, indicates whether
-	 *  or not a feature should be displayed by displayer. */
+	/** Displayer visbility flags configured by user to indicate whether
+	 *  or not a feature should be displayed.
+	 */
 	private static ConcurrentMap<String, DisplayVisibility> visibilities;
 
+	/** Indentation flag.  If true, displayed output is indented to indicate
+	 * subsidiarity relationships.
+	 */
 	protected boolean shouldIndent;
 
 	/**
@@ -102,24 +105,28 @@ Displayer {
 
 
 	@Override
-	public void display(Reportable reportable) throws FileNotFoundException,
-	JHOVE2Exception {
-		this.display(reportable, this.getOutputFilePath());
+	public void display(Reportable reportable)
+		throws FileNotFoundException, JHOVE2Exception
+	{
+		this.display(reportable, this.getFilePathname());
 	}
 
 	@Override
-	public void display(Reportable reportable, String outputFilePath)throws FileNotFoundException,
-	JHOVE2Exception {
+	public void display(Reportable reportable, String filePathname)
+		throws FileNotFoundException, JHOVE2Exception
+	{
 		PrintStream out = System.out;
-		if (outputFilePath != null) {
-			out = new PrintStream(outputFilePath);
+		if (filePathname != null) {
+			this.filePathname = filePathname;
+			out = new PrintStream(filePathname);
 		}	
 		this.display(reportable, out);
 	}
 
 	@Override
 	public void display(Reportable reportable, PrintStream out)
-	throws JHOVE2Exception {
+		throws JHOVE2Exception
+	{
 		this.getTimerInfo().setStartTime();
 		this.startDisplay(out, 0);
 		this.display(out, reportable, 0, 0);
@@ -141,9 +148,12 @@ Displayer {
 	 *            enclosing reportable or collection
 	 */
 	protected void display(PrintStream out, Reportable reportable, int level,
-			int order) throws JHOVE2Exception {
+			               int order)
+		throws JHOVE2Exception
+	{
 		this.display(out, reportable, level, order, true);
 	}
+	
 	/**
 	 * Display a {@link org.jhove2.core.Reportable}.
 	 * 
@@ -160,7 +170,9 @@ Displayer {
 	 * 			boolean indicating new level of reportable hierarchy
 	 */
 	protected void display(PrintStream out, Reportable reportable, int level,
-			int order, boolean shouldNestReportable) throws JHOVE2Exception {
+			               int order, boolean shouldNestReportable)
+		throws JHOVE2Exception
+	{
 		ReportableInfo reportableInfo = new ReportableInfo(reportable);
 		String name = reportableInfo.getName();
 		I8R identifier = reportableInfo.getIdentifier();
@@ -242,7 +254,10 @@ Displayer {
 	 *            enclosing reportable or collection
 	 */
 	protected void display(PrintStream out, int level, String name,
-			I8R identifier, Object value, int order, String unitOfMeasure) throws JHOVE2Exception {
+			               I8R identifier, Object value, int order,
+			               String unitOfMeasure)
+		throws JHOVE2Exception
+	{
 		if (value instanceof List<?>) {
 			List<?> valueList = (List<?>) value;
 			int size = valueList.size();
@@ -292,6 +307,9 @@ Displayer {
 	 * 
 	 * @param level
 	 *            Nesting level
+	 * @param shouldIndent
+	 *            Indentation flag; if true displayed output is indented to
+	 *            indicate subsidiarity relationships
 	 * @return Indentation string
 	 */
 	public static String getIndent(int level, boolean shouldIndent) {
@@ -304,14 +322,15 @@ Displayer {
 		return indent.toString();
 	}
 
-
 	/**
 	 * Utility method to get user-specified restrictions on display visibility of Reportable properties
 	 * @return TreeMap mapping from Reportable property I8R to a DisplayVisibility
 	 * @throws JHOVE2Exception
 	 */
-	public static ConcurrentMap<String, DisplayVisibility> getVisibilities() throws JHOVE2Exception {
-		if (visibilities==null){
+	public static ConcurrentMap<String, DisplayVisibility> getVisibilities()
+		throws JHOVE2Exception
+	{
+		if (visibilities == null){
 			ConcurrentHashMap<String, DisplayVisibility> viz = new ConcurrentHashMap<String, DisplayVisibility>();
 			Properties props = Configure.getProperties("DisplayVisibility");
 			if (props != null) {
@@ -352,25 +371,28 @@ Displayer {
 	public void setShowIdentifiers(boolean flag) {
 		this.showIdentifiers = flag;
 	}
-	/**
-	 * @return the outputFilePath
+	
+	/** Get output file pathname.
+	 * @return Output file pathname
 	 */
 	@Override
-	public String getOutputFilePath() {
-		return outputFilePath;
+	public String getFilePathname() {
+		return this.filePathname;
 	}
 
-	/**
-	 * @param outputFilePath the outputFilePath to set
+	/** Set output file pathname
+	 * @param filePathname Output file pathname
 	 */
 	@Override
-	public void setOutputFilePath(String outputFilePath) {
-		this.outputFilePath = outputFilePath;
+	public void setFilePathname(String filePathname) {
+		this.filePathname = filePathname;
 	}
+	
 	@Override
 	public boolean getShouldIndent() {
 		return this.shouldIndent;
 	}
+	
 	@Override
 	public void setShouldIndent(boolean shouldIndent){
 		this.shouldIndent = shouldIndent;

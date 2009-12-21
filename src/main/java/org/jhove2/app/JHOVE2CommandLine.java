@@ -73,60 +73,70 @@ public class JHOVE2CommandLine
 
 	/** Caught exception return code. */
 	public static final int EEXCEPTION = -1;
-	
 
 	/**
 	 * Instantiate a new <code>JHOVE2CommandLine</code>.
 	 * @throws JHOVE2Exception 
 	 */
-	public JHOVE2CommandLine() throws JHOVE2Exception {
-		// super constructor creates AppConfigInfo with JHOVE2 default settings,
-		// and the JHOVE2 default displayer, with default displayer settings
+	public JHOVE2CommandLine()
+		throws JHOVE2Exception
+	{
+		/* Super constructor creates {@link org.jhove2.core.AppConfigInfo} with
+		 * JHOVE2 default settings, and the JHOVE2 default displayer with
+		 * default displayer settings.
+		 */
 		super(VERSION, RELEASE, RIGHTS);
 	}
 	
 	/**
 	 * Main entry point for the JHOVE2 command line application.
 	 * 
-	 * @param args
-	 *            Command line arguments
+	 * @param args Command line arguments
 	 */
-	public static void main(String[] args) {
-
+	public static void main(String[] args)
+	{
 		try {
 			if (args.length < 1) {
 				System.out.println(getUsage());
 				System.exit(EUSAGE);
 			}
 		
-			JHOVE2CommandLine app = Configure.getReportable(Application.class,
-					"JHOVE2CommandLine");
+			/* Create and initialize the JHOVE2 command-line application. */
+			JHOVE2CommandLine app =	Configure.getReportable(Application.class,
+					                                        "JHOVE2CommandLine");
 			app.setDateTime(new Date());
 			
-			// Parse the application command line. 
-			// updates default (or Spring-wired) settings in AppConfigInfo with 
-			// any command line options
+			/* Parse the application command line and update the default (or
+			 * Spring-wired) settings in {@link org.jhove2.core.AppConfigInfo}
+			 * with any command line options.
+			 */
 			List<String> pathNames = app.parse(args); 
 			
-			
-			/* Create the JHOVE2 framework. */				
-			app.setFramework(Configure.getReportable(JHOVE2.class, "JHOVE2"));
-			
-			// configure the JHOVE2 framework
-			app.getFramework().setAppConfigInfo(app.getAppConfigInfo());	
-			
-			// make a Source out of files and directories to be processed
+			/* Create and initialize the JHOVE2 framework and register it with
+			 * the application.
+			 */		
+			JHOVE2 jhove2 = Configure.getReportable(JHOVE2.class, "JHOVE2");
+			jhove2.setAppConfigInfo(app.getAppConfigInfo());			
+			app.setFramework(jhove2);
+						
+			/* Create a File Set source unit out of files and directories
+			 * specified on the command line.  Add the JHOVE2 application and
+			 * framework as modules processing the source unit.
+			 */
 			Source source = SourceFactory.getSource(pathNames);
-			source.addModule(app);
-			source.addModule(app.getFramework());
+			source.addModule(jhove2);
+			app.setSource(source);
 			
-			/* Characterize the Source. */			
-			app.getFramework().getTimerInfo().setStartTime();
-			app.getFramework().characterize(source);
-			app.getFramework().getTimerInfo().setEndTime();
+			/* Characterize the File Set source unit (and all subsidiary
+			 * source units that it encapsulates.
+			 */			
+			jhove2.getTimerInfo().setStartTime();
+			jhove2.characterize(source);
+			jhove2.getTimerInfo().setEndTime();
 			
-			// display characterization information for all file system path names.
-			app.getDisplayer().display(source);
+			/* Display characterization information for the File Set.
+			 */
+			app.getDisplayer().display(app);
 			
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -136,19 +146,24 @@ public class JHOVE2CommandLine
 	}
 
 	/**
-	 * Parse the JHOVE2 application command line.
-	 * Updates the default values in the AppConfigInfo object with any command-line settings.
-	 * and constructs the list of file system paths to be processed by JHOVE2
-	 * Also constructs the commanLine string that is saved as a member in the instance of this class
+	 * Parse the JHOVE2 application command line and update the default values
+	 * in the {@link org.jhove2.core.AppConfigInfo} object with any
+	 * command-line settings; and construct the list of file system paths to be
+	 * processed by the application.  Also save the commandLine string as an
+	 * instance member.
+	 * 
 	 * @param args
 	 *            Command line arguments
 	 * @return File system path names
 	 * @throws JHOVE2Exception 
 	 */
-	public List<String> parse(String[] args) throws JHOVE2Exception {
+	public List<String> parse(String[] args)
+		throws JHOVE2Exception
+	{
 		ArrayList<String> pathNames = new ArrayList<String>();
 		boolean showIdentifiers = this.getDisplayer().getShowIdentifiers();
-		String outputFilePath = null;
+		String filePathname = null;
+		
 		for (int i = 0; i < args.length; i++) {
 			if (i == 0) {
 				this.commandLine = args[i];
@@ -161,24 +176,30 @@ public class JHOVE2CommandLine
 					if (opt == 'b' && i + 1 < args.length) {
 						this.getAppConfigInfo().setBufferSize(Integer.valueOf(args[++i]));
 						this.commandLine += " " + args[i];
-					} else if (opt == 'B' && i + 1 < args.length) {
+					}
+					else if (opt == 'B' && i + 1 < args.length) {
 						this.getAppConfigInfo().setBufferType(Type.valueOf(args[++i]));
 						this.commandLine += " " + args[i];
-					} else if (opt == 'd' && i + 1 < args.length) {
+					}
+					else if (opt == 'd' && i + 1 < args.length) {
 						String displayerType = args[++i];
 						this.setDisplayer( 
 							Configure.getReportable(Displayer.class,displayerType));
 						this.commandLine += " " + args[i];
-					} else if (opt == 'f' && i + 1 < args.length) {
+					}
+					else if (opt == 'f' && i + 1 < args.length) {
 						this.getAppConfigInfo().setFailFastLimit(Integer.valueOf(args[++i]));
 						this.commandLine += " " + args[i];
-					} else if (opt == 'o' && i + 1 < args.length) {
-						outputFilePath = args[++i];
+					}
+					else if (opt == 'o' && i + 1 < args.length) {
+						filePathname = args[++i];
 						this.commandLine += " " + args[i];
-					} else if (opt == 't' && i + 1 < args.length) {
+					}
+					else if (opt == 't' && i + 1 < args.length) {
 						this.getAppConfigInfo().setTempDirectory(args[++i]);
 						this.commandLine += " " + args[i];
-					} else {
+					}
+					else {
 						if (args[i].indexOf('i') > -1) {
 							showIdentifiers = true;
 						}
@@ -190,12 +211,14 @@ public class JHOVE2CommandLine
 						}
 					}
 				}
-			} else {
+			}
+			else {
 				pathNames.add(args[i]);
 			}
+			
 			this.getDisplayer().setShowIdentifiers(showIdentifiers);
-			if (outputFilePath != null){
-				this.getDisplayer().setOutputFilePath(outputFilePath);
+			if (filePathname != null){
+				this.getDisplayer().setFilePathname(filePathname);
 			}
 		}
 		return pathNames;
@@ -239,4 +262,3 @@ public class JHOVE2CommandLine
 		return usage.toString();
 	}
 }
-

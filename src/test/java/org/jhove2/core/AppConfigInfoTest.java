@@ -24,7 +24,7 @@ public class AppConfigInfoTest {
 	}
 
 	/**
-	 * Test method for {@link org.jhove2.core.AppConfigInfo#getJhove2Home()}.
+	 * Test method for {@link org.jhove2.core.AppConfigInfo#getJHOVE2Home()}.
 	 */
 	@Test
 	public void testGetJhove2Home() {
@@ -32,7 +32,7 @@ public class AppConfigInfoTest {
 		String sep = System.getProperty("file.separator");
 		assertEquals(config.getWorkingDirectory().concat(sep).
 				concat("target").concat(sep).concat("classes"),
-				config.getJhove2Home());
+				config.getJHOVE2Home());
 	}
 
 }

@@ -36,12 +36,15 @@
 
 package org.jhove2.app;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.jhove2.core.AppConfigInfo;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.config.Configure;
+import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractModule;
 import org.jhove2.module.display.Displayer;
 
@@ -50,8 +53,10 @@ import org.jhove2.module.display.Displayer;
  * 
  * @author mstrong, slabrams, smorrissey
  */
-public abstract class AbstractApplication extends AbstractModule implements
-		Application {
+public abstract class AbstractApplication
+	extends AbstractModule
+	implements Application
+{
 
 	/** Application command line. */
 	protected String commandLine;
@@ -67,6 +72,9 @@ public abstract class AbstractApplication extends AbstractModule implements
 	
 	/** Application displayer */
 	protected Displayer displayer;
+	
+	/** Application source units. */
+	protected List<Source> sources;
 
 	/**
 	 * Instantiate a new <code>AbstractApplication</code>.
@@ -79,10 +87,15 @@ public abstract class AbstractApplication extends AbstractModule implements
 	 *            Application rights statement
 	 * @throws JHOVE2Exception 
 	 */
-	public AbstractApplication(String version, String release, String rights) throws JHOVE2Exception {
+	public AbstractApplication(String version, String release, String rights)
+		throws JHOVE2Exception
+	{
 		super(version, release, rights);
-		// uses application defaults
-		this.setAppConfigInfo(new AppConfigInfo()); 
+
+		/* Default application initialization. */
+		this.setAppConfigInfo(new AppConfigInfo());
+		
+		/* Initialize the default displayer. */
 		try {
 			this.displayer = Configure.getReportable(Displayer.class,
 					Displayer.DEFAULT_DISPLAYER_TYPE);
@@ -95,6 +108,15 @@ public abstract class AbstractApplication extends AbstractModule implements
 				throw new JHOVE2Exception("Fail to instantiate default displayer", ex);
 			}
 		}
+		
+		this.sources = new ArrayList<Source>();
+	}
+
+	/** Get application configuration information.
+	 * @return Application configuration information
+	 */
+	public AppConfigInfo getAppConfigInfo() {
+		return appConfigInfo;
 	}
 
 	/**
@@ -118,6 +140,15 @@ public abstract class AbstractApplication extends AbstractModule implements
 	public Date getDateTime() {
 		return this.dateTime;
 	}
+
+	/** Get application displayer.
+	 * @return Application displayer
+	 */
+	@Override
+	public Displayer getDisplayer() {
+		return displayer;
+	}
+
 	
 	/**
 	 * Get application framework.
@@ -128,6 +159,42 @@ public abstract class AbstractApplication extends AbstractModule implements
 	@Override
 	public JHOVE2 getFramework() {
 		return this.framework;
+	}
+	
+	/** Get application {@link org.jhove2.core.source.Source} units.
+	 * @return Application source units
+	 */
+	public List<Source> getSources() {
+		return this.sources;
+	}
+
+	/** Set application configuration information.
+	 * @param appConfigInfo Application configuration information
+	 */
+	public void setAppConfigInfo(AppConfigInfo appConfigInfo) {
+		this.appConfigInfo = appConfigInfo;
+	}
+
+	/** Set application command line.
+	 * @param commandLine Application command line
+	 */
+	public void setCommandLine(String commandLine) {
+		this.commandLine = commandLine;
+	}
+
+	/** Set application invocation date/timestamp.
+	 * @param dateTime Application invocation date/timestamp
+	 */
+	public void setDateTime(Date dateTime) {
+		this.dateTime = dateTime;
+	}
+
+	/** Set application displayer.
+	 * @param displayer Application displayer
+	 */
+	@Override
+	public void setDisplayer(Displayer displayer) {
+		this.displayer = displayer;
 	}
 
 	/**
@@ -141,30 +208,12 @@ public abstract class AbstractApplication extends AbstractModule implements
 	public void setFramework(JHOVE2 framework) {
 		this.framework = framework;
 	}
-
-	public AppConfigInfo getAppConfigInfo() {
-		return appConfigInfo;
-	}
-
-	public void setAppConfigInfo(AppConfigInfo appConfigInfo) {
-		this.appConfigInfo = appConfigInfo;
-	}
-
-	public void setCommandLine(String commandLine) {
-		this.commandLine = commandLine;
-	}
-
-	public void setDateTime(Date dateTime) {
-		this.dateTime = dateTime;
-	}
-
+	
+	/** Add an application source unit.
+	 * @param source Source unit to be added
+	 */
 	@Override
-	public Displayer getDisplayer() {
-		return displayer;
-	}
-
-	@Override
-	public void setDisplayer(Displayer displayer) {
-		this.displayer = displayer;
+	public void setSource(Source source) {
+		this.sources.add(source);
 	}
 }

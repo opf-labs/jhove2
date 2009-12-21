@@ -36,7 +36,6 @@
 
 package org.jhove2.core;
 
-
 import java.io.IOException;
 import java.util.List;
 
@@ -76,23 +75,27 @@ extends AbstractModule
 	/** Configuration settings for framework.  If not configured, default values will be used */
 	protected AppConfigInfo appConfigInfo;
 	
-
 	/**
-	 * Instantiate a new <code>JHOVE2</code> core framework.
+	 * Instantiate a new <code>JHOVE2</code> core framework with a default
+	 * configuration.
 	 * 
 	 * @throws JHOVE2Exception
 	 */
 	public JHOVE2() throws JHOVE2Exception {
 		this(new AppConfigInfo());
 	}
+	
 	/**
-	 *  Instantiate a new <code>JHOVE2</code> core framework.
-	 * @param appConfigInfo Configuration settings for this instance of framework
+	 * Instantiate a new <code>JHOVE2</code> core framework with a specific
+	 * configuration.
+	 * @param appConfigInfo Configuration settings for this instance of the
+	 *                      JHOVE2 framework
 	 */
-	public JHOVE2(AppConfigInfo appConfigInfo){
+	public JHOVE2(AppConfigInfo appConfigInfo) {
 		super(VERSION, RELEASE, RIGHTS);
+		
 		this.appConfigInfo = appConfigInfo;
-		this.installation = Installation.getInstance();
+		this.installation  = Installation.getInstance();
 		this.sourceCounter = new SourceCounter();
 	}
 
@@ -106,21 +109,26 @@ extends AbstractModule
 	 * @throws JHOVE2Exception
 	 * @throws IOException
 	 */
-	public void characterize(Source source) throws IOException, JHOVE2Exception {
-		source.getTimerInfo().setStartTime();
-		source.setDeleteTempFiles(this.getAppConfigInfo().getDeleteTempFiles());
+	public void characterize(Source source)
+		throws IOException, JHOVE2Exception
+	{
+		TimerInfo timer = source.getTimerInfo();
+		timer.setStartTime();
+		
 		/* Update summary counts of source units, by type. */
 		this.sourceCounter.incrementSourceCounter(source);				
+		
+		/* Characterize the source unit. */
+		source.setDeleteTempFiles(this.getAppConfigInfo().getDeleteTempFiles());
 		try {
-			for (JHOVE2Command command:this.commands){
+			for (JHOVE2Command command : this.commands){
 				command.execute(this, source);
 			}
 		} finally {
 			source.close();
+			timer.setEndTime();
 		}
-		source.getTimerInfo().setEndTime();
 	}
-
 
 	/**
 	 * Determine if the fail fast limit has been exceeded.
@@ -163,25 +171,28 @@ extends AbstractModule
 	}
 
 	/**
-	 * Accessor for Counter to track number and type of sources processed by framework
-	 * @return
+	 * Accessor for counter to track number and type of source units processed
+	 * by the JHOVE2 framework.
+	 * @return Source unit counter
 	 */
-	@ReportableProperty(order = 52, value = "Counters of source units "
-		+ "processed, by type.")
+	@ReportableProperty(order = 52, value = "Counters of source units processed, " +
+		"by type.")
 	public SourceCounter getSourceCounter() {
 		return sourceCounter;
 	}
 
 	/**
-	 * Mutator for Counter to track number and type of sources processed by framework
-	 * @param sourceCounter
+	 * Mutator for counter to track number and type of sources processed by
+	 * the JHOVE2 framework.
+	 * @param sourceCounter Source unit counter
 	 */
 	public void setSourceCounter(SourceCounter sourceCounter) {
 		this.sourceCounter = sourceCounter;
 	}
 
 	/**
-	 * Get object which maintains configuration information for the running of this module
+	 * Get object which maintains configuration information for the running of
+	 * this module.
 	 * @return AppConfigInfo with configuration information for this module
 	 */
 	@ReportableProperty(order = 1, value = "Configuration info for this module.")
@@ -198,15 +209,17 @@ extends AbstractModule
 	}
 
 	/**
-	 * Mutator for object which records environment in which engine is run
+	 * Mutator for object which records environment in which engine is run.
 	 * @param installation
 	 */
 	public void setInstallation(Installation installation) {
 		this.installation = installation;
 	}
+	
 	/**
-	 * Accessor for list of commands to be executed in sequence in order to characterize Source
-	 * @return
+	 * Accessor for list of commands to be executed in sequence to characterize
+	 * a source unit.
+	 * @return List of command to be executed
 	 */
 	@ReportableProperty
 	public List<JHOVE2Command> getCommands() {
@@ -214,11 +227,11 @@ extends AbstractModule
 	}
 	
 	/**
-	 * Mutator for list of commands to be executed in sequence in order to characterize Source
+	 * Mutator for list of commands to be executed in sequence to characterize
+	 * a source unit.
 	 * @param commands
 	 */
 	public void setCommands(List<JHOVE2Command> commands) {
 		this.commands = commands;
 	}
-
 }
