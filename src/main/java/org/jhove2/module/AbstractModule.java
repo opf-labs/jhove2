@@ -40,20 +40,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jhove2.core.Agent;
-import org.jhove2.core.WrappedProductInfo;
+import org.jhove2.core.WrappedProduct;
 import org.jhove2.core.TimerInfo;
 import org.jhove2.core.reportable.AbstractReportable;
 
 /**
- * An abstract JHOVE2 module, a {@link org.jhove2.core.AbstractProduct} that
+ * An abstract JHOVE2 module, an independently distributable product that
  * reports its elapsed processing time.
  * 
  * @author mstrong, slabrams, smorrissey
  */
-public abstract class AbstractModule extends AbstractReportable
-implements Module 
+public abstract class AbstractModule
+	extends AbstractReportable
+	implements Module 
  {
-
 	/** Product developers. */
 	protected List<Agent> developers;
 
@@ -76,13 +76,11 @@ implements Module
 	 * not directly perform its own processing, but rather invokes an external
 	 * tool.
 	 */
-	protected WrappedProductInfo wrappedProduct;
-	/**
-	 * Timer info  used to track elapsed time for running of this module
-	 */
+	protected WrappedProduct wrappedProduct;
+	
+	/** Timer info used to track elapsed time for running of this module. */
 	protected TimerInfo timerInfo;
 	
-
 	/**
 	 * Instantiate a new <code>AbstractModule</code>.
 	 * 
@@ -190,7 +188,7 @@ implements Module
 	 * @see org.jhove2.module.Module#getWrappedProduct()
 	 */
 	@Override
-	public WrappedProductInfo getWrappedProduct() {
+	public WrappedProduct getWrappedProduct() {
 		return this.wrappedProduct;
 	}
 	/**
@@ -199,7 +197,7 @@ implements Module
 	 * @param product
 	 *            Wrapped product
 	 */
-	public void setWrappedProduct(WrappedProductInfo product) {
+	public void setWrappedProduct(WrappedProduct product) {
 		this.wrappedProduct = product;
 	}
 	

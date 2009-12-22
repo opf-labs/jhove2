@@ -341,7 +341,7 @@ Displayer {
 		else if (value instanceof Reportable) {
 			this.startReportable(out, level + 1, name, identifier,
 					order, ((Reportable)value).getReportableIdentifier());
-			display(out, (Reportable) value, level + 2, 0, false, units,
+			display(out, (Reportable) value, level + 1, 0, false, units,
 					visibilities);
 			this.endReportable(out, level + 1, name, identifier);
 		}

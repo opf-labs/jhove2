@@ -71,7 +71,7 @@ public class ShapefileModule
 		"Available under the terms of the BSD license.";
 	
 	/** Directory module validation coverage. */
-	public static final Coverage COVERAGE = Coverage.Exhaustive;
+	public static final Coverage COVERAGE = Coverage.Inclusive;
 
 	/** Shapefile validation status. */
 	protected Validity isValid;

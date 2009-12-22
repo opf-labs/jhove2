@@ -42,7 +42,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.WrappedProductInfo;
+import org.jhove2.core.WrappedProduct;
 import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.URLSource;
@@ -54,7 +54,6 @@ import uk.gov.nationalarchives.droid.JHOVE2IAnalysisController;
 import uk.gov.nationalarchives.droid.binFileReader.ByteReader;
 import uk.gov.nationalarchives.droid.signatureFile.FFSignatureFile;
 
-
 /**
  * JHOVE2 wrapper around droid programming API, adapted for JHOVE2 from
  * {@link uk.gov.nationalarchives.droid.Droid}
@@ -63,15 +62,16 @@ import uk.gov.nationalarchives.droid.signatureFile.FFSignatureFile;
  *  
  *  @author smorrissey
  */
-public class DROIDWrappedProduct extends WrappedProductInfo {
-
+public class DROIDWrappedProduct
+	extends WrappedProduct
+{
 	public static final String NAME = "Jhove2Droid";
 	
 	/** Framework version identifier. */
-	public static final String VERSION = "0.0.1";
+	public static final String VERSION = "0.5.4";
 
 	/** Framework release date. */
-	public static final String RELEASE = "2009-09-12";
+	public static final String RELEASE = "2009-12-22";
 
 	/** Framework rights statement. */
 	public static final String RIGHTS = "Extensions to DROID Copyright 2009 by The Regents of the University of California, "
@@ -88,15 +88,20 @@ public class DROIDWrappedProduct extends WrappedProductInfo {
      *
      * @throws Exception
      */
-    public DROIDWrappedProduct() throws Exception {
+    public DROIDWrappedProduct()
+    	throws Exception
+    {
     	this(NAME, VERSION, RELEASE, RIGHTS);
     }
+    
     /**
      * Constructor
      * @param name Name of this wrapped product
      * @throws Exception
      */
-    public DROIDWrappedProduct(String name) throws Exception {
+    public DROIDWrappedProduct(String name)
+    	throws Exception
+    {
     	this(name, VERSION, RELEASE, RIGHTS);
     }   
     
@@ -107,7 +112,8 @@ public class DROIDWrappedProduct extends WrappedProductInfo {
      * @param date Release date of this wrapped product
      * @param rights Rights statement of this wrapped product
      */
-    public DROIDWrappedProduct(String name, String version, String date, String rights) {
+    public DROIDWrappedProduct(String name, String version, String date,
+    		                   String rights) {
     	super(name, version, date, rights);
     	analysisControl = new DROIDAnalysisController();
     }
@@ -118,7 +124,9 @@ public class DROIDWrappedProduct extends WrappedProductInfo {
      * @param sigFilePath String containing path to local copy of DROID signature file
      * @throws Exception
      */
-    public DROIDWrappedProduct (String configFilePath, String sigFilePath) throws Exception {
+    public DROIDWrappedProduct(String configFilePath, String sigFilePath)
+    	throws Exception
+    {
     	this();
     	this.setConfigFile(parseConfigFile(configFilePath));
     	this.setSigFile((parseSignatureFile(this.getConfigFile(), sigFilePath)));
@@ -130,7 +138,9 @@ public class DROIDWrappedProduct extends WrappedProductInfo {
      * @param sigFile  Parsed Signature file object
      * @throws Exception
      */
-    public DROIDWrappedProduct(ConfigFile configFile, FFSignatureFile sigFile) throws Exception {
+    public DROIDWrappedProduct(ConfigFile configFile, FFSignatureFile sigFile)
+    	throws Exception
+    {
     	this();
     	this.setConfigFile(configFile);
     	this.setSigFile(sigFile);

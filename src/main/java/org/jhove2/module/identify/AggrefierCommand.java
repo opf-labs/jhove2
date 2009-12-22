@@ -41,6 +41,7 @@ import java.util.Set;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Command;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.TimerInfo;
 import org.jhove2.core.reportable.ReportableFactory;
 import org.jhove2.core.source.AggregateSource;
 import org.jhove2.core.source.ClumpSource;
@@ -49,37 +50,30 @@ import org.jhove2.module.AbstractModule;
 
 /**
  * JHOVE2Command to execute identification on AggregateSource objects, to detect any
- * presumptive Clump format instances
+ * presumptive {2link org.jhove2.core.source.ClumpSource} format instances
  * 
  * @author smorrissey
- *
  */
-public class AggrefierCommand extends AbstractModule implements JHOVE2Command {
+public class AggrefierCommand
+	extends AbstractModule
+	implements JHOVE2Command
+{
 	/** Identification module version identifier. */
-	public static final String VERSION = "1.0.0";
+	public static final String VERSION = "0.5.4";
+	
 	/** Identification module release date. */
-	public static final String RELEASE = "2009-08-21";
+	public static final String RELEASE = "2009-12-22";
+	
 	/** Identification module rights statement. */
 	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California, "
 		+ "Ithaka Harbors, Inc., and The Board of Trustees of the Leland "
 		+ "Stanford Junior University. "
 		+ "Available under the terms of the BSD license.";
 
-	/**
-	 * Constructor
+	/** Instantiate a new <code>AggrefierCommand</code>.
 	 */
 	public AggrefierCommand(){
-		this(VERSION, RELEASE, RIGHTS);
-	}
-
-	/**
-	 * Constructor
-	 * @param version Version of this module
-	 * @param release Release date of this module
-	 * @param rights  Rights statement for this module
-	 */
-	public AggrefierCommand(String version, String release, String rights) {
-		super(version, release, rights);
+		super(VERSION, RELEASE, RIGHTS);
 	}
 
 	/**
@@ -87,48 +81,57 @@ public class AggrefierCommand extends AbstractModule implements JHOVE2Command {
 	 * to detect possible ClumpSource instances in the aggregate;
 	 * If any ClumpSources are found, performs call back to JHOVE2 framework
 	 * to characterize them
-	 * @param source Source 
 	 * @param jhove2 JHOVE2 framework object
+	 * @param source Source 
 	 * @throws JHOVE2Exception
-	 * @see org.jhove2.core.JHOVE2Command#execute(org.jhove2.core.source.Source, org.jhove2.core.JHOVE2)
+	 * @see org.jhove2.core.JHOVE2Command#execute(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
 	 */
 	@Override
-	public void execute(JHOVE2 jhove2, Source source) throws JHOVE2Exception {
-		source.addModule(this);
+	public void execute(JHOVE2 jhove2, Source source)
+		throws JHOVE2Exception
+	{
 		if (source instanceof AggregateSource){
 			try {
 				AggregateIdentifier aggrefier = 
-					ReportableFactory.getReportable(AggregateIdentifier.class, "Aggrefier");
+					ReportableFactory.getReportable(AggregateIdentifier.class,
+							                       "AggrefierModule");
 				source.addModule(aggrefier);
-				aggrefier.getTimerInfo().setStartTime();
-				Set<ClumpSource> clumpSources = null;
-				clumpSources = aggrefier.identify(jhove2, source);
-				do{									
-					for (ClumpSource clumpSource : clumpSources){
-						// make clump child of source, and remove clump's children
-						// as direct children of source
-						source.addChildSource(clumpSource);				
-						for (Source src:clumpSource.getChildSources()){
-							source.deleteChildSource(src);					
+				TimerInfo timer = aggrefier.getTimerInfo();
+				timer.setStartTime();
+				try {
+					Set<ClumpSource> clumpSources = null;
+					clumpSources = aggrefier.identify(jhove2, source);
+					do {									
+						for (ClumpSource clumpSource : clumpSources){
+							/* Make clump child of source, and remove clump's
+							 * children as direct children of source.
+							 */
+							source.addChildSource(clumpSource);				
+							for (Source src:clumpSource.getChildSources()){
+								source.deleteChildSource(src);					
+							}
+							/* Characterize the ClumpSource. */
+							jhove2.characterize(clumpSource);
 						}
-						// now characterize the ClumpSource
-						jhove2.characterize(clumpSource);
-					}
-					//now see if addition of clump sources at this level results
-					// in new possible clump sources
-					if (clumpSources.size()>0){
-						// do aggregate identification again on this source,
-						// with its new child sources
-						clumpSources = aggrefier.identify(jhove2, source);
-					}
-				} while (clumpSources.size()>0);
-				aggrefier.getTimerInfo().setEndTime();
-
-			} catch (IOException e) {
+						/* Determine if the addition of clump sources at this level
+						 * results new possible clump sources.
+						 */
+						if (clumpSources.size()>0){
+							/* aggregate identification again on this source with
+							 * its new child sources.
+							 */
+							clumpSources = aggrefier.identify(jhove2, source);
+						}
+					} while (clumpSources.size()>0);
+				}
+				finally {
+					timer.setEndTime();
+				}
+			}
+			catch (IOException e) {
 				throw new JHOVE2Exception("AggrefierModule: IO exception", e);
 			}
 		}	
 		return;
 	}
-
 }

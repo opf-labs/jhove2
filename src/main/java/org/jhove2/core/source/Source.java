@@ -109,7 +109,7 @@ public interface Source
 	 * 
 	 * @return Child source units
 	 */
-	@ReportableProperty(order = 3, value = "Child source untis.")
+	@ReportableProperty(order = 3, value = "Child source units.")
 	public List<Source> getChildSources();
 
 	/**

@@ -55,20 +55,21 @@ import org.jhove2.module.AbstractModule;
  * 
  * @author mstrong, slabrams
  */
-public class DigesterModule extends AbstractModule 
-	implements Digester {
+public class DigesterModule
+	extends AbstractModule 
+	implements Digester
+{
 	/** Framework version identifier. */
-	public static final String VERSION = "1.0.0";
+	public static final String VERSION = "0.5.4";
 
 	/** Framework release date. */
-	public static final String RELEASE = "2009-09-05";
+	public static final String RELEASE = "2009-12-22";
 
 	/** Framework rights statement. */
 	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California, "
 		+ "Ithaka Harbors, Inc., and The Board of Trustees of the Leland "
 		+ "Stanford Junior University. "
 		+ "Available under the terms of the BSD license.";
-
 
 	/** Algorithm-specific byte array digesters. */
 	protected List<ArrayDigester> arrayDigesters;
@@ -140,7 +141,7 @@ public class DigesterModule extends AbstractModule
 			}
 		}
 	}
-
+	
 	/**
 	 * Get message digests.
 	 * 

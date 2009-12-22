@@ -33,6 +33,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.jhove2.module.format;
 
 import java.util.HashMap;
@@ -64,12 +65,12 @@ import org.jhove2.module.identify.DROIDIdentifier;
  * 
  * @author smorrissey
  */
-public class FeatureExtractorCommand
+public class DispatcherCommand
 	extends AbstractModule 
 	implements JHOVE2Command
 {
 	/** Directory module version identifier. */
-	public static final String VERSION = "0.0.1";
+	public static final String VERSION = "0.5.4";
 
 	/** Directory module release date. */
 	public static final String RELEASE = "2009-12-22";
@@ -85,23 +86,13 @@ public class FeatureExtractorCommand
 	 *  associated with the formats.*/
 	private static ConcurrentMap<String, String> dispatchMap;
 
-	/** map from JHOVE2 format ids to bean name for format*/
+	/** Map from JHOVE2 format ids to bean name for format*/
 	private static ConcurrentMap<String, String> jhoveIdToBeanName;
-	/**
-	 * Constructor
+	
+	/** Instantiate a new <code>DispatcherCommand</code>.
 	 */
-	public FeatureExtractorCommand(){
-		this(VERSION, RELEASE, RIGHTS);
-	}
-
-	/**
-	 * Constructor
-	 * @param version Version of this module
-	 * @param release Release date of module
-	 * @param rights  Rights statement for module
-	 */
-	public FeatureExtractorCommand(String version, String release, String rights) {
-		super(version, release, rights);
+	public DispatcherCommand(){
+		super(VERSION, RELEASE, RIGHTS);
 	}
 
 	/**
@@ -117,15 +108,19 @@ public class FeatureExtractorCommand
 	public void execute(JHOVE2 jhove2, Source source)
 		throws JHOVE2Exception
 	{
-		source.addModule(this);
-		// Sometimes more than one format identification will match to the same 
-		// JHOVE2 format; eliminate duplicates from list of JHOVE2 format modules
-		// to be run, then dispatch to each format module
+		/* Sometimes more than one format identification will match to the same 
+		 * JHOVE2 format; eliminate duplicates from list of JHOVE2 format modules
+		 * to be run, then dispatch to each format module.
+		 */
 		HashMap<I8R, Format> jhoveFormats = new HashMap<I8R, Format>();
 		for (FormatIdentification fid : source.getPresumptiveFormats()){
-			// make sure identification found a match for format in JHOVE2 namespace
+			/* Make sure identification found a match for format in the JHOVE2
+			 * namespace.
+			 */
 			if (fid.getJhove2Identification() != null) {
-				// use the JHOVE2 format id to get bean name for format in Spring config file
+				/* Use the JHOVE2 format id to get bean name for format in
+				 * Spring configuration file.
+				 */
 				String beanName = getJhoveIdToBeanName().get(fid.getJhove2Identification().getValue());		
 				if (beanName != null){
 					Format format = ReportableFactory.getReportable(Format.class, beanName);	
@@ -133,11 +128,12 @@ public class FeatureExtractorCommand
 				}
 			}
 		}
-		// more than one JHOVE2 format might map to the same format module,
-		// so we will keep track of the modules we run so as not to run them
-		// more than once per Source
+		/* More than one JHOVE2 format might map to the same format module,
+		 * so we will keep track of the modules we run so as not to run them
+		 * more than once per Source.
+		 */
 		TreeSet<I8R> visitedModules = new TreeSet<I8R>();
-		// now invoke the format module
+		/* now invoke the format module.*/
 		for (I8R id:jhoveFormats.keySet()){
 			Format format = jhoveFormats.get(id);			
 			Module module = this.getModuleFromIdentifier(id);
@@ -147,7 +143,7 @@ public class FeatureExtractorCommand
 				bFormatModule.setModuleNotFoundMessage(
 						new Message(Severity.ERROR,
 								Context.PROCESS,
-								"org.jhove2.module.format.FeatureExtractorCommand.moduleNotFoundMessage",
+								"org.jhove2.module.format.DispatcherCommand.moduleNotFoundMessage",
 								(Object[])parms));
 				bFormatModule.setFormat(format);
 				source.addModule(bFormatModule);
@@ -158,7 +154,7 @@ public class FeatureExtractorCommand
 				bFormatModule.setModuleNotFormatModuleMessage(
 						new Message(Severity.ERROR,
 								Context.PROCESS,
-								"org.jhove2.module.format.FeatureExtractorCommand.moduleNotFormatModuleMessage",
+								"org.jhove2.module.format.DispatcherCommand.moduleNotFormatModuleMessage",
 								(Object[])parms));
 				bFormatModule.setFormat(format);
 				source.addModule(bFormatModule);
@@ -171,12 +167,10 @@ public class FeatureExtractorCommand
 				if (!visitedModules.contains(formatModule.getReportableIdentifier())){
 					visitedModules.add(formatModule.getReportableIdentifier());
 					formatModule.execute(jhove2, source);
-				}// end if we have not already run this module
-			}// end if this is a non-null instance of a FormatModule
-		}// end for each JHOVE2 format
-
-		return;
-	}// end method
+				}
+			}
+		}
+	}
 
 	/**
 	 * Loads static map from JHOVE2 identifier to module from properties file if necessary,
@@ -184,8 +178,10 @@ public class FeatureExtractorCommand
 	 * @return map from JHOVE2 identifier to module from properties if necessary
 	 * @throws JHOVE2Exception
 	 */
-	public static ConcurrentMap<String, String> getDispatchMap () throws JHOVE2Exception{
-		if (dispatchMap==null){
+	public static ConcurrentMap<String, String> getDispatchMap()
+		throws JHOVE2Exception
+	{
+		if (dispatchMap == null){
 			dispatchMap = new ConcurrentHashMap<String, String>();
 			Properties props = ReportableFactory.getProperties("DispatchMap");
 			Set<String> keys = props.stringPropertyNames();
@@ -204,7 +200,9 @@ public class FeatureExtractorCommand
 	 *          module has been mapped to the JHOVE2 identifier
 	 * @throws JHOVE2Exception
 	 */
-	public Module getModuleFromIdentifier(I8R identifier) throws JHOVE2Exception{
+	public Module getModuleFromIdentifier(I8R identifier)
+		throws JHOVE2Exception
+	{
 		Module module = null;
 		String name = getDispatchMap().get(identifier.getValue());
 		if (name != null) {
@@ -219,9 +217,12 @@ public class FeatureExtractorCommand
 	 * @return map from JHOVE2 format ID to bean name for that format 
 	 * @throws JHOVE2Exception
 	 */
-	public static ConcurrentMap<String,String> getJhoveIdToBeanName () throws JHOVE2Exception{
-		if (FeatureExtractorCommand.jhoveIdToBeanName==null){
-			ConcurrentHashMap<String, String> map = new ConcurrentHashMap<String, String>();
+	public static ConcurrentMap<String,String> getJhoveIdToBeanName()
+		throws JHOVE2Exception
+	{
+		if (DispatcherCommand.jhoveIdToBeanName == null){
+			ConcurrentHashMap<String, String> map =
+				new ConcurrentHashMap<String, String>();
 			Properties props = null;
 			props = ReportableFactory.getProperties(DROIDIdentifier.JHOVE2BEANMAP_BEANNAME);
 			Set<String> keys = props.stringPropertyNames();
@@ -229,8 +230,8 @@ public class FeatureExtractorCommand
 				String value = props.getProperty(key);
 				map.put(key, value);
 			}
-			FeatureExtractorCommand.jhoveIdToBeanName = map;
+			DispatcherCommand.jhoveIdToBeanName = map;
 		}
-		return FeatureExtractorCommand.jhoveIdToBeanName;
+		return DispatcherCommand.jhoveIdToBeanName;
 	}
 }

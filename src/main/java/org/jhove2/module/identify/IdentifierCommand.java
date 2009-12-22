@@ -39,27 +39,16 @@ public class IdentifierCommand
 		+ "Stanford Junior University. "
 		+ "Available under the terms of the BSD license.";
 	
-	/** Instantiate a new <code>IdentifierCommand</code> module.
+	/** Instantiate a new <code>IdentifierCommand</code>.
 	 */
 	public IdentifierCommand(){
-		this(VERSION, RELEASE, RIGHTS);
-	}
-	
-	/**
-	 * Instantiate a new <code>IdentifierCommand</code> module.
-	 * @param version Module version	
-	 * @param release Module release date	
-	 * @param rights  Module rights statement	
-	 */
-	public IdentifierCommand(String version, String release, String rights) {
-		super(version, release, rights);
+		super(VERSION, RELEASE, RIGHTS);
 	}
 
 	/**
-	 * Instantiates Identifier and executes its identify method, attaching any resulting
-	 * FormatIdentifications to the Source
-	 * @param source Source to be identified
+	 * Identify the presumptive formats of the source unit.
 	 * @param jhove2 JHOVE2 framework object
+	 * @param source Source to be identified
 	 * @throws JHOVE2Exception
 	 * @see org.jhove2.core.JHOVE2Command#execute(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
 	 * @see org.jhove2.module.identify.Identifier#identify(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
@@ -67,12 +56,11 @@ public class IdentifierCommand
 	@Override
 	public void execute(JHOVE2 jhove2, Source source)
 		throws JHOVE2Exception
-	{	
-		source.addModule(this);
+	{
 		try {		
 			Identifier identifier =
 				ReportableFactory.getReportable(Identifier.class,
-					                           "Identifier");			
+					                           "IdentifierModule");			
 			source.addModule(identifier);
 			TimerInfo timer = identifier.getTimerInfo();
 			timer.setStartTime();

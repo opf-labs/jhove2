@@ -78,7 +78,7 @@ public class MessageTest {
 		messageParms = new Object[]{FeatureExtractorCommandmoduleNotFoundMessageParam};
 		message = new Message(Severity.ERROR,
 				Context.PROCESS ,
-				"org.jhove2.module.format.FeatureExtractorCommand.moduleNotFoundMessage",
+				"org.jhove2.module.format.DispatcherCommand.moduleNotFoundMessage",
 				messageParms);
 		assertEquals(sb.toString(), message.getLocalizedMessageText());
 		
@@ -88,7 +88,7 @@ public class MessageTest {
 		messageParms = new Object[]{FeatureExtractorCommandmoduleNotFoundMessageParam};
 		message = new Message(Severity.ERROR,
 				Context.PROCESS,
-				"org.jhove2.module.format.FeatureExtractorCommand.moduleNotFormatModuleMessage",
+				"org.jhove2.module.format.DispatcherCommand.moduleNotFormatModuleMessage",
 				(Object[])messageParms);
 		assertEquals(sb.toString(), message.getLocalizedMessageText());
 		

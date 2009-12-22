@@ -55,27 +55,24 @@ public class I8R implements Comparable<I8R> {
 	/** JHOVE2 namespace identifier format infix. */
 	public static final String JHOVE2_FORMAT_INFIX = "format";
 
-	/**
-	 * JHOVE2 namespace identifier {@link org.jhove2.core.Message} infix.
-	 */
+	/** JHOVE2 namespace identifier {@link org.jhove2.core.Message} infix. */
 	public static final String JHOVE2_MESSAGE_INFIX = "message";
 
 	/**
 	 * JHOVE2 reportable property identifier infix
-	 * {@link org.jhove2.annotation.ReportableProperty} infix.
+	 * {@link org.jhove2.annotation.ReportableProperty} infix label.
 	 */
 	public static final String JHOVE2_PROPERTY_INFIX = "property";
 
 	/**
-	 * JHOVE2 reportable identifier infix {@link org.jhove2.core.reportable.Reportable}
-	 * infix.
+	 * JHOVE2 reportable identifier infix
+	 * {@link org.jhove2.core.reportable.Reportable} infix label.
 	 */
 	public static final String JHOVE2_REPORTABLE_INFIX = "reportable";
 
-
 	protected static String messageClassName = null;
 
-	/** IdentifierModule types, or namespaces. */
+	/** Identifier types, or namespaces. */
 	public enum Namespace {
 		AFNOR, /* AFNOR standard */
 		AIIM, /* AIIM standard */
@@ -287,26 +284,25 @@ public class I8R implements Comparable<I8R> {
 	 * @param r Reportable object for which we want JHOVE2 namespace Identifier
 	 * @return I8R object containing JHOVE2 namespace identifier for a Reportable object
 	 */
-	public static I8R makeReportableTypeI8R (Reportable r){
+	public static I8R makeReportableI8R (Reportable r) {
 		Class<? extends Reportable> c1 = r.getClass();
 		String qName = c1.getName();
-		I8R identifier = new I8R(I8R.JHOVE2_PREFIX + "/"
-				+ I8R.JHOVE2_REPORTABLE_INFIX + "/"
-				+ qName.replace('.', '/'));
+		I8R identifier = new I8R(I8R.JHOVE2_PREFIX + "/" +
+				                 I8R.JHOVE2_REPORTABLE_INFIX + "/" +
+				                 qName.replace('.', '/'));
 		return identifier;
 	}
 	
 	/**
-	 *  A reportable instance has an I8R field, but that I8R
-	 *	 is for the instance as a whole
-	 *	 for each (reportable) field in the instance,
-	 *	 we have to construct an I8R
+	 * A reportable instance has an I8R field, but that I8R is for the
+	 * instance as a whole.  For each (reportable) field in the instance,
+	 * we have to construct an I8R.
 	 * @param method accessor method for the reportable field
 	 * @param reportableClass Class instance for the reportable
 	 * @return I8R for the reportable field in a reportable object
 	 */
 	public static I8R makeFeatureI8RFromMethod(Method method, 
-			Class <? extends Reportable> reportableClass){
+			                                   Class <? extends Reportable> reportableClass){
 		
 		I8R featureI8R = null;			
 		String name = method.getName();
@@ -320,15 +316,17 @@ public class I8R implements Comparable<I8R> {
 		try {
 			isMessage = isMessage(type);
 		}
-		catch(ClassNotFoundException e){}
+		catch(ClassNotFoundException e)
+		{}
 		if (isMessage) {
 			featureId += I8R.JHOVE2_MESSAGE_INFIX;
-		} else {
+		}
+		else {
 			featureId += I8R.JHOVE2_PROPERTY_INFIX;
 		}
-		featureId += "/" + reportableClass.getName().
-			replace('.', '/') + "/" + name;		
-		featureI8R = new I8R(featureId);		
+		featureId += "/" + reportableClass.getName().replace('.', '/') + "/" + name;		
+		featureI8R = new I8R(featureId);
+		
 		return featureI8R;		
 	}
 	
@@ -341,7 +339,8 @@ public class I8R implements Comparable<I8R> {
 	 * @throws ClassNotFoundException 
 	 */
 	public static synchronized boolean isMessage(Type type) 
-	throws ClassNotFoundException {
+		throws ClassNotFoundException
+	{
 		boolean isMessage = false;
 		String tname = type.toString();
 		if (tname != null){
@@ -357,8 +356,9 @@ public class I8R implements Comparable<I8R> {
 		return isMessage;
 	}
 
-
-	protected static String getMessageClassName() throws ClassNotFoundException{
+	protected static String getMessageClassName()
+		throws ClassNotFoundException
+	{
 		if (messageClassName==null){
 			messageClassName = Message.class.getName();
 		}

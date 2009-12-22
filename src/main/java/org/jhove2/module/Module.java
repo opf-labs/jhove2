@@ -40,7 +40,7 @@ import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.Agent;
-import org.jhove2.core.WrappedProductInfo;
+import org.jhove2.core.WrappedProduct;
 import org.jhove2.core.TimerInfo;
 import org.jhove2.core.reportable.Reportable;
 
@@ -100,11 +100,11 @@ public interface Module
 	 * Get metadata about any tool wrapped by a Module, and used to perform a
 	 * process.
 	 * 
-	 * @return Wrapped {@link org.jhove2.core.WrappedProductInfo}, or null if the
+	 * @return Wrapped {@link org.jhove2.core.WrappedProduct}, or null if the
 	 *         module directly performs its process
 	 */
 	@ReportableProperty(order = 7, value = "External tool wrapped by the module.")
-	public WrappedProductInfo getWrappedProduct();
+	public WrappedProduct getWrappedProduct();
 	/**
 	 * Get metadata about this module
 	 * @return ProductInfo {@link org.jhove2.core.ProductInfo}

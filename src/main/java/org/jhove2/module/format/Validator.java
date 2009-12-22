@@ -49,7 +49,7 @@ import org.jhove2.core.source.Source;
 public interface Validator {
 	/** Validation coverage. */
 	public enum Coverage {
-		Exhaustive,
+		Inclusive,
 		Selective,
 		None
 	}

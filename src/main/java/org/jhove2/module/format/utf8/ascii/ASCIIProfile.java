@@ -76,7 +76,7 @@ public class ASCIIProfile
 		"Available under the terms of the BSD license.";
 	
 	/** ASCII profile validation coverage. */
-	public static final Coverage COVERAGE = Coverage.Exhaustive;
+	public static final Coverage COVERAGE = Coverage.Inclusive;
 
 	/** ASCII validation status. */
 	protected Validity isValid;

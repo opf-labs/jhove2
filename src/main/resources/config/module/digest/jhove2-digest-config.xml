@@ -10,7 +10,7 @@
 		   http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 		  
 	<!--  Message digester module bean -->
-	<bean id="Digester"
+	<bean id="DigesterModule"
 	      class="org.jhove2.module.digest.DigesterModule"
 	      scope="prototype">
 		<property name="arrayDigesters">

@@ -10,7 +10,7 @@
 		   http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 	
 	<!-- Identifier module bean -->
-	<bean id="Identifier" class="org.jhove2.module.identify.IdentifierModule"
+	<bean id="IdentifierModule" class="org.jhove2.module.identify.IdentifierModule"
 	      scope="prototype">
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
@@ -19,12 +19,12 @@
 				<ref bean="StanfordAgent"/>
 			</list>
 		</property>
-		<property name="fileSourceIdentifier" ref="droidIdentifier"/>
+		<property name="fileSourceIdentifier" ref="DROIDIdentifier"/>
 	</bean>
 	      
 	<!-- DROID identifier bean -->
-	<bean id="droidIdentifier" class="org.jhove2.module.identify.DROIDIdentifier"
-	      scope="prototype">	
+	<bean id="DROIDIdentifier" class="org.jhove2.module.identify.DROIDIdentifier"
+	      scope="prototype">
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
@@ -32,6 +32,17 @@
 				<ref bean="StanfordAgent"/>
 			</list>
 		</property>
+	</bean>
+	
+	<!-- DROID wrapped product bean -->
+	<bean id="DROIDProduct" class="org.jhove2.core.WrappedProduct"
+	      scope="singleton">
+	    <constructor-arg index="0" value="DROID"/>
+	    <constructor-arg index="1" value="4.0.0"/>
+	    <constructor-arg index="2" value="2009-07-23"/>
+	    <constructor-arg index="3" value="BSD license"/>
+	    <property name="authority" value="The National Archives (TNA), UK"/>
+	    <property name="openSource" value="true"/>
 	</bean>
 	      	
     <!-- DROID PUID to JHOVE2 identifier properties bean -->
@@ -43,7 +54,7 @@
 		             location="classpath:properties/droidconfig.properties"/>	
 	
 	<!-- Aggrefier module bean -->
-	<bean id="Aggrefier" class="org.jhove2.module.identify.AggrefierModule"
+	<bean id="AggrefierModule" class="org.jhove2.module.identify.AggrefierModule"
 	      scope="singleton">
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">

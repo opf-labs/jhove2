@@ -80,12 +80,12 @@ public class I8RTest {
 		sb.append("/");
 		sb.append(classString);
 		moduleI8rString = sb.toString();
-		sourceI8r = I8R.makeReportableTypeI8R(source);
-		moduleI8r = I8R.makeReportableTypeI8R(module);	
+		sourceI8r = I8R.makeReportableI8R(source);
+		moduleI8r = I8R.makeReportableI8R(module);	
 	}
 
 	/**
-	 * Test method for {@link org.jhove2.core.I8R#makeReportableTypeI8R(org.jhove2.core.Reportable)}.
+	 * Test method for {@link org.jhove2.core.I8R#makeReportableI8R(org.jhove2.core.Reportable)}.
 	 */
 	@Test
 	public void testMakeReportableI8R() {		

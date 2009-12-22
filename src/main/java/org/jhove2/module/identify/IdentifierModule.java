@@ -44,6 +44,8 @@ import org.jhove2.core.FormatIdentification;
 import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.TimerInfo;
+import org.jhove2.core.FormatIdentification;
 import org.jhove2.core.FormatIdentification.Confidence;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.DirectorySource;
@@ -72,11 +74,7 @@ public class IdentifierModule
 		+ "Stanford Junior University. "
 		+ "Available under the terms of the BSD license.";
 	
-	/** bean name for identifier for non-clump, directory, zip etc. sources  (for example, DROID)
-	 *  We will need a new instance of the identifier for each source, so we do not have
-	 *  an Identifier member here; instead we use the bean name to instantiate a
-	 *  new Identifier as needed */
-	
+	/** File-level identifier module. */
 	protected Identifier fileSourceIdentifier;
 	
 	/**
@@ -104,7 +102,7 @@ public class IdentifierModule
 	public Set<FormatIdentification> identify(JHOVE2 jhove2, Source source)
 		throws IOException, JHOVE2Exception
 	{
-		Set<FormatIdentification> presumptiveFormatIds = 
+		Set<FormatIdentification> presumptiveFormatIDs = 
 			new TreeSet<FormatIdentification>();
 		if (source instanceof ClumpSource) {
 			/* ClumpSources are only created when identified as instances
@@ -115,39 +113,50 @@ public class IdentifierModule
 		}
 		else if (source instanceof DirectorySource ||
 				 source instanceof ZipDirectorySource) {
-			FormatIdentification id = new FormatIdentification(
-					new I8R("info:jhove2/format/directory"),
-					Confidence.PositiveSpecific, this.getReportableIdentifier());
-			presumptiveFormatIds.add(id);
+			FormatIdentification id =
+				new FormatIdentification(new I8R(I8R.JHOVE2_PREFIX + "/" +
+						                         I8R.JHOVE2_FORMAT_INFIX +
+						                         "/directory"),
+					                     Confidence.PositiveSpecific,
+					                     this.getReportableIdentifier());
+			presumptiveFormatIDs.add(id);
 		}
 		else if (source instanceof FileSetSource) {
-			FormatIdentification id = new FormatIdentification(
-					new I8R("info:jhove2/format/file-set"),
-					Confidence.PositiveSpecific, this.getReportableIdentifier());
-			presumptiveFormatIds.add(id);
+			FormatIdentification id =
+				new FormatIdentification(new I8R(I8R.JHOVE2_PREFIX + "/" +
+						                         I8R.JHOVE2_FORMAT_INFIX +
+						                         "/file-set"),
+					                     Confidence.PositiveSpecific,
+					                     this.getReportableIdentifier());
+			presumptiveFormatIDs.add(id);
 		}
-		else {
-			/* Identify file source unit. */						
-			fileSourceIdentifier.getTimerInfo().setStartTime();
-			presumptiveFormatIds.addAll(
-					fileSourceIdentifier.identify(jhove2, source));
-			fileSourceIdentifier.getTimerInfo().setEndTime();
-			source.addModule(fileSourceIdentifier);
+		else {   /* Identify file source unit. */	
+			source.addModule(fileSourceIdentifier);					
+			TimerInfo timer = fileSourceIdentifier.getTimerInfo();
+			timer.setStartTime();
+			try {
+				Set<FormatIdentification> formats =
+					fileSourceIdentifier.identify(jhove2, source);
+				presumptiveFormatIDs.addAll(formats);
+			}
+			finally {
+				timer.setEndTime();
+			}
 		}
-		return presumptiveFormatIds;
+		return presumptiveFormatIDs;
 	}
 
 	/**
-	 * Accessor for fileSourceIdentifierBeanName
-	 * @return fileSourceIdentifierBeanName
+	 * Get file source identifier module.
+	 * @return File source identifier module
 	 */
 	public Identifier getFileSourceIdentifier() {
 		return fileSourceIdentifier;
 	}
 
 	/**
-	 * Set fileSourceIdentifier
-	 * @param fileSourceIdentifier
+	 * Set file source identifier module.
+	 * @param fileSourceIdentifier File source identifier module
 	 */
 	public void setFileSourceIdentifier(Identifier fileSourceIdentifier) {
 		this.fileSourceIdentifier = fileSourceIdentifier;

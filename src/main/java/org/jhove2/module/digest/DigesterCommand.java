@@ -40,6 +40,7 @@ import java.io.IOException;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Command;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.TimerInfo;
 import org.jhove2.core.reportable.ReportableFactory;
 import org.jhove2.core.source.AggregateSource;
 import org.jhove2.core.source.ClumpSource;
@@ -50,17 +51,16 @@ import org.jhove2.module.AbstractModule;
  * JHOVE2Command to invoke message digesting on non-aggregate Sources
  * 
  * @author smorrissey
- *
  */
 public class DigesterCommand
 	extends AbstractModule
 	implements JHOVE2Command
 {
 	/** IdentifierCommand module version identifier. */
-	public static final String VERSION = "1.0.0";
+	public static final String VERSION = "0.5.4";
 
 	/** IdentifierCommand module release date. */
-	public static final String RELEASE = "2009-12-21";
+	public static final String RELEASE = "2009-12-22";
 
 	/** IdentifierCommand module rights statement. */
 	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California, "
@@ -68,21 +68,10 @@ public class DigesterCommand
 		+ "Stanford Junior University. "
 		+ "Available under the terms of the BSD license.";
 	
-	/**
-	 * Constructor
+	/** Instantiate a new <code>DigesterCommand</code>.
 	 */
 	public DigesterCommand(){
-		this(VERSION, RELEASE, RIGHTS);
-	}
-	
-	/**
-	 * Constructor
-	 * @param version Version of this module
-	 * @param release Release date of this module
-	 * @param rights  Rights statement for this module
-	 */
-	public DigesterCommand(String version, String release, String rights) {
-		super(version, release, rights);
+		super(VERSION, RELEASE, RIGHTS);
 	}
 
 	/**
@@ -97,19 +86,25 @@ public class DigesterCommand
 	public void execute(JHOVE2 jhove2, Source source) 
 		throws JHOVE2Exception
 	{
-		source.addModule(this);
-		if (!(source instanceof AggregateSource ||source instanceof ClumpSource)){
+		if (!(source instanceof AggregateSource ||
+			  source instanceof ClumpSource)) {
 			if (jhove2.getInvocation().getCalcDigests()) {
 				try {	
 					Digester digester = 
-						ReportableFactory.getReportable(Digester.class, "Digester");
-					digester.getTimerInfo().setStartTime();
-					digester.digest(jhove2, source);
-					digester.getTimerInfo().setEndTime();
+						ReportableFactory.getReportable(Digester.class,
+								                       "DigesterModule");
 					source.addModule(digester);
-				} catch (IOException e) {
-					throw new JHOVE2Exception("IO Exception on digest",
-							e);
+					TimerInfo timer = digester.getTimerInfo();
+					timer.setStartTime();
+					try {
+						digester.digest(jhove2, source);
+					}
+					finally {
+						timer.setEndTime();
+					}
+				}
+				catch (IOException e) {
+					throw new JHOVE2Exception("I/O Exception on digest", e);
 				}
 			}
 		}

@@ -78,7 +78,7 @@ public class XmlModule
 		"Available under the terms of the BSD license.";
 	
 	/** Module validation coverage. */
-	public static final Coverage COVERAGE = Coverage.Exhaustive;
+	public static final Coverage COVERAGE = Coverage.Inclusive;
 	
 	/** UTF-8 validity status. */
 	protected Validity isValid;

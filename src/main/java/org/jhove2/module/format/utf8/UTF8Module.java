@@ -82,7 +82,7 @@ public class UTF8Module
 		"Available under the terms of the BSD license.";
 	
 	/** UTF-8 module validation coverage. */
-	public static final Coverage COVERAGE = Coverage.Exhaustive;
+	public static final Coverage COVERAGE = Coverage.Inclusive;
 
 	/** Byte Order Mark (BOM) message. */
 	protected Message bomMessage;

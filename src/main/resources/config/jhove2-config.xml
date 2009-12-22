@@ -34,7 +34,7 @@
 		<property name="commands">
 			<list value-type="org.jhove2.core.JHOVE2Command">
 				<ref bean="IdentifierCommand"/>
-				<ref bean="FeatureExtractorCommand"/>
+				<ref bean="DispatcherCommand"/>
 				<ref bean="AggrefierCommand"/>
 				<ref bean="DigesterCommand"/>
 			</list>
@@ -53,8 +53,8 @@
 		</property>
 	</bean>
 
-	<!-- Format Feature extraction command bean -->
-	<bean id="FeatureExtractorCommand" class="org.jhove2.module.format.FeatureExtractorCommand"
+	<!-- Dispatcher command bean -->
+	<bean id="DispatcherCommand" class="org.jhove2.module.format.DispatcherCommand"
 	      scope="singleton">
 	    <property name="developers">
 			<list value-type="org.jhove2.core.Agent">
@@ -65,7 +65,7 @@
 		</property>
 	</bean>
 	
-	<!-- Aggrefier Command Bean -->
+	<!-- Aggrefier command Bean -->
 	<bean id="AggrefierCommand" class="org.jhove2.module.identify.AggrefierCommand"
 		scope="singleton" >
 		 <property name="developers">
@@ -77,7 +77,7 @@
 		</property>
 	</bean>    
 
-	<!--  Digester Command module bean -->  
+	<!--  Digester command bean -->  
 	<bean id="DigesterCommand"
 		  class="org.jhove2.module.digest.DigesterCommand"
 		  scope="singleton">

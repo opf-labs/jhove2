@@ -54,38 +54,38 @@ public abstract class AbstractReportable implements Reportable {
 	/** Object's simple name;  may be configure by user */
 	protected String reportableName = null;
 	
-	/* (non-Javadoc)
-	 * @see org.jhove2.core.Reportable#getJhove2Identifier()
+	/** Get reportable identifier.
+	 * @return Reportable identifier
+	 * @see org.jhove2.core.reportable.Reportable#getReportableIdentifier()
 	 */
 	@Override
 	public I8R getReportableIdentifier() {
 		if (myI8R == null){
-			myI8R = I8R.makeReportableTypeI8R(this);
+			myI8R = I8R.makeReportableI8R(this);
 		}
 		return myI8R;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.jhove2.core.Reportable#getName()
+	/** Get reportable name.
+	 * @return Reportable name
+	 * @see org.jhove2.core.reportable.Reportable#getReportableName()
 	 */
 	@Override
-	@ReportableProperty(order = 2, value = "Object name (can be configured by user) "
-		+ "simple name.")
+	@ReportableProperty(value = "Reportable name")
 	public String getReportableName(){
-		if (this.reportableName==null) {
+		if (this.reportableName == null) {
 			this.reportableName = this.getClass().getSimpleName();
 		}
 		return reportableName;
 	}
 	
 	/**
-	 * Set the object's simple name
-	 * @param name
+	 * Set reportable name.
+	 * @param name Reportable name
+	 * @see org.jhove2.core.reportable.Reportable#setReportableName(String)
 	 */
 	@Override
 	public void setReportableName(String name){
 		this.reportableName = name;
-	}
-	
+	}	
 }
-
