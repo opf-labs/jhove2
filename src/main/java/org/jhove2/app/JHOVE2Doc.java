@@ -40,14 +40,14 @@ import java.util.List;
 import java.util.Set;
 
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.Reportable;
-import org.jhove2.core.config.Configure;
 import org.jhove2.core.info.ReportableInfo;
 import org.jhove2.core.info.ReportablePropertyInfo;
 import org.jhove2.core.info.ReportableSourceInfo;
+import org.jhove2.core.reportable.ReportableFactory;
+import org.jhove2.core.reportable.Reportable;
 
 /**
- * JHOVE2 {@link org.jhove2.core.Reportable} documentation utility. The
+ * JHOVE2 {@link org.jhove2.core.reportable.Reportable} documentation utility. The
  * properties of the reportable (name, identifier, properties, messages) are
  * determined by reflection of the class.
  * 
@@ -72,7 +72,7 @@ public class JHOVE2Doc {
 			for (String arg : args) {
 //				Class<? extends Reportable> cl =
 //					(Class<? extends Reportable>) Class.forName(arg);
-				Reportable reportable = Configure.getReportable(Reportable.class,
+				Reportable reportable = ReportableFactory.getReportable(Reportable.class,
 						arg);
 				ReportableInfo info = new ReportableInfo(reportable);
 

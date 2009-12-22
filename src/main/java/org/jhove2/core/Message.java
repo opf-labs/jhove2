@@ -38,7 +38,7 @@ package org.jhove2.core;
 
 import java.util.Locale;
 
-import org.jhove2.core.config.Configure;
+import org.jhove2.core.reportable.ReportableFactory;
 
 /**
  * JHOVE2 message. A message has a severity, a context, and a textual value.
@@ -151,7 +151,7 @@ public class Message {
 	protected String localizeMessageText(String messageCode, Object[] messageArgs, Locale locale) 
 	throws JHOVE2Exception{
 		String localizedMessage = null;
-		localizedMessage = Configure.getLocalizedMessageText(messageCode, 
+		localizedMessage = ReportableFactory.getLocalizedMessageText(messageCode, 
 				messageArgs, locale);
 		return localizedMessage;
 	}

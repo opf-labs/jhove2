@@ -41,12 +41,12 @@ import java.util.List;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.Agent;
 import org.jhove2.core.WrappedProductInfo;
-import org.jhove2.core.Reportable;
 import org.jhove2.core.TimerInfo;
+import org.jhove2.core.reportable.Reportable;
 
 /**
  * Interface for JHOVE2 modules. A module is a
- * {@link org.jhove2.core.Reportable} that perform some process and report their
+ * {@link org.jhove2.core.reportable.Reportable} that perform some process and report their
  * elapsed processing time. A module generally directly performs its process;
  * however, some module implementations may be thin wrappers around 3rd party
  * tools.

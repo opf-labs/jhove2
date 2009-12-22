@@ -40,10 +40,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.reportable.AbstractReportable;
 
 /**
  * JHOVE2 product, an independently distributable and configurable
- * {@link org.jhove2.core.Reportable}.
+ * {@link org.jhove2.core.reportable.Reportable}.
  * 
  * @author mstrong, slabrams, smorrissey
  */

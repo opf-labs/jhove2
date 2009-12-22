@@ -40,7 +40,7 @@ import java.io.IOException;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Command;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.config.Configure;
+import org.jhove2.core.reportable.ReportableFactory;
 import org.jhove2.core.source.AggregateSource;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.Source;
@@ -99,10 +99,10 @@ public class DigesterCommand
 	{
 		source.addModule(this);
 		if (!(source instanceof AggregateSource ||source instanceof ClumpSource)){
-			if (jhove2.getApplicationConfig().getCalcDigests()) {
+			if (jhove2.getInvocation().getCalcDigests()) {
 				try {	
 					Digester digester = 
-						Configure.getReportable(Digester.class, "Digester");
+						ReportableFactory.getReportable(Digester.class, "Digester");
 					digester.getTimerInfo().setStartTime();
 					digester.digest(jhove2, source);
 					digester.getTimerInfo().setEndTime();

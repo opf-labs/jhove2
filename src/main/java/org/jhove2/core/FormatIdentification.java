@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.reportable.AbstractReportable;
 
 /**
  * JHOVE2 presumptive format identification.

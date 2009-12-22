@@ -36,7 +36,7 @@
 
 package org.jhove2.module.digest;
 
-import org.jhove2.core.AbstractReportable;
+import org.jhove2.core.reportable.AbstractReportable;
 
 /**
  * Abstract JHOVE2 algorithm-specific message digester that operates on a byte

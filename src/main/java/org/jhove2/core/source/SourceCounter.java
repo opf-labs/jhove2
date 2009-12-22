@@ -36,7 +36,7 @@
 package org.jhove2.core.source;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.AbstractReportable;
+import org.jhove2.core.reportable.AbstractReportable;
 
 /**
  * Convenvience class for keeping tally of the number and kind of sources

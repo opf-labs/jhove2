@@ -165,7 +165,7 @@ public class UTF8Module
 		int numErrors = 0;
 		Input input = null;
 		try {
-			Invocation config = jhove2.getApplicationConfig();
+			Invocation config = jhove2.getInvocation();
 			input = source.getInput(config.getBufferSize(), 
 					                config.getBufferType());
 			long start = 0L;

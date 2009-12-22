@@ -41,7 +41,6 @@ import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.app.Invocation;
-import org.jhove2.core.app.Installation;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceCounter;
 import org.jhove2.module.AbstractModule;
@@ -65,9 +64,6 @@ extends AbstractModule
 		+ "Ithaka Harbors, Inc., and The Board of Trustees of the Leland "
 		+ "Stanford Junior University. "
 		+ "Available under the terms of the BSD license.";
-
-	/** Framework installation properties. */
-	//protected Installation installation;
 
 	/** Counter to track number and type of sources processed by framework */
 	protected SourceCounter sourceCounter;
@@ -100,7 +96,6 @@ extends AbstractModule
 		super(VERSION, RELEASE, RIGHTS);
 		
 		this.invocation = invocation;
-		//this.installation  = Installation.getInstance();
 		this.sourceCounter = new SourceCounter();
 	}
 
@@ -124,7 +119,7 @@ extends AbstractModule
 		this.sourceCounter.incrementSourceCounter(source);				
 		
 		/* Characterize the source unit. */
-		source.setDeleteTempFiles(this.getApplicationConfig().getDeleteTempFiles());
+		source.setDeleteTempFiles(this.getInvocation().getDeleteTempFiles());
 		try {
 			for (JHOVE2Command command : this.commands){
 				command.execute(this, source);
@@ -156,31 +151,19 @@ extends AbstractModule
 	 * @return Invocation with configuration information for this module
 	 */
 	@ReportableProperty(order = 1, value = "Configuration info for this module.")
-	public Invocation getApplicationConfig() {
+	public Invocation getInvocation() {
 		return invocation;
 	}
 
 	/**
-	 * Accessor for list of commands to be executed in sequence to characterize
+	 * Get list of commands to be executed in sequence to characterize
 	 * a source unit.
 	 * @return List of command to be executed
 	 */
-	@ReportableProperty
+	@ReportableProperty(order = 2, value = "Configured commands.")
 	public List<JHOVE2Command> getCommands() {
 		return commands;
 	}
-
-	/**
-	 * Get framework installation properties.
-	 * 
-	 * @return Framework installation properties.
-	 */
-	/*
-	@ReportableProperty(order = 21, value = "Framework installation properties.")
-	public Installation getInstallation() {
-		return this.installation;
-	}
-	*/
 
 	/**
 	 * Get framework memory usage. This is calculated naively as the Java
@@ -189,7 +172,7 @@ extends AbstractModule
 	 * 
 	 * @return Memory usage, in bytes
 	 */
-	@ReportableProperty(order = 51, value = "Framework memory usage, in bytes.")
+	@ReportableProperty(order = 4, value = "Framework memory usage, in bytes.")
 	public long getMemoryUsage() {
 		Runtime rt = Runtime.getRuntime();
 		long use = rt.totalMemory() - rt.freeMemory();
@@ -202,7 +185,7 @@ extends AbstractModule
 	 * by the JHOVE2 framework.
 	 * @return Source unit counter
 	 */
-	@ReportableProperty(order = 52, value = "Counters of source units processed, " +
+	@ReportableProperty(order = 3, value = "Counters of source units processed, " +
 		"by type.")
 	public SourceCounter getSourceCounter() {
 		return sourceCounter;
@@ -212,7 +195,7 @@ extends AbstractModule
 	 * Mutator for object which maintains configuration information for the running of this module
 	 * @param invocation
 	 */
-	public void setApplicationConfig(Invocation invocation) {
+	public void setInvocation(Invocation invocation) {
 		this.invocation = invocation;
 	}
 	
@@ -224,16 +207,6 @@ extends AbstractModule
 	public void setCommands(List<JHOVE2Command> commands) {
 		this.commands = commands;
 	}
-
-	/**
-	 * Mutator for object which records environment in which engine is run.
-	 * @param installation
-	 */
-	/*
-	public void setInstallation(Installation installation) {
-		this.installation = installation;
-	}
-	*/
 
 	/**
 	 * Mutator for counter to track number and type of sources processed by

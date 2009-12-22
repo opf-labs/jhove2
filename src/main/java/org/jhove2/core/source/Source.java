@@ -46,10 +46,10 @@ import java.util.Set;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.FormatIdentification;
-import org.jhove2.core.Reportable;
 import org.jhove2.core.TimerInfo;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.io.Input.Type;
+import org.jhove2.core.reportable.Reportable;
 import org.jhove2.module.Module;
 
 /**

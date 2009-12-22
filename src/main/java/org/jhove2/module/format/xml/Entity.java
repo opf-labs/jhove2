@@ -1,7 +1,7 @@
 package org.jhove2.module.format.xml;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.AbstractReportable;
+import org.jhove2.core.reportable.AbstractReportable;
 
 public class Entity extends AbstractReportable {
 	

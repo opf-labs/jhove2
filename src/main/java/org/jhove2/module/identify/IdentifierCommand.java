@@ -6,7 +6,7 @@ package org.jhove2.module.identify;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Command;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.config.Configure;
+import org.jhove2.core.reportable.ReportableFactory;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractModule;
 
@@ -67,7 +67,7 @@ public class IdentifierCommand
 		source.addModule(this);
 		try {		
 			Identifier identifier = 
-				Configure.getReportable(Identifier.class, "Identifier");
+				ReportableFactory.getReportable(Identifier.class, "Identifier");
 			source.addModule(identifier);
 			identifier.getTimerInfo().setStartTime();
 			source.addPresumptiveFormatIdentifications(

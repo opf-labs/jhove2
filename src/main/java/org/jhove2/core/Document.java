@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.reportable.AbstractReportable;
 
 /**
  * A JHOVE2 specification document.

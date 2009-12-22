@@ -137,7 +137,7 @@ public class XMLDisplayer extends AbstractDisplayer {
 	}
 
 	/**
-	 * Start display of a {@link org.jhove2.core.Reportable}.
+	 * Start display of a {@link org.jhove2.core.reportable.Reportable}.
 	 * 
 	 * @param out
 	 *            Print stream
@@ -149,7 +149,7 @@ public class XMLDisplayer extends AbstractDisplayer {
 	 *            Reportable identifier in the JHOVE2 namespace
 	 * @param order
 	 *            Ordinal position of this reportable with respect to enclosing
-	 *            {@link org.jhove2.core.Reportable} or collection
+	 *            {@link org.jhove2.core.reportable.Reportable} or collection
 	 * @see org.jhove2.module.display.Displayer#startReportable(java.io.PrintStream,
 	 *      int, java.lang.String, org.jhove2.core.I8R, int)
 	 */
@@ -160,7 +160,7 @@ public class XMLDisplayer extends AbstractDisplayer {
 	}
 
 	/**
-	 * Start display of a {@link org.jhove2.core.Reportable}.
+	 * Start display of a {@link org.jhove2.core.reportable.Reportable}.
 	 * 
 	 * @param out
 	 *            Print stream
@@ -172,7 +172,7 @@ public class XMLDisplayer extends AbstractDisplayer {
 	 *            Reportable identifier in the JHOVE2 namespace
 	 * @param order
 	 *            Ordinal position of this reportable with respect to enclosing
-	 *            {@link org.jhove2.core.Reportable} or collection
+	 *            {@link org.jhove2.core.reportable.Reportable} or collection
 	 * @param typeIdentifier 
 	 * 			  Reportable type identifier in the JHOVE2 namespace
 	 * @see org.jhove2.module.display.Displayer#startReportable(java.io.PrintStream,
@@ -213,7 +213,7 @@ public class XMLDisplayer extends AbstractDisplayer {
 	 *            Property collection size
 	 * @param order
 	 *            Ordinal position of this reportable with respect to enclosing
-	 *            {@link org.jhove2.core.Reportable} or collection
+	 *            {@link org.jhove2.core.reportable.Reportable} or collection
 	 * @see org.jhove2.module.display.Displayer#startCollection(java.io.PrintStream,
 	 *      int, java.lang.String, org.jhove2.core.I8R, int, int)
 	 */
@@ -241,7 +241,7 @@ public class XMLDisplayer extends AbstractDisplayer {
 	 *            Property value
 	 * @param order
 	 *            Ordinal position of this reportable with respect to enclosing
-	 *            {@link org.jhove2.core.Reportable} or collection
+	 *            {@link org.jhove2.core.reportable.Reportable} or collection
 	 * @see org.jhove2.module.display.Displayer#displayProperty(java.io.PrintStream,
 	 *      int, java.lang.String, org.jhove2.core.I8R, java.lang.Object, int, java.lang.String)
 	 */
@@ -289,7 +289,7 @@ public class XMLDisplayer extends AbstractDisplayer {
 	}
 
 	/**
-	 * End display of a {@link org.jhove2.core.Reportable}.
+	 * End display of a {@link org.jhove2.core.reportable.Reportable}.
 	 * 
 	 * @param out
 	 *            Print stream

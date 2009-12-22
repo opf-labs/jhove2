@@ -39,7 +39,7 @@ package org.jhove2.core.app;
 import java.util.Properties;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.AbstractReportable;
+import org.jhove2.core.reportable.AbstractReportable;
 
 /**
  * JHOVE2 application installation properties.

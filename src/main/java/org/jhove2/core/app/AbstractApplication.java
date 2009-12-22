@@ -42,7 +42,7 @@ import java.util.List;
 
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.config.Configure;
+import org.jhove2.core.reportable.ReportableFactory;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractModule;
 import org.jhove2.module.display.Displayer;
@@ -99,7 +99,7 @@ public abstract class AbstractApplication
 		
 		/* Initialize the default displayer. */
 		try {
-			this.displayer = Configure.getReportable(Displayer.class,
+			this.displayer = ReportableFactory.getReportable(Displayer.class,
 					Displayer.DEFAULT_DISPLAYER_TYPE);
 		}
 		catch (JHOVE2Exception e){

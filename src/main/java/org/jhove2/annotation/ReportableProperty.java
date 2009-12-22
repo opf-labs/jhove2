@@ -50,7 +50,7 @@ import java.lang.annotation.Target;
  * is implied by the accessor method that returns it. For example, the method
  * <code>String getReportableName()</code> defines a scalar string-valued property named
  * "Name". the formal name is an identifier in JHOVE2 namespace based on the
- * name of the {@link org.jhove2.core.Reportable} containing the property
+ * name of the {@link org.jhove2.core.reportable.Reportable} containing the property
  * concatenated with the property's descriptive name.
  * 
  * @author mstrong, slabrams, smorrissey

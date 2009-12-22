@@ -49,11 +49,11 @@ import java.util.concurrent.ConcurrentMap;
 
 import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.Reportable;
-import org.jhove2.core.config.Configure;
 import org.jhove2.core.info.ReportableInfo;
 import org.jhove2.core.info.ReportablePropertyInfo;
 import org.jhove2.core.info.ReportableSourceInfo;
+import org.jhove2.core.reportable.ReportableFactory;
+import org.jhove2.core.reportable.Reportable;
 import org.jhove2.module.AbstractModule;
 
 /**
@@ -135,7 +135,7 @@ Displayer {
 	}
 
 	/**
-	 * Display a {@link org.jhove2.core.Reportable}.
+	 * Display a {@link org.jhove2.core.reportable.Reportable}.
 	 * 
 	 * @param out
 	 *            Print stream
@@ -155,7 +155,7 @@ Displayer {
 	}
 	
 	/**
-	 * Display a {@link org.jhove2.core.Reportable}.
+	 * Display a {@link org.jhove2.core.reportable.Reportable}.
 	 * 
 	 * @param out
 	 *            Print stream
@@ -332,7 +332,7 @@ Displayer {
 	{
 		if (visibilities == null){
 			ConcurrentHashMap<String, DisplayVisibility> viz = new ConcurrentHashMap<String, DisplayVisibility>();
-			Properties props = Configure.getProperties("DisplayVisibility");
+			Properties props = ReportableFactory.getProperties("DisplayVisibility");
 			if (props != null) {
 				Set<String> keys = props.stringPropertyNames();
 				for (String key : keys) {

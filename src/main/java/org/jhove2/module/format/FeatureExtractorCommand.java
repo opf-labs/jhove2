@@ -51,7 +51,7 @@ import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
-import org.jhove2.core.config.Configure;
+import org.jhove2.core.reportable.ReportableFactory;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractModule;
 import org.jhove2.module.Module;
@@ -125,7 +125,7 @@ implements JHOVE2Command {
 				// use the JHOVE2 format id to get bean name for format in Spring config file
 				String beanName = getJhoveIdToBeanName().get(fid.getJhove2Identification().getValue());		
 				if (beanName != null){
-					Format format = Configure.getReportable(Format.class, beanName);	
+					Format format = ReportableFactory.getReportable(Format.class, beanName);	
 					jhoveFormats.put(fid.getJhove2Identification(), format);
 				}
 			}
@@ -184,7 +184,7 @@ implements JHOVE2Command {
 	public static ConcurrentMap<String, String> getDispatchMap () throws JHOVE2Exception{
 		if (dispatchMap==null){
 			dispatchMap = new ConcurrentHashMap<String, String>();
-			Properties props = Configure.getProperties("DispatchMap");
+			Properties props = ReportableFactory.getProperties("DispatchMap");
 			Set<String> keys = props.stringPropertyNames();
 			for (String key : keys) {
 				String value = props.getProperty(key);
@@ -205,7 +205,7 @@ implements JHOVE2Command {
 		Module module = null;
 		String name = getDispatchMap().get(identifier.getValue());
 		if (name != null) {
-			module = Configure.getReportable(Module.class, name);
+			module = ReportableFactory.getReportable(Module.class, name);
 		} 
 		return module;
 	}
@@ -220,7 +220,7 @@ implements JHOVE2Command {
 		if (FeatureExtractorCommand.jhoveIdToBeanName==null){
 			ConcurrentHashMap<String, String> map = new ConcurrentHashMap<String, String>();
 			Properties props = null;
-			props = Configure.getProperties(DroidIdentifier.JHOVE2BEANMAP_BEANNAME);
+			props = ReportableFactory.getProperties(DroidIdentifier.JHOVE2BEANMAP_BEANNAME);
 			Set<String> keys = props.stringPropertyNames();
 			for (String key : keys) {
 				String value = props.getProperty(key);

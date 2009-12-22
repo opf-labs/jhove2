@@ -37,9 +37,10 @@
 package org.jhove2.core;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.reportable.AbstractReportable;
 
 /**
- * Class for timer information for {@link org.jhove2.core.Reportable}s that report their elapsed
+ * Class for timer information for {@link org.jhove2.core.reportable.Reportable}s that report their elapsed
  * processing times.
  * 
  * @author mstrong, slabrams, smorrissey

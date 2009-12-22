@@ -101,7 +101,7 @@ public class DigesterModule extends AbstractModule
 	{
 		Input input = null;
 		try {
-			Invocation config = jhove2.getApplicationConfig();
+			Invocation config = jhove2.getInvocation();
 			input = source.getInput(config.getBufferSize(), 
 					                config.getBufferType());
 			if (input != null) {

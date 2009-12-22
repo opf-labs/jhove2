@@ -45,8 +45,8 @@ import org.jhove2.core.JHOVE2;
 import org.jhove2.core.app.AbstractApplication;
 import org.jhove2.core.app.Application;
 import org.jhove2.core.app.Invocation;
-import org.jhove2.core.config.Configure;
 import org.jhove2.core.io.Input.Type;
+import org.jhove2.core.reportable.ReportableFactory;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
 import org.jhove2.module.display.Displayer;
@@ -105,8 +105,9 @@ public class JHOVE2CommandLine
 			}
 		
 			/* Create and initialize the JHOVE2 command-line application. */
-			JHOVE2CommandLine app =	Configure.getReportable(Application.class,
-					                                        "JHOVE2CommandLine");
+			JHOVE2CommandLine app =
+				ReportableFactory.getReportable(Application.class,
+					                            "JHOVE2CommandLine");
 			app.setDateTime(new Date());
 			
 			/* Parse the application command line and update the default (or
@@ -118,8 +119,10 @@ public class JHOVE2CommandLine
 			/* Create and initialize the JHOVE2 framework and register it with
 			 * the application.
 			 */		
-			JHOVE2 jhove2 = Configure.getReportable(JHOVE2.class, "JHOVE2");
-			jhove2.setApplicationConfig(app.getInvocation());			
+			JHOVE2 jhove2 = ReportableFactory.getReportable(JHOVE2.class,
+					                                       "JHOVE2");			
+			jhove2.getTimerInfo().setStartTime();
+			jhove2.setInvocation(app.getInvocation());			
 			app.setFramework(jhove2);
 						
 			/* Create a File Set source unit out of files and directories
@@ -132,8 +135,7 @@ public class JHOVE2CommandLine
 			
 			/* Characterize the File Set source unit (and all subsidiary
 			 * source units that it encapsulates.
-			 */			
-			jhove2.getTimerInfo().setStartTime();
+			 */
 			jhove2.characterize(source);
 			jhove2.getTimerInfo().setEndTime();
 			
@@ -188,7 +190,7 @@ public class JHOVE2CommandLine
 					else if (opt == 'd' && i + 1 < args.length) {
 						String displayerType = args[++i];
 						this.setDisplayer( 
-							Configure.getReportable(Displayer.class,displayerType));
+							ReportableFactory.getReportable(Displayer.class,displayerType));
 						this.commandLine += " " + args[i];
 					}
 					else if (opt == 'f' && i + 1 < args.length) {
@@ -236,7 +238,7 @@ public class JHOVE2CommandLine
 	 */
 	public static String getUsage() throws JHOVE2Exception {
 		Type[] bufferTypes = Type.values();
-		String[] displayers = Configure.getReportableNames(Displayer.class);
+		String[] displayers = ReportableFactory.getReportableNames(Displayer.class);
 
 		StringBuffer usage = new StringBuffer("usage: ");
 		usage.append(JHOVE2CommandLine.class.getName());

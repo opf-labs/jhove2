@@ -42,7 +42,7 @@ import java.util.List;
 import org.jhove2.core.Agent;
 import org.jhove2.core.WrappedProductInfo;
 import org.jhove2.core.TimerInfo;
-import org.jhove2.core.AbstractReportable;
+import org.jhove2.core.reportable.AbstractReportable;
 
 /**
  * An abstract JHOVE2 module, a {@link org.jhove2.core.AbstractProduct} that

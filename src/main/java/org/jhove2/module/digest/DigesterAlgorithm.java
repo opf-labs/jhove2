@@ -38,7 +38,7 @@ package org.jhove2.module.digest;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.Digest;
-import org.jhove2.core.Reportable;
+import org.jhove2.core.reportable.Reportable;
 
 /**
  * Interface for JHOVE2 algorithm-specific message digesters.

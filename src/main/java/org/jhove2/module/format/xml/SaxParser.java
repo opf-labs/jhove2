@@ -6,8 +6,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.AbstractReportable;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.reportable.AbstractReportable;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotRecognizedException;
 import org.xml.sax.SAXNotSupportedException;

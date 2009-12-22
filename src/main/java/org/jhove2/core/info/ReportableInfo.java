@@ -46,12 +46,12 @@ import java.util.TreeSet;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.I8R;
-import org.jhove2.core.Reportable;
 import org.jhove2.core.info.ReportableSourceInfo.Source;
+import org.jhove2.core.reportable.Reportable;
 
 /**
  * JHOVE2 introspection utility for retrieving the properties of
- * {@link org.jhove2.core.Reportable}s.
+ * {@link org.jhove2.core.reportable.Reportable}s.
  * 
  * @author mstrong, slabrams, smorrissey
  */
@@ -174,7 +174,7 @@ public class ReportableInfo {
 	}
 
 	/**
-	 * Get {@link org.jhove2.core.Reportable} formal identifier in the JHOVE2
+	 * Get {@link org.jhove2.core.reportable.Reportable} formal identifier in the JHOVE2
 	 * namespace. This identifier is guaranteed to be unique.
 	 * 
 	 * @return Reportable identifier in the JHOVE2 namespace
@@ -184,7 +184,7 @@ public class ReportableInfo {
 	}
 
 	/**
-	 * Get {@link org.jhove2.core.Reportable} simple name.
+	 * Get {@link org.jhove2.core.reportable.Reportable} simple name.
 	 * 
 	 * @return Simple name of the reportable
 	 */
@@ -193,7 +193,7 @@ public class ReportableInfo {
 	}
 
 	/**
-	 * Get {@link org.jhove2.core.Reportable} package name.
+	 * Get {@link org.jhove2.core.reportable.Reportable} package name.
 	 * 
 	 * @return Package name of the reportable
 	 */
@@ -202,7 +202,7 @@ public class ReportableInfo {
 	}
 
 	/**
-	 * Get reportable properties of the {@link org.jhove2.core.Reportable}.
+	 * Get reportable properties of the {@link org.jhove2.core.reportable.Reportable}.
 	 * 
 	 * @return Reportable properties of the reportable
 	 */
@@ -211,7 +211,7 @@ public class ReportableInfo {
 	}
 
 	/**
-	 * Get {@link org.jhove2.core.Reportable} qualified name.
+	 * Get {@link org.jhove2.core.reportable.Reportable} qualified name.
 	 * 
 	 * @return Qualified name of the reporter
 	 */

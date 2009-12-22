@@ -34,13 +34,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.core.config;
+package org.jhove2.core.reportable;
 
 import java.util.Locale;
 import java.util.Properties;
 
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.Reportable;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -52,7 +51,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * 
  * @author mstrong, slabrams, smorrissey
  */
-public class Configure {
+public class ReportableFactory {
 	/** Spring configuration classpath. */
 	public static final String CLASSPATH = "classpath*:**/*-config.xml";
 

@@ -41,7 +41,7 @@ import java.util.Set;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Command;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.config.Configure;
+import org.jhove2.core.reportable.ReportableFactory;
 import org.jhove2.core.source.AggregateSource;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.Source;
@@ -98,7 +98,7 @@ public class AggrefierCommand extends AbstractModule implements JHOVE2Command {
 		if (source instanceof AggregateSource){
 			try {
 				AggregateIdentifier aggrefier = 
-					Configure.getReportable(AggregateIdentifier.class, "Aggrefier");
+					ReportableFactory.getReportable(AggregateIdentifier.class, "Aggrefier");
 				source.addModule(aggrefier);
 				aggrefier.getTimerInfo().setStartTime();
 				Set<ClumpSource> clumpSources = null;

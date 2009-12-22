@@ -55,7 +55,7 @@ import org.jhove2.core.FormatIdentification.Confidence;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.app.Invocation;
-import org.jhove2.core.config.Configure;
+import org.jhove2.core.reportable.ReportableFactory;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractModule;
 
@@ -289,7 +289,7 @@ public class DroidIdentifier
 		if (puidToJhoveId==null){
 			ConcurrentHashMap<String, String> map = new ConcurrentHashMap<String, String>();
 			Properties props = null;
-			props = Configure.getProperties(PUIDMAP_BEANNAME);
+			props = ReportableFactory.getProperties(PUIDMAP_BEANNAME);
 			Set<String> keys = props.stringPropertyNames();
 			for (String key : keys) {
 				String value = props.getProperty(key);
@@ -306,7 +306,7 @@ public class DroidIdentifier
 		if (droidFilePaths == null){
 			ConcurrentHashMap<String, String> map = new ConcurrentHashMap<String, String>();
 			Properties props = null;
-			props = Configure.getProperties(DROIDCONFIG_BEANNAME);
+			props = ReportableFactory.getProperties(DROIDCONFIG_BEANNAME);
 			Set<String> keys = props.stringPropertyNames();
 			for (String key : keys) {
 				String value = props.getProperty(key);

@@ -40,8 +40,8 @@ import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import org.jhove2.core.AbstractReportable;
 import org.jhove2.core.Digest;
+import org.jhove2.core.reportable.AbstractReportable;
 
 /**
  * Abstract JHOVE2 algorithm-specific message digester that operates on a Java

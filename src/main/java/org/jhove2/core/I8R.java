@@ -39,6 +39,8 @@ package org.jhove2.core;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 
+import org.jhove2.core.reportable.Reportable;
+
 /**
  * A JHOVE2 identifier. Note that this class is named "I8R", not
  * "IdentifierModule" to avoid confusion between "identifier" as a label and
@@ -65,7 +67,7 @@ public class I8R implements Comparable<I8R> {
 	public static final String JHOVE2_PROPERTY_INFIX = "property";
 
 	/**
-	 * JHOVE2 reportable identifier infix {@link org.jhove2.core.Reportable}
+	 * JHOVE2 reportable identifier infix {@link org.jhove2.core.reportable.Reportable}
 	 * infix.
 	 */
 	public static final String JHOVE2_REPORTABLE_INFIX = "reportable";

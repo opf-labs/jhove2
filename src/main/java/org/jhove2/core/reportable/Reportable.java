@@ -33,58 +33,35 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.jhove2.core;
 
-import org.jhove2.annotation.ReportableProperty;
+package org.jhove2.core.reportable;
 
-
+import org.jhove2.core.I8R;
 
 /**
- * Base class for all classes that implement Reportable interface
- * Ensures all Reportables correctly form and populate I8R jhoveIdentifier field
- * and the (user-configurable) name field
- * @author smorrissey
- *
+ * Marker interface for JHOVE2 reportables. A reportable is a collection of
+ * reportable properties.
+ * 
+ * @author mstrong, slabrams, smorrissey
  */
-public abstract class AbstractReportable implements Reportable {
-    /** Object's unique JHOVE2 identifier  cannot be set by user */
-	protected I8R myI8R = null;
-	
-	/** Object's simple name;  may be configure by user */
-	protected String reportableName = null;
-	
-	/* (non-Javadoc)
-	 * @see org.jhove2.core.Reportable#getJhove2Identifier()
+public interface Reportable
+{
+	/**
+	 * Get reportable identifier.
+	 * @return Reportable identifier
 	 */
-	@Override
-	public I8R getReportableIdentifier() {
-		if (myI8R == null){
-			myI8R = I8R.makeReportableTypeI8R(this);
-		}
-		return myI8R;
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.jhove2.core.Reportable#getName()
-	 */
-	@Override
-	@ReportableProperty(order = 2, value = "Object name (can be configured by user) "
-		+ "simple name.")
-	public String getReportableName(){
-		if (this.reportableName==null) {
-			this.reportableName = this.getClass().getSimpleName();
-		}
-		return reportableName;
-	}
+	public I8R getReportableIdentifier();
 	
 	/**
-	 * Set the object's simple name
+	 * Get reportable simple name (may be configure by user)
+	 * 
+	 * @return String containing object name
+	 */
+	public String getReportableName();
+	
+	/**
+	 * Set reportable simple name 
 	 * @param name
 	 */
-	@Override
-	public void setReportableName(String name){
-		this.reportableName = name;
-	}
-	
+	public void setReportableName(String name);
 }
-

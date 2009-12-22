@@ -43,7 +43,7 @@ import java.text.SimpleDateFormat;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.Reportable;
+import org.jhove2.core.reportable.Reportable;
 import org.jhove2.module.Module;
 
 /**
@@ -67,7 +67,7 @@ public interface Displayer extends Module {
 	public static final String DEFAULT_DISPLAYER_CLASS = "org.jhove2.module.display.TextDisplayer";
 
 	/**
-	 * Display {@link org.jhove2.core.Reportable} to the standard output stream.
+	 * Display {@link org.jhove2.core.reportable.Reportable} to the standard output stream.
 	 * 
 	 * @param reportable
 	 *            Reportable
@@ -80,7 +80,7 @@ public interface Displayer extends Module {
 		throws FileNotFoundException, JHOVE2Exception;
 	
 	/**
-	 * Display {@link org.jhove2.core.Reportable} to a named file.
+	 * Display {@link org.jhove2.core.reportable.Reportable} to a named file.
 	 *  
 	 * @param reportable
 	 *            Reportable
@@ -95,7 +95,7 @@ public interface Displayer extends Module {
 		throws FileNotFoundException, JHOVE2Exception;
 	
 	/**
-	 * Display {@link org.jhove2.core.Reportable} to a
+	 * Display {@link org.jhove2.core.reportable.Reportable} to a
 	 * {@link java.io.PrintStream}.
 	 * 
 	 * @param reportable
@@ -119,7 +119,7 @@ public interface Displayer extends Module {
 	public void startDisplay(PrintStream out, int level);
 
 	/**
-	 * Start the display of a {@link org.jhove2.core.Reportable}.
+	 * Start the display of a {@link org.jhove2.core.reportable.Reportable}.
 	 * 
 	 * @param out
 	 *            Print stream
@@ -131,13 +131,13 @@ public interface Displayer extends Module {
 	 *            Property collection identifier in the JHOVE2 namespace
 	 * @param order
 	 *            Ordinal position of this reportable with respect to its
-	 *            enclosing {@link org.jhove2.core.Reportable} or collection
+	 *            enclosing {@link org.jhove2.core.reportable.Reportable} or collection
 	 */
 	public void startReportable(PrintStream out, int level, String name,
 			                    I8R identifier, int order);
 	
 	/**
-	 * Start display of a {@link org.jhove2.core.Reportable}.
+	 * Start display of a {@link org.jhove2.core.reportable.Reportable}.
 	 * 
 	 * @param out
 	 *            Print stream
@@ -149,7 +149,7 @@ public interface Displayer extends Module {
 	 *            Reportable identifier in the JHOVE2 namespace
 	 * @param order
 	 *            Ordinal position of this reportable with respect to enclosing
-	 *            {@link org.jhove2.core.Reportable} or collection
+	 *            {@link org.jhove2.core.reportable.Reportable} or collection
 	 * @param typeIdentifier 
 	 * 			  Reportable type identifier in the JHOVE2 namespace
 	 */
@@ -171,7 +171,7 @@ public interface Displayer extends Module {
 	 *            Property collection size
 	 * @param order
 	 *            Ordinal position of this property collection with respect to
-	 *            its enclosing {@link org.jhove2.core.Reportable} or collection
+	 *            its enclosing {@link org.jhove2.core.reportable.Reportable} or collection
 	 */
 	public void startCollection(PrintStream out, int level, String name,
 			                    I8R identifier, int size, int order);
@@ -191,7 +191,7 @@ public interface Displayer extends Module {
 	 *            Property value
 	 * @param order
 	 *            Ordinal position of this property with respect to its
-	 *            enclosing {@link org.jhove2.core.Reportable} or collection
+	 *            enclosing {@link org.jhove2.core.reportable.Reportable} or collection
 	 * @param unitOfMeasure
 	 *            Unit of measure in which the value is expressed
 	 */
@@ -217,7 +217,7 @@ public interface Displayer extends Module {
 			                  I8R identifier, int size);
 
 	/**
-	 * End display of a {@link org.jhove2.core.Reportable}.
+	 * End display of a {@link org.jhove2.core.reportable.Reportable}.
 	 * 
 	 * @param out
 	 *            Print stream

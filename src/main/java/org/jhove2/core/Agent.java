@@ -37,6 +37,7 @@
 package org.jhove2.core;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.reportable.AbstractReportable;
 
 /**
  * A JHOVE2 human or corporate agent.
