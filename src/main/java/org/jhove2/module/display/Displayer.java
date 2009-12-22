@@ -84,14 +84,14 @@ public interface Displayer extends Module {
 	 *  
 	 * @param reportable
 	 *            Reportable
-	 * @param outputFile
+	 * @param filePathname
 	 * 			Output file pathname
 	 * @throws FileNotFoundException
 	 *             Can't create output file
 	 * @throws JHOVE2Exception
 	 *             Can't instantiate displayer
 	 */
-	public void display(Reportable reportable, String outputFile)
+	public void display(Reportable reportable, String filePathname)
 		throws FileNotFoundException, JHOVE2Exception;
 	
 	/**
@@ -240,16 +240,37 @@ public interface Displayer extends Module {
 	 *            Nesting level
 	 */
 	public void endDisplay(PrintStream out, int level);
+	
+	/** Get the output file pathname
+	 * @return Output file pathname
+	 */
+	@ReportableProperty(order = 1, value = "Displayer output file pathname.")
+	public String getFilePathname();
 
+	/**
+	 * Get indentation flag.  If true, displayed output is indented to indicate
+	 * subsidiarity relationships.
+	 * 
+	 * @return Identation flag
+	 */
+	@ReportableProperty(order = 3, value = "Displayer indentation flag; " +
+		"if true, output is indented to indicate subsidiarity relationships.")
+	public boolean getShouldIndent();
+	
 	/**
 	 * Get show identifiers flag.
 	 * 
 	 * @return Show identifier flag; if true, show identifiers in non-XML
 	 *         display modes
 	 */
-	@ReportableProperty(order = 6, value = "Displayer show identifiers flag; " +
+	@ReportableProperty(order = 2, value = "Displayer show identifiers flag; " +
 		"if true, show identifiers in non-XML display modes.")
 	public boolean getShowIdentifiers();
+
+	/** Set the output file pathname
+	 * @param filePathname Output file pathname
+	 */
+	public void setFilePathname(String filePathname);
 
 	/**
 	 * Set show identifiers flag.
@@ -258,28 +279,7 @@ public interface Displayer extends Module {
 	 *            If true, show identifiers in non-XML display modes
 	 */
 	public void setShowIdentifiers(boolean flag);
-	
-	/** Get the output file pathname
-	 * @return Output file pathname
-	 */
-	@ReportableProperty(order = 7, value = "Displayer output file pathname.")
-	public String getFilePathname();
 
-	/** Set the output file pathname
-	 * @param filePathname Output file pathname
-	 */
-	public void setFilePathname(String filePathname);
-	
-	/**
-	 * Get indentation flag.  If true, displayed output is indented to indicate
-	 * subsidiarity relationships.
-	 * 
-	 * @return Identation flag
-	 */
-	@ReportableProperty(order = 6, value = "Displayer indentation flag; " +
-		"if true, output is indented to indicate subsidiarity relationships.")
-	public boolean getShouldIndent();
-	
 	/**
 	 * Set indentation flag.  If true, displayed output is indented to indicate
 	 * subsidiarity relationships.

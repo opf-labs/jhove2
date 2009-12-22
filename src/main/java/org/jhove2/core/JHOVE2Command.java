@@ -33,6 +33,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.jhove2.core;
 
 import org.jhove2.core.source.Source;
@@ -40,18 +41,18 @@ import org.jhove2.module.Module;
 
 /**
  * Command invoked by JHOVE2 application framework to characterize some aspect
- * of a Source (example:  identification, format feature extraction/validation/profile validation,
- * aggregate detection and characterization, assessment, message digest computation).
+ * of a {@link org.jhove2.core.source.Source}, for example, identification,
+ * format feature extraction/validation/profile validation, aggregate detection
+ * and characterization, assessment, message digest calculation.
  * 
- * These commands should be thought of as essentially stateless (except for the metadata members
- * common to all Modules that describe the Module itself).
+ * These commands should be thought of as essentially stateless (except for the
+ * metadata members common to all {@link org.jhove2.module.Module}s that
+ * describe the Module itself).
  * 
- * The JHOVE2 framework is configured by plugging a sequence of JHOVE2Command objects into the 
- * JHOVE2.commands List field.
- * 
+ * The JHOVE2 framework is configured by plugging a sequence of JHOVE2Command
+ * objects into the JHOVE2.commands List field.
  * 
  * @author smorrissey
- *
  */
 public interface JHOVE2Command
 	extends Module

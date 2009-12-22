@@ -51,7 +51,7 @@ public class TextDisplayer extends AbstractDisplayer {
 	public static final String VERSION = "1.0.0";
 
 	/** Text displayer release date. */
-	public static final String RELEASE = "2009-06-11";
+	public static final String RELEASE = "2009-12-21";
 
 	/** Text displayer rights statement. */
 	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California, "
@@ -129,18 +129,20 @@ public class TextDisplayer extends AbstractDisplayer {
 				this.getShouldIndent()));
 
 		buffer.append(name);
-		if (this.getShowIdentifiers()) {
-			buffer.append(" [" + identifier + "]");
-		}
 		if (typeIdentifier != null){
 			String typeName = typeIdentifier.getValue();
 			int i = typeName.lastIndexOf("/");
 			if (i > -1 ){
-				buffer.append(" [ ");
 				typeName = typeName.substring(i+1);
-				buffer.append(typeName);
-				buffer.append(" ]");
+				if (!typeName.equals(name)) {
+					buffer.append("{");
+					buffer.append(typeName);
+					buffer.append("}");
+				}
 			}
+		}
+		if (this.getShowIdentifiers()) {
+			buffer.append(" [" + identifier + "]");
 		}
 		buffer.append(":");
 		out.println(buffer);

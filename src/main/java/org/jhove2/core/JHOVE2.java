@@ -37,6 +37,7 @@
 package org.jhove2.core;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
@@ -181,35 +182,46 @@ extends AbstractModule
 	}
 
 	/**
-	 * Accessor for counter to track number and type of source units processed
+	 * Get counter to track number and type of source units processed
 	 * by the JHOVE2 framework.
 	 * @return Source unit counter
 	 */
-	@ReportableProperty(order = 3, value = "Counters of source units processed, " +
-		"by type.")
+	@ReportableProperty(order = 3, value = "Source unit counter, by type.")
 	public SourceCounter getSourceCounter() {
 		return sourceCounter;
 	}
 
 	/**
-	 * Mutator for object which maintains configuration information for the running of this module
-	 * @param invocation
+	 * Set framework invocation properties.
+	 * @param invocation Framework invocation properties
 	 */
 	public void setInvocation(Invocation invocation) {
 		this.invocation = invocation;
 	}
 	
+	/** Add command to be executed in sequence to characterize
+	 * {@link org.jhove2.core.source.Source} units.
+	 * @param command Command to be executed
+	 */
+	public void setCommand(JHOVE2Command command) {
+		if (this.commands == null) {
+			this.commands = new ArrayList<JHOVE2Command>();
+		}
+		this.commands.add(command);
+	}
+	
 	/**
-	 * Mutator for list of commands to be executed in sequence to characterize
-	 * a source unit.
-	 * @param commands
+	 * Set commands to be executed in sequence to characterize
+	 * {@link org.jhove2.core.source.Source} units.
+	 * @param commands Commands to be executed
 	 */
 	public void setCommands(List<JHOVE2Command> commands) {
 		this.commands = commands;
 	}
 
 	/**
-	 * Mutator for counter to track number and type of sources processed by
+	 * Set counter to track number and type of
+	 * {@link org.jhove2.core.source.Source}s processed by
 	 * the JHOVE2 framework.
 	 * @param sourceCounter Source unit counter
 	 */

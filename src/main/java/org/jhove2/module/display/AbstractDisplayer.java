@@ -103,7 +103,16 @@ Displayer {
 		this.setShowIdentifiers(DEFAULT_SHOW_IDENTIFIERS);
 	}
 
-
+	/**
+	 * Display {@link org.jhove2.core.reportable.Reportable} to the standard output stream.
+	 * 
+	 * @param reportable
+	 *            Reportable
+	 * @throws FileNotFoundException
+	 *             Can't create output file
+	 * @throws JHOVE2Exception
+	 *             Can't instantiate displayer
+	 */
 	@Override
 	public void display(Reportable reportable)
 		throws FileNotFoundException, JHOVE2Exception
@@ -111,6 +120,18 @@ Displayer {
 		this.display(reportable, this.getFilePathname());
 	}
 
+	/**
+	 * Display {@link org.jhove2.core.reportable.Reportable} to a named file.
+	 *  
+	 * @param reportable
+	 *            Reportable
+	 * @param filePathname
+	 * 			Output file pathname
+	 * @throws FileNotFoundException
+	 *             Can't create output file
+	 * @throws JHOVE2Exception
+	 *             Can't instantiate displayer
+	 */
 	@Override
 	public void display(Reportable reportable, String filePathname)
 		throws FileNotFoundException, JHOVE2Exception
@@ -122,7 +143,18 @@ Displayer {
 		}	
 		this.display(reportable, out);
 	}
-
+	
+	/**
+	 * Display {@link org.jhove2.core.reportable.Reportable} to a
+	 * {@link java.io.PrintStream}.
+	 * 
+	 * @param reportable
+	 *            Reportable
+	 * @param out
+	 *            Print stream
+	 * @throws JHOVE2Exception
+	 *             Can't instantiate displayer
+	 */
 	@Override
 	public void display(Reportable reportable, PrintStream out)
 		throws JHOVE2Exception
@@ -301,6 +333,14 @@ Displayer {
 					value, order, unitOfMeasure);
 		}
 	}
+	
+	/** Get output file pathname.
+	 * @return Output file pathname
+	 */
+	@Override
+	public String getFilePathname() {
+		return this.filePathname;
+	}
 
 	/**
 	 * Get indentation appropriate for a nesting level.
@@ -347,7 +387,18 @@ Displayer {
 		}
 		return visibilities;
 	}
-
+	
+	/**
+	 * Get indentation flag.  If true, displayed output is indented to indicate
+	 * subsidiarity relationships.
+	 * 
+	 * @return Identation flag
+	 */	
+	@Override
+	public boolean getShouldIndent() {
+		return this.shouldIndent;
+	}
+	
 	/**
 	 * Get show identifiers flag.
 	 * 
@@ -371,14 +422,6 @@ Displayer {
 	public void setShowIdentifiers(boolean flag) {
 		this.showIdentifiers = flag;
 	}
-	
-	/** Get output file pathname.
-	 * @return Output file pathname
-	 */
-	@Override
-	public String getFilePathname() {
-		return this.filePathname;
-	}
 
 	/** Set output file pathname
 	 * @param filePathname Output file pathname
@@ -387,16 +430,14 @@ Displayer {
 	public void setFilePathname(String filePathname) {
 		this.filePathname = filePathname;
 	}
-	
-	@Override
-	public boolean getShouldIndent() {
-		return this.shouldIndent;
-	}
-	
+
+	/**
+	 * Set indentation flag.  If true, displayed output is indented to indicate
+	 * subsidiarity relationships.
+	 * @param shouldIndent Indentation flag
+	 */
 	@Override
 	public void setShouldIndent(boolean shouldIndent){
 		this.shouldIndent = shouldIndent;
 	}
 }
-
-
