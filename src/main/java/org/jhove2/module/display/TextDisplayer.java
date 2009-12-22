@@ -120,7 +120,7 @@ public class TextDisplayer extends AbstractDisplayer {
 	 * @param typeIdentifier 
 	 * 			  Reportable type identifier in the JHOVE2 namespace
 	 * @see org.jhove2.module.display.Displayer#startReportable(java.io.PrintStream,
-	 *      int, java.lang.String, org.jhove2.core.I8R, int, java.lang.String, org.jhove2.core.I8R)
+	 *      int, java.lang.String, org.jhove2.core.I8R, int, org.jhove2.core.I8R)
 	 */
 	@Override
 	public void startReportable(PrintStream out, int level, String name,
@@ -135,14 +135,14 @@ public class TextDisplayer extends AbstractDisplayer {
 			if (i > -1 ){
 				typeName = typeName.substring(i+1);
 				if (!typeName.equals(name)) {
-					buffer.append("{");
+					buffer.append(" {");
 					buffer.append(typeName);
 					buffer.append("}");
 				}
 			}
 		}
 		if (this.getShowIdentifiers()) {
-			buffer.append(" [" + identifier + "]");
+			buffer.append(" <" + identifier + ">");
 		}
 		buffer.append(":");
 		out.println(buffer);
@@ -174,7 +174,7 @@ public class TextDisplayer extends AbstractDisplayer {
 
 		buffer.append(name);
 		if (this.getShowIdentifiers()) {
-			buffer.append(" [" + identifier + "]");
+			buffer.append(" <" + identifier + ">");
 		}
 		buffer.append(":");
 		out.println(buffer);
@@ -205,13 +205,13 @@ public class TextDisplayer extends AbstractDisplayer {
 		StringBuffer buffer = new StringBuffer(getIndent(level,this.getShouldIndent()));
 		buffer.append(name);
 		if (this.getShowIdentifiers()) {
-			buffer.append(" [" + identifier + "]");
+			buffer.append(" <" + identifier + ">");
 		}
 		if (unitOfMeasure.equals(ReportableProperty.NOT_APPLICABLE)){
 			buffer.append(": " + value);
 		}
 		else {
-			buffer.append(" [unit of measure: " + unitOfMeasure + "] ");
+			buffer.append(" (" + unitOfMeasure + ")");
 			buffer.append(": " + value);
 		}
 		out.println(buffer);

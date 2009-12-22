@@ -5,6 +5,7 @@ package org.jhove2.core;
 
 import static org.junit.Assert.*;
 
+import org.jhove2.core.app.Invocation;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,17 +15,17 @@ import org.junit.Test;
  */
 public class AppConfigInfoTest {
 
-	private AppConfigInfo config;
+	private Invocation config;
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
-		config = new AppConfigInfo();
+		config = new Invocation();
 	}
 
 	/**
-	 * Test method for {@link org.jhove2.core.AppConfigInfo#getJHOVE2Home()}.
+	 * Test method for {@link org.jhove2.core.app.Invocation#getJHOVE2Home()}.
 	 */
 	@Test
 	public void testGetJhove2Home() {

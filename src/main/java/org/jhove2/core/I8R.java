@@ -50,7 +50,7 @@ import org.jhove2.core.reportable.Reportable;
  */
 public class I8R implements Comparable<I8R> {
 	/** JHOVE2 namespace identifier prefix. */
-	public static final String JHOVE2_PREFIX = "info:jhove2";
+	public static final String JHOVE2_PREFIX = "http://jhove2.org/terms";
 
 	/** JHOVE2 namespace identifier format infix. */
 	public static final String JHOVE2_FORMAT_INFIX = "format";

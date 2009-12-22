@@ -39,6 +39,7 @@ import static org.junit.Assert.*;
 
 
 import org.jhove2.core.JHOVE2;
+import org.jhove2.core.app.Invocation;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -71,15 +72,21 @@ public class URLSourceTest {
 	@Test
 	public void testEqualsObject() {
 		try {
+			Invocation config = jhove2.getInvocation();
 			ptcURL = new URL(ptcUrlString);
 			cdlURL = new URL(cdlUrlString);
-			URLSource uPtc = new URLSource(jhove2.getAppConfigInfo().getTempPrefix(), 
-					jhove2.getAppConfigInfo().getTempSuffix(), jhove2.getAppConfigInfo().getBufferSize(),
-					ptcURL);
-			URLSource uPtc2 = new URLSource(jhove2.getAppConfigInfo().getTempPrefix(), 
-					jhove2.getAppConfigInfo().getTempSuffix(), jhove2.getAppConfigInfo().getBufferSize(), ptcURL);
-			URLSource uCdl = new URLSource(jhove2.getAppConfigInfo().getTempPrefix(), 
-					jhove2.getAppConfigInfo().getTempSuffix(), jhove2.getAppConfigInfo().getBufferSize(), cdlURL);
+			URLSource uPtc  = new URLSource(config.getTempPrefix(), 
+					                        config.getTempSuffix(),
+					                        config.getBufferSize(),
+					                        ptcURL);
+			URLSource uPtc2 = new URLSource(config.getTempPrefix(), 
+					                        config.getTempSuffix(),
+					                        config.getBufferSize(),
+					                        ptcURL);
+			URLSource uCdl  = new URLSource(config.getTempPrefix(), 
+					                        config.getTempSuffix(),
+					                        config.getBufferSize(),
+					                        cdlURL);
 			assertEquals(uPtc,uPtc);
 			// this will fail, because the temp file underlying each URL will be different
 			assertFalse(uPtc.equals(uPtc2));
@@ -109,12 +116,17 @@ public class URLSourceTest {
 	@Test
 	public void testCompareTo() {
 		try {
+			Invocation config = jhove2.getInvocation();
 			ptcURL = new URL(ptcUrlString);
 			cdlURL = new URL(cdlUrlString);
-			URLSource uPtc = new URLSource(jhove2.getAppConfigInfo().getTempPrefix(), 
-					jhove2.getAppConfigInfo().getTempSuffix(), jhove2.getAppConfigInfo().getBufferSize(), ptcURL);
-			URLSource uPtc2 = new URLSource(jhove2.getAppConfigInfo().getTempPrefix(), 
-					jhove2.getAppConfigInfo().getTempSuffix(), jhove2.getAppConfigInfo().getBufferSize(), ptcURL);
+			URLSource uPtc  = new URLSource(config.getTempPrefix(), 
+					                        config.getTempSuffix(),
+					                        config.getBufferSize(),
+					                        ptcURL);
+			URLSource uPtc2 = new URLSource(config.getTempPrefix(), 
+					                        config.getTempSuffix(),
+					                        config.getBufferSize(),
+					                        ptcURL);
 			assertEquals(0,uPtc.compareTo(uPtc));
 			assertEquals(1, uPtc.compareTo(null));
 			boolean notEq = uPtc.compareTo(uPtc2)!=0;

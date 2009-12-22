@@ -14,6 +14,7 @@ import java.net.URL;
 
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.app.Invocation;
 import org.jhove2.core.io.Input.Type;
 import org.jhove2.core.source.URLSource;
 
@@ -37,9 +38,11 @@ public class InputFactoryTest {
 		}
 		try {
 			JHOVE2 jhove2 = new JHOVE2();
-			URLSource yahooURL = new URLSource(jhove2.getAppConfigInfo().getTempPrefix(), 
-					jhove2.getAppConfigInfo().getTempSuffix(), jhove2.getAppConfigInfo().getBufferSize(),
-					yahoo);
+			Invocation config = jhove2.getInvocation();
+			URLSource yahooURL = new URLSource(config.getTempPrefix(), 
+					                           config.getTempSuffix(),
+					                           config.getBufferSize(),
+					                           yahoo);
 			Input input = yahooURL.getInput(8192, Type.Direct);
 			// this closes the channel and the stream associated with any temp
 			// file created

@@ -41,7 +41,7 @@ import javax.annotation.Resource;
 
 
 import org.jhove2.core.JHOVE2;
-import org.jhove2.core.config.Configure;
+import org.jhove2.core.reportable.ReportableFactory;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
 import org.junit.Test;
@@ -73,7 +73,7 @@ public class AbstractDisplayerTest {
 			String filePath = testDir.concat(testFile01);
 			Source source = SourceFactory.getSource(filePath);
 			JHOVE2.characterize(source);
-			Displayer displayer = Configure.getReportable(Displayer.class,
+			Displayer displayer = ReportableFactory.getReportable(Displayer.class,
 					Displayer.DEFAULT_DISPLAYER_TYPE);
 			displayer.display(source);			
 		}

@@ -31,7 +31,7 @@
 				<ref bean="StanfordAgent"/>
 			</list>
 		</property>
-				<property name="commands">
+		<property name="commands">
 			<list value-type="org.jhove2.core.JHOVE2Command">
 				<ref bean="IdentifierCommand"/>
 				<ref bean="FeatureExtractorCommand"/>
