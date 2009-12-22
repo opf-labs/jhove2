@@ -55,7 +55,7 @@ import org.jhove2.core.reportable.ReportableFactory;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractModule;
 import org.jhove2.module.Module;
-import org.jhove2.module.identify.DroidIdentifier;
+import org.jhove2.module.identify.DROIDIdentifier;
 
 /**
  * Module that inspects the presumptive format identifications attached to a 
@@ -64,14 +64,15 @@ import org.jhove2.module.identify.DroidIdentifier;
  * 
  * @author smorrissey
  */
-public class FeatureExtractorCommand extends AbstractModule 
-implements JHOVE2Command {
-
+public class FeatureExtractorCommand
+	extends AbstractModule 
+	implements JHOVE2Command
+{
 	/** Directory module version identifier. */
 	public static final String VERSION = "0.0.1";
 
 	/** Directory module release date. */
-	public static final String RELEASE = "2009-09-16";
+	public static final String RELEASE = "2009-12-22";
 
 	/** Directory module rights statement. */
 	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California, "
@@ -110,16 +111,18 @@ implements JHOVE2Command {
 	 * @param source Source with FormatIdentifications
 	 * @param jhove2 JHOVE2 framework object
 	 * @throws JHOVE2Exception
-	 * @see org.jhove2.core.JHOVE2Command#execute(org.jhove2.core.source.Source, org.jhove2.core.JHOVE2)
+	 * @see org.jhove2.core.JHOVE2Command#execute(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
 	 */
 	@Override
-	public void execute(JHOVE2 jhove2, Source source) throws JHOVE2Exception {
+	public void execute(JHOVE2 jhove2, Source source)
+		throws JHOVE2Exception
+	{
 		source.addModule(this);
 		// Sometimes more than one format identification will match to the same 
 		// JHOVE2 format; eliminate duplicates from list of JHOVE2 format modules
 		// to be run, then dispatch to each format module
 		HashMap<I8R, Format> jhoveFormats = new HashMap<I8R, Format>();
-		for (FormatIdentification fid : source.getPresumptiveFormatIdentifications()){
+		for (FormatIdentification fid : source.getPresumptiveFormats()){
 			// make sure identification found a match for format in JHOVE2 namespace
 			if (fid.getJhove2Identification() != null) {
 				// use the JHOVE2 format id to get bean name for format in Spring config file
@@ -220,7 +223,7 @@ implements JHOVE2Command {
 		if (FeatureExtractorCommand.jhoveIdToBeanName==null){
 			ConcurrentHashMap<String, String> map = new ConcurrentHashMap<String, String>();
 			Properties props = null;
-			props = ReportableFactory.getProperties(DroidIdentifier.JHOVE2BEANMAP_BEANNAME);
+			props = ReportableFactory.getProperties(DROIDIdentifier.JHOVE2BEANMAP_BEANNAME);
 			Set<String> keys = props.stringPropertyNames();
 			for (String key : keys) {
 				String value = props.getProperty(key);
@@ -230,6 +233,4 @@ implements JHOVE2Command {
 		}
 		return FeatureExtractorCommand.jhoveIdToBeanName;
 	}
-
 }
-

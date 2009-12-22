@@ -42,6 +42,7 @@ import java.util.List;
 
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.JHOVE2;
+import org.jhove2.core.TimerInfo;
 import org.jhove2.core.app.AbstractApplication;
 import org.jhove2.core.app.Application;
 import org.jhove2.core.app.Invocation;
@@ -63,7 +64,7 @@ public class JHOVE2CommandLine
 	public static final String VERSION = "0.5.4";
 
 	/** JHOVE2 application release date. */
-	public static final String RELEASE = "2009-12-21";
+	public static final String RELEASE = "2009-12-22";
 
 	/** JHOVE2 application rights statement. */
 	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California, "
@@ -120,26 +121,27 @@ public class JHOVE2CommandLine
 			 * the application.
 			 */		
 			JHOVE2 jhove2 = ReportableFactory.getReportable(JHOVE2.class,
-					                                       "JHOVE2");			
-			jhove2.getTimerInfo().setStartTime();
+					                                       "JHOVE2");
+			TimerInfo timer = jhove2.getTimerInfo();
+			timer.setStartTime();
+			
 			jhove2.setInvocation(app.getInvocation());			
 			app.setFramework(jhove2);
 						
-			/* Create a File Set source unit out of files and directories
+			/* Create a FileSet source unit out of files and directories
 			 * specified on the command line.  Add the JHOVE2 application and
 			 * framework as modules processing the source unit.
 			 */
 			Source source = SourceFactory.getSource(pathNames);
-			source.addModule(jhove2);
 			app.setSource(source);
 			
-			/* Characterize the File Set source unit (and all subsidiary
+			/* Characterize the FileSet source unit (and all subsidiary
 			 * source units that it encapsulates.
 			 */
 			jhove2.characterize(source);
-			jhove2.getTimerInfo().setEndTime();
+			timer.setEndTime();
 			
-			/* Display characterization information for the File Set.
+			/* Display characterization information for the FileSet.
 			 */
 			app.getDisplayer().display(app);
 			

@@ -3,9 +3,13 @@
  */
 package org.jhove2.module.identify;
 
+import java.util.Set;
+
+import org.jhove2.core.FormatIdentification;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Command;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.TimerInfo;
 import org.jhove2.core.reportable.ReportableFactory;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractModule;
@@ -24,10 +28,10 @@ public class IdentifierCommand
 	implements JHOVE2Command
 {
 	/** IdentifierCommand module version identifier. */
-	public static final String VERSION = "1.0.0";
+	public static final String VERSION = "0.5.4";
 
 	/** IdentifierCommand module release date. */
-	public static final String RELEASE = "2009-09-09";
+	public static final String RELEASE = "2009-12-22";
 
 	/** IdentifierCommand module rights statement. */
 	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California, "
@@ -66,19 +70,24 @@ public class IdentifierCommand
 	{	
 		source.addModule(this);
 		try {		
-			Identifier identifier = 
-				ReportableFactory.getReportable(Identifier.class, "Identifier");
+			Identifier identifier =
+				ReportableFactory.getReportable(Identifier.class,
+					                           "Identifier");			
 			source.addModule(identifier);
-			identifier.getTimerInfo().setStartTime();
-			source.addPresumptiveFormatIdentifications(
-					identifier.identify( jhove2, source));	
-			identifier.getTimerInfo().setEndTime();						
+			TimerInfo timer = identifier.getTimerInfo();
+			timer.setStartTime();
+			try {
+				Set<FormatIdentification> formats = identifier.identify(jhove2,
+					                                                    source);
+				source.addPresumptiveFormats(formats);
+			}
+			finally {
+				timer.setEndTime();
+			}
 		}
 		catch (Exception e){
-			throw new JHOVE2Exception("failed to execute identification",
-					e);
+			throw new JHOVE2Exception("failed to execute identification", e);
 		}	
         return;
 	}
-
 }

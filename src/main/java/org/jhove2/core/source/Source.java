@@ -69,6 +69,34 @@ public interface Source
 	public void close();
 
 	/**
+	 * Add a child source unit.
+	 * 
+	 * @param child
+	 *            Child source unit
+	 */
+	public void addChildSource(Source child);
+
+	/**
+	 * Add a module that processed the source unit.
+	 * 
+	 * @param module
+	 *            Module that processed the source unit
+	 */
+	public void addModule(Module module);
+	
+	/**
+	 * Add presumptive format to the source unit.
+	 * @param fi Presumptive format
+	 */
+	public void addPresumptiveFormat(FormatIdentification fi);
+	
+	/**
+	 * Add set of presumptive formats to the source unit.
+	 * @param fis Set of presumptive formats
+	 */
+	public void addPresumptiveFormats(Set<FormatIdentification> fis);
+	
+	/**
 	 * Delete child source unit.
 	 * 
 	 * @param child
@@ -110,7 +138,7 @@ public interface Source
 	 * @throws IOException
 	 */
 	public Input getInput(int bufferSize, Type bufferType)
-			throws FileNotFoundException, IOException;
+		throws FileNotFoundException, IOException;
 
 	/**
 	 * Get {@link org.jhove2.core.io.Input} for the source unit.
@@ -135,7 +163,8 @@ public interface Source
 	 * @throws FileNotFoundException
 	 *             File not found
 	 */
-	public InputStream getInputStream() throws FileNotFoundException;
+	public InputStream getInputStream()
+		throws FileNotFoundException;
 
 	/**
 	 * Get modules that processed the source unit.
@@ -144,13 +173,6 @@ public interface Source
 	 */
 	@ReportableProperty(order = 1, value = "Modules that processed the source unit")
 	public List<Module> getModules();
-
-	/**
-	 * Get source unit backing file temporary status.
-	 * 
-	 * @return True if the source unit backing file is a temporary file
-	 */
-	public boolean isTemp();
 
 	/**
 	 * Get number of child source units.
@@ -168,12 +190,25 @@ public interface Source
 	public int getNumModules();
 
 	/**
-	 * Add a child source unit.
-	 * 
-	 * @param child
-	 *            Child source unit
+	 * Get list of presumptive formats for the source unit.
+	 * @return List of presumptive formats
 	 */
-	public void addChildSource(Source child);
+	@ReportableProperty(order = 3, value="Presumptive formats for the source.")
+	public Set<FormatIdentification> getPresumptiveFormats();
+	
+	/**
+	 * Get elapsed time processing this source unit.
+	 * @return Elapsed time
+	 */
+	@ReportableProperty(order = 4, value="Timer info for this Source.")
+	public TimerInfo getTimerInfo();
+	
+	/**
+	 * Get source unit backing file temporary status.
+	 * 
+	 * @return True if the source unit backing file is a temporary file
+	 */
+	public boolean isTemp();
 
 	/**
 	 * Set delete temporary files flag; if true, delete files.
@@ -184,42 +219,8 @@ public interface Source
 	public void setDeleteTempFiles(boolean flag);
 
 	/**
-	 * Add a module that processed the source unit.
-	 * 
-	 * @param module
-	 *            Module that processed the source unit
+	 * Set set of presumptive formats to the source unit
+	 * @param fi Set of presumptive formats
 	 */
-	public void addModule(Module module);
-	
-	/**
-	 * Get elapsed time processing this source unit.
-	 * @return Elapsed time
-	 */
-	@ReportableProperty(order = 4, value="Timer info for this Source.")
-	public TimerInfo getTimerInfo();
-	
-	/**
-	 * Return list of presumptive identifications returned by identifer(s)
-	 * @return List of presumptive format identfications
-	 */
-	@ReportableProperty(order = 3, value="Presumptive identifications for this Source.")
-	public Set<FormatIdentification> getPresumptiveFormatIdentifications();
-	
-	/**
-	 * Mutator for set of presumptive  FormatIdentifications attached to Source
-	 * @param fi presumptive FormatIdentifications
-	 */
-	public void setPresumptiveFormatIdentifications(Set<FormatIdentification> fi);
-	
-	/**
-	 * Add FormatIdentification to set of FormatIdentifications attached to Source
-	 * @param fi FormatIdentifications
-	 */
-	public void addPresumptiveFormatIdentification(FormatIdentification fi);
-	
-	/**
-	 * Add set of FormatIdentifications to set of FormatIdentifications attached to Source
-	 * @param fis set of FormatIdentifications
-	 */
-	public void addPresumptiveFormatIdentifications(Set<FormatIdentification> fis);
+	public void setPresumptiveFormats(Set<FormatIdentification> fi);
 }

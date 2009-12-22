@@ -9,7 +9,6 @@
 		   http://www.springframework.org/schema/util 
 		   http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 	
-
  	<!-- JSON displayer bean -->
 	<bean id="JSON" class="org.jhove2.module.display.JSONDisplayer"
 	      scope="prototype">
@@ -46,6 +45,5 @@
 			</list>
 		</property>
 	</bean>
-	
 
 </beans>		   

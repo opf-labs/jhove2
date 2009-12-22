@@ -8,7 +8,6 @@
            http://www.springframework.org/schema/context/spring-context-2.5.xsd
 		   http://www.springframework.org/schema/util 
 		   http://www.springframework.org/schema/util/spring-util-2.0.xsd">
-	
 		  
 	<!--  Message digester module bean -->
 	<bean id="Digester"
@@ -65,8 +64,4 @@
 	<!-- SHA-512 message digester bean -->
 	<bean id="SHA512Digester" class="org.jhove2.module.digest.SHA512Digester"
 	      scope="prototype"/>
-	      
-	      
-	      	
-
 </beans>		   

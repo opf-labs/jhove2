@@ -134,7 +134,7 @@ public class MessageTest {
 		messageParms = new Object[]{msg};
 		message = new Message(Severity.WARNING,
 				Context.OBJECT,
-				"org.jhove2.module.identify.DroidIdentifier.identify.idWarningMessage",
+				"org.jhove2.module.identify.DROIDIdentifier.identify.idWarningMessage",
 				messageParms);
 		assertEquals(sb.toString(), message.getLocalizedMessageText());
 		
@@ -144,7 +144,7 @@ public class MessageTest {
 		messageParms = new Object[]{msg};
 		message = new Message(Severity.WARNING,
 				Context.OBJECT,
-				"org.jhove2.module.identify.DroidIdentifier.identify.hitWarningMsg",
+				"org.jhove2.module.identify.DROIDIdentifier.identify.hitWarningMsg",
 				messageParms);
 		assertEquals(sb.toString(), message.getLocalizedMessageText());
 		
@@ -154,7 +154,7 @@ public class MessageTest {
 		messageParms = new Object[]{msg};
 		message = new Message(Severity.ERROR,
 				Context.PROCESS,
-				"org.jhove2.module.identify.DroidIdentifier.identify.missingPuid",
+				"org.jhove2.module.identify.DROIDIdentifier.identify.missingPuid",
 				messageParms);
 		assertEquals(sb.toString(), message.getLocalizedMessageText());
 		
@@ -164,7 +164,7 @@ public class MessageTest {
 		messageParms = new Object[]{msg};
 		message = new Message(Severity.WARNING,
 				Context.OBJECT,
-				"org.jhove2.module.identify.DroidIdentifier.fileNotIdentifiedMessage",
+				"org.jhove2.module.identify.DROIDIdentifier.fileNotIdentifiedMessage",
 				messageParms);
 		assertEquals(sb.toString(), message.getLocalizedMessageText());
 		
@@ -172,7 +172,7 @@ public class MessageTest {
 		sb.append(msg);
 		message = new Message(Severity.ERROR,
 				Context.PROCESS,
-				"org.jhove2.module.identify.DroidIdentifier.fileNotRunMessage",
+				"org.jhove2.module.identify.DROIDIdentifier.fileNotRunMessage",
 				messageParms);
 		assertEquals(sb.toString(), message.getLocalizedMessageText());
 		
@@ -180,7 +180,7 @@ public class MessageTest {
 		sb.append(msg);
 		message = new Message(Severity.ERROR,
 				Context.PROCESS,
-				"org.jhove2.module.identify.DroidIdentifier.fileErrorMessage",
+				"org.jhove2.module.identify.DROIDIdentifier.fileErrorMessage",
 				messageParms);
 		assertEquals(sb.toString(), message.getLocalizedMessageText());
 		

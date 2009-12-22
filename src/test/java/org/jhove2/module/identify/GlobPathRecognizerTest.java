@@ -160,7 +160,7 @@ public class GlobPathRecognizerTest{
 				else {
 					assertEquals(fullKeyCountMap.get(infoGroup.groupKey).intValue(),
 							clumpSource.getChildSources().size());
-					for (FormatIdentification fi: clumpSource.getPresumptiveFormatIdentifications()){				
+					for (FormatIdentification fi: clumpSource.getPresumptiveFormats()){				
 						assertFalse(fullFailKeys.contains(infoGroup.groupKey));
 						assertEquals(strictShapeFileRecognizer.getFormatIdentifier(),
 								fi.getJhove2Identification());
@@ -191,7 +191,7 @@ public class GlobPathRecognizerTest{
 				else {
 					assertEquals(fullKeyCountMap.get(infoGroup.groupKey).intValue(),
 							clumpSource.getChildSources().size());
-					for (FormatIdentification fi : clumpSource.getPresumptiveFormatIdentifications()){
+					for (FormatIdentification fi : clumpSource.getPresumptiveFormats()){
 						assertFalse(fullFailKeys.contains(infoGroup.groupKey));
 						assertEquals(relaxedShapeFileRecognizer.getFormatIdentifier(),
 								fi.getJhove2Identification());
@@ -221,7 +221,7 @@ public class GlobPathRecognizerTest{
 				strictShapeFileRecognizer.identify(JHOVE2, fsSource);
 			assertEquals(strictKeyCountMap.size(), sources.size());
 			for (ClumpSource cSource:sources){
-				Set<FormatIdentification> fiSet = cSource.getPresumptiveFormatIdentifications();
+				Set<FormatIdentification> fiSet = cSource.getPresumptiveFormats();
 				for (FormatIdentification fi:fiSet){
 					assertEquals(strictShapeFileRecognizer.getFormatIdentifier(),
 							fi.getJhove2Identification());
@@ -232,7 +232,7 @@ public class GlobPathRecognizerTest{
 
 			assertEquals(relaxedKeyCountMap.size(), sources.size());
 			for (Source cSource:sources){
-				Set<FormatIdentification> fiSet = cSource.getPresumptiveFormatIdentifications();
+				Set<FormatIdentification> fiSet = cSource.getPresumptiveFormats();
 
 				for (FormatIdentification fi:fiSet){
 					assertEquals(relaxedShapeFileRecognizer.getFormatIdentifier(),

@@ -42,7 +42,7 @@ package org.jhove2.module.format.utf8.unicode;
  * @author mstrong, slabrams
  */
 public interface Unicode {
-	/** End-of-line (EOL) characters. */
+	/** End-of-line (EOL) markers. */
 	public enum EOL {
 		CR, CRLF, LF
 	}

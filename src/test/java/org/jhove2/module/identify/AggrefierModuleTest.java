@@ -104,7 +104,7 @@ public class AggrefierModuleTest {
 			assertEquals(shapeStrictKeyCountMap.entrySet().size() + 
 					quickenStrictKeyCountMap.entrySet().size(), clumpSources.size());
 			for (ClumpSource clumpSource:clumpSources){
-				for (FormatIdentification fi:clumpSource.getPresumptiveFormatIdentifications()){
+				for (FormatIdentification fi:clumpSource.getPresumptiveFormats()){
 					assertEquals(fi.getConfidence(),GlobPathRecognizer.GLOB_PATH_CONFIDENCE);
 					I8R format = fi.getJhove2Identification();
 					if (format.equals(strictShapeFileRecognizer.getFormatIdentifier())){

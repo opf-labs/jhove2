@@ -115,14 +115,14 @@ public class UTF8Character
 	public UTF8Character() {
 		super();
 
-		this.codePoint = UNINITIALIZED;
+		this.codePoint      = UNINITIALIZED;
 		this.invalidByteValueMessages = new ArrayList<Message>();
-		this.isBOM = false;
-		this.isC0Control = false;
-		this.isC1Control = false;
+		this.isBOM          = false;
+		this.isC0Control    = false;
+		this.isC1Control    = false;
 		this.isNonCharacter = false;
-		this.isValid = Validity.Undetermined;
-		this.size = 0;
+		this.isValid        = Validity.Undetermined;
+		this.size           = 0;
 	}
 
 	/**
@@ -267,13 +267,13 @@ public class UTF8Character
 	}
 
 	/**
-	 * Determine line ending characters.
+	 * Determine line ending markers.
 	 * 
 	 * @param prevCodePoint
 	 *            Previous character code point
 	 * @param codePoint
 	 *            Current character code point
-	 * @return The line ending characters (CR, LF, or CRLF) or null if not at a
+	 * @return The line ending markers (CR, LF, or CRLF) or null if not at a
 	 *         line ending
 	 */
 	public static synchronized EOL getEOL(int prevCodePoint, int codePoint) {

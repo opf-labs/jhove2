@@ -123,7 +123,14 @@ extends AbstractModule
 		source.setDeleteTempFiles(this.getInvocation().getDeleteTempFiles());
 		try {
 			for (JHOVE2Command command : this.commands){
-				command.execute(this, source);
+				TimerInfo time2 = command.getTimerInfo();
+				time2.setStartTime();
+				try {
+					command.execute(this, source);
+				}
+				finally {
+					time2.setEndTime();
+				}
 			}
 		} finally {
 			source.close();
@@ -147,23 +154,22 @@ extends AbstractModule
 	}
 
 	/**
-	 * Get object which maintains configuration information for the running of
-	 * this module.
-	 * @return Invocation with configuration information for this module
-	 */
-	@ReportableProperty(order = 1, value = "Configuration info for this module.")
-	public Invocation getInvocation() {
-		return invocation;
-	}
-
-	/**
 	 * Get list of commands to be executed in sequence to characterize
 	 * a source unit.
 	 * @return List of command to be executed
 	 */
-	@ReportableProperty(order = 2, value = "Configured commands.")
+	@ReportableProperty(order = 1, value = "Configured commands.")
 	public List<JHOVE2Command> getCommands() {
 		return commands;
+	}
+
+	/**
+	 * Get object which maintains configuration information for the running of
+	 * this module.
+	 * @return Invocation with configuration information for this module
+	 */
+	public Invocation getInvocation() {
+		return invocation;
 	}
 
 	/**
@@ -173,7 +179,7 @@ extends AbstractModule
 	 * 
 	 * @return Memory usage, in bytes
 	 */
-	@ReportableProperty(order = 4, value = "Framework memory usage, in bytes.")
+	@ReportableProperty(order = 3, value = "Framework memory usage, in bytes.")
 	public long getMemoryUsage() {
 		Runtime rt = Runtime.getRuntime();
 		long use = rt.totalMemory() - rt.freeMemory();
@@ -186,7 +192,7 @@ extends AbstractModule
 	 * by the JHOVE2 framework.
 	 * @return Source unit counter
 	 */
-	@ReportableProperty(order = 3, value = "Source unit counter, by type.")
+	@ReportableProperty(order = 2, value = "Source unit counter, by type.")
 	public SourceCounter getSourceCounter() {
 		return sourceCounter;
 	}

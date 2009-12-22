@@ -150,7 +150,7 @@ public class SourceCounter
 	 * 
 	 * @return Number of clump source units processed
 	 */
-	@ReportableProperty(order = 2, value = "Number of clump source units "
+	@ReportableProperty(order = 3, value = "Number of clump source units "
 		+ "processed.")
 		public int getNumClumpSources() {
 		return this.numClumps;
@@ -169,6 +169,16 @@ public class SourceCounter
 		return this.numDirectories;
 	}
 
+	/**
+	 * Get number of file set source units processed.
+	 * 
+	 * @return Number of file set source units processed
+	 */
+	@ReportableProperty(order = 2, value = "Number of file set source units "
+		+ "processed.")
+		public int getNumFileSetSources() {
+		return this.numFileSets;
+	}
 	/**
 	 * Get number of file source units processed, including both file system
 	 * files and Zip entry files.
@@ -191,16 +201,5 @@ public class SourceCounter
 	public int getNumSources() {
 		return this.numFileSets + this.numDirectories + this.numClumps
 		+ this.numFiles + this.numBytestreams;
-	}
-
-	/**
-	 * Get number of file set source units processed.
-	 * 
-	 * @return Number of file set source units processed
-	 */
-	@ReportableProperty(order = 5, value = "Number of file set source units "
-		+ "processed.")
-		public int getNumFileSetSources() {
-		return this.numFileSets;
 	}
 }

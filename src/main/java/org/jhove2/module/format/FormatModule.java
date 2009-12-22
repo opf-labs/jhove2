@@ -60,33 +60,6 @@ public interface FormatModule
 	extends Module, JHOVE2Command
 {
 	/**
-	 * Get format module format.
-	 * 
-	 * @return Format module format
-	 */
-	@ReportableProperty(order = 1, value = "Format module format.")
-	public Format getFormat();
-
-	
-	public void setFormat(Format format);
-	
-	/**
-	 * Get format module format profiles.
-	 * 
-	 * @return Format module format profiles.
-	 */
-	@ReportableProperty(order = 2, value = "Format module format profiles.")
-	public List<FormatProfile> getProfiles();
-
-	/**
-	 * Add a format module format profile.
-	 * 
-	 * @param profile
-	 *            Format module format profile
-	 */
-	public void setProfile(FormatProfile profile);
-	
-	/**
 	 * Parse a source unit.
 	 * 
 	 * @param jhove2
@@ -100,7 +73,35 @@ public interface FormatModule
 	 *             If an I/O exception is raised reading the source unit
 	 * @throws JHOVE2Exception
 	 */
-	public long parse(JHOVE2 jhove2, Source source) throws EOFException,
-			IOException, JHOVE2Exception;
+	public long parse(JHOVE2 jhove2, Source source)
+		throws EOFException, IOException, JHOVE2Exception;
+	
+	/**
+	 * Get format module format.
+	 * 
+	 * @return Format module format
+	 */
+	@ReportableProperty(order = 1, value = "Format module format.")
+	public Format getFormat();
 
+	/**
+	 * Get format module format profiles.
+	 * 
+	 * @return Format module format profiles.
+	 */
+	@ReportableProperty(order = 2, value = "Format module format profiles.")
+	public List<FormatProfile> getProfiles();
+
+	/** Set module format.
+	 * @param format Module format
+	 */
+	public void setFormat(Format format);
+	
+	/**
+	 * Add a format module format profile.
+	 * 
+	 * @param profile
+	 *            Format module format profile
+	 */
+	public void setProfile(FormatProfile profile);
 }

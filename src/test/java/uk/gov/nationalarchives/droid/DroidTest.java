@@ -41,7 +41,7 @@ import static org.junit.Assert.*;
 import javax.annotation.Resource;
 
 import org.jhove2.core.source.SourceFactory;
-import org.jhove2.module.identify.DroidWrappedProduct;
+import org.jhove2.module.identify.DROIDWrappedProduct;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -56,7 +56,7 @@ import uk.gov.nationalarchives.droid.signatureFile.FileFormat;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath*:**/ukDroid-config.xml"})
 public class DroidTest {
-	private DroidWrappedProduct droid;
+	private DROIDWrappedProduct droid;
 	private String droidConfigDirPath;
 	private String configFileName;
 	private String sigFileName;
@@ -74,7 +74,7 @@ public class DroidTest {
 		String sigFilePath = droidConfigDirPath.concat(sigFileName);
 		String sampleFilePath = samplesDirPath.concat(sampleFile);
 		try {		
-			droid = new DroidWrappedProduct(configFilePath, sigFilePath);
+			droid = new DROIDWrappedProduct(configFilePath, sigFilePath);
 			IdentificationFile idf = droid.identify(sampleFilePath);
 			assertEquals(JHOVE2IAnalysisController.FILE_CLASSIFICATION_POSITIVE,
 					idf.getClassification());
@@ -95,7 +95,7 @@ public class DroidTest {
 		}
 		// now try it on an input stream
 		try {		
-			droid = new DroidWrappedProduct(configFilePath, sigFilePath);			
+			droid = new DROIDWrappedProduct(configFilePath, sigFilePath);			
 			IdentificationFile idf = droid.identify(SourceFactory.getSource(sampleFilePath));
 			assertEquals(JHOVE2IAnalysisController.FILE_CLASSIFICATION_POSITIVE,
 					idf.getClassification());

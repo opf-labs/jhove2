@@ -274,7 +274,7 @@ AggregateIdentifier {
 			fi = new FormatIdentification(this.formatIdentifier, GLOB_PATH_CONFIDENCE, 
 					this.getReportableIdentifier());
 			clumpSource = new ClumpSource();
-			clumpSource.addPresumptiveFormatIdentification(fi);
+			clumpSource.addPresumptiveFormat(fi);
 			for (GlobPathMatchInfo sourceInfo:fileGroup.getSourceMatchInfoList()){
 				if ((sourceInfo.isMustHave() || sourceInfo.isMayHave()) ||
 						(this.includeUnmatchedFromGroup)) {

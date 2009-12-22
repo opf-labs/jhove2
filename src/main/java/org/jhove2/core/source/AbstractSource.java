@@ -69,9 +69,10 @@ import org.jhove2.module.Module;
  * 
  * @author mstrong, slabrams, smorrissey
  */
-public abstract class AbstractSource extends AbstractReportable
-implements Source, Comparable<Source> {
-
+public abstract class AbstractSource
+	extends AbstractReportable
+	implements Source, Comparable<Source>
+{
 	/** Child source units. */
 	protected List<Source> children;
 
@@ -142,6 +143,48 @@ implements Source, Comparable<Source> {
 	}
 
 	/**
+	 * Add a child source unit.
+	 * 
+	 * @param child
+	 *            Child source unit
+	 * @see org.jhove2.core.source.Source#addChildSource(org.jhove2.core.source.Source)
+	 */
+	@Override
+	public void addChildSource(Source child) {
+		this.children.add(child);
+	}
+
+	/**
+	 * Add a module that processed the source unit.
+	 * 
+	 * @param module
+	 *            Module that processed the source unit
+	 * @see org.jhove2.core.source.Source#addModule(org.jhove2.module.Module)
+	 */
+	@Override
+	public void addModule(Module module) {
+		this.modules.add(module);
+	}
+	
+	/** Add a presumptively-identified format for this source unit.
+	 * @param fi Presumptively-identified format
+	 */
+	@Override
+	public void addPresumptiveFormat(FormatIdentification fi){
+		this.presumptiveFormatIdentifications.add(fi);
+	}
+	
+	/** Add set of presumptively-identified formats for this source unit.
+	 * @param fis Presumptively-identified formats
+	 */
+	@Override
+	public void addPresumptiveFormats(Set<FormatIdentification> fis){
+		for (FormatIdentification fi:fis){
+			this.addPresumptiveFormat(fi);
+		}
+	}
+
+	/**
 	 * Close the source unit. If the source unit is backed by a temporary file,
 	 * delete the file.
 	 */
@@ -163,8 +206,9 @@ implements Source, Comparable<Source> {
 	 * @throws IOException
 	 */
 	protected File createTempFile(String tmpPrefix, String tmpSuffix,
-			int bufferSize, InputStream inStream)
-	throws IOException {
+			                      int bufferSize, InputStream inStream)
+		throws IOException
+	{
 		File tempFile = File.createTempFile(tmpPrefix, tmpSuffix);
 		OutputStream outStream = new FileOutputStream(tempFile);
 		ReadableByteChannel in = Channels.newChannel(inStream);
@@ -190,17 +234,6 @@ implements Source, Comparable<Source> {
 	}
 
 	/**
-	 * Get child source units.
-	 * 
-	 * @return Child source units
-	 * @see org.jhove2.core.source.Source#getChildSources()
-	 */
-	@Override
-	public List<Source> getChildSources() {
-		return this.children;
-	}
-
-	/**
 	 * Delete child source unit.
 	 * 
 	 * @param child
@@ -220,6 +253,17 @@ implements Source, Comparable<Source> {
 	@Override
 	public boolean getDeleteTempFiles() {
 		return this.deleteTempFiles;
+	}
+
+	/**
+	 * Get child source units.
+	 * 
+	 * @return Child source units
+	 * @see org.jhove2.core.source.Source#getChildSources()
+	 */
+	@Override
+	public List<Source> getChildSources() {
+		return this.children;
 	}
 
 	/**
@@ -328,7 +372,25 @@ implements Source, Comparable<Source> {
 	public int getNumModules() {
 		return this.modules.size();
 	}
+	
+	/**
+	 * Get set of presumptively-identified formats.
+	 * @return Presumptively-identified formats
+	 */
+	@Override
+	public Set<FormatIdentification> getPresumptiveFormats() {
+		return presumptiveFormatIdentifications;
+	}
 
+	/**
+	 * Get elapsed time processing the source unit.
+	 * @return Elapsed time
+	 */
+	@Override
+	public TimerInfo getTimerInfo() {
+		return timerInfo;
+	}
+	
 	/**
 	 * Get source unit backing file temporary status.
 	 * 
@@ -338,18 +400,6 @@ implements Source, Comparable<Source> {
 	@Override
 	public boolean isTemp() {
 		return this.isTemp;
-	}
-
-	/**
-	 * Add a child source unit.
-	 * 
-	 * @param child
-	 *            Child source unit
-	 * @see org.jhove2.core.source.Source#addChildSource(org.jhove2.core.source.Source)
-	 */
-	@Override
-	public void addChildSource(Source child) {
-		this.children.add(child);
 	}
 
 	/**
@@ -365,84 +415,14 @@ implements Source, Comparable<Source> {
 	}
 
 	/**
-	 * Add a module that processed the source unit.
-	 * 
-	 * @param module
-	 *            Module that processed the source unit
-	 * @see org.jhove2.core.source.Source#addModule(org.jhove2.module.Module)
+	 * Set presumptive format identifications for this source unit.
+	 * @param formatIdentifications Presumptive format identifications
 	 */
 	@Override
-	public void addModule(Module module) {
-		this.modules.add(module);
+	public void setPresumptiveFormats(Set<FormatIdentification> formatIdentifications) {
+		this.presumptiveFormatIdentifications = formatIdentifications;
 	}
 
-	/**
-	 * Test for equality.
-	 * @param obj Object to test equality against
-	 * @return True if equal; otherwise false
-	 */
-	@Override
-	public boolean equals (Object obj){
-		if (obj == null) {
-			return false;
-		}
-		if (obj == this) {
-			return true;
-		}
-		if (! (obj instanceof AbstractSource)){
-			return false;
-		}
-		//same class?
-		AbstractSource absObj = (AbstractSource) obj;
-		if(!(this.getReportableIdentifier().equals(absObj.getReportableIdentifier()))){
-			return false;
-		}
-		File thisFile = this.getFile();
-		File objFile = absObj.getFile();
-		if (thisFile==null){
-			if (objFile != null){
-				return false;
-			}
-		}
-		else if (objFile==null){
-			return false;
-		}
-		else if (!(this.getFile().equals(absObj.getFile()))){
-			return false;
-		}
-		int thisChildSize = this.getChildSources().size();
-		int srcChildSize = absObj.getChildSources().size();		
-		if (thisChildSize != srcChildSize){
-			return false;
-		}
-		int containsCount = 0;
-		if (thisChildSize > 0){	
-			for (Source src : this.getChildSources()){
-				AbstractSource childSource = (AbstractSource)src;
-				if (absObj.getChildSources().contains(childSource)){
-					containsCount++;
-				}
-			}			
-		}
-		if (thisChildSize != containsCount){
-			return false;
-		}		
-		thisChildSize = this.getModules().size();
-		srcChildSize = absObj.getModules().size();
-		if (thisChildSize != srcChildSize){
-			return false;
-		}
-		containsCount = 0;
-		
-		for (Module module : this.getModules()){
-			if (absObj.getModules().contains(module)){
-				containsCount++;
-			}
-		}
-
-		return (thisChildSize == containsCount);
-	}
-	
 	/**
 	 * Lexically compare format identifications.
 	 * 
@@ -527,49 +507,71 @@ implements Source, Comparable<Source> {
 		}		
 		return 0;
 	}
-	
+
 	/**
-	 * Get elapsed time processing the source unit.
-	 * @return Elapsed time
+	 * Test for equality.
+	 * @param obj Object to test equality against
+	 * @return True if equal; otherwise false
 	 */
 	@Override
-	public TimerInfo getTimerInfo() {
-		return timerInfo;
-	}
-	
-	/**
-	 * Get set of presumptively-identified formats.
-	 * @return Presumptively-identified formats
-	 */
-	@Override
-	public Set<FormatIdentification> getPresumptiveFormatIdentifications() {
-		return presumptiveFormatIdentifications;
-	}
-	
-	/**
-	 * Set presumptive format identifications for this source unit.
-	 * @param formatIdentifications Presumptive format identifications
-	 */
-	@Override
-	public void setPresumptiveFormatIdentifications(Set<FormatIdentification> formatIdentifications) {
-		this.presumptiveFormatIdentifications = formatIdentifications;
-	}
-	
-	/** Add a presumptively-identified format for this source unit.
-	 * @param fi Presumptively-identified format
-	 */
-	@Override
-	public void addPresumptiveFormatIdentification(FormatIdentification fi){
-		this.presumptiveFormatIdentifications.add(fi);
-	}
-	
-	/** Add set of presumptively-identified formats for this source unit.
-	 * @param fis Presumptively-identified formats
-	 */
-	@Override
-	public void addPresumptiveFormatIdentifications(Set<FormatIdentification> fis){
-		for (FormatIdentification fi:fis){
-			this.addPresumptiveFormatIdentification(fi);
+	public boolean equals (Object obj){
+		if (obj == null) {
+			return false;
 		}
+		if (obj == this) {
+			return true;
+		}
+		if (! (obj instanceof AbstractSource)){
+			return false;
+		}
+		//same class?
+		AbstractSource absObj = (AbstractSource) obj;
+		if(!(this.getReportableIdentifier().equals(absObj.getReportableIdentifier()))){
+			return false;
+		}
+		File thisFile = this.getFile();
+		File objFile = absObj.getFile();
+		if (thisFile==null){
+			if (objFile != null){
+				return false;
+			}
+		}
+		else if (objFile==null){
+			return false;
+		}
+		else if (!(this.getFile().equals(absObj.getFile()))){
+			return false;
+		}
+		int thisChildSize = this.getChildSources().size();
+		int srcChildSize = absObj.getChildSources().size();		
+		if (thisChildSize != srcChildSize){
+			return false;
+		}
+		int containsCount = 0;
+		if (thisChildSize > 0){	
+			for (Source src : this.getChildSources()){
+				AbstractSource childSource = (AbstractSource)src;
+				if (absObj.getChildSources().contains(childSource)){
+					containsCount++;
+				}
+			}			
+		}
+		if (thisChildSize != containsCount){
+			return false;
+		}		
+		thisChildSize = this.getModules().size();
+		srcChildSize = absObj.getModules().size();
+		if (thisChildSize != srcChildSize){
+			return false;
+		}
+		containsCount = 0;
+		
+		for (Module module : this.getModules()){
+			if (absObj.getModules().contains(module)){
+				containsCount++;
+			}
+		}
+
+		return (thisChildSize == containsCount);
 	}
 }

@@ -73,33 +73,33 @@ public interface Application
 	 * Get application displayer.
 	 * @return Application displayer
 	 */
-	@ReportableProperty(order = 5, value = "Application displayer module.")
+	@ReportableProperty(order = 7, value = "Application displayer module.")
 	public Displayer getDisplayer();
 	
 	/**
-	 * Get application JHOVE2 framework.
-	 * 
+	 * Get application {@link org.jhove2.core.JHOVE2} framework.
 	 * @return Application JHOVE2 framework
 	 */
+	@ReportableProperty(order = 6, value = "Application framework.")
 	public JHOVE2 getFramework();
 	
 	/** Get application {@link org.jhove2.core.app.Installation} properties.
 	 * @return Application installation properties
 	 */
-	@ReportableProperty(order = 6, value = "Application installation properties.")
+	@ReportableProperty(order = 4, value = "Application installation properties.")
 	public Installation getInstallation();
 
 	/**
 	 * Get application {@link org.jhove2.core.app.Invocation} properties. 
 	 * @return Application invocation properties
 	 */
-	@ReportableProperty(order = 3, value = "Application invocation properties.")
+	@ReportableProperty(order = 5, value = "Application invocation properties.")
 	public Invocation getInvocation();
 	
 	/** Get application {@link org.jhove2.core.source.Source} units.
 	 * @return Application source units
 	 */
-	@ReportableProperty(order = 4, value = "Application source units.")
+	@ReportableProperty(order = 3, value = "Application source units.")
 	public List<Source> getSources();
 	
 	/**

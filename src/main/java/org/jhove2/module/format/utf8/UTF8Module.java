@@ -71,10 +71,10 @@ public class UTF8Module
 	implements Validator
 {
 	/** UTF-8 module version identifier. */
-	public static final String VERSION = "0.1.3";
+	public static final String VERSION = "0.0.4";
 
 	/** UTF-8 module release date. */
-	public static final String RELEASE = "2009-09-05";
+	public static final String RELEASE = "2009-12-22";
 
 	/** UTF-8 module rights statement. */
 	public static final String RIGHTS =
@@ -99,8 +99,8 @@ public class UTF8Module
 	/** Unicode code blocks. */
 	protected Set<CodeBlock> codeBlocks;
 
-	/** End-of-Line (EOL) characters. */
-	protected Set<EOL> eolCharacters;
+	/** End-of-Line (EOL) markers. */
+	protected Set<EOL> eolMarkers;
 
 	/** Fail fast message. */
 	protected Message failFastMessage;
@@ -129,15 +129,15 @@ public class UTF8Module
 	public UTF8Module(Format format) {
 		super(VERSION, RELEASE, RIGHTS, format);
 
-		this.c0Characters = new TreeSet<C0Control>();
-		this.c1Characters = new TreeSet<C1Control>();
-		this.codeBlocks = new TreeSet<CodeBlock>();
-		this.eolCharacters = new TreeSet<EOL>();
+		this.c0Characters      = new TreeSet<C0Control>();
+		this.c1Characters      = new TreeSet<C1Control>();
+		this.codeBlocks        = new TreeSet<CodeBlock>();
+		this.eolMarkers        = new TreeSet<EOL>();
 		this.invalidCharacters = new ArrayList<UTF8Character>();
-		this.isValid = Validity.Undetermined;
-		this.numCharacters = 0L;
-		this.numLines = 0L;
-		this.numNonCharacters = 0L;
+		this.isValid           = Validity.Undetermined;
+		this.numCharacters     = 0L;
+		this.numLines          = 0L;
+		this.numNonCharacters  = 0L;
 	}
 
 	/**
@@ -153,7 +153,7 @@ public class UTF8Module
 	 * @throws IOException
 	 *             If an I/O exception is raised reading the source unit
 	 * @throws JHOVE2Exception
-	 * @see org.jhove2.module.format.Parser#parse(org.jhove2.core.JHOVE2,
+	 * @see org.jhove2.module.format.FormatModule#parse(org.jhove2.core.JHOVE2,
 	 *      org.jhove2.core.source.Source)
 	 */
 	@Override
@@ -211,7 +211,7 @@ public class UTF8Module
 				eol = UTF8Character.getEOL(prevCodePoint, codePoint);
 				if (eol != null) {
 					this.numLines++;
-					this.eolCharacters.add(eol);
+					this.eolMarkers.add(eol);
 				}
 				CodeBlock codeBlock = ch.getCodeBlock();
 				if (codeBlock != null) {
@@ -248,7 +248,7 @@ public class UTF8Module
 					UTF8Character.UNINITIALIZED);
 			if (eol != null) {
 				this.numLines++;
-				this.eolCharacters.add(eol);
+				this.eolMarkers.add(eol);
 			} else if (prevCodePoint != Unicode.LF) {
 				this.numLines++;
 			}
@@ -328,13 +328,13 @@ public class UTF8Module
 	}
 	
 	/**
-	 * Get End-of-Line (EOL) characters.
+	 * Get End-of-Line (EOL) markers.
 	 * 
-	 * @return Set of EOL characters
+	 * @return Set of EOL markers
 	 */
-	@ReportableProperty(order = 3, value = "Set of unique End-of-Line (EOL) characters.")
-	public Set<EOL> getEOLCharacters() {
-		return this.eolCharacters;
+	@ReportableProperty(order = 3, value = "Set of unique End-of-Line (EOL) markers.")
+	public Set<EOL> getEOLMarkers() {
+		return this.eolMarkers;
 	}
 
 	/**
@@ -398,5 +398,4 @@ public class UTF8Module
 	public Validity isValid() {
 		return this.isValid;
 	}
-
 }

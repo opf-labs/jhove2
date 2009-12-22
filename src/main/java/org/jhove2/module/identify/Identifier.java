@@ -50,20 +50,21 @@ import org.jhove2.module.Module;
  * 
  * @author mstrong, slabrams
  */
-public interface Identifier extends Module {
+public interface Identifier
+	extends Module
+{
 	/**
 	 * Presumptively identify the format of a source unit.
-	 * Attaches set of FormatIdentifications to Source
 	 * 
 	 * @param jhove2
 	 *            JHOVE2 framework
 	 * @param source
 	 *            Source unit
+	 * @return Set of presumptive format identifications
 	 * @throws IOException
 	 *             I/O exception encountered identifying the source unit
 	 * @throws JHOVE2Exception
 	 */
 	public Set<FormatIdentification> identify(JHOVE2 jhove2, Source source)
 			throws IOException, JHOVE2Exception;
-
 }

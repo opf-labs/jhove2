@@ -89,10 +89,11 @@ public class Message {
 	 *            Key to message text in localized property file
 	 * @throws JHOVE2Exception 
 	 */
-	public Message(Severity severity, Context context, String messageCode) throws JHOVE2Exception {
+	public Message(Severity severity, Context context, String messageCode)
+		throws JHOVE2Exception
+	{
 		this(severity, context, messageCode, new Object[0], defaultLocale);
 	}
-	
 	
 	/**
 	 * Instantiate a new Localized <code>Message</code>.
@@ -107,8 +108,10 @@ public class Message {
 	 * 	          Arguments to message format template
 	 * @throws JHOVE2Exception
 	 */
-	public Message(Severity severity, Context context, String messageCode, Object[] messageArgs) 
-	throws JHOVE2Exception {
+	public Message(Severity severity, Context context, String messageCode,
+			       Object[] messageArgs) 
+		throws JHOVE2Exception
+	{
 		this(severity, context, messageCode, messageArgs, defaultLocale);
 	}
 
@@ -128,7 +131,9 @@ public class Message {
 	 * @throws JHOVE2Exception
 	 */
 	public Message(Severity severity, Context context, String messageCode, 
-			Object[] messageArgs, Locale locale) throws JHOVE2Exception {
+			       Object[] messageArgs, Locale locale)
+		throws JHOVE2Exception
+	{
 		this.severity = severity;
 		this.context = context;
 		this.locale = locale;
@@ -148,13 +153,72 @@ public class Message {
 	 *         Localized formatted message text
 	 * @throws JHOVE2Exception
 	 */
-	protected String localizeMessageText(String messageCode, Object[] messageArgs, Locale locale) 
-	throws JHOVE2Exception{
+	protected String localizeMessageText(String messageCode, Object[] messageArgs,
+			                             Locale locale) 
+		throws JHOVE2Exception
+	{
 		String localizedMessage = null;
 		localizedMessage = ReportableFactory.getLocalizedMessageText(messageCode, 
 				messageArgs, locale);
 		return localizedMessage;
 	}
+
+	/** Get message context.
+	 * @return Message context
+	 */
+	public Context getContext() {
+		return context;
+	}
+
+	/** Get localized message text.
+	 * @return Localized message text
+	 */
+	public String getLocalizedMessageText() {
+		return localizedMessageText;
+	}
+
+	/** Get message code.
+	 * @return Message code
+	 */
+	public String getMessageCode() {
+		return messageCode;
+	}
+
+	/** Get message severity
+	 * @return Message severity
+	 */
+	public Severity getSeverity() {
+		return severity;
+	}
+
+	/** Set message context.
+	 * @param context Message context
+	 */
+	public void setContext(Context context) {
+		this.context = context;
+	}
+
+	/** Set localized message text.
+	 * @param localizedMessageText Localized message text
+	 */
+	public void setLocalizedMessageText(String localizedMessageText) {
+		this.localizedMessageText = localizedMessageText;
+	}
+	
+	/** Set message code.
+	 * @param messageCode Message code
+	 */
+	public void setMessageCode(String messageCode) {
+		this.messageCode = messageCode;
+	}
+
+	/** Set message severity.
+	 * @param severity Message severity
+	 */
+	public void setSeverity(Severity severity) {
+		this.severity = severity;
+	}
+
 	/**
 	 * Get {@link java.lang.String} representation of the message.
 	 */
@@ -162,62 +226,4 @@ public class Message {
 	public String toString() {
 		return "[" + this.severity + "/" + this.context + "] " + this.localizedMessageText;
 	}
-
-	/**
-	 * @return the message
-	 */
-	public String getMessageCode() {
-		return messageCode;
-	}
-
-	/**
-	 * @param message the message to set
-	 */
-	public void setMessageCode(String messageCode) {
-		this.messageCode = messageCode;
-	}
-
-	/**
-	 * @return the context
-	 */
-	public Context getContext() {
-		return context;
-	}
-
-	/**
-	 * @param context the context to set
-	 */
-	public void setContext(Context context) {
-		this.context = context;
-	}
-
-	/**
-	 * @return the severity
-	 */
-	public Severity getSeverity() {
-		return severity;
-	}
-
-	/**
-	 * @param severity the severity to set
-	 */
-	public void setSeverity(Severity severity) {
-		this.severity = severity;
-	}
-
-
-	/**
-	 * @return the localizedMessageText
-	 */
-	public String getLocalizedMessageText() {
-		return localizedMessageText;
-	}
-
-	/**
-	 * @param localizedMessageText the localizedMessageText to set
-	 */
-	public void setLocalizedMessageText(String localizedMessageText) {
-		this.localizedMessageText = localizedMessageText;
-	}
-
 }
