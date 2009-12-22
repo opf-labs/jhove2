@@ -53,7 +53,9 @@ import org.jhove2.module.Module;
  * @author smorrissey
  *
  */
-public interface JHOVE2Command extends Module {
+public interface JHOVE2Command
+	extends Module
+{
 	/**
 	 * Execute a characterization command
 	 * @param source Source on which command is to be executed

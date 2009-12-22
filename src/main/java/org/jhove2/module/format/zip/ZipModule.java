@@ -48,6 +48,7 @@ import java.util.zip.ZipFile;
 import org.jhove2.core.Format;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.app.Invocation;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
@@ -105,8 +106,9 @@ public class ZipModule
 	{
 		Input input = null;
 		try {
-			input = source.getInput(jhove2.getAppConfigInfo().getBufferSize(), jhove2.getAppConfigInfo()
-					.getBufferType());
+			Invocation config = jhove2.getApplicationConfig();
+			input = source.getInput(config.getBufferSize(),
+					                config.getBufferType());
 			if (input != null) {
 				File file = input.getFile();
 				ZipFile zip = new ZipFile(file, ZipFile.OPEN_READ);
@@ -121,11 +123,11 @@ public class ZipModule
 				while (en.hasMoreElements()) {
 					ZipEntry entry = en.nextElement();
 					if (entry.isDirectory()) {
-						Source src = SourceFactory
-								.getSource(jhove2.getAppConfigInfo().getTempPrefix(),
-										jhove2.getAppConfigInfo().getTempSuffix(),
-										jhove2.getAppConfigInfo().getBufferSize(),
-										zip, entry);
+						Source src =
+							SourceFactory.getSource(config.getTempPrefix(),
+										            config.getTempSuffix(),
+										            config.getBufferSize(),
+										            zip, entry);
 						if (src != null) {
 							String key = entry.getName();
 							/* Remove trailing slash. */
@@ -172,11 +174,12 @@ public class ZipModule
 								source.addChildSource(src);
 							}
 						}
-					} else {
-						Source src = SourceFactory
-								.getSource(jhove2.getAppConfigInfo().getTempPrefix(),
-										jhove2.getAppConfigInfo().getTempSuffix(),
-										jhove2.getAppConfigInfo().getBufferSize(), zip, entry);
+					}
+					else {
+						Source src =
+							SourceFactory.getSource(config.getTempPrefix(),
+							                        config.getTempSuffix(),
+										            config.getBufferSize(), zip, entry);
 						if (src != null) {
 							jhove2.characterize(src);
 

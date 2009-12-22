@@ -34,19 +34,22 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.core;
+package org.jhove2.core.app;
 
 import java.util.Properties;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.AbstractReportable;
 import org.jhove2.core.io.Input.Type;
 
 /**
- * Configuration information for JHOVE2 framework.
+ * Configuration information for JHOVE2 applications.
  * 
  * @author mstrong, slabrams, smorrissey
  */
-public class AppConfigInfo extends AbstractReportable {
+public class Invocation
+	extends AbstractReportable
+{
 
 	/** Default temporary file suffix. */
 	public static final String DEFAULT_TEMP_SUFFIX = ".dat";
@@ -116,7 +119,7 @@ public class AppConfigInfo extends AbstractReportable {
 	/**
 	 * Instantiate a new <code>AbstractApplication</code>.
 	 */
-	public AppConfigInfo() {
+	public Invocation() {
 		Properties props = System.getProperties();
 		this.tempDirectory    = props.getProperty("java.io.tmpdir");
 		this.userName         = props.getProperty("user.name");
@@ -190,7 +193,7 @@ public class AppConfigInfo extends AbstractReportable {
 	 * Get JHOVE2 home directory
 	 * @return JHOVE2 home directory
 	 */
-	@ReportableProperty(order = 1, value = "JHOVE2 home directory.")
+	@ReportableProperty(order = 2, value = "JHOVE2 home directory.")
 	public String getJHOVE2Home() {
 		return jhove2Home;
 	}
@@ -244,7 +247,7 @@ public class AppConfigInfo extends AbstractReportable {
 	 * 
 	 * @return Application user name
 	 */
-	@ReportableProperty(order = 2, value = "Application user name.")
+	@ReportableProperty(order = 1, value = "Application user name.")
 	public String getUserName() {
 		return this.userName;
 	}

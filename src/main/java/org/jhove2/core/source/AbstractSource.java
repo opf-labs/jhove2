@@ -54,9 +54,9 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.jhove2.core.AbstractReportable;
-import org.jhove2.core.AppConfigInfo;
 import org.jhove2.core.FormatIdentification;
 import org.jhove2.core.TimerInfo;
+import org.jhove2.core.app.Invocation;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.io.InputFactory;
 import org.jhove2.core.io.Input.Type;
@@ -103,7 +103,7 @@ implements Source, Comparable<Source> {
 	 */
 	protected AbstractSource() {
 		this.children        = new ArrayList<Source>();
-		this.deleteTempFiles = AppConfigInfo.DEFAULT_DELETE_TEMP_FILES;
+		this.deleteTempFiles = Invocation.DEFAULT_DELETE_TEMP_FILES;
 		this.modules         = new ArrayList<Module>();
 		this.timerInfo       = new TimerInfo();
 		this.presumptiveFormatIdentifications = new TreeSet<FormatIdentification>();

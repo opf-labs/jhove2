@@ -48,6 +48,7 @@ import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
+import org.jhove2.core.app.Invocation;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.Source;
@@ -164,8 +165,9 @@ public class UTF8Module
 		int numErrors = 0;
 		Input input = null;
 		try {
-			input = source.getInput(jhove2.getAppConfigInfo().getBufferSize(), 
-					jhove2.getAppConfigInfo().getBufferType());
+			Invocation config = jhove2.getApplicationConfig();
+			input = source.getInput(config.getBufferSize(), 
+					                config.getBufferType());
 			long start = 0L;
 			long end = 0L;
 			if (source instanceof FileSource) {

@@ -45,6 +45,7 @@ import java.util.TreeSet;
 
 import org.jhove2.core.Digest;
 import org.jhove2.core.JHOVE2;
+import org.jhove2.core.app.Invocation;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractModule;
@@ -95,11 +96,14 @@ public class DigesterModule extends AbstractModule
 	 *             I/O exception calculating message digests
 	 */
 	@Override
-	public void digest(JHOVE2 jhove2, Source source) throws IOException {
+	public void digest(JHOVE2 jhove2, Source source)
+		throws IOException
+	{
 		Input input = null;
 		try {
-			input = source.getInput(jhove2.getAppConfigInfo().getBufferSize(), 
-					jhove2.getAppConfigInfo().getBufferType());
+			Invocation config = jhove2.getApplicationConfig();
+			input = source.getInput(config.getBufferSize(), 
+					                config.getBufferType());
 			if (input != null) {
 				long inputSize = input.getSize();
 				long bufferSize = input.getMaxBufferSize();

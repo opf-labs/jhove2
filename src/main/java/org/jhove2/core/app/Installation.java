@@ -34,19 +34,20 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.core;
+package org.jhove2.core.app;
 
 import java.util.Properties;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.AbstractReportable;
 
 /**
- * JHOVE2 installation properties.
+ * JHOVE2 application installation properties.
  * 
  * @author mstrong, slabrams, smorrissey
  */
 public class Installation
-extends AbstractReportable
+	extends AbstractReportable
 {
 	/** Platform architecture. */
 	protected String architecture;
@@ -100,11 +101,12 @@ extends AbstractReportable
 	 * @return Installation with all member set
 	 */
 	public static Installation getInstance(){
-		if (installation==null){
+		if (installation == null){
 			installation = new Installation();
 		}
 		return installation;
 	}
+	
 	/**
 	 * Instantiate a new <code>Installation</code> reportable.
 	 */

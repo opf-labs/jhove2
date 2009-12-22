@@ -52,13 +52,15 @@ import org.jhove2.module.AbstractModule;
  * @author smorrissey
  *
  */
-public class DigesterCommand extends AbstractModule implements JHOVE2Command {
-
+public class DigesterCommand
+	extends AbstractModule
+	implements JHOVE2Command
+{
 	/** IdentifierCommand module version identifier. */
 	public static final String VERSION = "1.0.0";
 
 	/** IdentifierCommand module release date. */
-	public static final String RELEASE = "2009-09-18";
+	public static final String RELEASE = "2009-12-21";
 
 	/** IdentifierCommand module rights statement. */
 	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California, "
@@ -89,14 +91,15 @@ public class DigesterCommand extends AbstractModule implements JHOVE2Command {
 	 * @param source Source whose digest is to be calculates
 	 * @param jhove2 JHOVE2 framework object
 	 * @throws JHOVE2Exception
-	 * @see org.jhove2.core.JHOVE2Command#execute(org.jhove2.core.source.Source, org.jhove2.core.JHOVE2)
+	 * @see org.jhove2.core.JHOVE2Command#execute(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
 	 */
 	@Override
 	public void execute(JHOVE2 jhove2, Source source) 
-	throws JHOVE2Exception {
+		throws JHOVE2Exception
+	{
 		source.addModule(this);
 		if (!(source instanceof AggregateSource ||source instanceof ClumpSource)){
-			if (jhove2.getAppConfigInfo().getCalcDigests()) {
+			if (jhove2.getApplicationConfig().getCalcDigests()) {
 				try {	
 					Digester digester = 
 						Configure.getReportable(Digester.class, "Digester");
@@ -112,5 +115,4 @@ public class DigesterCommand extends AbstractModule implements JHOVE2Command {
 		}
 		return;
 	}
-
 }

@@ -45,7 +45,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.AppConfigInfo;
 import org.jhove2.core.FormatIdentification;
 import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2;
@@ -55,6 +54,7 @@ import org.jhove2.core.WrappedProductInfo;
 import org.jhove2.core.FormatIdentification.Confidence;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
+import org.jhove2.core.app.Invocation;
 import org.jhove2.core.config.Configure;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractModule;
@@ -485,7 +485,7 @@ public class DroidIdentifier
 				dHome = null;
 			}	
 			if (dHome == null){				
-				dHome = AppConfigInfo.getJHOVE2HomeFromEnv(System.getProperties());	
+				dHome = Invocation.getJHOVE2HomeFromEnv(System.getProperties());	
 				droidHome.append(dHome);
 				if (dHome.lastIndexOf(separator) != dHome.length()-1){
 					droidHome.append(separator);

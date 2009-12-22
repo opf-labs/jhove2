@@ -34,13 +34,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.app;
+package org.jhove2.core.app;
 
 import java.util.Date;
 import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.AppConfigInfo;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.Module;
@@ -55,18 +54,11 @@ public interface Application
 	extends Module
 {
 	/**
-	 * Get the {@link org.jhove2.core.AppConfigInfo} object. 
-	 * @return Application configuration information object
-	 */
-	@ReportableProperty(order = 1, value = "Application configuration infromation.")
-	public AppConfigInfo getAppConfigInfo();
-
-	/**
 	 * Get application command line.
 	 * 
 	 * @return Application command line
 	 */
-	@ReportableProperty(order = 3, value = "Application command line.")
+	@ReportableProperty(order = 2, value = "Application command line.")
 	public String getCommandLine();
 
 	/**
@@ -74,7 +66,7 @@ public interface Application
 	 * 
 	 * @return Application invocation date/timestamp
 	 */
-	@ReportableProperty(order = 2, value = "Application invocation date/timestamp.")
+	@ReportableProperty(order = 1, value = "Application invocation date/timestamp.")
 	public Date getDateTime();
 	
 	/**
@@ -90,6 +82,19 @@ public interface Application
 	 * @return Application JHOVE2 framework
 	 */
 	public JHOVE2 getFramework();
+	
+	/** Get application {@link org.jhove2.core.app.Installation} properties.
+	 * @return Application installation properties
+	 */
+	@ReportableProperty(order = 6, value = "Application installation properties.")
+	public Installation getInstallation();
+
+	/**
+	 * Get application {@link org.jhove2.core.app.Invocation} properties. 
+	 * @return Application invocation properties
+	 */
+	@ReportableProperty(order = 3, value = "Application invocation properties.")
+	public Invocation getInvocation();
 	
 	/** Get application {@link org.jhove2.core.source.Source} units.
 	 * @return Application source units

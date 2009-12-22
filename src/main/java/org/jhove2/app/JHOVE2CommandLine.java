@@ -42,6 +42,9 @@ import java.util.List;
 
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.JHOVE2;
+import org.jhove2.core.app.AbstractApplication;
+import org.jhove2.core.app.Application;
+import org.jhove2.core.app.Invocation;
 import org.jhove2.core.config.Configure;
 import org.jhove2.core.io.Input.Type;
 import org.jhove2.core.source.Source;
@@ -60,7 +63,7 @@ public class JHOVE2CommandLine
 	public static final String VERSION = "0.5.4";
 
 	/** JHOVE2 application release date. */
-	public static final String RELEASE = "2009-09-05";
+	public static final String RELEASE = "2009-12-21";
 
 	/** JHOVE2 application rights statement. */
 	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California, "
@@ -116,7 +119,7 @@ public class JHOVE2CommandLine
 			 * the application.
 			 */		
 			JHOVE2 jhove2 = Configure.getReportable(JHOVE2.class, "JHOVE2");
-			jhove2.setAppConfigInfo(app.getAppConfigInfo());			
+			jhove2.setApplicationConfig(app.getInvocation());			
 			app.setFramework(jhove2);
 						
 			/* Create a File Set source unit out of files and directories
@@ -147,7 +150,7 @@ public class JHOVE2CommandLine
 
 	/**
 	 * Parse the JHOVE2 application command line and update the default values
-	 * in the {@link org.jhove2.core.AppConfigInfo} object with any
+	 * in the {@link org.jhove2.core.app.Invocation} object with any
 	 * command-line settings; and construct the list of file system paths to be
 	 * processed by the application.  Also save the commandLine string as an
 	 * instance member.
@@ -164,6 +167,7 @@ public class JHOVE2CommandLine
 		boolean showIdentifiers = this.getDisplayer().getShowIdentifiers();
 		String filePathname = null;
 		
+		Invocation config = this.getInvocation();
 		for (int i = 0; i < args.length; i++) {
 			if (i == 0) {
 				this.commandLine = args[i];
@@ -171,14 +175,14 @@ public class JHOVE2CommandLine
 				this.commandLine += " " + args[i];
 			}
 			if (args[i].charAt(0) == '-') {
-				if (args[i].length() > 1) { 
+				if (args[i].length() > 1) {
 					char opt = args[i].charAt(1);
 					if (opt == 'b' && i + 1 < args.length) {
-						this.getAppConfigInfo().setBufferSize(Integer.valueOf(args[++i]));
+						config.setBufferSize(Integer.valueOf(args[++i]));
 						this.commandLine += " " + args[i];
 					}
 					else if (opt == 'B' && i + 1 < args.length) {
-						this.getAppConfigInfo().setBufferType(Type.valueOf(args[++i]));
+						config.setBufferType(Type.valueOf(args[++i]));
 						this.commandLine += " " + args[i];
 					}
 					else if (opt == 'd' && i + 1 < args.length) {
@@ -188,7 +192,7 @@ public class JHOVE2CommandLine
 						this.commandLine += " " + args[i];
 					}
 					else if (opt == 'f' && i + 1 < args.length) {
-						this.getAppConfigInfo().setFailFastLimit(Integer.valueOf(args[++i]));
+						config.setFailFastLimit(Integer.valueOf(args[++i]));
 						this.commandLine += " " + args[i];
 					}
 					else if (opt == 'o' && i + 1 < args.length) {
@@ -196,7 +200,7 @@ public class JHOVE2CommandLine
 						this.commandLine += " " + args[i];
 					}
 					else if (opt == 't' && i + 1 < args.length) {
-						this.getAppConfigInfo().setTempDirectory(args[++i]);
+						config.setTempDirectory(args[++i]);
 						this.commandLine += " " + args[i];
 					}
 					else {
@@ -204,10 +208,10 @@ public class JHOVE2CommandLine
 							showIdentifiers = true;
 						}
 						if (args[i].indexOf('k') > -1) {
-							this.getAppConfigInfo().setCalcDigests(true);
+							config.setCalcDigests(true);
 						}
 						if (args[i].indexOf('T') > -1) {
-							this.getAppConfigInfo().setDeleteTempFiles(false);
+							config.setDeleteTempFiles(false);
 						}
 					}
 				}

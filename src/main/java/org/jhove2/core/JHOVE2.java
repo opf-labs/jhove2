@@ -40,7 +40,10 @@ import java.io.IOException;
 import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.app.Invocation;
+import org.jhove2.core.app.Installation;
 import org.jhove2.core.source.Source;
+import org.jhove2.core.source.SourceCounter;
 import org.jhove2.module.AbstractModule;
 
 /**
@@ -55,7 +58,7 @@ extends AbstractModule
 	public static final String VERSION = "0.5.4";
 
 	/** Framework release date. */
-	public static final String RELEASE = "2009-09-09";
+	public static final String RELEASE = "2009-12-21";
 
 	/** Framework rights statement. */
 	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California, "
@@ -64,7 +67,7 @@ extends AbstractModule
 		+ "Available under the terms of the BSD license.";
 
 	/** Framework installation properties. */
-	protected Installation installation;
+	//protected Installation installation;
 
 	/** Counter to track number and type of sources processed by framework */
 	protected SourceCounter sourceCounter;
@@ -73,7 +76,7 @@ extends AbstractModule
 	protected List<JHOVE2Command> commands;
 
 	/** Configuration settings for framework.  If not configured, default values will be used */
-	protected AppConfigInfo appConfigInfo;
+	protected Invocation invocation;
 	
 	/**
 	 * Instantiate a new <code>JHOVE2</code> core framework with a default
@@ -81,26 +84,28 @@ extends AbstractModule
 	 * 
 	 * @throws JHOVE2Exception
 	 */
-	public JHOVE2() throws JHOVE2Exception {
-		this(new AppConfigInfo());
+	public JHOVE2()
+		throws JHOVE2Exception
+	{
+		this(new Invocation());
 	}
 	
 	/**
 	 * Instantiate a new <code>JHOVE2</code> core framework with a specific
 	 * configuration.
-	 * @param appConfigInfo Configuration settings for this instance of the
+	 * @param invocation Configuration settings for this instance of the
 	 *                      JHOVE2 framework
 	 */
-	public JHOVE2(AppConfigInfo appConfigInfo) {
+	public JHOVE2(Invocation invocation) {
 		super(VERSION, RELEASE, RIGHTS);
 		
-		this.appConfigInfo = appConfigInfo;
-		this.installation  = Installation.getInstance();
+		this.invocation = invocation;
+		//this.installation  = Installation.getInstance();
 		this.sourceCounter = new SourceCounter();
 	}
 
 	/**
-	 * Characterize a source unit.
+	 * Characterize a {@link org.jhove2.core.source.Source} unit.
 	 * This method will be used as a call-back by any format module that must
 	 * recursively characterize components of a format instance.
 	 * 
@@ -119,7 +124,7 @@ extends AbstractModule
 		this.sourceCounter.incrementSourceCounter(source);				
 		
 		/* Characterize the source unit. */
-		source.setDeleteTempFiles(this.getAppConfigInfo().getDeleteTempFiles());
+		source.setDeleteTempFiles(this.getApplicationConfig().getDeleteTempFiles());
 		try {
 			for (JHOVE2Command command : this.commands){
 				command.execute(this, source);
@@ -138,11 +143,31 @@ extends AbstractModule
 	 * @return True if the fail fast limit has been exceeded
 	 */
 	public boolean failFast(int numErrors) {
-		if (this.appConfigInfo.getFailFastLimit() > 0 && 
-				numErrors > this.appConfigInfo.getFailFastLimit()) {
+		if (this.invocation.getFailFastLimit() > 0 && 
+				numErrors > this.invocation.getFailFastLimit()) {
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * Get object which maintains configuration information for the running of
+	 * this module.
+	 * @return Invocation with configuration information for this module
+	 */
+	@ReportableProperty(order = 1, value = "Configuration info for this module.")
+	public Invocation getApplicationConfig() {
+		return invocation;
+	}
+
+	/**
+	 * Accessor for list of commands to be executed in sequence to characterize
+	 * a source unit.
+	 * @return List of command to be executed
+	 */
+	@ReportableProperty
+	public List<JHOVE2Command> getCommands() {
+		return commands;
 	}
 
 	/**
@@ -150,10 +175,12 @@ extends AbstractModule
 	 * 
 	 * @return Framework installation properties.
 	 */
+	/*
 	@ReportableProperty(order = 21, value = "Framework installation properties.")
 	public Installation getInstallation() {
 		return this.installation;
 	}
+	*/
 
 	/**
 	 * Get framework memory usage. This is calculated naively as the Java
@@ -182,48 +209,11 @@ extends AbstractModule
 	}
 
 	/**
-	 * Mutator for counter to track number and type of sources processed by
-	 * the JHOVE2 framework.
-	 * @param sourceCounter Source unit counter
-	 */
-	public void setSourceCounter(SourceCounter sourceCounter) {
-		this.sourceCounter = sourceCounter;
-	}
-
-	/**
-	 * Get object which maintains configuration information for the running of
-	 * this module.
-	 * @return AppConfigInfo with configuration information for this module
-	 */
-	@ReportableProperty(order = 1, value = "Configuration info for this module.")
-	public AppConfigInfo getAppConfigInfo() {
-		return appConfigInfo;
-	}
-
-	/**
 	 * Mutator for object which maintains configuration information for the running of this module
-	 * @param appConfigInfo
+	 * @param invocation
 	 */
-	public void setAppConfigInfo(AppConfigInfo appConfigInfo) {
-		this.appConfigInfo = appConfigInfo;
-	}
-
-	/**
-	 * Mutator for object which records environment in which engine is run.
-	 * @param installation
-	 */
-	public void setInstallation(Installation installation) {
-		this.installation = installation;
-	}
-	
-	/**
-	 * Accessor for list of commands to be executed in sequence to characterize
-	 * a source unit.
-	 * @return List of command to be executed
-	 */
-	@ReportableProperty
-	public List<JHOVE2Command> getCommands() {
-		return commands;
+	public void setApplicationConfig(Invocation invocation) {
+		this.invocation = invocation;
 	}
 	
 	/**
@@ -233,5 +223,24 @@ extends AbstractModule
 	 */
 	public void setCommands(List<JHOVE2Command> commands) {
 		this.commands = commands;
+	}
+
+	/**
+	 * Mutator for object which records environment in which engine is run.
+	 * @param installation
+	 */
+	/*
+	public void setInstallation(Installation installation) {
+		this.installation = installation;
+	}
+	*/
+
+	/**
+	 * Mutator for counter to track number and type of sources processed by
+	 * the JHOVE2 framework.
+	 * @param sourceCounter Source unit counter
+	 */
+	public void setSourceCounter(SourceCounter sourceCounter) {
+		this.sourceCounter = sourceCounter;
 	}
 }

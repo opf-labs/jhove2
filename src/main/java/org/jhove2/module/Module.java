@@ -53,7 +53,9 @@ import org.jhove2.core.TimerInfo;
  * 
  * @author mstrong, slabrams, smorrissey
  */
-public interface Module extends Reportable {
+public interface Module
+	extends Reportable
+{
 	/**
 	 * Get product developers.
 	 * 
@@ -61,7 +63,7 @@ public interface Module extends Reportable {
 	 */
 	@ReportableProperty(order = 4, value = "Product developers.")
 	public List<Agent> getDevelopers();
-	
+
 
 	/**
 	 * Get product informative note.
@@ -78,7 +80,6 @@ public interface Module extends Reportable {
 	 */
 	@ReportableProperty(order = 3, value = "Product release date.")
 	public String getReleaseDate();
-	
 
 	/**
 	 * Get product rights statement.
@@ -115,5 +116,4 @@ public interface Module extends Reportable {
 	 */
 	@ReportableProperty(order = 8, value = "Timer info for this module.")
 	public TimerInfo getTimerInfo();
-	
 }

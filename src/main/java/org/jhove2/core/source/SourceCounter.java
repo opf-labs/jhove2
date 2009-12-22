@@ -33,26 +33,21 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.jhove2.core;
+package org.jhove2.core.source;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.source.ClumpSource;
-import org.jhove2.core.source.DirectorySource;
-import org.jhove2.core.source.FileSetSource;
-import org.jhove2.core.source.FileSource;
-import org.jhove2.core.source.Source;
-import org.jhove2.core.source.ZipDirectorySource;
-import org.jhove2.core.source.ZipFileSource;
+import org.jhove2.core.AbstractReportable;
 
 /**
- * Convenvience class.  Data structure for keeping tally of
- * number and kind of sources processed by JHOVE2 engine
+ * Convenvience class for keeping tally of the number and kind of sources
+ * processed by JHOVE2 engine.
  * 
  * @author mstrong, slabrams, smorrissey
  * 
  */
-public class SourceCounter extends AbstractReportable {
-
+public class SourceCounter
+	extends AbstractReportable
+{
 	/** Number of bytestream source units. */
 	protected int numBytestreams;
 
@@ -138,14 +133,13 @@ public class SourceCounter extends AbstractReportable {
 	public void incrementNumFileSets() {
 		this.numFileSets++;
 	}
-
 	
 	/**
 	 * Get number of aggregate source units processed.
 	 * 
 	 * @return Number of aggregate source units processed
 	 */
-	@ReportableProperty(order = 46, value = "Number of bytestream source units "
+	@ReportableProperty(order = 6, value = "Number of bytestream source units "
 		+ "processed.")
 		public int getNumBytestreamSources() {
 		return this.numBytestreams;
@@ -156,7 +150,7 @@ public class SourceCounter extends AbstractReportable {
 	 * 
 	 * @return Number of clump source units processed
 	 */
-	@ReportableProperty(order = 42, value = "Number of clump source units "
+	@ReportableProperty(order = 2, value = "Number of clump source units "
 		+ "processed.")
 		public int getNumClumpSources() {
 		return this.numClumps;
@@ -168,7 +162,7 @@ public class SourceCounter extends AbstractReportable {
 	 * 
 	 * @return Number of directory source units processed
 	 */
-	@ReportableProperty(order = 44, value = "Number of directory source units "
+	@ReportableProperty(order = 4, value = "Number of directory source units "
 		+ "processed, including both file system directories and Zip "
 		+ "entry directories.")
 		public int getNumDirectorySources() {
@@ -181,7 +175,7 @@ public class SourceCounter extends AbstractReportable {
 	 * 
 	 * @return Number of file source units processed
 	 */
-	@ReportableProperty(order = 45, value = "Number of file source units "
+	@ReportableProperty(order = 5, value = "Number of file source units "
 		+ "processed, including both file system files and Zip entry "
 		+ "files.")
 		public int getNumFileSources() {
@@ -193,7 +187,7 @@ public class SourceCounter extends AbstractReportable {
 	 * 
 	 * @return Number of source units processed
 	 */
-	@ReportableProperty(order = 41, value = "Number of source units processed.")
+	@ReportableProperty(order = 1, value = "Number of source units processed.")
 	public int getNumSources() {
 		return this.numFileSets + this.numDirectories + this.numClumps
 		+ this.numFiles + this.numBytestreams;
@@ -204,12 +198,9 @@ public class SourceCounter extends AbstractReportable {
 	 * 
 	 * @return Number of file set source units processed
 	 */
-	@ReportableProperty(order = 45, value = "Number of file set source units "
+	@ReportableProperty(order = 5, value = "Number of file set source units "
 		+ "processed.")
 		public int getNumFileSetSources() {
 		return this.numFileSets;
 	}
-
-
-	
 }

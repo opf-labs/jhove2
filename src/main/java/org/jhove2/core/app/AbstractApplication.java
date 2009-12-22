@@ -34,13 +34,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.app;
+package org.jhove2.core.app;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.jhove2.core.AppConfigInfo;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.config.Configure;
@@ -57,21 +56,23 @@ public abstract class AbstractApplication
 	extends AbstractModule
 	implements Application
 {
-
 	/** Application command line. */
 	protected String commandLine;
 
 	/** Application invocation date/timestamp. */
 	protected Date dateTime;
 
-	/** Application configuration settings  */
-	protected AppConfigInfo appConfigInfo;
-	
 	/** Application framework. */
 	protected JHOVE2 framework;
 	
 	/** Application displayer */
 	protected Displayer displayer;
+
+	/** Application installation properties.  */
+	protected Installation installation;
+
+	/** Application invocation properties.  */
+	protected Invocation invocation;
 	
 	/** Application source units. */
 	protected List<Source> sources;
@@ -92,8 +93,9 @@ public abstract class AbstractApplication
 	{
 		super(version, release, rights);
 
-		/* Default application initialization. */
-		this.setAppConfigInfo(new AppConfigInfo());
+		/* Default application installation and invocation properties. */
+		this.setInstallation(Installation.getInstance());
+		this.setInvocation  (new Invocation());
 		
 		/* Initialize the default displayer. */
 		try {
@@ -102,28 +104,38 @@ public abstract class AbstractApplication
 		}
 		catch (JHOVE2Exception e){
 			try {
-				this.displayer = (Displayer)(Class.forName(Displayer.DEFAULT_DISPLAYER_CLASS).newInstance());
+				this.displayer = 
+					(Displayer) (Class.forName(Displayer.DEFAULT_DISPLAYER_CLASS).newInstance());
 			}
 			catch (Exception ex){
-				throw new JHOVE2Exception("Fail to instantiate default displayer", ex);
+				throw new JHOVE2Exception("Unable to instantiate default displayer", ex);
 			}
 		}
 		
 		this.sources = new ArrayList<Source>();
 	}
 
-	/** Get application configuration information.
-	 * @return Application configuration information
+	/** Get application {@link org.jhove2.core.app.Invocation} properties.
+	 * @return Application invocation properties
 	 */
-	public AppConfigInfo getAppConfigInfo() {
-		return appConfigInfo;
+	@Override
+	public Invocation getInvocation() {
+		return this.invocation;
+	}
+
+	/** Get application {@link org.jhove2.core.app.Installation} properties.
+	 * @return Application installation properties
+	 */
+	@Override
+	public Installation getInstallation() {
+		return this.installation;
 	}
 
 	/**
 	 * Get application command line.
 	 * 
 	 * @return Application command line
-	 * @see org.jhove2.app.Application#getCommandLine()
+	 * @see org.jhove2.core.app.Application#getCommandLine()
 	 */
 	@Override
 	public String getCommandLine() {
@@ -134,7 +146,7 @@ public abstract class AbstractApplication
 	 * Get application invocation date/timestamp.
 	 * 
 	 * @return Application invocation date/timestamp
-	 * @see org.jhove2.app.Application#getDateTime()
+	 * @see org.jhove2.core.app.Application#getDateTime()
 	 */
 	@Override
 	public Date getDateTime() {
@@ -146,15 +158,14 @@ public abstract class AbstractApplication
 	 */
 	@Override
 	public Displayer getDisplayer() {
-		return displayer;
+		return this.displayer;
 	}
-
 	
 	/**
 	 * Get application framework.
 	 * 
 	 * @return Application framework
-	 * @see org.jhove2.app.Application#getFramework()
+	 * @see org.jhove2.core.app.Application#getFramework()
 	 */
 	@Override
 	public JHOVE2 getFramework() {
@@ -166,13 +177,6 @@ public abstract class AbstractApplication
 	 */
 	public List<Source> getSources() {
 		return this.sources;
-	}
-
-	/** Set application configuration information.
-	 * @param appConfigInfo Application configuration information
-	 */
-	public void setAppConfigInfo(AppConfigInfo appConfigInfo) {
-		this.appConfigInfo = appConfigInfo;
 	}
 
 	/** Set application command line.
@@ -202,13 +206,27 @@ public abstract class AbstractApplication
 	 * 
 	 * @param framework
 	 *            Application framework
-	 * @see org.jhove2.app.Application#setFramework(org.jhove2.core.JHOVE2)
+	 * @see org.jhove2.core.app.Application#setFramework(org.jhove2.core.JHOVE2)
 	 */
 	@Override
 	public void setFramework(JHOVE2 framework) {
 		this.framework = framework;
 	}
-	
+
+	/** Set application {@link org.jhove2.core.app.Installation} properties.
+	 * @param installation Application installation properties
+	 */
+	public void setInstallation(Installation installation) {
+		this.installation = installation;
+	}
+
+	/** Set application {@link org.jhove2.core.app.Invocation} properties.
+	 * @param invocation Application invocation properties
+	 */
+	public void setInvocation(Invocation invocation) {
+		this.invocation = invocation;
+	}
+
 	/** Add an application source unit.
 	 * @param source Source unit to be added
 	 */
