@@ -38,7 +38,6 @@ package org.jhove2.module.display;
 
 import java.io.PrintStream;
 
-import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.I8R;
 
 /**
@@ -46,12 +45,14 @@ import org.jhove2.core.I8R;
  * 
  * @author mstrong, slabrams, smorrissey
  */
-public class XMLDisplayer extends AbstractDisplayer {
+public class XMLDisplayer
+	extends AbstractDisplayer
+{
 	/** XML displayer version identifier. */
 	public static final String VERSION = "1.0.0";
 
 	/** XML displayer release date. */
-	public static final String RELEASE = "2009-07-30";
+	public static final String RELEASE = "2009-12-22";
 
 	/** XML displayer rights statement. */
 	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California, "
@@ -105,7 +106,6 @@ public class XMLDisplayer extends AbstractDisplayer {
 	/** JHOVE2 namespace URI. */
 	protected String uri;
 
-
 	/**
 	 * Instantiate a new <code>XMLDisplayer</code>.
 	 */
@@ -132,8 +132,6 @@ public class XMLDisplayer extends AbstractDisplayer {
 		declaration(out);
 		startTag(out, level, ELEROOT, XMLNS + this.prefix, this.uri, XMLNS + XSI,
 				XSI_URI);
-		// ,XSI+SCHEMA_LOCATION,
-		// this.uri + " " + schemaLoc);
 	}
 
 	/**
@@ -176,23 +174,23 @@ public class XMLDisplayer extends AbstractDisplayer {
 	 * @param typeIdentifier 
 	 * 			  Reportable type identifier in the JHOVE2 namespace
 	 * @see org.jhove2.module.display.Displayer#startReportable(java.io.PrintStream,
-	 *      int, java.lang.String, org.jhove2.core.I8R, int, java.lang.String, org.jhove2.core.I8R)
+	 *      int, java.lang.String, org.jhove2.core.I8R, int, org.jhove2.core.I8R)
 	 */
 	@Override
 	public void startReportable(PrintStream out, int level, String name,
 			I8R identifier, int order, I8R typeIdentifier) {
 		if (typeIdentifier != null){
 			startTag(out, level, ELEFEATURE,
-					ATTNAME, name,
-					ATTIDENTIFIER, identifier.getValue(),
-					ATTIDNAMESPACE, identifier.getNamespace().toString(),
-					ATTTYPEID, typeIdentifier.getValue(),
+					ATTNAME,            name,
+					ATTIDENTIFIER,      identifier.getValue(),
+					ATTIDNAMESPACE,     identifier.getNamespace().toString(),
+					ATTTYPEID,          typeIdentifier.getValue(),
 					ATTTYPEIDNAMESPACE, typeIdentifier.getNamespace().toString());
 		}
 		else {
 			startTag(out, level, ELEFEATURE,
-					ATTNAME, name,
-					ATTIDENTIFIER, identifier.getValue(),
+					ATTNAME,        name,
+					ATTIDENTIFIER,  identifier.getValue(),
 					ATTIDNAMESPACE, identifier.getNamespace().toString());
 		}
 		startTag(out, level + 1, ELEFEATURES);
@@ -220,9 +218,10 @@ public class XMLDisplayer extends AbstractDisplayer {
 	@Override
 	public void startCollection(PrintStream out, int level, String name,
 			I8R identifier, int size, int order) {
-		startTag(out, level, ELEFEATURE, ATTNAME, name,
-				ATTIDENTIFIER, identifier.getValue(),
-				ATTIDNAMESPACE,identifier.getNamespace().toString());
+		startTag(out, level, ELEFEATURE,
+				ATTNAME,        name,
+				ATTIDENTIFIER,  identifier.getValue(),
+				ATTIDNAMESPACE, identifier.getNamespace().toString());
 		startTag(out, level + 1, ELEFEATURES);
 	}
 
@@ -242,24 +241,25 @@ public class XMLDisplayer extends AbstractDisplayer {
 	 * @param order
 	 *            Ordinal position of this reportable with respect to enclosing
 	 *            {@link org.jhove2.core.reportable.Reportable} or collection
+	 * @param unit Unit of measure (may be null)
 	 * @see org.jhove2.module.display.Displayer#displayProperty(java.io.PrintStream,
 	 *      int, java.lang.String, org.jhove2.core.I8R, java.lang.Object, int, java.lang.String)
 	 */
 	@Override
 	public void displayProperty(PrintStream out, int level, String name,
-			I8R identifier, Object value, int order, String unitOfMeasure) {
-		if (unitOfMeasure.equals(ReportableProperty.NOT_APPLICABLE)){
-		startTag(out, level, ELEFEATURE,
-				ATTNAME, name,
-				ATTIDENTIFIER, identifier.getValue(), 
-				ATTIDNAMESPACE,identifier.getNamespace().toString());
+			I8R identifier, Object value, int order, String unit) {
+		if (unit == null) {
+			startTag(out, level, ELEFEATURE,
+				     ATTNAME,        name,
+				     ATTIDENTIFIER,  identifier.getValue(), 
+				     ATTIDNAMESPACE, identifier.getNamespace().toString());
 		}
 		else {
 			startTag(out, level, ELEFEATURE,
-					ATTNAME, name,
-					ATTIDENTIFIER, identifier.getValue(), 
-					ATTIDNAMESPACE,identifier.getNamespace().toString(),
-					ATTUNITOFMEASURE,unitOfMeasure) ;
+					ATTNAME,          name,
+					ATTIDENTIFIER,    identifier.getValue(), 
+					ATTIDNAMESPACE,   identifier.getNamespace().toString(),
+					ATTUNITOFMEASURE, unit);
 		}
 		tag(out, level + 1, ELEVALUE, value.toString());
 		endTag(out, level, ELEFEATURE);

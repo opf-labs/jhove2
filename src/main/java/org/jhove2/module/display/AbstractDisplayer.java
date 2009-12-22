@@ -42,6 +42,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
@@ -77,6 +78,9 @@ Displayer {
 
 	/** Output file pathname, if System.out is not being used. */
 	protected String filePathname;
+	
+	/** Units of measure configured by the user. */
+	private static ConcurrentMap<String, String> units;
 
 	/** Displayer visbility flags configured by user to indicate whether
 	 *  or not a feature should be displayed.
@@ -160,9 +164,14 @@ Displayer {
 		throws JHOVE2Exception
 	{
 		this.getTimerInfo().setStartTime();
+		
+		Map<String, String> units = getUnits();
+		Map<String, DisplayVisibility> visibilities = getVisibilities();
+		
 		this.startDisplay(out, 0);
-		this.display(out, reportable, 0, 0);
-		this.endDisplay(out, 0);
+		this.display     (out, reportable, 0, 0, units, visibilities);
+		this.endDisplay  (out, 0);
+		
 		this.getTimerInfo().setEndTime();
 	}
 
@@ -178,12 +187,15 @@ Displayer {
 	 * @param order
 	 *            Ordinal position of this reportable with respect to its
 	 *            enclosing reportable or collection
+	 * @param units Map of units of measure
+	 * @param visibilities Map of display visibilities
 	 */
 	protected void display(PrintStream out, Reportable reportable, int level,
-			               int order)
+			               int order, Map<String, String> units,
+			               Map<String, DisplayVisibility> visibilities)
 		throws JHOVE2Exception
 	{
-		this.display(out, reportable, level, order, true);
+		this.display(out, reportable, level, order, true, units, visibilities);
 	}
 	
 	/**
@@ -200,9 +212,13 @@ Displayer {
 	 *            enclosing reportable or collection
 	 * @param shouldNestReportable
 	 * 			boolean indicating new level of reportable hierarchy
+	 * @param units Map of units of measure
+	 * @param visibilities Map of display visibilities
 	 */
 	protected void display(PrintStream out, Reportable reportable, int level,
-			               int order, boolean shouldNestReportable)
+			               int order, boolean shouldNestReportable,
+			               Map<String, String> units,
+			               Map<String, DisplayVisibility> visibilities)
 		throws JHOVE2Exception
 	{
 		ReportableInfo reportableInfo = new ReportableInfo(reportable);
@@ -217,8 +233,8 @@ Displayer {
 			Set<ReportablePropertyInfo> props = source.getProperties();
 			for (ReportablePropertyInfo prop : props) {
 				I8R id = prop.getIdentifier();
-				DisplayVisibility visbility = 
-					getVisibilities().get(id.getValue());
+				String ident = id.getValue();
+				DisplayVisibility visbility = visibilities.get(ident);
 				if (visbility != null && visbility == DisplayVisibility.Never) {
 					continue;
 				}
@@ -249,7 +265,8 @@ Displayer {
 								}
 							}
 						}
-						display(out, level, propertyName, id, value, or++, prop.getUnitOfMeasure());
+						String unit = units.get(ident);
+						display(out, level, propertyName, id, value, or++, unit);
 					}
 				} catch (IllegalArgumentException e) {
 					throw new JHOVE2Exception(
@@ -284,10 +301,11 @@ Displayer {
 	 * @param order
 	 *            Ordinal position of this property with respect to its
 	 *            enclosing reportable or collection
+	 * @param unit Unit of measure (may be null)
 	 */
 	protected void display(PrintStream out, int level, String name,
 			               I8R identifier, Object value, int order,
-			               String unitOfMeasure)
+			               String unit)
 		throws JHOVE2Exception
 	{
 		if (value instanceof List<?>) {
@@ -300,12 +318,12 @@ Displayer {
 				I8R id = I8R.singularIdentifier(identifier);
 				int i = 0;
 				for (Object prop : valueList) {
-					this.display(out, level + 1, singularName, id, prop, i++, unitOfMeasure);
+					this.display(out, level + 1, singularName, id, prop, i++, unit);
 				}
-				this.endCollection(out, level + 1, name, identifier,
-						size);
+				this.endCollection(out, level + 1, name, identifier, size);
 			}
-		} else if (value instanceof Set<?>) {
+		}
+		else if (value instanceof Set<?>) {
 			Set<?> set = (Set<?>) value;
 			int size = set.size();
 			if (size > 0) {
@@ -315,25 +333,50 @@ Displayer {
 				I8R id = I8R.singularIdentifier(identifier);
 				int i = 0;
 				for (Object prop : set) {
-					display(out, level + 1, singularName, id, prop, i++, unitOfMeasure);
+					display(out, level + 1, singularName, id, prop, i++, unit);
 				}
-				this.endCollection(out, level + 1, name, identifier,
-						size);
+				this.endCollection(out, level + 1, name, identifier, size);
 			}
-		} else if (value instanceof Reportable) {
+		}
+		else if (value instanceof Reportable) {
 			this.startReportable(out, level + 1, name, identifier,
 					order, ((Reportable)value).getReportableIdentifier());
-			display(out, (Reportable) value, level + 2, 0, false);
+			display(out, (Reportable) value, level + 2, 0, false, units,
+					visibilities);
 			this.endReportable(out, level + 1, name, identifier);
-		} else {
+		}
+		else {
 			if (value instanceof Date) {
 				value = ISO8601.format(value);
 			}
-			this.displayProperty(out, level + 1, name, identifier,
-					value, order, unitOfMeasure);
+			this.displayProperty(out, level + 1, name, identifier, value,
+					             order, unit);
 		}
 	}
-	
+
+	/**
+	 * Display property with no unit of measure.
+	 * 
+	 * @param out
+	 *            Print stream
+	 * @param level
+	 *            Nesting level
+	 * @param name
+	 *            Property name
+	 * @param identifier
+	 *            Property identifier in the JHOVE2 namespace
+	 * @param value
+	 *            Property value
+	 * @param order
+	 *            Ordinal position of this property with respect to its
+	 *            enclosing {@link org.jhove2.core.reportable.Reportable} or collection
+	 */
+	@Override
+	public void displayProperty(PrintStream out, int level, String name,
+			                    I8R identifier, Object value, int order) {
+		this.displayProperty(out, level, name, identifier, value, order, null);
+	}
+
 	/** Get output file pathname.
 	 * @return Output file pathname
 	 */
@@ -363,32 +406,6 @@ Displayer {
 	}
 
 	/**
-	 * Utility method to get user-specified restrictions on display visibility of Reportable properties
-	 * @return TreeMap mapping from Reportable property I8R to a DisplayVisibility
-	 * @throws JHOVE2Exception
-	 */
-	public static ConcurrentMap<String, DisplayVisibility> getVisibilities()
-		throws JHOVE2Exception
-	{
-		if (visibilities == null){
-			ConcurrentHashMap<String, DisplayVisibility> viz = new ConcurrentHashMap<String, DisplayVisibility>();
-			Properties props = ReportableFactory.getProperties("DisplayVisibility");
-			if (props != null) {
-				Set<String> keys = props.stringPropertyNames();
-				for (String key : keys) {
-					DisplayVisibility value = DisplayVisibility.valueOf(props
-							.getProperty(key));
-					if (value != null) {
-						viz.put(key, value);
-					}
-				}
-			}
-			visibilities = viz;
-		}
-		return visibilities;
-	}
-	
-	/**
 	 * Get indentation flag.  If true, displayed output is indented to indicate
 	 * subsidiarity relationships.
 	 * 
@@ -410,6 +427,61 @@ Displayer {
 	public boolean getShowIdentifiers() {
 		return this.showIdentifiers;
 	}
+	
+	/** Utility method to get user-specified units of measure.
+	 * @return TreeMap mapping from Reportable property I8R to a unit of measure
+	 * @throws JHOVE2Exception
+	 */
+	public static ConcurrentMap<String, String> getUnits()
+		throws JHOVE2Exception
+{
+	if (units == null){
+		units =	new ConcurrentHashMap<String, String>();
+		Properties props = ReportableFactory.getProperties("DisplayUnits");
+		if (props != null) {
+			Set<String> keys = props.stringPropertyNames();
+			for (String key : keys) {
+				String value = props.getProperty(key);
+				if (value != null) {
+					units.put(key, value);
+				}
+			}
+		}
+	}
+	return units;
+}
+	/**
+	 * Utility method to get user-specified restrictions on display visibility of Reportable properties
+	 * @return TreeMap mapping from Reportable property I8R to a DisplayVisibility
+	 * @throws JHOVE2Exception
+	 */
+	public static ConcurrentMap<String, DisplayVisibility> getVisibilities()
+		throws JHOVE2Exception
+	{
+		if (visibilities == null){
+			visibilities = new ConcurrentHashMap<String, DisplayVisibility>();
+			Properties props = ReportableFactory.getProperties("DisplayVisibility");
+			if (props != null) {
+				Set<String> keys = props.stringPropertyNames();
+				for (String key : keys) {
+					DisplayVisibility value = DisplayVisibility.valueOf(props
+							.getProperty(key));
+					if (value != null) {
+						visibilities.put(key, value);
+					}
+				}
+			}
+		}
+		return visibilities;
+	}
+
+	/** Set output file pathname
+	 * @param filePathname Output file pathname
+	 */
+	@Override
+	public void setFilePathname(String filePathname) {
+		this.filePathname = filePathname;
+	}
 
 	/**
 	 * Set show identifiers flag.
@@ -421,14 +493,6 @@ Displayer {
 	@Override
 	public void setShowIdentifiers(boolean flag) {
 		this.showIdentifiers = flag;
-	}
-
-	/** Set output file pathname
-	 * @param filePathname Output file pathname
-	 */
-	@Override
-	public void setFilePathname(String filePathname) {
-		this.filePathname = filePathname;
 	}
 
 	/**

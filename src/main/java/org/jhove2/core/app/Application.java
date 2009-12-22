@@ -73,7 +73,7 @@ public interface Application
 	 * Get application displayer.
 	 * @return Application displayer
 	 */
-	@ReportableProperty(order = 4, value = "Application displayer module.")
+	@ReportableProperty(order = 5, value = "Application displayer module.")
 	public Displayer getDisplayer();
 	
 	/**
@@ -99,7 +99,7 @@ public interface Application
 	/** Get application {@link org.jhove2.core.source.Source} units.
 	 * @return Application source units
 	 */
-	@ReportableProperty(order = 5, value = "Application source units.")
+	@ReportableProperty(order = 4, value = "Application source units.")
 	public List<Source> getSources();
 	
 	/**

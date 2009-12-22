@@ -79,9 +79,9 @@ public class ZipFileSource extends AbstractSource implements NamedSource {
 	/**
 	 * Instantiate a new <code>ZipFileSource</code>.
 	 * 
-     * @param String temporary file prefix
-     * @param String temporary file suffix
-     * @param int buffer size 
+     * @param tmpPrefix Temporary file prefix
+     * @param tmpSuffix Temporary file suffix
+     * @param bufferSize Buffer size 
 	 * @param stream
 	 *            Input stream for the Zip file entry
 	 * @param entry
@@ -177,18 +177,22 @@ public class ZipFileSource extends AbstractSource implements NamedSource {
 	 * 
 	 * @return Zip file size, in bytes
 	 */
-	@ReportableProperty(order = 3, value = "Zip file size, in bytes.", unitOfMeasure = "bytes")
+	@ReportableProperty(order = 3, value = "Zip file size, in bytes.")
 	public long getSize() {
 		return this.size;
 	}
 	/**
 	 * CRC value recorded in ZipEntry
-	 * @return
+	 * @return CRC value
 	 */
 	public long getCrc() {
 		return crc;
 	}
 	
+	/** Equality comparison.
+	 * @oparam obj The object being compared
+	 * @return True if the object is equal
+	 */
 	@Override
 	public boolean equals(Object obj){
 		boolean equals = false;
@@ -249,6 +253,12 @@ public class ZipFileSource extends AbstractSource implements NamedSource {
 		}
 		return super.equals(obj);
 	}
+	
+	/** Comparison.
+	 * @param source Source unit to be compared
+	 * @return Return -1, 0, 1 if the compared source unit collates less than,
+	 *         equal to, or greater than the underlying source unit
+	 */
 	@Override
 	public int compareTo(Source source){
 		int comp = 0;

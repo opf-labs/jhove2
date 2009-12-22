@@ -111,6 +111,9 @@
 		<property name="URI" value="http://www.stanford.edu/"/>
 	</bean>
 	
+	<!-- Display units of measure bean -->
+	<util:properties id="DisplayUnits"
+	                 location="classpath:properties/unit.properties"/>
 	
 	<!-- Display visibility properties bean -->
 	<util:properties id="DisplayVisibility"
@@ -133,6 +136,5 @@
           	<value>properties.messages</value>
           </property>
     </bean>
-
 
 </beans>

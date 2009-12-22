@@ -111,7 +111,7 @@ public class ReportableInfo {
 						idMap.put(featureId.getValue(), featureId.getValue());
 						ReportablePropertyInfo prop = new ReportablePropertyInfo(
 								featureId, methods[j], annot.value(), 
-								annot.ref(), annot.unitOfMeasure());
+								annot.ref());
 						set.add(prop);
 					}
 				}
@@ -159,7 +159,7 @@ public class ReportableInfo {
 						idMap.put(featureId.getValue(), featureId.getValue());
 						ReportablePropertyInfo prop = new ReportablePropertyInfo(
 								featureId, methods[j], annot.value(), 
-								annot.ref(), annot.unitOfMeasure());
+								annot.ref());
 						set.add(prop);
 					}
 				}

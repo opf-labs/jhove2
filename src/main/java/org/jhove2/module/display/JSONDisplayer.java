@@ -38,7 +38,6 @@ package org.jhove2.module.display;
 
 import java.io.PrintStream;
 
-import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.I8R;
 
 /**
@@ -46,12 +45,14 @@ import org.jhove2.core.I8R;
  * 
  * @author mstrong, slabrams, smorrissey
  */
-public class JSONDisplayer extends AbstractDisplayer {
+public class JSONDisplayer
+	extends AbstractDisplayer
+{
 	/** JSON displayer version identifier. */
 	public static final String VERSION = "1.0.0";
 
 	/** JSON displayer release date. */
-	public static final String RELEASE = "2009-07-30";
+	public static final String RELEASE = "2009-12-22";
 
 	/** JSON displayer rights statement. */
 	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California, "
@@ -104,7 +105,7 @@ public class JSONDisplayer extends AbstractDisplayer {
 	 */
 	@Override
 	public void startReportable(PrintStream out, int level, String name,
-			I8R identifier, int order) {
+			                    I8R identifier, int order) {
 		this.startReportable(out, level, name, identifier, order, null);
 	}
 
@@ -125,11 +126,11 @@ public class JSONDisplayer extends AbstractDisplayer {
 	 * @param typeIdentifier 
 	 * 			  Reportable type identifier in the JHOVE2 namespace
 	 * @see org.jhove2.module.display.Displayer#startReportable(java.io.PrintStream,
-	 *      int, java.lang.String, org.jhove2.core.I8R, int, java.lang.String, org.jhove2.core.I8R)
+	 *      int, java.lang.String, org.jhove2.core.I8R, int, org.jhove2.core.I8R)
 	 */
 	@Override
 	public void startReportable(PrintStream out, int level, String name,
-			I8R identifier, int order, I8R typeIdentifier) {
+			                    I8R identifier, int order, I8R typeIdentifier) {
 		String indent = getIndent(this.getShowIdentifiers() ? 2 * level : level, 
 				this.getShouldIndent());
 		StringBuffer buffer = new StringBuffer(indent);
@@ -186,7 +187,7 @@ public class JSONDisplayer extends AbstractDisplayer {
 	 */
 	@Override
 	public void startCollection(PrintStream out, int level, String name,
-			I8R identifier, int size, int order) {
+			                    I8R identifier, int size, int order) {
 		String indent = getIndent(this.getShowIdentifiers() ? 2 * level : level, 
 				this.getShouldIndent());
 		StringBuffer buffer = new StringBuffer(indent);
@@ -220,12 +221,14 @@ public class JSONDisplayer extends AbstractDisplayer {
 	 * @param order
 	 *            Ordinal position of this reportable with respect to enclosing
 	 *            {@link org.jhove2.core.reportable.Reportable} or collection
+	 * @param unit Unit of measure (may be null)
 	 * @see org.jhove2.module.display.Displayer#displayProperty(java.io.PrintStream,
 	 *      int, java.lang.String, org.jhove2.core.I8R, java.lang.Object, int, java.lang.String)
 	 */
 	@Override
 	public void displayProperty(PrintStream out, int level, String name,
-			I8R identifier, Object value, int order, String unitOfMeasure) {
+			                    I8R identifier, Object value, int order,
+			                    String unit) {
 		String indent = getIndent((this.getShowIdentifiers() ? 2 * level : level), 
 				this.getShouldIndent());
 		StringBuffer buffer = new StringBuffer(indent);
@@ -236,34 +239,33 @@ public class JSONDisplayer extends AbstractDisplayer {
 			buffer.append(",");
 		}
 		buffer.append("\"" + name + "\": ");
-		boolean mustShowUnits = (!unitOfMeasure.equals(ReportableProperty.NOT_APPLICABLE));
-		boolean mustBracket = (this.getShowIdentifiers() || (mustShowUnits));
+		boolean showIdentifiers = this.getShowIdentifiers();
+		boolean mustBracket = showIdentifiers || unit != null;
 		if (mustBracket){
-			if (this.getShowIdentifiers()) {
-				buffer.append("{\n" + indent + "   \"identifier\": \"" + identifier);
-//						+ "\"" + "\n" + indent + "  ,\"value\": ");
-				if (mustShowUnits){
-					// have to show units as well as value
-					buffer.append("\"" + "\n" + indent + "   ,\"unit of measure\": \"" + unitOfMeasure);
-				}	
-				buffer.append("\"" + "\n" + indent);
+			buffer.append("{\n");
+			if (showIdentifiers) {
+				buffer.append(indent + "   \"identifier\": \"" + identifier + "\"\n");
 			}
-			else {
-				// just show units and value, not the identifier
-				buffer.append("{\n" + indent + "   \"unit of measure\": \"" + unitOfMeasure);
-				buffer.append("\"" + "\n" + indent);
+			if (unit != null) {
+				buffer.append(indent + "  ");
+				if (showIdentifiers) {
+					buffer.append(",");
+				}
+				else {
+					buffer.append(" ");
+				}
+				buffer.append("\"unit\": \"" + unit + "\"\n");
 			}
-			// now  show value
-			buffer.append("  ,\"value\": ");
+			buffer.append(indent + "  ,\"value\": ");
 		}
 		if (value instanceof Number) {
 			buffer.append(value);
-		} else {
+		}
+		else {
 			buffer.append("\"");
 			buffer.append(escape(value.toString()));
 			buffer.append("\"");
 		}
-//		if (this.getShowIdentifiers()) {
 		if (mustBracket) {
 			buffer.append("\n" + indent + " }");
 		}

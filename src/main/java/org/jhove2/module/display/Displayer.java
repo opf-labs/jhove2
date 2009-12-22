@@ -51,8 +51,9 @@ import org.jhove2.module.Module;
  * 
  * @author mstrong, slabrams, smorrissey
  */
-public interface Displayer extends Module {
-	
+public interface Displayer
+	extends Module
+{	
 	/** ISO 8601 date/time format. */
 	public static final SimpleDateFormat ISO8601 = new SimpleDateFormat(
 			"yyyy-MM-ss'T'hh:mm:ssZ");
@@ -177,6 +178,26 @@ public interface Displayer extends Module {
 			                    I8R identifier, int size, int order);
 
 	/**
+	 * Display property with no unit of measure.
+	 * 
+	 * @param out
+	 *            Print stream
+	 * @param level
+	 *            Nesting level
+	 * @param name
+	 *            Property name
+	 * @param identifier
+	 *            Property identifier in the JHOVE2 namespace
+	 * @param value
+	 *            Property value
+	 * @param order
+	 *            Ordinal position of this property with respect to its
+	 *            enclosing {@link org.jhove2.core.reportable.Reportable} or collection
+	 */
+	public void displayProperty(PrintStream out, int level, String name,
+			                    I8R identifier, Object value, int order);
+	
+	/**
 	 * Display property.
 	 * 
 	 * @param out
@@ -192,12 +213,12 @@ public interface Displayer extends Module {
 	 * @param order
 	 *            Ordinal position of this property with respect to its
 	 *            enclosing {@link org.jhove2.core.reportable.Reportable} or collection
-	 * @param unitOfMeasure
+	 * @param unit
 	 *            Unit of measure in which the value is expressed
 	 */
 	public void displayProperty(PrintStream out, int level, String name,
 			                    I8R identifier, Object value, int order,
-			                    String unitOfMeasure);
+			                    String unit);
 
 	/**
 	 * End display of a property collection.

@@ -61,7 +61,9 @@ import org.jhove2.module.format.utf8.unicode.Unicode.EOL;
  * 
  * @author mstrong, slabrams
  */
-public class UTF8Character extends AbstractReportable {
+public class UTF8Character
+	extends AbstractReportable
+{
 	/** Byte Order Mark (BOM). */
 	public static final int BOM = 0xFEFF;
 
@@ -345,7 +347,7 @@ public class UTF8Character extends AbstractReportable {
 	 * 
 	 * @return Encoded size, in bytes
 	 */
-	@ReportableProperty(order = 2, value = "Encoded size, in bytes.", unitOfMeasure = "bytes")
+	@ReportableProperty(order = 2, value = "Encoded size, in bytes.")
 	public int getSize() {
 		return this.size;
 	}

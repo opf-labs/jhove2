@@ -62,9 +62,6 @@ import java.lang.annotation.Target;
 public @interface ReportableProperty {
 	/** Default description and reference value. */
 	public static final String DEFAULT = "Not available.";
-	
-	/** Not applicable. */
-	public static final String NOT_APPLICABLE = "Not applicable";
 
 	/** Property description. */
 	public String value() default DEFAULT;
@@ -80,9 +77,4 @@ public @interface ReportableProperty {
 	 * defined in a class.
 	 */
 	public int order() default 1;
-	
-	/**
-	 * Unit of measure for a property
-	 */
-	public String unitOfMeasure() default NOT_APPLICABLE;
 }

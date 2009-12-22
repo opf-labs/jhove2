@@ -51,7 +51,10 @@ import org.jhove2.core.io.Input.Type;
  * 
  * @author mstrong, slabrams
  */
-public class FileSource extends AbstractSource implements NamedSource {
+public class FileSource
+	extends AbstractSource
+	implements NamedSource
+{
 	/** File existence. */
 	protected boolean isExtant;
 
@@ -115,7 +118,8 @@ public class FileSource extends AbstractSource implements NamedSource {
 			this.isReadable = file.canRead();
 			this.isSpecial = !file.isFile();
 			this.lastModified = new Date(file.lastModified());
-		} else {
+		}
+		else {
 			this.size = 0L;
 			this.isHidden = false;
 			this.isSpecial = false;
@@ -208,6 +212,16 @@ public class FileSource extends AbstractSource implements NamedSource {
 	}
 
 	/**
+	 * Get file size, in bytes.
+	 * 
+	 * @return File size, in bytes
+	 */
+	@ReportableProperty(order = 3, value = "File size, in bytes.")
+	public long getSize() {
+		return this.size;
+	}
+	
+	/**
 	 * Get file readability.
 	 * 
 	 * @return True if file is readable
@@ -227,15 +241,5 @@ public class FileSource extends AbstractSource implements NamedSource {
 			+ "special.")
 	public boolean isSpecial() {
 		return this.isSpecial;
-	}
-
-	/**
-	 * Get file size, in bytes.
-	 * 
-	 * @return File size, in bytes
-	 */
-	@ReportableProperty(order = 3, value = "File size, in bytes.", unitOfMeasure = "bytes")
-	public long getSize() {
-		return this.size;
 	}
 }

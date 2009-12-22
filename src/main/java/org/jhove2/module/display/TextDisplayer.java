@@ -38,7 +38,6 @@ package org.jhove2.module.display;
 
 import java.io.PrintStream;
 
-import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.I8R;
 
 /**
@@ -51,7 +50,7 @@ public class TextDisplayer extends AbstractDisplayer {
 	public static final String VERSION = "1.0.0";
 
 	/** Text displayer release date. */
-	public static final String RELEASE = "2009-12-21";
+	public static final String RELEASE = "2009-12-22";
 
 	/** Text displayer rights statement. */
 	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California, "
@@ -196,24 +195,22 @@ public class TextDisplayer extends AbstractDisplayer {
 	 * @param order
 	 *            Ordinal position of this reportable with respect to enclosing
 	 *            {@link org.jhove2.core.reportable.Reportable} or collection
+	 * @param unit Unit of measure (may be null)
 	 * @see org.jhove2.module.display.Displayer#displayProperty(java.io.PrintStream,
 	 *      int, java.lang.String, org.jhove2.core.I8R, java.lang.Object, int, java.lang.String)
 	 */
 	@Override
 	public void displayProperty(PrintStream out, int level, String name,
-			I8R identifier, Object value, int order, String unitOfMeasure) {
+			I8R identifier, Object value, int order, String unit) {
 		StringBuffer buffer = new StringBuffer(getIndent(level,this.getShouldIndent()));
 		buffer.append(name);
 		if (this.getShowIdentifiers()) {
 			buffer.append(" <" + identifier + ">");
 		}
-		if (unitOfMeasure.equals(ReportableProperty.NOT_APPLICABLE)){
-			buffer.append(": " + value);
+		if (unit != null){
+			buffer.append(" (" + unit + ")");
 		}
-		else {
-			buffer.append(" (" + unitOfMeasure + ")");
-			buffer.append(": " + value);
-		}
+		buffer.append(": " + value);
 		out.println(buffer);
 	}
 
