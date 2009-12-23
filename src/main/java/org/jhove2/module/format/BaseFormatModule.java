@@ -42,23 +42,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.AbstractCommand;
 import org.jhove2.core.Format;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
 import org.jhove2.core.source.Source;
-import org.jhove2.module.AbstractModule;
 
 /**
  * Base JHOVE2 format module.
  * Modules for specific formats/format families will inherit from this module.
  * Any single format module that inherits from this class can be invoked as
- * a JHOVE2Command.
+ * a Command.
  * 
  * @author mstrong, slabrams, smorrissey
  */
 public class BaseFormatModule
-	extends AbstractModule
+	extends AbstractCommand
 	implements FormatModule
 {
 	/** Directory module version identifier. */
@@ -122,7 +122,7 @@ public class BaseFormatModule
 	 * @param Source to be parsed
 	 * @param JHOVE2 framework for callbacks
 	 * @throws JHOVE2Exception
-	 * @see org.jhove2.core.JHOVE2Command#execute(org.jhove2.core.source.Source, org.jhove2.core.JHOVE2)
+	 * @see org.jhove2.core.Command#execute(org.jhove2.core.source.Source, org.jhove2.core.JHOVE2)
 	 */
 	@Override
 	public void execute(JHOVE2 jhove2, Source source)

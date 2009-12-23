@@ -5,27 +5,24 @@ package org.jhove2.module.identify;
 
 import java.util.Set;
 
+import org.jhove2.core.AbstractCommand;
 import org.jhove2.core.FormatIdentification;
 import org.jhove2.core.JHOVE2;
-import org.jhove2.core.JHOVE2Command;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.TimerInfo;
 import org.jhove2.core.reportable.ReportableFactory;
 import org.jhove2.core.source.Source;
-import org.jhove2.module.AbstractModule;
 
 /**
- * {@link org.jhove2.core.JHOVE2Command} to perform identification on
+ * {@link org.jhove2.core.Command} to perform identification on
  * {@link org.jhove2.core.source.Source}s.
  * Note that this module does not detect
  * {@link org.jhove2.core.source.ClumpSource} format instances. 
  * 
  * @author smorrissey
- *
  */
 public class IdentifierCommand
-	extends AbstractModule
-	implements JHOVE2Command
+	extends AbstractCommand
 {
 	/** IdentifierCommand module version identifier. */
 	public static final String VERSION = "0.5.4";
@@ -50,7 +47,7 @@ public class IdentifierCommand
 	 * @param jhove2 JHOVE2 framework object
 	 * @param source Source to be identified
 	 * @throws JHOVE2Exception
-	 * @see org.jhove2.core.JHOVE2Command#execute(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
+	 * @see org.jhove2.core.Command#execute(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
 	 * @see org.jhove2.module.identify.Identifier#identify(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
 	 */
 	@Override
@@ -60,8 +57,9 @@ public class IdentifierCommand
 		try {		
 			Identifier identifier =
 				ReportableFactory.getReportable(Identifier.class,
-					                           "IdentifierModule");			
-			source.addModule(identifier);
+					                           "IdentifierModule");	
+			this.addModule(identifier);
+			this.addModule(identifier.getFileSourceIdentifier());
 			TimerInfo timer = identifier.getTimerInfo();
 			timer.setStartTime();
 			try {

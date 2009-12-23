@@ -43,18 +43,17 @@ import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import org.jhove2.core.AbstractCommand;
 import org.jhove2.core.Format;
 import org.jhove2.core.FormatIdentification;
 import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2;
-import org.jhove2.core.JHOVE2Command;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.reportable.ReportableFactory;
 import org.jhove2.core.source.Source;
-import org.jhove2.module.AbstractModule;
 import org.jhove2.module.Module;
 import org.jhove2.module.identify.DROIDIdentifier;
 
@@ -66,8 +65,7 @@ import org.jhove2.module.identify.DROIDIdentifier;
  * @author smorrissey
  */
 public class DispatcherCommand
-	extends AbstractModule 
-	implements JHOVE2Command
+	extends AbstractCommand 
 {
 	/** Directory module version identifier. */
 	public static final String VERSION = "0.5.4";
@@ -102,7 +100,7 @@ public class DispatcherCommand
 	 * @param source Source with FormatIdentifications
 	 * @param jhove2 JHOVE2 framework object
 	 * @throws JHOVE2Exception
-	 * @see org.jhove2.core.JHOVE2Command#execute(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
+	 * @see org.jhove2.core.Command#execute(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
 	 */
 	@Override
 	public void execute(JHOVE2 jhove2, Source source)

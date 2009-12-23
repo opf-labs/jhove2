@@ -157,41 +157,6 @@ public class DROIDIdentifier
 				                                               "DROIDProduct");
 		this.setWrappedProduct(droid);
 	}
-
-	/**
-	 * If DROID config file has not yet been parsed, parse and return it;
-	 * Otherwise simply returns parsed config file
-	 * @param configFilePath path to DROID config file
-	 * @return parsed config file object
-	 * @throws Exception
-	 */
-	private static synchronized ConfigFile getCachedConfigFile(String configFilePath)
-		throws Exception
-	{
-		if (cachedConfigFile == null) {
-			cachedConfigFile = DROIDWrappedProduct.parseConfigFile(configFilePath);
-		}
-		return cachedConfigFile;
-	}
-
-	/**
-	 * If DROID signature file has not yet been parsed, parses and returns it;
-	 * Otherwise, just returns parsed signature file
-	 * @param configFile  parsed DROID config file object
-	 * @param sigFilePath  path to DROID signature file
-	 * @return parsed signature file contents
-	 * @throws Exception
-	 */
-	private static synchronized FFSignatureFile getCachedSignatureFile(ConfigFile configFile,
-			                                                           String sigFilePath)
-		throws Exception
-	{
-		if (cachedSigFile == null) {
-			cachedSigFile = DROIDWrappedProduct.parseSignatureFile(configFile,
-					                                               sigFilePath);
-		}
-		return cachedSigFile;
-	}
 	
 	/**
 	 * Presumptively identify the format of a source unit.
@@ -285,6 +250,41 @@ public class DROIDIdentifier
 			throw new JHOVE2Exception("Failure running DROID " + ex.getMessage(),ex);
 		}
 		return presumptiveFormatIds;
+	}
+
+	/**
+	 * If DROID config file has not yet been parsed, parse and return it;
+	 * Otherwise simply returns parsed config file
+	 * @param configFilePath path to DROID config file
+	 * @return parsed config file object
+	 * @throws Exception
+	 */
+	private static synchronized ConfigFile getCachedConfigFile(String configFilePath)
+		throws Exception
+	{
+		if (cachedConfigFile == null) {
+			cachedConfigFile = DROIDWrappedProduct.parseConfigFile(configFilePath);
+		}
+		return cachedConfigFile;
+	}
+
+	/**
+	 * If DROID signature file has not yet been parsed, parses and returns it;
+	 * Otherwise, just returns parsed signature file
+	 * @param configFile  parsed DROID config file object
+	 * @param sigFilePath  path to DROID signature file
+	 * @return parsed signature file contents
+	 * @throws Exception
+	 */
+	private static synchronized FFSignatureFile getCachedSignatureFile(ConfigFile configFile,
+			                                                           String sigFilePath)
+		throws Exception
+	{
+		if (cachedSigFile == null) {
+			cachedSigFile = DROIDWrappedProduct.parseSignatureFile(configFile,
+					                                               sigFilePath);
+		}
+		return cachedSigFile;
 	}
 
 	/**
@@ -536,5 +536,14 @@ public class DROIDIdentifier
 	 */
 	public void setFileNotRunMessage(Message fileNotRunMessage) {
 		this.fileNotRunMessage = fileNotRunMessage;
+	}
+	
+	/**
+	 * Get file source identifier module.
+	 * @return File source identifier module
+	 */
+	@Override
+	public Identifier getFileSourceIdentifier() {
+		return this;
 	}
 }

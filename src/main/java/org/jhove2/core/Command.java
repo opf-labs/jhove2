@@ -34,73 +34,49 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.module.format;
+package org.jhove2.core;
 
-import java.io.EOFException;
-import java.io.IOException;
 import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.Format;
-import org.jhove2.core.JHOVE2;
-import org.jhove2.core.Command;
-import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.Module;
-import org.jhove2.module.format.FormatProfile;
 
 /**
- * Interface for JHOVE2 format {@link org.jhove2.module.Module}s that model a
- * format or format family.
+ * Command invoked by JHOVE2 application framework to characterize some aspect
+ * of a {@link org.jhove2.core.source.Source}, for example, identification,
+ * format feature extraction/validation/profile validation, aggregate detection
+ * and characterization, assessment, message digest calculation.
  * 
- * @author mstrong, slabrams, smorrissey
+ * These commands should be thought of as essentially stateless (except for the
+ * metadata members common to all {@link org.jhove2.module.Module}s that
+ * describe the Module itself).
+ * 
+ * The JHOVE2 framework is configured by plugging a sequence of Command
+ * objects into the JHOVE2.commands List field.
+ * 
+ * @author smorrissey, slabrams
  */
-public interface FormatModule
-	extends Module, Command
+public interface Command
+	extends Module
 {
 	/**
-	 * Parse a source unit.
-	 * 
-	 * @param jhove2
-	 *            JHOVE2 framework
-	 * @param source
-	 *            Source unit
-	 * @return Number of bytes consumed
-	 * @throws EOFException
-	 *             If End-of-File is reached reading the source unit
-	 * @throws IOException
-	 *             If an I/O exception is raised reading the source unit
+	 * Execute a characterization command
+	 * @param source Source on which command is to be executed
+	 * @param jhove2 JHOVE2 application framework for configuration information and callback
 	 * @throws JHOVE2Exception
 	 */
-	public long parse(JHOVE2 jhove2, Source source)
-		throws EOFException, IOException, JHOVE2Exception;
+	public void execute(JHOVE2 jhove2, Source source)
+	   throws JHOVE2Exception;
 	
-	/**
-	 * Get format module format.
-	 * 
-	 * @return Format module format
+	/** Add module associated with the command.
+	 * @param module Module associated with the command
 	 */
-	@ReportableProperty(order = 1, value = "Format module format.")
-	public Format getFormat();
-
-	/**
-	 * Get format module format profiles.
-	 * 
-	 * @return Format module format profiles.
-	 */
-	@ReportableProperty(order = 2, value = "Format module format profiles.")
-	public List<FormatProfile> getProfiles();
-
-	/** Set module format.
-	 * @param format Module format
-	 */
-	public void setFormat(Format format);
+	public void addModule(Module module);
 	
-	/**
-	 * Add a format module format profile.
-	 * 
-	 * @param profile
-	 *            Format module format profile
+	/** Get modules associated with the command.
+	 * @return Modules associated with the command
 	 */
-	public void setProfile(FormatProfile profile);
+	@ReportableProperty(value = "Modules associated with the command.")
+	public List<Module> getModules();
 }

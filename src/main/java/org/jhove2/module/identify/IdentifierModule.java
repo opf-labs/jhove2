@@ -45,7 +45,6 @@ import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.TimerInfo;
-import org.jhove2.core.FormatIdentification;
 import org.jhove2.core.FormatIdentification.Confidence;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.DirectorySource;
@@ -130,8 +129,7 @@ public class IdentifierModule
 					                     this.getReportableIdentifier());
 			presumptiveFormatIDs.add(id);
 		}
-		else {   /* Identify file source unit. */	
-			source.addModule(fileSourceIdentifier);					
+		else {   /* Identify file source unit. */				
 			TimerInfo timer = fileSourceIdentifier.getTimerInfo();
 			timer.setStartTime();
 			try {
@@ -150,6 +148,7 @@ public class IdentifierModule
 	 * Get file source identifier module.
 	 * @return File source identifier module
 	 */
+	@Override
 	public Identifier getFileSourceIdentifier() {
 		return fileSourceIdentifier;
 	}

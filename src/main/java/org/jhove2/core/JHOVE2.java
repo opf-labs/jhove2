@@ -70,7 +70,7 @@ extends AbstractModule
 	protected SourceCounter sourceCounter;
 
 	/** List of commands to be executed in sequence in order to characterize Source */
-	protected List<JHOVE2Command> commands;
+	protected List<Command> commands;
 
 	/** Configuration settings for framework.  If not configured, default values will be used */
 	protected Invocation invocation;
@@ -122,7 +122,7 @@ extends AbstractModule
 		/* Characterize the source unit. */
 		source.setDeleteTempFiles(this.getInvocation().getDeleteTempFiles());
 		try {
-			for (JHOVE2Command command : this.commands){
+			for (Command command : this.commands){
 				TimerInfo time2 = command.getTimerInfo();
 				time2.setStartTime();
 				try {
@@ -159,7 +159,7 @@ extends AbstractModule
 	 * @return List of command to be executed
 	 */
 	@ReportableProperty(order = 1, value = "Configured commands.")
-	public List<JHOVE2Command> getCommands() {
+	public List<Command> getCommands() {
 		return commands;
 	}
 
@@ -209,9 +209,9 @@ extends AbstractModule
 	 * {@link org.jhove2.core.source.Source} units.
 	 * @param command Command to be executed
 	 */
-	public void setCommand(JHOVE2Command command) {
+	public void setCommand(Command command) {
 		if (this.commands == null) {
-			this.commands = new ArrayList<JHOVE2Command>();
+			this.commands = new ArrayList<Command>();
 		}
 		this.commands.add(command);
 	}
@@ -221,7 +221,7 @@ extends AbstractModule
 	 * {@link org.jhove2.core.source.Source} units.
 	 * @param commands Commands to be executed
 	 */
-	public void setCommands(List<JHOVE2Command> commands) {
+	public void setCommands(List<Command> commands) {
 		this.commands = commands;
 	}
 

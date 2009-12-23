@@ -33,28 +33,27 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.jhove2.module.digest;
 
 import java.io.IOException;
 
+import org.jhove2.core.AbstractCommand;
 import org.jhove2.core.JHOVE2;
-import org.jhove2.core.JHOVE2Command;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.TimerInfo;
 import org.jhove2.core.reportable.ReportableFactory;
 import org.jhove2.core.source.AggregateSource;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.Source;
-import org.jhove2.module.AbstractModule;
 
 /**
- * JHOVE2Command to invoke message digesting on non-aggregate Sources
+ * Command to invoke message digesting on non-aggregate Sources
  * 
  * @author smorrissey
  */
 public class DigesterCommand
-	extends AbstractModule
-	implements JHOVE2Command
+	extends AbstractCommand
 {
 	/** IdentifierCommand module version identifier. */
 	public static final String VERSION = "0.5.4";
@@ -80,7 +79,7 @@ public class DigesterCommand
 	 * @param source Source whose digest is to be calculates
 	 * @param jhove2 JHOVE2 framework object
 	 * @throws JHOVE2Exception
-	 * @see org.jhove2.core.JHOVE2Command#execute(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
+	 * @see org.jhove2.core.Command#execute(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
 	 */
 	@Override
 	public void execute(JHOVE2 jhove2, Source source) 
