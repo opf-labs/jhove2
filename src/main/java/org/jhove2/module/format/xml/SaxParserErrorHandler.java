@@ -34,54 +34,60 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * </p>
  */
-
 package org.jhove2.module.format.xml;
 
-import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.reportable.AbstractReportable;
+import org.xml.sax.helpers.DefaultHandler;
+import org.xml.sax.ErrorHandler;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
-// TODO: Auto-generated Javadoc
 /**
- * This class is used to hold information about a <i>processing instruction</i>
- * discovered during parsing of an XML instance.
- * <p>
- * Processing instructions allow documents to contain instructions for
- * applications. A processing instruction has the syntax &lt;?target value?&gt;.
- * </p>
- * <p>
- * The <i>target</i> identifies the application to which the instruction (the
- * value) is directed. The XML Notation mechanism may be used for formal
- * declaration of targets.
- * </p>
+ * An instance of this class is registered with the SAX parser to handle events
+ * related to errors or warnings that occur during the parsing of the XML
+ * document.
+ * 
  * @author rnanders
- * @see <a href="http://www.w3.org/TR/REC-xml/#sec-pi">Extensible Markup Language (XML) 1.0 -- Processing Instructions</a>
+ * @see <a
+ *      href="http://www.saxproject.org/apidoc/org/xml/sax/ErrorHandler.html">ErrorHandler javadoc</a>
  */
-public class ProcessingInstruction extends AbstractReportable {
+public class SaxParserErrorHandler extends DefaultHandler implements
+        ErrorHandler {
 
-    /** The processing instruction target. */
-    protected String target;
-
-    /** The processing instruction data. */
-    protected String data;
+    /** The XmlModule object that is invoking the parser. */
+    private XmlModule xmlModule;
 
     /**
-     * Gets the processing instruction target.
+     * Instantiates a new SaxParserErrorHandler object.
      * 
-     * @return the processing instruction target
+     * @param xmlModule
+     *            the XmlModule object that is invoking the parser
      */
-    @ReportableProperty(order = 1, value = "Processing Instruction Target")
-    public String getTarget() {
-        return target;
+    public SaxParserErrorHandler(XmlModule xmlModule) {
+        this.xmlModule = xmlModule;
     }
 
     /**
-     * Gets the processing instruction data.
-     * 
-     * @return the processing instruction data
+     * Receive notification of a warning.
      */
-    @ReportableProperty(order = 2, value = "Processing Instruction Data")
-    public String getData() {
-        return data;
+    @Override
+    public void warning(SAXParseException exception) throws SAXException {
+        xmlModule.validationResults.addParserWarning(exception);
+    }
+
+    /**
+     * Receive notification of a recoverable error.
+     */
+    @Override
+    public void error(SAXParseException exception) throws SAXException {
+        xmlModule.validationResults.addParserError(exception);
+    }
+
+    /**
+     * Receive notification of a non-recoverable error.
+     */
+    @Override
+    public void fatalError(SAXParseException exception) throws SAXException {
+        xmlModule.validationResults.addFatalError(exception);
     }
 
 }

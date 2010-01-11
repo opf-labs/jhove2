@@ -34,54 +34,60 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * </p>
  */
-
 package org.jhove2.module.format.xml;
 
-import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.reportable.AbstractReportable;
+import org.xml.sax.DTDHandler;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
-// TODO: Auto-generated Javadoc
 /**
- * This class is used to hold information about a <i>processing instruction</i>
- * discovered during parsing of an XML instance.
- * <p>
- * Processing instructions allow documents to contain instructions for
- * applications. A processing instruction has the syntax &lt;?target value?&gt;.
- * </p>
- * <p>
- * The <i>target</i> identifies the application to which the instruction (the
- * value) is directed. The XML Notation mechanism may be used for formal
- * declaration of targets.
- * </p>
+ * An instance of this class is registered with the SAX parser to handle events
+ * related to the XML document's DTD declarations. In this application, the
+ * information about notations and unparsed external entity declarations is
+ * captured
+ * 
  * @author rnanders
- * @see <a href="http://www.w3.org/TR/REC-xml/#sec-pi">Extensible Markup Language (XML) 1.0 -- Processing Instructions</a>
+ * @see <a
+ *      href="http://www.saxproject.org/apidoc/org/xml/sax/DTDHandler.html">DTDHandler javadoc</a>
  */
-public class ProcessingInstruction extends AbstractReportable {
+public class SaxParserDtdHandler extends DefaultHandler implements DTDHandler {
 
-    /** The processing instruction target. */
-    protected String target;
-
-    /** The processing instruction data. */
-    protected String data;
+    /** The XmlModule object that is invoking the parser. */
+    private XmlModule xmlModule;
 
     /**
-     * Gets the processing instruction target.
+     * Instantiates a new SaxParserDeclHandler object.
      * 
-     * @return the processing instruction target
+     * @param xmlModule
+     *            the XmlModule object that is invoking the parser
      */
-    @ReportableProperty(order = 1, value = "Processing Instruction Target")
-    public String getTarget() {
-        return target;
+    public SaxParserDtdHandler(XmlModule xmlModule) {
+        this.xmlModule = xmlModule;
     }
 
-    /**
-     * Gets the processing instruction data.
-     * 
-     * @return the processing instruction data
-     */
-    @ReportableProperty(order = 2, value = "Processing Instruction Data")
-    public String getData() {
-        return data;
+    /** Receive notification of a notation declaration event. */
+    @Override
+    public void notationDecl(String name, String publicId, String systemId)
+            throws SAXException {
+        Notation notation = new Notation();
+        notation.name = name;
+        notation.publicId = publicId;
+        notation.systemId = systemId;
+        xmlModule.notations.add(notation);
+    }
+
+    /** Receive notification of a unparsed entity declaration event. */
+    @Override
+    public void unparsedEntityDecl(String name, String publicId,
+            String systemId, String notationName) throws SAXException {
+        Entity entity = new Entity();
+        entity.type = Entity.EntityType.ExternalUnparsed;
+        entity.name = name;
+        entity.publicId = publicId;
+        entity.systemId = systemId;
+        entity.notationName = notationName;
+        xmlModule.entities.add(entity);
+
     }
 
 }

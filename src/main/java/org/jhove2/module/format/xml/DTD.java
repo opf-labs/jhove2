@@ -34,77 +34,62 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * </p>
  */
-
 package org.jhove2.module.format.xml;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.reportable.AbstractReportable;
 
 /**
- * This class is used to hold information about a <i>notation declaration</i>
+ * This class is used to hold information about a <i>document type declaration</i>
  * discovered during parsing of an XML instance.
  * <p>
- * Notations identify by name the format of unparsed entities, the format of
- * elements bearing a notation attribute, or the application to which a
- * processing instruction is addressed.
- * </p>
- * <p>
- * An notation is declared by using the NOTATION keyword inside a DTD. The
- * declaration contains the <i>name</i> of the notation and the <i>external
- * identifier</i> which may allow an XML processor or its client application to
- * locate a helper application capable of processing data in the given notation.
- * </p>
- * <p>
- * An <i>external identifier</i> is either a <i>system identifier</i> or a
- * <i>public identifier</i>, the former of which must contain a <i>system
+ * An <i>external identifier</i> (if present) is either a <i>system identifier</i> or a
+ * <i>public identifier</i>, either of which must contain a <i>system
  * literal</i> (e.g. a URI reference), that points to a separate storage object
- * (such as a file or a web resource). A <i>public identifier</i> provides a
- * public resource name that may be used via a xml catalog (or similar) lookup
+ * (such as a file or a web resource). A <i>public identifier</i> also includes
+ * a public resource name that may be used via a xml catalog (or similar) lookup
  * mechanism to resolve the entity reference.
  * </p>
- * @author rnanders
- * @see <a href="http://www.w3.org/TR/REC-xml/#Notations">Extensible Markup
- * Language (XML) 1.0 -- Notation Declarations</a>
+ * @author rnanders 
  */
-public class Notation extends AbstractReportable {
-
-    /** The notation name. */
-    protected String name;
-
-    /** The public identifier. */
-    protected String publicId;
-
-    /** The system identifier. */
-    protected String systemId;
-
-    /**
-     * Gets the notation name.
-     * 
-     * @return the notation name
-     */
-    @ReportableProperty(order = 1, value = "Notation Name")
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Gets the public identifier.
-     * 
-     * @return the public identifier
-     */
-    @ReportableProperty(order = 2, value = "Notation Public Identifier")
-    public String getPublicID() {
-        return publicId;
-    }
-
-    /**
-     * Gets the system identifier.
-     * 
-     * @return the system identifier
-     */
-    @ReportableProperty(order = 3, value = "Notation System Identifier")
-    public String getSystemID() {
-        return systemId;
-    }
-
+public class DTD extends AbstractReportable {
+	
+	/** The document type name. */
+	protected String name;
+	
+	/** The declared public identifier for the external DTD subset, or null if none was declared. */
+	protected String publicID;
+	
+	/** The declared system identifier for the external DTD subset, or null if none was declared. */
+	protected String systemID;
+	
+	/**
+	 * Gets the document type name.
+	 * 
+	 * @return the document type name
+	 */
+	@ReportableProperty(order = 1, value = "DTD Name")
+	public String getName() {
+		return name;
+	}
+	
+	/**
+	 * Gets the DTD public identifier.
+	 * 
+	 * @return the DTD public identifier
+	 */
+	@ReportableProperty(order = 2, value = "DTD PublicID")
+	public String getPublicID() {
+		return publicID;
+	}
+	
+	/**
+	 * Gets the DTD system identifier.
+	 * 
+	 * @return the DTD system identifier
+	 */
+	@ReportableProperty(order = 3, value = "DTD SystemID")
+	public String getSystemID() {
+		return systemID;
+	}
 }
