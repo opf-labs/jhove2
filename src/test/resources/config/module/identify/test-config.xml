@@ -37,7 +37,7 @@
 	</bean>
 	
 	<!-- DROID identifier bean -->
-	<bean id="testDroidIdentifier" class="org.jhove2.module.identify.DroidIdentifier"
+	<bean id="testDroidIdentifier" class="org.jhove2.module.identify.DROIDIdentifier"
 	      scope="prototype">	
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">

@@ -154,7 +154,7 @@ public class MessageTest {
 		messageParms = new Object[]{msg};
 		message = new Message(Severity.ERROR,
 				Context.PROCESS,
-				"org.jhove2.module.identify.DROIDIdentifier.identify.missingPuid",
+				"org.jhove2.module.identify.DROIDIdentifier.identify.missingPUID",
 				messageParms);
 		assertEquals(sb.toString(), message.getLocalizedMessageText());
 		

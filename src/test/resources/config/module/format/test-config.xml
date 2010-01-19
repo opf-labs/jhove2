@@ -12,7 +12,7 @@
 
 
 		<!-- BaseFormat module bean -->
-	<bean id="FeatureExtractorCommand" class="org.jhove2.module.format.FeatureExtractorCommand"
+	<bean id="FeatureExtractorCommand" class="org.jhove2.module.format.DispatcherCommand"
 	      scope="prototype">
 	    <property name="developers">
 			<list value-type="org.jhove2.core.Agent">
