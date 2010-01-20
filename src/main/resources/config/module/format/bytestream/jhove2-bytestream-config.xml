@@ -21,7 +21,7 @@
 	</bean>		
 	<!-- Bytestream identifier bean -->  
 	<bean id="BytestreamIdentifier" class="org.jhove2.core.I8R" scope="singleton">
-		<constructor-arg type="java.lang.String" value="info:jhove2/format/bytestream"/>
+		<constructor-arg type="java.lang.String" value=" http://jhove2.org/terms/format/bytestream"/>
 	</bean>
 	<!-- Bytestream MIME type bean -->
 	<bean id="BytestreamMIMEType" class="org.jhove2.core.I8R" scope="singleton">

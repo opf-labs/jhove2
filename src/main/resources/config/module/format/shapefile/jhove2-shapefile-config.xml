@@ -19,7 +19,7 @@
 	</bean>		
 	<!-- Shapefile identifier bean -->  
 	<bean id="ShapefileIdentifier" class="org.jhove2.core.I8R" scope="singleton">
-		<constructor-arg type="java.lang.String" value="info:jhove2/format/shapefile"/>
+		<constructor-arg type="java.lang.String" value=" http://jhove2.org/terms/format/shapefile"/>
 	</bean>	
 
 

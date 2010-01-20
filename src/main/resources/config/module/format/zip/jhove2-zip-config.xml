@@ -34,7 +34,7 @@
 		
 	<!-- Zip identifier bean -->  
 	<bean id="ZipIdentifier" class="org.jhove2.core.I8R" scope="singleton">
-		<constructor-arg type="java.lang.String" value="info:jhove2/format/zip"/>
+		<constructor-arg type="java.lang.String" value=" http://jhove2.org/terms/format/zip"/>
 	</bean>
 	
 

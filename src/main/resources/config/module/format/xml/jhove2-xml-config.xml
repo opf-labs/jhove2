@@ -73,7 +73,7 @@
 
 	<!-- XML identifier bean -->  
 	<bean id="XmlIdentifier" class="org.jhove2.core.I8R" scope="singleton">
-		<constructor-arg type="java.lang.String" value="info:jhove2/format/xml"/>
+		<constructor-arg type="java.lang.String" value=" http://jhove2.org/terms/format/xml"/>
 	</bean>
 	<!-- XML MIME type bean -->
 	<bean id="XmlMIMEType" class="org.jhove2.core.I8R" scope="singleton">

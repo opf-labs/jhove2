@@ -69,7 +69,7 @@ public class IdentifierModuleTest {
 	private String testShapeDirPath;
 	private List<String> testFileList;
 	private String zipPuid = "x-fmt/263";
-	private String zipJhoveId = "info:jhove2/format/zip";
+	private String zipJhoveId = "http://jhove2.org/terms/format/zip";
 	/**
 	 * Test method for {@link org.jhove2.module.identify.IdentifierModule#identify(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)}.
 	 */

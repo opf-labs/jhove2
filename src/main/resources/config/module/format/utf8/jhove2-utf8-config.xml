@@ -42,7 +42,7 @@
 	</bean>		
 	<!-- ASCII identifier bean -->  
 	<bean id="ASCIIIdentifier" class="org.jhove2.core.I8R" scope="singleton">
-		<constructor-arg type="java.lang.String" value="info:jhove2/format/ascii"/>
+		<constructor-arg type="java.lang.String" value=" http://jhove2.org/terms/format/ascii"/>
 	</bean>
 	<!-- ASCII ANSI X3.4-1968 bean  -->
 	<bean id="ASCIIANSIX34" class="org.jhove2.core.I8R" scope="singleton">
@@ -116,7 +116,7 @@
 	</bean>
 	<!-- UTF-8 identifier bean -->  
 	<bean id="UTF8Identifier" class="org.jhove2.core.I8R" scope="singleton">
-		<constructor-arg type="java.lang.String" value="info:jhove2/format/utf-8"/>
+		<constructor-arg type="java.lang.String" value=" http://jhove2.org/terms/format/utf-8"/>
 	</bean>
 	<!-- UTF-8 charset bean -->  
 	<bean id="UTF8Charset" class="org.jhove2.core.I8R" scope="singleton">

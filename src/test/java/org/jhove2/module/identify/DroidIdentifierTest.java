@@ -64,14 +64,14 @@ public class DroidIdentifierTest {
 
 	private DROIDIdentifier dROIDIdentifier;
 	private String zipPuid = "x-fmt/263";
-	private String zipJhoveId = "info:jhove2/format/zip";
+	private String zipJhoveId = "http://jhove2.org/terms/format/zip";
 	private String samplesDirPath;
 	private String sampleFile;
 	private String sampleFilePUID;
 	private String sampleBadFile;
 	private JHOVE2 JHOVE2;
 	private String xmlPuid = "fmt/101";
-	private String xmlJhoveId = "info:jhove2/format/xml";
+	private String xmlJhoveId = " http://jhove2.org/terms/format/xml";
 	private String sampleNoFormatFile;
 	private String sampleNoJhoveIdFile;
 
