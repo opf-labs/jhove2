@@ -38,7 +38,7 @@
 	
 		<!-- UTF-8 identifier bean -->  
 	<bean id="UTF8Identifier" class="org.jhove2.core.I8R" scope="singleton">
-		<constructor-arg type="java.lang.String" value=" http://jhove2.org/terms/format/utf-8"/>
+		<constructor-arg type="java.lang.String" value="http://jhove2.org/terms/format/utf-8"/>
 	</bean>
 	
 	

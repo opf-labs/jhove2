@@ -18,7 +18,7 @@
 	</bean>				
 	<!-- Directory identifier bean -->  
 	<bean id="DirectoryIdentifier" class="org.jhove2.core.I8R" scope="singleton">
-		<constructor-arg type="java.lang.String" value=" http://jhove2.org/terms/format/directory"/>
+		<constructor-arg type="java.lang.String" value="http://jhove2.org/terms/format/directory"/>
 	</bean>
 	
 	

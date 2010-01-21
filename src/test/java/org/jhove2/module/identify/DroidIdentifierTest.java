@@ -71,7 +71,7 @@ public class DroidIdentifierTest {
 	private String sampleBadFile;
 	private JHOVE2 JHOVE2;
 	private String xmlPuid = "fmt/101";
-	private String xmlJhoveId = " http://jhove2.org/terms/format/xml";
+	private String xmlJhoveId = "http://jhove2.org/terms/format/xml";
 	private String sampleNoFormatFile;
 	private String sampleNoJhoveIdFile;
 
