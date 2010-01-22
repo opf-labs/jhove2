@@ -317,8 +317,7 @@ public class DispatcherCommand extends AbstractCommand {
                 I8R formatID = format.getIdentifier();
                 /* Add an entry into the format identifier to module map */
                 jhoveIdToBeanName.put(formatID.getValue(), formatBeanName);
-                System.out
-                        .println(formatID.getValue() + " = " + formatBeanName);
+                // System.out.println(formatID.getValue() + " = " + formatBeanName);
             }
         }
         return jhoveIdToBeanName;
