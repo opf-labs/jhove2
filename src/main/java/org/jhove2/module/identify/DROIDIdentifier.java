@@ -38,13 +38,16 @@ package org.jhove2.module.identify;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.Format;
 import org.jhove2.core.FormatIdentification;
 import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2;
@@ -293,7 +296,7 @@ public class DROIDIdentifier
 	 * @return DROID PUID to JHOVE2 Format Identifier map
 	 * @throws JHOVE2Exception
 	 */
-	public static ConcurrentMap<String,String> getPuidToJhoveId()
+	public static ConcurrentMap<String,String> getPuidToJhoveIdOld()
 		throws JHOVE2Exception
 	{
 		if (puidToJhoveId == null){
@@ -310,7 +313,45 @@ public class DROIDIdentifier
 		return puidToJhoveId;
 	}
 	
-	private static ConcurrentMap<String,String> getDroidFilePaths()
+    /**
+     * Gets the mapping from DROID PUID to JHOVE2 Format Identifier. 
+     * Initializes the static map on first invocation.
+     * 
+     * @return DROID PUID to JHOVE2 Format Identifier map
+     * @throws JHOVE2Exception
+     */
+    public static ConcurrentMap<String,String> getPuidToJhoveId()
+        throws JHOVE2Exception
+    {
+        if (puidToJhoveId == null){
+            ConcurrentHashMap<String, String> map = new ConcurrentHashMap<String, String>();
+            puidToJhoveId = map;
+            /*
+             * Use Spring to get instances of all objects inheriting from
+             * BaseFormatModule
+             */
+            Map<String, Object> formatMap = ReportableFactory
+                    .getObjectsForType(Format.class);
+            /* For each of the formats */
+            for (Entry<String, Object> entry : formatMap.entrySet()) {
+                /* Get the format object */
+                Format format = (Format) entry.getValue();
+                /* Get the JHOVE format identifier for the format */
+                I8R formatID = format.getIdentifier();
+                /* For each aliasIdentifier of the format */
+                for (I8R alias :  format.getAliasIdentifiers()) {
+                    if (alias.getNamespace().equals(I8R.Namespace.PUID)) {
+                        /* Add an entry into the format identifier to module map */
+                        puidToJhoveId.put(alias.getValue(), formatID.getValue());
+                        //System.out.println(alias.getValue() + " = " + formatID.getValue());
+                    }
+                }
+            }
+        }
+        return puidToJhoveId;
+    }
+
+    private static ConcurrentMap<String,String> getDroidFilePaths()
 		throws JHOVE2Exception
 	{
 		if (droidFilePaths == null){

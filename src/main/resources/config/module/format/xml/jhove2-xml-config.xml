@@ -53,6 +53,7 @@
 		<constructor-arg type="org.jhove2.core.Format$Ambiguity" value="Unambiguous"/>
 		<property name="aliasIdentifiers">
 			<set value-type="org.jhove2.core.I8R">
+				<ref bean="PUIDfmt101"/>
 				<ref bean="XmlMIMEType"/>
 				<ref bean="XmlRFC3023"/>
 				<ref bean="XmlUTI"/>
@@ -75,17 +76,22 @@
 	<bean id="XmlIdentifier" class="org.jhove2.core.I8R" scope="singleton">
 		<constructor-arg type="java.lang.String" value="http://jhove2.org/terms/format/xml"/>
 	</bean>
-	<!-- XML MIME type bean -->
+	<!-- XML PUID aliasIdentifier bean -->
+	<bean id="PUIDfmt101" class="org.jhove2.core.I8R" scope="singleton">
+	    <constructor-arg type="java.lang.String" value="fmt/101"/>
+	    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
+	</bean>
+	<!-- XML MIME aliasIdentifier bean -->
 	<bean id="XmlMIMEType" class="org.jhove2.core.I8R" scope="singleton">
 	    <constructor-arg type="java.lang.String" value="application/xml"/>
 	    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="MIME"/>
 	</bean>
-	<!--  XML RFC 3023 bean -->
+	<!--  XML RFC 3023 aliasIdentifier bean -->
 	<bean id="XmlRFC3023" class="org.jhove2.core.I8R" scope="singleton">
 		<constructor-arg type="java.lang.String" value="RFC 3023"/>
 		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="RFC"/>
 	</bean>
-	<!-- XML UTI bean -->
+	<!-- XML UTI aliasIdentifier bean -->
 	<bean id="XmlUTI" class="org.jhove2.core.I8R" scope="singleton">
 	    <constructor-arg type="java.lang.String" value="public.xml"/>
 	    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="UTI"/>

@@ -30,11 +30,22 @@
 		<constructor-arg ref="ZipIdentifier"/>
 		<constructor-arg type="org.jhove2.core.Format$Type" value="Family"/>
 		<constructor-arg type="org.jhove2.core.Format$Ambiguity" value="Unambiguous"/>
+		<property name="aliasIdentifiers">
+			<set value-type="org.jhove2.core.I8R">
+				<ref bean="PUIDxfmt263"/>
+			</set>
+		</property>
 	</bean>
 		
 	<!-- Zip identifier bean -->  
 	<bean id="ZipIdentifier" class="org.jhove2.core.I8R" scope="singleton">
 		<constructor-arg type="java.lang.String" value="http://jhove2.org/terms/format/zip"/>
+	</bean>
+	
+	<!-- PUID x-fmt/263 aliasIdentifier bean -->
+	<bean id="PUIDxfmt263" class="org.jhove2.core.I8R" scope="singleton">
+	    <constructor-arg type="java.lang.String" value="x-fmt/263"/>
+	    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
 	</bean>
 	
 

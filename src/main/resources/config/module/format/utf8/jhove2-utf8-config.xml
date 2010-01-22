@@ -29,6 +29,11 @@
 		<constructor-arg type="org.jhove2.core.Format$Ambiguity" value="Unambiguous"/>
 		<property name="aliasIdentifiers">
 			<set value-type="org.jhove2.core.I8R">
+				<ref bean="PUIDxfmt13"/>
+				<ref bean="PUIDxfmt14"/>
+				<ref bean="PUIDxfmt15"/>
+				<ref bean="PUIDxfmt21"/>
+				<ref bean="PUIDxfmt22"/>
 				<ref bean="ASCIIANSIX34"/>
 				<ref bean="ASCIICharset"/>
 				<ref bean="ASCIICharsetUS"/>
@@ -43,6 +48,31 @@
 	<!-- ASCII identifier bean -->  
 	<bean id="ASCIIIdentifier" class="org.jhove2.core.I8R" scope="singleton">
 		<constructor-arg type="java.lang.String" value="http://jhove2.org/terms/format/ascii"/>
+	</bean>
+	<!-- PUID x-fmt/13 aliasIdentifier bean -->
+	<bean id="PUIDxfmt13" class="org.jhove2.core.I8R" scope="singleton">
+	    <constructor-arg type="java.lang.String" value="x-fmt/13"/>
+	    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
+	</bean>
+	<!-- PUID x-fmt/14 aliasIdentifier bean -->
+	<bean id="PUIDxfmt14" class="org.jhove2.core.I8R" scope="singleton">
+	    <constructor-arg type="java.lang.String" value="x-fmt/14"/>
+	    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
+	</bean>
+	<!-- PUID x-fmt/15 aliasIdentifier bean -->
+	<bean id="PUIDxfmt15" class="org.jhove2.core.I8R" scope="singleton">
+	    <constructor-arg type="java.lang.String" value="x-fmt/15"/>
+	    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
+	</bean>
+	<!-- PUID x-fmt/21 aliasIdentifier bean -->
+	<bean id="PUIDxfmt21" class="org.jhove2.core.I8R" scope="singleton">
+	    <constructor-arg type="java.lang.String" value="x-fmt/21"/>
+	    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
+	</bean>
+	<!-- PUID x-fmt/22 aliasIdentifier bean -->
+	<bean id="PUIDxfmt22" class="org.jhove2.core.I8R" scope="singleton">
+	    <constructor-arg type="java.lang.String" value="x-fmt/22"/>
+	    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
 	</bean>
 	<!-- ASCII ANSI X3.4-1968 bean  -->
 	<bean id="ASCIIANSIX34" class="org.jhove2.core.I8R" scope="singleton">
