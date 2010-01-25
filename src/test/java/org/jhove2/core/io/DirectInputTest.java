@@ -82,12 +82,13 @@ public class DirectInputTest {
 			abstractInput = source.getInput(bufferSize, Type.Direct);// ,
 																		// ByteOrder.LITTLE_ENDIAN);
 			assertTrue("AbstractInput Type is Direct with LITTLE_ENDIAN",
-					abstractInput.getBuffer().order() == ByteOrder.BIG_ENDIAN);
+					abstractInput.getBuffer().order() == ByteOrder.LITTLE_ENDIAN);
 			abstractInput.close();
 			abstractInput = InputFactory.getInput(testFile, bufferSize,
 					Type.Direct);
 			assertTrue("AbstractInput Type is Direct", abstractInput.getClass()
 					.getName().equalsIgnoreCase(DirectInput.class.getName()));
+			abstractInput.setByteOrder(ByteOrder.BIG_ENDIAN);
 			assertTrue("AbstractInput Type is Direct with BIG_ENDIAN",
 					abstractInput.getBuffer().order() == ByteOrder.BIG_ENDIAN);
 		} catch (FileNotFoundException e) {

@@ -91,8 +91,8 @@ public class NonDirectInputTest {
 			assertTrue("AbstractInput Type is NonDirect", abstractInput
 					.getClass().getName().equalsIgnoreCase(
 							NonDirectInput.class.getName()));
-			assertTrue("AbstractInput Type is Direct with BIG_ENDIAN",
-					abstractInput.getBuffer().order() == ByteOrder.BIG_ENDIAN);
+			assertTrue("AbstractInput Type is Direct with LITTLE_ENDIAN",
+					abstractInput.getBuffer().order() == ByteOrder.LITTLE_ENDIAN);
 		} catch (FileNotFoundException e) {
 			fail(e.getMessage());
 		} catch (IOException e) {
@@ -249,7 +249,7 @@ public class NonDirectInputTest {
 			assertTrue("High Order Bit not set ", testValue > 32768
 					&& testValue < 65535);
 			assertTrue("Hex value does not match expected 'efbb'", testStr
-					.equalsIgnoreCase("EFBB"));
+					.equalsIgnoreCase("bbef"));
 			out.printf("%d\n", testValue);
 			out.printf("0x%X\n", testValue);
 
@@ -258,11 +258,11 @@ public class NonDirectInputTest {
 			assertTrue("High Order Bit not set ", shortTestValue > -32768
 					&& shortTestValue < 32768);
 			assertTrue("Hex value does not match expected 'efbb'", testStr
-					.equalsIgnoreCase("EFBB"));
+					.equalsIgnoreCase("bbef"));
 			out.printf("%d\n", shortTestValue);
 			testStr = String.format("%X", shortTestValue);
-			assertTrue("Hex value does not match expected 'efbb'", testStr
-					.equalsIgnoreCase("EFBB"));
+			assertTrue("Hex value does not match expected 'bbef'", testStr
+					.equalsIgnoreCase("BBEF"));
 			out.printf("0x%X\n", shortTestValue);
 		} catch (IOException e) {
 			fail(e.getMessage());
@@ -278,6 +278,7 @@ public class NonDirectInputTest {
 		try {
 			// test ReadSignedInt()
 			abstractInput.setPosition(0);
+			abstractInput.setByteOrder(ByteOrder.BIG_ENDIAN);
 			int intTestValue = abstractInput.readSignedInt();
 			String testStr = Integer.toHexString(intTestValue);
 			assertTrue("Value returned is not signed", (intTestValue < 0));
