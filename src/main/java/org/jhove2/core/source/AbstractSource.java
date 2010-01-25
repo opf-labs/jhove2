@@ -54,8 +54,8 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.jhove2.core.FormatIdentification;
+import org.jhove2.core.Invocation;
 import org.jhove2.core.TimerInfo;
-import org.jhove2.core.app.Invocation;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.io.InputFactory;
 import org.jhove2.core.io.Input.Type;

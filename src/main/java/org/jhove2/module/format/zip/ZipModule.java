@@ -46,9 +46,9 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import org.jhove2.core.Format;
+import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.app.Invocation;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;

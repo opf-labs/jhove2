@@ -41,10 +41,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.app.Invocation;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceCounter;
 import org.jhove2.module.AbstractModule;
+import org.jhove2.module.display.Displayer;
 
 /**
  * The JHOVE2 core processing framework.
@@ -72,8 +72,11 @@ extends AbstractModule
 	/** List of commands to be executed in sequence in order to characterize Source */
 	protected List<Command> commands;
 
-	/** Configuration settings for framework.  If not configured, default values will be used */
+	/** Invocation settings for framework.  If not configured, default values will be used */
 	protected Invocation invocation;
+	
+	/** Installation settings for framework. */
+	protected Installation installation;
 	
 	/**
 	 * Instantiate a new <code>JHOVE2</code> core framework with a default
@@ -164,14 +167,22 @@ extends AbstractModule
 	}
 
 	/**
-	 * Get object which maintains configuration information for the running of
-	 * this module.
-	 * @return Invocation with configuration information for this module
+	 * Get framework invocation properties.
+	 * @return Framework invocation properties
 	 */
+	@ReportableProperty(order = 3, value="Framework invocation properties.")
 	public Invocation getInvocation() {
 		return invocation;
 	}
-
+	
+	/** Get framework {@link org.jhove2.core.Installation} properties.
+	 * @return Framework installation properties
+	 */
+	@ReportableProperty(order = 2, value = "Framework installation properties.")
+	public Installation getInstallation() {
+		return installation;
+	}
+	
 	/**
 	 * Get framework memory usage. This is calculated naively as the Java
 	 * {@link java.lang.Runtime}'s total memory minus free memory at the time of
@@ -179,7 +190,7 @@ extends AbstractModule
 	 * 
 	 * @return Memory usage, in bytes
 	 */
-	@ReportableProperty(order = 3, value = "Framework memory usage, in bytes.")
+	@ReportableProperty(order = 5, value = "Framework memory usage, in bytes.")
 	public long getMemoryUsage() {
 		Runtime rt = Runtime.getRuntime();
 		long use = rt.totalMemory() - rt.freeMemory();
@@ -192,17 +203,9 @@ extends AbstractModule
 	 * by the JHOVE2 framework.
 	 * @return Source unit counter
 	 */
-	@ReportableProperty(order = 2, value = "Source unit counter, by type.")
+	@ReportableProperty(order = 4, value = "Source unit counter, by type.")
 	public SourceCounter getSourceCounter() {
 		return sourceCounter;
-	}
-
-	/**
-	 * Set framework invocation properties.
-	 * @param invocation Framework invocation properties
-	 */
-	public void setInvocation(Invocation invocation) {
-		this.invocation = invocation;
 	}
 	
 	/** Add command to be executed in sequence to characterize
@@ -225,6 +228,22 @@ extends AbstractModule
 		this.commands = commands;
 	}
 
+	/**
+	 * Set framework invocation properties.
+	 * @param invocation Framework invocation properties
+	 */
+	public void setInvocation(Invocation invocation) {
+		this.invocation = invocation;
+	}
+
+	/**
+	 * Set framework installation properties.
+	 * @param installation Framework installation properties
+	 */
+	public void setInstallation(Installation installation) {
+		this.installation = installation;
+	}
+	
 	/**
 	 * Set counter to track number and type of
 	 * {@link org.jhove2.core.source.Source}s processed by

@@ -34,7 +34,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.core.app;
+package org.jhove2.core;
 
 import java.util.Properties;
 

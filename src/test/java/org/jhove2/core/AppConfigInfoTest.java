@@ -5,7 +5,6 @@ package org.jhove2.core;
 
 import static org.junit.Assert.*;
 
-import org.jhove2.core.app.Invocation;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -25,7 +24,7 @@ public class AppConfigInfoTest {
 	}
 
 	/**
-	 * Test method for {@link org.jhove2.core.app.Invocation#getJHOVE2Home()}.
+	 * Test method for {@link org.jhove2.core.Invocation#getJHOVE2Home()}.
 	 */
 	@Test
 	public void testGetJhove2Home() {

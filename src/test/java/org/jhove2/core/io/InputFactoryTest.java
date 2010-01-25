@@ -12,9 +12,9 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.app.Invocation;
 import org.jhove2.core.io.Input.Type;
 import org.jhove2.core.source.URLSource;
 

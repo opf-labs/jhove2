@@ -38,8 +38,8 @@ package org.jhove2.core.source;
 import static org.junit.Assert.*;
 
 
+import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
-import org.jhove2.core.app.Invocation;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;

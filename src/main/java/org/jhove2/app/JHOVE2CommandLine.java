@@ -1,7 +1,7 @@
 /**
  * JHOVE2 - Next-generation architecture for format-aware characterization
  *
- * Copyright (c) 2009 by The Regents of the University of California,
+ * Copyright (c) 2010 by The Regents of the University of California,
  * Ithaka Harbors, Inc., and The Board of Trustees of the Leland Stanford
  * Junior University.
  * All rights reserved.
@@ -40,12 +40,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.TimerInfo;
 import org.jhove2.core.app.AbstractApplication;
 import org.jhove2.core.app.Application;
-import org.jhove2.core.app.Invocation;
 import org.jhove2.core.io.Input.Type;
 import org.jhove2.core.reportable.ReportableFactory;
 import org.jhove2.core.source.Source;
@@ -64,10 +64,10 @@ public class JHOVE2CommandLine
 	public static final String VERSION = "0.5.4";
 
 	/** JHOVE2 application release date. */
-	public static final String RELEASE = "2009-12-22";
+	public static final String RELEASE = "2010-01-25";
 
 	/** JHOVE2 application rights statement. */
-	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California, "
+	public static final String RIGHTS = "Copyright 2010 by The Regents of the University of California, "
 			+ "Ithaka Harbors, Inc., and The Board of Trustees of the Leland "
 			+ "Stanford Junior University. "
 			+ "Available under the terms of the BSD license.";
@@ -98,8 +98,7 @@ public class JHOVE2CommandLine
 	 * @param args Command line arguments
 	 */
 	public static void main(String[] args)
-	{
-		
+	{	
 		try {
 
 			/* Create and initialize the JHOVE2 command-line application. */
@@ -122,7 +121,8 @@ public class JHOVE2CommandLine
 			TimerInfo timer = jhove2.getTimerInfo();
 			timer.setStartTime();
 			
-			jhove2.setInvocation(app.getInvocation());			
+			jhove2.setInvocation(app.getInvocation());
+			jhove2.setInstallation(app.getInstallation());
 			app.setFramework(jhove2);
 						
 			/* Create a FileSet source unit out of files and directories
@@ -141,20 +141,18 @@ public class JHOVE2CommandLine
 			/* Display characterization information for the FileSet.
 			 */
 			app.getDisplayer().display(app);
-				
-			
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace(System.err);
 			System.exit(EEXCEPTION);
 		}
-
 	}
 
     /**
     *
     * Parse the JHOVE2 application command line and update the default values
-    * in the {@link org.jhove2.core.app.Invocation} object with any
+    * in the {@link org.jhove2.core.Invocation} object with any
     * command-line settings; and construct the list of file system paths to be
     * processed by the application.  Also save the commandLine string as an
     * instance member.
@@ -183,22 +181,22 @@ public class JHOVE2CommandLine
 
 		ArrayList<String> pathNames = new ArrayList<String>();
 		boolean showIdentifiers = this.getDisplayer().getShowIdentifiers();
-		String filePathname = null;
-		Integer bufferSize = null;
-		String bufferType = null;
-		String displayerType = null;
+		String filePathname   = null;
+		Integer bufferSize    = null;
+		String bufferType     = null;
+		String displayerType  = null;
 		Integer failFastLimit = null;
-		String tempDirectory =  null;
-        String[] otherArgs = null;
+		String tempDirectory  = null;
+        String[] otherArgs    = null;
 		
 		Invocation config = this.getInvocation();
 		
 		StringBuffer bufferTypeValues = new StringBuffer("");
-		for (Type i : Type.values()){
+		for (Type i : Type.values()) {
 			if (i.ordinal() > 0)
 				bufferTypeValues.append("|");
 			bufferTypeValues.append(i.toString());
-			}
+		}
 
 		String[] displayers = ReportableFactory.getReportableNames(Displayer.class);
 		StringBuffer displayerValues = new StringBuffer("");
@@ -210,37 +208,44 @@ public class JHOVE2CommandLine
 		
 		/* set the command line options
 		 */
-		Parser.Option showIdentifiersO = parser.addHelp((
-    		parser.addBooleanOption('i',"identifiers")),
-    		"show identifiers");
-		Parser.Option setCalcDigestsO = parser.addHelp(
-    		parser.addBooleanOption('k', "calcDigest"),
-    		"calculate message digest");
-		Parser.Option bufferSizeO = parser.addHelp(
-    		parser.addIntegerOption('b', "bufferSize"), 
-    		"<buffersize>", "I/O buffer size (default=" + 
-    		Invocation.DEFAULT_BUFFER_SIZE + ")");
-		Parser.Option bufferTypeO = parser.addHelp(
-    		parser.addStringOption('B', "bufferType"), 
-    		bufferTypeValues.toString(), "I/O buffer type (default=Direct)");
-		Parser.Option displayerTypeO = parser.addHelp(
-    		parser.addStringOption('d', "display"), 
-    		displayerValues.toString(), "display results format");
-		Parser.Option failFastLimitO = parser.addHelp(
-    		parser.addIntegerOption('f', "fail"), 
-    		"<failFastLimit>", 	"fail fast limit (default=0; no limit on the number of reported errors)");
-		Parser.Option tempDirectoryO = parser.addHelp(
-    		parser.addStringOption('t', "tempDir"), 
-    		"<tempDirectory>", "temporary directory (default=java.io.tmpdir)");
-        Parser.Option deleteTempFilesO = parser.addHelp(
-                parser.addBooleanOption('T', "deleteTempFiles"),
-                "Delete temporary files created");
-		Parser.Option filePathnameO = parser.addHelp(
-    		parser.addStringOption('o', "outfile"),
-    		"<outfile>", "output file (default=standard output unit)");
-        Parser.Option helpO = parser.addHelp(
-                parser.addBooleanOption('h', "help"),
-                "Show this help message");
+		Parser.Option showIdentifiersO =
+			parser.addHelp((parser.addBooleanOption('i',"identifiers")),
+			               "show identifiers");
+		Parser.Option setCalcDigestsO =
+			parser.addHelp(parser.addBooleanOption('k', "calcDigest"),
+    		               "calculate message digest");
+		Parser.Option bufferSizeO =
+			parser.addHelp(parser.addIntegerOption('b', "bufferSize"), 
+    		               "<buffersize>",
+    		               "I/O buffer size (default=" +
+    		               Invocation.DEFAULT_BUFFER_SIZE + ")");
+		Parser.Option bufferTypeO =
+			parser.addHelp(parser.addStringOption('B', "bufferType"), 
+    		               bufferTypeValues.toString(),
+    		               "I/O buffer type (default=Direct)");
+		Parser.Option displayerTypeO =
+			parser.addHelp(parser.addStringOption('d', "display"), 
+    		               displayerValues.toString(),
+    		               "display results format");
+		Parser.Option failFastLimitO =
+			parser.addHelp(parser.addIntegerOption('f', "fail"), 
+    		               "<failFastLimit>",
+    		               "fail fast limit (default=0; " +
+    		               "no limit on the number of reported errors)");
+		Parser.Option tempDirectoryO =
+			parser.addHelp(parser.addStringOption('t', "tempDir"), 
+    		               "<tempDirectory>",
+    		               "temporary directory (default=java.io.tmpdir)");
+        Parser.Option deleteTempFilesO =
+        	parser.addHelp(parser.addBooleanOption('T', "deleteTempFiles"),
+                           "Delete temporary files created");
+		Parser.Option filePathnameO =
+			parser.addHelp(parser.addStringOption('o', "outfile"),
+    		               "<outfile>",
+    		               "output file (default=standard output unit)");
+        Parser.Option helpO =
+        	parser.addHelp(parser.addBooleanOption('h', "help"),
+                           "Show this help message");
 
         try {
             parser.parse(args);
@@ -265,31 +270,31 @@ public class JHOVE2CommandLine
         	showIdentifiers = true;
         	this.getDisplayer().setShowIdentifiers(showIdentifiers);
         }        
-        if ((Boolean)parser.getOptionValue(setCalcDigestsO) != null)
+        if ((Boolean)parser.getOptionValue(setCalcDigestsO) != null) {
 			config.setCalcDigests(true);
-               
-		if ((bufferSize = (Integer)parser.getOptionValue(bufferSizeO)) != null)
+        }
+		if ((bufferSize = (Integer)parser.getOptionValue(bufferSizeO)) != null) {
 			config.setBufferSize(bufferSize.intValue());
-        
-        if ((bufferType = (String)parser.getOptionValue(bufferTypeO)) != null)
+		}
+        if ((bufferType = (String)parser.getOptionValue(bufferTypeO)) != null) {
         	config.setBufferType(Type.valueOf(bufferType));
-        
-        if (( displayerType = (String)parser.getOptionValue(displayerTypeO)) != null)
-			this.setDisplayer( 
-					ReportableFactory.getReportable(Displayer.class,displayerType));
-
-        if (( failFastLimit = (Integer)parser.getOptionValue(failFastLimitO)) != null)
+        }
+        if (( displayerType = (String)parser.getOptionValue(displayerTypeO)) != null) {
+			this.setDisplayer(ReportableFactory.getReportable(Displayer.class,
+					                                          displayerType));
+        }
+        if (( failFastLimit = (Integer)parser.getOptionValue(failFastLimitO)) != null) {
 			config.setFailFastLimit(failFastLimit.intValue());
-
-        if ((tempDirectory = (String)parser.getOptionValue(tempDirectoryO)) != null)
+        }
+        if ((tempDirectory = (String)parser.getOptionValue(tempDirectoryO)) != null) {
 			config.setTempDirectory(tempDirectory);
-			
-        if ((filePathname = (String)parser.getOptionValue(filePathnameO)) != null)
+        }
+        if ((filePathname = (String)parser.getOptionValue(filePathnameO)) != null) {
         	this.getDisplayer().setFilePathname(filePathname);
- 
-        if ((Boolean)parser.getOptionValue(deleteTempFilesO) != null)
+        }
+        if ((Boolean)parser.getOptionValue(deleteTempFilesO) != null) {
             config.setDeleteTempFiles(false);
-
+        }
         if ( Boolean.TRUE.equals(parser.getOptionValue(helpO))) {
             parser.getUsage();
             System.exit(0);

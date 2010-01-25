@@ -43,12 +43,12 @@ import java.util.TreeSet;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.Format;
+import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
-import org.jhove2.core.app.Invocation;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.Source;

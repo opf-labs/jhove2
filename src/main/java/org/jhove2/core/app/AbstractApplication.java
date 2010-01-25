@@ -40,6 +40,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.jhove2.core.Installation;
+import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.reportable.ReportableFactory;
@@ -115,7 +117,7 @@ public abstract class AbstractApplication
 		this.sources = new ArrayList<Source>();
 	}
 
-	/** Get application {@link org.jhove2.core.app.Invocation} properties.
+	/** Get application {@link org.jhove2.core.Invocation} properties.
 	 * @return Application invocation properties
 	 */
 	@Override
@@ -123,7 +125,7 @@ public abstract class AbstractApplication
 		return this.invocation;
 	}
 
-	/** Get application {@link org.jhove2.core.app.Installation} properties.
+	/** Get application {@link org.jhove2.core.Installation} properties.
 	 * @return Application installation properties
 	 */
 	@Override
@@ -213,14 +215,14 @@ public abstract class AbstractApplication
 		this.framework = framework;
 	}
 
-	/** Set application {@link org.jhove2.core.app.Installation} properties.
+	/** Set application {@link org.jhove2.core.Installation} properties.
 	 * @param installation Application installation properties
 	 */
 	public void setInstallation(Installation installation) {
 		this.installation = installation;
 	}
 
-	/** Set application {@link org.jhove2.core.app.Invocation} properties.
+	/** Set application {@link org.jhove2.core.Invocation} properties.
 	 * @param invocation Application invocation properties
 	 */
 	public void setInvocation(Invocation invocation) {
