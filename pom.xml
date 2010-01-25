@@ -59,8 +59,22 @@
     		<artifactId>xercesImpl</artifactId>
     		<version>2.9.1</version>
 		</dependency> 
+		<!--  for jargs GNU Command Line Parser -->
+		<dependency>
+  			<groupId>net.sf</groupId>
+  			<artifactId>jargs</artifactId>
+    		<version>1.0</version>
+		</dependency>	
 	</dependencies>
-	<build>
+   	<repositories>
+   		<!-- for jargs GNO Command Line Parser -->
+        <repository>
+            <id>JBOSS</id>
+            <name>JBoss Repository</name>
+            <url>http://repository.jboss.org/maven2/</url>
+        </repository>
+    </repositories>	
+    <build>
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<testSourceDirectory>src/test/java</testSourceDirectory>
 		<outputDirectory>target/classes</outputDirectory>

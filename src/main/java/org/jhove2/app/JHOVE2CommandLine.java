@@ -40,8 +40,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.JHOVE2;
+import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.TimerInfo;
 import org.jhove2.core.app.AbstractApplication;
 import org.jhove2.core.app.Application;
@@ -99,12 +99,9 @@ public class JHOVE2CommandLine
 	 */
 	public static void main(String[] args)
 	{
-		try {
-			if (args.length < 1) {
-				System.out.println(getUsage());
-				System.exit(EUSAGE);
-			}
 		
+		try {
+
 			/* Create and initialize the JHOVE2 command-line application. */
 			JHOVE2CommandLine app =
 				ReportableFactory.getReportable(Application.class,
@@ -144,129 +141,176 @@ public class JHOVE2CommandLine
 			/* Display characterization information for the FileSet.
 			 */
 			app.getDisplayer().display(app);
+				
 			
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace(System.err);
 			System.exit(EEXCEPTION);
 		}
+
 	}
 
-	/**
-	 * Parse the JHOVE2 application command line and update the default values
-	 * in the {@link org.jhove2.core.app.Invocation} object with any
-	 * command-line settings; and construct the list of file system paths to be
-	 * processed by the application.  Also save the commandLine string as an
-	 * instance member.
-	 * 
-	 * @param args
-	 *            Command line arguments
-	 * @return File system path names
-	 * @throws JHOVE2Exception 
-	 */
+    /**
+    *
+    * Parse the JHOVE2 application command line and update the default values
+    * in the {@link org.jhove2.core.app.Invocation} object with any
+    * command-line settings; and construct the list of file system paths to be
+    * processed by the application.  Also save the commandLine string as an
+    * instance member.
+    * 
+    *  -i  Show the unique formal identifiers for all reportable properties in results.
+    *  -k  Calculate message digests.
+    *  -b size     I/O buffer size (default=131072)
+    *  -B type     I/O buffer type (default=Direct)
+    *  -d format   Results format (default=Text)
+    *  -f limit    Fail fast limit (default=0; no limit on the number of reported errors.
+    *  -t temp     Temporary directory (default=java.io.tmpdir)
+    *  -T  Delete temporary files
+    *  -o file     Output file (default=standard output unit)
+    *  -h  Display a help message
+    *  file ...    One or more files or directories to be characterized.
+    *   
+    * @param args
+    *            Command line arguments
+    * @return File system path names
+    * @throws JHOVE2Exception 
+    */
 	public List<String> parse(String[] args)
 		throws JHOVE2Exception
 	{
+		Parser parser = new Parser(JHOVE2CommandLine.class.getName());
+
 		ArrayList<String> pathNames = new ArrayList<String>();
 		boolean showIdentifiers = this.getDisplayer().getShowIdentifiers();
 		String filePathname = null;
+		Integer bufferSize = null;
+		String bufferType = null;
+		String displayerType = null;
+		Integer failFastLimit = null;
+		String tempDirectory =  null;
+        String[] otherArgs = null;
 		
 		Invocation config = this.getInvocation();
-		for (int i = 0; i < args.length; i++) {
-			if (i == 0) {
-				this.commandLine = args[i];
-			} else {
-				this.commandLine += " " + args[i];
+		
+		StringBuffer bufferTypeValues = new StringBuffer("");
+		for (Type i : Type.values()){
+			if (i.ordinal() > 0)
+				bufferTypeValues.append("|");
+			bufferTypeValues.append(i.toString());
 			}
-			if (args[i].charAt(0) == '-') {
-				if (args[i].length() > 1) {
-					char opt = args[i].charAt(1);
-					if (opt == 'b' && i + 1 < args.length) {
-						config.setBufferSize(Integer.valueOf(args[++i]));
-						this.commandLine += " " + args[i];
-					}
-					else if (opt == 'B' && i + 1 < args.length) {
-						config.setBufferType(Type.valueOf(args[++i]));
-						this.commandLine += " " + args[i];
-					}
-					else if (opt == 'd' && i + 1 < args.length) {
-						String displayerType = args[++i];
-						this.setDisplayer( 
-							ReportableFactory.getReportable(Displayer.class,displayerType));
-						this.commandLine += " " + args[i];
-					}
-					else if (opt == 'f' && i + 1 < args.length) {
-						config.setFailFastLimit(Integer.valueOf(args[++i]));
-						this.commandLine += " " + args[i];
-					}
-					else if (opt == 'o' && i + 1 < args.length) {
-						filePathname = args[++i];
-						this.commandLine += " " + args[i];
-					}
-					else if (opt == 't' && i + 1 < args.length) {
-						config.setTempDirectory(args[++i]);
-						this.commandLine += " " + args[i];
-					}
-					else {
-						if (args[i].indexOf('i') > -1) {
-							showIdentifiers = true;
-						}
-						if (args[i].indexOf('k') > -1) {
-							config.setCalcDigests(true);
-						}
-						if (args[i].indexOf('T') > -1) {
-							config.setDeleteTempFiles(false);
-						}
-					}
-				}
-			}
-			else {
-				pathNames.add(args[i]);
-			}
-			
-			this.getDisplayer().setShowIdentifiers(showIdentifiers);
-			if (filePathname != null){
-				this.getDisplayer().setFilePathname(filePathname);
-			}
-		}
-		return pathNames;
-	}
 
-	/**
-	 * Get application usage statement.
-	 * 
-	 * @return Application usage statement
-	 * @throws JHOVE2Exception
-	 */
-	public static String getUsage() throws JHOVE2Exception {
-		Type[] bufferTypes = Type.values();
 		String[] displayers = ReportableFactory.getReportableNames(Displayer.class);
-
-		StringBuffer usage = new StringBuffer("usage: ");
-		usage.append(JHOVE2CommandLine.class.getName());
-		usage.append(" [-ik]");
-		usage.append(" [-b <bufferSize>]");
-		usage.append(" [-B ");
-		for (int i = 0; i < bufferTypes.length; i++) {
-			if (i > 0) {
-				usage.append("|");
-			}
-			usage.append(bufferTypes[i]);
+		StringBuffer displayerValues = new StringBuffer("");
+		for (int i=0;i<displayers.length;i++){
+			if (i>0)
+				displayerValues.append("|");
+			displayerValues.append(displayers[i]);
 		}
-		usage.append("]");
-		usage.append(" [-d ");
-		for (int i = 0; i < displayers.length; i++) {
-			if (i > 0) {
-				usage.append("|");
-			}
-			usage.append(displayers[i]);
-		}
-		usage.append("]");
-		usage.append(" [-f <failFastLimit>]");
-		usage.append(" [-t <tempDirectory]");
-		usage.append(" [-o <file>]");
-		usage.append(" <file> ...");
+		
+		/* set the command line options
+		 */
+		Parser.Option showIdentifiersO = parser.addHelp((
+    		parser.addBooleanOption('i',"identifiers")),
+    		"show identifiers");
+		Parser.Option setCalcDigestsO = parser.addHelp(
+    		parser.addBooleanOption('k', "calcDigest"),
+    		"calculate message digest");
+		Parser.Option bufferSizeO = parser.addHelp(
+    		parser.addIntegerOption('b', "bufferSize"), 
+    		"<buffersize>", "I/O buffer size (default=" + 
+    		Invocation.DEFAULT_BUFFER_SIZE + ")");
+		Parser.Option bufferTypeO = parser.addHelp(
+    		parser.addStringOption('B', "bufferType"), 
+    		bufferTypeValues.toString(), "I/O buffer type (default=Direct)");
+		Parser.Option displayerTypeO = parser.addHelp(
+    		parser.addStringOption('d', "display"), 
+    		displayerValues.toString(), "display results format");
+		Parser.Option failFastLimitO = parser.addHelp(
+    		parser.addIntegerOption('f', "fail"), 
+    		"<failFastLimit>", 	"fail fast limit (default=0; no limit on the number of reported errors)");
+		Parser.Option tempDirectoryO = parser.addHelp(
+    		parser.addStringOption('t', "tempDir"), 
+    		"<tempDirectory>", "temporary directory (default=java.io.tmpdir)");
+        Parser.Option deleteTempFilesO = parser.addHelp(
+                parser.addBooleanOption('T', "deleteTempFiles"),
+                "Delete temporary files created");
+		Parser.Option filePathnameO = parser.addHelp(
+    		parser.addStringOption('o', "outfile"),
+    		"<outfile>", "output file (default=standard output unit)");
+        Parser.Option helpO = parser.addHelp(
+                parser.addBooleanOption('h', "help"),
+                "Show this help message");
 
-		return usage.toString();
-	}
+        try {
+            parser.parse(args);
+            otherArgs = parser.getRemainingArgs();
+
+            /* ensure there is at least one file in command line
+             */
+            if (otherArgs.length < 1) {
+    			parser.getUsage();
+    			System.exit(EUSAGE);
+            }
+        }
+        catch ( Parser.OptionException e ) {
+            System.err.println(e.getMessage());
+            parser.getUsage();
+            System.exit(EUSAGE);
+        }
+
+        /* get the options and values
+         */
+        if ((Boolean)parser.getOptionValue(showIdentifiersO) != null) {
+        	showIdentifiers = true;
+        	this.getDisplayer().setShowIdentifiers(showIdentifiers);
+        }        
+        if ((Boolean)parser.getOptionValue(setCalcDigestsO) != null)
+			config.setCalcDigests(true);
+               
+		if ((bufferSize = (Integer)parser.getOptionValue(bufferSizeO)) != null)
+			config.setBufferSize(bufferSize.intValue());
+        
+        if ((bufferType = (String)parser.getOptionValue(bufferTypeO)) != null)
+        	config.setBufferType(Type.valueOf(bufferType));
+        
+        if (( displayerType = (String)parser.getOptionValue(displayerTypeO)) != null)
+			this.setDisplayer( 
+					ReportableFactory.getReportable(Displayer.class,displayerType));
+
+        if (( failFastLimit = (Integer)parser.getOptionValue(failFastLimitO)) != null)
+			config.setFailFastLimit(failFastLimit.intValue());
+
+        if ((tempDirectory = (String)parser.getOptionValue(tempDirectoryO)) != null)
+			config.setTempDirectory(tempDirectory);
+			
+        if ((filePathname = (String)parser.getOptionValue(filePathnameO)) != null)
+        	this.getDisplayer().setFilePathname(filePathname);
+ 
+        if ((Boolean)parser.getOptionValue(deleteTempFilesO) != null)
+            config.setDeleteTempFiles(false);
+
+        if ( Boolean.TRUE.equals(parser.getOptionValue(helpO))) {
+            parser.getUsage();
+            System.exit(0);
+        }
+
+        /* process remaining arguments 	
+         */
+        for ( int i = 0; i < otherArgs.length; ++i ) {
+            pathNames.add(otherArgs[i]);
+        }
+        
+        /* save the command line string
+         */
+        for (int i = 0; i < args.length; i++) {
+            if (i == 0) {
+                this.commandLine = args[i];
+            } else {
+                this.commandLine += " " + args[i];
+            }
+        }
+
+		return pathNames;
+		}
 }
