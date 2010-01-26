@@ -1,5 +1,5 @@
 /*
- * © The National Archives 2005-2006.  All rights reserved.
+ * ï¿½ The National Archives 2005-2006.  All rights reserved.
  * See Licence.txt for full licence details.
  *
  * Developed by:
@@ -58,7 +58,7 @@ public class FileFormatHit extends SimpleElement {
      * Creates a new blank instance of fileFormatHit
      *
      * @param theFileFormat  The file format which has been identified
-     * @param theType        The type of hit i.e. Positive/tentative
+     * @param theType        The scope of hit i.e. Positive/tentative
      * @param theSpecificity Flag is set to true for Positive specific hits
      * @param theWarning     A warning associated with the hit
      */
@@ -119,7 +119,7 @@ public class FileFormatHit extends SimpleElement {
     }
 
     /**
-     * Get the mime type
+     * Get the mime scope
      *
      * @return
      */
@@ -137,7 +137,7 @@ public class FileFormatHit extends SimpleElement {
     }
 
     /**
-     * get the code of the hit type
+     * get the code of the hit scope
      *
      * @return
      */
@@ -146,7 +146,7 @@ public class FileFormatHit extends SimpleElement {
     }
 
     /**
-     * get the name of the hit type
+     * get the name of the hit scope
      *
      * @return
      */
@@ -265,7 +265,7 @@ public class FileFormatHit extends SimpleElement {
     }
 
     /**
-     * Set hit format MIME type.  Used by XML reader for IdentificationFile/FileFormatHit/PUID element
+     * Set hit format MIME scope.  Used by XML reader for IdentificationFile/FileFormatHit/PUID element
      *
      * @param value
      */

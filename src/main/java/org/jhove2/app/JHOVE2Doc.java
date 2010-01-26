@@ -123,9 +123,9 @@ public class JHOVE2Doc {
 						System.out.println("            Identifier: "
 								+ prop.getIdentifier());
 						if (collection == null) {
-							System.out.println("            Type: " + type);
+							System.out.println("            Scope: " + type);
 						} else {
-							System.out.println("            Type: "
+							System.out.println("            Scope: "
 									+ collection + "<" + type + ">");
 						}
 						if (description != null) {

@@ -89,7 +89,7 @@ public class JHOVE2CommandLine
 		 * JHOVE2 default settings, and the JHOVE2 default displayer with
 		 * default displayer settings.
 		 */
-		super(VERSION, RELEASE, RIGHTS, Type.Generic);
+		super(VERSION, RELEASE, RIGHTS, Scope.Generic);
 	}
 	
 	/**
@@ -160,7 +160,7 @@ public class JHOVE2CommandLine
     *  -i  Show the unique formal identifiers for all reportable properties in results.
     *  -k  Calculate message digests.
     *  -b size     I/O buffer size (default=131072)
-    *  -B type     I/O buffer type (default=Direct)
+    *  -B scope     I/O buffer scope (default=Direct)
     *  -d format   Results format (default=Text)
     *  -f limit    Fail fast limit (default=0; no limit on the number of reported errors.
     *  -t temp     Temporary directory (default=java.io.tmpdir)
@@ -192,7 +192,7 @@ public class JHOVE2CommandLine
 		Invocation config = this.getInvocation();
 		
 		StringBuffer bufferTypeValues = new StringBuffer("");
-		for (Type i : Type.values()) {
+		for (Scope i : Scope.values()) {
 			if (i.ordinal() > 0)
 				bufferTypeValues.append("|");
 			bufferTypeValues.append(i.toString());
@@ -222,7 +222,7 @@ public class JHOVE2CommandLine
 		Parser.Option bufferTypeO =
 			parser.addHelp(parser.addStringOption('B', "bufferType"), 
     		               bufferTypeValues.toString(),
-    		               "I/O buffer type (default=Direct)");
+    		               "I/O buffer scope (default=Direct)");
 		Parser.Option displayerTypeO =
 			parser.addHelp(parser.addStringOption('d', "display"), 
     		               displayerValues.toString(),
@@ -277,7 +277,7 @@ public class JHOVE2CommandLine
 			config.setBufferSize(bufferSize.intValue());
 		}
         if ((bufferType = (String)parser.getOptionValue(bufferTypeO)) != null) {
-        	config.setBufferType(org.jhove2.core.io.Input.Type.valueOf(bufferType));
+        	config.setBufferType(Type.valueOf(bufferType));
         }
         if (( displayerType = (String)parser.getOptionValue(displayerTypeO)) != null) {
 			this.setDisplayer(ReportableFactory.getReportable(Displayer.class,

@@ -56,9 +56,10 @@ import org.jhove2.module.AbstractModule;
  * 
  * @author smorrissey
  */
-public class AggrefierModule extends AbstractModule 
-	implements AggregateIdentifier {
-	
+public class AggrefierModule
+	extends AbstractModule 
+	implements AggregateIdentifier
+{
 	/** Identification module version identifier. */
 	public static final String VERSION = "1.0.0";
 	/** Identification module release date. */
@@ -78,7 +79,7 @@ public class AggrefierModule extends AbstractModule
 	 * Instantiate a new <code>AggrefierModule</code>.
 	 */
 	public AggrefierModule() {
-		super(VERSION, RELEASE, RIGHTS, Type.Generic);
+		super(VERSION, RELEASE, RIGHTS, Scope.Generic);
 	}
 
 	
@@ -94,19 +95,20 @@ public class AggrefierModule extends AbstractModule
 	 * @throws IOException
 	 *             I/O exception encountered identifying the source unit
 	 * @throws JHOVE2Exception
-	 * @see org.jhove2.module.identify.Aggrefier#identify(org.jhove2.core.JHOVE2,
+	 * @see org.jhove2.module.identify.AggregateIdentifier#identify(org.jhove2.core.JHOVE2,
 	 *      org.jhove2.core.source.AggregateSource)
 	 */
 	@Override
-	public Set<ClumpSource>  identify(JHOVE2 jhove2,
-			Source source) throws IOException, JHOVE2Exception {
+	public Set<ClumpSource>  identify(JHOVE2 jhove2, Source source)
+		throws IOException, JHOVE2Exception
+	{
 		Set<ClumpSource> clumpSources = 
 			new TreeSet<ClumpSource>();
-		for (AggregateIdentifier recognizer:this.recognizers){	
+		for (AggregateIdentifier recognizer:this.recognizers) {	
 			recognizer.getTimerInfo().setStartTime();
 			clumpSources.addAll((Collection<? extends ClumpSource>) recognizer.identify(jhove2, source));
 			recognizer.getTimerInfo().setEndTime();
-			source.addModule(recognizer);
+			jhove2.addModule(recognizer);
 		}	
 		return clumpSources;
 	}

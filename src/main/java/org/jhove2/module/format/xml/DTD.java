@@ -40,7 +40,7 @@ import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.reportable.AbstractReportable;
 
 /**
- * This class is used to hold information about a <i>document type declaration</i>
+ * This class is used to hold information about a <i>document scope declaration</i>
  * discovered during parsing of an XML instance.
  * <p>
  * An <i>external identifier</i> (if present) is either a <i>system identifier</i> or a
@@ -54,7 +54,7 @@ import org.jhove2.core.reportable.AbstractReportable;
  */
 public class DTD extends AbstractReportable {
 	
-	/** The document type name. */
+	/** The document scope name. */
 	protected String name;
 	
 	/** The declared public identifier for the external DTD subset, or null if none was declared. */
@@ -64,9 +64,9 @@ public class DTD extends AbstractReportable {
 	protected String systemID;
 	
 	/**
-	 * Gets the document type name.
+	 * Gets the document scope name.
 	 * 
-	 * @return the document type name
+	 * @return the document scope name
 	 */
 	@ReportableProperty(order = 1, value = "DTD Name")
 	public String getName() {

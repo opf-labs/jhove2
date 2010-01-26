@@ -55,7 +55,7 @@ public class Format extends AbstractReportable implements Comparable<Format> {
 		Ambiguous, Unambiguous
 	}
 
-	/** Format type. */
+	/** Format scope. */
 	public enum Type {
 		Family, Format
 	}
@@ -84,7 +84,7 @@ public class Format extends AbstractReportable implements Comparable<Format> {
 	/** Format specifications. */
 	protected List<Document> specifications;
 
-	/** Format type. */
+	/** Format scope. */
 	protected Type type;
 
 	/** Format version. */
@@ -97,8 +97,8 @@ public class Format extends AbstractReportable implements Comparable<Format> {
 	 *            Format canonical name
 	 * @param identifier
 	 *            Format canonical identifier
-	 * @param type
-	 *            Format type
+	 * @param scope
+	 *            Format scope
 	 * @param ambiguity
 	 *            Format ambiguity
 	 */
@@ -197,11 +197,11 @@ public class Format extends AbstractReportable implements Comparable<Format> {
 	}
 
 	/**
-	 * Get format type.
+	 * Get format scope.
 	 * 
-	 * @return Format type
+	 * @return Format scope
 	 */
-	@ReportableProperty(order = 4, value = "Format type.")
+	@ReportableProperty(order = 4, value = "Format scope.")
 	public Type getType() {
 		return this.type;
 	}

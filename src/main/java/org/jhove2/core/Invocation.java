@@ -69,7 +69,7 @@ public class Invocation
 	/** Default message digests flag: don't calculate digests. */
 	public static final boolean DEFAULT_CALC_DIGESTS = false;
 
-	/** Default {@link org.jhove2.core.io.Input} buffer type. */
+	/** Default {@link org.jhove2.core.io.Input} buffer scope. */
 	public static final Type DEFAULT_BUFFER_TYPE = Type.Direct;
 
 	/** Default {@link org.jhove2.core.io.Input} buffer size. */
@@ -81,7 +81,7 @@ public class Invocation
 	/** {@link org.jhove2.core.io.Input} buffer size. */
 	protected int bufferSize;
 
-	/** {@link org.jhove2.core.io.Input} buffer type. */
+	/** {@link org.jhove2.core.io.Input} buffer scope. */
 	protected Type bufferType;
 	
 	/** Message digests flag: if true, calculate message digests. */
@@ -145,11 +145,11 @@ public class Invocation
 	}
 
 	/**
-	 * Get {@link org.jhove2.core.io.Input} buffer type.
+	 * Get {@link org.jhove2.core.io.Input} buffer scope.
 	 * 
-	 * @return Input buffer type
+	 * @return Input buffer scope
 	 */
-	@ReportableProperty(order = 11, value = "Input buffer type.")
+	@ReportableProperty(order = 11, value = "Input buffer scope.")
 	public Type getBufferType() {
 		return this.bufferType;
 	}
@@ -278,8 +278,8 @@ public class Invocation
 	}
 	
 	/**
-	 * Set Input buffer type.
-	 * @param type Input buffer type
+	 * Set Input buffer scope.
+	 * @param scope Input buffer scope
 	 */
 	public void setBufferType(Type type) {
 		this.bufferType = type;

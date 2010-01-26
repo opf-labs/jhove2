@@ -56,8 +56,8 @@ import org.jhove2.core.reportable.Reportable;
 public interface Module
 	extends Reportable
 {
-	/** Module type. */
-	public enum Type {
+	/** Module scope: generic or specific (to a source unit. */
+	public enum Scope {
 		Generic,
 		Specific
 	}
@@ -94,11 +94,12 @@ public interface Module
 	@ReportableProperty(order = 5, value = "Module rights statement.")
 	public String getRightsStatement();
 	
-	/** Get module type: generic or specific.
-	 * @return Module type
+	/** Get module scope: generic or specific.
+	 * @return Module scope
 	 */
-	@ReportableProperty(order = 6, value = "Module type: generic or specific.")
-	public Type getType();
+	@ReportableProperty(order = 6, value = "Module scope: generic or " +
+			"specific (to a source unit.")
+	public Scope getScope();
 	
 	/**
 	 * Get module version.

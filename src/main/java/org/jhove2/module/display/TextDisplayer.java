@@ -117,7 +117,7 @@ public class TextDisplayer extends AbstractDisplayer {
 	 *            Ordinal position of this reportable with respect to enclosing
 	 *            {@link org.jhove2.core.reportable.Reportable} or collection
 	 * @param typeIdentifier 
-	 * 			  Reportable type identifier in the JHOVE2 namespace
+	 * 			  Reportable scope identifier in the JHOVE2 namespace
 	 * @see org.jhove2.module.display.Displayer#startReportable(java.io.PrintStream,
 	 *      int, java.lang.String, org.jhove2.core.I8R, int, org.jhove2.core.I8R)
 	 */

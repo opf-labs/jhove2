@@ -69,7 +69,7 @@ public interface JHOVE2IAnalysisController {
     public static final String FILE_CLASSIFICATION_ERROR_TEXT = "Error";
     public static final String FILE_CLASSIFICATION_NOTCLASSIFIED_TEXT = "Not yet run";
 
-    //hit type constants
+    //hit scope constants
     public static final int HIT_TYPE_POSITIVE_SPECIFIC = 10;
     public static final int HIT_TYPE_POSITIVE_GENERIC = 11;
     public static final int HIT_TYPE_TENTATIVE = 12;

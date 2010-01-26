@@ -81,7 +81,7 @@ public class DigesterModule
 	 * Instantiate a new <code>DigesterModule</code>.
 	 */
 	public DigesterModule() {
-		super(VERSION, RELEASE, RIGHTS, Type.Specific);
+		super(VERSION, RELEASE, RIGHTS, Scope.Specific);
 	}
 
 	/**

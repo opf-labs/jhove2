@@ -57,9 +57,12 @@ public abstract class AbstractCommand
 	 *            Module release date in ISO 8601 format: "YYYY-MM-DD"
 	 * @param rights
 	 *            Module rights statement
+	 * @param scope
+	 *            Module scope: generic or specific (to a source unit)
 	 */
-	public AbstractCommand(String version, String release, String rights) {
-		super(version, release, rights, Type.Generic);
+	public AbstractCommand(String version, String release, String rights,
+			               Scope scope) {
+		super(version, release, rights, scope);
 		this.modules = new ArrayList<Module>();
 	}
 

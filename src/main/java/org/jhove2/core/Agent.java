@@ -71,7 +71,7 @@ public class Agent extends AbstractReportable {
 	/** Agent telephone number. */
 	protected String telephone;
 
-	/** Agent type. */
+	/** Agent scope. */
 	protected Type type;
 
 	/** Agent URI. */
@@ -82,8 +82,8 @@ public class Agent extends AbstractReportable {
 	 * 
 	 * @param name
 	 *            Agent name
-	 * @param type
-	 *            Agent type
+	 * @param scope
+	 *            Agent scope
 	 */
 	public Agent(String name, Type type) {
 		super();
@@ -163,11 +163,11 @@ public class Agent extends AbstractReportable {
 	}
 
 	/**
-	 * Get agent type.
+	 * Get agent scope.
 	 * 
-	 * @return Agent type
+	 * @return Agent scope
 	 */
-	@ReportableProperty(order = 2, value = "Agent type.")
+	@ReportableProperty(order = 2, value = "Agent scope.")
 	public Type getType() {
 		return this.type;
 	}

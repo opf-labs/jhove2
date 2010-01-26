@@ -155,7 +155,7 @@ public class DROIDIdentifier
 	public DROIDIdentifier()
 		throws JHOVE2Exception
 	{
-		super(VERSION, RELEASE, RIGHTS, Type.Generic);
+		super(VERSION, RELEASE, RIGHTS, Scope.Generic);
 		WrappedProduct droid = ReportableFactory.getReportable(WrappedProduct.class,
 				                                               "DROIDProduct");
 		this.setWrappedProduct(droid);

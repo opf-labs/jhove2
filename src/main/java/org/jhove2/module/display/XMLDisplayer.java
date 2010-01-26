@@ -67,9 +67,9 @@ public class XMLDisplayer
 	public static final String ATTIDENTIFIER = "fid";  
 	/** I8R namepsace for feature in a Reportable. */
 	public static final String ATTIDNAMESPACE = "fidns";	
-	/** I8R value for type of a Reportable. */
+	/** I8R value for scope of a Reportable. */
 	public static final String ATTTYPEID = "ftid";
-	/** I8R namespace for type of a Reportable. */
+	/** I8R namespace for scope of a Reportable. */
 	public static final String ATTTYPEIDNAMESPACE = "ftidns";	
 	/** unit of measure for value of element, where applicable */
 	public static final String ATTUNITOFMEASURE = "funit";
@@ -172,7 +172,7 @@ public class XMLDisplayer
 	 *            Ordinal position of this reportable with respect to enclosing
 	 *            {@link org.jhove2.core.reportable.Reportable} or collection
 	 * @param typeIdentifier 
-	 * 			  Reportable type identifier in the JHOVE2 namespace
+	 * 			  Reportable scope identifier in the JHOVE2 namespace
 	 * @see org.jhove2.module.display.Displayer#startReportable(java.io.PrintStream,
 	 *      int, java.lang.String, org.jhove2.core.I8R, int, org.jhove2.core.I8R)
 	 */

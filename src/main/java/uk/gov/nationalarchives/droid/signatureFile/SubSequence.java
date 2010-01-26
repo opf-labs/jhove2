@@ -543,7 +543,7 @@ public class SubSequence extends SimpleElement {
                     maxSeqOffset += indirectOffset;
                 } catch (Exception e) {
                     // If an exception is thrown, we can assume that the file did not match the indirect offset
-                    // eg. the indirect offset found  could be too large to be held in an int type
+                    // eg. the indirect offset found  could be too large to be held in an int scope
                     return false;
                 }
             }

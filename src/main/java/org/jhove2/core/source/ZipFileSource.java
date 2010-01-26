@@ -131,7 +131,7 @@ public class ZipFileSource extends AbstractSource implements NamedSource {
 	 * @param bufferSize
 	 *            Input buffer size
 	 * @param bufferType
-	 *            Input buffer type
+	 *            Input buffer scope
 	 * @return Input for the source unit
 	 * @throws FileNotFoundException
 	 * @throws IOException

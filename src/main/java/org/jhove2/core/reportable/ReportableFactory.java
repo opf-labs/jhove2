@@ -61,7 +61,7 @@ public class ReportableFactory {
      * Get reportable by bean name.
      * 
      * @param <R>
-     *            Parameter type of the reportable
+     *            Parameter scope of the reportable
      * @param cl
      *            Reportable class
      * @param name
@@ -88,7 +88,7 @@ public class ReportableFactory {
     }
 
     /**
-     * Get reportable names by type.
+     * Get reportable names by scope.
      * 
      * @param reportable
      *            Reportable class
@@ -171,9 +171,9 @@ public class ReportableFactory {
 
     /**
      * Return the objects (Spring bean instances) that match the given object
-     * type (including subclasses),
+     * scope (including subclasses),
      * 
-     * @param type
+     * @param scope
      *            the class or interface to match, or null for all concrete
      *            beans
      * @return a Map with the matching objects (Spring beans), containing the

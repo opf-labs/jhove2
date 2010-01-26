@@ -70,7 +70,7 @@ public class DispatcherCommand extends AbstractCommand {
     public static final String VERSION = "0.5.5";
 
     /** Module release date. */
-    public static final String RELEASE = "2010-01-21";
+    public static final String RELEASE = "2010-01-26";
 
     /** Module rights statement. */
     public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California, "
@@ -91,7 +91,7 @@ public class DispatcherCommand extends AbstractCommand {
      * Instantiate a new <code>DispatcherCommand</code>.
      */
     public DispatcherCommand() {
-        super(VERSION, RELEASE, RIGHTS);
+        super(VERSION, RELEASE, RIGHTS, Scope.Generic);
     }
 
     /**
@@ -198,7 +198,6 @@ public class DispatcherCommand extends AbstractCommand {
             for (String key : keys) {
                 String value = props.getProperty(key);
                 dispatchMap.put(key, value);
-                // System.out.println(key + " = " + value);
             }
         }
         return dispatchMap;

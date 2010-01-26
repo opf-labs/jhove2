@@ -45,6 +45,7 @@ import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceCounter;
 import org.jhove2.module.AbstractModule;
 import org.jhove2.module.Command;
+import org.jhove2.module.Module;
 
 /**
  * The JHOVE2 core processing framework.
@@ -52,21 +53,21 @@ import org.jhove2.module.Command;
  * @author mstrong, slabrams, smorrissey
  */
 public class JHOVE2  
-extends AbstractModule
+	extends AbstractModule
 {
 	/** Framework version identifier. */
 	public static final String VERSION = "0.5.4";
 
 	/** Framework release date. */
-	public static final String RELEASE = "2009-12-21";
+	public static final String RELEASE = "2010-01-26";
 
 	/** Framework rights statement. */
-	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California, "
+	public static final String RIGHTS = "Copyright 2010 by The Regents of the University of California, "
 		+ "Ithaka Harbors, Inc., and The Board of Trustees of the Leland "
 		+ "Stanford Junior University. "
 		+ "Available under the terms of the BSD license.";
 
-	/** Counter to track number and type of sources processed by framework */
+	/** Counter to track number and scope of sources processed by framework */
 	protected SourceCounter sourceCounter;
 
 	/** List of commands to be executed in sequence in order to characterize Source */
@@ -77,6 +78,9 @@ extends AbstractModule
 	
 	/** Installation settings for framework. */
 	protected Installation installation;
+	
+	/** Generic modules registered with the framework. */
+	protected List<Module> modules;
 	
 	/**
 	 * Instantiate a new <code>JHOVE2</code> core framework with a default
@@ -97,10 +101,12 @@ extends AbstractModule
 	 *                      JHOVE2 framework
 	 */
 	public JHOVE2(Invocation invocation) {
-		super(VERSION, RELEASE, RIGHTS, Type.Generic);
+		super(VERSION, RELEASE, RIGHTS, Scope.Generic);
 		
 		this.invocation = invocation;
 		this.sourceCounter = new SourceCounter();
+		
+		this.modules = new ArrayList<Module>();
 	}
 
 	/**
@@ -119,7 +125,7 @@ extends AbstractModule
 		TimerInfo timer = source.getTimerInfo();
 		timer.setStartTime();
 		
-		/* Update summary counts of source units, by type. */
+		/* Update summary counts of source units, by scope. */
 		this.sourceCounter.incrementSourceCounter(source);				
 		
 		/* Characterize the source unit. */
@@ -199,11 +205,11 @@ extends AbstractModule
 	}
 
 	/**
-	 * Get counter to track number and type of source units processed
+	 * Get counter to track number and scope of source units processed
 	 * by the JHOVE2 framework.
 	 * @return Source unit counter
 	 */
-	@ReportableProperty(order = 4, value = "Source unit counter, by type.")
+	@ReportableProperty(order = 4, value = "Source unit counter, by scope.")
 	public SourceCounter getSourceCounter() {
 		return sourceCounter;
 	}
@@ -244,8 +250,15 @@ extends AbstractModule
 		this.installation = installation;
 	}
 	
+	/** Set generic module.
+	 * @param module Generic module
+	 */
+	public void addModule(Module module) {
+		this.modules.add(module);
+	}
+	
 	/**
-	 * Set counter to track number and type of
+	 * Set counter to track number and scope of
 	 * {@link org.jhove2.core.source.Source}s processed by
 	 * the JHOVE2 framework.
 	 * @param sourceCounter Source unit counter

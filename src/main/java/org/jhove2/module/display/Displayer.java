@@ -152,7 +152,7 @@ public interface Displayer
 	 *            Ordinal position of this reportable with respect to enclosing
 	 *            {@link org.jhove2.core.reportable.Reportable} or collection
 	 * @param typeIdentifier 
-	 * 			  Reportable type identifier in the JHOVE2 namespace
+	 * 			  Reportable scope identifier in the JHOVE2 namespace
 	 */
 	public void startReportable(PrintStream out, int level, String name,
 			                    I8R identifier, int order, I8R typeIdentifier);

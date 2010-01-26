@@ -123,7 +123,7 @@ public class GlobPathRecognizer
 	 * Instantiate a new <code>FilePathGlobbingRecognizer</code>.
 	 */
 	public GlobPathRecognizer() {
-		super(VERSION, RELEASE, RIGHTS, Type.Generic);
+		super(VERSION, RELEASE, RIGHTS, Scope.Generic);
 	}
 	
 	/**

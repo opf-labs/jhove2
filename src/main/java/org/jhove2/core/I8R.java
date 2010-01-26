@@ -101,7 +101,7 @@ public class I8R implements Comparable<I8R> {
 		JHOVE2, /* JHOVE2 identifier */
 		LCC, /* Library of Congress Classification */
 		LCCN, /* Library of Congress Control Number */
-		MIME, /* MIME media type */
+		MIME, /* MIME media scope */
 		NISO, /* NISO standard */
 		OCLC, /* OCLC number */
 		PII, /* Publisher Item IdentifierModule */
@@ -118,7 +118,7 @@ public class I8R implements Comparable<I8R> {
 		URI, /* W3C Uniform Resource IdentifierModule */
 		URL, /* W3C Uniform Resource Locator */
 		URN, /* W3C Uniform Resource Name */
-		UTI, /* Apple Uniform Type IdentifierModule */
+		UTI, /* Apple Uniform Scope IdentifierModule */
 		Other
 	}
 	/** Class object for a JHOVE2 Message */
@@ -331,11 +331,11 @@ public class I8R implements Comparable<I8R> {
 	}
 	
 	/**
-	 * Determine if Type is a JHOVE2 Message
+	 * Determine if Scope is a JHOVE2 Message
 	 * 
-	 * @param type
-	 *            Property type
-	 * @return True if the Type is a message; otherwise, false
+	 * @param scope
+	 *            Property scope
+	 * @return True if the Scope is a message; otherwise, false
 	 * @throws ClassNotFoundException 
 	 */
 	public static synchronized boolean isMessage(Type type) 

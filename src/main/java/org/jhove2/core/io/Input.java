@@ -47,7 +47,7 @@ import java.nio.ByteOrder;
  * @author MStrong
  */
 public interface Input  {
-	/** AbstractInput buffer type. */
+	/** AbstractInput buffer scope. */
 	public enum Type {
 		Direct, NonDirect, MemoryMapped
 	};

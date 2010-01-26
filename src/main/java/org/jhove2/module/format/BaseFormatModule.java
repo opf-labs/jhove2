@@ -65,10 +65,10 @@ public class BaseFormatModule
 	public static final String VERSION = "0.0.1";
 
 	/** Directory module release date. */
-	public static final String RELEASE = "2009-09-16";
+	public static final String RELEASE = "2010-01-26";
 
 	/** Directory module rights statement. */
-	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California, "
+	public static final String RIGHTS = "Copyright 2010 by The Regents of the University of California, "
 			+ "Ithaka Harbors, Inc., and The Board of Trustees of the Leland "
 			+ "Stanford Junior University. "
 			+ "Available under the terms of the BSD license.";
@@ -98,7 +98,6 @@ public class BaseFormatModule
 
 	/**
 	 * Instantiate a new <code>BaseFormatModule</code>
-	 * 
 	 * @param version
 	 *            Format module version identifier in three-part form: "M.N.P"
 	 * @param release
@@ -110,7 +109,7 @@ public class BaseFormatModule
 	 */
 	public BaseFormatModule(String version, String release, String rights,
 			Format format) {
-		super(version, release, rights);
+		super(version, release, rights, Scope.Specific);
 		this.format   = format;
 		this.profiles = new ArrayList<FormatProfile>();
 	}
@@ -128,7 +127,9 @@ public class BaseFormatModule
 	public void execute(JHOVE2 jhove2, Source source)
 	   throws JHOVE2Exception
 	{
-		source.addModule(this);
+		if (this.getScope() == Scope.Specific) {
+			source.addModule(this);
+		}
 		this.getTimerInfo().setStartTime();
 		try {
 			this.parse(jhove2, source);
@@ -154,9 +155,9 @@ public class BaseFormatModule
 		
 		return;
 	}
+	
 	/**
 	 * Get format module format.
-	 * 
 	 * @return Format module format
 	 * @see org.jhove2.module.format.FormatProfile#getFormat()
 	 */
@@ -174,7 +175,6 @@ public class BaseFormatModule
 
 	/**
 	 * Get format module format profiles.
-	 * 
 	 * @return Format module format profiles
 	 * @see org.jhove2.module.format.FormatModule#getProfiles()
 	 */
@@ -184,8 +184,7 @@ public class BaseFormatModule
 	}
 
 	/**
-	 * Set format module format profile.
-	 * 
+	 * Set format module format profile. 
 	 * @param profile
 	 *            Format module format profile
 	 * @see org.jhove2.module.format.FormatModule#setProfile(org.jhove2.module.format.FormatProfile)

@@ -69,8 +69,8 @@ public abstract class AbstractModule
 	/** Product rights statement. */
 	protected String rights;
 	
-	/** Module type: generic or specific. */
-	protected Type type;
+	/** Module scope: generic or specific. */
+	protected Scope scope;
 
 	/** Product version identifier in three-part form: "M.N.P". */
 	protected String version;
@@ -94,17 +94,17 @@ public abstract class AbstractModule
 	 *            Module release date in ISO 8601 format: "YYYY-MM-DD"
 	 * @param rights
 	 *            Module rights statement
-	 * @param type
-	 *            Module type: generic or specific
+	 * @param scope
+	 *            Module scope: generic or specific
 	 */
 	public AbstractModule(String version, String release, String rights,
-			              Type type)
+			              Scope scope)
 	{	
 		super();
 		this.version     = version;
 		this.releaseDate = release;
 		this.rights      = rights;
-		this.type        = type;
+		this.scope        = scope;
 		
 		this.developers  = new ArrayList<Agent>();		
 		this.timerInfo   = new TimerInfo();
@@ -151,13 +151,12 @@ public abstract class AbstractModule
 		return this.rights;
 	}
 	
-	
-	/** Get module type: generic or specific.
-	 * @return Module type
+	/** Get module scope: generic or specific (to a source unit).
+	 * @return Module scope
 	 */
 	@Override
-	public Type getType() {
-		return this.type;
+	public Scope getScope() {
+		return this.scope;
 	}
 
 	/**

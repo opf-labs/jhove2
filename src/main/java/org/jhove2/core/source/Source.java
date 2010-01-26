@@ -132,7 +132,7 @@ public interface Source
 	 * @param bufferSize
 	 *            Input maximum buffer size
 	 * @param bufferType
-	 *            Input buffer type
+	 *            Input buffer scope
 	 * @return Input for the source unit
 	 * @throws FileNotFoundException
 	 * @throws IOException
@@ -146,7 +146,7 @@ public interface Source
 	 * @param bufferSize
 	 *            Input maximum buffer size
 	 * @param bufferType
-	 *            Input buffer type
+	 *            Input buffer scope
 	 * @param order
 	 *            Byte order
 	 * @return Input for the source unit

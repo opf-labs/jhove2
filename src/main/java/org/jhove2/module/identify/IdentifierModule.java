@@ -80,7 +80,7 @@ public class IdentifierModule
 	 * Instantiate a new <code>IdentifierModule</code>.
 	 */
 	public IdentifierModule() {
-		super(VERSION, RELEASE, RIGHTS, Type.Generic);
+		super(VERSION, RELEASE, RIGHTS, Scope.Generic);
 	}
 
 	/**

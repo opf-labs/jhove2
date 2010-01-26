@@ -56,7 +56,7 @@ public class ReportableSourceInfo {
 	/** Reportable properties. */
 	protected Set<ReportablePropertyInfo> props;
 
-	/** Source type of the reportable properties. */
+	/** Source scope of the reportable properties. */
 	protected Source source;
 
 	/**
@@ -65,7 +65,7 @@ public class ReportableSourceInfo {
 	 * @param name
 	 *            Source name
 	 * @param source
-	 *            Source type
+	 *            Source scope
 	 * @param props
 	 *            Reportable properties defined by source
 	 */
@@ -95,9 +95,9 @@ public class ReportableSourceInfo {
 	}
 
 	/**
-	 * Get source type.
+	 * Get source scope.
 	 * 
-	 * @return Source type
+	 * @return Source scope
 	 */
 	public Source getSource() {
 		return this.source;

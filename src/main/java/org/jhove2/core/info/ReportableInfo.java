@@ -86,7 +86,7 @@ public class ReportableInfo {
 		} else {
 			this.packageName = this.qName;
 		}	
-		// get the type identifier for the Reportable object
+		// get the scope identifier for the Reportable object
 		this.identifier = reportable.getReportableIdentifier();
 		this.name = reportable.getReportableName();
 		this.properties = new ArrayList<ReportableSourceInfo>();

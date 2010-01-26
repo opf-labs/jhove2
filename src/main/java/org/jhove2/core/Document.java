@@ -82,7 +82,7 @@ public class Document extends AbstractReportable {
 	/** Document title. */
 	protected String title;
 
-	/** Document type. */
+	/** Document scope. */
 	protected Type type;
 
 	/**
@@ -90,8 +90,8 @@ public class Document extends AbstractReportable {
 	 * 
 	 * @param title
 	 *            Document title
-	 * @param type
-	 *            Document type
+	 * @param scope
+	 *            Document scope
 	 * @param intention
 	 *            Document intention
 	 */
@@ -186,11 +186,11 @@ public class Document extends AbstractReportable {
 	}
 
 	/**
-	 * Get document type.
+	 * Get document scope.
 	 * 
-	 * @return document type
+	 * @return document scope
 	 */
-	@ReportableProperty(order = 7, value = "Document type.")
+	@ReportableProperty(order = 7, value = "Document scope.")
 	public Type getType() {
 		return this.type;
 	}

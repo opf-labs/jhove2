@@ -136,7 +136,7 @@ public class ValidationResults extends AbstractReportable {
     }
 
     /**
-     * A data structure to hold the list of messages of a specific message type.
+     * A data structure to hold the list of messages of a specific message scope.
      */
     public class ValidationMessageList extends AbstractReportable {
 

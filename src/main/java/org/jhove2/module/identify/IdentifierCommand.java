@@ -28,10 +28,10 @@ public class IdentifierCommand
 	public static final String VERSION = "0.5.4";
 
 	/** IdentifierCommand module release date. */
-	public static final String RELEASE = "2009-12-22";
+	public static final String RELEASE = "2010-01-26";
 
 	/** IdentifierCommand module rights statement. */
-	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California, "
+	public static final String RIGHTS = "Copyright 2010 by The Regents of the University of California, "
 		+ "Ithaka Harbors, Inc., and The Board of Trustees of the Leland "
 		+ "Stanford Junior University. "
 		+ "Available under the terms of the BSD license.";
@@ -39,7 +39,7 @@ public class IdentifierCommand
 	/** Instantiate a new <code>IdentifierCommand</code>.
 	 */
 	public IdentifierCommand(){
-		super(VERSION, RELEASE, RIGHTS);
+		super(VERSION, RELEASE, RIGHTS, Scope.Generic);
 	}
 
 	/**

@@ -77,7 +77,7 @@ public class URLSource extends AbstractSource {
 	 * @param bufferSize
 	 *            Input buffer size
 	 * @param bufferType
-	 *            Input buffer type
+	 *            Input buffer scope
 	 * @return Input
 	 * @throws FileNotFoundException
 	 *             File not found

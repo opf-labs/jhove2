@@ -124,7 +124,7 @@ public class JSONDisplayer
 	 *            Ordinal position of this reportable with respect to enclosing
 	 *            {@link org.jhove2.core.reportable.Reportable} or collection
 	 * @param typeIdentifier 
-	 * 			  Reportable type identifier in the JHOVE2 namespace
+	 * 			  Reportable scope identifier in the JHOVE2 namespace
 	 * @see org.jhove2.module.display.Displayer#startReportable(java.io.PrintStream,
 	 *      int, java.lang.String, org.jhove2.core.I8R, int, org.jhove2.core.I8R)
 	 */
@@ -146,7 +146,7 @@ public class JSONDisplayer
 			int i = typeName.lastIndexOf("/");
 			if (i > -1 ){
 				typeName = typeName.substring(i+1);		
-				buffer.append("\n" + indent + "  \"type\": \"" + typeName
+				buffer.append("\n" + indent + "  \"scope\": \"" + typeName
 						+ "\"" + "\n" + indent + ",");
 				if (this.getShowIdentifiers()){
 					buffer.append("\"identifier\": \"" + identifier

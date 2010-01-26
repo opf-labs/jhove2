@@ -57,8 +57,8 @@ public class InputFactory {
 	 *            Java {java.io.File} underlying the inputable
 	 * @param bufferSize
 	 *            Maximum buffer size, in bytes
-	 * @param type
-	 *            Input buffer type
+	 * @param scope
+	 *            Input buffer scope
 	 * @return Input
 	 * @throws FileNotFoundException
 	 *             File not found
@@ -77,8 +77,8 @@ public class InputFactory {
 	 *            Java {java.io.File} underlying the inputable
 	 * @param bufferSize
 	 *            Maximum buffer size, in bytes
-	 * @param type
-	 *            Input buffer type
+	 * @param scope
+	 *            Input buffer scope
 	 * @param order
 	 *            ByteOrder Endianess of buffer
 	 * @return Input

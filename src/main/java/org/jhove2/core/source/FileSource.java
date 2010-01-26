@@ -141,7 +141,7 @@ public class FileSource
 	 * @param bufferSize
 	 *            Buffer size
 	 * @param bufferType
-	 *            Buffer type
+	 *            Buffer scope
 	 * @return Input for the source unit
 	 * @throws FileNotFoundException
 	 *             File not found

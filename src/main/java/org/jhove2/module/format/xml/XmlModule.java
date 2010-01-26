@@ -121,7 +121,7 @@ public class XmlModule extends BaseFormatModule implements Validator {
     /** The XML document's root element name. */
     protected String rootElementName;
 
-    /** A list of the documents document type declarations. */
+    /** A list of the documents document scope declarations. */
     protected List<DTD> dtds  = new ArrayList<DTD>();
 
     /** Data store for XML namespace information captured during the parse. */
@@ -200,11 +200,11 @@ public class XmlModule extends BaseFormatModule implements Validator {
     }
 
     /**
-     * Gets the list of documents document type declarations.
+     * Gets the list of documents document scope declarations.
      * 
-     * @return list of documents document type declarations
+     * @return list of documents document scope declarations
      */
-    @ReportableProperty(order = 4, value = "List of Document Type Definitions (DTDs)")
+    @ReportableProperty(order = 4, value = "List of Document Scope Definitions (DTDs)")
     public List<DTD> getDTDs() {
         return dtds;
     }

@@ -58,7 +58,7 @@ import org.jhove2.core.reportable.AbstractReportable;
  * If the entity's definition specifies replacement text to be inserted at the
  * location of an entity reference, then it is considered a <i>parsed
  * entity</i>. If the entity's name is used as the value of an attribute having
- * type ENTITY or ENTITIES, then it is considered an <i>unparsed entity</i>. An
+ * scope ENTITY or ENTITIES, then it is considered an <i>unparsed entity</i>. An
  * example of the latter would be a binary file that is being referenced via its
  * symbolic entity name, but whose content is not substituted into the document.
  * A unparsed entity's declaration may optionally include a notation reference.
@@ -95,7 +95,7 @@ public class Entity extends AbstractReportable {
     /** The entity name. */
     protected String name;
 
-    /** The entity type. */
+    /** The entity scope. */
     protected EntityType type;
 
     /** The entity value (for internal parsed entities). */
@@ -121,11 +121,11 @@ public class Entity extends AbstractReportable {
     }
 
     /**
-     * Gets the entity type.
+     * Gets the entity scope.
      * 
-     * @return the entity type
+     * @return the entity scope
      */
-    @ReportableProperty(order = 2, value = "Entity Type")
+    @ReportableProperty(order = 2, value = "Entity Scope")
     public EntityType getType() {
         return type;
     }

@@ -56,8 +56,8 @@ public class ReportablePropertyInfo {
 	protected String description;
 
 	/**
-	 * Property generic type, as defined by the generic return type of the
-	 * method. For collection types, this represents the entire nested type.
+	 * Property generic scope, as defined by the generic return scope of the
+	 * method. For collection types, this represents the entire nested scope.
 	 */
 	protected Type genericType;
 
@@ -130,10 +130,10 @@ public class ReportablePropertyInfo {
 	}
 
 	/**
-	 * Get property generic type, as defined by the generic return type of the
-	 * method. For collection types this represents the entire nested type.
+	 * Get property generic scope, as defined by the generic return scope of the
+	 * method. For collection types this represents the entire nested scope.
 	 * 
-	 * @return Property generic type
+	 * @return Property generic scope
 	 */
 	public Type getGenericType() {
 		return this.genericType;

@@ -69,8 +69,8 @@ public class SourceCounter
 	public SourceCounter(){};
 	
 	/**
-	 * Increment appropriate counter, depending on type of Source
-	 * @param source Source whose type determines which counter to increment
+	 * Increment appropriate counter, depending on scope of Source
+	 * @param source Source whose scope determines which counter to increment
 	 */
 	public void incrementSourceCounter(Source source){
 		if (source instanceof ClumpSource) {

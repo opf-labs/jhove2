@@ -33,12 +33,11 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.jhove2.core.reportable;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.I8R;
-
-
 
 /**
  * Base class for all classes that implement Reportable interface
@@ -47,7 +46,9 @@ import org.jhove2.core.I8R;
  * @author smorrissey
  *
  */
-public abstract class AbstractReportable implements Reportable {
+public abstract class AbstractReportable
+	implements Reportable
+{
     /** Object's unique JHOVE2 identifier  cannot be set by user */
 	protected I8R myI8R = null;
 	
