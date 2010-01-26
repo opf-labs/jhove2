@@ -103,7 +103,7 @@ Displayer {
 	 *            AbstractDisplayer rights statement
 	 */
 	public AbstractDisplayer(String version, String date, String rights) {
-		super(version, date, rights);
+		super(version, date, rights, Type.Generic);
 		this.setShowIdentifiers(DEFAULT_SHOW_IDENTIFIERS);
 	}
 

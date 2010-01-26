@@ -56,44 +56,56 @@ import org.jhove2.core.reportable.Reportable;
 public interface Module
 	extends Reportable
 {
+	/** Module type. */
+	public enum Type {
+		Generic,
+		Specific
+	}
+	
 	/**
-	 * Get product developers.
+	 * Get module developers.
 	 * 
-	 * @return Product developers
+	 * @return Module developers
 	 */
-	@ReportableProperty(order = 4, value = "Product developers.")
+	@ReportableProperty(order = 4, value = "Module developers.")
 	public List<Agent> getDevelopers();
 
-
 	/**
-	 * Get product informative note.
+	 * Get module informative note.
 	 * 
-	 * @return Product informative note
+	 * @return Module informative note
 	 */
-	@ReportableProperty(order = 6, value = "Product informative note.")
+	@ReportableProperty(order = 7, value = "Module informative note.")
 	public String getNote();
 	
 	/**
-	 * Get product release date.
+	 * Get module release date.
 	 * 
-	 * @return Product release date
+	 * @return Module release date
 	 */
-	@ReportableProperty(order = 3, value = "Product release date.")
+	@ReportableProperty(order = 3, value = "Module release date.")
 	public String getReleaseDate();
 
 	/**
-	 * Get product rights statement.
+	 * Get module rights statement.
 	 * 
-	 * @return Product rights statement
+	 * @return Module rights statement
 	 */
-	@ReportableProperty(order = 5, value = "Product rights statement.")
+	@ReportableProperty(order = 5, value = "Module rights statement.")
 	public String getRightsStatement();
-	/**
-	 * Get product version.
-	 * 
-	 * @return Product version
+	
+	/** Get module type: generic or specific.
+	 * @return Module type
 	 */
-	@ReportableProperty(order = 2, value = "Product version identifier.")
+	@ReportableProperty(order = 6, value = "Module type: generic or specific.")
+	public Type getType();
+	
+	/**
+	 * Get module version.
+	 * 
+	 * @return Module version
+	 */
+	@ReportableProperty(order = 2, value = "Module version identifier.")
 	public String getVersion();
 	
 	/**
@@ -103,12 +115,8 @@ public interface Module
 	 * @return Wrapped {@link org.jhove2.core.WrappedProduct}, or null if the
 	 *         module directly performs its process
 	 */
-	@ReportableProperty(order = 7, value = "External tool wrapped by the module.")
+	@ReportableProperty(order = 7, value = "External product wrapped by the module.")
 	public WrappedProduct getWrappedProduct();
-	/**
-	 * Get metadata about this module
-	 * @return ProductInfo {@link org.jhove2.core.ProductInfo}
-	 */
 
 	/**
 	 * Get object which maintains timer information about the running of this module

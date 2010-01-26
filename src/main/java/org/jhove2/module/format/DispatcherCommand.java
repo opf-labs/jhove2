@@ -44,7 +44,6 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import org.jhove2.core.AbstractCommand;
 import org.jhove2.core.Format;
 import org.jhove2.core.FormatIdentification;
 import org.jhove2.core.I8R;
@@ -55,6 +54,7 @@ import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.reportable.ReportableFactory;
 import org.jhove2.core.source.Source;
+import org.jhove2.module.AbstractCommand;
 import org.jhove2.module.Module;
 import org.jhove2.module.identify.DROIDIdentifier;
 
@@ -104,7 +104,7 @@ public class DispatcherCommand extends AbstractCommand {
      * @param jhove2
      *            JHOVE2 framework object
      * @throws JHOVE2Exception
-     * @see org.jhove2.core.Command#execute(org.jhove2.core.JHOVE2,
+     * @see org.jhove2.module.Command#execute(org.jhove2.core.JHOVE2,
      *      org.jhove2.core.source.Source)
      */
     @Override
@@ -125,15 +125,17 @@ public class DispatcherCommand extends AbstractCommand {
                  * Use the JHOVE2 format id to get bean name for format in
                  * Spring configuration file.
                  */
-                String beanName = getJhoveIdToBeanName().get(
-                        fid.getJhove2Identification().getValue());
+                String beanName =
+                	getJhoveIdToBeanName().get(fid.getJhove2Identification().getValue());
                 if (beanName != null) {
-                    Format format = ReportableFactory.getReportable(
-                            Format.class, beanName);
+                    Format format =
+                    	ReportableFactory.getReportable(Format.class,
+                    			                        beanName);
                     jhoveFormats.put(fid.getJhove2Identification(), format);
                 }
             }
         }
+        
         /*
          * More than one JHOVE2 format might map to the same format module, so
          * we will keep track of the modules we run so as not to run them more
@@ -147,24 +149,22 @@ public class DispatcherCommand extends AbstractCommand {
             if (module == null) {
                 BaseFormatModule bFormatModule = new BaseFormatModule();
                 String[] parms = new String[] { id.getValue() };
-                bFormatModule
-                        .setModuleNotFoundMessage(new Message(
-                                Severity.ERROR,
-                                Context.PROCESS,
-                                "org.jhove2.module.format.DispatcherCommand.moduleNotFoundMessage",
-                                (Object[]) parms));
+                bFormatModule.setModuleNotFoundMessage(new Message(
+                	Severity.ERROR,
+                	Context.PROCESS,
+                	"org.jhove2.module.format.DispatcherCommand.moduleNotFoundMessage",
+                	(Object[]) parms));
                 bFormatModule.setFormat(format);
                 source.addModule(bFormatModule);
             }
             else if (!(module instanceof FormatModule)) {
                 BaseFormatModule bFormatModule = new BaseFormatModule();
                 String[] parms = new String[] { id.getValue() };
-                bFormatModule
-                        .setModuleNotFormatModuleMessage(new Message(
-                                Severity.ERROR,
-                                Context.PROCESS,
-                                "org.jhove2.module.format.DispatcherCommand.moduleNotFormatModuleMessage",
-                                (Object[]) parms));
+                bFormatModule.setModuleNotFormatModuleMessage(new Message(
+                	Severity.ERROR,
+                	Context.PROCESS,
+                	"org.jhove2.module.format.DispatcherCommand.moduleNotFormatModuleMessage",
+                	(Object[]) parms));
                 bFormatModule.setFormat(format);
                 source.addModule(bFormatModule);
             }

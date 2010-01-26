@@ -38,7 +38,6 @@ package org.jhove2.module.digest;
 
 import java.io.IOException;
 
-import org.jhove2.core.AbstractCommand;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.TimerInfo;
@@ -46,6 +45,7 @@ import org.jhove2.core.reportable.ReportableFactory;
 import org.jhove2.core.source.AggregateSource;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.Source;
+import org.jhove2.module.AbstractCommand;
 
 /**
  * Command to invoke message digesting on non-aggregate Sources
@@ -79,7 +79,7 @@ public class DigesterCommand
 	 * @param source Source whose digest is to be calculates
 	 * @param jhove2 JHOVE2 framework object
 	 * @throws JHOVE2Exception
-	 * @see org.jhove2.core.Command#execute(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
+	 * @see org.jhove2.module.Command#execute(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
 	 */
 	@Override
 	public void execute(JHOVE2 jhove2, Source source) 

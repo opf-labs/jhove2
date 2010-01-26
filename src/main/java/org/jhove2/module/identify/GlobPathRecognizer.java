@@ -58,16 +58,18 @@ import org.jhove2.module.AbstractModule;
  * 
  * @author smorrissey
  */
-public class GlobPathRecognizer extends AbstractModule implements
-AggregateIdentifier {
+public class GlobPathRecognizer
+	extends AbstractModule
+	implements AggregateIdentifier
+{
 	/** Identification module version identifier. */
 	public static final String VERSION = "1.0.0";
 
 	/** Identification module release date. */
-	public static final String RELEASE = "2009-08-21";
+	public static final String RELEASE = "2010-01-25";
 
 	/** Identification module rights statement. */
-	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California, "
+	public static final String RIGHTS = "Copyright 2010 by The Regents of the University of California, "
 		+ "Ithaka Harbors, Inc., and The Board of Trustees of the Leland "
 		+ "Stanford Junior University. "
 		+ "Available under the terms of the BSD license.";
@@ -121,8 +123,9 @@ AggregateIdentifier {
 	 * Instantiate a new <code>FilePathGlobbingRecognizer</code>.
 	 */
 	public GlobPathRecognizer() {
-		super(VERSION, RELEASE, RIGHTS);
+		super(VERSION, RELEASE, RIGHTS, Type.Generic);
 	}
+	
 	/**
 	 * Instantiate a new <code>FilePathGlobbingRecognizer</code>.
 	 * @param formatIdentifier Format which this class can recognize

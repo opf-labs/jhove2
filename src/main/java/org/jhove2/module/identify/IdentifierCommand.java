@@ -5,16 +5,16 @@ package org.jhove2.module.identify;
 
 import java.util.Set;
 
-import org.jhove2.core.AbstractCommand;
 import org.jhove2.core.FormatIdentification;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.TimerInfo;
 import org.jhove2.core.reportable.ReportableFactory;
 import org.jhove2.core.source.Source;
+import org.jhove2.module.AbstractCommand;
 
 /**
- * {@link org.jhove2.core.Command} to perform identification on
+ * {@link org.jhove2.module.Command} to perform identification on
  * {@link org.jhove2.core.source.Source}s.
  * Note that this module does not detect
  * {@link org.jhove2.core.source.ClumpSource} format instances. 
@@ -47,7 +47,7 @@ public class IdentifierCommand
 	 * @param jhove2 JHOVE2 framework object
 	 * @param source Source to be identified
 	 * @throws JHOVE2Exception
-	 * @see org.jhove2.core.Command#execute(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
+	 * @see org.jhove2.module.Command#execute(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
 	 * @see org.jhove2.module.identify.Identifier#identify(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
 	 */
 	@Override

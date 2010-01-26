@@ -66,11 +66,10 @@ public class AbstractFormatProfile
 	 *            Format profile rights statement
 	 * @param format
 	 *            Format profile format
-	 * @param coverage
 	 */
 	public AbstractFormatProfile(String version, String release, String rights,
-			Format format) {
-		super(version, release, rights);
+			                     Format format) {
+		super(version, release, rights, Type.Specific);
 
 		this.format   = format;
 	}

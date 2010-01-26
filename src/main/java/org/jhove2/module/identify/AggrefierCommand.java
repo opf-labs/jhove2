@@ -38,7 +38,6 @@ package org.jhove2.module.identify;
 import java.io.IOException;
 import java.util.Set;
 
-import org.jhove2.core.AbstractCommand;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.TimerInfo;
@@ -46,6 +45,7 @@ import org.jhove2.core.reportable.ReportableFactory;
 import org.jhove2.core.source.AggregateSource;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.Source;
+import org.jhove2.module.AbstractCommand;
 
 /**
  * Command to execute identification on AggregateSource objects, to detect any
@@ -82,7 +82,7 @@ public class AggrefierCommand
 	 * @param jhove2 JHOVE2 framework object
 	 * @param source Source 
 	 * @throws JHOVE2Exception
-	 * @see org.jhove2.core.Command#execute(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
+	 * @see org.jhove2.module.Command#execute(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
 	 */
 	@Override
 	public void execute(JHOVE2 jhove2, Source source)

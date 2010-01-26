@@ -44,7 +44,7 @@ import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceCounter;
 import org.jhove2.module.AbstractModule;
-import org.jhove2.module.display.Displayer;
+import org.jhove2.module.Command;
 
 /**
  * The JHOVE2 core processing framework.
@@ -97,7 +97,7 @@ extends AbstractModule
 	 *                      JHOVE2 framework
 	 */
 	public JHOVE2(Invocation invocation) {
-		super(VERSION, RELEASE, RIGHTS);
+		super(VERSION, RELEASE, RIGHTS, Type.Generic);
 		
 		this.invocation = invocation;
 		this.sourceCounter = new SourceCounter();

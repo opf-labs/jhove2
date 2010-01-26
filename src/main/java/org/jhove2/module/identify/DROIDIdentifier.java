@@ -88,10 +88,10 @@ public class DROIDIdentifier
 	public static final String VERSION = "0.5.4";
 
 	/** Framework release date. */
-	public static final String RELEASE = "2009-12-22";
+	public static final String RELEASE = "2010-01-25";
 
 	/** Framework rights statement. */
-	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California, "
+	public static final String RIGHTS = "Copyright 2010 by The Regents of the University of California, "
 		+ "Ithaka Harbors, Inc., and The Board of Trustees of the Leland "
 		+ "Stanford Junior University. "
 		+ "Available under the terms of the BSD license.";
@@ -155,7 +155,7 @@ public class DROIDIdentifier
 	public DROIDIdentifier()
 		throws JHOVE2Exception
 	{
-		super(VERSION, RELEASE, RIGHTS);
+		super(VERSION, RELEASE, RIGHTS, Type.Generic);
 		WrappedProduct droid = ReportableFactory.getReportable(WrappedProduct.class,
 				                                               "DROIDProduct");
 		this.setWrappedProduct(droid);

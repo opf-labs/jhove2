@@ -89,7 +89,7 @@ public class JHOVE2CommandLine
 		 * JHOVE2 default settings, and the JHOVE2 default displayer with
 		 * default displayer settings.
 		 */
-		super(VERSION, RELEASE, RIGHTS);
+		super(VERSION, RELEASE, RIGHTS, Type.Generic);
 	}
 	
 	/**
@@ -277,7 +277,7 @@ public class JHOVE2CommandLine
 			config.setBufferSize(bufferSize.intValue());
 		}
         if ((bufferType = (String)parser.getOptionValue(bufferTypeO)) != null) {
-        	config.setBufferType(Type.valueOf(bufferType));
+        	config.setBufferType(org.jhove2.core.io.Input.Type.valueOf(bufferType));
         }
         if (( displayerType = (String)parser.getOptionValue(displayerTypeO)) != null) {
 			this.setDisplayer(ReportableFactory.getReportable(Displayer.class,

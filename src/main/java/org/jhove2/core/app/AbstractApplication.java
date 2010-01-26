@@ -88,12 +88,15 @@ public abstract class AbstractApplication
 	 *            Application release date in ISO 8601 format: "YYYY-MM-DD"
 	 * @param rights
 	 *            Application rights statement
+	 * @param type
+	 *            Application type: generic or specific
 	 * @throws JHOVE2Exception 
 	 */
-	public AbstractApplication(String version, String release, String rights)
+	public AbstractApplication(String version, String release, String rights,
+			                   Type type)
 		throws JHOVE2Exception
 	{
-		super(version, release, rights);
+		super(version, release, rights, type);
 
 		/* Default application installation and invocation properties. */
 		this.setInstallation(Installation.getInstance());

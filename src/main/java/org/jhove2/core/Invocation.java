@@ -115,7 +115,6 @@ public class Invocation
 	/** JHOVE2 home directory (from environment; defaults to user directory */
 	protected String jhove2Home;
 
-
 	/**
 	 * Instantiate a new <code>AbstractApplication</code>.
 	 */
@@ -280,10 +279,10 @@ public class Invocation
 	
 	/**
 	 * Set Input buffer type.
-	 * @param bufferType Input buffer type
+	 * @param type Input buffer type
 	 */
-	public void setBufferType(Type bufferType) {
-		this.bufferType = bufferType;
+	public void setBufferType(Type type) {
+		this.bufferType = type;
 	}
 	/**
 	 * Set temporary file deletion flag.

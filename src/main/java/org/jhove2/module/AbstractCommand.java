@@ -34,49 +34,50 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.core;
+package org.jhove2.module;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.source.Source;
-import org.jhove2.module.Module;
-
-/**
- * Command invoked by JHOVE2 application framework to characterize some aspect
- * of a {@link org.jhove2.core.source.Source}, for example, identification,
- * format feature extraction/validation/profile validation, aggregate detection
- * and characterization, assessment, message digest calculation.
+/** Abstract {@link org.jhove2.module.Command}.
  * 
- * These commands should be thought of as essentially stateless (except for the
- * metadata members common to all {@link org.jhove2.module.Module}s that
- * describe the Module itself).
- * 
- * The JHOVE2 framework is configured by plugging a sequence of Command
- * objects into the JHOVE2.commands List field.
- * 
- * @author smorrissey, slabrams
+ * @author slabrams
  */
-public interface Command
-	extends Module
+public abstract class AbstractCommand
+	extends AbstractModule
+	implements Command
 {
-	/**
-	 * Execute a characterization command
-	 * @param source Source on which command is to be executed
-	 * @param jhove2 JHOVE2 application framework for configuration information and callback
-	 * @throws JHOVE2Exception
-	 */
-	public void execute(JHOVE2 jhove2, Source source)
-	   throws JHOVE2Exception;
+	/** Modules associated with the command. */
+	protected List<Module> modules;
 	
+	/** Instantiate a new <code>AbstractCommand</code>. 
+	 * 	 * @param version
+	 *            Module version identifier in three-part form: "M.N.P"
+	 * @param release
+	 *            Module release date in ISO 8601 format: "YYYY-MM-DD"
+	 * @param rights
+	 *            Module rights statement
+	 */
+	public AbstractCommand(String version, String release, String rights) {
+		super(version, release, rights, Type.Generic);
+		this.modules = new ArrayList<Module>();
+	}
+
 	/** Add module associated with the command.
 	 * @param module Module associated with the command
+	 * @see org.jhove2.module.Command#addModule(org.jhove2.module.Module)
 	 */
-	public void addModule(Module module);
-	
+	@Override
+	public void addModule(Module module) {
+		this.modules.add(module);
+	}
+
 	/** Get modules associated with the command.
 	 * @return Modules associated with the command
+	 * @see org.jhove2.module.Command#getModules()
 	 */
-	@ReportableProperty(value = "Modules associated with the command.")
-	public List<Module> getModules();
+	@Override
+	public List<Module> getModules() {
+		return this.modules;
+	}
 }

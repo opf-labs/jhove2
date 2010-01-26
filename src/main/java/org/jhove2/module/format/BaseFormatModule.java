@@ -42,12 +42,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.AbstractCommand;
 import org.jhove2.core.Format;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
 import org.jhove2.core.source.Source;
+import org.jhove2.module.AbstractCommand;
 
 /**
  * Base JHOVE2 format module.
@@ -119,14 +119,15 @@ public class BaseFormatModule
 	 * Parses format instance
 	 * If format can validate, validates instance
 	 * If format has profiles and those profiles can validate, validates profiles
-	 * @param Source to be parsed
-	 * @param JHOVE2 framework for callbacks
+	 * @param jhove2 JHOVE2 framework
+	 * @param source Source to be parsed
 	 * @throws JHOVE2Exception
-	 * @see org.jhove2.core.Command#execute(org.jhove2.core.source.Source, org.jhove2.core.JHOVE2)
+	 * @see org.jhove2.module.Command#execute(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
 	 */
 	@Override
 	public void execute(JHOVE2 jhove2, Source source)
-	   throws JHOVE2Exception {
+	   throws JHOVE2Exception
+	{
 		source.addModule(this);
 		this.getTimerInfo().setStartTime();
 		try {
@@ -164,6 +165,9 @@ public class BaseFormatModule
 		return this.format;
 	}
 	
+	/** Set the base format.
+	 * @param format Base format
+	 */
 	public void setFormat(Format format){
 		this.format = format;
 	}
@@ -192,9 +196,14 @@ public class BaseFormatModule
 		this.profiles.add(profile);
 	}
 
+	/** Parse the format.
+	 * @param jhove2 JHOVE2 framework
+	 * @param source Source unit
+	 */
 	@Override
-	public long parse(JHOVE2 jhove2, Source source) throws EOFException,
-			IOException, JHOVE2Exception {
+	public long parse(JHOVE2 jhove2, Source source)
+		throws EOFException, IOException, JHOVE2Exception
+	{
 		return 0;
 	}
 
@@ -206,6 +215,7 @@ public class BaseFormatModule
 	public Message getModuleNotFoundMessage() {
 		return moduleNotFoundMessage;
 	}
+	
 	/**
 	 * Mutator for moduleNotFoundMessage
 	 * @param moduleNotFoundMessage
@@ -213,14 +223,16 @@ public class BaseFormatModule
 	public void setModuleNotFoundMessage(Message moduleNotFoundMessage) {
 		this.moduleNotFoundMessage = moduleNotFoundMessage;
 	}
+	
 	/**
 	 * Accessor for moduleNotFormatModuleMessage
-	 * @return
+	 * @return Message
 	 */
 	@ReportableProperty(order = 16, value = "Module returned is not Format Module Error Message")
 	public Message getModuleNotFormatModuleMessage() {
 		return moduleNotFormatModuleMessage;
 	}
+	
 	/**
 	 * Mutator for moduleNotFormatModuleMessage
 	 * @param moduleNotFormatModuleMessage

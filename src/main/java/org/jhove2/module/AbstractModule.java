@@ -68,9 +68,13 @@ public abstract class AbstractModule
 
 	/** Product rights statement. */
 	protected String rights;
+	
+	/** Module type: generic or specific. */
+	protected Type type;
 
 	/** Product version identifier in three-part form: "M.N.P". */
 	protected String version;
+	
 	/**
 	 * Module wrapped product. This field should be defined if the module does
 	 * not directly perform its own processing, but rather invokes an external
@@ -90,19 +94,25 @@ public abstract class AbstractModule
 	 *            Module release date in ISO 8601 format: "YYYY-MM-DD"
 	 * @param rights
 	 *            Module rights statement
+	 * @param type
+	 *            Module type: generic or specific
 	 */
-	public AbstractModule(String version, String release, String rights) {	
+	public AbstractModule(String version, String release, String rights,
+			              Type type)
+	{	
 		super();
-		this.version = version;
+		this.version     = version;
 		this.releaseDate = release;
-		this.rights = rights;
-		this.developers = new ArrayList<Agent>();		
-		this.timerInfo = new TimerInfo();
-		this.name = this.getClass().getSimpleName();
+		this.rights      = rights;
+		this.type        = type;
+		
+		this.developers  = new ArrayList<Agent>();		
+		this.timerInfo   = new TimerInfo();
+		this.name        = this.getClass().getSimpleName();
 	}
 
 	/**
-	 * Get product developers.
+	 * Get module developers.
 	 * 
 	 * @return Product developers
 	 */
@@ -112,7 +122,7 @@ public abstract class AbstractModule
 	}
 
 	/**
-	 * Get product informative note.
+	 * Get module informative note.
 	 * 
 	 * @return Product informative note
 	 */
@@ -122,7 +132,7 @@ public abstract class AbstractModule
 	}
 
 	/**
-	 * Get product release date.
+	 * Get module release date.
 	 * 
 	 * @return Product release date
 	 */
@@ -132,7 +142,7 @@ public abstract class AbstractModule
 	}
 
 	/**
-	 * Get product rights statement.
+	 * Get module rights statement.
 	 * 
 	 * @return Product rights statement
 	 */
@@ -140,9 +150,18 @@ public abstract class AbstractModule
 	public String getRightsStatement() {
 		return this.rights;
 	}
+	
+	
+	/** Get module type: generic or specific.
+	 * @return Module type
+	 */
+	@Override
+	public Type getType() {
+		return this.type;
+	}
 
 	/**
-	 * Get product version.
+	 * Get module version.
 	 * 
 	 * @return Product version
 	 */
@@ -152,7 +171,7 @@ public abstract class AbstractModule
 	}
 
 	/**
-	 * Add product developer.
+	 * Add module developer.
 	 * 
 	 * @param developer
 	 *            Product developer
@@ -162,7 +181,7 @@ public abstract class AbstractModule
 	}
 
 	/**
-	 * Add product developers.
+	 * Add module developers.
 	 * 
 	 * @param developers
 	 *            Product developers
@@ -172,7 +191,7 @@ public abstract class AbstractModule
 	}
 
 	/**
-	 * Set product informative note.
+	 * Set module informative note.
 	 * 
 	 * @param note
 	 *            Product informative note
@@ -182,15 +201,15 @@ public abstract class AbstractModule
 	}
 	
 	/**
-	 * Get wrapped {@link org.jhove2.core.AbstractProduct}.
+	 * Get wrapped external product.
 	 * 
-	 * @return Wrapped {@link org.jhove2.core.AbstractProduct}
-	 * @see org.jhove2.module.Module#getWrappedProduct()
+	 * @return Wrapped external product
 	 */
 	@Override
 	public WrappedProduct getWrappedProduct() {
 		return this.wrappedProduct;
 	}
+	
 	/**
 	 * Set wrapped product.
 	 * 
@@ -201,6 +220,9 @@ public abstract class AbstractModule
 		this.wrappedProduct = product;
 	}
 	
+	/** Get module timer information.
+	 * @return Module timer information
+	 */
 	@Override
 	public TimerInfo getTimerInfo() {
 		return timerInfo;

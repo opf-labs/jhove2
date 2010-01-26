@@ -43,9 +43,9 @@ import java.util.List;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.Format;
 import org.jhove2.core.JHOVE2;
-import org.jhove2.core.Command;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.source.Source;
+import org.jhove2.module.Command;
 import org.jhove2.module.Module;
 import org.jhove2.module.format.FormatProfile;
 
