@@ -93,7 +93,7 @@ public class AggrefierCommand
 				AggregateIdentifier aggrefier = 
 					ReportableFactory.getReportable(AggregateIdentifier.class,
 							                       "AggrefierModule");
-				source.addModule(aggrefier);
+				this.addModule(aggrefier);
 				TimerInfo timer = aggrefier.getTimerInfo();
 				timer.setStartTime();
 				try {

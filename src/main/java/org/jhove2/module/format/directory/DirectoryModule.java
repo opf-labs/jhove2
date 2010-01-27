@@ -60,10 +60,10 @@ public class DirectoryModule
 	public static final String VERSION = "0.1.2";
 
 	/** Directory module release date. */
-	public static final String RELEASE = "2009-08-11";
+	public static final String RELEASE = "2010-01-26";
 
 	/** Directory module rights statement. */
-	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California, "
+	public static final String RIGHTS = "Copyright 2010 by The Regents of the University of California, "
 			+ "Ithaka Harbors, Inc., and The Board of Trustees of the Leland "
 			+ "Stanford Junior University. "
 			+ "Available under the terms of the BSD license.";
@@ -75,7 +75,7 @@ public class DirectoryModule
 	 *            Directory format
 	 */
 	public DirectoryModule(Format format) {
-		super(VERSION, RELEASE, RIGHTS, format);
+		super(VERSION, RELEASE, RIGHTS, Scope.Generic, format);
 	}
 
 	/**
@@ -91,7 +91,7 @@ public class DirectoryModule
 	 * @throws IOException
 	 *             If an I/O exception is raised reading the source unit
 	 * @throws JHOVE2Exception
-	 * @see org.jhove2.module.format.Parser#parse(org.jhove2.core.JHOVE2,
+	 * @see org.jhove2.module.format.FormatModule#parse(org.jhove2.core.JHOVE2,
 	 *      org.jhove2.core.source.Source)
 	 */
 	@Override

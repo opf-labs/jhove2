@@ -108,8 +108,26 @@ public class BaseFormatModule
 	 *            Format module format
 	 */
 	public BaseFormatModule(String version, String release, String rights,
-			Format format) {
-		super(version, release, rights, Scope.Specific);
+			                Format format) {
+		this(version, release, rights, Scope.Specific, format);
+	}
+	
+	/**
+	 * Instantiate a new <code>BaseFormatModule</code>
+	 * @param version
+	 *            Format module version identifier in three-part form: "M.N.P"
+	 * @param release
+	 *            Format module release date in ISO 8601 format: "YYYY-MM-DD"
+	 * @param rights
+	 *            Format module rights statement
+	 * @param scope
+	 *            Format scope: generic or specific (to a source unit)
+	 * @param format
+	 *            Format module format
+	 */	public BaseFormatModule(String version, String release, String rights,
+			                Scope scope, Format format)
+	{
+		super(version, release, rights, scope);
 		this.format   = format;
 		this.profiles = new ArrayList<FormatProfile>();
 	}
@@ -129,6 +147,9 @@ public class BaseFormatModule
 	{
 		if (this.getScope() == Scope.Specific) {
 			source.addModule(this);
+		}
+		else {
+			jhove2.addModule(this);
 		}
 		this.getTimerInfo().setStartTime();
 		try {

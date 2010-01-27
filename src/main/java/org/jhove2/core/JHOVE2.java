@@ -167,7 +167,7 @@ public class JHOVE2
 	 * a source unit.
 	 * @return List of command to be executed
 	 */
-	@ReportableProperty(order = 1, value = "Configured commands.")
+	@ReportableProperty(order = 3, value = "Configured commands.")
 	public List<Command> getCommands() {
 		return commands;
 	}
@@ -176,7 +176,7 @@ public class JHOVE2
 	 * Get framework invocation properties.
 	 * @return Framework invocation properties
 	 */
-	@ReportableProperty(order = 3, value="Framework invocation properties.")
+	@ReportableProperty(order = 2, value="Framework invocation properties.")
 	public Invocation getInvocation() {
 		return invocation;
 	}
@@ -184,7 +184,7 @@ public class JHOVE2
 	/** Get framework {@link org.jhove2.core.Installation} properties.
 	 * @return Framework installation properties
 	 */
-	@ReportableProperty(order = 2, value = "Framework installation properties.")
+	@ReportableProperty(order = 1, value = "Framework installation properties.")
 	public Installation getInstallation() {
 		return installation;
 	}
@@ -196,12 +196,20 @@ public class JHOVE2
 	 * 
 	 * @return Memory usage, in bytes
 	 */
-	@ReportableProperty(order = 5, value = "Framework memory usage, in bytes.")
+	@ReportableProperty(order = 6, value = "Framework memory usage, in bytes.")
 	public long getMemoryUsage() {
 		Runtime rt = Runtime.getRuntime();
 		long use = rt.totalMemory() - rt.freeMemory();
 
 		return use;
+	}
+	
+	/** Get framework generic modules.
+	 * @return Generic modules
+	 */
+	@ReportableProperty(order = 4, value = "Framework generic modules.")
+	public List<Module> getModules() {
+		return this.modules;
 	}
 
 	/**
@@ -209,7 +217,7 @@ public class JHOVE2
 	 * by the JHOVE2 framework.
 	 * @return Source unit counter
 	 */
-	@ReportableProperty(order = 4, value = "Source unit counter, by scope.")
+	@ReportableProperty(order = 5, value = "Source unit counter, by scope.")
 	public SourceCounter getSourceCounter() {
 		return sourceCounter;
 	}

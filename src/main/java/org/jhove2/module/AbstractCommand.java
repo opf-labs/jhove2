@@ -36,8 +36,8 @@
 
 package org.jhove2.module;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /** Abstract {@link org.jhove2.module.Command}.
  * 
@@ -48,7 +48,7 @@ public abstract class AbstractCommand
 	implements Command
 {
 	/** Modules associated with the command. */
-	protected List<Module> modules;
+	protected Set<Module> modules;
 	
 	/** Instantiate a new <code>AbstractCommand</code>. 
 	 * 	 * @param version
@@ -63,7 +63,7 @@ public abstract class AbstractCommand
 	public AbstractCommand(String version, String release, String rights,
 			               Scope scope) {
 		super(version, release, rights, scope);
-		this.modules = new ArrayList<Module>();
+		this.modules = new HashSet<Module>();
 	}
 
 	/** Add module associated with the command.
@@ -80,7 +80,7 @@ public abstract class AbstractCommand
 	 * @see org.jhove2.module.Command#getModules()
 	 */
 	@Override
-	public List<Module> getModules() {
+	public Set<Module> getModules() {
 		return this.modules;
 	}
 }

@@ -36,7 +36,7 @@
 
 package org.jhove2.module;
 
-import java.util.List;
+import java.util.Set;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2;
@@ -79,5 +79,5 @@ public interface Command
 	 * @return Modules associated with the command
 	 */
 	@ReportableProperty(value = "Modules associated with the command.")
-	public List<Module> getModules();
+	public Set<Module> getModules();
 }

@@ -97,7 +97,7 @@ public class ZipModule
 	 * @throws IOException
 	 *             If an I/O exception is raised reading the source unit
 	 * @throws JHOVE2Exception
-	 * @see org.jhove2.module.format.Parser#parse(org.jhove2.core.JHOVE2,
+	 * @see org.jhove2.module.format.FormatModule#parse(org.jhove2.core.JHOVE2,
 	 *      org.jhove2.core.source.Source)
 	 */
 	@Override

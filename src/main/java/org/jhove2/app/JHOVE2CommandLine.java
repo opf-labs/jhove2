@@ -265,11 +265,7 @@ public class JHOVE2CommandLine
         }
 
         /* get the options and values
-         */
-        if ((Boolean)parser.getOptionValue(showIdentifiersO) != null) {
-        	showIdentifiers = true;
-        	this.getDisplayer().setShowIdentifiers(showIdentifiers);
-        }        
+         */     
         if ((Boolean)parser.getOptionValue(setCalcDigestsO) != null) {
 			config.setCalcDigests(true);
         }
@@ -283,9 +279,14 @@ public class JHOVE2CommandLine
 			this.setDisplayer(ReportableFactory.getReportable(Displayer.class,
 					                                          displayerType));
         }
-        if (( failFastLimit = (Integer)parser.getOptionValue(failFastLimitO)) != null) {
+        if ((failFastLimit = (Integer)parser.getOptionValue(failFastLimitO)) != null) {
 			config.setFailFastLimit(failFastLimit.intValue());
         }
+        /* Make sure that the displayer has already been set. */
+        if ((Boolean)parser.getOptionValue(showIdentifiersO) != null) {
+        	showIdentifiers = true;
+        	this.getDisplayer().setShowIdentifiers(showIdentifiers);
+        }  
         if ((tempDirectory = (String)parser.getOptionValue(tempDirectoryO)) != null) {
 			config.setTempDirectory(tempDirectory);
         }
@@ -317,5 +318,5 @@ public class JHOVE2CommandLine
         }
 
 		return pathNames;
-		}
+	}
 }

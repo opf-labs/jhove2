@@ -96,10 +96,10 @@ public class AggrefierModule
 	 *             I/O exception encountered identifying the source unit
 	 * @throws JHOVE2Exception
 	 * @see org.jhove2.module.identify.AggregateIdentifier#identify(org.jhove2.core.JHOVE2,
-	 *      org.jhove2.core.source.AggregateSource)
+	 *      org.jhove2.core.source.Source)
 	 */
 	@Override
-	public Set<ClumpSource>  identify(JHOVE2 jhove2, Source source)
+	public Set<ClumpSource> identify(JHOVE2 jhove2, Source source)
 		throws IOException, JHOVE2Exception
 	{
 		Set<ClumpSource> clumpSources = 

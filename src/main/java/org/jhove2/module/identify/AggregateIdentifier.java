@@ -51,7 +51,9 @@ import org.jhove2.module.Module;
  * 
  * @author smmorrissey
  */
-public interface AggregateIdentifier extends Module {
+public interface AggregateIdentifier
+	extends Module
+{
 	/**
 	 * Detect presumptive instances of a clump format in a source unit, and identify.
 	 * 

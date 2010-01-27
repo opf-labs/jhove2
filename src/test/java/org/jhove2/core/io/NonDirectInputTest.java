@@ -80,18 +80,18 @@ public class NonDirectInputTest {
 		try {
 			Source source = SourceFactory.getSource(testFile);
 			/*
-			 * abstractInput = source.getInput(bufferSize, Type.NonDirect,
+			 * abstractInput = source.getInput(bufferSize, Scope.NonDirect,
 			 * ByteOrder.LITTLE_ENDIAN);
-			 * assertTrue("AbstractInput Type is NonDirect with LITTLE_ENDIAN",
+			 * assertTrue("AbstractInput Scope is NonDirect with LITTLE_ENDIAN",
 			 * abstractInput.getBuffer().order() == ByteOrder.LITTLE_ENDIAN);
 			 * abstractInput.close();
 			 */
 			abstractInput = InputFactory.getInput(testFile, bufferSize,
 					Type.NonDirect);
-			assertTrue("AbstractInput Type is NonDirect", abstractInput
+			assertTrue("AbstractInput Scope is NonDirect", abstractInput
 					.getClass().getName().equalsIgnoreCase(
 							NonDirectInput.class.getName()));
-			assertTrue("AbstractInput Type is Direct with LITTLE_ENDIAN",
+			assertTrue("AbstractInput Scope is Direct with LITTLE_ENDIAN",
 					abstractInput.getBuffer().order() == ByteOrder.LITTLE_ENDIAN);
 		} catch (FileNotFoundException e) {
 			fail(e.getMessage());
