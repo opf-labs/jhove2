@@ -240,7 +240,8 @@ public class DROIDWrappedProduct
 	    	identificationFile.setIDStatus(JHOVE2IAnalysisController.FILE_CLASSIFICATION_NOTCLASSIFIED);
 		}
         finally{
-            byteReader.close();
+            if (byteReader != null)
+                byteReader.close();
         }
         return identificationFile;
     }
