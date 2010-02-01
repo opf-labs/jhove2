@@ -44,6 +44,7 @@ import java.util.TreeSet;
 
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.TimerInfo;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractModule;
@@ -58,12 +59,12 @@ import org.jhove2.module.AbstractModule;
  */
 public class AggrefierModule
 	extends AbstractModule 
-	implements AggregateIdentifier
+	implements Aggrefier
 {
 	/** Identification module version identifier. */
 	public static final String VERSION = "1.0.0";
 	/** Identification module release date. */
-	public static final String RELEASE = "2010-01-25";
+	public static final String RELEASE = "2010-02-01";
 	/** Identification module rights statement. */
 	public static final String RIGHTS = "Copyright 2010 by The Regents of the University of California, "
 		+ "Ithaka Harbors, Inc., and The Board of Trustees of the Leland "
@@ -73,7 +74,7 @@ public class AggrefierModule
 	/** list of configured AggregateIdentifiers that can detect instances 
 	 * of an aggregate format.  Each identifier recognizes exactly one format.
      */
-	protected List<AggregateIdentifier> recognizers;
+	protected List<Recognizer> recognizers;
 
 	/**
 	 * Instantiate a new <code>AggrefierModule</code>.
@@ -81,7 +82,6 @@ public class AggrefierModule
 	public AggrefierModule() {
 		super(VERSION, RELEASE, RIGHTS, Scope.Generic);
 	}
-
 	
 	/**
 	 * Detect presumptive instances of a clump format in a source unit, and identify
@@ -95,7 +95,7 @@ public class AggrefierModule
 	 * @throws IOException
 	 *             I/O exception encountered identifying the source unit
 	 * @throws JHOVE2Exception
-	 * @see org.jhove2.module.identify.AggregateIdentifier#identify(org.jhove2.core.JHOVE2,
+	 * @see org.jhove2.module.identify.Aggrefier#identify(org.jhove2.core.JHOVE2,
 	 *      org.jhove2.core.source.Source)
 	 */
 	@Override
@@ -104,28 +104,29 @@ public class AggrefierModule
 	{
 		Set<ClumpSource> clumpSources = 
 			new TreeSet<ClumpSource>();
-		for (AggregateIdentifier recognizer:this.recognizers) {	
-			recognizer.getTimerInfo().setStartTime();
+		for (Recognizer recognizer:this.recognizers) {	
+			TimerInfo info = recognizer.getTimerInfo();
+			info.setStartTime();
 			clumpSources.addAll((Collection<? extends ClumpSource>) recognizer.identify(jhove2, source));
-			recognizer.getTimerInfo().setEndTime();
-			jhove2.addModule(recognizer);
+			info.setEndTime();
 		}	
 		return clumpSources;
 	}
 
 	/**
 	 * Accessor for clump format instance identifiers
-	 * @return
+	 * @return Aggregate recognizers
 	 */
-	public List<AggregateIdentifier> getRecognizers() {
-		return recognizers;
+	@Override
+	public List<Recognizer> getRecognizers() {
+		return this.recognizers;
 	}
 
 	/**
 	 * Mutator for clump format instance identifiers
 	 * @param recognizers
 	 */
-	public void setRecognizers(List<AggregateIdentifier> recognizers) {
+	public void setRecognizers(List<Recognizer> recognizers) {
 		this.recognizers = recognizers;
 	}
 

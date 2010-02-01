@@ -36,6 +36,7 @@
 package org.jhove2.module.identify;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Set;
 
 import org.jhove2.core.JHOVE2;
@@ -60,7 +61,7 @@ public class AggrefierCommand
 	public static final String VERSION = "0.5.4";
 	
 	/** Identification module release date. */
-	public static final String RELEASE = "2010-01-26";
+	public static final String RELEASE = "2010-02-01";
 	
 	/** Identification module rights statement. */
 	public static final String RIGHTS = "Copyright 2010 by The Regents of the University of California, "
@@ -90,10 +91,14 @@ public class AggrefierCommand
 	{
 		if (source instanceof AggregateSource){
 			try {
-				AggregateIdentifier aggrefier = 
-					ReportableFactory.getReportable(AggregateIdentifier.class,
+				Aggrefier aggrefier = 
+					ReportableFactory.getReportable(Aggrefier.class,
 							                       "AggrefierModule");
 				this.addModule(aggrefier);
+				List<Recognizer> recognizers = aggrefier.getRecognizers();
+				for (Recognizer recognizer : recognizers) {
+					this.addModule(recognizer);
+				}
 				TimerInfo timer = aggrefier.getTimerInfo();
 				timer.setStartTime();
 				try {

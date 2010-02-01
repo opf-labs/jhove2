@@ -208,7 +208,7 @@ public class JHOVE2
 	 * @return Generic modules
 	 */
 	@ReportableProperty(order = 4, value = "Framework generic modules.")
-	public List<Module> getModules() {
+	public List<Module> getGenericModules() {
 		return this.modules;
 	}
 

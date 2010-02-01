@@ -64,7 +64,7 @@
 			</list>
 		</property>
 		<property name="recognizers">
-			<list value-type="org.jhove2.module.identify.AggregateIdentifier">
+			<list value-type="org.jhove2.module.identify.Recognizer">
 				<ref bean="ShapeFileRecognizer"/>
 			</list>
 		</property>

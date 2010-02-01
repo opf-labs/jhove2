@@ -109,7 +109,7 @@ public interface Source
 	 * 
 	 * @return Child source units
 	 */
-	@ReportableProperty(order = 3, value = "Child source units.")
+	@ReportableProperty(order = 4, value = "Child source units.")
 	public List<Source> getChildSources();
 
 	/**
@@ -171,7 +171,7 @@ public interface Source
 	 * 
 	 * @return Modules that processed the source unit
 	 */
-	@ReportableProperty(order = 1, value = "Modules that processed the source unit")
+	@ReportableProperty(order = 2, value = "Modules that processed the source unit")
 	public List<Module> getModules();
 
 	/**
@@ -179,7 +179,7 @@ public interface Source
 	 * 
 	 * @return Number of child source units
 	 */
-	@ReportableProperty(order = 2, value = "Number of child source units.")
+	@ReportableProperty(order = 3, value = "Number of child source units.")
 	public int getNumChildSources();
 
 	/**
@@ -193,14 +193,14 @@ public interface Source
 	 * Get list of presumptive formats for the source unit.
 	 * @return List of presumptive formats
 	 */
-	@ReportableProperty(order = 3, value="Presumptive formats for the source.")
+	@ReportableProperty(order = 1, value="Presumptive formats for the source.")
 	public Set<FormatIdentification> getPresumptiveFormats();
 	
 	/**
 	 * Get elapsed time processing this source unit.
 	 * @return Elapsed time
 	 */
-	@ReportableProperty(order = 4, value="Timer info for this Source.")
+	@ReportableProperty(order = 5, value="Timer info for this Source.")
 	public TimerInfo getTimerInfo();
 	
 	/**

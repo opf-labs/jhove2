@@ -60,13 +60,13 @@ import org.jhove2.module.AbstractModule;
  */
 public class GlobPathRecognizer
 	extends AbstractModule
-	implements AggregateIdentifier
+	implements Recognizer
 {
 	/** Identification module version identifier. */
 	public static final String VERSION = "1.0.0";
 
 	/** Identification module release date. */
-	public static final String RELEASE = "2010-01-25";
+	public static final String RELEASE = "2010-02-01";
 
 	/** Identification module rights statement. */
 	public static final String RIGHTS = "Copyright 2010 by The Regents of the University of California, "
@@ -74,10 +74,11 @@ public class GlobPathRecognizer
 		+ "Stanford Junior University. "
 		+ "Available under the terms of the BSD license.";
 
+	/** Aggrgate identification confidence. */
 	public static final Confidence GLOB_PATH_CONFIDENCE = Confidence.Tentative;
 
 	/** Format which this recognizer can detect*/
-	protected I8R formatIdentifier;
+	protected I8R format;
 
 	/** String containing regular expression to group candidate files */
 	protected String fileGroupingExpr;
@@ -128,7 +129,7 @@ public class GlobPathRecognizer
 	
 	/**
 	 * Instantiate a new <code>FilePathGlobbingRecognizer</code>.
-	 * @param formatIdentifier Format which this class can recognize
+	 * @param format Format which this class can recognize
 	 * @param fileGroupingExpr  String containing regular expression to group candidate files
 	 * @param mustHaveExpr String containing regular expression to identify required candidate files
 	 * @param mayHaveExpr  String containing regular expression to identify optional candidate files
@@ -142,12 +143,12 @@ public class GlobPathRecognizer
 	 *                           mustHaveExpr in order for a set of Sources to be considered an 
 	 *                           instance of an aggregate Format.  Allows us to identify potentially 
 	 *                           defective instances
-	 * @param includedUnmatchedFromGroup boolean which indicates whether or not to include in a Source
+	 * @param includeUnmatchedFromGroup boolean which indicates whether or not to include in a Source
 	 *                           that is part of the FormatIdentification returned by this class any 
 	 *                           files which match the grouping expression, but do not match either 
 	 *                           mustHaveExpr or mayHaveExpr 
 	 */
-	public GlobPathRecognizer(I8R formatIdentifier, String fileGroupingExpr,
+	public GlobPathRecognizer(I8R format, String fileGroupingExpr,
 			String mustHaveExpr, String mayHaveExpr, 
 			int fileGroupingCaptureGroupIndex,
 			int mustHaveCaptureGroupIndex, 
@@ -155,7 +156,7 @@ public class GlobPathRecognizer
 			int minMustHavesToIdentify, 
 			boolean includeUnmatchedFromGroup) {
 		this();
-		this.formatIdentifier = formatIdentifier;
+		this.format = format;
 		this.fileGroupingExpr = fileGroupingExpr;
 		this.mustHaveExpr = mustHaveExpr;
 		this.mayHaveExpr = mayHaveExpr;
@@ -166,12 +167,15 @@ public class GlobPathRecognizer
 		this.includeUnmatchedFromGroup = includeUnmatchedFromGroup;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.jhove2.module.identify.Identifier#identify(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
+	/** Aggregate identification of the source unit.
+	 * @param jhove2 JHOVE2 core framework
+	 * @param source Source unit
+	 * @return Recognized clump source units
+	 * @see org.jhove2.module.identify.Aggrefier#identify(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
 	 */
 	@Override
 	public Set<ClumpSource> identify(JHOVE2 jhove2, Source source)
-	throws IOException, JHOVE2Exception {
+		throws IOException, JHOVE2Exception {
 		Set<ClumpSource> clumpSources = 
 			new TreeSet<ClumpSource>();
 		this.compilePatterns();
@@ -274,7 +278,7 @@ public class GlobPathRecognizer
 		FormatIdentification fi = null;
 		ClumpSource clumpSource = null;
 		if (fileGroup.getMustHaveCount() >= this.minMustHavesToIdentify){
-			fi = new FormatIdentification(this.formatIdentifier, GLOB_PATH_CONFIDENCE, 
+			fi = new FormatIdentification(this.format, GLOB_PATH_CONFIDENCE, 
 					this.getReportableIdentifier());
 			clumpSource = new ClumpSource();
 			clumpSource.addPresumptiveFormat(fi);
@@ -287,6 +291,7 @@ public class GlobPathRecognizer
 		}
 		return clumpSource;
 	}
+	
 	/**
 	 * Compiles regular expression patterns used in globbing
 	 * @throws JHOVE2Exception
@@ -319,20 +324,23 @@ public class GlobPathRecognizer
 		}
 		return;
 	}
+	
 	/**
 	 * Get identification for  Format which this recognizer can detect
 	 * @return Format which this recognizer can detect
 	 */
 	public I8R getFormatIdentifier() {
-		return formatIdentifier;
+		return format;
 	}
+	
 	/**
 	 * Sets identification for Format which this recognizer can detect
-	 * @param Format which this recognizer can detect
+	 * @param format Format which this recognizer can detect
 	 */
-	public void setFormatIdentifier(I8R formatIdentifier) {
-		this.formatIdentifier = formatIdentifier;
+	public void setFormatIdentifier(I8R format) {
+		this.format = format;
 	}
+	
 	/**
 	 * Get String containing regular expression to group candidate files
 	 * @return String containing regular expression to group candidate files
@@ -340,41 +348,47 @@ public class GlobPathRecognizer
 	public String getFileGroupingExpr() {
 		return fileGroupingExpr;
 	}
+	
 	/**
 	 * Set String containing regular expression to group candidate files
-	 * @param String containing regular expression to group candidate files
+	 * @param groupingExpr Regular expression to group candidate files
 	 */
 	public void setFileGroupingExpr(String groupingExpr) {
 		this.fileGroupingExpr = groupingExpr;
 	}
+	
 	/**
 	 * Get String containing regular expression to identify required candidate files
-	 * @return String containing regular expression to identify required candidate files
+	 * @return Regular expression to identify required candidate files
 	 */
 	public String getMustHaveExpr() {
 		return mustHaveExpr;
 	}
+	
 	/**
 	 * Sets String containing regular expression to identify required candidate files
-	 * @param String containing regular expression to identify required candidate files
+	 * @param mustHaveExpr Regular expression to identify required candidate files
 	 */
 	public void setMustHaveExpr(String mustHaveExpr) {
 		this.mustHaveExpr = mustHaveExpr;
 	}
+	
 	/**
 	 * Gets String containing regular expression to identify optional candidate files
-	 * @return String containing regular expression to identify optional candidate files
+	 * @return Regular expression to identify optional candidate files
 	 */
 	public String getMayHaveExpr() {
 		return mayHaveExpr;
 	}
+	
 	/**
 	 * Sets String containing regular expression to identify optional candidate files
-	 * @param String containing regular expression to identify optional candidate files
+	 * @param mayHaveExpr Regular expression to identify optional candidate files
 	 */
 	public void setMayHaveExpr(String mayHaveExpr) {
 		this.mayHaveExpr = mayHaveExpr;
 	}
+	
 	/**
 	 * Get minimum number of files that must match the mustHaveExpr in order for 
 	 * a set of Sources to be considered an instance of an aggregate Format.  
@@ -385,6 +399,7 @@ public class GlobPathRecognizer
 	public int getMinMustHavesToIdentify() {
 		return minMustHavesToIdentify;
 	}
+	
 	/**
 	 * Sets minimum number of files that must match the mustHaveExpr in order for 
 	 * a set of Sources to be considered an instance of an aggregate Format.  
@@ -395,6 +410,7 @@ public class GlobPathRecognizer
 	public void setMinMustHavesToIdentify(int minMustHavesToIdentify) {
 		this.minMustHavesToIdentify = minMustHavesToIdentify;
 	}
+	
 	/**
 	 * Get indicator as to whether or not to include in the Source that is part of the 
 	 *  FormatIdentification returned by this class any files which match the grouping expression, 
@@ -405,6 +421,7 @@ public class GlobPathRecognizer
 	public boolean isIncludeUnmatchedFromGroup() {
 		return includeUnmatchedFromGroup;
 	}
+	
 	/**
 	 * Sets indicator as to whether or not to include in the Source that is part of the 
 	 *  FormatIdentification returned by this class any files which match the grouping expression, 
@@ -415,6 +432,7 @@ public class GlobPathRecognizer
 	public void setIncludeUnmatchedFromGroup(boolean includeUnmatchedFromGroup) {
 		this.includeUnmatchedFromGroup = includeUnmatchedFromGroup;
 	}
+	
 	/**
 	 *  Gets capture group index in fileGroupingToken which captures the part of
 	 *  the file path which we will be comparing for "must-have" files 
@@ -433,6 +451,7 @@ public class GlobPathRecognizer
 	public void setMustHaveCaptureGroupIndex(int mustHaveCaptureGroupIndex) {
 		this.mustHaveCaptureGroupIndex = mustHaveCaptureGroupIndex;
 	}
+	
 	/**
 	 * Get capture group index in fileGroupingToken which captures the part of
 	 *  the file path which we will be comparing for "may-have" files 
@@ -442,6 +461,7 @@ public class GlobPathRecognizer
 	public int getMayHaveCaptureGroupIndex() {
 		return mayHaveCaptureGroupIndex;
 	}
+	
 	/**
 	 * Set capture group index in fileGroupingToken which captures the part of
 	 *  the file path which we will be comparing for "may-have" files 
@@ -451,6 +471,7 @@ public class GlobPathRecognizer
 	public void setMayHaveCaptureGroupIndex(int mayHaveCaptureGroupIndex) {
 		this.mayHaveCaptureGroupIndex = mayHaveCaptureGroupIndex;
 	}
+	
 	/**
 	 * Get capture group index in fileGroupingToken which captures the part of
 	 *  the file path which indicates related files 
@@ -460,6 +481,7 @@ public class GlobPathRecognizer
 	public int getFileGroupingCaptureGroupIndex() {
 		return fileGroupingCaptureGroupIndex;
 	}
+	
 	/**
 	 * Set capture group index in fileGroupingToken which captures the part of
 	 *  the file path which indicates related files
@@ -469,5 +491,4 @@ public class GlobPathRecognizer
 	public void setFileGroupingCaptureGroupIndex(int fileGroupingCaptureGroupIndex) {
 		this.fileGroupingCaptureGroupIndex = fileGroupingCaptureGroupIndex;
 	}
-
 }
