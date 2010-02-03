@@ -152,7 +152,7 @@ public class XmlModule extends BaseFormatModule implements Validator {
     protected List<ProcessingInstruction> processingInstructions = new ArrayList<ProcessingInstruction>();
 
     /** Data store for XML comment information captured during the parse. */
-    protected List<String> comments = new ArrayList<String>();
+    protected Comments comments = new Comments();
 
     /** The validation results. */
     protected ValidationResults validationResults = new ValidationResults();
@@ -281,7 +281,7 @@ public class XmlModule extends BaseFormatModule implements Validator {
      * @return list of XML comments
      */
     @ReportableProperty(order = 11, value = "List of Comments")
-    public List<String> getComments() {
+    public Comments getComments() {
         return comments;
     }
 
