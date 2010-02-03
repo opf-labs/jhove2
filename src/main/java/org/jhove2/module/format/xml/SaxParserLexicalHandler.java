@@ -91,7 +91,7 @@ public class SaxParserLexicalHandler extends DefaultHandler2 implements
      */
     @Override
     public void startEntity(String name) throws SAXException {
-        xmlModule.entityReferences.add(name);
+        xmlModule.entityReferences.tally(name);
     }
 
 }

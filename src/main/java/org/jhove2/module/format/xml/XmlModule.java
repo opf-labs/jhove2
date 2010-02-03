@@ -39,6 +39,7 @@ package org.jhove2.module.format.xml;
 import java.io.EOFException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -142,7 +143,7 @@ public class XmlModule extends BaseFormatModule implements Validator {
     protected List<Entity> entities = new ArrayList<Entity>();
 
     /** Data store for XML entity references captured during the parse. */
-    protected List<String> entityReferences = new ArrayList<String>();
+    protected EntityReferences entityReferences = new EntityReferences();
 
     /**
      * Data store for XML processing instruction information captured during the
@@ -260,8 +261,8 @@ public class XmlModule extends BaseFormatModule implements Validator {
      * @return list of XML entity references
      */
     @ReportableProperty(order = 9, value = "List of Entity References")
-    public List<String> getEntityReferences() {
-        return entityReferences;
+    public ArrayList<EntityReferences.EntityReference> getEntityReferences() {
+        return entityReferences.getEntityReferenceList();
     }
 
     /**
@@ -318,6 +319,7 @@ public class XmlModule extends BaseFormatModule implements Validator {
 
         /* Create the InputSource object containing the XML entity to be parsed */
         InputSource saxInputSource = new InputSource(source.getInputStream());
+        //TODO explore per-source-unit entity resolution
         /* Provide the path of the source file, in case relative paths need to be resolved */
         if (source.getFile() != null) {
             saxInputSource.setSystemId(source.getFile().getAbsolutePath());
