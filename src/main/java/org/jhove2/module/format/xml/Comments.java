@@ -70,7 +70,7 @@ public class Comments extends AbstractReportable {
     }
     
     /**
-     * Increment the count of references found for this entity.
+     * Add a new comment to the list.
      * 
      * @param comment the comment text
      */
@@ -78,8 +78,4 @@ public class Comments extends AbstractReportable {
         commentList.add(commentText);
      }
     
-
-
-
-
 }
