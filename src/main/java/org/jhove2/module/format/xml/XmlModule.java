@@ -37,13 +37,12 @@
 package org.jhove2.module.format.xml;
 
 import java.io.EOFException;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
+import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -55,6 +54,9 @@ import org.jhove2.core.Format;
 import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.Message;
+import org.jhove2.core.Message.Context;
+import org.jhove2.core.Message.Severity;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.BaseFormatModule;
@@ -86,7 +88,7 @@ public class XmlModule extends BaseFormatModule implements Validator {
     /**
      * The regular expression that identifies a numeric character reference
      */
-    private static final String NCR_REGEX = "&#[0-9]+;|&#[xX][0-9a-fA-F]+;";
+    private static final String NCR_REGEX = "&#([0-9]+|[xX][0-9a-fA-F]+);";
 
     /**
      * The compiled regular expression
@@ -163,14 +165,6 @@ public class XmlModule extends BaseFormatModule implements Validator {
     /** Data store for XML notation information captured during the parse. */
     protected List<Notation> notations = new ArrayList<Notation>();
 
-    // TODO implementing this would require wrapping the input stream and
-    // checking for &# in the source XML document
-    /**
-     * Data store for XML character reference information captured during the
-     * parse. [not implemented]
-     */
-    protected List<String> xmlCharacterReferences;
-
     /** Data store for XML entity declarations captured during the parse. */
     protected List<Entity> entities = new ArrayList<Entity>();
 
@@ -195,6 +189,10 @@ public class XmlModule extends BaseFormatModule implements Validator {
     /** The well formed status of the source unit. */
     protected boolean wellFormed = false;
 
+    /** Invalid character for encoding message. */
+    protected Message invalidCharacterForEncodingMessage;
+
+    
     /**
      * Sets the SaxParser object to be used for parsing the source unit.
      * 
@@ -261,31 +259,11 @@ public class XmlModule extends BaseFormatModule implements Validator {
     }
 
     /**
-     * Gets the list of XML notations.
-     * 
-     * @return list of XML notations
-     */
-    @ReportableProperty(order = 6, value = "List of Notations found in the XML document")
-    public List<Notation> getNotations() {
-        return notations;
-    }
-
-    /**
-     * Gets the list of XML character references.
-     * 
-     * @return list of XML character references
-     */
-    @ReportableProperty(order = 7, value = "List of Character References")
-    public List<String> getXmlCharacterReferences() {
-        return xmlCharacterReferences;
-    }
-
-    /**
      * Gets the list of XML entity declarations.
      * 
      * @return list of XML entity declarations
      */
-    @ReportableProperty(order = 8, value = "List of Entity Declarations")
+    @ReportableProperty(order = 6, value = "List of Entity Declarations")
     public List<Entity> getEntities() {
         return entities;
     }
@@ -295,17 +273,27 @@ public class XmlModule extends BaseFormatModule implements Validator {
      * 
      * @return list of XML entity references
      */
-    @ReportableProperty(order = 9, value = "List of Entity References")
+    @ReportableProperty(order = 7, value = "List of Entity References")
     public ArrayList<EntityReferences.EntityReference> getEntityReferences() {
         return entityReferences.getEntityReferenceList();
     }
 
     /**
-     * Gets the list of XML entity references.
+     * Gets the list of XML notations.
      * 
-     * @return list of XML entity references
+     * @return list of XML notations
      */
-    @ReportableProperty(order = 10, value = "List of Numeric Character References")
+    @ReportableProperty(order = 8, value = "List of Notations found in the XML document")
+    public List<Notation> getNotations() {
+        return notations;
+    }
+
+    /**
+     * Gets the list of XML Numeric Character References.
+     * 
+     * @return list of XML Numeric Character References
+     */
+    @ReportableProperty(order = 9, value = "List of Numeric Character References")
     public ArrayList<NumericCharacterReferences.NumericCharacterReference> getNumericCharacterReferences() {
         return numericCharacterReferences.getNumericCharacterReferenceList();
     }
@@ -315,7 +303,7 @@ public class XmlModule extends BaseFormatModule implements Validator {
      * 
      * @return list of XML processing instructions
      */
-    @ReportableProperty(order = 11, value = "List of Processing Instructions")
+    @ReportableProperty(order = 10, value = "List of Processing Instructions")
     public List<ProcessingInstruction> getProcessingInstructions() {
         return processingInstructions;
     }
@@ -325,7 +313,7 @@ public class XmlModule extends BaseFormatModule implements Validator {
      * 
      * @return list of XML comments
      */
-    @ReportableProperty(order = 12, value = "List of Comments")
+    @ReportableProperty(order = 11, value = "List of Comments")
     public Comments getComments() {
         return comments;
     }
@@ -335,7 +323,7 @@ public class XmlModule extends BaseFormatModule implements Validator {
      * 
      * @return validation results
      */
-    @ReportableProperty(order = 13, value = "Warning or error messages generated during XML Validation")
+    @ReportableProperty(order = 12, value = "Warning or error messages generated during XML Validation")
     public ValidationResults getValidationResults() {
         return validationResults;
     }
@@ -345,7 +333,7 @@ public class XmlModule extends BaseFormatModule implements Validator {
      * 
      * @return well-formedness status
      */
-    @ReportableProperty(order = 14, value = "XML well-formed status")
+    @ReportableProperty(order = 13, value = "XML well-formed status")
     public boolean isWellFormed() {
         return wellFormed;
     }
@@ -394,8 +382,8 @@ public class XmlModule extends BaseFormatModule implements Validator {
         catch (SAXException e) {
             throw new JHOVE2Exception("Could not parse the Source object", e);
         }
-        /* Do a separate parse to inventory stuff not obtainable from SAX parser */
-        parseAgain(jhove2, source);
+        /* Do a separate parse to inventory numeric character references */
+        parseNCRs(jhove2, source);
         return 0;
     }
 
@@ -403,9 +391,9 @@ public class XmlModule extends BaseFormatModule implements Validator {
      * In order to locate numeric character references (like the code for double
      * dagger = &#x2021; ), we need to do a separate parse of the source object.
      * The SAX2 parser does not provide a mechanism for getting at these markup
-     * constructs, which are not considered XML entities. The characters()
+     * constructs, which are not considered XML entities.  The characters()
      * method of the ContentHandler interface, translates these codes into
-     * unicode characters before placing the data in the buffer.
+     * Unicode characters before placing the data in the buffer.
      * 
      * @param jhove2
      *            the JHOVE2 framework
@@ -413,18 +401,26 @@ public class XmlModule extends BaseFormatModule implements Validator {
      *            the source object
      * 
      * @throws IOException
+     * @throws JHOVE2Exception 
      */
-    public void parseAgain(JHOVE2 jhove2, Source source) throws IOException {
+    public void parseNCRs(JHOVE2 jhove2, Source source) throws IOException, JHOVE2Exception {
         /* Get a CharSequence object that can be analyzed */
         Invocation config = jhove2.getInvocation();
         Input input = source.getInput(config.getBufferSize(), config
                 .getBufferType());
         ByteBuffer bbuf = input.getBuffer();
-        CharBuffer cbuf = Charset.forName("UTF-8").newDecoder().decode(bbuf);
-        /* Look for numeric character references */
-        Matcher ncrMatcher = NCR_PATTERN.matcher(cbuf);
-        while (ncrMatcher.find()) {
-            numericCharacterReferences.tally(ncrMatcher.group());
+        try {
+            CharBuffer cbuf = Charset.forName(xmlDeclaration.encoding).newDecoder().decode(bbuf);
+            /* Look for numeric character references */
+            Matcher ncrMatcher = NCR_PATTERN.matcher(cbuf);
+            while (ncrMatcher.find()) {
+                numericCharacterReferences.tally(ncrMatcher.group(1));
+            }
+        } catch (CharacterCodingException e) {
+            this.invalidCharacterForEncodingMessage = new Message(Severity.ERROR,
+                    Context.OBJECT, 
+                    "org.jhove2.module.format.xml.XmlModule.invalidCharacterForEncodingMessage");
+            
         }
     }
 

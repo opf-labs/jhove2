@@ -37,23 +37,26 @@
 package org.jhove2.module.format.xml;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.TreeMap;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.reportable.AbstractReportable;
 
 /**
- * A class to hold a sorted set of numeric character references and the counts of how many times 
- * each reference was found in the XML document.
+ * A class to hold a sorted set of numeric character references (NCRs) that are
+ * used to represent Unicode characters, and the counts of how many times each
+ * NCR reference was found in the XML document.
+ * 
+ * @see http://www.w3.org/International/questions/qa-escapes
+ * @see http://unicode.org/standard/principles.html#Assigning_Codes
  */
 public class NumericCharacterReferences extends AbstractReportable {
  
-    /** The de-duplicated set of numeric character references found in the XML document. */
-    TreeMap<String,NumericCharacterReference> numericCharacterReferenceMap = new TreeMap<String,NumericCharacterReference>();
+    /** The de-duplicated set of NCRs found in the XML document. */
+    TreeMap<Integer,NumericCharacterReference> numericCharacterReferenceMap = new TreeMap<Integer,NumericCharacterReference>();
     
     /**
-     * Get the numeric character references found during XML parsing.
+     * Get the NCRs found during XML parsing.
      * 
      * @return the numeric character references
      */
@@ -65,24 +68,25 @@ public class NumericCharacterReferences extends AbstractReportable {
     /**
      * Increment the instance count for this numeric character reference.
      * 
-     * @param name the numeric character reference code
+     * @param code the string representation of a character's unicode code point
      */
     public void tally(String code) {
-        NumericCharacterReference reference = numericCharacterReferenceMap.get(code);
+        Integer codePoint = Integer.decode(code.replace("x", "0x"));
+        NumericCharacterReference reference = numericCharacterReferenceMap.get(codePoint);
         if (reference != null) {
             reference.count++;
         } else {
-            numericCharacterReferenceMap.put(code, new NumericCharacterReference(code));
+            numericCharacterReferenceMap.put(codePoint, new NumericCharacterReference(codePoint));
         }
      }
     
      /**
-      * A nested class to contain a single numeric character reference and the count of its occurrences in the XML document
+      * A nested class to contain a single NCR code point and the count of its occurrences
       */
      public class NumericCharacterReference extends AbstractReportable  {
          
-         /** The numeric character reference markup construct. */
-         protected String code;
+         /** The integer representation of a Unicode character. */
+         protected Integer codePoint;
 
          /** The reference count. */
          protected Integer count;
@@ -90,23 +94,25 @@ public class NumericCharacterReferences extends AbstractReportable {
          /**
           * Instantiates a new numeric character reference.
           * 
-          * @param code the markup construct
-          * @param count the initial count
+          * @param codePoint the integer representation of a Unicode character
           */
-         public NumericCharacterReference(String code){
-             this.code = code;
+         public NumericCharacterReference(Integer codePoint){
+             this.codePoint = codePoint;
              this.count = 1;
          }
              
          /**
           * Gets the numeric character reference.
           * 
-          * @return the name
+          * @return the code point for the NCR
           */
-         @ReportableProperty(order = 1, value = "Numeric character reference code")
-         public String getCode() {
-            return code;
-        }
+         @ReportableProperty(order = 1, value = "Numeric character reference code point")
+         public String getCodePoint() {
+             //return Integer.toHexString(ucs);
+            //Formatter formatter = new Formatter();
+            //formatter.
+             return String.format("U+%04X", codePoint);
+         }
 
          /**
           * Gets the count.

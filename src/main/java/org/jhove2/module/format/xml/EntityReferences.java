@@ -37,7 +37,6 @@
 package org.jhove2.module.format.xml;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.TreeMap;
 
 import org.jhove2.annotation.ReportableProperty;
