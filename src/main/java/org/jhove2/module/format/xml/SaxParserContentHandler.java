@@ -118,8 +118,8 @@ public class SaxParserContentHandler extends DefaultHandler implements
     @Override
     public void startDocument() {
         if (locator2 != null) {
-            xmlModule.xmlDeclaration.encoding = locator2.getEncoding();
-            xmlModule.xmlDeclaration.version = locator2.getXMLVersion();
+            xmlModule.xmlDeclaration.encodingFromSAX2 = locator2.getEncoding();
+            xmlModule.xmlDeclaration.versionFromSAX2 = locator2.getXMLVersion();
         }
     }
 
@@ -138,10 +138,10 @@ public class SaxParserContentHandler extends DefaultHandler implements
         try {
             boolean isStandalone = xmlReader
                     .getFeature("http://xml.org/sax/features/is-standalone");
-            xmlModule.xmlDeclaration.standalone = (isStandalone) ? "yes" : "no";
+            xmlModule.xmlDeclaration.standaloneFromSAX2 = (isStandalone) ? "yes" : "no";
         }
         catch (SAXException e) {
-            xmlModule.xmlDeclaration.standalone = null;
+            xmlModule.xmlDeclaration.standaloneFromSAX2 = null;
         }
     }
 

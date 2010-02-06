@@ -85,16 +85,6 @@ public class XmlModule extends BaseFormatModule implements Validator {
     /** Module validation coverage. */
     public static final Coverage COVERAGE = Coverage.Inclusive;
     
-    /**
-     * The regular expression that identifies a numeric character reference
-     */
-    private static final String NCR_REGEX = "&#([0-9]+|[xX][0-9a-fA-F]+);";
-
-    /**
-     * The compiled regular expression
-     */
-    private static final Pattern NCR_PATTERN = Pattern.compile(NCR_REGEX);
-
     /** Source unit's validity status. */
     protected Validity isValid;
 
@@ -188,10 +178,6 @@ public class XmlModule extends BaseFormatModule implements Validator {
 
     /** The well formed status of the source unit. */
     protected boolean wellFormed = false;
-
-    /** Invalid character for encoding message. */
-    protected Message invalidCharacterForEncodingMessage;
-
     
     /**
      * Sets the SaxParser object to be used for parsing the source unit.
@@ -382,46 +368,20 @@ public class XmlModule extends BaseFormatModule implements Validator {
         catch (SAXException e) {
             throw new JHOVE2Exception("Could not parse the Source object", e);
         }
-        /* Do a separate parse to inventory numeric character references */
-        parseNCRs(jhove2, source);
-        return 0;
-    }
-
-    /**
-     * In order to locate numeric character references (like the code for double
-     * dagger = &#x2021; ), we need to do a separate parse of the source object.
-     * The SAX2 parser does not provide a mechanism for getting at these markup
-     * constructs, which are not considered XML entities.  The characters()
-     * method of the ContentHandler interface, translates these codes into
-     * Unicode characters before placing the data in the buffer.
-     * 
-     * @param jhove2
-     *            the JHOVE2 framework
-     * @param source
-     *            the source object
-     * 
-     * @throws IOException
-     * @throws JHOVE2Exception 
-     */
-    public void parseNCRs(JHOVE2 jhove2, Source source) throws IOException, JHOVE2Exception {
-        /* Get a CharSequence object that can be analyzed */
+        /* Get the input object */
         Invocation config = jhove2.getInvocation();
         Input input = source.getInput(config.getBufferSize(), config
                 .getBufferType());
-        ByteBuffer bbuf = input.getBuffer();
-        try {
-            CharBuffer cbuf = Charset.forName(xmlDeclaration.encoding).newDecoder().decode(bbuf);
-            /* Look for numeric character references */
-            Matcher ncrMatcher = NCR_PATTERN.matcher(cbuf);
-            while (ncrMatcher.find()) {
-                numericCharacterReferences.tally(ncrMatcher.group(1));
-            }
-        } catch (CharacterCodingException e) {
-            this.invalidCharacterForEncodingMessage = new Message(Severity.ERROR,
-                    Context.OBJECT, 
-                    "org.jhove2.module.format.xml.XmlModule.invalidCharacterForEncodingMessage");
-            
-        }
+        long start = 0L;
+        /* parse the XML declaration at the start of the document */
+        
+        /* Do a separate parse of the XML Declaration at the start of the document */
+        input.setPosition(start);
+        xmlDeclaration.parse(input);
+        /* Do a separate parse to inventory numeric character references */
+        input.setPosition(start);
+        numericCharacterReferences.parse(input, xmlDeclaration.encodingFromSAX2);
+        return 0;
     }
 
 }
