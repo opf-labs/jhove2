@@ -41,46 +41,41 @@ import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.reportable.AbstractReportable;
 
 /**
- * This class is used to hold information about a <i>processing instruction</i>
- * discovered during parsing of an XML instance.
- * <p>
- * Processing instructions allow documents to contain instructions for
- * applications. A processing instruction has the syntax &lt;?target value?&gt;.
- * </p>
- * <p>
- * The <i>target</i> identifies the application to which the instruction (the
- * value) is directed. The XML Notation mechanism may be used for formal
- * declaration of targets.
- * </p>
- * @author rnanders
- * @see <a href="http://www.w3.org/TR/REC-xml/#sec-pi">Extensible Markup Language (XML) 1.0 -- Processing Instructions</a>
- */
-public class ProcessingInstruction extends AbstractReportable {
+* This class is used to hold information about the <i>root element</i>
+* discovered during parsing of an XML instance.
+* @author rnanders
+*/
+
+public class RootElement extends AbstractReportable {
 
     /** The processing instruction target. */
-    protected String target;
+    protected String name;
 
     /** The processing instruction data. */
-    protected String data;
+    protected String namespace;
 
     /**
-     * Gets the processing instruction target.
+     * Gets the root element name.
      * 
-     * @return the processing instruction target
+     * @return the the root element name
      */
-    @ReportableProperty(order = 1, value = "Processing Instruction Target")
-    public String getTarget() {
-        return target;
+    @ReportableProperty(order = 1, value = "Root Element Name")
+    public String getName() {
+        return name;
     }
 
     /**
-     * Gets the processing instruction data.
+     * Gets the the root element namespace.
      * 
-     * @return the processing instruction data
+     * @return the root element namespace
      */
-    @ReportableProperty(order = 2, value = "Processing Instruction Data")
-    public String getData() {
-        return data;
+    @ReportableProperty(order = 2, value = "Root Element Namespace")
+    public String getNamespace() {
+        if ((namespace == null) || (namespace.length() < 1)) {
+            return "[noNamespace]";
+        } else {
+            return namespace;
+        }
     }
 
 }

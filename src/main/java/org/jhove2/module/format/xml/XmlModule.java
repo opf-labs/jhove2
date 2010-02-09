@@ -139,12 +139,15 @@ public class XmlModule extends BaseFormatModule implements Validator {
 
     /** The instance of a SAX2 XMLReader class used to parse XML instances. */
     protected SaxParser saxParser;
+    
+    /** The parser to be used for extracting numeric character references */
+    protected boolean ncrParser = false;
 
     /** Data store for XML declaration information captured during the parse. */
     protected XmlDeclaration xmlDeclaration = new XmlDeclaration();
 
-    /** The XML document's root element name. */
-    protected String rootElementName;
+    /** The XML document's root element. */
+    protected RootElement rootElement;
 
     /** A list of the documents document scope declarations. */
     protected List<DTD> dtds = new ArrayList<DTD>();
@@ -168,7 +171,7 @@ public class XmlModule extends BaseFormatModule implements Validator {
     protected List<ProcessingInstruction> processingInstructions = new ArrayList<ProcessingInstruction>();
 
     /** Data store for XML comment information captured during the parse. */
-    protected Comments comments = new Comments();
+    protected CommentInformation commentInformation = new CommentInformation();
 
     /** The validation results. */
     protected ValidationResults validationResults = new ValidationResults();
@@ -195,7 +198,12 @@ public class XmlModule extends BaseFormatModule implements Validator {
     public SaxParser getSaxParser() {
         return saxParser;
     }
-
+    
+    /** Sets the class name of the parser to be used for extracting numeric character references */
+    public void setNcrParser(boolean ncrParser) {
+        this.ncrParser = ncrParser;
+    }
+    
     /**
      * Gets the XML Declaration data.
      * 
@@ -211,9 +219,9 @@ public class XmlModule extends BaseFormatModule implements Validator {
      * 
      * @return root element name
      */
-    @ReportableProperty(order = 3, value = "Name of the document's root element")
-    public String getRootElementName() {
-        return rootElementName;
+    @ReportableProperty(order = 3, value = "The document's root element")
+    public RootElement getRootElement() {
+        return rootElement;
     }
 
     /**
@@ -292,8 +300,8 @@ public class XmlModule extends BaseFormatModule implements Validator {
      * @return list of XML comments
      */
     @ReportableProperty(order = 11, value = "List of Comments")
-    public Comments getComments() {
-        return comments;
+    public CommentInformation getCommentInformation() {
+        return commentInformation;
     }
 
     /**
@@ -371,8 +379,10 @@ public class XmlModule extends BaseFormatModule implements Validator {
         input.setPosition(start);
         xmlDeclaration.parse(input);
         /* Do a separate parse to inventory numeric character references */
-        input.setPosition(start);
-        numericCharacterReferences.parse(input, xmlDeclaration.encodingFromSAX2);
+        if (this.ncrParser) {
+            input.setPosition(start);
+            numericCharacterReferences.parse(input, xmlDeclaration.encodingFromSAX2);            
+        }
         return 0;
     }
 

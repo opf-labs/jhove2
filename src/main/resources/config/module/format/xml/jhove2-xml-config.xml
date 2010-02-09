@@ -21,6 +21,7 @@
 		</property>
 		<!-- Optionally provide an explicit specification of XML parser to be used -->
 		<property name="saxParser" ref="SaxParser" />
+		<property name="ncrParser" value="false"/>
 	</bean>
    
    	<!-- SAX Parser bean -->

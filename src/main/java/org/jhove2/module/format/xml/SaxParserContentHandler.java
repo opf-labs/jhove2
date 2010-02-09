@@ -160,13 +160,15 @@ public class SaxParserContentHandler extends DefaultHandler implements
     public void startElement(String uri, String localName, String qName,
             Attributes atts) throws SAXException {
         /* The first element we encounter is the root, so we save the name info */
-        if (xmlModule.rootElementName == null) {
+        if (xmlModule.rootElement == null) {
+            xmlModule.rootElement = new RootElement();
             if (qName.equals("")) {
-                xmlModule.rootElementName = localName;
+                xmlModule.rootElement.name = localName;
             }
             else {
-                xmlModule.rootElementName = qName;
+                xmlModule.rootElement.name = qName;
             }
+            xmlModule.rootElement.namespace = uri;
         }
         /* Check for schemaLocation or noNamespaceSchemaLocation attributes */
         if (atts != null) {

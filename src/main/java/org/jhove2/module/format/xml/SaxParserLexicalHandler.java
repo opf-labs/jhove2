@@ -70,7 +70,7 @@ public class SaxParserLexicalHandler extends DefaultHandler2 implements
      */
     @Override
     public void comment(char[] ch, int start, int length) throws SAXException {
-        xmlModule.comments.add(String.copyValueOf(ch, start, length));
+        xmlModule.commentInformation.add(String.copyValueOf(ch, start, length));
     }
 
     /**

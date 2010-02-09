@@ -44,10 +44,10 @@ import org.jhove2.core.reportable.AbstractReportable;
 /**
  * A class to hold a list of comment strings.
  */
-public class Comments extends AbstractReportable {
+public class CommentInformation extends AbstractReportable {
  
     /** The list of comment strings */
-    ArrayList<String> commentList = new ArrayList<String>();
+    ArrayList<String> comments = new ArrayList<String>();
     
     /**
      * Get the count of comment strings.
@@ -56,7 +56,7 @@ public class Comments extends AbstractReportable {
      */
     @ReportableProperty(order = 1, value = "Number of comments found during XML parsing")
      public int getCount() {
-        return commentList.size();
+        return comments.size();
     }  
     
     /**
@@ -65,8 +65,8 @@ public class Comments extends AbstractReportable {
      * @return list of comment text strings
      */
     @ReportableProperty(order = 2, value = "Comments found during XML parsing")
-     public ArrayList<String> getCommentList() {
-        return commentList;
+     public ArrayList<String> getComments() {
+        return comments;
     }
     
     /**
@@ -75,7 +75,7 @@ public class Comments extends AbstractReportable {
      * @param comment the comment text
      */
     public void add(String commentText) {
-        commentList.add(commentText);
+        comments.add(commentText);
      }
     
 }
