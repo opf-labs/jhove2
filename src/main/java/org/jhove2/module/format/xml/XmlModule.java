@@ -150,7 +150,7 @@ public class XmlModule extends BaseFormatModule implements Validator {
     protected List<DTD> dtds = new ArrayList<DTD>();
 
     /** Data store for XML namespace information captured during the parse. */
-    protected Map<String, Namespace> namespaces = new TreeMap<String, Namespace>();
+    protected NamespaceInformation namespaceInformation = new NamespaceInformation();
 
     /** Data store for XML notation information captured during the parse. */
     protected List<Notation> notations = new ArrayList<Notation>();
@@ -164,10 +164,7 @@ public class XmlModule extends BaseFormatModule implements Validator {
     /** Data store for XML entity references captured during the parse. */
     protected NumericCharacterReferences numericCharacterReferences = new NumericCharacterReferences();
 
-    /**
-     * Data store for XML processing instruction information captured during the
-     * parse.
-     */
+    /** Data store for XML processing instruction information captured during the parse. */
     protected List<ProcessingInstruction> processingInstructions = new ArrayList<ProcessingInstruction>();
 
     /** Data store for XML comment information captured during the parse. */
@@ -234,14 +231,9 @@ public class XmlModule extends BaseFormatModule implements Validator {
      * 
      * @return list of XML namespaces
      */
-    @ReportableProperty(order = 5, value = "List of XML Namespaces")
-    public ArrayList<Namespace> getNamespaces() {
-        if (namespaces != null) {
-            return new ArrayList<Namespace>(namespaces.values());
-        }
-        else {
-            return null;
-        }
+    @ReportableProperty(order = 5, value = "XML Namespace Information")
+    public NamespaceInformation getNamespaceInformation() {
+        return namespaceInformation;
     }
 
     /**

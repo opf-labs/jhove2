@@ -119,7 +119,7 @@ public class XmlDeclaration extends AbstractReportable {
     }
 
     /**
-     * Compares the value found by SAX2 and the value specified in the XML
+     * Compares the value found by SAX2 and the value explicitly specified in the XML
      * Declaration. <br />
      * 
      * <ul>
@@ -135,7 +135,7 @@ public class XmlDeclaration extends AbstractReportable {
      * @return the value
      */
     private String getValue(String valueFromSAX2, String valueDeclared) {
-        if (valueFromSAX2.equals(valueDeclared)) {
+        if (valueFromSAX2.equalsIgnoreCase(valueDeclared)) {
             return valueFromSAX2;
         }
         else if (valueDeclared == null) {

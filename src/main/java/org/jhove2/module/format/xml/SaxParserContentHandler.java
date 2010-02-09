@@ -37,6 +37,9 @@
 package org.jhove2.module.format.xml;
 
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.XMLReader;
 import org.xml.sax.ContentHandler;
@@ -59,7 +62,10 @@ import org.xml.sax.SAXException;
  */
 public class SaxParserContentHandler extends DefaultHandler implements
         ContentHandler {
-
+    
+    /** The namespace URI for schemaLocation and noNamespaceSchemaLocation attributes */
+    private static final String XSI_NAMESPACE = "http://www.w3.org/2001/XMLSchema-instance";
+    
     /** The XmlModule object that is invoking the parser. */
     private XmlModule xmlModule;
 
@@ -148,7 +154,7 @@ public class SaxParserContentHandler extends DefaultHandler implements
     /**
      * This event fires at the beginning of every element in the XML document.
      * In this application we are using the event to capture the root element's
-     * name
+     * name and schemaLocation or noNamespaceSchemaLocation attributes from any element
      */
     @Override
     public void startElement(String uri, String localName, String qName,
@@ -162,6 +168,12 @@ public class SaxParserContentHandler extends DefaultHandler implements
                 xmlModule.rootElementName = qName;
             }
         }
+        /* Check for schemaLocation or noNamespaceSchemaLocation attributes */
+        if (atts != null) {
+            String schemaLocation = atts.getValue(XSI_NAMESPACE, "schemaLocation");
+            String noNamespaceSchemaLocation = atts.getValue(XSI_NAMESPACE, "noNamespaceSchemaLocation");
+            xmlModule.namespaceInformation.parseSchemaLocation(schemaLocation, noNamespaceSchemaLocation);
+        }
     }
 
     /**
@@ -170,26 +182,7 @@ public class SaxParserContentHandler extends DefaultHandler implements
     @Override
     public void startPrefixMapping(String prefix, String uri)
             throws SAXException {
-        Map<String, Namespace> nsMap = this.xmlModule.namespaces;
-        /*
-         * Constructing a map key to ensure that unique combinations of prefix
-         * and URI are only listed one time
-         */
-        String key;
-        if (prefix.length() < 1) {
-            /* make sure the default namespace heads the list */
-            key = " " + uri;
-        }
-        else {
-            key = prefix + uri;
-        }
-        /* only add the prefix/URI combination if not already present */
-        if (!nsMap.containsKey(key)) {
-            Namespace ns = new Namespace();
-            ns.prefix = prefix;
-            ns.uri = uri;
-            nsMap.put(key, ns);
-        }
+        xmlModule.namespaceInformation.tallyDeclaration(uri, prefix);
     }
 
     /**
