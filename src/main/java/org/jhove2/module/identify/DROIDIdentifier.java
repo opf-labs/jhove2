@@ -37,9 +37,10 @@
 package org.jhove2.module.identify;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.Map.Entry;
@@ -50,7 +51,6 @@ import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.Format;
 import org.jhove2.core.FormatIdentification;
 import org.jhove2.core.I8R;
-import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
@@ -105,21 +105,6 @@ public class DROIDIdentifier
 	/** Bean name for bean for properties file mapping JHOVE2 format identifiers to JHOVE2 format bean names */
 	public static final String JHOVE2BEANMAP_BEANNAME = "FormatBeanMap";
 
-	/** Bean name for bean for properties file mapping PUIDs to JHOVE2 format identifiers */
-	public static final String DROIDCONFIG_BEANNAME = "DroidConfigMap";
-	
-	/** System property name for DROID home directory path */
-	public static final String DROID_HOME_ENV = "droid.home";
-
-	/** Default DROID directory name */
-	public static final String DEFAULT_DROID_DIRNAME = "droid";
-	
-	/** DROID configuration file name. */
-	public static final String PROP_CONFIG_FILE_NAME = "file.droid.config";
-		
-	/** DROID signature file name. */
-	public static final String PROP_SIG_FILE_NAME = "file.droid.sig";
-
 	/** File not identified message (returned by DROID). */
 	protected Message fileNotIdentifiedMessage;
 
@@ -129,14 +114,11 @@ public class DROIDIdentifier
 	/** File Error Message(returned by DROID). */
 	protected Message fileErrorMessage;
 
-	/** Path to directory containing DROID config and sig files */
-	private static String droidHomePath = null;
-
 	/** DROID Configuration file name */
-	private static String configFileName = null;
+	private String configFileName = null;
 	
 	/** DROID signature file name */
-	private static String sigFileName = null;
+	private String sigFileName = null;
 
 	private static ConcurrentMap<String, String> droidFilePaths;
 	
@@ -159,6 +141,17 @@ public class DROIDIdentifier
 		WrappedProduct droid = ReportableFactory.getReportable(WrappedProduct.class,
 				                                               "DROIDProduct");
 		this.setWrappedProduct(droid);
+	}
+	
+	/**Instantiate a new <code>DROIDIdentifier</code> module that wraps DROID.
+	 * @throws JHOVE2Exception 
+	 */
+	public DROIDIdentifier(String configFileName, String sigFileName)
+		throws JHOVE2Exception
+	{
+		this();
+		this.setConfigFileName(configFileName);
+		this.setSigFileName(sigFileName);
 	}
 	
 	/**
@@ -289,29 +282,6 @@ public class DROIDIdentifier
 		}
 		return cachedSigFile;
 	}
-
-	/**
-	 * Load DROID PUID to JHOVE2 Format Identifier map from properties file if map 
-	 * is not already populated and returns map; otherwise just returns map
-	 * @return DROID PUID to JHOVE2 Format Identifier map
-	 * @throws JHOVE2Exception
-	 */
-	public static ConcurrentMap<String,String> getPuidToJhoveIdOld()
-		throws JHOVE2Exception
-	{
-		if (puidToJhoveId == null){
-			ConcurrentHashMap<String, String> map = new ConcurrentHashMap<String, String>();
-			Properties props = null;
-			props = ReportableFactory.getProperties(PUIDMAP_BEANNAME);
-			Set<String> keys = props.stringPropertyNames();
-			for (String key : keys) {
-				String value = props.getProperty(key);
-				map.put(key, value);
-			}
-			puidToJhoveId = map;
-		}
-		return puidToJhoveId;
-	}
 	
     /**
      * Gets the mapping from DROID PUID to JHOVE2 Format Identifier. 
@@ -350,23 +320,6 @@ public class DROIDIdentifier
         }
         return puidToJhoveId;
     }
-
-    private static ConcurrentMap<String,String> getDroidFilePaths()
-		throws JHOVE2Exception
-	{
-		if (droidFilePaths == null){
-			ConcurrentHashMap<String, String> map = new ConcurrentHashMap<String, String>();
-			Properties props = null;
-			props = ReportableFactory.getProperties(DROIDCONFIG_BEANNAME);
-			Set<String> keys = props.stringPropertyNames();
-			for (String key : keys) {
-				String value = props.getProperty(key);
-				map.put(key, value);
-			}
-			droidFilePaths = map;
-		}
-		return droidFilePaths;
-	}
 
 	/**
 	 * Checks DROID file classification codes to see if DROID was able to match file
@@ -426,10 +379,12 @@ public class DROIDIdentifier
 
 	/** Get DROID configuration file path.
 	 * @return DROID configuration file path
+	 * @throws JHOVE2Exception 
 	 */
 	@ReportableProperty(order = 17, value = "DROID configuration file path.")
-	public String getConfigFilePath() {
-		return getDROIDHomePath().concat(getConfigFileName());
+	public String getConfigFilePath() throws JHOVE2Exception {
+		String path = getFilePathFromClasspath(this.getConfigFileName(), "DROID config file");
+		return path;
 	}
 	
 	/**
@@ -491,72 +446,39 @@ public class DROIDIdentifier
 
 	/** Get DROID signature file path.
 	 * @return DROID signature file path
+	 * @throws JHOVE2Exception 
 	 */
 	@ReportableProperty(order = 18, value = "DROID signature file path.")
-	public String getSigFilePath() {
-		return getDROIDHomePath().concat(getSigFileName());
+	public String getSigFilePath() throws JHOVE2Exception {
+		String path = getFilePathFromClasspath(this.getSigFileName(), "DROID signature file");
+		return path;
 	}
 	
-	/** Get DROID configuration file name.
-	 * @return DROID configuration file name
+	/**
+	 * Utility method to construct full path to a file on class path.  Used to locate DROID signature and configuration
+	 * files.  Assumes directory containing these files is on the classpath
+	 * @param fileName File to be found on class path
+	 * @param fileDescription descriptor of file to be used in any exception messages
+	 * @return String containing path to file
+	 * @throws JHOVE2Exception if file is not found or ClassLoader throws exception
 	 */
-	private static synchronized String getConfigFileName() {
-		if (configFileName == null){
-			try {
-				configFileName = getDroidFilePaths().get(PROP_CONFIG_FILE_NAME);
-			} catch (JHOVE2Exception e) {
-				;
+	public static String getFilePathFromClasspath(String fileName, String fileDescription)throws JHOVE2Exception {
+		URI fileURI = null;
+		try {
+			fileURI = ClassLoader.getSystemResource(fileName).toURI();
+			if (fileURI == null){
+				throw new JHOVE2Exception(fileDescription + " " + fileName
+						+ " not found on classpath");
 			}
 		}
-		return configFileName;
-	}
-
-	/** Get DROID home pathname.
-	 * @return Get DROID home pathname
-	 */
-	private static synchronized String getDROIDHomePath() {
-		if (droidHomePath == null){
-			String separator = System.getProperty("file.separator");
-			StringBuffer droidHome = new StringBuffer();
-			String dHome;
-			try {
-				dHome = getDroidFilePaths().get(DROID_HOME_ENV);
-			} catch (JHOVE2Exception e) {
-				dHome = null;
-			}	
-			if (dHome == null){				
-				dHome = Invocation.getJHOVE2HomeFromEnv(System.getProperties());	
-				droidHome.append(dHome);
-				if (dHome.lastIndexOf(separator) != dHome.length()-1){
-					droidHome.append(separator);
-				}
-				droidHome.append(DEFAULT_DROID_DIRNAME);
-				droidHome.append(separator);
-			}
-			else {
-				droidHome.append(dHome);
-				if (dHome.lastIndexOf(separator) != dHome.length()-1){
-					droidHome.append(separator);
-				}
-			}
-			droidHomePath = droidHome.toString();
-		}		
-		return droidHomePath;
-	}
-
-	/** Get DROID signature file name.
-	 * @return DROID signature file name;
-	 */
-	private static synchronized String getSigFileName() {
-		if (sigFileName == null){
-			try {
-				sigFileName = getDroidFilePaths().get(PROP_SIG_FILE_NAME);
-			} catch (JHOVE2Exception e) {
-				;
-			}
+		catch (URISyntaxException e){
+			throw new JHOVE2Exception("Exception thrown when attempting to find " + fileDescription 
+					+ " on classpath", e);
 		}
-		return sigFileName;
+		String path = fileURI.getPath();
+		return path;		
 	}
+
 
 	/** Set File Error message.
 	 * @param fileErrorMessage File Error message
@@ -586,5 +508,37 @@ public class DROIDIdentifier
 	@Override
 	public Identifier getFileSourceIdentifier() {
 		return this;
+	}
+
+	/**
+	 * Set the name of the config file
+	 * @param configFileName the configFileName to set
+	 */
+	public void setConfigFileName(String configFileName) {
+		this.configFileName = configFileName;
+	}
+
+	/**
+	 * Set the name of the signature file
+	 * @param sigFileName the sigFileName to set
+	 */
+	public void setSigFileName(String sigFileName) {
+		this.sigFileName = sigFileName;
+	}
+
+	/**
+	 * Return the name of the config file
+	 * @return the configFileName
+	 */
+	public String getConfigFileName() {
+		return configFileName;
+	}
+
+	/**
+	 * Return the name of the signature file
+	 * @return the sigFileName
+	 */
+	public String getSigFileName() {
+		return sigFileName;
 	}
 }

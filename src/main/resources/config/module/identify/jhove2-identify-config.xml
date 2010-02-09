@@ -32,6 +32,8 @@
 				<ref bean="StanfordAgent"/>
 			</list>
 		</property>
+		<property name="configFileName" value="DROID_config.xml"/>
+		<property name="sigFileName" value="DROID_SignatureFile_V20.xml"/>
 	</bean>
 	
 	<!-- DROID wrapped product bean -->
@@ -44,14 +46,6 @@
 	    <property name="authority" value="The National Archives (TNA), UK"/>
 	    <property name="openSource" value="true"/>
 	</bean>
-	      	
-    <!-- DROID PUID to JHOVE2 identifier properties bean -->
-		<util:properties id="DroidMap"	
- 		             location="classpath:properties/droid2jhove.properties"/>
-
-    <!-- DROID configuration files properties bean -->
-		<util:properties id="DroidConfigMap"	
-		             location="classpath:properties/droidconfig.properties"/>	
 	
 	<!-- Aggrefier module bean -->
 	<bean id="AggrefierModule" class="org.jhove2.module.identify.AggrefierModule"

@@ -41,6 +41,7 @@ import static org.junit.Assert.*;
 import javax.annotation.Resource;
 
 import org.jhove2.core.source.SourceFactory;
+import org.jhove2.module.identify.DROIDIdentifier;
 import org.jhove2.module.identify.DROIDWrappedProduct;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -57,7 +58,6 @@ import uk.gov.nationalarchives.droid.signatureFile.FileFormat;
 @ContextConfiguration(locations={"classpath*:**/ukDroid-config.xml"})
 public class DroidTest {
 	private DROIDWrappedProduct droid;
-	private String droidConfigDirPath;
 	private String configFileName;
 	private String sigFileName;
 	private String samplesDirPath;
@@ -69,11 +69,12 @@ public class DroidTest {
 	 * Test method for 
 	 */
 	@Test
-	public void testIdentify() {
-		String configFilePath = droidConfigDirPath.concat(configFileName);
-		String sigFilePath = droidConfigDirPath.concat(sigFileName);
+	public void testIdentify() {	
 		String sampleFilePath = samplesDirPath.concat(sampleFile);
-		try {		
+		try {	
+			String configFilePath = DROIDIdentifier.getFilePathFromClasspath(configFileName, "Droid config file");
+			String sigFilePath = DROIDIdentifier.getFilePathFromClasspath(sigFileName, "Droid signature file");
+			
 			droid = new DROIDWrappedProduct(configFilePath, sigFilePath);
 			IdentificationFile idf = droid.identify(sampleFilePath);
 			assertEquals(JHOVE2IAnalysisController.FILE_CLASSIFICATION_POSITIVE,
@@ -95,6 +96,8 @@ public class DroidTest {
 		}
 		// now try it on an input stream
 		try {		
+			String configFilePath = DROIDIdentifier.getFilePathFromClasspath(configFileName, "Droid config file");
+			String sigFilePath = DROIDIdentifier.getFilePathFromClasspath(sigFileName, "Droid signature file");
 			droid = new DROIDWrappedProduct(configFilePath, sigFilePath);			
 			IdentificationFile idf = droid.identify(SourceFactory.getSource(sampleFilePath));
 			assertEquals(JHOVE2IAnalysisController.FILE_CLASSIFICATION_POSITIVE,
@@ -115,17 +118,6 @@ public class DroidTest {
 			e.printStackTrace();
 		}
 	}
-
-
-	public String getDroidConfigDirPath() {
-		return droidConfigDirPath;
-	}
-
-	@Resource
-	public void setDroidConfigDirPath(String droidConfigDirPath) {
-		this.droidConfigDirPath = droidConfigDirPath;
-	}
-
 
 	public String getConfigFileName() {
 		return configFileName;

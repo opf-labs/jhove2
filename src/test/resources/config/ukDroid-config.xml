@@ -14,16 +14,16 @@
     	<property name="locations">
     		<list>
     			<value>properties/filepath.properties</value>
-    			<value>properties/droidconfig.properties</value>
     		</list>
     	</property>
     </bean>		
 			<!--  you will need to edit the droidConfigDirPath property to run on your machine -->
+			<!--
 	<bean id="droidConfigDirPath" class="java.lang.String" >
 	       <constructor-arg type="java.lang.String" 
 	        value="${dir.droid.config}"/>
-	</bean>   
-	
+	</bean>   	
+	-->
 	<bean id="configFileName" class="java.lang.String" >
 		<constructor-arg type="java.lang.String" 
 	        value="DROID_config.xml"/>

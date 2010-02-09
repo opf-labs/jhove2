@@ -168,7 +168,7 @@ public class MessageTest {
 				messageParms);
 		assertEquals(sb.toString(), message.getLocalizedMessageText());
 		
-		sb = new StringBuffer("DROID returns file-non-run message  ");
+		sb = new StringBuffer("DROID returns file-not-run message  ");
 		sb.append(msg);
 		message = new Message(Severity.ERROR,
 				Context.PROCESS,

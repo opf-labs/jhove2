@@ -23,16 +23,16 @@ public class AppConfigInfoTest {
 		config = new Invocation();
 	}
 
-	/**
-	 * Test method for {@link org.jhove2.core.Invocation#getJHOVE2Home()}.
-	 */
-	@Test
-	public void testGetJhove2Home() {
-		// test assumes we have  set JHOVE2 HOME env variable
-		String sep = System.getProperty("file.separator");
-		assertEquals(config.getWorkingDirectory().concat(sep).
-				concat("target").concat(sep).concat("classes"),
-				config.getJHOVE2Home());
-	}
+//	/**
+//	 * Test method for {@link org.jhove2.core.Invocation#getJHOVE2Home()}.
+//	 */
+//	@Test
+//	public void testGetJhove2Home() {
+//		// test assumes we have  set JHOVE2 HOME env variable
+//		String sep = System.getProperty("file.separator");
+//		assertEquals(config.getWorkingDirectory().concat(sep).
+//				concat("target").concat(sep).concat("classes"),
+//				config.getJHOVE2Home());
+//	}
 
 }

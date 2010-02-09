@@ -54,4 +54,12 @@ public class JHOVE2Exception extends Exception {
 	public JHOVE2Exception(String message, Throwable cause) {
 		super(message, cause);
 	}
+
+	/**
+	 * Instantiate a new <code>JHOVE2Exception</code>
+	 * @param message
+	 */
+	public JHOVE2Exception(String message) {
+		super(message);
+	}
 }
