@@ -46,6 +46,7 @@ import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.TimerInfo;
 import org.jhove2.core.app.AbstractApplication;
 import org.jhove2.core.app.Application;
+import org.jhove2.core.io.Input;
 import org.jhove2.core.io.Input.Type;
 import org.jhove2.core.reportable.ReportableFactory;
 import org.jhove2.core.source.Source;
@@ -160,7 +161,7 @@ public class JHOVE2CommandLine
     *  -i  Show the unique formal identifiers for all reportable properties in results.
     *  -k  Calculate message digests.
     *  -b size     I/O buffer size (default=131072)
-    *  -B scope     I/O buffer scope (default=Direct)
+    *  -B scope     I/O buffer type (default=Direct)
     *  -d format   Results format (default=Text)
     *  -f limit    Fail fast limit (default=0; no limit on the number of reported errors.
     *  -t temp     Temporary directory (default=java.io.tmpdir)
@@ -192,7 +193,7 @@ public class JHOVE2CommandLine
 		Invocation config = this.getInvocation();
 		
 		StringBuffer bufferTypeValues = new StringBuffer("");
-		for (Scope i : Scope.values()) {
+		for (Input.Type i : Input.Type.values()) {
 			if (i.ordinal() > 0)
 				bufferTypeValues.append("|");
 			bufferTypeValues.append(i.toString());
@@ -222,7 +223,7 @@ public class JHOVE2CommandLine
 		Parser.Option bufferTypeO =
 			parser.addHelp(parser.addStringOption('B', "bufferType"), 
     		               bufferTypeValues.toString(),
-    		               "I/O buffer scope (default=Direct)");
+    		               "I/O buffer type (default=Direct)");
 		Parser.Option displayerTypeO =
 			parser.addHelp(parser.addStringOption('d', "display"), 
     		               displayerValues.toString(),
@@ -249,6 +250,22 @@ public class JHOVE2CommandLine
 
         try {
             parser.parse(args);
+            /* Test for valid option values
+             */
+            if ((bufferType = (String)parser.getOptionValue(bufferTypeO)) != null) {
+                if (bufferTypeValues.indexOf(bufferType) == -1) 
+                    throw new Parser.IllegalOptionValueException(bufferTypeO, bufferType);
+                else
+                    config.setBufferType(Type.valueOf(bufferType));
+            }
+            if (( displayerType = (String)parser.getOptionValue(displayerTypeO)) != null) {
+                if (displayerValues.indexOf(displayerType) == -1)
+                    throw new Parser.IllegalOptionValueException(displayerTypeO, displayerType);
+                else
+                    this.setDisplayer(ReportableFactory.getReportable(Displayer.class,
+                                                                  displayerType));
+            }
+
             otherArgs = parser.getRemainingArgs();
 
             /* ensure there is at least one file in command line
