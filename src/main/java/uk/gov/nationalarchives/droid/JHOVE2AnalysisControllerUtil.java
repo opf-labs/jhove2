@@ -33,10 +33,12 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- * Created byfor JHOVE2 2009.09.12
+ * Created for JHOVE2 2009.09.12
  * from static methods in original uk.gov.nationalarchives.droid.AnalysisController
  * Please see the file DROID-LICENSE.txt in the JHOVE2 distribution for a complete statement
  *  of the BSD license rights governing the use of DROID source code.
+ *  
+ *  2010.02.09 S. Morrissey Modified to suppress re-write of DROID config file 
  */
 package uk.gov.nationalarchives.droid;
 
@@ -145,9 +147,10 @@ public class JHOVE2AnalysisControllerUtil {
 		}
 		return configFile;
 	}
-	
+
 	/**
 	 * Parses and loads the DROID signature file
+	 * Modified 2010.02.09 to supprress rewrite of config file
 	 * @param configFile ConfigurationFile object
 	 * @param theSigFileName  path to DROID signataure file
 	 * @return loaded FFSignatureFile object
@@ -176,17 +179,18 @@ public class JHOVE2AnalysisControllerUtil {
 			String successMessage = "The signature file " + theSigFileName + 
 			" was loaded with " + numXMLWarnings + " warnings";
 			String cmdlineMessage = numXMLWarnings + " warnings were found";
-			MessageDisplay.generalInformation(successMessage, cmdlineMessage);		}{
-				//update the configuration file to contain the details of this signature file
-				try {
-					configFile.saveConfiguration();
-				} catch (IOException e) {
-					MessageDisplay.generalWarning("Unable to save configuration updates");
-				}
-			}
+			MessageDisplay.generalInformation(successMessage, cmdlineMessage);		}
+//			{
+//				//update the configuration file to contain the details of this signature file
+//				try {
+//					configFile.saveConfiguration();
+//				} catch (IOException e) {
+//					MessageDisplay.generalWarning("Unable to save configuration updates");
+//				}
+//			}
 			return sigFile;
 	}
-	
+
 	/**
 	 * Checks that a file name corresponds to a file that exists and can be opened
 	 *
