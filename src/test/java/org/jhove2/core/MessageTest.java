@@ -128,7 +128,7 @@ public class MessageTest {
 				messageParms);
 		assertEquals(sb.toString(), message.getLocalizedMessageText());
 		
-		sb = new StringBuffer("DROID identifier warning message: ");
+		sb = new StringBuffer("DROID identification warning message: ");
 		String msg = "some DROID message";
 		sb.append(msg);
 		messageParms = new Object[]{msg};
