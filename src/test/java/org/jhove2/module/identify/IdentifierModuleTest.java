@@ -88,8 +88,8 @@ public class IdentifierModuleTest {
 			assertEquals(1, ids.size());
 			for (FormatIdentification fi : ids){
 				assertEquals(Confidence.PositiveSpecific, fi.getConfidence());
-				assertEquals(zipPuid, fi.getIdentification().getValue());
-				assertEquals(zipJhoveId, fi.getJhove2Identification().getValue());
+				assertEquals(zipPuid, fi.getNativeIdentifier().getValue());
+				assertEquals(zipJhoveId, fi.getJHOVE2Identifier().getValue());
 			}
 
 		} catch (Exception e) {

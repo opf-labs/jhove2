@@ -43,6 +43,7 @@ import java.io.InputStream;
 
 import javax.annotation.Resource;
 
+import org.jhove2.core.JHOVE2Exception;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -61,9 +62,10 @@ public class FileSourceTest {
 	private String testFile01;
 	/**
 	 * Test method for {@link org.jhove2.core.source.AbstractSource#getInputStream()}.
+	 * @throws JHOVE2Exception 
 	 */
 	@Test
-	public void testGetInputStream() {
+	public void testGetInputStream() throws JHOVE2Exception {
 		String filePath = testDir.concat(testFile01);
 		try {
 			Source source = SourceFactory.getSource(filePath);

@@ -137,30 +137,30 @@ public abstract class AbstractByteReader implements ByteReader {
     /// **************************** END ADDED FOR JHOVE2 *********************************************
     
     
-    /* Setters for identification status */
+    /* Setters for identifier status */
     /**
-     * Set identification status to Positive
+     * Set identifier status to Positive
      */
     public void setPositiveIdent() {
         this.myIDFile.setPositiveIdent();
     }
 
     /**
-     * Set identification status to Tentative
+     * Set identifier status to Tentative
      */
     public void setTentativeIdent() {
         this.myIDFile.setTentativeIdent();
     }
 
     /**
-     * Set identification status to No identification
+     * Set identifier status to No identifier
      */
     public void setNoIdent() {
         this.myIDFile.setNoIdent();
     }
 
     /**
-     * Set identification status to Error
+     * Set identifier status to Error
      */
     public void setErrorIdent() {
         this.myIDFile.setErrorIdent();
@@ -181,7 +181,7 @@ public abstract class AbstractByteReader implements ByteReader {
     }
 
     /**
-     * Set identification warning
+     * Set identifier warning
      *
      * @param theWarning the warning message to use
      */

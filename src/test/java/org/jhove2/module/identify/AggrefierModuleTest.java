@@ -106,7 +106,7 @@ public class AggrefierModuleTest {
 			for (ClumpSource clumpSource:clumpSources){
 				for (FormatIdentification fi:clumpSource.getPresumptiveFormats()){
 					assertEquals(fi.getConfidence(),GlobPathRecognizer.GLOB_PATH_CONFIDENCE);
-					I8R format = fi.getJhove2Identification();
+					I8R format = fi.getJHOVE2Identifier();
 					if (format.equals(strictShapeFileRecognizer.getFormatIdentifier())){
 						String sourceKey = getSourceKey(clumpSource);
 						assertTrue(shapeStrictKeyCountMap.containsKey(sourceKey));

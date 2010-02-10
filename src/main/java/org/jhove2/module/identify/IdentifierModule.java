@@ -54,7 +54,7 @@ import org.jhove2.core.source.ZipDirectorySource;
 import org.jhove2.module.AbstractModule;
 
 /**
- * JHOVE2 identification module for non-Clump sources
+ * JHOVE2 identifier module for non-Clump sources
  * @author mstrong, slabrams, smorrissey
  */
 public class IdentifierModule

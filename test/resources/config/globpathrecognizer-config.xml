@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:util="http://www.springframework.org/schema/util"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans 
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-2.5.xsd
+		   http://www.springframework.org/schema/util 
+		   http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+	<bean id="propertyConfigurer" 
+    	class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    	<property name="locations">
+    		<list>
+    			<value>properties/filepath.properties</value>
+    			<value>properties/droidconfig.properties</value>
+    		</list>
+    	</property>
+    </bean>
+    	
+	
+	<!--  JUNIT test parameter Beans -->
+	
+	<!--  you will need to edit the testDirPath property to run on your machine -->
+	<bean id="testDirPath" class="java.lang.String" >
+			<constructor-arg type="java.lang.String" 
+	        value="${dir.example.shapfiles}"/>
+	</bean>
+	
+	<bean id="testFileList" class="java.util.ArrayList">
+		<constructor-arg type="java.util.Collection">
+			<list>
+				<value>abc.dbf</value>
+				<value>abc.shp</value>
+				<value>abc.shp.xml</value>
+				<value>abc.shx</value>
+				<value>abc.zzz</value>
+				<value>def.dbf</value>
+				<value>def.shp</value>
+				<value>def.shx</value>
+				<value>ghi.dbf</value>
+				<value>ghi.shp</value>
+				<value>ghi.shp.xml</value>
+				<value>something-else.txt</value> <!--  will not be grouped; does not match grouping expression -->
+			</list>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="groupKeys" class="java.util.ArrayList">
+		<constructor-arg type="java.util.Collection">
+			<list>
+				<value>abc</value><!-- passes relaxed,passes strict (but not all files included in format Identification source) -->
+				<value>def</value><!-- passes relaxed, passes strict -->
+				<value>ghi</value><!-- passes relaxed, fails strict (missing required file extension) -->
+			</list>
+	 	</constructor-arg>
+	</bean> 
+
+	<bean id="expectedGroupCount" class="java.lang.Integer">
+		<constructor-arg type="java.lang.String" value="3"/>
+	</bean>
+	
+	<bean id="failStrictKeys" class="java.util.ArrayList">
+	<constructor-arg type="java.util.Collection">
+			<list>
+				<value>ghi</value><!-- passes relaxed, fails strict (missing required file extension) -->
+			</list>
+	 	</constructor-arg>
+	</bean>
+	
+	<bean id="failRelaxedKeys" class="java.util.ArrayList">
+		<constructor-arg type="java.util.Collection">
+			<list>
+			</list>
+	 	</constructor-arg>
+	</bean>
+	
+	<bean id="strictKeyCountMap" class="java.util.HashMap">
+		<constructor-arg type="java.util.Map">
+			<map>
+				<entry key="abc" value="4"/>
+				<entry key="def" value="3"/>
+			</map>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="relaxedKeyCountMap" class="java.util.HashMap">
+		<constructor-arg type="java.util.Map">
+			<map >
+				<entry key="abc" value="5"/>
+				<entry key="def" value="3"/>
+				<entry key="ghi" value="3"/>
+			</map>
+		</constructor-arg>
+	</bean>
+
+</beans>

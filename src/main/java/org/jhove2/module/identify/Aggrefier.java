@@ -39,7 +39,7 @@ package org.jhove2.module.identify;
 import java.util.List;
 
 /**
- * Interface for JHOVE2 aggregate identification modules, capable of
+ * Interface for JHOVE2 aggregate identifier modules, capable of
  * detecting instances of Clump formats
  * 
  * @author smmorrissey

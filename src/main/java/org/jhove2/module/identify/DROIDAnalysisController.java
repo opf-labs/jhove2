@@ -160,7 +160,7 @@ public class DROIDAnalysisController implements JHOVE2IAnalysisController {
 	}
 
 	/**
-	 * Add files to list of files ready for identification.
+	 * Add files to list of files ready for identifier.
 	 * Calls addFile(fileFolderName, false)
 	 *
 	 * @param fileFolderName file or folder to add to
@@ -170,7 +170,7 @@ public class DROIDAnalysisController implements JHOVE2IAnalysisController {
 	}
 
 	/**
-	 * Add file to list of files ready for identification.
+	 * Add file to list of files ready for identifier.
 	 * If the file is already in list, then does not add it.
 	 * If the file is a folder, then adds all files it contains.
 	 * If isRecursive is set to true, then it also searches recursively through any subfolders.
@@ -199,7 +199,7 @@ public class DROIDAnalysisController implements JHOVE2IAnalysisController {
 	 * Returns an identificationFile object based on its index in the list
 	 *
 	 * @param theIndex index of file in file collection
-	 * @return identification file
+	 * @return identifier file
 	 */
 	public IdentificationFile getFile(int theIndex) {
 		IdentificationFile theFile = null;
@@ -212,7 +212,7 @@ public class DROIDAnalysisController implements JHOVE2IAnalysisController {
 	}
 
 	/**
-	 * Returns the number of files in identification file list
+	 * Returns the number of files in identifier file list
 	 *
 	 * @return num of files
 	 */

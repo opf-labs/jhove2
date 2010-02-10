@@ -36,8 +36,13 @@
 
 package org.jhove2.module;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+
+import org.jhove2.core.I8R;
 
 /** Abstract {@link org.jhove2.module.Command}.
  * 
@@ -47,8 +52,11 @@ public abstract class AbstractCommand
 	extends AbstractModule
 	implements Command
 {
+    /** Identifiers of modules associated with the command. */
+    protected Set<String> identifiers;
+    
 	/** Modules associated with the command. */
-	protected Set<Module> modules;
+	protected List<Module> modules;
 	
 	/** Instantiate a new <code>AbstractCommand</code>. 
 	 * 	 * @param version
@@ -63,7 +71,9 @@ public abstract class AbstractCommand
 	public AbstractCommand(String version, String release, String rights,
 			               Scope scope) {
 		super(version, release, rights, scope);
-		this.modules = new HashSet<Module>();
+		
+		this.identifiers = new HashSet<String>();
+		this.modules     = new ArrayList<Module>();
 	}
 
 	/** Add module associated with the command.
@@ -72,7 +82,11 @@ public abstract class AbstractCommand
 	 */
 	@Override
 	public void addModule(Module module) {
-		this.modules.add(module);
+	    String identifier = module.getReportableIdentifier().toString();
+	    if (!this.identifiers.contains(identifier)) {
+	        this.identifiers.add(identifier);
+	        this.modules.add(module);
+	    }
 	}
 
 	/** Get modules associated with the command.
@@ -80,7 +94,7 @@ public abstract class AbstractCommand
 	 * @see org.jhove2.module.Command#getModules()
 	 */
 	@Override
-	public Set<Module> getModules() {
+	public List<Module> getModules() {
 		return this.modules;
 	}
 }

@@ -46,6 +46,7 @@ import java.util.Set;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.FormatIdentification;
+import org.jhove2.core.Message;
 import org.jhove2.core.TimerInfo;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.io.Input.Type;
@@ -75,6 +76,11 @@ public interface Source
 	 *            Child source unit
 	 */
 	public void addChildSource(Source child);
+	
+	/** Add a message to be associated with the source unit.
+	 * @param message Message to be associated with the source unit
+	 */
+	public void addMessage(Message message);
 
 	/**
 	 * Add a module that processed the source unit.
@@ -109,7 +115,7 @@ public interface Source
 	 * 
 	 * @return Child source units
 	 */
-	@ReportableProperty(order = 4, value = "Child source units.")
+	@ReportableProperty(order = 5, value = "Child source units.")
 	public List<Source> getChildSources();
 
 	/**
@@ -171,7 +177,7 @@ public interface Source
 	 * 
 	 * @return Modules that processed the source unit
 	 */
-	@ReportableProperty(order = 2, value = "Modules that processed the source unit")
+	@ReportableProperty(order = 3, value = "Modules that processed the source unit")
 	public List<Module> getModules();
 
 	/**
@@ -179,8 +185,14 @@ public interface Source
 	 * 
 	 * @return Number of child source units
 	 */
-	@ReportableProperty(order = 3, value = "Number of child source units.")
+	@ReportableProperty(order = 4, value = "Number of child source units.")
 	public int getNumChildSources();
+	
+	/** Get messages associated with the source unit.
+	 * @return Source unit messages
+	 */
+	@ReportableProperty(order = 2, value = "Source unit messages.")
+	public List<Message> getMessages();
 
 	/**
 	 * Get number of modules.
@@ -200,7 +212,7 @@ public interface Source
 	 * Get elapsed time processing this source unit.
 	 * @return Elapsed time
 	 */
-	@ReportableProperty(order = 5, value="Timer info for this Source.")
+	@ReportableProperty(order = 6, value="Timer info for this Source.")
 	public TimerInfo getTimerInfo();
 	
 	/**

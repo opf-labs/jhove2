@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:util="http://www.springframework.org/schema/util"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans 
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-2.5.xsd
+		   http://www.springframework.org/schema/util 
+		   http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+	
+	<bean id="propertyConfigurer" 
+    	class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    	<property name="locations">
+    		<list>
+    			<value>properties/filepath.properties</value>
+<!--    			<value>properties/droidconfig.properties</value>-->
+    		</list>
+    	</property>
+    </bean>
+		   
+
+	      
+	<!-- Aggrefier module bean -->
+	<bean id="TestAggrefier" class="org.jhove2.module.identify.AggrefierModule"
+	      scope="prototype">
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+				<ref bean="PorticoAgent"/>
+				<ref bean="StanfordAgent"/>
+			</list>
+		</property>
+		<property name="recognizers">
+			<list value-type="org.jhove2.module.identify.Identifier">
+				<ref bean="testStrictShapeFileRecognizer"/>
+				<ref bean="quickenFileRecognizer"/>
+			</list>
+		</property>
+	</bean>
+	      
+
+	
+	<!--  JUNIT test parameter Beans -->
+	
+	<!--  you will need to edit the testDirPath property to run on your machine -->
+	<bean id="shapeDirPath" class="java.lang.String" >
+	        <constructor-arg type="java.lang.String" 
+	        value="${dir.example.shapfiles}"/>
+	</bean>
+	
+	<bean id="shapeFileList" class="java.util.ArrayList">
+		<constructor-arg type="java.util.Collection">
+			<list>
+				<value>abc.dbf</value>
+				<value>abc.shp</value>
+				<value>abc.shp.xml</value>
+				<value>abc.shx</value>
+				<value>abc.zzz</value>
+				<value>def.dbf</value>
+				<value>def.shp</value>
+				<value>def.shx</value>
+				<value>ghi.dbf</value>
+				<value>ghi.shp</value>
+				<value>ghi.shp.xml</value>
+				<value>something-else.txt</value> <!--  will not be grouped; does not match grouping expression -->
+			</list>
+		</constructor-arg>
+	</bean>
+	
+	
+	<bean id="shapeStrictKeyCountMap" class="java.util.HashMap">
+		<constructor-arg type="java.util.Map">
+			<map>
+				<entry key="abc" value="4"/>
+				<entry key="def" value="3"/>
+			</map>
+		</constructor-arg>
+	</bean>
+	
+
+	
+	<bean id="quickenDirPath" class="java.lang.String" >
+		 <constructor-arg type="java.lang.String" 
+	        value="${dir.example.quicken}"/>
+	</bean>
+	
+		<bean id="quickenFileList" class="java.util.ArrayList">
+		<constructor-arg type="java.util.Collection">
+			<list>
+				<value>finances.idx</value>
+				<value>finances.idx.txt</value>
+				<value>finances.ptx</value>
+				<value>finances.qdf</value>
+				<value>finances.qel</value>
+				<value>finances.qph</value>
+			</list>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="quickenStrictKeyCountMap" class="java.util.HashMap">
+		<constructor-arg type="java.util.Map">
+			<map>
+				<entry key="finances" value="5"/>
+			</map>
+		</constructor-arg>
+	</bean>
+	
+		<bean id="emptyDirPath" class="java.lang.String" >
+		<constructor-arg type="java.lang.String" 
+	        value="${dir.example.empty}"/>
+	</bean>
+</beans>

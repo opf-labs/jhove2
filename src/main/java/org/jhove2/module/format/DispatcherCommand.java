@@ -110,28 +110,28 @@ public class DispatcherCommand extends AbstractCommand {
     @Override
     public void execute(JHOVE2 jhove2, Source source) throws JHOVE2Exception {
         /*
-         * Sometimes more than one format identification will match to the same
+         * Sometimes more than one format identifier will match to the same
          * JHOVE2 format; eliminate duplicates from list of JHOVE2 format
          * modules to be run, then dispatch to each format module.
          */
         HashMap<I8R, Format> jhoveFormats = new HashMap<I8R, Format>();
         for (FormatIdentification fid : source.getPresumptiveFormats()) {
             /*
-             * Make sure identification found a match for format in the JHOVE2
+             * Make sure identifier found a match for format in the JHOVE2
              * namespace.
              */
-            if (fid.getJhove2Identification() != null) {
+            if (fid.getJHOVE2Identifier() != null) {
                 /*
                  * Use the JHOVE2 format id to get bean name for format in
                  * Spring configuration file.
                  */
                 String beanName =
-                	getJhoveIdToBeanName().get(fid.getJhove2Identification().getValue());
+                	getJhoveIdToBeanName().get(fid.getJHOVE2Identifier().getValue());
                 if (beanName != null) {
                     Format format =
                     	ReportableFactory.getReportable(Format.class,
                     			                        beanName);
-                    jhoveFormats.put(fid.getJhove2Identification(), format);
+                    jhoveFormats.put(fid.getJHOVE2Identifier(), format);
                 }
             }
         }

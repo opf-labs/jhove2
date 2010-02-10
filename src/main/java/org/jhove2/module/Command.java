@@ -36,7 +36,7 @@
 
 package org.jhove2.module;
 
-import java.util.Set;
+import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2;
@@ -45,7 +45,7 @@ import org.jhove2.core.source.Source;
 
 /**
  * Command invoked by JHOVE2 application framework to characterize some aspect
- * of a {@link org.jhove2.core.source.Source}, for example, identification,
+ * of a {@link org.jhove2.core.source.Source}, for example, identifier,
  * format feature extraction/validation/profile validation, aggregate detection
  * and characterization, assessment, message digest calculation.
  * 
@@ -79,5 +79,5 @@ public interface Command
 	 * @return Modules associated with the command
 	 */
 	@ReportableProperty(value = "Modules associated with the command.")
-	public Set<Module> getModules();
+	public List<Module> getModules();
 }

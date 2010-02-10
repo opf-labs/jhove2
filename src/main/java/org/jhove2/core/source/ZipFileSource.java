@@ -55,7 +55,10 @@ import org.jhove2.module.digest.CRC32Digester;
  * 
  * @author mstrong, slabrams
  */
-public class ZipFileSource extends AbstractSource implements NamedSource {
+public class ZipFileSource
+    extends AbstractSource
+    implements NamedSource
+{
 	/** CRC message digest value recorded in the ZipEntry. */
 	protected long crc;
 	/** Zip file CRC-32 message digest. */

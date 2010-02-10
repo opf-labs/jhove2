@@ -49,7 +49,7 @@ import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractCommand;
 
 /**
- * Command to execute identification on AggregateSource objects, to detect any
+ * Command to execute identifier on AggregateSource objects, to detect any
  * presumptive {2link org.jhove2.core.source.ClumpSource} format instances
  * 
  * @author smorrissey
@@ -76,7 +76,7 @@ public class AggrefierCommand
 	}
 
 	/**
-	 * If Source is an aggregate source, invokes aggregate identification
+	 * If Source is an aggregate source, invokes aggregate identifier
 	 * to detect possible ClumpSource instances in the aggregate;
 	 * If any ClumpSources are found, performs call back to JHOVE2 framework
 	 * to characterize them
@@ -120,7 +120,7 @@ public class AggrefierCommand
 						 * results new possible clump sources.
 						 */
 						if (clumpSources.size()>0){
-							/* aggregate identification again on this source with
+							/* aggregate identifier again on this source with
 							 * its new child sources.
 							 */
 							clumpSources = aggrefier.identify(jhove2, source);

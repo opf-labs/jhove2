@@ -43,7 +43,11 @@ import java.util.List;
 import org.jhove2.core.Format;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.Message;
+import org.jhove2.core.Message.Context;
+import org.jhove2.core.Message.Severity;
 import org.jhove2.core.source.FileSetSource;
+import org.jhove2.core.source.FileSystemSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.BaseFormatModule;
 
@@ -54,20 +58,19 @@ import org.jhove2.module.format.BaseFormatModule;
  */
 public class FileSetModule
 	extends BaseFormatModule
-
 {
 	/** Pseudo-directory module version identifier. */
-	public static final String VERSION = "0.1.2";
+	public static final String VERSION = "0.1.3";
 
 	/** Pseudo-directory module release date. */
-	public static final String RELEASE = "2010-01-26";
+	public static final String RELEASE = "2010-02-09";
 
 	/** Pseudo-directory module rights statement. */
 	public static final String RIGHTS = "Copyright 2010 by The Regents of the University of California, "
 			+ "Ithaka Harbors, Inc., and The Board of Trustees of the Leland "
 			+ "Stanford Junior University. "
 			+ "Available under the terms of the BSD license.";
-
+	
 	/**
 	 * Instantiate a new <code>FileSetModule</code>.
 	 * 
@@ -101,6 +104,27 @@ public class FileSetModule
 		if (source instanceof FileSetSource) {
 			List<Source> children = ((FileSetSource) source).getChildSources();
 			for (Source src : children) {
+			    /* Make sure that the source unit exists and is readable before
+			     * trying to characterize it.
+			     */
+			    if (src instanceof FileSystemSource) {
+			        FileSystemSource fs = (FileSystemSource) src;
+			        String name = fs.getFileName();
+			        if (!fs.isExtant()) {
+			            source.addMessage(new Message(Severity.ERROR,
+			                Context.PROCESS,
+			                "org.jhove2.core.source.FileSetSource.FileNotFoundMessage",
+			                new Object[]{name}));
+			            continue;
+			        }
+			        else if (!fs.isReadable()) {
+			            source.addMessage(new Message(Severity.ERROR,
+                            Context.PROCESS,
+                            "org.jhove2.core.source.FileSetSource.FileNotReadableMessage",
+                            new Object[]{name}));
+			            continue;
+			        }
+			    }
 				jhove2.characterize(src);
 			}
 		}

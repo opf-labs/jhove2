@@ -14,7 +14,7 @@ import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractCommand;
 
 /**
- * {@link org.jhove2.module.Command} to perform identification on
+ * {@link org.jhove2.module.Command} to perform identifier on
  * {@link org.jhove2.core.source.Source}s.
  * Note that this module does not detect
  * {@link org.jhove2.core.source.ClumpSource} format instances. 
@@ -72,7 +72,7 @@ public class IdentifierCommand
 			}
 		}
 		catch (Exception e){
-			throw new JHOVE2Exception("failed to execute identification", e);
+			throw new JHOVE2Exception("failed to execute identifier", e);
 		}	
         return;
 	}

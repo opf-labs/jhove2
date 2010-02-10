@@ -74,7 +74,7 @@ public class GlobPathRecognizer
 		+ "Stanford Junior University. "
 		+ "Available under the terms of the BSD license.";
 
-	/** Aggrgate identification confidence. */
+	/** Aggrgate identifier confidence. */
 	public static final Confidence GLOB_PATH_CONFIDENCE = Confidence.Tentative;
 
 	/** Format which this recognizer can detect*/
@@ -167,7 +167,7 @@ public class GlobPathRecognizer
 		this.includeUnmatchedFromGroup = includeUnmatchedFromGroup;
 	}
 
-	/** Aggregate identification of the source unit.
+	/** Aggregate identifier of the source unit.
 	 * @param jhove2 JHOVE2 core framework
 	 * @param source Source unit
 	 * @return Recognized clump source units
@@ -326,7 +326,7 @@ public class GlobPathRecognizer
 	}
 	
 	/**
-	 * Get identification for  Format which this recognizer can detect
+	 * Get identifier for  Format which this recognizer can detect
 	 * @return Format which this recognizer can detect
 	 */
 	public I8R getFormatIdentifier() {
@@ -334,7 +334,7 @@ public class GlobPathRecognizer
 	}
 	
 	/**
-	 * Sets identification for Format which this recognizer can detect
+	 * Sets identifier for Format which this recognizer can detect
 	 * @param format Format which this recognizer can detect
 	 */
 	public void setFormatIdentifier(I8R format) {

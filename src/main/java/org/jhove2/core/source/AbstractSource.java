@@ -55,6 +55,7 @@ import java.util.TreeSet;
 
 import org.jhove2.core.FormatIdentification;
 import org.jhove2.core.Invocation;
+import org.jhove2.core.Message;
 import org.jhove2.core.TimerInfo;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.io.InputFactory;
@@ -81,33 +82,37 @@ public abstract class AbstractSource
 
 	/** Source unit backing file. */
 	protected File file;
-	
-	/**
-	 * Timer info  used to track elapsed time for running of this module
-	 */
-	protected TimerInfo timerInfo;
-	
+
 	/**
 	 * Source unit backing file temporary status: true if the source unit
 	 * backing file is a temporary file.
 	 */
 	protected boolean isTemp;
+	
+	/** Source unit messages. */
+	protected List<Message> messages;
 
 	/** Modules that processed the source unit. */
 	protected List<Module> modules;
 	
 	/** Presumptive identifications for the source unit. */
 	protected Set<FormatIdentification> presumptiveFormatIdentifications;
-
+    
+    /**
+     * Timer info  used to track elapsed time for running of this module
+     */
+    protected TimerInfo timerInfo;
+    
 	/**
 	 * Instantiate a new <code>AbstractSource</code>.
 	 */
 	protected AbstractSource() {
 		this.children        = new ArrayList<Source>();
 		this.deleteTempFiles = Invocation.DEFAULT_DELETE_TEMP_FILES;
+		this.messages        = new ArrayList<Message>();
 		this.modules         = new ArrayList<Module>();
-		this.timerInfo       = new TimerInfo();
 		this.presumptiveFormatIdentifications = new TreeSet<FormatIdentification>();
+        this.timerInfo       = new TimerInfo();
 	}
 
 	/**
@@ -153,6 +158,13 @@ public abstract class AbstractSource
 	public void addChildSource(Source child) {
 		this.children.add(child);
 	}
+	   
+    /** Add a message to be associated with the source unit.
+     * @param message Message to be associated with the source unit
+     */
+    public void addMessage(Message message) {
+        this.messages.add(message);
+    }
 
 	/**
 	 * Add a module that processed the source unit.
@@ -340,6 +352,14 @@ public abstract class AbstractSource
 		return new FileInputStream(this.file);
 	}
 
+	/** Get source unit messages.
+	 * @return Source unit messages
+	 */
+	@Override
+	public List<Message> getMessages() {
+	    return this.messages;
+	}
+	
 	/**
 	 * Get modules that processed the source unit.
 	 * 

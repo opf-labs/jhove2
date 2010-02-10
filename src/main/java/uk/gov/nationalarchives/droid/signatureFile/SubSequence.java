@@ -979,7 +979,7 @@ public class SubSequence extends SimpleElement {
      * between the leftmost and rightmost byte positions that are given.
      * returns the end position of the found sequence or -1 if it is not found
      *
-     * @param targetFile      The file that is being reviewed for identification
+     * @param targetFile      The file that is being reviewed for identifier
      * @param leftEndBytePos  leftmost position in file at which to search
      * @param rightEndBytePos rightmost postion in file at which to search
      * @param leftFrag        flag to indicate whether looking at left or right fragments

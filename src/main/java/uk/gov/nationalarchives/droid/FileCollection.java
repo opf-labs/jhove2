@@ -1,5 +1,5 @@
 /*
- * © The National Archives 2005-2006.  All rights reserved.
+ * ï¿½ The National Archives 2005-2006.  All rights reserved.
  * See Licence.txt for full licence details.
  *
  * Developed by:
@@ -212,7 +212,7 @@ public class FileCollection extends SimpleElement {
     }
 
     /**
-     * Add a new identification file to list (used when reading in an XML file collection file)
+     * Add a new identifier file to list (used when reading in an XML file collection file)
      *
      * @param theFile A new IdentificationFile object which will be populated from file
      */

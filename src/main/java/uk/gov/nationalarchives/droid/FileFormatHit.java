@@ -44,7 +44,7 @@ import uk.gov.nationalarchives.droid.signatureFile.FileFormat;
 import uk.gov.nationalarchives.droid.xmlReader.SimpleElement;
 
 /**
- * holds the description of a hit (format identification) on a file
+ * holds the description of a hit (format identifier) on a file
  *
  * @author Martin Waller
  * @version 4.0.0

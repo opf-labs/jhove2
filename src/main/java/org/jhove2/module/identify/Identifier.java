@@ -46,7 +46,7 @@ import org.jhove2.core.source.Source;
 import org.jhove2.module.Module;
 
 /**
- * Interface for JHOVE2 identification modules.
+ * Interface for JHOVE2 identifier modules.
  * 
  * @author mstrong, slabrams
  */

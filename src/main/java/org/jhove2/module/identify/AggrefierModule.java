@@ -50,7 +50,7 @@ import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractModule;
 
 /**
- * JHOVE2 aggregate identification module.
+ * JHOVE2 aggregate identifier module.
  * Identifies presumptive instances of Clump formats (e.g. ShapeFiles) in
  * an aggregate Source, and performs callback to JHOVE2 framework 
  * to characterize those Clump format instances

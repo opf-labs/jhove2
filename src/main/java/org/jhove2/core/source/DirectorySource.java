@@ -41,14 +41,17 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.JHOVE2Exception;
 
 /**
  * JHOVE2 file system directory source unit.
  * 
  * @author mstrong, slabrams
  */
-public class DirectorySource extends AbstractSource implements AggregateSource,
-		NamedSource {
+public class DirectorySource
+    extends AbstractSource
+    implements AggregateSource,	FileSystemSource
+{
 	/** Directory existence. */
 	protected boolean isExtant;
 
@@ -57,7 +60,7 @@ public class DirectorySource extends AbstractSource implements AggregateSource,
 
 	/** Directory name. */
 	protected String directoryName;
-
+    
 	/** Directory path. */
 	protected String path;
 
@@ -68,9 +71,12 @@ public class DirectorySource extends AbstractSource implements AggregateSource,
 	 *            Directory path name
 	 * @throws IOException
 	 * @throws FileNotFoundException
+	 * @throws JHOVE2Exception 
+	 * @throws JHOVE2Exception 
 	 */
-	public DirectorySource(String pathName) throws FileNotFoundException,
-			IOException {
+	public DirectorySource(String pathName)
+	    throws FileNotFoundException, IOException, JHOVE2Exception
+	{
 		this(new File(pathName));
 	}
 
@@ -81,8 +87,12 @@ public class DirectorySource extends AbstractSource implements AggregateSource,
 	 *            Java {@link java.io.File} representing a directory
 	 * @throws IOException
 	 * @throws FileNotFoundException
+	 * @throws JHOVE2Exception 
+	 * @throws JHOVE2Exception 
 	 */
-	public DirectorySource(File file) throws FileNotFoundException, IOException {
+	public DirectorySource(File file)
+	    throws FileNotFoundException, IOException, JHOVE2Exception
+	{
 		super(file);
 
 		this.directoryName = file.getName();
@@ -98,7 +108,7 @@ public class DirectorySource extends AbstractSource implements AggregateSource,
 			for (int i = 0; i < list.length; i++) {
 				Source source = SourceFactory.getSource(list[i]);
 				this.children.add(source);
-			}
+			} 
 		}
 	}
 
@@ -112,13 +122,13 @@ public class DirectorySource extends AbstractSource implements AggregateSource,
 	public String getFileName() {
 		return this.directoryName;
 	}
-
+    
 	/**
 	 * Get directory path.
 	 * 
 	 * @return Directory path
 	 */
-	@ReportableProperty(order = 2, value = "Directory path.")
+	@ReportableProperty(order = 1, value = "Directory path.")
 	public String getPath() {
 		return this.path;
 	}
@@ -128,8 +138,7 @@ public class DirectorySource extends AbstractSource implements AggregateSource,
 	 * 
 	 * @return True if directory exists
 	 */
-	@ReportableProperty(order = 4, value = "Directory existence: true if the "
-			+ "directory exists")
+	@Override
 	public boolean isExtant() {
 		return this.isExtant;
 	}
@@ -139,8 +148,7 @@ public class DirectorySource extends AbstractSource implements AggregateSource,
 	 * 
 	 * @return True if directory is readable
 	 */
-	@ReportableProperty(order = 5, value = "Directory readability: true if the "
-			+ "directory is readable.")
+	@Override
 	public boolean isReadable() {
 		return this.isReadable;
 	}

@@ -1,5 +1,5 @@
 /*
- * © The National Archives 2005-2006.  All rights reserved.
+ * ï¿½ The National Archives 2005-2006.  All rights reserved.
  * See Licence.txt for full licence details.
  *
  * Developed by:
@@ -58,7 +58,7 @@
  * *****************  Version 7  *****************
  * User: Walm         Date: 15/03/05   Time: 15:31
  * Updated in $/PRONOM4/FFIT_SOURCE
- * initialise identification warning
+ * initialise identifier warning
  *
  * *****************  Version 6  *****************
  * User: Walm         Date: 15/03/05   Time: 14:40
@@ -69,7 +69,7 @@
  * *****************  Version 5  *****************
  * User: Mals         Date: 14/03/05   Time: 18:09
  * Updated in $/PRONOM4/FFIT_SOURCE
- * return null identification status
+ * return null identifier status
  *
  * *****************  Version 4  *****************
  * User: Mals         Date: 14/03/05   Time: 15:07
@@ -135,9 +135,9 @@ public class IdentificationFile extends SimpleElement implements Comparable {
     }
 
     /**
-     * Set the file identification status.
+     * Set the file identifier status.
      *
-     * @param theStatus file identification status
+     * @param theStatus file identifier status
      */
     public void setIDStatus(int theStatus) {
         myIDStatus = theStatus;
@@ -165,16 +165,16 @@ public class IdentificationFile extends SimpleElement implements Comparable {
     }
 
     /**
-     * Sets the status to error during identification
+     * Sets the status to error during identifier
      */
     public void setErrorIdent() {
         myIDStatus = JHOVE2IAnalysisController.FILE_CLASSIFICATION_ERROR;
     }
 
     /**
-     * Set the file identification warning.
+     * Set the file identifier warning.
      *
-     * @param warning file identification warning
+     * @param warning file identifier warning
      */
     public void setWarning(String warning) {
         identificationWarning = warning;
@@ -262,7 +262,7 @@ public class IdentificationFile extends SimpleElement implements Comparable {
     }
 
     /**
-     * Returns the file classification found by the identification
+     * Returns the file classification found by the identifier
      * The options are setup as constants under Analysis Controller:
      * *FILE_CLASSIFICATION_POSITIVE
      * *FILE_CLASSIFICATION_TENTATIVE
@@ -277,7 +277,7 @@ public class IdentificationFile extends SimpleElement implements Comparable {
     }
 
     /**
-     * Returns the text description of the file classification found by the identification
+     * Returns the text description of the file classification found by the identifier
      * The options are setup as constants under Analysis Controller:
      * *FILE_CLASSIFICATION_POSITIVE_TEXT
      * *FILE_CLASSIFICATION_TENTATIVE_TEXT
@@ -323,7 +323,7 @@ public class IdentificationFile extends SimpleElement implements Comparable {
 
     /**
      * Returns a hit object associated with the file that has been run
-     * through the identification process
+     * through the identifier process
      *
      * @param theIndex
      * @return

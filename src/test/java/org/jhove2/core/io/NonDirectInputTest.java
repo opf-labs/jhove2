@@ -43,6 +43,7 @@ import java.io.PrintWriter;
 import java.nio.Buffer;
 import java.nio.ByteOrder;
 
+import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.io.Input.Type;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
@@ -75,7 +76,7 @@ public class NonDirectInputTest {
 	}
 
 	@Test
-	public void testGetInput() {
+	public void testGetInput() throws JHOVE2Exception {
 
 		try {
 			Source source = SourceFactory.getSource(testFile);

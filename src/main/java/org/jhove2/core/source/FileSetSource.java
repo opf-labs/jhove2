@@ -41,7 +41,10 @@ package org.jhove2.core.source;
  * 
  * @author mstrong, slabrams
  */
-public class FileSetSource extends AbstractSource implements AggregateSource {
+public class FileSetSource
+    extends AbstractSource
+    implements AggregateSource
+{
 	/**
 	 * Instantiate a new <code>FileSetSource</code>.
 	 */

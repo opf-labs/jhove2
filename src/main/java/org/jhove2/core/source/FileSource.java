@@ -42,6 +42,7 @@ import java.io.IOException;
 import java.util.Date;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.io.InputFactory;
 import org.jhove2.core.io.Input.Type;
@@ -53,7 +54,7 @@ import org.jhove2.core.io.Input.Type;
  */
 public class FileSource
 	extends AbstractSource
-	implements NamedSource
+	implements FileSystemSource
 {
 	/** File existence. */
 	protected boolean isExtant;
@@ -88,9 +89,11 @@ public class FileSource
 	 *             File not found
 	 * @throws IOException
 	 *             I/O exception instantiating source
+	 * @throws JHOVE2Exception 
 	 */
-	public FileSource(String pathName) throws FileNotFoundException,
-			IOException {
+	public FileSource(String pathName)
+	    throws FileNotFoundException, IOException, JHOVE2Exception
+	{
 		this(new File(pathName));
 	}
 
@@ -101,8 +104,11 @@ public class FileSource
 	 *            Java {@link java.io.File}
 	 * @throws IOException
 	 * @throws FileNotFoundException
+	 * @throws JHOVE2Exception 
 	 */
-	public FileSource(File file) throws FileNotFoundException, IOException {
+	public FileSource(File file)
+	    throws FileNotFoundException, IOException, JHOVE2Exception
+	{
 		super(file);
 
 		this.fileName = file.getName();
@@ -135,6 +141,16 @@ public class FileSource
 		return this.file;
 	}
 
+	/** Get file name.
+	 * @return File name
+     * @see org.jhove2.core.source.NamedSource#getFileName()
+	 */
+    @Override
+    public String getFileName()
+    {
+        return this.fileName;
+    }
+    
 	/**
 	 * Get {@link org.jhove2.core.io.Input} for the source unit.
 	 * 
@@ -158,55 +174,22 @@ public class FileSource
 		return input;
 	}
 
-	/**
-	 * Get file existence.
-	 * 
-	 * @return True if file exists
-	 */
-	@ReportableProperty(order = 5, value = "File existence: true if the file exists")
-	public boolean isExtant() {
-		return this.isExtant;
-	}
-
-	/**
-	 * Get file hiddeness.
-	 * 
-	 * @return True if file is hidden
-	 */
-	@ReportableProperty(order = 7, value = "File hiddeness: True if the file is "
-			+ "hidden")
-	public boolean isHidden() {
-		return this.isHidden;
-	}
-
-	/**
-	 * Get file last modified date.
-	 * 
-	 * @return File last modified date
-	 */
-	@ReportableProperty(order = 4, value = "File last modified date.")
-	public Date getLastModified() {
-		return this.lastModified;
-	}
-
-	/**
-	 * Get file name.
-	 * 
-	 * @return File name
-	 * @see org.jhove2.core.source.NamedSource#getFileName()
-	 */
-	@Override
-	@ReportableProperty(order = 1, value = "File name.")
-	public String getFileName() {
-		return this.fileName;
-	}
-
+    /**
+     * Get file last modified date.
+     * 
+     * @return File last modified date
+     */
+    @ReportableProperty(order = 3, value = "File last modified date.")
+    public Date getLastModified() {
+        return this.lastModified;
+    }
+    
 	/**
 	 * Get file path.
 	 * 
 	 * @return File path
 	 */
-	@ReportableProperty(order = 2, value = "File path.")
+	@ReportableProperty(order = 1, value = "File path.")
 	public String getPath() {
 		return this.path;
 	}
@@ -216,18 +199,38 @@ public class FileSource
 	 * 
 	 * @return File size, in bytes
 	 */
-	@ReportableProperty(order = 3, value = "File size, in bytes.")
+	@ReportableProperty(order = 2, value = "File size, in bytes.")
 	public long getSize() {
 		return this.size;
 	}
-	
+
+    /**
+     * Get file existence.
+     * 
+     * @return True if file exists
+     */
+    @Override
+    public boolean isExtant() {
+        return this.isExtant;
+    }
+
+    /**
+     * Get file hiddeness.
+     * 
+     * @return True if file is hidden
+     */
+    @ReportableProperty(order = 4, value = "File hiddeness: True if the file is "
+            + "hidden")
+    public boolean isHidden() {
+        return this.isHidden;
+    }
+
 	/**
 	 * Get file readability.
 	 * 
 	 * @return True if file is readable
 	 */
-	@ReportableProperty(order = 6, value = "File readability: true if the file is "
-			+ "readable.")
+    @Override
 	public boolean isReadable() {
 		return this.isReadable;
 	}
@@ -237,7 +240,7 @@ public class FileSource
 	 * 
 	 * @return True if file is special
 	 */
-	@ReportableProperty(order = 8, value = "File specialness: true if the file is "
+	@ReportableProperty(order = 5, value = "File specialness: true if the file is "
 			+ "special.")
 	public boolean isSpecial() {
 		return this.isSpecial;

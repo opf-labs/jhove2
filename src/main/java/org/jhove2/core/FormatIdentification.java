@@ -36,8 +36,6 @@
 
 package org.jhove2.core;
 
-
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,19 +43,26 @@ import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.reportable.AbstractReportable;
 
 /**
- * JHOVE2 presumptive format identification.
+ * JHOVE2 presumptive format identifier.
  * 
  * @author mstrong, slabrams, smorrissey
  */
-public class FormatIdentification extends AbstractReportable implements 
-		Comparable<FormatIdentification> {
+public class FormatIdentification
+    extends AbstractReportable
+    implements Comparable<FormatIdentification>
+{
 	/** Identification confidence levels. */
 	public enum Confidence {
-		Negative(6), Tentative(5), Heuristic(4), PositiveGeneric(3), PositiveSpecific(
-				2), Validated(1);
+		Negative        (6),
+		Tentative       (5), 
+		Heuristic       (4), 
+		PositiveGeneric (3),
+		PositiveSpecific(2),
+		Validated       (1);
 
 		/** Priority order. */
 		private int order;
+		
 		/**
 		 * Instantiate a new <code>Confidence</code> enum.
 		 * @param order
@@ -66,6 +71,7 @@ public class FormatIdentification extends AbstractReportable implements
 		private Confidence(int order) {
 			this.order = order;
 		}
+		
 		/**
 		 * Get priority order.
 		 * @return Priority order
@@ -74,86 +80,93 @@ public class FormatIdentification extends AbstractReportable implements
 			return this.order;
 		}
 	}
-	/** format identification returned by identifying module (might not be JHOVE2 namespace) */
-	protected I8R identification;
+	/** Format identifier native to the identification process, which may not
+	 *  be in the JHOVE2 namespace.
+	 */
+	protected I8R identifier;
 	
-	protected I8R jhove2Identification;
+	/** Canonical JHOVE2 identifier in the JHOVE2 namespace. */
+	protected I8R jhove2Identifier;
 	
 	/** Identification confidence level. */
 	protected Confidence confidence;
 
-
-	/** Identification product. 
-	 *  We'll need a instance with every invocation of this class, because these
-	 * identifiers are potentially stateful, unlike this class, which is effectively stateless */
+	/** Identifier for the product performing the identification process. */
 	protected I8R identifierProduct;
 
-	
-	/**
-	 * Messages associated with this identification
-	 */
+	/** Messages produced by the identification process. */
 	protected List<Message> messages;
 	
-	
 	/**
 	 * Instantiate a new <code>FormatIdentification</code>.
 	 * 
-	 * @param jhove2FormatId
-	 *            Presumptively identified format id (JHOVE2 namespace)
+	 * @param canonical
+	 *            Canonical format identifier in the JHOVE2 namespace
 	 * @param confidence
 	 *            Identification confidence level
 	 */
-	public FormatIdentification(I8R jhove2FormatId, Confidence confidence) {
-		this(jhove2FormatId, confidence, null, jhove2FormatId, null);
-	}
-
-	
-	/**
-	 * Instantiate a new <code>FormatIdentification</code>.
-	 * 
-	 * @param jhove2FormatId
-	 *            Presumptively identified format id (JHOVE2 namespace)
-	 * @param confidence
-	 *            Identification confidence level
-	 */
-	public FormatIdentification(I8R jhove2FormatId, Confidence confidence, I8R identifierProduct) {
-		this(jhove2FormatId, confidence, identifierProduct, jhove2FormatId, null);
+	public FormatIdentification(I8R canonical, Confidence confidence) {
+		this(canonical, confidence, null, canonical, null);
 	}
 	
 	/**
 	 * Instantiate a new <code>FormatIdentification</code>.
 	 * 
-	 * @param jhove2FormatId
-	 *            Presumptively identified format id (JHOVE2 namespace)
+	 * @param canonical
+	 *            Canonical format identifier in the JHOVE2 namespace
 	 * @param confidence
 	 *            Identification confidence level
-	 * @param process
-	 *            Identification process
+	 * @param product
+	 *            Identifier for the product performing the identification process
 	 */
-	public FormatIdentification(I8R jhove2FormatId, Confidence confidence,
-			I8R process, I8R id, List<Message> messages) {
-		this.jhove2Identification = jhove2FormatId;
+	public FormatIdentification(I8R canonical, Confidence confidence, I8R product) {
+		this(canonical, confidence, product, canonical, null);
+	}
+	
+	/**
+	 * Instantiate a new <code>FormatIdentification</code>.
+	 * 
+	 * @param canonical
+	 *            Canonical format identifier in the JHOVE2 namespace
+	 * @param confidence
+	 *            Identification confidence level
+	 * @param product
+	 *            Identifier of product performing the identification process
+	 * @param identifier
+	 *            Identifier native to the identification process
+	 * @param messages
+	 *            Messages produced by the identification process
+	 */
+	public FormatIdentification(I8R canonical, Confidence confidence,
+			I8R product, I8R identifier, List<Message> messages) {
+		this.jhove2Identifier = canonical;
 		this.confidence = confidence;
-		this.identifierProduct = process;
-		this.identification = id;
-		if (messages==null){
+		this.identifierProduct = product;
+		this.identifier = identifier;
+		if (messages==null) {
 			this.messages = new ArrayList<Message>();
 		}
 		else {
 			this.messages = messages;
 		}
 	}
-	@ReportableProperty(order = 1, value = "Format Identification returned by identifier.")
-	public I8R getIdentification() {
-		return identification;
-	}
-	/**
-	 * Get identification process.
-	 * 
-	 * @return Identification process
+	
+	/** Get format identifier native to the identification process.
+	 * @return Format identifier native to the identification process
 	 */
-	@ReportableProperty(order = 3, value = "Identifier product.")
-	public I8R getIdentifierProduct() {
+	@ReportableProperty(order = 1, value = "Format identifier native to the " +
+	        "identification process.")
+	public I8R getNativeIdentifier() {
+		return identifier;
+	}
+	
+	/**
+	 * Get identifier for product performing the identification process.
+	 * @return product identifier
+	 */
+	@ReportableProperty(order = 3, value = "Identifier for the product " +
+	        "performing the identification process.")
+	public I8R getIdentificationProduct() {
 		return this.identifierProduct;
 	}
 
@@ -167,12 +180,56 @@ public class FormatIdentification extends AbstractReportable implements
 		return this.confidence;
 	}
 
+    /** Get canonical JHOVE2 format identifier in the JHOVE2 namespace.
+     * @return the jhove2FormatIdentification
+     */
+    @ReportableProperty(order = 2, value = "Canonical format identifier in " +
+            "the JHOVE2 namespace.")
+    public I8R getJHOVE2Identifier() {
+        return this.jhove2Identifier;
+    }
+    
 	@ReportableProperty(order = 5, value = "Messages returned by identifier.")
 	public List<Message> getMessages() {
 		return messages;
 	}
+    
+    /** Set identification confidence level.
+     * @param confidence Identification confidence level
+     */
+    public void setConfidence(Confidence confidence) {
+        this.confidence = confidence;
+    }
 
+    /** Set identifier for the product performing the identification process.
+     * @param product Product identifier
+     */
+    public void setIdentificationProduct(I8R product) {
+        this.identifierProduct = product;
+    }
 
+    /** Set format identifier native to the identification process, which may
+     * be in the JHOVE2 namespace.
+     * @param identifier Format identifier native to the identification process
+     */
+    public void setIdentifier(I8R identifier) {
+        this.identifier = identifier;
+    }
+
+    /** Set canonical JHOVE2 identifier in the JHOVE2 namespace.
+     * @param identifier the jhove2FormatIdentification to set
+     */
+    public void setJhove2Identification(I8R identifier) {
+        this.jhove2Identifier = identifier;
+    }
+
+    /** Set messages produced by the identification process.
+     * @param messages Messages produced by the identification process
+     */
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
+    }
+    
 	/**
 	 * Lexically compare format identifications.
 	 * 
@@ -190,36 +247,36 @@ public class FormatIdentification extends AbstractReportable implements
 		if (this==id){
 			return 0;
 		}
-		if (this.getIdentification()==null){
-			if (id.getIdentification()!=null){
+		if (this.getNativeIdentifier()==null){
+			if (id.getNativeIdentifier()!=null){
 				return -1;
 			}
 		}
-		else if (id.getIdentification()==null){
+		else if (id.getNativeIdentifier()==null){
 			return 1;
 		}
 		else {
-			int idComp = this.getIdentification().compareTo(id.getIdentification());
+			int idComp = this.getNativeIdentifier().compareTo(id.getNativeIdentifier());
 			if (idComp != 0){
 				return idComp;
 			}
 		}
-		int compareFormat = this.getJhove2Identification().compareTo(
-				id.getJhove2Identification());
+		int compareFormat = this.getJHOVE2Identifier().compareTo(
+				id.getJHOVE2Identifier());
 		if (compareFormat != 0){
 			return compareFormat;
 		}
-		if (this.getIdentifierProduct()==null){
-			if (id.getIdentifierProduct()!= null){
+		if (this.getIdentificationProduct()==null){
+			if (id.getIdentificationProduct()!= null){
 				return -1;
 			}
 		}
-		else if (id.getIdentifierProduct()==null){
+		else if (id.getIdentificationProduct()==null){
 			return 1;
 		}
 		else {
-			int compareProduct = this.getIdentifierProduct().compareTo
-						(id.getIdentifierProduct());
+			int compareProduct = this.getIdentificationProduct().compareTo
+						(id.getIdentificationProduct());
 			if (compareProduct != 0){
 				return compareProduct;
 			}
@@ -249,30 +306,30 @@ public class FormatIdentification extends AbstractReportable implements
 			return false;
 		}
 		FormatIdentification fiObj = (FormatIdentification) obj;
-		if (this.getIdentification()==null){
-			if (fiObj.getIdentification()!=null){
+		if (this.getNativeIdentifier()==null){
+			if (fiObj.getNativeIdentifier()!=null){
 				return false;
 			}
 		}
-		boolean equals = (this.getIdentification().equals(fiObj.getIdentification()));
+		boolean equals = (this.getNativeIdentifier().equals(fiObj.getNativeIdentifier()));
 		if (!equals){
 			return equals;
 		}			
-		equals = (this.getJhove2Identification().equals
-				            (fiObj.getJhove2Identification()));
+		equals = (this.getJHOVE2Identifier().equals
+				            (fiObj.getJHOVE2Identifier()));
 		if (!equals){
 			return equals;
 		}		
-		if (this.getIdentifierProduct()==null){
-			if (fiObj.getIdentifierProduct() != null){
+		if (this.getIdentificationProduct()==null){
+			if (fiObj.getIdentificationProduct() != null){
 				return false;
 			}
 		}
-		else if (fiObj.getIdentifierProduct()==null){
+		else if (fiObj.getIdentificationProduct()==null){
 			return false;
 		}
 		else {
-			equals = this.getIdentifierProduct().equals(fiObj.getIdentifierProduct());
+			equals = this.getIdentificationProduct().equals(fiObj.getIdentificationProduct());
 			if (!equals){
 				return equals;
 			}
@@ -280,39 +337,4 @@ public class FormatIdentification extends AbstractReportable implements
 		equals = this.getConfidence().getOrder()== fiObj.getConfidence().getOrder();
 		return equals;
 	}
-	
-
-	public void setConfidence(Confidence confidence) {
-		this.confidence = confidence;
-	}
-
-
-	public void setIdentifierProduct(I8R identifierProduct) {
-		this.identifierProduct = identifierProduct;
-	}
-
-
-	public void setIdentification(I8R identification) {
-		this.identification = identification;
-	}
-
-	public void setMessages(List<Message> messages) {
-		this.messages = messages;
-	}
-
-	/**
-	 * @return the jhove2FormatIdentification
-	 */
-	@ReportableProperty(order = 2, value = "Format Identification returned by identifier.")
-	public I8R getJhove2Identification() {
-		return jhove2Identification;
-	}
-
-	/**
-	 * @param jhove2FormatIdentification the jhove2FormatIdentification to set
-	 */
-	public void setJhove2Identification(I8R jhove2FormatIdentification) {
-		this.jhove2Identification = jhove2FormatIdentification;
-	}
-
 }

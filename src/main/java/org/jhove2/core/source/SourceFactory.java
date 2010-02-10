@@ -66,11 +66,11 @@ public class SourceFactory
 	 *             File not found
 	 * @throws IOException
 	 *             I/O exception instantiating source
+	 * @throws JHOVE2Exception 
 	 */
 	public static synchronized Source getSource(String pathName)
-		throws FileNotFoundException, IOException
+		throws FileNotFoundException, IOException, JHOVE2Exception
 	{
-		// TODO: check if file exists and if not, throw FileNotFound exception
 		return getSource(new File(pathName));
 	}
 
@@ -84,9 +84,10 @@ public class SourceFactory
 	 *             File not found
 	 * @throws IOException
 	 *             I/O exception instantiating source
+	 * @throws JHOVE2Exception 
 	 */
 	public static synchronized Source getSource(File file)
-		throws FileNotFoundException, IOException
+		throws FileNotFoundException, IOException, JHOVE2Exception
 	{
 		if (file.isDirectory()) {
 			return new DirectorySource(file);

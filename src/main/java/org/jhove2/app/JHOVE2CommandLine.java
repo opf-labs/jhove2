@@ -253,17 +253,23 @@ public class JHOVE2CommandLine
             /* Test for valid option values
              */
             if ((bufferType = (String)parser.getOptionValue(bufferTypeO)) != null) {
-                if (bufferTypeValues.indexOf(bufferType) == -1) 
-                    throw new Parser.IllegalOptionValueException(bufferTypeO, bufferType);
-                else
+                if (bufferTypeValues.indexOf(bufferType) == -1) {
+                    throw new Parser.IllegalOptionValueException(bufferTypeO,
+                                                                 bufferType);
+                }
+                else {
                     config.setBufferType(Type.valueOf(bufferType));
+                }
             }
             if (( displayerType = (String)parser.getOptionValue(displayerTypeO)) != null) {
-                if (displayerValues.indexOf(displayerType) == -1)
-                    throw new Parser.IllegalOptionValueException(displayerTypeO, displayerType);
-                else
-                    this.setDisplayer(ReportableFactory.getReportable(Displayer.class,
-                                                                  displayerType));
+                if (displayerValues.indexOf(displayerType) == -1) {
+                    throw new Parser.IllegalOptionValueException(displayerTypeO,
+                                                                 displayerType);
+                }
+                else {
+                    setDisplayer(ReportableFactory.getReportable(Displayer.class,
+                                                                 displayerType));
+                }
             }
 
             otherArgs = parser.getRemainingArgs();

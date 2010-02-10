@@ -76,14 +76,14 @@ public class DroidIdentifierTest {
 
 
 	/**
-	 * Test method for {@link org.jhove2.module.identify.DROIDIdentifier#getPuidToJhoveId()}.
+	 * Test method for {@link org.jhove2.module.identify.DROIDIdentifier#getPUIDtoJ2ID()}.
 	 */
 	@Test
 	public void testGetPuidToJhoveId() {
 		try {
-			DROIDIdentifier.getPuidToJhoveId();
-			assertTrue(DROIDIdentifier.getPuidToJhoveId().containsKey(zipPuid));
-			assertEquals(zipJhoveId, DROIDIdentifier.getPuidToJhoveId().get(zipPuid));
+			DROIDIdentifier.getPUIDtoJ2ID();
+			assertTrue(DROIDIdentifier.getPUIDtoJ2ID().containsKey(zipPuid));
+			assertEquals(zipJhoveId, DROIDIdentifier.getPUIDtoJ2ID().get(zipPuid));
 		} catch (JHOVE2Exception e) {
 			fail("exception" + e.getMessage());
 		}		
@@ -107,8 +107,8 @@ public class DroidIdentifierTest {
 			assertEquals(1, ids.size());
 			for (FormatIdentification fi : ids){
 				assertEquals(Confidence.PositiveSpecific, fi.getConfidence());
-				assertEquals(zipPuid, fi.getIdentification().getValue());
-				assertEquals(zipJhoveId, fi.getJhove2Identification().getValue());
+				assertEquals(zipPuid, fi.getNativeIdentifier().getValue());
+				assertEquals(zipJhoveId, fi.getJHOVE2Identifier().getValue());
 				assertEquals(0, fi.getMessages().size());
 			}
 			assertNull(dROIDIdentifier.getFileErrorMessage());
@@ -146,7 +146,7 @@ public class DroidIdentifierTest {
 			assertEquals(1, ids.size());
 			for (FormatIdentification fi : ids){
 				assertEquals(Confidence.PositiveSpecific, fi.getConfidence());
-				assertNull(fi.getJhove2Identification());
+				assertNull(fi.getJHOVE2Identifier());
 			}
 			assertNull(dROIDIdentifier.getFileErrorMessage());
 			assertNull(dROIDIdentifier.getFileNotRunMessage());

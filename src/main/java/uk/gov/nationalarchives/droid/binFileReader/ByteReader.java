@@ -48,24 +48,24 @@ import uk.gov.nationalarchives.droid.FileFormatHit;
  */
 public interface ByteReader {
 
-    /* Setters for identification status */
+    /* Setters for identifier status */
     /**
-     * Set identification status to Positive
+     * Set identifier status to Positive
      */
     public void setPositiveIdent();
 
     /**
-     * Set identification status to Tentative
+     * Set identifier status to Tentative
      */
     public void setTentativeIdent();
 
     /**
-     * Set identification status to No identification
+     * Set identifier status to No identifier
      */
     public void setNoIdent();
 
     /**
-     * Set identification status to Error
+     * Set identifier status to Error
      */
     public void setErrorIdent();
 
@@ -80,7 +80,7 @@ public interface ByteReader {
     public int getClassification();
 
     /**
-     * Set identification warning
+     * Set identifier warning
      *
      * @param theWarning the warning message to use
      */
