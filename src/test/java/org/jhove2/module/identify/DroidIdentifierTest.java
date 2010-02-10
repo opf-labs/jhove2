@@ -45,6 +45,7 @@ import org.jhove2.core.FormatIdentification;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.FormatIdentification.Confidence;
+import org.jhove2.core.reportable.ReportableFactory;
 import org.jhove2.core.source.FileSource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -57,13 +58,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath*:**/test-config.xml", 
-		"classpath*:**/DROIDId-test-config.xml"})
+		"classpath*:**/DROIDId-test-config.xml", "classpath*:**/filepaths-config.xml"})
 public class DroidIdentifierTest {
 
 	private DROIDIdentifier dROIDIdentifier;
 	private String zipPuid = "x-fmt/263";
 	private String zipJhoveId = "http://jhove2.org/terms/format/zip";
-	private String samplesDirPath;
+	private String droidDirBasePath;
 	private String sampleFile;
 	private String sampleFilePUID;
 	private String sampleBadFile;
@@ -96,6 +97,13 @@ public class DroidIdentifierTest {
 	public void testIdentify() {
 		FileSource source = null;
 		Set<FormatIdentification> ids = null;
+		String samplesDirPath = null;
+		try {
+			samplesDirPath = 
+				ReportableFactory.getFilePathFromClasspath(droidDirBasePath, "droid samples dir");
+		} catch (JHOVE2Exception e1) {
+			fail("Could not create base directory");
+		}
 		String zipFilePath = samplesDirPath.concat(sampleFile);
 		try {
 			source = new FileSource(zipFilePath);
@@ -181,12 +189,12 @@ public class DroidIdentifierTest {
 		this.zipJhoveId = zipJhoveId;
 	}
 
-	public String getSamplesDirPath() {
-		return samplesDirPath;
+	public String getDroidDirBasePath() {
+		return droidDirBasePath;
 	}
 	@Resource
-	public void setSamplesDirPath(String samplesDirPath) {
-		this.samplesDirPath = samplesDirPath;
+	public void setDroidDirBasePath(String samplesDirPath) {
+		this.droidDirBasePath = samplesDirPath;
 	}
 
 	public String getSampleFile() {

@@ -41,6 +41,7 @@ import javax.annotation.Resource;
 
 
 import org.jhove2.core.JHOVE2;
+import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.reportable.ReportableFactory;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
@@ -57,11 +58,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath*:**/abstractdisplayer-config.xml",
-		"classpath*:**/test-config.xml"})
+		"classpath*:**/test-config.xml", "classpath*:**/filepaths-config.xml"})
 public class AbstractDisplayerTest {
 
 	private JHOVE2 JHOVE2;
-	private String testDir;
+	private String utf8DirBasePath;
 	private String testFile01;
 
 	/**
@@ -69,8 +70,15 @@ public class AbstractDisplayerTest {
 	 */
 	@Test
 	public void testDisplay() {
+		String utf8DirPath = null;
 		try {
-			String filePath = testDir.concat(testFile01);
+			utf8DirPath = 
+				ReportableFactory.getFilePathFromClasspath(utf8DirBasePath, "utf8 dir");
+		} catch (JHOVE2Exception e1) {
+			fail("Could not create base directory");
+		}
+		try {
+			String filePath = utf8DirPath.concat(testFile01);
 			Source source = SourceFactory.getSource(filePath);
 			JHOVE2.characterize(source);
 			Displayer displayer = ReportableFactory.getReportable(Displayer.class,
@@ -96,11 +104,11 @@ public class AbstractDisplayerTest {
 	public void setTestFile01(String testFile01) {
 		this.testFile01 = testFile01;
 	}
-	public String getTestDir() {
-		return testDir;
+	public String getUtf8DirBaseBath() {
+		return utf8DirBasePath;
 	}
 	@Resource
-	public void setTestDir(String testDir) {
-		this.testDir = testDir;
+	public void setUtf8DirBasePath(String testDir) {
+		this.utf8DirBasePath = testDir;
 	}
 }

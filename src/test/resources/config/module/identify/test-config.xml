@@ -8,15 +8,6 @@
            http://www.springframework.org/schema/context/spring-context-2.5.xsd
 		   http://www.springframework.org/schema/util 
 		   http://www.springframework.org/schema/util/spring-util-2.0.xsd">
-		   
-	<bean id="propertyConfigurer" 
-    	class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-    	<property name="locations">
-    		<list>
-    			<value>properties/filepath.properties</value>
-    		</list>
-    	</property>
-    </bean>
     
 	<bean id="IdentifierCommand" class="org.jhove2.module.identify.IdentifierCommand"
 	 	scope="prototype">
@@ -82,7 +73,6 @@
 				<ref bean="StanfordAgent"/>
 			</list>
 		</property>
-<!--	 	<property name="format" ref="ShapefileFormat"/>-->
 	 	<property name="formatIdentifier" ref="ShapefileIdentifier"/>
 	 	<property name="fileGroupingExpr" value="(.*[\\/]\w+).((?i:shp\.)?\w{3})"/>
 	 	<property name="mustHaveExpr" value="^((?i:shp)|(?i:shx)|(?i:dbf))$"/>
@@ -106,7 +96,6 @@
 				<ref bean="StanfordAgent"/>
 			</list>
 		</property>
-<!--	 	<property name="format" ref="ShapefileFormat"/>-->
 	 	<property name="formatIdentifier" ref="ShapefileIdentifier"/>
 	 	<property name="fileGroupingExpr" value="(.*[\\/]\w+).((?i:shp\.)?\w{3})"/>
 	 	<property name="mustHaveExpr" value="^((?i:shp)|(?i:shx)|(?i:dbf))$"/>
@@ -131,7 +120,6 @@
 				<ref bean="StanfordAgent"/>
 			</list>
 		</property>
-<!--	 	<property name="format" ref="QuickenFormat"/>-->
 	 	<property name="formatIdentifier" ref="QuickenIdentifier"/>
 	 	<property name="fileGroupingExpr" value="(.*[\\/]\w+).(\w{3})"/>
 	 	<property name="mustHaveExpr" value="^((?i:idx)|(?i:qel)|(?i:qph)|(?i:qdf)|(?i:ptx))$"/>

@@ -8,19 +8,8 @@
            http://www.springframework.org/schema/context/spring-context-2.5.xsd
 		   http://www.springframework.org/schema/util 
 		   http://www.springframework.org/schema/util/spring-util-2.0.xsd">
-	
-	<bean id="propertyConfigurer" 
-    	class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-    	<property name="locations">
-    		<list>
-    			<value>properties/filepath.properties</value>
-<!--    			<value>properties/droidconfig.properties</value>-->
-    		</list>
-    	</property>
-    </bean>
-		   
 
-	      
+
 	<!-- Aggrefier module bean -->
 	<bean id="TestAggrefier" class="org.jhove2.module.identify.AggrefierModule"
 	      scope="prototype">
@@ -39,16 +28,8 @@
 		</property>
 	</bean>
 	      
-
-	
 	<!--  JUNIT test parameter Beans -->
-	
-	<!--  you will need to edit the testDirPath property to run on your machine -->
-	<bean id="shapeDirPath" class="java.lang.String" >
-	        <constructor-arg type="java.lang.String" 
-	        value="${dir.example.shapfiles}"/>
-	</bean>
-	
+
 	<bean id="shapeFileList" class="java.util.ArrayList">
 		<constructor-arg type="java.util.Collection">
 			<list>
@@ -77,14 +58,7 @@
 			</map>
 		</constructor-arg>
 	</bean>
-	
 
-	
-	<bean id="quickenDirPath" class="java.lang.String" >
-		 <constructor-arg type="java.lang.String" 
-	        value="${dir.example.quicken}"/>
-	</bean>
-	
 		<bean id="quickenFileList" class="java.util.ArrayList">
 		<constructor-arg type="java.util.Collection">
 			<list>
@@ -105,9 +79,5 @@
 			</map>
 		</constructor-arg>
 	</bean>
-	
-		<bean id="emptyDirPath" class="java.lang.String" >
-		<constructor-arg type="java.lang.String" 
-	        value="${dir.example.empty}"/>
-	</bean>
+
 </beans>

@@ -37,8 +37,6 @@
 package org.jhove2.module.identify;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
@@ -299,7 +297,7 @@ public class DROIDIdentifier
     public String getConfigurationFile()
         throws JHOVE2Exception
     {
-        String path = getFilePathFromClasspath(this.getConfigurationFileName(), "DROID config file");
+        String path = ReportableFactory.getFilePathFromClasspath(this.getConfigurationFileName(), "DROID config file");
         return path;
     }
 
@@ -333,31 +331,6 @@ public class DROIDIdentifier
         return this.fileErrorMessage;
     }
     
-    /**
-     * Utility method to construct full path to a file on class path.  Used to locate DROID signature and configuration
-     * files.  Assumes directory containing these files is on the classpath
-     * @param fileName File to be found on class path
-     * @param fileDescription descriptor of file to be used in any exception messages
-     * @return String containing path to file
-     * @throws JHOVE2Exception if file is not found or ClassLoader throws exception
-     */
-    public static String getFilePathFromClasspath(String fileName, String fileDescription)throws JHOVE2Exception {
-        URI fileURI = null;
-        try {
-            fileURI = ClassLoader.getSystemResource(fileName).toURI();
-            if (fileURI == null){
-                throw new JHOVE2Exception(fileDescription + " " + fileName
-                        + " not found on classpath");
-            }
-        }
-        catch (URISyntaxException e){
-            throw new JHOVE2Exception("Exception thrown when attempting to find " + fileDescription 
-                    + " on classpath", e);
-        }
-        String path = fileURI.getPath();
-        return path;        
-    }
-
     /**
      * Get file source identifier module.
      * @return File source identifier module
@@ -438,7 +411,7 @@ public class DROIDIdentifier
      */
     @ReportableProperty(order = 2, value = "DROID signature file path.")
     public String getSignatureFile() throws JHOVE2Exception {
-        String path = getFilePathFromClasspath(this.getSignatureFileName(), "DROID signature file");
+        String path = ReportableFactory.getFilePathFromClasspath(this.getSignatureFileName(), "DROID signature file");
         return path;
     }
 

@@ -9,31 +9,29 @@
 		   http://www.springframework.org/schema/util 
 		   http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
-	
-	<bean id="sampleFile" class="java.lang.String" >
-	<constructor-arg type="java.lang.String" 
-	        value="two-files.zip"/>
-	</bean>
-	
-		<bean id="sampleFilePUID" class="java.lang.String" >
-	<constructor-arg type="java.lang.String" 
-	        value="x-fmt/263"/>
+	      
+	<bean id="shapeDirBasePath" class="java.lang.String" >
+	        <constructor-arg type="java.lang.String" 
+	        value="examples/shapefiles/"/>
 	</bean>
 
-	<bean id="sampleBadFile" class="java.lang.String" >
-	<constructor-arg type="java.lang.String" 
-	        value="unidentifiable.totallymadeupextension"/>
+	<bean id="quickenDirBasePath" class="java.lang.String" >
+		 <constructor-arg type="java.lang.String" 
+	        value="examples/quicken/"/>
 	</bean>
 	
-	<bean id="sampleNoFormatFile" class="java.lang.String">
-	<constructor-arg type="java.lang.String" 
-	        value="sample.xml"/>
+	<bean id="emptyDirBasePath" class="java.lang.String" >
+		<constructor-arg type="java.lang.String" 
+	        value="examples/"/>
+	</bean>
+		<bean id="droidDirBasePath" class="java.lang.String" >
+		<constructor-arg type="java.lang.String" 
+	        value="examples/droid/"/>
+	</bean>
+		<bean id="utf8DirBasePath" class="java.lang.String" >
+		<constructor-arg type="java.lang.String" 
+	        value="examples/utf8/"/>
 	</bean>
 	
-	<bean id="sampleNoJhoveIdFile" class="java.lang.String">
-	<constructor-arg type="java.lang.String" 
-	        value="sample.doc"/>
-	</bean>
-	
-	
+
 </beans>

@@ -9,24 +9,8 @@
 		   http://www.springframework.org/schema/util 
 		   http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
-	<bean id="propertyConfigurer" 
-    	class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-    	<property name="locations">
-    		<list>
-    			<value>properties/filepath.properties</value>
-    		</list>
-    	</property>
-    </bean>
-    	
-	
 	<!--  JUNIT test parameter Beans -->
-	
-	<!--  you will need to edit the testDirPath property to run on your machine -->
-	<bean id="testDirPath" class="java.lang.String" >
-			<constructor-arg type="java.lang.String" 
-	        value="${dir.example.shapfiles}"/>
-	</bean>
-	
+
 	<bean id="testFileList" class="java.util.ArrayList">
 		<constructor-arg type="java.util.Collection">
 			<list>

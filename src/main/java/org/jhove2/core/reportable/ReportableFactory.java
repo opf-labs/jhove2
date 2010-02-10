@@ -35,6 +35,8 @@
 
 package org.jhove2.core.reportable;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
@@ -193,5 +195,31 @@ public class ReportableFactory {
         Map<String, Object> objectMap = context.getBeansOfType(type);
         return objectMap;
     }
+
+	/**
+	 * Utility method to construct full path to a file on class path.  Used for example 
+	 * to locate DROID signature and configuration
+	 * files.  Assumes directory containing these files is on the classpath
+	 * @param fileName File to be found on class path
+	 * @param fileDescription descriptor of file to be used in any exception messages
+	 * @return String containing path to file
+	 * @throws JHOVE2Exception if file is not found or ClassLoader throws exception
+	 */
+	public static String getFilePathFromClasspath(String fileName, String fileDescription)throws JHOVE2Exception {
+	    URI fileURI = null;
+	    try {
+	        fileURI = ClassLoader.getSystemResource(fileName).toURI();
+	        if (fileURI == null){
+	            throw new JHOVE2Exception(fileDescription + " " + fileName
+	                    + " not found on classpath");
+	        }
+	    }
+	    catch (URISyntaxException e){
+	        throw new JHOVE2Exception("Exception thrown when attempting to find " + fileDescription 
+	                + " on classpath", e);
+	    }
+	    String path = fileURI.getPath();
+	    return path;        
+	}
 
 }

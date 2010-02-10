@@ -8,22 +8,6 @@
            http://www.springframework.org/schema/context/spring-context-2.5.xsd
 		   http://www.springframework.org/schema/util 
 		   http://www.springframework.org/schema/util/spring-util-2.0.xsd">
-
-	<bean id="propertyConfigurer" 
-    	class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-    	<property name="locations">
-    		<list>
-    			<value>properties/filepath.properties</value>
-<!--    			<value>properties/droidconfig.properties</value>-->
-    		</list>
-    	</property>
-    </bean>
-
-	<!--  you will need to edit the samplesDirPath property to run on your machine -->
-	<bean id="samplesDirPath" class="java.lang.String" >
-		<constructor-arg type="java.lang.String" 
-	        value="${dir.example.droid}"/>
-	</bean>
 	
 	<bean id="sampleFile" class="java.lang.String" >
 	<constructor-arg type="java.lang.String" 
@@ -48,12 +32,6 @@
 		<bean id="sampleNoJhoveIdFile" class="java.lang.String">
 	<constructor-arg type="java.lang.String" 
 	        value="sample.doc"/>
-	</bean>
-	
-	
-	<bean id="testShapeDirPath" class="java.lang.String" >
-			<constructor-arg type="java.lang.String" 
-	        value="${dir.example.shapfiles}"/>
 	</bean>
 	
 	<bean id="testFileList" class="java.util.ArrayList">

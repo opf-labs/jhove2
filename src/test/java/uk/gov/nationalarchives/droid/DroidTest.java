@@ -40,8 +40,9 @@ import static org.junit.Assert.*;
 
 import javax.annotation.Resource;
 
+import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.reportable.ReportableFactory;
 import org.jhove2.core.source.SourceFactory;
-import org.jhove2.module.identify.DROIDIdentifier;
 import org.jhove2.module.identify.DROIDWrappedProduct;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -55,12 +56,12 @@ import uk.gov.nationalarchives.droid.signatureFile.FileFormat;
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath*:**/ukDroid-config.xml"})
+@ContextConfiguration(locations={"classpath*:**/ukDroid-config.xml", "classpath*:**/filepaths-config.xml"})
 public class DroidTest {
 	private DROIDWrappedProduct droid;
 	private String configFileName;
 	private String sigFileName;
-	private String samplesDirPath;
+	private String droidDirBasePath;
 	private String sampleFile;
 	private String sampleFilePUID;
 	private String sampleBadFile;
@@ -70,10 +71,17 @@ public class DroidTest {
 	 */
 	@Test
 	public void testIdentify() {	
+		String samplesDirPath = null;
+		try {
+			samplesDirPath = 
+				ReportableFactory.getFilePathFromClasspath(droidDirBasePath, "droid samples dir");
+		} catch (JHOVE2Exception e1) {
+			fail("Could not create base directory");
+		}
 		String sampleFilePath = samplesDirPath.concat(sampleFile);
 		try {	
-			String configFilePath = DROIDIdentifier.getFilePathFromClasspath(configFileName, "Droid config file");
-			String sigFilePath = DROIDIdentifier.getFilePathFromClasspath(sigFileName, "Droid signature file");
+			String configFilePath = ReportableFactory.getFilePathFromClasspath(configFileName, "Droid config file");
+			String sigFilePath = ReportableFactory.getFilePathFromClasspath(sigFileName, "Droid signature file");
 			
 			droid = new DROIDWrappedProduct(configFilePath, sigFilePath);
 			IdentificationFile idf = droid.identify(sampleFilePath);
@@ -96,8 +104,8 @@ public class DroidTest {
 		}
 		// now try it on an input stream
 		try {		
-			String configFilePath = DROIDIdentifier.getFilePathFromClasspath(configFileName, "Droid config file");
-			String sigFilePath = DROIDIdentifier.getFilePathFromClasspath(sigFileName, "Droid signature file");
+			String configFilePath = ReportableFactory.getFilePathFromClasspath(configFileName, "Droid config file");
+			String sigFilePath = ReportableFactory.getFilePathFromClasspath(sigFileName, "Droid signature file");
 			droid = new DROIDWrappedProduct(configFilePath, sigFilePath);			
 			IdentificationFile idf = droid.identify(SourceFactory.getSource(sampleFilePath));
 			assertEquals(JHOVE2IAnalysisController.FILE_CLASSIFICATION_POSITIVE,
@@ -139,13 +147,13 @@ public class DroidTest {
 	}
 
 
-	public String getSamplesDirPath() {
-		return samplesDirPath;
+	public String getDroidDirBasePath() {
+		return droidDirBasePath;
 	}
 
 	@Resource
-	public void setSamplesDirPath(String samplesDirPath) {
-		this.samplesDirPath = samplesDirPath;
+	public void setDroidDirBasePath(String samplesDirPath) {
+		this.droidDirBasePath = samplesDirPath;
 	}
 
 

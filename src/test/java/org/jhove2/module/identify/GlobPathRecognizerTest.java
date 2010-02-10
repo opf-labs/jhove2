@@ -37,6 +37,7 @@ package org.jhove2.module.identify;
 
 
 import static org.junit.Assert.*;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -55,6 +56,8 @@ import javax.annotation.Resource;
 
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.FormatIdentification;
+import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.reportable.ReportableFactory;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.FileSetSource;
@@ -67,12 +70,12 @@ import org.jhove2.core.source.Source;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath*:**/globpathrecognizer-config.xml",
-		"classpath*:**/test-config.xml"})
+		"classpath*:**/test-config.xml", "classpath*:**/filepaths-config.xml"})
 public class GlobPathRecognizerTest{
 
 	private GlobPathRecognizer strictShapeFileRecognizer;
 	private GlobPathRecognizer relaxedShapeFileRecognizer;
-	private String testDirPath;
+	private String shapeDirBasePath;
 	private ArrayList<String> testFileList;
 	private ArrayList<String> groupKeys;
 	private Integer expectedGroupCount;// expect the same number of groups for strict and relaxed
@@ -86,11 +89,18 @@ public class GlobPathRecognizerTest{
 	 * Test method for {@link org.jhove2.module.identify.GlobPathRecognizer#groupSources(org.jhove2.core.source.Source)}.
 	 */
 	@Test
-	public void testGroupSources() {		
+	public void testGroupSources() {
+		String samplesDirPath = null;
+		try {
+			samplesDirPath = 
+				ReportableFactory.getFilePathFromClasspath(shapeDirBasePath, "samples dir");
+		} catch (JHOVE2Exception e1) {
+			fail("Could not create base directory");
+		}
 		try {			
 			FileSetSource fsSource = new FileSetSource();
 			for (String fileName:this.getTestFileList()){
-				String testFilePath = testDirPath.concat(fileName);
+				String testFilePath = samplesDirPath.concat(fileName);
 				FileSource fs = new FileSource(new File(testFilePath));
 				fsSource.addChildSource(fs);
 			}
@@ -103,8 +113,9 @@ public class GlobPathRecognizerTest{
 			for (GlobPathMatchInfoGroup group:gInfoGroupStrict){
 				actualKeys.add(group.getGroupKey());
 			}
-			for (String key:expectedKeys){			
-				String newKey = this.getTestDirPath().concat(key);
+			for (String key:expectedKeys){		
+				File newFile = new File(samplesDirPath.concat(key));
+				String newKey = newFile.getPath();
 				assertTrue(actualKeys.contains(newKey));
 			}
 			relaxedShapeFileRecognizer.compilePatterns();
@@ -117,7 +128,8 @@ public class GlobPathRecognizerTest{
 				actualKeys.add(group.getGroupKey());
 			}
 			for (String key:expectedKeys){			;
-			String newKey = this.getTestDirPath().concat(key);
+			File newFile = new File(samplesDirPath.concat(key));
+			String newKey = newFile.getPath();
 			assertTrue(actualKeys.contains(newKey));
 			}
 		}
@@ -131,20 +143,29 @@ public class GlobPathRecognizerTest{
 	 */
 	@Test
 	public void testRecognizeGroupedSource() {
+		String samplesDirPath = null;
+		try {
+			samplesDirPath = 
+				ReportableFactory.getFilePathFromClasspath(shapeDirBasePath, "samples dir");
+		} catch (JHOVE2Exception e1) {
+			fail("Could not create base directory");
+		}
 		try{
 			FileSetSource fsSource = new FileSetSource();
 			for (String fileName:this.getTestFileList()){
-				String testFilePath = testDirPath.concat(fileName);
+				String testFilePath = samplesDirPath.concat(fileName);
 				FileSource fs = new FileSource(new File(testFilePath));
 				fsSource.addChildSource(fs);
 			}
 			ArrayList<String> fullFailKeys = new ArrayList<String>();
 			for (String failKey:failStrictKeys){
-				fullFailKeys.add(testDirPath.concat(failKey));
+				File newFile = new File(samplesDirPath.concat(failKey));
+				fullFailKeys.add(newFile.getPath());
 			}
 			HashMap<String, Integer> fullKeyCountMap = new HashMap<String, Integer>();
 			for (String key:strictKeyCountMap.keySet()){
-				String newKey = testDirPath.concat(key);
+				File newFile = new File(samplesDirPath.concat(key));
+				String newKey = newFile.getPath();
 				Integer newValue = Integer.valueOf(strictKeyCountMap.get(key));
 				fullKeyCountMap.put(newKey, newValue);
 			}
@@ -171,11 +192,13 @@ public class GlobPathRecognizerTest{
 			// now test relaxed recognizer
 			fullFailKeys = new ArrayList<String>();
 			for (String failKey:failRelaxedKeys){
-				fullFailKeys.add(testDirPath.concat(failKey));
+				File newFile = new File(samplesDirPath.concat(failKey));
+				fullFailKeys.add(newFile.getPath());
 			}
 			fullKeyCountMap = new HashMap<String, Integer>();
 			for (String key:relaxedKeyCountMap.keySet()){
-				String newKey = testDirPath.concat(key);
+				File newFile = new File(samplesDirPath.concat(key));
+				String newKey = newFile.getPath();
 				Integer newValue = Integer.valueOf(relaxedKeyCountMap.get(key));
 				fullKeyCountMap.put(newKey, newValue);
 			}
@@ -201,7 +224,7 @@ public class GlobPathRecognizerTest{
 			}
 		}
 		catch (Exception e){
-			fail("Exceptpion thrown:" + e.getMessage());
+			fail("Exception thrown:" + e.getMessage());
 		}
 	}
 
@@ -210,10 +233,17 @@ public class GlobPathRecognizerTest{
 	 */
 	@Test
 	public void testIdentify() {
+		String samplesDirPath = null;
+		try {
+			samplesDirPath = 
+				ReportableFactory.getFilePathFromClasspath(shapeDirBasePath, "samples dir");
+		} catch (JHOVE2Exception e1) {
+			fail("Could not create base directory");
+		}
 		try {
 			FileSetSource fsSource = new FileSetSource();
 			for (String fileName:this.getTestFileList()){
-				String testFilePath = testDirPath.concat(fileName);
+				String testFilePath = samplesDirPath.concat(fileName);
 				FileSource fs = new FileSource(new File(testFilePath));
 				fsSource.addChildSource(fs);
 			}
@@ -264,12 +294,12 @@ public class GlobPathRecognizerTest{
 		this.relaxedShapeFileRecognizer = relaxedShapeFileRecognizer;
 	}
 
-	public String getTestDirPath() {
-		return testDirPath;
+	public String getShapeDirBasePath() {
+		return shapeDirBasePath;
 	}
 	@Resource
-	public void setTestDirPath(String testDirPath) {
-		this.testDirPath = testDirPath;
+	public void setShapeDirBasePath(String testDirPath) {
+		this.shapeDirBasePath = testDirPath;
 	}
 
 	public ArrayList<String> getTestFileList() {

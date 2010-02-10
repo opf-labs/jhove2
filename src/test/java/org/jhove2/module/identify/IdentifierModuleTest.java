@@ -44,7 +44,9 @@ import javax.annotation.Resource;
 
 import org.jhove2.core.FormatIdentification;
 import org.jhove2.core.JHOVE2;
+import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.FormatIdentification.Confidence;
+import org.jhove2.core.reportable.ReportableFactory;
 import org.jhove2.core.source.FileSource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -59,14 +61,14 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath*:**/identifier-config.xml",
-		"classpath*:**/test-config.xml"})
+		"classpath*:**/test-config.xml", "classpath*:**/filepaths-config.xml"})
 public class IdentifierModuleTest {
 	
 	private JHOVE2 JHOVE2;
 	private IdentifierModule identifier;
-	private String samplesDirPath;
+	private String droidDirBasePath;
 	private String sampleFile;
-	private String testShapeDirPath;
+	private String shapeDirBasePath;
 	private List<String> testFileList;
 	private String zipPuid = "x-fmt/263";
 	private String zipJhoveId = "http://jhove2.org/terms/format/zip";
@@ -77,7 +79,14 @@ public class IdentifierModuleTest {
 	public void testIdentify() {
 		FileSource source = null;
 		Set<FormatIdentification> ids = null;
-		String zipFilePath = samplesDirPath.concat(sampleFile);
+		String droidDirPath = null;
+		try {
+			droidDirPath = 
+				ReportableFactory.getFilePathFromClasspath(droidDirBasePath, "droid dir");
+		} catch (JHOVE2Exception e1) {
+			fail("Could not create base directory");
+		}
+		String zipFilePath = droidDirPath.concat(sampleFile);
 		try {
 			source = new FileSource(zipFilePath);
 		} catch (Exception e) {
@@ -97,7 +106,15 @@ public class IdentifierModuleTest {
 		} 
 		for (String testFile:testFileList){
 			ids.clear();
-			String testFilePath = testShapeDirPath.concat(testFile);
+			String shapeDirPath = null;
+			try {
+				shapeDirPath = 
+					ReportableFactory.getFilePathFromClasspath(shapeDirBasePath, "shapefile dir");
+			}
+			catch (Exception e){
+				fail("unable to find shapefile sample dir");
+			}
+			String testFilePath = shapeDirPath.concat(testFile);
 			try {
 				source = new FileSource(testFilePath);
 			} catch (Exception e) {
@@ -109,9 +126,8 @@ public class IdentifierModuleTest {
 			catch (Exception ex){
 				fail(ex.getMessage());
 			}
-		}
-		
-		
+		}	
+	
 	}
 	public JHOVE2 getJHOVE2() {
 		return JHOVE2;
@@ -127,12 +143,12 @@ public class IdentifierModuleTest {
 	public void setIdentifier(IdentifierModule testIdentifier) {
 		this.identifier = testIdentifier;
 	}
-	public String getSamplesDirPath() {
-		return samplesDirPath;
+	public String getDroidDirBasePath() {
+		return droidDirBasePath;
 	}
 	@Resource
-	public void setSamplesDirPath(String samplesDirPath) {
-		this.samplesDirPath = samplesDirPath;
+	public void setDroidDirBasePath(String samplesDirPath) {
+		this.droidDirBasePath = samplesDirPath;
 	}
 	public String getSampleFile() {
 		return sampleFile;
@@ -153,12 +169,12 @@ public class IdentifierModuleTest {
 	public void setZipJhoveId(String zipJhoveId) {
 		this.zipJhoveId = zipJhoveId;
 	}
-	public String getTestShapeDirPath() {
-		return testShapeDirPath;
+	public String getShapeDirBasePath() {
+		return shapeDirBasePath;
 	}
 	@Resource
-	public void setTestShapeDirPath(String testShapeDirPath) {
-		this.testShapeDirPath = testShapeDirPath;
+	public void setShapeDirBasePath(String testShapeDirPath) {
+		this.shapeDirBasePath = testShapeDirPath;
 	}
 	public List<String> getTestFileList() {
 		return testFileList;

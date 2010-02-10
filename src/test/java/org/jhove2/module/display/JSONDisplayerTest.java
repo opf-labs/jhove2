@@ -56,11 +56,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath*:**/abstractdisplayer-config.xml",
-		"classpath*:**/test-config.xml"})
+		"classpath*:**/test-config.xml", "classpath*:**/filepaths-config.xml"})
 public class JSONDisplayerTest {
 
 	private JHOVE2 JHOVE2;
-	private String testDir;
+	private String utf8DirBasePath;
 	private String testFile01;
 
 	/**
@@ -69,7 +69,7 @@ public class JSONDisplayerTest {
 	@Test
 	public void testDisplay() {
 		try {
-			String filePath = testDir.concat(testFile01);
+			String filePath = utf8DirBasePath.concat(testFile01);
 			Source source = SourceFactory.getSource(filePath);
 			JHOVE2.characterize(source);
 			Displayer displayer = new JSONDisplayer();
@@ -95,11 +95,11 @@ public class JSONDisplayerTest {
 	public void setTestFile01(String testFile01) {
 		this.testFile01 = testFile01;
 	}
-	public String getTestDir() {
-		return testDir;
+	public String getUtf8DirBaseBath() {
+		return utf8DirBasePath;
 	}
 	@Resource
-	public void setTestDir(String testDir) {
-		this.testDir = testDir;
+	public void setUtf8DirBasePath(String testDir) {
+		this.utf8DirBasePath = testDir;
 	}
 }

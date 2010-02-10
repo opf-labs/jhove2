@@ -9,21 +9,7 @@
 		   http://www.springframework.org/schema/util 
 		   http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 		   
-	<bean id="propertyConfigurer" 
-    	class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-    	<property name="locations">
-    		<list>
-    			<value>properties/filepath.properties</value>
-    		</list>
-    	</property>
-    </bean>		
-			<!--  you will need to edit the droidConfigDirPath property to run on your machine -->
-			<!--
-	<bean id="droidConfigDirPath" class="java.lang.String" >
-	       <constructor-arg type="java.lang.String" 
-	        value="${dir.droid.config}"/>
-	</bean>   	
-	-->
+	
 	<bean id="configFileName" class="java.lang.String" >
 		<constructor-arg type="java.lang.String" 
 	        value="DROID_config.xml"/>
@@ -32,11 +18,7 @@
 		<constructor-arg type="java.lang.String" 
 	        value="DROID_SignatureFile_V20.xml"/>
 	</bean>  
-	<!--  you will need to edit the samplesDirPath property to run on your machine -->
-	<bean id="samplesDirPath" class="java.lang.String" >
-	    <constructor-arg type="java.lang.String" 
-	        value="${dir.example.droid}"/>
-	</bean>
+
 	
 	<bean id="sampleFile" class="java.lang.String" >
 	<constructor-arg type="java.lang.String" 

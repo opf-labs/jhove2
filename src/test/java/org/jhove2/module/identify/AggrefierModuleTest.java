@@ -48,6 +48,8 @@ import javax.annotation.Resource;
 import org.jhove2.core.FormatIdentification;
 import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2;
+import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.reportable.ReportableFactory;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.DirectorySource;
 import org.jhove2.core.source.FileSetSource;
@@ -67,20 +69,20 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath*:**/aggrefier-config.xml",
-		"classpath*:**/test-config.xml"})
+		"classpath*:**/test-config.xml", "classpath*:**/filepaths-config.xml"})
 public class AggrefierModuleTest {
 
 	private AggrefierModule TestAggrefier;
 	private GlobPathRecognizer strictShapeFileRecognizer;
-	private String shapeDirPath;
+	private String shapeDirBasePath;
 	private ArrayList<String> shapeFileList;
 	private HashMap<String, String> shapeStrictKeyCountMap;
 	private JHOVE2 JHOVE2;
 	private GlobPathRecognizer quickenFileRecognizer;
-	private String quickenDirPath;
+	private String quickenDirBasePath;
 	private List<String> quickenFileList;
 	private HashMap<String, String> quickenStrictKeyCountMap;
-	private String emptyDirPath;
+	private String emptyDirBasePath;
 
 	/**
 	 * Test method for {@link org.jhove2.module.identify.AggrefierModule#identify(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)}.
@@ -88,6 +90,30 @@ public class AggrefierModuleTest {
 	@Test
 	public void testIdentify() {
 		FileSetSource fsSource = new FileSetSource();
+		String shapeDirPath = null;
+		String quickenDirPath = null;
+		String emptyDirPath = null;
+		try {
+			shapeDirPath = 
+				ReportableFactory.getFilePathFromClasspath(shapeDirBasePath, "shapefile dir");
+			quickenDirPath = 
+				ReportableFactory.getFilePathFromClasspath(quickenDirBasePath, "quicken dir");
+			
+			emptyDirPath = 
+				ReportableFactory.getFilePathFromClasspath(emptyDirBasePath, "empty dir");
+		} catch (JHOVE2Exception e1) {
+			fail("Could not create base directory");
+		}
+		emptyDirBasePath = emptyDirBasePath.concat("empty/");
+		try {		
+			File emptyDir = new File(emptyDirPath);
+			if (!emptyDir.exists()){
+				emptyDir.mkdirs();
+			}
+		}
+		catch (Exception e){
+			fail("Could not create empty directory");
+		}
 		try {
 			for (String shapeFileName:shapeFileList){
 				String testFilePath = shapeDirPath.concat(shapeFileName);
@@ -127,7 +153,7 @@ public class AggrefierModuleTest {
 				}
 			}
 			DirectorySource dSource = (DirectorySource) SourceFactory.getSource(
-					new File(this.getEmptyDirPath())); 
+					new File(emptyDirPath)); 
 			for (ClumpSource clumpSource:clumpSources){
 				dSource.addChildSource(clumpSource);
 			}
@@ -168,12 +194,12 @@ public class AggrefierModuleTest {
 		this.strictShapeFileRecognizer = strictShapeFileRecognizer;
 	}
 
-	public String getShapeDirPath() {
-		return shapeDirPath;
+	public String getShapeDirBasePath() {
+		return shapeDirBasePath;
 	}
 	@Resource
-	public void setShapeDirPath(String shapeDirPath) {
-		this.shapeDirPath = shapeDirPath;
+	public void setShapeDirBasePath(String shapeDirPath) {
+		this.shapeDirBasePath = shapeDirPath;
 	}
 
 	public ArrayList<String> getShapeFileList() {
@@ -209,12 +235,12 @@ public class AggrefierModuleTest {
 		this.quickenFileRecognizer = quickenFileRecognizer;
 	}
 
-	public String getQuickenDirPath() {
-		return quickenDirPath;
+	public String getQuickenDirBasePath() {
+		return quickenDirBasePath;
 	}
 	@Resource
-	public void setQuickenDirPath(String quickenDirPath) {
-		this.quickenDirPath = quickenDirPath;
+	public void setQuickenDirBasePath(String quickenDirPath) {
+		this.quickenDirBasePath = quickenDirPath;
 	}
 
 	public List<String> getQuickenFileList() {
@@ -234,12 +260,12 @@ public class AggrefierModuleTest {
 		this.quickenStrictKeyCountMap = quickenStrictKeyCountMap;
 	}
 
-	public String getEmptyDirPath() {
-		return emptyDirPath;
+	public String getEmptyDirBasePath() {
+		return emptyDirBasePath;
 	}
 	@Resource
-	public void setEmptyDirPath(String emptyDirPath) {
-		this.emptyDirPath = emptyDirPath;
+	public void setEmptyDirBasePath(String emptyDirPath) {
+		this.emptyDirBasePath = emptyDirPath;
 	}
 
 }

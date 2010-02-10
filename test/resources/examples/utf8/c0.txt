@@ -1,3 +1,0 @@
-This is a test.
-This is the second line.
-This line has control characters in it: , , , cncn

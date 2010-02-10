@@ -106,7 +106,7 @@ public class InitializerTest {
 		assertTrue("Error loading block", props3 != null);
 
 		Properties props4 = ReportableFactory.getProperties("DispatchMap");
-		assertTrue("Error loading block", props4 != null);
+		assertTrue("Error dispatch map", props4 != null);
 
 	}
 }
