@@ -214,8 +214,10 @@ public abstract class AbstractInput implements Input {
 			buffer = this.buffer.array();
 		else {
 			buffer = new byte[this.buffer.limit()]; // capacity()];
+			this.buffer.mark();
 			this.buffer.position(0);
 			this.buffer.get(buffer);
+			this.buffer.reset();
 		}
 
 		return buffer;

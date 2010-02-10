@@ -51,6 +51,7 @@ import java.nio.channels.FileChannel;
  * @author mstrong, slabrams
  */
 public class MappedInput extends AbstractInput {
+
 	/** Maximum buffer size, in bytes. */
 	protected int maxBufferSize;
 
@@ -89,9 +90,10 @@ public class MappedInput extends AbstractInput {
 			throws FileNotFoundException, IOException {
 		super(file, order);
 
-		/* Allocate memory mapped buffer and initialize it. */
-		if (maxBufferSize > this.channel.size())
-			maxBufferSize = (int) this.channel.size();
+		/* Allocate memory mapped buffer and initialize it.
+		*  The buffersize will always be size of file channel size 
+		*/
+		maxBufferSize = (int) this.channel.size();
 		this.maxBufferSize = maxBufferSize;
 		this.buffer = (MappedByteBuffer) buffer;
 		/*
@@ -107,8 +109,9 @@ public class MappedInput extends AbstractInput {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-		// getNextBuffer();
+		this.inputablePosition = this.inputablePosition + bufferSize;
+		this.bufferOffset = this.channel.position() - buffer.capacity();
+		this.bufferSize = buffer.capacity();
 	}
 
 	/**
@@ -119,24 +122,6 @@ public class MappedInput extends AbstractInput {
 	 */
 	@Override
 	public int getMaxBufferSize() {
-		return this.bufferSize;
-	}
-
-	/**
-	 * Get the next buffer's worth of data from the channel.
-	 * 
-	 * @return Number of bytes actually read, possibly 0 or -1 if EOF
-	 * @throws IOException
-	 */
-	@Override
-	protected long getNextBuffer() throws IOException {
-		this.buffer.clear();
-		// int n = this.channel.read(this.buffer);
-		this.buffer.flip();
-		this.bufferOffset = this.channel.position() - buffer.capacity();
-		this.bufferSize = buffer.capacity();
-		this.inputablePosition = this.bufferOffset + this.buffer.position();
-
 		return this.bufferSize;
 	}
 }

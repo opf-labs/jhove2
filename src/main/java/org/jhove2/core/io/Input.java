@@ -47,9 +47,9 @@ import java.nio.ByteOrder;
  * @author MStrong
  */
 public interface Input  {
-	/** AbstractInput buffer scope. */
+	/** AbstractInput buffer type. */
 	public enum Type {
-		Direct, NonDirect, MemoryMapped
+		Direct, NonDirect, Mapped
 	};
 
 	/** Marker indicating end-of-file. */
@@ -57,6 +57,9 @@ public interface Input  {
 
 	/** Marker indicating an uninitialized value. */
 	public final static int UNINITIALIZED = -1;
+
+	/** Maximum file size region that can mapped ~1.6 GB. */
+	public final static int MAX_MAPPED_FILE = 1717986918;
 
 	/**
 	 * Close the input.

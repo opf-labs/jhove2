@@ -58,7 +58,7 @@ public class InputFactory {
 	 * @param bufferSize
 	 *            Maximum buffer size, in bytes
 	 * @param scope
-	 *            Input buffer scope
+	 *            Input buffer type
 	 * @return Input
 	 * @throws FileNotFoundException
 	 *             File not found
@@ -71,14 +71,27 @@ public class InputFactory {
 	}
 
 	/**
-	 * Factory to create an appropriate <code>AbstractInput</code>.
+	 * Factory to create an appropriate <code>AbstractInput</code>.  
+	 * MemoryMapped IO will not be used for files which are larger 
+	 * than Integer.MAX_VALUE (2GB on most systems) and Direct IO
+	 * Input type will be returned.
+	 *  
+	 * NOTE: A process is limited to 2GB of virtual memory on 32-bit 
+	 * editions of Windows which means it is not possible to map 
+	 * a region close to that size. If sharing is disabled 
+	 * (-Xshare:off or use server VM) then it should be possible 
+	 * to map a region up to ~1.6GB. It will be less than this 
+	 * if the java heap needs to be increased beyond its default. 
+	 * If sharing is enabled then the maximum will be reduced 
+	 * to about ~1-1.1GB.
+
 	 * 
 	 * @param file
 	 *            Java {java.io.File} underlying the inputable
 	 * @param bufferSize
 	 *            Maximum buffer size, in bytes
 	 * @param scope
-	 *            Input buffer scope
+	 *            Input buffer type
 	 * @param order
 	 *            ByteOrder Endianess of buffer
 	 * @return Input
@@ -94,8 +107,15 @@ public class InputFactory {
 			abstractInput = new DirectInput(file, bufferSize, order);
 		} else if (type.equals(Type.NonDirect)) {
 			abstractInput = new NonDirectInput(file, bufferSize, order);
-		} else if (type.equals(Type.MemoryMapped)) {
-			abstractInput = new MappedInput(file, bufferSize, order);
+		} else if (type.equals(Type.Mapped)) {
+			/* Only files smaller than Input.MAX_MAPPED_FILESIZE can utilize 
+			 * MappedByteBuffers 
+			 */
+			long length;
+			if ((length = file.length()) < Input.MAX_MAPPED_FILE)
+				abstractInput = new MappedInput(file, bufferSize, order);
+			else
+				abstractInput = new DirectInput(file, bufferSize, order);
 		}
 
 		return abstractInput;

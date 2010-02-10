@@ -299,7 +299,7 @@ public abstract class AbstractSource
 	 * @param bufferSize
 	 *            Input maximum buffer size
 	 * @param bufferType
-	 *            Input buffer scope
+	 *            Input buffer type
 	 * @return Input
 	 * @throws FileNotFoundException
 	 *             File not found
@@ -324,7 +324,7 @@ public abstract class AbstractSource
 	 * @param bufferSize
 	 *            Input maximum buffer size, in bytes
 	 * @param bufferType
-	 *            Input buffer scope
+	 *            Input buffer type
 	 * @param order
 	 *            Byte order
 	 * @return null

@@ -134,7 +134,7 @@ public class ZipFileSource
 	 * @param bufferSize
 	 *            Input buffer size
 	 * @param bufferType
-	 *            Input buffer scope
+	 *            Input buffer type
 	 * @return Input for the source unit
 	 * @throws FileNotFoundException
 	 * @throws IOException
