@@ -183,27 +183,6 @@ public class DispatcherCommand extends AbstractCommand {
     }
 
     /**
-     * Loads static map from JHOVE2 identifier to module from properties file if
-     * necessary, then returns map
-     * 
-     * @return map from JHOVE2 identifier to module from properties if necessary
-     * @throws JHOVE2Exception
-     */
-    public static ConcurrentMap<String, String> getDispatchMapOld()
-            throws JHOVE2Exception {
-        if (dispatchMap == null) {
-            dispatchMap = new ConcurrentHashMap<String, String>();
-            Properties props = ReportableFactory.getProperties("DispatchMap");
-            Set<String> keys = props.stringPropertyNames();
-            for (String key : keys) {
-                String value = props.getProperty(key);
-                dispatchMap.put(key, value);
-            }
-        }
-        return dispatchMap;
-    }
-
-    /**
      * Gets the mapping from format to format module. Initializes the static map
      * on first invocation.
      * 
@@ -263,31 +242,6 @@ public class DispatcherCommand extends AbstractCommand {
             module = ReportableFactory.getReportable(Module.class, name);
         }
         return module;
-    }
-
-    /**
-     * Loads map from JHOVE2 format ID to bean name for that format from
-     * properties file if map is not already populated and returns map;
-     * otherwise just returns map
-     * 
-     * @return map from JHOVE2 format ID to bean name for that format
-     * @throws JHOVE2Exception
-     */
-    public static ConcurrentMap<String, String> getJhoveIdToBeanNameOld()
-            throws JHOVE2Exception {
-        if (DispatcherCommand.jhoveIdToBeanName == null) {
-            ConcurrentHashMap<String, String> map = new ConcurrentHashMap<String, String>();
-            Properties props = null;
-            props = ReportableFactory
-                    .getProperties(DROIDIdentifier.JHOVE2BEANMAP_BEANNAME);
-            Set<String> keys = props.stringPropertyNames();
-            for (String key : keys) {
-                String value = props.getProperty(key);
-                map.put(key, value);
-            }
-            DispatcherCommand.jhoveIdToBeanName = map;
-        }
-        return DispatcherCommand.jhoveIdToBeanName;
     }
 
     /**
