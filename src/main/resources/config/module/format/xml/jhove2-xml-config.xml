@@ -31,6 +31,9 @@
 			<map>
 				<!-- Specify that validation should occur when the XML instance is parsed -->			
 				<entry key="http://xml.org/sax/features/validation" value="true"/>
+				<!-- A value of "true" indicates that system IDs in entity declarations will be 
+				absolutized (relative to their base URIs) before reporting.  -->			
+				<entry key="http://xml.org/sax/features/resolve-dtd-uris" value="false"/>
 				<!-- The parser will validate the document only if a grammar is specified -->			
 				<entry key="http://apache.org/xml/features/validation/dynamic" value="true"/>
 				<!-- Turn on XML Schema validation by inserting an XML Schema validator into the pipeline -->			
@@ -39,10 +42,16 @@
 				<entry key="http://apache.org/xml/features/validation/schema-full-checking" value="false"/>
 				<!-- Only the first schema location hint encountered by the processor will be used to locate the components for a given target namespace -->			
 				<entry key="http://apache.org/xml/features/honour-all-schemaLocations" value="false"/>
-				<!-- Testing dummy feature -->			
-				<entry key="dummy" value="true"/>
-
 			</map>
+		</property>
+		<!-- Should the parser use XML Catalog technology for resolving DTD and/or Schema locations? -->
+		<property name="useXmlCatalog" value="false"/>
+		<!-- If so, one or more XML Catalog files should be specified using absolute URIs -->
+		<property name="xmlCatalogList">
+			<list>
+				<value>file:///C:/xml-catalogs/dtd-catalog.xml</value>
+				<value>file:///C:/xml-catalogs/schema-catalog.xml</value>
+			</list>
 		</property>
 	</bean>
    

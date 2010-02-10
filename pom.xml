@@ -59,6 +59,11 @@
     		<artifactId>xercesImpl</artifactId>
     		<version>2.9.1</version>
 		</dependency> 
+		<dependency>
+		    <groupId>xml-resolver</groupId>
+		    <artifactId>xml-resolver</artifactId>
+		    <version>1.2</version>
+		</dependency>
 		<!--  for jargs GNU Command Line Parser -->
 		<dependency>
   			<groupId>net.sf</groupId>

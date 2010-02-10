@@ -37,26 +37,16 @@
 package org.jhove2.module.format.xml;
 
 import java.io.EOFException;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.charset.CharacterCodingException;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.Format;
 import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.Message;
-import org.jhove2.core.Message.Context;
-import org.jhove2.core.Message.Severity;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.BaseFormatModule;
@@ -140,7 +130,7 @@ public class XmlModule extends BaseFormatModule implements Validator {
     /** The instance of a SAX2 XMLReader class used to parse XML instances. */
     protected SaxParser saxParser;
     
-    /** The parser to be used for extracting numeric character references */
+    /** If true, run a separate parse to extract numeric character references */
     protected boolean ncrParser = false;
 
     /** Data store for XML declaration information captured during the parse. */
@@ -199,6 +189,11 @@ public class XmlModule extends BaseFormatModule implements Validator {
         return saxParser;
     }
     
+    /** Sets the class name of the parser to be used for extracting numeric character references */
+    public void setCollectCommentText(boolean collectCommentText) {
+        this.commentInformation.collectCommentText = collectCommentText;
+    }
+
     /** Sets the class name of the parser to be used for extracting numeric character references */
     public void setNcrParser(boolean ncrParser) {
         this.ncrParser = ncrParser;
@@ -352,7 +347,6 @@ public class XmlModule extends BaseFormatModule implements Validator {
 
         /* Create the InputSource object containing the XML entity to be parsed */
         InputSource saxInputSource = new InputSource(source.getInputStream());
-        // TODO explore per-source-unit entity resolution, or use XML Catalog
         /* Provide the path of the source file, in case relative paths need to be resolved */
         if (source.getFile() != null) {
             saxInputSource.setSystemId(source.getFile().getAbsolutePath());
@@ -366,6 +360,8 @@ public class XmlModule extends BaseFormatModule implements Validator {
             wellFormed = false;
         }
         catch (SAXException e) {
+            throw new JHOVE2Exception("Could not parse the Source object", e);
+        } catch (FileNotFoundException e) {
             throw new JHOVE2Exception("Could not parse the Source object", e);
         }
         /* Get the input object */

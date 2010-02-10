@@ -74,7 +74,16 @@ public class SaxParserDeclHandler extends DefaultHandler2 implements DeclHandler
 		Entity entity = new Entity();
 		entity.type = Entity.EntityType.Internal;
 		entity.name = name;
-		entity.value = value;
+		if (value.length() == 1) {
+		    int codePoint = value.codePointAt(0);
+		    if ((codePoint > 32 ) && (codePoint < 127 )) {
+		        entity.value = value;
+		    } else {
+	            entity.value = String.format("U+%04X", codePoint);
+		    }
+		} else {
+		    entity.value = value;
+		}
 		xmlModule.entities.add(entity);
 	}
 

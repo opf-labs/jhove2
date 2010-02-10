@@ -36,10 +36,6 @@
  */
 package org.jhove2.module.format.xml;
 
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.xml.sax.Attributes;
 import org.xml.sax.XMLReader;
 import org.xml.sax.ContentHandler;

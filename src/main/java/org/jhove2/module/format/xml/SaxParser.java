@@ -38,11 +38,13 @@
 package org.jhove2.module.format.xml;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.xerces.util.XMLCatalogResolver;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.reportable.AbstractReportable;
@@ -87,6 +89,12 @@ public class SaxParser extends AbstractReportable {
      * registered with the parser.
      */
     protected Map<String, Object> properties = new HashMap<String, Object>();
+    
+    /** If true, use XML Catalog files and external entity lookup */
+    protected boolean useXmlCatalog;
+    
+    /** An ordered array list of absolute URIs for the catalog files to be used by the external entity resolver */
+    protected String[] xmlCatalogList;
 
     /**
      * The name of the SAX driver class to be used for parsing can optionally be
@@ -136,6 +144,16 @@ public class SaxParser extends AbstractReportable {
         return list;
     }
 
+    /** If set true, use XML Catalog files and external entity lookup */
+    public void setUseXmlCatalog(boolean useXmlCatalog) {
+        this.useXmlCatalog = useXmlCatalog;
+    }
+    
+    /** Setter for the array of catalog files to be used by the external entity resolver */
+    public void setXmlCatalogList(String[] xmlCatalogList) {
+        this.xmlCatalogList = xmlCatalogList;
+    }
+
     /**
      * Gets the list of SAX properties that are currently in effect
      * 
@@ -157,6 +175,17 @@ public class SaxParser extends AbstractReportable {
         return list;
     }
 
+    /**
+     * Gets the list of XML Catalogs that were used for entity resolution
+     * 
+     * @return a list of XML Catalogs that were used for entity resolution
+     */
+    @ReportableProperty(order = 4, value = "XML Catalogs used for resolving entities")
+    public List<String> getXmlCatalogs() {
+        return Arrays.asList(xmlCatalogList);
+    }
+    
+    
     /**
      * Sets a pointer to the XmlModule that has invoked this class.
      * 
@@ -180,9 +209,12 @@ public class SaxParser extends AbstractReportable {
             specifyXmlReaderFeatures();
             specifyXmlReaderHandlers();
             specifyXmlReaderHandlers2();
+            specifyXmlCatalog();
+            specifyXmlReaderProperties();
         }
         return xmlReader;
     }
+
 
     /**
      * Creates the SAX2 XMLReader object.
@@ -251,6 +283,30 @@ public class SaxParser extends AbstractReportable {
                 new SaxParserDeclHandler(xmlModule));
         properties.put("http://xml.org/sax/properties/lexical-handler",
                 new SaxParserLexicalHandler(xmlModule));
+     }
+
+    /**
+     * Initialize XML Catalog Resolver.<br />
+     * @see <a href="http://xerces.apache.org/xerces2-j/javadocs/xerces2/org/apache/xerces/util/XMLCatalogResolver.html"
+     * >XMLCatalogResolver</a>
+     */
+    private void specifyXmlCatalog() {
+        if (useXmlCatalog && (xmlCatalogList != null)) {
+            // Create catalog resolver.
+            XMLCatalogResolver resolver = new XMLCatalogResolver();
+            // Set public identifier matches are preferred to system identifier matches
+            resolver.setPreferPublic(true);
+            // catalog list should be set from the Spring config file
+            resolver.setCatalogList(xmlCatalogList);
+            // Set the resolver on the parser.
+            properties.put("http://apache.org/xml/properties/internal/entity-resolver", resolver);            
+        }
+    }
+    
+    /**
+     * Set parser properties (callback objects) using the list previously filled
+     */
+    private void specifyXmlReaderProperties() {
         for (Entry<String, Object> entry : properties.entrySet()) {
             try {
                 xmlReader.setProperty(entry.getKey(), entry.getValue());
