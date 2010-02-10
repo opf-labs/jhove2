@@ -158,7 +158,7 @@ public class MessageTest {
 				messageParms);
 		assertEquals(sb.toString(), message.getLocalizedMessageText());
 		
-		sb = new StringBuffer("No identifier match on internal or external signatures found by DROID ");
+		sb = new StringBuffer("No identification match on internal or external signatures found by DROID ");
 		msg = "Some droid text";
 		sb.append(msg);
 		messageParms = new Object[]{msg};
