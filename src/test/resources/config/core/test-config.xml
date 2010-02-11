@@ -50,16 +50,9 @@
 		<constructor-arg type="org.jhove2.core.Agent$Type" value="Corporate"/>
 		<property name="URI" value="http://www.stanford.edu/"/>
 	</bean>
-	
-	
-			
+		
 	<!-- Display visibility properties bean -->
 	<util:properties id="DisplayVisibility"
 	                 location="classpath:properties/displayer.properties"/>
 
-	<!-- Dispatch map properties bean -->
-	<util:properties id="DispatchMap"	
-		             location="classpath:properties/dispatcher.properties"/>
-		             
-		             
 </beans>
