@@ -347,7 +347,10 @@ Displayer {
 		}
 		else {
 			if (value instanceof Date) {
-				value = ISO8601.format(value);
+				String date = ISO8601.format(value);
+				String dat1 = date.substring(1, 22);
+				String dat2 = date.substring(22);
+				value = dat1 + ":" + dat2;
 			}
 			this.displayProperty(out, level + 1, name, identifier, value,
 					             order, unit);
