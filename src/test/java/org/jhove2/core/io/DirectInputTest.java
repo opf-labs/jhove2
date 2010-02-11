@@ -43,36 +43,55 @@ import java.io.PrintWriter;
 import java.nio.Buffer;
 import java.nio.ByteOrder;
 
+import javax.annotation.Resource;
+
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.io.Input.Type;
+import org.jhove2.core.reportable.ReportableFactory;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * @author mstrong
  * 
  */
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations={"classpath*:**/abstractdisplayer-config.xml",
+		"classpath*:**/filepaths-config.xml"})
 public class DirectInputTest {
 
 	int bufferSize;
 	static Input abstractInput = null;
-	File testFile;
 	PrintWriter out;
+	private String utf8DirBasePath;
+	private String testFile01;
+	private File testFile;
+
 
 	@Before
 	public void setUp() throws Exception {
 		bufferSize = 100;
-		testFile = new File("src/test/resources/examples/utf8/xmas_menu.txt");
+		String utf8DirPath = null;
+		try {
+			utf8DirPath = 
+				ReportableFactory.getFilePathFromClasspath(utf8DirBasePath, "utf8 dir");
+		} catch (JHOVE2Exception e1) {
+			fail("Could not create base directory");
+		}
+		String filePath = utf8DirPath.concat(testFile01);
+		testFile = new File(filePath);
 		out = new PrintWriter(System.out, true);
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		// abstractInput.close();
 	}
 
 	@Test
@@ -102,7 +121,6 @@ public class DirectInputTest {
 
 	@Test
 	public void testGetBuffer() {
-
 		Buffer buffer = abstractInput.getBuffer();
 		assertTrue("Buffer returned is null", buffer != null);
 	}
@@ -117,21 +135,28 @@ public class DirectInputTest {
 	@Test
 	public void testGetBufferOffset() {
 		try {
-			// test within the bounds of the current buffer. Buffer Offset will
-			// not change because you have not exceeded the buffer limit
-			abstractInput.setPosition(50);
+			/* test that bufferOffsete does not change.  Test within the bounds 
+			 * of the current buffer. Buffer Offset will not change 
+			 * because you have not exceeded the buffer limit
+			*/
+			long markBufferOffset = abstractInput.getBufferOffset();
+			long bufferUpperBound = markBufferOffset + bufferSize;
+			/* move to somewhere in the middle of the current buffer
+			 */
+			abstractInput.setPosition(markBufferOffset + (bufferSize / 2));  
 			long bufferOffset = abstractInput.getBufferOffset();
-			assertTrue("Buffer Offset is not set to expected value",
-					bufferOffset == 0);
+			assertTrue("Buffer Offset " + bufferOffset + " is not set to expected value " + markBufferOffset,
+					bufferOffset == markBufferOffset);
 
-			// test outside the bounds of the current buffer
-			// bufferOffset will be set to the beginning position of the buffer
-			// that
-			// is read into.
-			long newBufferOffset = bufferSize + 50;
+			/* test that bufferOffset changes when outside the bounds 
+			 * of the current buffer
+			 * bufferOffset will be set to the beginning position of the buffer
+			 * that is read into.
+			 */
+			long newBufferOffset = bufferUpperBound + 50;
 			abstractInput.setPosition(newBufferOffset);
 			bufferOffset = abstractInput.getBufferOffset();
-			assertTrue("Buffer Offset is not set to expected value",
+			assertTrue("Buffer Offset " + bufferOffset + " is not set to expected value " + newBufferOffset,
 					bufferOffset == newBufferOffset);
 		} catch (IOException e1) {
 			e1.printStackTrace();
@@ -454,6 +479,21 @@ public class DirectInputTest {
 			fail(e.getMessage());
 			e.printStackTrace();
 		}
+	}
+	public String getTestFile01() {
+		return testFile01;
+	}
+	@Resource
+	public void setTestFile01(String testFile01) {
+		this.testFile01 = testFile01;
+	}
+
+	public String getUtf8DirBaseBath() {
+		return utf8DirBasePath;
+	}
+	@Resource
+	public void setUtf8DirBasePath(String testDir) {
+		this.utf8DirBasePath = testDir;
 	}
 
 }

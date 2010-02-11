@@ -45,36 +45,54 @@ import java.io.PrintWriter;
 import java.nio.Buffer;
 import java.nio.ByteOrder;
 
+import javax.annotation.Resource;
+
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.io.Input.Type;
+import org.jhove2.core.reportable.ReportableFactory;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * @author mstrong
  *
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations={"classpath*:**/abstractdisplayer-config.xml",
+		"classpath*:**/filepaths-config.xml"})
 public class MappedInputTest {
 
     int bufferSize;
     static MappedInput abstractInput = null;
-    File testFile;
+	private String utf8DirBasePath;
+	private String testFile01;
+	private File testFile;
     PrintWriter out;
     ByteOrder nativeOrder = ByteOrder.nativeOrder(); 
 
     @Before
     public void setUp() throws Exception {
         bufferSize = 100;
-        testFile = new File("src/test/resources/examples/utf8/xmas_menu.txt");
+		String utf8DirPath = null;
+		try {
+			utf8DirPath = 
+				ReportableFactory.getFilePathFromClasspath(utf8DirBasePath, "utf8 dir");
+		} catch (JHOVE2Exception e1) {
+			fail("Could not create base directory");
+		}
+		String filePath = utf8DirPath.concat(testFile01);
+		testFile = new File(filePath);
         out = new PrintWriter(System.out, true);
     }
 
     @After
     public void tearDown() throws Exception {
-        // abstractInput.close();
     }
 
     @Test
@@ -353,6 +371,21 @@ public class MappedInputTest {
 		}
 	}
 
+	public String getTestFile01() {
+		return testFile01;
+	}
+	@Resource
+	public void setTestFile01(String testFile01) {
+		this.testFile01 = testFile01;
+	}
+
+	public String getUtf8DirBaseBath() {
+		return utf8DirBasePath;
+	}
+	@Resource
+	public void setUtf8DirBasePath(String testDir) {
+		this.utf8DirBasePath = testDir;
+	}
 
 
 }
