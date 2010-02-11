@@ -25,7 +25,7 @@
 	</bean>
    
    	<!-- SAX Parser bean -->
-   	<bean id="SaxParser" class = "org.jhove2.module.format.xml.SaxParser" scope="singleton">
+   	<bean id="SaxParser" class = "org.jhove2.module.format.xml.SaxParser" scope="prototype">
 		<property name="parser" value="org.apache.xerces.parsers.SAXParser"/>
 		<property name="features">
 			<map>
