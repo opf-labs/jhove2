@@ -135,7 +135,10 @@ public class XmlDeclaration extends AbstractReportable {
      * @return the value
      */
     private String getValue(String valueFromSAX2, String valueDeclared) {
-        if (valueFromSAX2.equalsIgnoreCase(valueDeclared)) {
+        if (valueFromSAX2 == null) {
+            return valueDeclared;
+        }
+        else if (valueFromSAX2.equalsIgnoreCase(valueDeclared)) {
             return valueFromSAX2;
         }
         else if (valueDeclared == null) {

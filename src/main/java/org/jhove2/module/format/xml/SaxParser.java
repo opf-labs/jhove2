@@ -144,16 +144,6 @@ public class SaxParser extends AbstractReportable {
         return list;
     }
 
-    /** If set true, use XML Catalog files and external entity lookup */
-    public void setUseXmlCatalog(boolean useXmlCatalog) {
-        this.useXmlCatalog = useXmlCatalog;
-    }
-    
-    /** Setter for the array of catalog files to be used by the external entity resolver */
-    public void setXmlCatalogList(String[] xmlCatalogList) {
-        this.xmlCatalogList = xmlCatalogList;
-    }
-
     /**
      * Gets the list of SAX properties that are currently in effect
      * 
@@ -175,16 +165,29 @@ public class SaxParser extends AbstractReportable {
         return list;
     }
 
-    /**
+    /** If set true, use XML Catalog files and external entity lookup */
+    public void setUseXmlCatalog(boolean useXmlCatalog) {
+        this.useXmlCatalog = useXmlCatalog;
+    }
+    
+    /** Setter for the array of catalog files to be used by the external entity resolver */
+    public void setXmlCatalogList(String[] xmlCatalogList) {
+        this.xmlCatalogList = xmlCatalogList;
+    }
+
+   /**
      * Gets the list of XML Catalogs that were used for entity resolution
      * 
      * @return a list of XML Catalogs that were used for entity resolution
      */
     @ReportableProperty(order = 4, value = "XML Catalogs used for resolving entities")
     public List<String> getXmlCatalogs() {
-        return Arrays.asList(xmlCatalogList);
+        if (useXmlCatalog) {
+            return Arrays.asList(xmlCatalogList);
+        } else {
+            return null;
+        }
     }
-    
     
     /**
      * Sets a pointer to the XmlModule that has invoked this class.
