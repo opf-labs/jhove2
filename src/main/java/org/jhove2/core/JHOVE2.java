@@ -41,6 +41,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.Message.Context;
+import org.jhove2.core.Message.Severity;
+import org.jhove2.core.source.FileSystemSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceCounter;
 import org.jhove2.module.AbstractModule;
@@ -59,7 +62,7 @@ public class JHOVE2
 	public static final String VERSION = "0.5.4";
 
 	/** Framework release date. */
-	public static final String RELEASE = "2010-01-26";
+	public static final String RELEASE = "2010-02-11";
 
 	/** Framework rights statement. */
 	public static final String RIGHTS = "Copyright 2010 by The Regents of the University of California, "
@@ -129,17 +132,36 @@ public class JHOVE2
 		this.sourceCounter.incrementSourceCounter(source);				
 		
 		/* Characterize the source unit. */
-		source.setDeleteTempFiles(this.getInvocation().getDeleteTempFiles());
+		boolean tryIt = true;
+		if (source instanceof FileSystemSource) {
+		    FileSystemSource fs = (FileSystemSource) source;
+		    String name = fs.getFileName();
+		    if (!fs.isExtant()) {
+		        source.addMessage(new Message(Severity.ERROR,
+                        Context.PROCESS,
+                        "org.jhove2.core.source.FileSystemSource.FileNotFoundMessage",
+                        new Object[]{name}));
+		    }
+		    else if (!fs.isReadable()) {
+		        source.addMessage(new Message(Severity.ERROR,
+                        Context.PROCESS,
+                        "org.jhove2.core.source.FileSystemSource.FileNotReadableMessage",
+                        new Object[]{name}));
+		    }
+		}
 		try {
-			for (Command command : this.commands){
-				TimerInfo time2 = command.getTimerInfo();
-				time2.setStartTime();
-				try {
-					command.execute(this, source);
-				}
-				finally {
-					time2.setEndTime();
-				}
+		    if (tryIt) {
+		        source.setDeleteTempFiles(this.getInvocation().getDeleteTempFiles());
+		        for (Command command : this.commands){
+		            TimerInfo time2 = command.getTimerInfo();
+		            time2.setStartTime();
+		            try {
+		                command.execute(this, source);
+		            }
+		            finally {
+		                time2.setEndTime();
+		            }
+		        }
 			}
 		} finally {
 			source.close();
