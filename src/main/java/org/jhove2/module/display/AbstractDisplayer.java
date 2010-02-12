@@ -348,7 +348,7 @@ Displayer {
 		else {
 			if (value instanceof Date) {
 				String date = ISO8601.format(value);
-				String dat1 = date.substring(1, 22);
+				String dat1 = date.substring(0, 22);
 				String dat2 = date.substring(22);
 				value = dat1 + ":" + dat2;
 			}
