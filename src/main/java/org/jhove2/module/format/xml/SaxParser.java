@@ -37,6 +37,8 @@
 
 package org.jhove2.module.format.xml;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -47,10 +49,19 @@ import java.util.Map.Entry;
 import org.apache.xerces.util.XMLCatalogResolver;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.Message;
+import org.jhove2.core.Message.Context;
+import org.jhove2.core.Message.Severity;
 import org.jhove2.core.reportable.AbstractReportable;
+import org.jhove2.core.source.FileSource;
+import org.jhove2.core.source.Source;
+import org.jhove2.core.source.URLSource;
+import org.jhove2.module.format.Validator.Validity;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotRecognizedException;
 import org.xml.sax.SAXNotSupportedException;
+import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
@@ -203,6 +214,7 @@ public class SaxParser extends AbstractReportable {
      * Creates and initializes the SAX2 XMLReader object (the actual parser).
      * 
      * @return the the SAX2 XMLReader object
+     * @throws JHOVE2Exception 
      * 
      * @throws JHOVE2Exception
      */
@@ -217,7 +229,6 @@ public class SaxParser extends AbstractReportable {
         }
         return xmlReader;
     }
-
 
     /**
      * Creates the SAX2 XMLReader object.
@@ -321,6 +332,47 @@ public class SaxParser extends AbstractReportable {
                 entry.setValue("Property not supported by parser");
             }
         }
+    }
+    
+    protected void parse(Source source) throws JHOVE2Exception, IOException {
+        
+        /* The XMLReader does the parsing of the XML */
+        XMLReader xmlReader = getXmlReader();
+        
+        /* Create the InputSource object containing the XML entity to be parsed */
+        InputSource saxInputSource = new InputSource(source.getInputStream());
+        /* Provide the BASE path of the source file, in case relative paths need to be resolved */
+        if (source instanceof FileSource){
+            saxInputSource.setSystemId(source.getFile().getAbsolutePath());
+        }
+        else if (source instanceof URLSource){
+            saxInputSource.setSystemId(((URLSource)source).getURLString());
+        }
+
+        /* Here's where the SAX parsing takes place */
+        try {
+            xmlReader.parse(saxInputSource);
+            xmlModule.wellFormed = true;
+        }
+        catch (SAXException e) {
+            xmlModule.wellFormed = false;
+            xmlModule.validationResults.isValid = Validity.False;
+            Object[]messageArgs = new Object[]{e.getMessage()};
+            xmlModule.saxParserMessages.add(new Message(Severity.ERROR,
+                    Context.OBJECT,
+                    "org.jhove2.module.format.xml.XmlModule.saxParserMessage",
+                    messageArgs));
+        }
+        catch (FileNotFoundException e) {
+            xmlModule.wellFormed = false;
+            xmlModule.validationResults.isValid = Validity.False;
+            Object[]messageArgs = new Object[]{e.getMessage()};
+            xmlModule.saxParserMessages.add(new Message(Severity.ERROR,
+                    Context.OBJECT,
+                    "org.jhove2.module.format.xml.XmlModule.fileNotFoundMessage",
+                    messageArgs));
+        }
+ 
     }
 
 }

@@ -47,6 +47,7 @@ import org.jhove2.core.Format;
 import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.Message;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.BaseFormatModule;
@@ -166,6 +167,12 @@ public class XmlModule extends BaseFormatModule implements Validator {
     /** The validation results. */
     protected ValidationResults validationResults = new ValidationResults();
 
+    /** Fail fast message. */
+    protected Message failFastMessage;
+
+    /** SAX Parser messages. */
+    protected ArrayList<Message> saxParserMessages = new ArrayList<Message>();
+
     /** The well formed status of the source unit. */
     protected boolean wellFormed = false;
     
@@ -177,6 +184,7 @@ public class XmlModule extends BaseFormatModule implements Validator {
      */
     public void setSaxParser(SaxParser saxParser) {
         this.saxParser = saxParser;
+        this.saxParser.setXmlModule(this);
     }
 
     /**
@@ -318,7 +326,27 @@ public class XmlModule extends BaseFormatModule implements Validator {
     public boolean isWellFormed() {
         return wellFormed;
     }
+    
+   /**
+     * Get fail fast message.
+     * 
+     * @return Fail fast message
+     */
+    @ReportableProperty(order = 14, value = "Fail fast message.")
+    public Message getFailFast() {
+        return this.failFastMessage;
+    }
 
+    /**
+     * Get SAX Parser messages.
+     * 
+     * @return SAX Parser messages
+     */
+    @ReportableProperty(order = 15, value = "SAX Parser Messages.")
+    public List<Message> getSaxParserMessages() {
+        return this.saxParserMessages;
+    }
+    
     /**
      * Parse a source unit.
      * 
@@ -337,46 +365,24 @@ public class XmlModule extends BaseFormatModule implements Validator {
      *             the JHOV e2 exception
      */
     @Override
-    public long parse(JHOVE2 jhove2, Source source) throws EOFException,
-            IOException, JHOVE2Exception {
-        if ((saxParser == null))
-            saxParser = new SaxParser();
-        saxParser.setXmlModule(this);
-        /* The XMLReader does the parsing of the XML */
-        XMLReader xmlReader = saxParser.getXmlReader();
-
-        /* Create the InputSource object containing the XML entity to be parsed */
-        InputSource saxInputSource = new InputSource(source.getInputStream());
-        /* Provide the path of the source file, in case relative paths need to be resolved */
-        if (source.getFile() != null) {
-            saxInputSource.setSystemId(source.getFile().getAbsolutePath());
-        }
-        /* Here's where the parsing takes place */
-        try {
-            xmlReader.parse(saxInputSource);
-            wellFormed = true;
-        }
-        catch (SAXParseException spe) {
-            wellFormed = false;
-        }
-        catch (SAXException e) {
-            throw new JHOVE2Exception("Could not parse the Source object", e);
-        } catch (FileNotFoundException e) {
-            throw new JHOVE2Exception("Could not parse the Source object", e);
-        }
+    public long parse(JHOVE2 jhove2, Source source) throws EOFException, IOException, 
+             JHOVE2Exception {
+        
+        /* Use SAX2 to get what information is available from that mechanism */
+        saxParser.parse(source);
+        
         /* Get the input object */
         Invocation config = jhove2.getInvocation();
         Input input = source.getInput(config.getBufferSize(), config
                 .getBufferType());
-        long start = 0L;
-        /* parse the XML declaration at the start of the document */
-        
+
         /* Do a separate parse of the XML Declaration at the start of the document */
-        input.setPosition(start);
+        input.setPosition(0L);
         xmlDeclaration.parse(input);
+
         /* Do a separate parse to inventory numeric character references */
         if (this.ncrParser) {
-            input.setPosition(start);
+            input.setPosition(0L);
             numericCharacterReferences.parse(input, xmlDeclaration.encodingFromSAX2);            
         }
         return 0;
