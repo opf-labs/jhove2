@@ -54,7 +54,6 @@ import org.jhove2.core.info.ReportablePropertyComparator;
 import org.jhove2.core.info.ReportablePropertyInfo;
 import org.jhove2.core.info.ReportableSourceInfo;
 import org.jhove2.core.reportable.Reportable;
-import org.jhove2.module.display.AbstractDisplayer;
 
 /**
  * Base class for utility applications to generate .properties files for
@@ -239,26 +238,6 @@ public class FeatureConfigurationUtil {
 		}
 	}
 	/**
-	 * Get list of possible display choices for a property
-	 * @param {@link org.jhove2.core.info.ReportablePropertyInfo} for a Reportable property
-	 * @return String with possible display choices for a property
-	 * @throws JHOVE2Exception 
-	 */
-	public static String getDisplayChoices(ReportablePropertyInfo info){
-		StringBuffer choices = new StringBuffer(getAllTypesChoices());
-		Type type = info.getGenericType();
-		if (isBooleanType(type)){
-			choices.append(OR);
-			choices.append(getBooleanChoices());
-		}
-		else if (isNumericType(type)){
-			choices.append(OR);
-			choices.append(getNumericChoices());
-		}
-		return choices.toString();
-	}
-
-	/**
 	 * Test if Type is boolean
 	 * @param type to be tested
 	 * @return true if boolean, else false
@@ -305,54 +284,6 @@ public class FeatureConfigurationUtil {
 		}
 		catch(Exception e){;}
 		return isPType;
-	}
-	/**
-	 * Get display choices available to properties of all types
-	 * @return String containing choices available to properties of all types
-	 */
-	public static String getAllTypesChoices(){
-		StringBuffer choices = new StringBuffer(
-				AbstractDisplayer.DisplayVisibility.Always.toString());
-		choices.append(OR);
-		choices.append(
-				AbstractDisplayer.DisplayVisibility.Never.toString());
-		return choices.toString();
-	}
-	/**
-	 * Get display choices available to boolean properties
-	 * @return String containing choices available to boolean properties
-	 */
-	public static String getBooleanChoices(){
-		StringBuffer choices = new StringBuffer(
-				AbstractDisplayer.DisplayVisibility.IfTrue.toString());
-		choices.append(OR);
-		choices.append(
-				AbstractDisplayer.DisplayVisibility.IfFalse.toString());
-		return choices.toString();
-	}
-	/**
-	 * Get display choices available to boolean properties
-	 * @return String containing choices available to boolean properties
-	 */
-	public static String getNumericChoices(){
-		StringBuffer choices = new StringBuffer(
-				AbstractDisplayer.DisplayVisibility.IfNegative.toString());
-		choices.append(OR);
-		choices.append(
-				AbstractDisplayer.DisplayVisibility.IfNonNegative.toString());
-		choices.append(OR);
-		choices.append(
-				AbstractDisplayer.DisplayVisibility.IfNonPositive.toString());
-		choices.append(OR);
-		choices.append(
-				AbstractDisplayer.DisplayVisibility.IfNonZero.toString());
-		choices.append(OR);
-		choices.append(
-				AbstractDisplayer.DisplayVisibility.IfPositive.toString());
-		choices.append(OR);
-		choices.append(
-				AbstractDisplayer.DisplayVisibility.IfZero.toString());
-		return choices.toString();
 	}
 	/**
 	 * Get list of Strings representing all boolean class type names
@@ -411,5 +342,4 @@ public class FeatureConfigurationUtil {
 		} catch (ClassNotFoundException e) {;}
 		return isReportable;
 	}
-
 }

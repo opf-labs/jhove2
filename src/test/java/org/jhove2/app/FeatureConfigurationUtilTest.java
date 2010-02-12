@@ -41,11 +41,9 @@ import static org.junit.Assert.*;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 import java.lang.reflect.Type;
 
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.info.ReportablePropertyInfo;
 import org.jhove2.core.reportable.Reportable;
 import org.junit.Before;
 import org.junit.Test;
@@ -60,12 +58,7 @@ public class FeatureConfigurationUtilTest {
 	private String rClassName2 = "org.jhove2.core.FormatIdentification";
 	private String notRClassName = "org.jhove2.app.Parser";
 	private String phoneyClassName = "no.such.classname";
-	private String allChoices = "Always | Never";
-	private String booleanChoices = "IfTrue | IfFalse";
-	private String numericChoices = "IfNegative | IfNonNegative | IfNonPositive | IfNonZero | IfPositive | IfZero";
-	private String allPlusNumericChoices = 
-		"Always | Never | IfNegative | IfNonNegative | IfNonPositive | IfNonZero | IfPositive | IfZero";
-	private String memoryUsage = "http://jhove2.org/terms/property/org/jhove2/core/JHOVE2/MemoryUsage";
+
 	/**
 	 * @throws java.lang.Exception
 	 */
@@ -130,62 +123,7 @@ public class FeatureConfigurationUtilTest {
 			fail("unable to create reportable for " + rClassName);
 		}
 	}
-		@Test
-		public void testGetDisplayChoices(){
-			try{
-				Reportable r = FeatureConfigurationUtil.
-					getReportableFromClassName(rClassName);
-				List<ReportablePropertyInfo> props = FeatureConfigurationUtil.
-				getPropertiesAsReportablePropertyInfoList(r);
-				assertTrue(props.size()==15);
-				for (ReportablePropertyInfo info : props){
-					String choices = FeatureConfigurationUtil.getDisplayChoices(info);
-					String propName = info.getIdentifier().getValue();
-					if (propName.equals(memoryUsage)){
-						assertEquals(allPlusNumericChoices,choices);
-					}
-					else {
-						assertEquals(allChoices, choices);
-					}
-				}
-			}
-			catch (JHOVE2Exception e){
-				System.out.println(e.getMessage());
-				fail("unable to create reportable for " + rClassName);
-			}
-			try{
-				Set<ReportablePropertyInfo> props = FeatureConfigurationUtil.
-				getProperitiesAsReportablePropertyInfoSet(rClassName);
-				assertTrue(props.size()==15);
-				for (ReportablePropertyInfo info : props){
-					String choices = FeatureConfigurationUtil.getDisplayChoices(info);
-					String propName = info.getIdentifier().getValue();
-					if (propName.equals(memoryUsage)){
-						assertEquals(allPlusNumericChoices,choices);
-					}
-					else {
-						assertEquals(allChoices, choices);
-					}
-				}
-			}
-			catch (JHOVE2Exception e){
-				System.out.println(e.getMessage());
-				fail("unable to create reportable for " + rClassName);
-			}
-			try{
-				Set<ReportablePropertyInfo> props = FeatureConfigurationUtil.
-				getProperitiesAsReportablePropertyInfoSet(rClassName2);
-				assertTrue(props.size()==6);
-				for (ReportablePropertyInfo info : props){
-					String choices = FeatureConfigurationUtil.getDisplayChoices(info);
-					assertEquals(allChoices, choices);
-				}
-			}
-			catch (JHOVE2Exception e){
-				System.out.println(e.getMessage());
-				fail("unable to create reportable for " + rClassName2);
-			}
-		}
+
 	@Test
 	public void testIsBooleanType(){
 		boolean[] b1 = new boolean[]{true, false};
@@ -212,21 +150,7 @@ public class FeatureConfigurationUtilTest {
 		type = (Type)theClass;
 		assertFalse(FeatureConfigurationUtil.isBooleanType(type));	
 	}
-	@Test
-	public void testGetAllTypesChoices(){
-		String choices = FeatureConfigurationUtil.getAllTypesChoices();
-		assertEquals(allChoices,choices);
-	}
-	@Test
-	public void testGetBooleanChoices(){
-		String choices = FeatureConfigurationUtil.getBooleanChoices();
-		assertEquals(booleanChoices, choices);
-	}
-	@Test
-	public void testGetNumericChoices(){
-		String choices = FeatureConfigurationUtil.getNumericChoices();
-		assertEquals(numericChoices, choices);
-	}
+
 	@Test
 	public void testIsReportableClass(){
 		assertTrue(FeatureConfigurationUtil.isReportableClass(rClassName));
@@ -234,4 +158,5 @@ public class FeatureConfigurationUtilTest {
 		assertFalse(FeatureConfigurationUtil.isReportableClass(notRClassName));
 		assertFalse(FeatureConfigurationUtil.isReportableClass(phoneyClassName));
 	}
+
 }
