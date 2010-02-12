@@ -14,7 +14,7 @@
 	    scope="prototype"/>
 
 	<!-- JHOVE2 framework bean -->
-	<bean id="JHOVE2" class="org.jhove2.core.JHOVE2" scope="prototype">
+	<bean id="JHOVE2" class="org.jhove2.core.JHOVE2" scope="singleton">
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>

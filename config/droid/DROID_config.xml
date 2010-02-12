@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ConfigFile xmlns="http://www.nationalarchives.gov.uk/pronom/ConfigFile">
-  <SigFile>C:\EclipseWorkspace\jhove2\src\main\resources\droid\DROID_SignatureFile_V20.xml</SigFile>
+  <SigFile>DROID_SignatureFile_V20.xml</SigFile>
   <SigFileVersion>20</SigFileVersion>
   <SigFileURL>http://www.nationalarchives.gov.uk/pronom/SignatureFile/proSignatureFileProvider.asp</SigFileURL>
   <ProxyHost />
@@ -16,4 +16,3 @@
   <PauseFrequency>0</PauseFrequency>
   <PauseLength>0</PauseLength>
 </ConfigFile>
-
