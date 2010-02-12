@@ -45,7 +45,6 @@ import org.jhove2.core.Format;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.source.Source;
-import org.jhove2.module.Command;
 import org.jhove2.module.Module;
 import org.jhove2.module.format.FormatProfile;
 
@@ -56,8 +55,18 @@ import org.jhove2.module.format.FormatProfile;
  * @author mstrong, slabrams, smorrissey
  */
 public interface FormatModule
-	extends Module, Command
+	extends Module
 {
+    /**
+     * Invoke the parsing of the source unit and validate all registered profiles.
+     * @param jhove2 JHOVE2 framework
+     * @param source Source to be parsed
+     * @throws JHOVE2Exception
+     * @see org.jhove2.module.Command#execute(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
+     */
+    public void invoke(JHOVE2 jhove2, Source source)
+       throws JHOVE2Exception;
+       
 	/**
 	 * Parse a source unit.
 	 * 

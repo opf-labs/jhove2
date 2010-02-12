@@ -124,6 +124,7 @@ public class JHOVE2CommandLine
 			
 			jhove2.setInvocation(app.getInvocation());
 			jhove2.setInstallation(app.getInstallation());
+			jhove2.addModule(app.getDisplayer());
 			app.setFramework(jhove2);
 						
 			/* Create a FileSet source unit out of files and directories
@@ -136,7 +137,12 @@ public class JHOVE2CommandLine
 			/* Characterize the FileSet source unit (and all subsidiary
 			 * source units that it encapsulates.
 			 */
+			TimerInfo time2 = jhove2.getTimerInfo();
+			time2.setStartTime();
+			
 			jhove2.characterize(source);
+			
+			time2.setEndTime();
 			timer.setEndTime();
 			
 			/* Display characterization information for the FileSet.

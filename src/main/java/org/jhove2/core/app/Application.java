@@ -75,14 +75,13 @@ public interface Application
 	/** Get application {@link org.jhove2.module.display.Displayer} properties.
 	 * @return Application displayer
 	 */
-	@ReportableProperty(order = 4, value = "Application displayer.")
 	public Displayer getDisplayer();
 	
 	/**
 	 * Get application {@link org.jhove2.core.JHOVE2} framework.
 	 * @return Application JHOVE2 framework
 	 */
-	@ReportableProperty(order = 5, value = "Application framework.")
+	@ReportableProperty(order = 4, value = "Application framework.")
 	public JHOVE2 getFramework();
 
 	/** Get application {@link org.jhove2.core.Invocation} properties.

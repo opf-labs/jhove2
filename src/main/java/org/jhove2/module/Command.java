@@ -36,9 +36,6 @@
 
 package org.jhove2.module;
 
-import java.util.List;
-
-import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.source.Source;
@@ -62,22 +59,11 @@ public interface Command
 	extends Module
 {
 	/**
-	 * Execute a characterization command
-	 * @param source Source on which command is to be executed
+	 * Execute a JHOVE2 command
 	 * @param jhove2 JHOVE2 application framework for configuration information and callback
+     * @param source Source unit on which command is to be executed
 	 * @throws JHOVE2Exception
 	 */
 	public void execute(JHOVE2 jhove2, Source source)
 	   throws JHOVE2Exception;
-	
-	/** Add module associated with the command.
-	 * @param module Module associated with the command
-	 */
-	public void addModule(Module module);
-	
-	/** Get modules associated with the command.
-	 * @return Modules associated with the command
-	 */
-	@ReportableProperty(value = "Modules associated with the command.")
-	public List<Module> getModules();
 }

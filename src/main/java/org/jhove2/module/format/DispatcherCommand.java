@@ -37,8 +37,6 @@ package org.jhove2.module.format;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
 import java.util.TreeSet;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
@@ -56,7 +54,6 @@ import org.jhove2.core.reportable.ReportableFactory;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractCommand;
 import org.jhove2.module.Module;
-import org.jhove2.module.identify.DROIDIdentifier;
 
 /**
  * Module that inspects the presumptive format identifications attached to a
@@ -176,7 +173,7 @@ public class DispatcherCommand extends AbstractCommand {
                 if (!visitedModules.contains(formatModule
                         .getReportableIdentifier())) {
                     visitedModules.add(formatModule.getReportableIdentifier());
-                    formatModule.execute(jhove2, source);
+                    formatModule.invoke(jhove2, source);
                 }
             }
         }

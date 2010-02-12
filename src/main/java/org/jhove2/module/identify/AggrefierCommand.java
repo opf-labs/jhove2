@@ -94,14 +94,17 @@ public class AggrefierCommand
 				Aggrefier aggrefier = 
 					ReportableFactory.getReportable(Aggrefier.class,
 							                       "AggrefierModule");
-				this.addModule(aggrefier);
-				List<Recognizer> recognizers = aggrefier.getRecognizers();
-				for (Recognizer recognizer : recognizers) {
-					this.addModule(recognizer);
-				}
 				TimerInfo timer = aggrefier.getTimerInfo();
 				timer.setStartTime();
 				try {
+	                /* Register the aggrefying modules. */
+	                jhove2.addModule(aggrefier);
+	                List<Recognizer> recognizers = aggrefier.getRecognizers();
+	                for (Recognizer recognizer : recognizers) {
+	                    jhove2.addModule(recognizer);
+	                }
+	                
+	                /* Identify the aggregate. */
 					Set<ClumpSource> clumpSources = null;
 					clumpSources = aggrefier.identify(jhove2, source);
 					do {									

@@ -92,10 +92,13 @@ public class DigesterCommand
 					Digester digester = 
 						ReportableFactory.getReportable(Digester.class,
 								                       "DigesterModule");
-					source.addModule(digester);
 					TimerInfo timer = digester.getTimerInfo();
 					timer.setStartTime();
 					try {
+					    /* Register the digesting module. */
+	                    source.addModule(digester);
+	                    
+	                    /* Calculate the digests. */
 						digester.digest(jhove2, source);
 					}
 					finally {
@@ -107,6 +110,5 @@ public class DigesterCommand
 				}
 			}
 		}
-		return;
 	}
 }

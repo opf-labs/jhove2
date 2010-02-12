@@ -40,7 +40,7 @@ import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.reportable.AbstractReportable;
 
 /**
- * Class for timer information for {@link org.jhove2.core.reportable.Reportable}s that report their elapsed
+ * Timing information for {@link org.jhove2.core.reportable.Reportable}s that report their elapsed
  * processing times.
  * 
  * @author mstrong, slabrams, smorrissey
@@ -48,16 +48,20 @@ import org.jhove2.core.reportable.AbstractReportable;
 public class TimerInfo
 	extends AbstractReportable
 {
-	/**  end time. */
+	/** End of elapsed time. */
 	protected long endTime;
+	
+	/** Time of instantiation. */
+	protected long instTime;
 
-	/**  start time. */
+	/** Start of elapsed. */
 	protected long startTime;
 	
 	/** Instantiate a new <code>TimerInfo</code> object.
 	 */
 	public TimerInfo(){
-		this.startTime = System.currentTimeMillis();
+		this.instTime  = System.currentTimeMillis();
+		this.startTime = Duration.UNINITIALIZED;
 		this.endTime   = Duration.UNINITIALIZED;
 	}
 	
@@ -69,6 +73,9 @@ public class TimerInfo
 	 */
 	@ReportableProperty(value="Elapsed time, milliseconds.")
 	public Duration getElapsedTime(){
+	    if (this.startTime == Duration.UNINITIALIZED) {
+	        this.startTime = this.instTime;
+	    }
 		if (this.endTime == Duration.UNINITIALIZED) {
 			setEndTime();
 		}
@@ -78,6 +85,21 @@ public class TimerInfo
 		}
 		return new Duration(duration);
 	}
+	
+	/** Reset the start time of the elapsed duration.
+	 * return Restart time, in milliseconds
+	 */
+	public long resetStartTime() {
+	    if (this.startTime == Duration.UNINITIALIZED) {
+	        setStartTime();
+	    }
+	    if (this.endTime == Duration.UNINITIALIZED) {
+	        this.endTime = this.startTime;
+	    }
+	    long duration = this.endTime - this.startTime;
+	    
+	    return this.startTime = System.currentTimeMillis() - duration;
+	}
 
 	/**
 	 * Set the end time of the elapsed duration. Defaults to the time of
@@ -86,7 +108,7 @@ public class TimerInfo
 	 * 
 	 * @return End time, in milliseconds
 	 */
-	public long setEndTime(){
+	public long setEndTime() {
 		return this.endTime = System.currentTimeMillis();
 	}
 
@@ -96,7 +118,7 @@ public class TimerInfo
 	 * 
 	 * @return Start time, in milliseconds
 	 */
-	public long setStartTime(){
+	public long setStartTime() {
 		return this.startTime = System.currentTimeMillis();
 	}
 }

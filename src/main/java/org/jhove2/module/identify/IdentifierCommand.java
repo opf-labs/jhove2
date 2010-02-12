@@ -57,12 +57,15 @@ public class IdentifierCommand
 		try {		
 			Identifier identifier =
 				ReportableFactory.getReportable(Identifier.class,
-					                           "IdentifierModule");	
-			this.addModule(identifier);
-			this.addModule(identifier.getFileSourceIdentifier());
+					                           "IdentifierModule");
 			TimerInfo timer = identifier.getTimerInfo();
 			timer.setStartTime();
 			try {
+	            /* Register all identifying modules. */
+	            jhove2.addModule(identifier);
+	            jhove2.addModule(identifier.getFileSourceIdentifier());
+	            
+	            /* Identify the format. */
 				Set<FormatIdentification> formats = identifier.identify(jhove2,
 					                                                    source);
 				source.addPresumptiveFormats(formats);

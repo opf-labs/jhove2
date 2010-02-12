@@ -46,8 +46,9 @@ import org.jhove2.core.Format;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
+import org.jhove2.core.TimerInfo;
 import org.jhove2.core.source.Source;
-import org.jhove2.module.AbstractCommand;
+import org.jhove2.module.AbstractModule;
 
 /**
  * Base JHOVE2 format module.
@@ -58,14 +59,14 @@ import org.jhove2.module.AbstractCommand;
  * @author mstrong, slabrams, smorrissey
  */
 public class BaseFormatModule
-	extends AbstractCommand
+	extends AbstractModule
 	implements FormatModule
 {
 	/** Directory module version identifier. */
-	public static final String VERSION = "0.0.1";
+	public static final String VERSION = "0.5.5";
 
 	/** Directory module release date. */
-	public static final String RELEASE = "2010-01-26";
+	public static final String RELEASE = "2010-02-11";
 
 	/** Directory module rights statement. */
 	public static final String RIGHTS = "Copyright 2010 by The Regents of the University of California, "
@@ -88,9 +89,8 @@ public class BaseFormatModule
 	 *    returns a non-format module*/
 	protected Message moduleNotFormatModuleMessage;
 	
-	
 	/**
-	 * Constructor
+	 * Instantiate a new <code>BaseFormatModule</code>.
 	 */
 	public BaseFormatModule(){
 		this(VERSION, RELEASE, RIGHTS, null);
@@ -133,25 +133,24 @@ public class BaseFormatModule
 	}
 
 	/**
-	 * Parses format instance
-	 * If format can validate, validates instance
-	 * If format has profiles and those profiles can validate, validates profiles
+	 * Invoke the parsing of the source unit and validate all registered profiles.
 	 * @param jhove2 JHOVE2 framework
 	 * @param source Source to be parsed
 	 * @throws JHOVE2Exception
 	 * @see org.jhove2.module.Command#execute(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
 	 */
 	@Override
-	public void execute(JHOVE2 jhove2, Source source)
+	public void invoke(JHOVE2 jhove2, Source source)
 	   throws JHOVE2Exception
 	{
+        this.timerInfo.setStartTime();
+        
 		if (this.getScope() == Scope.Specific) {
 			source.addModule(this);
 		}
 		else {
 			jhove2.addModule(this);
 		}
-		this.getTimerInfo().setStartTime();
 		try {
 			this.parse(jhove2, source);
 			if (this instanceof Validator) {
@@ -161,20 +160,25 @@ public class BaseFormatModule
 			if (profiles.size() > 0) {
 				for (FormatProfile profile : profiles) {
 					if (profile instanceof Validator) {
-						profile.getTimerInfo().setStartTime();
+						TimerInfo timer = profile.getTimerInfo();
+						timer.setStartTime();
+						
 						((Validator) profile).validate(jhove2, source);
-						profile.getTimerInfo().setEndTime();
+						
+						timer.setEndTime();
 					}
 				}
 			}
-		} catch (EOFException e) {
-			throw new JHOVE2Exception("EOFException",e);
-		} catch (IOException e) {
-			throw new JHOVE2Exception("IOException",e);
 		}
-		this.getTimerInfo().setEndTime();
-		
-		return;
+		catch (EOFException e) {
+			throw new JHOVE2Exception("EOFException", e);
+		}
+		catch (IOException e) {
+			throw new JHOVE2Exception("IOException", e);
+		}
+		finally {
+		    this.timerInfo.setEndTime();
+		}
 	}
 	
 	/**

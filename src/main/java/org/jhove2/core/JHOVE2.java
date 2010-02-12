@@ -38,7 +38,9 @@ package org.jhove2.core;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.Message.Context;
@@ -82,6 +84,9 @@ public class JHOVE2
 	/** Installation settings for framework. */
 	protected Installation installation;
 	
+	/** Identifiers of generic modules registered with the framework. */
+	protected Set<String> moduleIDs;
+	
 	/** Generic modules registered with the framework. */
 	protected List<Module> modules;
 	
@@ -109,7 +114,8 @@ public class JHOVE2
 		this.invocation = invocation;
 		this.sourceCounter = new SourceCounter();
 		
-		this.modules = new ArrayList<Module>();
+		this.modules   = new ArrayList<Module>();
+		this.moduleIDs = new HashSet<String>();
 	}
 
 	/**
@@ -129,32 +135,32 @@ public class JHOVE2
 		timer.setStartTime();
 		
 		/* Update summary counts of source units, by scope. */
-		this.sourceCounter.incrementSourceCounter(source);				
+        try {
+            this.sourceCounter.incrementSourceCounter(source);				
 		
-		/* Characterize the source unit. */
-		boolean tryIt = true;
-		if (source instanceof FileSystemSource) {
-		    FileSystemSource fs = (FileSystemSource) source;
-		    String name = fs.getFileName();
-		    if (!fs.isExtant()) {
-		        source.addMessage(new Message(Severity.ERROR,
+            /* Characterize the source unit. */
+            boolean tryIt = true;
+            if (source instanceof FileSystemSource) {
+                FileSystemSource fs = (FileSystemSource) source;
+                String name = fs.getFileName();
+                if (!fs.isExtant()) {
+                    source.addMessage(new Message(Severity.ERROR,
                         Context.PROCESS,
                         "org.jhove2.core.source.FileSystemSource.FileNotFoundMessage",
                         new Object[]{name}));
-		    }
-		    else if (!fs.isReadable()) {
-		        source.addMessage(new Message(Severity.ERROR,
+                }
+                else if (!fs.isReadable()) {
+                    source.addMessage(new Message(Severity.ERROR,
                         Context.PROCESS,
                         "org.jhove2.core.source.FileSystemSource.FileNotReadableMessage",
                         new Object[]{name}));
-		    }
-		}
-		try {
+                }
+            }
 		    if (tryIt) {
 		        source.setDeleteTempFiles(this.getInvocation().getDeleteTempFiles());
 		        for (Command command : this.commands){
 		            TimerInfo time2 = command.getTimerInfo();
-		            time2.setStartTime();
+		            time2.resetStartTime();
 		            try {
 		                command.execute(this, source);
 		            }
@@ -163,12 +169,24 @@ public class JHOVE2
 		            }
 		        }
 			}
-		} finally {
+		}
+        finally {
 			source.close();
 			timer.setEndTime();
 		}
 	}
-
+    
+    /** Add generic module.
+     * @param module Generic module
+     */
+    public void addModule(Module module) {
+        String id = module.getReportableIdentifier().toString();
+        if (!this.moduleIDs.contains(id)) {
+            this.moduleIDs.add(id);
+            this.modules.add(module);
+        }
+    }
+    
 	/**
 	 * Determine if the fail fast limit has been exceeded.
 	 * 
@@ -226,11 +244,11 @@ public class JHOVE2
 		return use;
 	}
 	
-	/** Get framework generic modules.
-	 * @return Generic modules
+	/** Get framework  modules.
+	 * @return Framework modules
 	 */
-	@ReportableProperty(order = 4, value = "Framework generic modules.")
-	public List<Module> getGenericModules() {
+	@ReportableProperty(order = 4, value = "Framework modules.")
+	public List<Module> getModules() {
 		return this.modules;
 	}
 
@@ -279,14 +297,7 @@ public class JHOVE2
 	public void setInstallation(Installation installation) {
 		this.installation = installation;
 	}
-	
-	/** Set generic module.
-	 * @param module Generic module
-	 */
-	public void addModule(Module module) {
-		this.modules.add(module);
-	}
-	
+
 	/**
 	 * Set counter to track number and scope of
 	 * {@link org.jhove2.core.source.Source}s processed by
