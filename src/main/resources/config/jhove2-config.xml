@@ -102,13 +102,14 @@
 		<property name="URI" value="http://www.stanford.edu/"/>
 	</bean>
 	
-	<!-- Display units of measure bean -->
-	<util:properties id="DisplayUnits"
-	                 location="classpath:properties/unit.properties"/>
-	
-	<!-- Display visibility properties bean -->
-	<util:properties id="DisplayVisibility"
-	                 location="classpath:properties/displayer.properties"/>
+
+   <bean id="DisplayVisibility" class="org.jhove2.core.reportable.PropertiesFactoryBean">
+  		<property name="propertyFileBaseName" value="displayer"/>
+   </bean>
+   
+      <bean id="DisplayUnits" class="org.jhove2.core.reportable.PropertiesFactoryBean">
+  		<property name="propertyFileBaseName" value="unit"/>
+   </bean>
 	             
     <!--  BEAN for message properties files (used for I18N ) -->
     <!--    NOTE  BEAN MUST HAVE id "messageSource" -->

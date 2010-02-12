@@ -51,8 +51,8 @@
 		<property name="URI" value="http://www.stanford.edu/"/>
 	</bean>
 		
-	<!-- Display visibility properties bean -->
-	<util:properties id="DisplayVisibility"
-	                 location="classpath:properties/displayer.properties"/>
 
+   <bean id="DisplayVisibility" class="org.jhove2.core.reportable.PropertiesFactoryBean">
+  		<property name="propertyFileBaseName" value="displayer"/>
+   </bean>
 </beans>
