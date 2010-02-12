@@ -111,9 +111,6 @@
 					<additionalClasspathElements>
 						<additionalClasspathElement>config/droid</additionalClasspathElement>
 					</additionalClasspathElements>
-					<excludes>
-						<exclude>**/AppConfigInfoTest.java</exclude>
-					</excludes>
 				</configuration>
 			</plugin>
 			<plugin>
