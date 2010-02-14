@@ -100,7 +100,7 @@
       </xs:attribute>
       <xs:attribute name="funit" type="xs:string" use="optional">
         <xs:annotation>
-          <xs:documentation>Unit of measure for feature value.  Derived from the org.jhove2.annotation.ReportableProperty annotation attached to the reportable property.</xs:documentation>
+          <xs:documentation>Unit of measure for feature value.  Obtained from a properties file</xs:documentation>
         </xs:annotation>
       </xs:attribute>
     </xs:complexType>
