@@ -69,7 +69,7 @@ public class MessageTest {
 			messageParms = new Object[]{ASCIIProfilenonBasicLatinMessageparm};
 			message = new Message(Severity.ERROR,
 					Context.OBJECT, 
-					"org.jhove2.module.format.utf8.ASCIIProfile.nonBasicLatinMessage",
+					"org.jhove2.module.format.utf8.ascii.ASCIIProfile.nonBasicLatinMessage",
 					messageParms);
 			assertEquals(sb.toString(), message.getLocalizedMessageText());
 			

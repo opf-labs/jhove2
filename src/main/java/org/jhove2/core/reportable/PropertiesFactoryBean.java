@@ -38,15 +38,31 @@ package org.jhove2.core.reportable;
 import java.io.IOException;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.Resource;
+import org.springframework.util.Assert;
 
 
 /**
+ * Class to enable use of mask to find all related .properties files on classpath (for example,
+ * all displayer.properties files for JHOVE2 Reportable feature display options, or
+ * all unit.properties files for JHOVE2 Reportable feature units of measure.
+ * Assumes that Spring config file will NOT make use of either the "location" or "locations"
+ * properties, but instead will use the new "fileBaseName" property.
+ * 
+ * This enables creators of new modules, by following the naming conventions for these
+ * standard configuration properties files,
+ * and by putting such files on the classpath, to expose these files to discovery without
+ * any changes required to the Spring configuration files
+ * 
  * @author smorrissey
  *
  */
 public class PropertiesFactoryBean 
 extends org.springframework.beans.factory.config.PropertiesFactoryBean {
-
+	/**
+	 * base name to be used in search for related Java .properties files, for example,
+	 * "displayer" for all files on the classpath that match the pattern
+	 * properties/{0 or more directories here/{somename}_displayer.properties
+	 */
 	protected String propertyFileBaseName;
 
 	/**
@@ -57,16 +73,27 @@ extends org.springframework.beans.factory.config.PropertiesFactoryBean {
 	}
 
 	/**
+	 * Uses the propertyFileBaseName to locate all .properties files on the classpath
+	 * that match the pattern 
+	 * "properties/{0 or more directories here/{somename}_displayer.properties",
+	 * and sets the locations field of the parent class to these Resources
 	 * @param propertyFileBaseName the propertyFileBaseName to set
-	 * @throws IOException 
+	 * @throws IllegalArgumentException if any IOException is thrown attempting to resolve resource
 	 */
-	public void setPropertyFileBaseName(String propertyFileBaseName) throws IOException {
+	public void setPropertyFileBaseName(String propertyFileBaseName) {
 		this.propertyFileBaseName = propertyFileBaseName;
 		PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-		Resource[] resources = resolver.getResources
-			("classpath*:properties/**/*_" + propertyFileBaseName + ".properties");
+		Resource[] resources = new Resource[0];
+		try {
+			resources = resolver.getResources
+				("classpath*:properties/**/*_" + propertyFileBaseName + ".properties");
+		} catch (IOException e) {
+			Assert.isTrue(false, "IO exception when attempting to resolve resources for " +
+					"classpath*:properties/**/*_" + propertyFileBaseName + ".properties");
+		}
 		this.setLocations(resources);
 	}
 
+	
 	
 }

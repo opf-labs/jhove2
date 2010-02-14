@@ -36,12 +36,8 @@
 
 package org.jhove2.core;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.reportable.AbstractReportable;
-import org.jhove2.module.AbstractModule;
 
 /**
  * JHOVE2 product, an independently distributable and configurable

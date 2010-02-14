@@ -117,8 +117,6 @@ public class DROIDIdentifier
 	
 	/** DROID signature file name */
 	private String signatureFileName = null;
-
-	private static ConcurrentMap<String, String> droidFilePaths;
 	
 	/** map from DROID PUIDs to JHOVE2 format ids */
 	private static ConcurrentMap<String, String> puidToJhoveId;

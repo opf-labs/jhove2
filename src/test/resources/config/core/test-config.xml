@@ -55,4 +55,5 @@
    <bean id="DisplayVisibility" class="org.jhove2.core.reportable.PropertiesFactoryBean">
   		<property name="propertyFileBaseName" value="displayer"/>
    </bean>
+
 </beans>

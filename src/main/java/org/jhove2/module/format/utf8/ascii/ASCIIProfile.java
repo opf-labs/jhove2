@@ -140,7 +140,7 @@ public class ASCIIProfile
 			Object[]messageArgs = new Object[]{buffer.toString()};
 			this.nonBasicLatinMessage = new Message(Severity.ERROR,
 					Context.OBJECT, 
-					"org.jhove2.module.format.utf8.ASCIIProfile.nonBasicLatinMessage",
+					"org.jhove2.module.format.utf8.ascii.ASCIIProfile.nonBasicLatinMessage",
 					messageArgs);
 		}
 
