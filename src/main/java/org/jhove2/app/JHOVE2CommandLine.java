@@ -216,40 +216,40 @@ public class JHOVE2CommandLine
 		/* set the command line options
 		 */
 		Parser.Option showIdentifiersO =
-			parser.addHelp((parser.addBooleanOption('i',"identifiers")),
-			               "show identifiers");
+			parser.addHelp((parser.addBooleanOption('i',"show-identifiers")),
+			               "Show identifiers");
 		Parser.Option setCalcDigestsO =
-			parser.addHelp(parser.addBooleanOption('k', "calcDigest"),
-    		               "calculate message digest");
+			parser.addHelp(parser.addBooleanOption('k', "calc-digests"),
+    		               "Calculate message digests");
 		Parser.Option bufferSizeO =
-			parser.addHelp(parser.addIntegerOption('b', "bufferSize"), 
+			parser.addHelp(parser.addIntegerOption('b', "buffer-size"), 
     		               "<buffersize>",
     		               "I/O buffer size (default=" +
     		               Invocation.DEFAULT_BUFFER_SIZE + ")");
 		Parser.Option bufferTypeO =
-			parser.addHelp(parser.addStringOption('B', "bufferType"), 
+			parser.addHelp(parser.addStringOption('B', "buffer-type"), 
     		               bufferTypeValues.toString(),
     		               "I/O buffer type (default=Direct)");
 		Parser.Option displayerTypeO =
 			parser.addHelp(parser.addStringOption('d', "display"), 
     		               displayerValues.toString(),
-    		               "display results format");
+    		               "Display format");
 		Parser.Option failFastLimitO =
-			parser.addHelp(parser.addIntegerOption('f', "fail"), 
+			parser.addHelp(parser.addIntegerOption('f', "fail-fast"), 
     		               "<failFastLimit>",
-    		               "fail fast limit (default=0; " +
+    		               "Fail fast limit (default=0; " +
     		               "no limit on the number of reported errors)");
 		Parser.Option tempDirectoryO =
-			parser.addHelp(parser.addStringOption('t', "tempDir"), 
+			parser.addHelp(parser.addStringOption('t', "temp"), 
     		               "<tempDirectory>",
-    		               "temporary directory (default=java.io.tmpdir)");
+    		               "Temporary directory (default=java.io.tmpdir)");
         Parser.Option deleteTempFilesO =
-        	parser.addHelp(parser.addBooleanOption('T', "deleteTempFiles"),
-                           "Delete temporary files created");
+        	parser.addHelp(parser.addBooleanOption('T', "delete-temp-files"),
+                           "Delete temporary files");
 		Parser.Option filePathnameO =
-			parser.addHelp(parser.addStringOption('o', "outfile"),
+			parser.addHelp(parser.addStringOption('o', "output"),
     		               "<outfile>",
-    		               "output file (default=standard output unit)");
+    		               "Output file (default=standard output unit)");
         Parser.Option helpO =
         	parser.addHelp(parser.addBooleanOption('h', "help"),
                            "Show this help message");
