@@ -37,7 +37,6 @@
 package org.jhove2.module.format.xml;
 
 import java.io.EOFException;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,24 +52,25 @@ import org.jhove2.core.source.Source;
 import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.module.format.Validator;
 
-import org.xml.sax.*;
-
 /**
  * JHOVE2 XML module. This module parses and XML instance and captures selected
  * characterization information
  * 
  * @author rnanders
  */
-public class XmlModule extends BaseFormatModule implements Validator {
+public class XmlModule 
+    extends BaseFormatModule
+    implements Validator
+{
 
     /** Module version identifier. */
-    public static final String VERSION = "0.1.0";
+    public static final String VERSION = "1.9.5";
 
     /** Module release date. */
-    public static final String RELEASE = "2009-09-23";
+    public static final String RELEASE = "2010-02-16";
 
     /** Module rights statement. */
-    public static final String RIGHTS = "Copyright 2009 by The Board of Trustees of the Leland Stanford Junior University. "
+    public static final String RIGHTS = "Copyright 2010 by The Board of Trustees of the Leland Stanford Junior University. "
             + "Available under the terms of the BSD license.";
 
     /** Module validation coverage. */

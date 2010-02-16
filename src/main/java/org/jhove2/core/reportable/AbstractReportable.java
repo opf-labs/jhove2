@@ -61,10 +61,10 @@ public abstract class AbstractReportable
 	 */
 	@Override
 	public I8R getReportableIdentifier() {
-		if (myI8R == null){
-			myI8R = I8R.makeReportableI8R(this);
+		if (this.myI8R == null){
+			this.myI8R = I8R.makeReportableI8R(this);
 		}
-		return myI8R;
+		return this.myI8R;
 	}
 	
 	/** Get reportable name.

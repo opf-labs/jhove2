@@ -60,10 +60,10 @@ public class FileSetModule
 	extends BaseFormatModule
 {
 	/** Pseudo-directory module version identifier. */
-	public static final String VERSION = "0.1.3";
+	public static final String VERSION = "1.9.5";
 
 	/** Pseudo-directory module release date. */
-	public static final String RELEASE = "2010-02-09";
+	public static final String RELEASE = "2010-02-16";
 
 	/** Pseudo-directory module rights statement. */
 	public static final String RIGHTS = "Copyright 2010 by The Regents of the University of California, "

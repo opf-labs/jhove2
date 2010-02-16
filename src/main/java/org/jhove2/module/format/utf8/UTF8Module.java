@@ -71,14 +71,14 @@ public class UTF8Module
 	implements Validator
 {
 	/** UTF-8 module version identifier. */
-	public static final String VERSION = "0.0.4";
+	public static final String VERSION = "1.9.5";
 
 	/** UTF-8 module release date. */
-	public static final String RELEASE = "2009-12-22";
+	public static final String RELEASE = "2010-02-16";
 
 	/** UTF-8 module rights statement. */
 	public static final String RIGHTS =
-		"Copyright 2009 by The Regents of the University of California. " +
+		"Copyright 2010 by The Regents of the University of California. " +
 		"Available under the terms of the BSD license.";
 	
 	/** UTF-8 module validation coverage. */

@@ -25,10 +25,10 @@ public class IdentifierCommand
 	extends AbstractCommand
 {
 	/** IdentifierCommand module version identifier. */
-	public static final String VERSION = "0.5.4";
+	public static final String VERSION = "1.9.5";
 
 	/** IdentifierCommand module release date. */
-	public static final String RELEASE = "2010-01-26";
+	public static final String RELEASE = "2010-02-16";
 
 	/** IdentifierCommand module rights statement. */
 	public static final String RIGHTS = "Copyright 2010 by The Regents of the University of California, "

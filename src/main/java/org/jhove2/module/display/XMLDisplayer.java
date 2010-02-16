@@ -49,13 +49,13 @@ public class XMLDisplayer
 	extends AbstractDisplayer
 {
 	/** XML displayer version identifier. */
-	public static final String VERSION = "1.0.0";
+	public static final String VERSION = "1.9.5";
 
 	/** XML displayer release date. */
-	public static final String RELEASE = "2009-12-22";
+	public static final String RELEASE = "2010-02-16";
 
 	/** XML displayer rights statement. */
-	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California, "
+	public static final String RIGHTS = "Copyright 2010 by The Regents of the University of California, "
 		+ "Ithaka Harbors, Inc., and The Board of Trustees of the Leland "
 		+ "Stanford Junior University. "
 		+ "Available under the terms of the BSD license.";

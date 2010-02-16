@@ -47,13 +47,13 @@ import org.jhove2.core.I8R;
  */
 public class TextDisplayer extends AbstractDisplayer {
 	/** Text displayer version identifier. */
-	public static final String VERSION = "1.0.0";
+	public static final String VERSION = "1.9.5";
 
 	/** Text displayer release date. */
-	public static final String RELEASE = "2009-12-22";
+	public static final String RELEASE = "2010-02-16";
 
 	/** Text displayer rights statement. */
-	public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California, "
+	public static final String RIGHTS = "Copyright 2010 by The Regents of the University of California, "
 			+ "Ithaka Harbors, Inc., and The Board of Trustees of the Leland "
 			+ "Stanford Junior University. "
 			+ "Available under the terms of the BSD license.";
