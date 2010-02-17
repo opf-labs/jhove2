@@ -35,7 +35,7 @@
  */
 
 
-package org.jhove2.app;
+package org.jhove2.app.util;
 
 import static org.junit.Assert.*;
 
