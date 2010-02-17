@@ -19,7 +19,7 @@
 	</bean>
 				
 	<!-- File set identifier bean -->  
-	<bean id="FileSetIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+	<bean id="FileSetIdentifier" class="org.jhove2.core.I8R" scope="prototype">
 		<constructor-arg type="java.lang.String" value="http://jhove2.org/terms/format/file-set"/>
 	</bean>
 
