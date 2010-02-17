@@ -47,8 +47,10 @@ import org.jhove2.annotation.ReportableProperty;
  * 
  * @author mstrong, slabrams
  */
-public class ZipDirectorySource extends AbstractSource implements
-		AggregateSource, NamedSource {
+public class ZipDirectorySource
+    extends AbstractSource
+    implements AggregateSource, NamedSource
+{
 	/** Zip directory comment. */
 	protected String comment;
 
@@ -92,7 +94,7 @@ public class ZipDirectorySource extends AbstractSource implements
 	 * 
 	 * @return Zip directory comment
 	 */
-	@ReportableProperty(order = 4, value = "Zip directory comment.")
+	@ReportableProperty(order = 3, value = "Zip directory comment.")
 	public String getComment() {
 		return this.comment;
 	}
@@ -102,7 +104,7 @@ public class ZipDirectorySource extends AbstractSource implements
 	 * 
 	 * @return Zip directory last modified date
 	 */
-	@ReportableProperty(order = 3, value = "Zip directory last modified date.")
+	@ReportableProperty(order = 2, value = "Zip directory last modified date.")
 	public Date getLastModified() {
 		return this.lastModified;
 	}
@@ -111,10 +113,10 @@ public class ZipDirectorySource extends AbstractSource implements
 	 * Get Zip directory name.
 	 * 
 	 * @return Zip directory name
-	 * @see org.jhove2.core.source.NamedSource#getFileName()
+	 * @see org.jhove2.core.source.NamedSource#getSourceName()
 	 */
 	@Override
-	public String getFileName() {
+	public String getSourceName() {
 		return this.name;
 	}
 
@@ -123,7 +125,7 @@ public class ZipDirectorySource extends AbstractSource implements
 	 * 
 	 * @return Zip directory path
 	 */
-	@ReportableProperty(order = 2, value = "Zip directory path.")
+	@ReportableProperty(order = 1, value = "Zip directory path.")
 	public String getPath() {
 		return this.path;
 	}
@@ -142,37 +144,37 @@ public class ZipDirectorySource extends AbstractSource implements
 			return false;
 		}
 		ZipDirectorySource zObj = (ZipDirectorySource)obj;
-		if (this.getPath()==null){
-			if (zObj.getPath()!= null){
+		if (this.getPath() == null){
+			if (zObj.getPath() != null){
 				return false;
 			}
 		}
-		else if (zObj.getPath()==null){
+		else if (zObj.getPath() == null){
 			return false;
 		}
 		equals = this.getPath().equalsIgnoreCase(zObj.getPath());
 		if (!equals){
 			return false;
 		}
-		// won't bother to check name; it is constructed from path
-		if (this.getLastModified()==null){
-			if (zObj.getLastModified()!= null){
+		/* Don't bother to check name; it is constructed from path. */
+		if (this.getLastModified() == null){
+			if (zObj.getLastModified() != null){
 				return false;
 			}
 		}
-		else if (zObj.getLastModified()==null){
+		else if (zObj.getLastModified() == null){
 			return false;
 		}
 		equals = this.getLastModified().equals(zObj.getLastModified());
 		if (!equals){
 			return false;
 		}
-		if (this.getComment()==null){
+		if (this.getComment() == null){
 			if (zObj.getComment()!= null){
 				return false;
 			}
 		}
-		else if (zObj.getComment()==null){
+		else if (zObj.getComment() == null){
 			return false;
 		}
 		equals = this.getComment().equalsIgnoreCase(zObj.getComment());
@@ -198,11 +200,11 @@ public class ZipDirectorySource extends AbstractSource implements
 		}
 		ZipDirectorySource zObj = (ZipDirectorySource)source;
 		if (this.getPath()==null){
-			if (zObj.getPath()!= null){
+			if (zObj.getPath() != null){
 				return -1;
 			}
 		}
-		else if (zObj.getPath()==null){
+		else if (zObj.getPath() == null){
 			return 1;
 		}
 		else {
@@ -214,12 +216,12 @@ public class ZipDirectorySource extends AbstractSource implements
 				return 1;
 			}
 		}
-		if (this.getLastModified()==null){
-			if (zObj.getLastModified()!= null){
+		if (this.getLastModified() == null){
+			if (zObj.getLastModified() != null){
 				return -1;
 			}
 		}
-		else if (zObj.getLastModified()==null){
+		else if (zObj.getLastModified() == null){
 			return 1;
 		}
 		else {
@@ -231,12 +233,12 @@ public class ZipDirectorySource extends AbstractSource implements
 				return 1;
 			}
 		}
-		if (this.getComment()==null){
+		if (this.getComment() == null){
 			if (zObj.getComment()!= null){
 				return -1;
 			}
 		}
-		else if (zObj.getComment()==null){
+		else if (zObj.getComment() == null){
 			return 1;
 		}
 		else {

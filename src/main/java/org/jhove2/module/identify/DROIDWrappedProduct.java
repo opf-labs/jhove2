@@ -228,7 +228,7 @@ public class DROIDWrappedProduct
         	  }
         	  else if (source instanceof URLSource){
         		// set the path so DROID will make use of external signatures as well as internal ones
-        		  identificationFile.setFilePath(((URLSource)source).getURLString());
+        		  identificationFile.setFilePath(((URLSource)source).getSourceName());
         	  }
             	analysisControl.getSigFile().runFileIdentification(byteReader);
             }

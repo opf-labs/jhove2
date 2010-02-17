@@ -142,7 +142,7 @@ public class JHOVE2
             boolean tryIt = true;
             if (source instanceof FileSystemSource) {
                 FileSystemSource fs = (FileSystemSource) source;
-                String name = fs.getFileName();
+                String name = fs.getSourceName();
                 if (!fs.isExtant()) {
                     source.addMessage(new Message(Severity.ERROR,
                         Context.PROCESS,

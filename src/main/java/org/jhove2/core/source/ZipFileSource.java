@@ -113,7 +113,7 @@ public class ZipFileSource
 	 * 
 	 * @return Zip file comment
 	 */
-	@ReportableProperty(order = 6, value = "Zip file comment.")
+	@ReportableProperty(order = 5, value = "Zip file comment.")
 	public String getComment() {
 		return this.comment;
 	}
@@ -123,7 +123,7 @@ public class ZipFileSource
 	 * 
 	 * @return Zip file CRC-32 message digest
 	 */
-	@ReportableProperty(order = 5, value = "Zip file CRC-32 message digest.")
+	@ReportableProperty(order = 4, value = "Zip file CRC-32 message digest.")
 	public Digest getCRC32MessageDigest() {
 		return this.crc32;
 	}
@@ -149,7 +149,7 @@ public class ZipFileSource
 	 * 
 	 * @return Zip file last modified date
 	 */
-	@ReportableProperty(order = 4, value = "Zip file last modified date.")
+	@ReportableProperty(order = 3, value = "Zip file last modified date.")
 	public Date getLastModified() {
 		return this.lastModified;
 	}
@@ -158,10 +158,10 @@ public class ZipFileSource
 	 * Get Zip file name.
 	 * 
 	 * @return Zip file name
-	 * @see org.jhove2.core.source.NamedSource#getFileName()
+	 * @see org.jhove2.core.source.NamedSource#getSourceName()
 	 */
 	@Override
-	public String getFileName() {
+	public String getSourceName() {
 		return this.name;
 	}
 
@@ -170,7 +170,7 @@ public class ZipFileSource
 	 * 
 	 * @return Zip file path
 	 */
-	@ReportableProperty(order = 2, value = "Zip file path.")
+	@ReportableProperty(order = 1, value = "Zip file path.")
 	public String getPath() {
 		return this.path;
 	}
@@ -180,7 +180,7 @@ public class ZipFileSource
 	 * 
 	 * @return Zip file size, in bytes
 	 */
-	@ReportableProperty(order = 3, value = "Zip file size, in bytes.")
+	@ReportableProperty(order = 2, value = "Zip file size, in bytes.")
 	public long getSize() {
 		return this.size;
 	}

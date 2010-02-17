@@ -40,7 +40,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 
-import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.io.InputFactory;
 import org.jhove2.core.io.Input.Type;
@@ -50,7 +49,13 @@ import org.jhove2.core.io.Input.Type;
  * 
  * @author mstrong, slabrams
  */
-public class URLSource extends AbstractSource {
+public class URLSource
+    extends AbstractSource
+    implements NamedSource
+{
+    /** URL name. */
+    protected String name;
+    
 	/** URL backing the source unit. */
 	protected URL url;
 
@@ -68,7 +73,9 @@ public class URLSource extends AbstractSource {
 	public URLSource(String tmpPrefix, String tmpSuffix,
 			int bufferSize, URL url) throws IOException {
 		super(tmpPrefix, tmpSuffix, bufferSize, url.openStream());
-		this.url = url;
+		
+		this.name = url.toString();
+		this.url  = url;
 	}
 
 	/**
@@ -93,18 +100,27 @@ public class URLSource extends AbstractSource {
 	}
 
 	/**
-	 * Get URL.
+	 * Get URL name.
+	 * 
+	 * @return URL name
+	 */
+	@Override
+	public String getSourceName() {
+		return this.name;
+	}
+	
+	/** Get URL.
 	 * 
 	 * @return URL
 	 */
-	@ReportableProperty("URL.")
-	public String getURLString() {
-		return this.url.toString();
-	}
-	
 	public URL getURL(){
 		return this.url;
 	}
+	
+	/** Compare the URL.
+	 * @return True, if the URLs are identical
+	 * @see org.jhove2.core.source.AbstractSource#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj){
 		if (obj == null){
@@ -125,12 +141,17 @@ public class URLSource extends AbstractSource {
 		else if (uObj.getURL()==null){
 			return false;
 		}
-		boolean equals = this.getURLString().equalsIgnoreCase(uObj.getURLString());
+		boolean equals = this.name.equalsIgnoreCase(uObj.getSourceName());
 		if (!equals){
 			return false;
 		}
 		return super.equals(obj);
 	}
+	
+	/** Compare the URL.
+	 * @return -1, 0, or 1 if the URL is less than, equals to, or greater than
+	 * the compared URL
+	 */
 	@Override
 	public int compareTo(Source source){
 		if (source==null){
@@ -154,7 +175,7 @@ public class URLSource extends AbstractSource {
 			return 1;
 		}
 		else {			
-			int stCompare = this.getURLString().compareToIgnoreCase(uObj.getURLString());
+			int stCompare = this.name.compareToIgnoreCase(uObj.getSourceName());
 			if (stCompare < 0){
 				return -1;
 			}

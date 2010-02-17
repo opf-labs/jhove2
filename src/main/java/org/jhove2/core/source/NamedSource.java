@@ -43,12 +43,14 @@ import org.jhove2.annotation.ReportableProperty;
  * 
  * @author mstrong, slabrams
  */
-public interface NamedSource extends Source {
+public interface NamedSource
+    extends Source
+{
 	/**
 	 * Get source name.
 	 * 
 	 * @return Source name
 	 */
-	@ReportableProperty(order = 0, value = "Source name.")
-	public String getFileName();
+	@ReportableProperty("Source unit name.")
+	public String getSourceName();
 }

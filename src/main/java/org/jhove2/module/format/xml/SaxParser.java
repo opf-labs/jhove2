@@ -61,7 +61,6 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotRecognizedException;
 import org.xml.sax.SAXNotSupportedException;
-import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
@@ -75,8 +74,9 @@ import org.xml.sax.helpers.XMLReaderFactory;
  * @see <a href="https://jaxp.dev.java.net/">Sun's JAXP website</a> <br />
  * @see <a href="http://xerces.apache.org/xerces2-j/">Xerces2 Java Parser</a>
  */
-public class SaxParser extends AbstractReportable {
-
+public class SaxParser
+    extends AbstractReportable
+{
     /** The XmlModule object that is invoking the parser. */
     protected XmlModule xmlModule;
 
@@ -346,7 +346,7 @@ public class SaxParser extends AbstractReportable {
             saxInputSource.setSystemId(source.getFile().getAbsolutePath());
         }
         else if (source instanceof URLSource){
-            saxInputSource.setSystemId(((URLSource)source).getURLString());
+            saxInputSource.setSystemId(((URLSource)source).getSourceName());
         }
 
         /* Here's where the SAX parsing takes place */

@@ -116,10 +116,10 @@ public class DirectorySource
 	 * Get directory name.
 	 * 
 	 * @return Directory name
-	 * @see org.jhove2.core.source.NamedSource#getFileName()
+	 * @see org.jhove2.core.source.NamedSource#getSourceName()
 	 */
 	@Override
-	public String getFileName() {
+	public String getSourceName() {
 		return this.directoryName;
 	}
     

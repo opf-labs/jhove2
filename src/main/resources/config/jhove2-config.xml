@@ -26,8 +26,8 @@
 			<list value-type="org.jhove2.core.JHOVE2Command">
 				<ref bean="IdentifierCommand"/>
 				<ref bean="DispatcherCommand"/>
-				<ref bean="AggrefierCommand"/>
 				<ref bean="DigesterCommand"/>
+				<ref bean="AggrefierCommand"/>
 			</list>
 		</property>
 	</bean>

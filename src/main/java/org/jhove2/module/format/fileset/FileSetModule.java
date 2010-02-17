@@ -109,7 +109,7 @@ public class FileSetModule
 			     */
 			    if (src instanceof FileSystemSource) {
 			        FileSystemSource fs = (FileSystemSource) src;
-			        String name = fs.getFileName();
+			        String name = fs.getSourceName();
 			        if (!fs.isExtant()) {
 			            source.addMessage(new Message(Severity.ERROR,
 			                Context.PROCESS,

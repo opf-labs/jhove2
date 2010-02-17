@@ -116,7 +116,7 @@ public class ShapefileModule
 
 			List<Source> sources = source.getChildSources();
 			for (Source src : sources) {
-				this.prefix = ((NamedSource) src).getFileName();
+				this.prefix = ((NamedSource) src).getSourceName();
 				int in = this.prefix.indexOf('.');
 				if (in > -1) {
 					this.prefix = this.prefix.substring(0, in);

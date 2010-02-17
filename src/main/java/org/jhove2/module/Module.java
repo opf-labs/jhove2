@@ -83,7 +83,7 @@ public interface Module
 	 * 
 	 * @return Module release date
 	 */
-	@ReportableProperty(order = 3, value = "Module release date.")
+	@ReportableProperty(order = 2, value = "Module release date.")
 	public String getReleaseDate();
 
 	/**
@@ -91,22 +91,29 @@ public interface Module
 	 * 
 	 * @return Module rights statement
 	 */
-	@ReportableProperty(order = 5, value = "Module rights statement.")
+	@ReportableProperty(order = 3, value = "Module rights statement.")
 	public String getRightsStatement();
 	
 	/** Get module scope: generic or specific.
 	 * @return Module scope
 	 */
-	@ReportableProperty(order = 6, value = "Module scope: generic or " +
+	@ReportableProperty(order = 5, value = "Module scope: generic or " +
 			"specific (to a source unit.")
 	public Scope getScope();
-	
+
+    /**
+     * Get object which maintains timer information about the running of this module
+     * @return TimerInfo with timer information about the running of this module
+     */
+    @ReportableProperty(order = 8, value = "Timer info for this module.")
+    public TimerInfo getTimerInfo();
+    
 	/**
 	 * Get module version.
 	 * 
 	 * @return Module version
 	 */
-	@ReportableProperty(order = 2, value = "Module version identifier.")
+	@ReportableProperty(order = 1, value = "Module version identifier.")
 	public String getVersion();
 	
 	/**
@@ -116,13 +123,6 @@ public interface Module
 	 * @return Wrapped {@link org.jhove2.core.WrappedProduct}, or null if the
 	 *         module directly performs its process
 	 */
-	@ReportableProperty(order = 7, value = "External product wrapped by the module.")
+	@ReportableProperty(order = 6, value = "External product wrapped by the module.")
 	public WrappedProduct getWrappedProduct();
-
-	/**
-	 * Get object which maintains timer information about the running of this module
-	 * @return TimerInfo with timer information about the running of this module
-	 */
-	@ReportableProperty(order = 8, value = "Timer info for this module.")
-	public TimerInfo getTimerInfo();
 }
