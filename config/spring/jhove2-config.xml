@@ -11,10 +11,10 @@
 		   
 	<!-- JHOVE2 command line application bean -->
 	<bean id="JHOVE2CommandLine" class="org.jhove2.app.JHOVE2CommandLine"
-	    scope="prototype"/>
+	    scope="singleton"/>
 
 	<!-- JHOVE2 framework bean -->
-	<bean id="JHOVE2" class="org.jhove2.core.JHOVE2" scope="singleton">
+	<bean id="JHOVE2" class="org.jhove2.core.JHOVE2" scope="prototype">
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
@@ -34,7 +34,7 @@
 	
 	<!-- Identifier command bean -->
 	<bean id="IdentifierCommand" class="org.jhove2.module.identify.IdentifierCommand"
-	 	scope="singleton">
+	 	scope="prototype">
 	 	 <property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
@@ -46,7 +46,7 @@
 
 	<!-- Dispatcher command bean -->
 	<bean id="DispatcherCommand" class="org.jhove2.module.format.DispatcherCommand"
-	      scope="singleton">
+	      scope="prototype">
 	    <property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
@@ -58,7 +58,7 @@
 	
 	<!-- Aggrefier command Bean -->
 	<bean id="AggrefierCommand" class="org.jhove2.module.identify.AggrefierCommand"
-		scope="singleton" >
+		scope="prototype" >
 		 <property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
@@ -71,7 +71,7 @@
 	<!--  Digester command bean -->  
 	<bean id="DigesterCommand"
 		  class="org.jhove2.module.digest.DigesterCommand"
-		  scope="singleton">
+		  scope="prototype">
 		   <property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>

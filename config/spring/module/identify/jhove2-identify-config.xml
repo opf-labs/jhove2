@@ -38,7 +38,7 @@
 	
 	<!-- DROID wrapped product bean -->
 	<bean id="DROIDProduct" class="org.jhove2.core.WrappedProduct"
-	      scope="singleton">
+	      scope="prototype">
 	    <constructor-arg index="0" value="DROID"/>
 	    <constructor-arg index="1" value="4.0.0"/>
 	    <constructor-arg index="2" value="2009-07-23"/>
@@ -49,7 +49,7 @@
 	
 	<!-- Aggrefier module bean -->
 	<bean id="AggrefierModule" class="org.jhove2.module.identify.AggrefierModule"
-	      scope="singleton">
+	      scope="prototype">
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
