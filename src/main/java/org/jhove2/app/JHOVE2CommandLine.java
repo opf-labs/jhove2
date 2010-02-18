@@ -107,13 +107,14 @@ public class JHOVE2CommandLine
 			/* Create and initialize the JHOVE2 command-line application. */
 
 			JHOVE2CommandLine app = new JHOVE2CommandLine();
+			app.getDisplayer().setConfigInfo(factory);
 			app.setDateTime(new Date());
 			
 			/* Parse the application command line and update the default (or
 			 * Spring-wired) settings in {@link org.jhove2.core.AppConfigInfo}
 			 * with any command line options.
 			 */
-			List<String> pathNames = app.parse(args, factory); 
+			List<String> pathNames = app.parse(args); 
 			
 			/* Create and initialize the JHOVE2 framework and register it with
 			 * the application.
@@ -182,7 +183,7 @@ public class JHOVE2CommandLine
     * @return File system path names
     * @throws JHOVE2Exception 
     */
-	public List<String> parse(String[] args, SpringConfigInfo factory)
+	public List<String> parse(String[] args)
 		throws JHOVE2Exception
 	{
 		Parser parser = new Parser(JHOVE2CommandLine.class.getName());
@@ -268,7 +269,8 @@ public class JHOVE2CommandLine
                     config.setBufferType(Type.valueOf(bufferType));
                 }
             }
-            if (( displayerType = (String)parser.getOptionValue(displayerTypeO)) != null) {
+             displayerType = (String)parser.getOptionValue(displayerTypeO);
+            if (displayerType != null) {
                 if (displayerValues.indexOf(displayerType) == -1) {
                     throw new Parser.IllegalOptionValueException(displayerTypeO,
                                                                  displayerType);
@@ -305,7 +307,8 @@ public class JHOVE2CommandLine
         if ((bufferType = (String)parser.getOptionValue(bufferTypeO)) != null) {
         	config.setBufferType(Type.valueOf(bufferType));
         }
-        if (( displayerType = (String)parser.getOptionValue(displayerTypeO)) != null) {
+        displayerType = (String)parser.getOptionValue(displayerTypeO);
+        if (displayerType != null) {
 			this.setDisplayer(SpringConfigInfo.getReportable(Displayer.class,
 					                                          displayerType));
         }
