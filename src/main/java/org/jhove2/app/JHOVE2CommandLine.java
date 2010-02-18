@@ -38,19 +38,20 @@ package org.jhove2.app;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
+import org.jhove2.config.spring.SpringConfigInfo;
 import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.TimerInfo;
 import org.jhove2.core.app.AbstractApplication;
-import org.jhove2.core.app.Application;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.io.Input.Type;
-import org.jhove2.core.reportable.ReportableFactory;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
+import org.jhove2.module.display.AbstractDisplayer;
 import org.jhove2.module.display.Displayer;
 
 /**
@@ -101,23 +102,23 @@ public class JHOVE2CommandLine
 	public static void main(String[] args)
 	{	
 		try {
-
+			SpringConfigInfo factory = new SpringConfigInfo();
+			
 			/* Create and initialize the JHOVE2 command-line application. */
-			JHOVE2CommandLine app =
-				ReportableFactory.getReportable(Application.class,
-					                            "JHOVE2CommandLine");
+
+			JHOVE2CommandLine app = new JHOVE2CommandLine();
 			app.setDateTime(new Date());
 			
 			/* Parse the application command line and update the default (or
 			 * Spring-wired) settings in {@link org.jhove2.core.AppConfigInfo}
 			 * with any command line options.
 			 */
-			List<String> pathNames = app.parse(args); 
+			List<String> pathNames = app.parse(args, factory); 
 			
 			/* Create and initialize the JHOVE2 framework and register it with
 			 * the application.
 			 */		
-			JHOVE2 jhove2 = ReportableFactory.getReportable(JHOVE2.class,
+			JHOVE2 jhove2 = SpringConfigInfo.getReportable(JHOVE2.class,
 					                                       "JHOVE2");
 			TimerInfo timer = jhove2.getTimerInfo();
 			timer.setStartTime();
@@ -181,7 +182,7 @@ public class JHOVE2CommandLine
     * @return File system path names
     * @throws JHOVE2Exception 
     */
-	public List<String> parse(String[] args)
+	public List<String> parse(String[] args, SpringConfigInfo factory)
 		throws JHOVE2Exception
 	{
 		Parser parser = new Parser(JHOVE2CommandLine.class.getName());
@@ -205,7 +206,7 @@ public class JHOVE2CommandLine
 			bufferTypeValues.append(i.toString());
 		}
 
-		String[] displayers = ReportableFactory.getReportableNames(Displayer.class);
+		String[] displayers = SpringConfigInfo.getReportableNames(Displayer.class);
 		StringBuffer displayerValues = new StringBuffer("");
 		for (int i=0;i<displayers.length;i++){
 			if (i>0)
@@ -273,8 +274,8 @@ public class JHOVE2CommandLine
                                                                  displayerType);
                 }
                 else {
-                    setDisplayer(ReportableFactory.getReportable(Displayer.class,
-                                                                 displayerType));
+                    setDisplayer(SpringConfigInfo.getReportable(Displayer.class,
+                                                                displayerType));
                 }
             }
 
@@ -305,7 +306,7 @@ public class JHOVE2CommandLine
         	config.setBufferType(Type.valueOf(bufferType));
         }
         if (( displayerType = (String)parser.getOptionValue(displayerTypeO)) != null) {
-			this.setDisplayer(ReportableFactory.getReportable(Displayer.class,
+			this.setDisplayer(SpringConfigInfo.getReportable(Displayer.class,
 					                                          displayerType));
         }
         if ((failFastLimit = (Integer)parser.getOptionValue(failFastLimitO)) != null) {

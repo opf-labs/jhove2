@@ -40,8 +40,10 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.config.ConfigInfo;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
@@ -108,6 +110,12 @@ public class UTF8Character
 
 	/** Character encoded size, in bytes. */
 	protected int size;
+	
+	protected static Properties codeBlockProps;
+	
+	protected static Properties c0ControlProps;
+	
+	protected static Properties c1ContolProps;
 
 	/**
 	 * Instantiate a new <code>UTF8Character</code>
@@ -169,7 +177,7 @@ public class UTF8Character
 			this.invalidByteValueMessages.add(new Message(Severity.ERROR,
 					Context.OBJECT,
 					"org.jhove2.module.format.utf8.UTF8Character.invalidByteValueMessages",
-					messageArgs));
+					messageArgs, jhove2.getConfigInfo()));
 		}
 
 		/* Read the remaining bytes. */
@@ -188,7 +196,7 @@ public class UTF8Character
 				this.invalidByteValueMessages.add(new Message(Severity.ERROR,
 						Context.OBJECT, 
 						"org.jhove2.module.format.utf8.UTF8Character.invalidByteValueMessages",
-						messageArgs));
+						messageArgs, jhove2.getConfigInfo()));
 			}
 		}
 
@@ -210,9 +218,9 @@ public class UTF8Character
 			this.isBOM = true;
 		}
 
-		this.codeBlock = CodeBlock.getBlock(this.codePoint);
-		this.c0control = C0Control.getControl(this.codePoint);
-		this.c1control = C1Control.getControl(this.codePoint);
+		this.codeBlock = CodeBlock.getBlock(this.codePoint, getCodeBlockProps(jhove2.getConfigInfo()));
+		this.c0control = C0Control.getControl(this.codePoint, getC0ControlProps(jhove2.getConfigInfo()));
+		this.c1control = C1Control.getControl(this.codePoint, getC1ContolProps(jhove2.getConfigInfo()));
 
 		/* Check for code point outside of valid range [Unicode, D76]. */
 		if (this.codePoint < 0x00
@@ -223,7 +231,7 @@ public class UTF8Character
 			this.codePointOutOfRangeMessage = new Message(Severity.ERROR,
 					Context.OBJECT, 
 					"org.jhove2.module.format.utf8.UTF8Character.codePointOutOfRangeMessage",
-					messageArgs);
+					messageArgs, jhove2.getConfigInfo());
 		}
 
 		/* Check if code point is a non-character [Unicode, D14] */
@@ -400,4 +408,39 @@ public class UTF8Character
 	public Validity isValid() {
 		return this.isValid;
 	}
+
+	/**
+	 * @return the codeBlockProps
+	 * @throws JHOVE2Exception 
+	 */
+	public static Properties getCodeBlockProps(ConfigInfo config) throws JHOVE2Exception {
+		if (codeBlockProps==null){
+			codeBlockProps = config.getProperties("CodeBlock");
+		}
+		return codeBlockProps;
+	}
+
+
+	/**
+	 * @return the c0ControlProps
+	 */
+	public static Properties getC0ControlProps(ConfigInfo config)  throws JHOVE2Exception {
+		if (c0ControlProps==null){
+			c0ControlProps = config.getProperties("C0Control");
+		}
+		return c0ControlProps;
+	}
+
+
+	/**
+	 * @return the c1ContolProps
+	 */
+	public static Properties getC1ContolProps(ConfigInfo config)  throws JHOVE2Exception {
+		if (c1ContolProps==null){
+			c1ContolProps = config.getProperties("C1Control");
+		}
+		return c1ContolProps;
+	}
+
+
 }

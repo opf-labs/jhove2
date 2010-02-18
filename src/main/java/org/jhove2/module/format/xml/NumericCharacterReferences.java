@@ -47,6 +47,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
@@ -119,7 +120,7 @@ public class NumericCharacterReferences extends AbstractReportable {
      * constructs, which are not considered XML entities. The characters()
      * method of the ContentHandler interface, translates these codes into
      * Unicode characters before placing the data in the buffer.
-     * 
+     * @param jhove2 TODO
      * @param jhove2
      *            the JHOVE2 framework
      * @param source
@@ -128,7 +129,7 @@ public class NumericCharacterReferences extends AbstractReportable {
      * @throws IOException
      * @throws JHOVE2Exception
      */
-    protected void parse(Input input, String encodingFromSAX2)
+    protected void parse(Input input, String encodingFromSAX2, JHOVE2 jhove2)
             throws IOException, JHOVE2Exception {
         try {
             /* Get a CharSequence object that can be analyzed */
@@ -148,7 +149,8 @@ public class NumericCharacterReferences extends AbstractReportable {
         catch (CharacterCodingException e) {
             this.invalidCharacterForEncodingMessage = new Message(
                     Severity.ERROR, Context.OBJECT,
-                    "org.jhove2.module.format.xml.XmlModule.invalidCharacterForEncodingMessage");
+                    "org.jhove2.module.format.xml.XmlModule.invalidCharacterForEncodingMessage",
+                    jhove2.getConfigInfo());
         }
     }
 

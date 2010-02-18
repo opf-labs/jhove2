@@ -33,7 +33,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.core.reportable;
+package org.jhove2.config.spring;
 
 import java.io.IOException;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;

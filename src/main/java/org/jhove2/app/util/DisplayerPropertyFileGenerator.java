@@ -40,7 +40,7 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.info.ReportablePropertyInfo;
+import org.jhove2.core.reportable.info.ReportablePropertyInfo;
 import org.jhove2.module.display.AbstractDisplayer;
 
 /**
@@ -124,7 +124,7 @@ public class DisplayerPropertyFileGenerator extends PropertyFileGenerator {
 
 	/**
 	 * Get list of possible display choices for a property
-	 * @param {@link org.jhove2.core.info.ReportablePropertyInfo} for a Reportable property
+	 * @param {@link org.jhove2.core.reportable.info.ReportablePropertyInfo} for a Reportable property
 	 * @return String with possible display choices for a property
 	 * @throws JHOVE2Exception 
 	 */

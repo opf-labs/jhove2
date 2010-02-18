@@ -369,7 +369,7 @@ public class XmlModule
              JHOVE2Exception {
         
         /* Use SAX2 to get what information is available from that mechanism */
-        saxParser.parse(source);
+        saxParser.parse(source, jhove2);
         
         /* Get the input object */
         Invocation config = jhove2.getInvocation();
@@ -383,7 +383,7 @@ public class XmlModule
         /* Do a separate parse to inventory numeric character references */
         if (this.ncrParser) {
             input.setPosition(0L);
-            numericCharacterReferences.parse(input, xmlDeclaration.encodingFromSAX2);            
+            numericCharacterReferences.parse(input, xmlDeclaration.encodingFromSAX2, jhove2);            
         }
         return 0;
     }

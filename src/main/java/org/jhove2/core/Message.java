@@ -38,7 +38,7 @@ package org.jhove2.core;
 
 import java.util.Locale;
 
-import org.jhove2.core.reportable.ReportableFactory;
+import org.jhove2.config.ConfigInfo;
 
 /**
  * JHOVE2 message. A message has a severity, a context, and a textual value.
@@ -70,6 +70,8 @@ public class Message {
 
 	/** Message Locale. */
 	protected Locale locale;
+	
+	protected ConfigInfo configInfo;
 
 	/** Default Locale */
 	private static Locale defaultLocale;
@@ -87,12 +89,13 @@ public class Message {
 	 *            Message context
 	 * @param messageCode
 	 *            Key to message text in localized property file
+	 * @param configInfo TODO
 	 * @throws JHOVE2Exception 
 	 */
-	public Message(Severity severity, Context context, String messageCode)
+	public Message(Severity severity, Context context, String messageCode, ConfigInfo configInfo)
 		throws JHOVE2Exception
 	{
-		this(severity, context, messageCode, new Object[0], defaultLocale);
+		this(severity, context, messageCode, new Object[0], defaultLocale, configInfo);
 	}
 	
 	/**
@@ -106,13 +109,14 @@ public class Message {
 	 *            Key to message text in localized property file
 	 * @param messageArgs
 	 * 	          Arguments to message format template
+	 * @param configInfo TODO
 	 * @throws JHOVE2Exception
 	 */
 	public Message(Severity severity, Context context, String messageCode,
-			       Object[] messageArgs) 
+			       Object[] messageArgs, ConfigInfo configInfo) 
 		throws JHOVE2Exception
 	{
-		this(severity, context, messageCode, messageArgs, defaultLocale);
+		this(severity, context, messageCode, messageArgs, defaultLocale, configInfo);
 	}
 
 	/**
@@ -128,16 +132,18 @@ public class Message {
 	 * 	          Arguments to message format template
 	 * @param locale
 	 * 			  Locale for message text
+	 * @param configInfo TODO
 	 * @throws JHOVE2Exception
 	 */
 	public Message(Severity severity, Context context, String messageCode, 
-			       Object[] messageArgs, Locale locale)
+			       Object[] messageArgs, Locale locale, ConfigInfo configInfo)
 		throws JHOVE2Exception
 	{
 		this.severity = severity;
 		this.context = context;
 		this.locale = locale;
 		this.messageCode = messageCode;
+		this.configInfo = configInfo;
 		this.localizedMessageText = this.localizeMessageText(messageCode, messageArgs, locale);
 	}
 
@@ -158,7 +164,7 @@ public class Message {
 		throws JHOVE2Exception
 	{
 		String localizedMessage = null;
-		localizedMessage = ReportableFactory.getLocalizedMessageText(messageCode, 
+		localizedMessage = this.getConfigInfo().getLocalizedMessageText(messageCode, 
 				messageArgs, locale);
 		return localizedMessage;
 	}
@@ -225,5 +231,19 @@ public class Message {
 	@Override
 	public String toString() {
 		return "[" + this.severity + "/" + this.context + "] " + this.localizedMessageText;
+	}
+
+	/**
+	 * @return the configInfo
+	 */
+	public ConfigInfo getConfigInfo() {
+		return configInfo;
+	}
+
+	/**
+	 * @param configInfo the configInfo to set
+	 */
+	public void setConfigInfo(ConfigInfo configInfo) {
+		this.configInfo = configInfo;
 	}
 }

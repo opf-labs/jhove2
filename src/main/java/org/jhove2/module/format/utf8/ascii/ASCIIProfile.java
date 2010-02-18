@@ -141,7 +141,7 @@ public class ASCIIProfile
 			this.nonBasicLatinMessage = new Message(Severity.ERROR,
 					Context.OBJECT, 
 					"org.jhove2.module.format.utf8.ascii.ASCIIProfile.nonBasicLatinMessage",
-					messageArgs);
+					messageArgs, jhove2.getConfigInfo());
 		}
 
 		return this.isValid;

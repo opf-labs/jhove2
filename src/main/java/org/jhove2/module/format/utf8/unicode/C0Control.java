@@ -41,7 +41,6 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.reportable.ReportableFactory;
 
 /**
  * Unicode C0 control. Controls are initialized from a properties file in the
@@ -81,15 +80,16 @@ public class C0Control implements Comparable<C0Control> {
 	 * 
 	 * @param codePoint
 	 *            Code point
+	 * @param properties TODO
 	 * @return Control, or null if the code point is not a C0 control
 	 * @throws JHOVE2Exception
 	 */
-	public static synchronized C0Control getControl(int codePoint)
+	public static synchronized C0Control getControl(int codePoint, Properties props)
 			throws JHOVE2Exception {
 		if (controls == null) {
 			/* Initialize the controls from s Java resource bundle. */
 			controls = new TreeSet<C0Control>();
-			Properties props = ReportableFactory.getProperties("C0Control");
+//			Properties props = SpringConfigInfo.getProperties("C0Control");
 			if (props != null) {
 				Set<String> set = props.stringPropertyNames();
 				Iterator<String> iter = set.iterator();

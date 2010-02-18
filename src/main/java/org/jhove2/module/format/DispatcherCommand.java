@@ -36,11 +36,7 @@
 package org.jhove2.module.format;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.TreeSet;
-import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 import org.jhove2.core.Format;
 import org.jhove2.core.FormatIdentification;
@@ -50,7 +46,7 @@ import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
-import org.jhove2.core.reportable.ReportableFactory;
+import org.jhove2.core.format.FormatFactory;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractCommand;
 import org.jhove2.module.Module;
@@ -75,14 +71,9 @@ public class DispatcherCommand extends AbstractCommand {
             + "Stanford Junior University. "
             + "Available under the terms of the BSD license.";
 
-    /**
-     * Dispatch map. Maps from unique identifiers to Spring bean names for the
-     * modules associated with the formats.
-     */
-    private static ConcurrentMap<String, String> dispatchMap;
-
-    /** Map from JHOVE2 format identifiers to bean name for format */
-    private static ConcurrentMap<String, String> jhoveIdToBeanName;
+    protected FormatFactory formatFactory;
+    
+    protected FormatModuleFactory formatModuleFactory;
 
     /**
      * Instantiate a new <code>DispatcherCommand</code>.
@@ -118,21 +109,13 @@ public class DispatcherCommand extends AbstractCommand {
              * namespace.
              */
             if (fid.getJHOVE2Identifier() != null) {
-                /*
-                 * Use the JHOVE2 format id to get bean name for format in
-                 * Spring configuration file.
-                 */
-                String beanName =
-                	getJhoveIdToBeanName().get(fid.getJHOVE2Identifier().getValue());
-                if (beanName != null) {
-                    Format format =
-                    	ReportableFactory.getReportable(Format.class,
-                    			                        beanName);
-                    jhoveFormats.put(fid.getJHOVE2Identifier(), format);
-                }
+            	String formatIdString = fid.getJHOVE2Identifier().getValue();
+            	Format format = this.getFormatFactory().makeFormat(formatIdString);
+            	if (format != null){
+            		jhoveFormats.put(fid.getJHOVE2Identifier(), format);
+            	}
             }
-        }
-        
+        }        
         /*
          * More than one JHOVE2 format might map to the same format module, so
          * we will keep track of the modules we run so as not to run them more
@@ -142,7 +125,8 @@ public class DispatcherCommand extends AbstractCommand {
         /* now invoke the format module. */
         for (I8R id : jhoveFormats.keySet()) {
             Format format = jhoveFormats.get(id);
-            Module module = this.getModuleFromIdentifier(id);
+            Module module = this.getFormatModuleFactory()
+            	.makeFormatModule(id);
             if (module == null) {
                 BaseFormatModule bFormatModule = new BaseFormatModule();
                 String[] parms = new String[] { id.getValue() };
@@ -150,7 +134,7 @@ public class DispatcherCommand extends AbstractCommand {
                 	Severity.ERROR,
                 	Context.PROCESS,
                 	"org.jhove2.module.format.DispatcherCommand.moduleNotFoundMessage",
-                	(Object[]) parms));
+                	(Object[]) parms, jhove2.getConfigInfo()));
                 bFormatModule.setFormat(format);
                 source.addModule(bFormatModule);
             }
@@ -161,7 +145,7 @@ public class DispatcherCommand extends AbstractCommand {
                 	Severity.ERROR,
                 	Context.PROCESS,
                 	"org.jhove2.module.format.DispatcherCommand.moduleNotFormatModuleMessage",
-                	(Object[]) parms));
+                	(Object[]) parms, jhove2.getConfigInfo()));
                 bFormatModule.setFormat(format);
                 source.addModule(bFormatModule);
             }
@@ -179,98 +163,33 @@ public class DispatcherCommand extends AbstractCommand {
         }
     }
 
-    /**
-     * Gets the mapping from format to format module. Initializes the static map
-     * on first invocation.
-     * 
-     * @return map from JHOVE2 format identifier to module bean name
-     * 
-     * @throws JHOVE2Exception
-     */
-    public static ConcurrentMap<String, String> getDispatchMap()
-            throws JHOVE2Exception {
-        if (dispatchMap == null) {
-            dispatchMap = new ConcurrentHashMap<String, String>();
-            /*
-             * Use Spring to get instances of all objects inheriting from
-             * BaseFormatModule
-             */
-            Map<String, Object> map = ReportableFactory
-                    .getObjectsForType(BaseFormatModule.class);
-            /* For each of the format modules */
-            for (Entry<String, Object> entry : map.entrySet()) {
-                /* Get the Spring bean name for the format module */
-                String moduleBeanName = entry.getKey();
-                /* Get the JHOVE format identifier that the module references */
-                BaseFormatModule module = (BaseFormatModule) entry.getValue();
-                Format format = module.format;
-                I8R formatID = format.getIdentifier();
-                /* Add an entry into the format identifier to module map */
-                dispatchMap.put(formatID.getValue(), moduleBeanName);
-                /*
-                 * Now get the format profiles that the module references and
-                 * add them to the map
-                 */
-                for (FormatProfile profile : module.getProfiles()) {
-                    I8R profileID = profile.getFormat().getIdentifier();
-                    dispatchMap.put(profileID.getValue(), moduleBeanName);
-                    // System.out.println(profileID.getValue() + " = " + moduleBeanName);
-                }
-                // System.out.println(formatID.getValue() + " = " + moduleBeanName);
-            }
-        }
-        return dispatchMap;
-    }
 
-    /**
-     * Determine module to be invoked from format identifier
-     * 
-     * @param identifier
-     *            JHOVE2 identifier for format
-     * @return Module mapped to the JHOVE2 format identifier, or null if no
-     *         module has been mapped to the JHOVE2 identifier
-     * @throws JHOVE2Exception
-     */
-    public Module getModuleFromIdentifier(I8R identifier)
-            throws JHOVE2Exception {
-        Module module = null;
-        String name = getDispatchMap().get(identifier.getValue());
-        if (name != null) {
-            module = ReportableFactory.getReportable(Module.class, name);
-        }
-        return module;
-    }
+	/**
+	 * @return the formatFactory
+	 */
+	public FormatFactory getFormatFactory() {
+		return formatFactory;
+	}
 
-    /**
-     * Gets the mapping from format identifier to format object. Initializes the
-     * static map on first invocation.
-     * 
-     * @return map from JHOVE2 format identifier to format object bean name
-     * @throws JHOVE2Exception
-     */
-    public static ConcurrentMap<String, String> getJhoveIdToBeanName()
-            throws JHOVE2Exception {
-        if (jhoveIdToBeanName == null) {
-            jhoveIdToBeanName = new ConcurrentHashMap<String, String>();
-            /*
-             * Use Spring to get instances of all objects inheriting from
-             * BaseFormatModule
-             */
-            Map<String, Object> formatMap = ReportableFactory
-                    .getObjectsForType(Format.class);
-            /* For each of the formats */
-            for (Entry<String, Object> entry : formatMap.entrySet()) {
-                /* Get the Spring bean name for the format object */
-                String formatBeanName = entry.getKey();
-                /* Get the JHOVE format identifier for the format */
-                Format format = (Format) entry.getValue();
-                I8R formatID = format.getIdentifier();
-                /* Add an entry into the format identifier to module map */
-                jhoveIdToBeanName.put(formatID.getValue(), formatBeanName);
-                // System.out.println(formatID.getValue() + " = " + formatBeanName);
-            }
-        }
-        return jhoveIdToBeanName;
-    }
+	/**
+	 * @param formatFactory the formatFactory to set
+	 */
+	public void setFormatFactory(FormatFactory formatFactory) {
+		this.formatFactory = formatFactory;
+	}
+
+	/**
+	 * @return the formatModuleFactory
+	 */
+	public FormatModuleFactory getFormatModuleFactory() {
+		return formatModuleFactory;
+	}
+
+	/**
+	 * @param formatModuleFactory the formatModuleFactory to set
+	 */
+	public void setFormatModuleFactory(FormatModuleFactory formatModuleFactory) {
+		this.formatModuleFactory = formatModuleFactory;
+	}
 
 }

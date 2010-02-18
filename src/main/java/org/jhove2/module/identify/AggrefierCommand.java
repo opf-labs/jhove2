@@ -42,7 +42,6 @@ import java.util.Set;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.TimerInfo;
-import org.jhove2.core.reportable.ReportableFactory;
 import org.jhove2.core.source.AggregateSource;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.Source;
@@ -68,6 +67,8 @@ public class AggrefierCommand
 		+ "Ithaka Harbors, Inc., and The Board of Trustees of the Leland "
 		+ "Stanford Junior University. "
 		+ "Available under the terms of the BSD license.";
+	
+	protected AggrefierFactory aggrefierFactory;
 
 	/** Instantiate a new <code>AggrefierCommand</code>.
 	 */
@@ -92,8 +93,7 @@ public class AggrefierCommand
 		if (source instanceof AggregateSource){
 			try {
 				Aggrefier aggrefier = 
-					ReportableFactory.getReportable(Aggrefier.class,
-							                       "AggrefierModule");
+					this.getAggrefierFactory().makeAggrefier();
 				TimerInfo timer = aggrefier.getTimerInfo();
 				timer.setStartTime();
 				try {
@@ -139,5 +139,19 @@ public class AggrefierCommand
 			}
 		}	
 		return;
+	}
+
+	/**
+	 * @return the aggrefierFactory
+	 */
+	public AggrefierFactory getAggrefierFactory() {
+		return aggrefierFactory;
+	}
+
+	/**
+	 * @param aggrefierFactory the aggrefierFactory to set
+	 */
+	public void setAggrefierFactory(AggrefierFactory aggrefierFactory) {
+		this.aggrefierFactory = aggrefierFactory;
 	}
 }

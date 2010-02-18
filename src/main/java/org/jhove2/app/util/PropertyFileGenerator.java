@@ -45,7 +45,7 @@ import java.io.FileOutputStream;
 import java.lang.SecurityException;
 
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.info.ReportablePropertyInfo;
+import org.jhove2.core.reportable.info.ReportablePropertyInfo;
 
 /**
  * Base class for generating editable Java properties files for features of 

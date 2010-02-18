@@ -41,7 +41,6 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.reportable.ReportableFactory;
 
 /**
  * A Unicode code block, a range of code points associated with a named language
@@ -97,16 +96,17 @@ public class CodeBlock implements Comparable<CodeBlock> {
 	 * 
 	 * @param codePoint
 	 *            Code point
+	 * @param properties TODO
 	 * @return Code block, or null if the code point is outside of all defined
 	 *         blocks
 	 * @throws JHOVE2Exception
 	 */
-	public static synchronized CodeBlock getBlock(int codePoint)
+	public static synchronized CodeBlock getBlock(int codePoint, Properties props)
 			throws JHOVE2Exception {
 		if (codeBlocks == null) {
 			/* Initialize the code blocks from Java Properties. */
 			codeBlocks = new TreeSet<CodeBlock>();
-			Properties props = ReportableFactory.getProperties("CodeBlock");
+//			Properties props = SpringConfigInfo.getProperties("CodeBlock");
 			if (props != null) {
 				Set<String> set = props.stringPropertyNames();
 				Iterator<String> iter = set.iterator();

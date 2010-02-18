@@ -44,7 +44,6 @@ import org.jhove2.core.Installation;
 import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.reportable.ReportableFactory;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractModule;
 import org.jhove2.module.display.Displayer;
@@ -104,19 +103,12 @@ public abstract class AbstractApplication
 		
 		/* Initialize the default displayer. */
 		try {
-			this.displayer = ReportableFactory.getReportable(Displayer.class,
-					Displayer.DEFAULT_DISPLAYER_TYPE);
+			this.displayer = 
+				(Displayer) (Class.forName(Displayer.DEFAULT_DISPLAYER_CLASS).newInstance());
 		}
-		catch (JHOVE2Exception e){
-			try {
-				this.displayer = 
-					(Displayer) (Class.forName(Displayer.DEFAULT_DISPLAYER_CLASS).newInstance());
-			}
-			catch (Exception ex){
-				throw new JHOVE2Exception("Unable to instantiate default displayer", ex);
-			}
-		}
-		
+		catch (Exception ex){
+			throw new JHOVE2Exception("Unable to instantiate default displayer", ex);
+		}		
 		this.sources = new ArrayList<Source>();
 	}
 

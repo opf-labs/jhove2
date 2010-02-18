@@ -38,25 +38,20 @@ package org.jhove2.module.identify;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.Format;
+import org.jhove2.app.util.FeatureConfigurationUtil;
 import org.jhove2.core.FormatIdentification;
 import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
-import org.jhove2.core.WrappedProduct;
 import org.jhove2.core.FormatIdentification.Confidence;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
-import org.jhove2.core.reportable.ReportableFactory;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractModule;
 
@@ -134,9 +129,6 @@ public class DROIDIdentifier
 		throws JHOVE2Exception
 	{
 		super(VERSION, RELEASE, RIGHTS, Scope.Generic);
-		WrappedProduct droid = ReportableFactory.getReportable(WrappedProduct.class,
-				                                               "DROIDProduct");
-		this.setWrappedProduct(droid);
 	}
 	
 	/**Instantiate a new <code>DROIDIdentifier</code> module that wraps DROID.
@@ -166,15 +158,16 @@ public class DROIDIdentifier
 	public Set<FormatIdentification> identify(JHOVE2 jhove2, Source source)
 		throws IOException, JHOVE2Exception
 	{
-		DROIDWrappedProduct droid;
+		DROIDWrappedProduct droid = (DROIDWrappedProduct)this.getWrappedProduct();
 		Set<FormatIdentification> presumptiveFormatIds =
 			new TreeSet<FormatIdentification>();
 		try {
 			ConfigFile configFile = getCachedConfigFile(this.getConfigurationFile());
 			FFSignatureFile sigFile = getCachedSignatureFile(configFile, this.getSignatureFile());
-			droid = new DROIDWrappedProduct(configFile, sigFile);
+			droid.setConfigFile(configFile);
+			droid.setSigFile(sigFile);
 			IdentificationFile idf = droid.identify(source);
-			boolean matchFound = this.matchFound(idf);
+			boolean matchFound = this.matchFound(idf, jhove2);
 			if (matchFound){
 				String msgText = idf.getWarning();				
 				Message idWarningMessage = null;
@@ -183,7 +176,7 @@ public class DROIDIdentifier
 					idWarningMessage = new Message(Severity.WARNING,
 							Context.OBJECT,
 							"org.jhove2.module.identify.DROIDIdentifier.identify.idWarningMessage",
-							messageParms);
+							messageParms, jhove2.getConfigInfo());
 				}
 				for (int i=0; i<idf.getNumHits(); i++){		
 					ArrayList<Message> idMessages = new ArrayList<Message>();
@@ -200,7 +193,7 @@ public class DROIDIdentifier
 						hitWarningMsg = new Message(Severity.WARNING,
 								Context.OBJECT,
 								"org.jhove2.module.identify.DROIDIdentifier.identify.hitWarningMsg",
-								messageParms);
+								messageParms, jhove2.getConfigInfo());
 						idMessages.add(hitWarningMsg);
 					}
 					FileFormat ff = ffh.getFileFormat();				
@@ -209,18 +202,18 @@ public class DROIDIdentifier
 					Confidence jhoveConfidence = this.getJHOVE2Confidence(ffh);	
 					// look up the JHOVE2 format id corresponding to DROID format id (PUID)
 					String jhoveFormatId = null;
-					if (! getPUIDtoJ2ID().containsKey(puid)){
+					if (! getPUIDtoJ2ID(jhove2).containsKey(puid)){
 						// if there is no match, attach an ERROR message to the FormatIdentification, 
 						// and use the default JHOVE2 format
 						Object[]messageParms = new Object[]{puid};
 						Message missingPuid = new Message(Severity.ERROR,
 								Context.PROCESS,
 								"org.jhove2.module.identify.DROIDIdentifier.identify.missingPUID",
-								messageParms);
+								messageParms, jhove2.getConfigInfo());
 						unmatchedPUIDMessages.add(missingPuid);
 					}
 					else {
-						jhoveFormatId = getPUIDtoJ2ID().get(puid);	
+						jhoveFormatId = getPUIDtoJ2ID(jhove2).get(puid);	
 					}
 					idMessages.addAll(unmatchedPUIDMessages);
 					I8R jhoveId = null;
@@ -295,7 +288,7 @@ public class DROIDIdentifier
     public String getConfigurationFile()
         throws JHOVE2Exception
     {
-        String path = ReportableFactory.getFilePathFromClasspath(this.getConfigurationFileName(), "DROID config file");
+        String path = FeatureConfigurationUtil.getFilePathFromClasspath(this.getConfigurationFileName(), "DROID config file");
         return path;
     }
 
@@ -372,33 +365,11 @@ public class DROIDIdentifier
      * @return DROID PUID to JHOVE2 Format Identifier map
      * @throws JHOVE2Exception
      */
-    public static ConcurrentMap<String,String> getPUIDtoJ2ID()
+    public static ConcurrentMap<String,String> getPUIDtoJ2ID(JHOVE2 jhove2)
         throws JHOVE2Exception
     {
         if (puidToJhoveId == null){
-            ConcurrentHashMap<String, String> map = new ConcurrentHashMap<String, String>();
-            puidToJhoveId = map;
-            /*
-             * Use Spring to get instances of all objects inheriting from
-             * BaseFormatModule
-             */
-            Map<String, Object> formatMap = ReportableFactory
-                    .getObjectsForType(Format.class);
-            /* For each of the formats */
-            for (Entry<String, Object> entry : formatMap.entrySet()) {
-                /* Get the format object */
-                Format format = (Format) entry.getValue();
-                /* Get the JHOVE format identifier for the format */
-                I8R formatID = format.getIdentifier();
-                /* For each aliasIdentifier of the format */
-                for (I8R alias :  format.getAliasIdentifiers()) {
-                    if (alias.getNamespace().equals(I8R.Namespace.PUID)) {
-                        /* Add an entry into the format identifier to module map */
-                        puidToJhoveId.put(alias.getValue(), formatID.getValue());
-                        //System.out.println(alias.getValue() + " = " + formatID.getValue());
-                    }
-                }
-            }
+        	puidToJhoveId = jhove2.getConfigInfo().getFormatAliasIdsToJ2Ids(I8R.Namespace.PUID);
         }
         return puidToJhoveId;
     }
@@ -409,7 +380,7 @@ public class DROIDIdentifier
      */
     @ReportableProperty(order = 2, value = "DROID signature file path.")
     public String getSignatureFile() throws JHOVE2Exception {
-        String path = ReportableFactory.getFilePathFromClasspath(this.getSignatureFileName(), "DROID signature file");
+        String path = FeatureConfigurationUtil.getFilePathFromClasspath(this.getSignatureFileName(), "DROID signature file");
         return path;
     }
 
@@ -427,10 +398,11 @@ public class DROIDIdentifier
 	 *                       if DROID returns warning message, this method populates 
 	 *                       the relevant Message member of this object instance
 	 * @param idf DROID {@link uk.gov.nationalarchives.droid.IdentificationFile} object
+	 * @param jhove2 TODO
 	 * @return true if DROID able to identify file; otherwise false
 	 * @throws JHOVE2Exception 
 	 */
-	protected boolean matchFound(IdentificationFile idf)
+	protected boolean matchFound(IdentificationFile idf, JHOVE2 jhove2)
 		throws JHOVE2Exception
 	{
 		boolean matchFound = false;
@@ -446,7 +418,7 @@ public class DROIDIdentifier
 			this.fileNotIdentifiedMessage = new Message(Severity.WARNING,
 					Context.OBJECT,
 					"org.jhove2.module.identify.DROIDIdentifier.fileNotIdentifiedMessage",
-					messageParms);
+					messageParms, jhove2.getConfigInfo());
 			break;
 		case JHOVE2IAnalysisController.FILE_CLASSIFICATION_NOTCLASSIFIED:
 			msgText = idf.getWarning();
@@ -457,7 +429,7 @@ public class DROIDIdentifier
 			this.fileNotRunMessage = new Message(Severity.ERROR,
 					Context.PROCESS,
 					"org.jhove2.module.identify.DROIDIdentifier.fileNotRunMessage",
-					messageParms);
+					messageParms, jhove2.getConfigInfo());
 			break;
 		case JHOVE2IAnalysisController.FILE_CLASSIFICATION_ERROR:
 			msgText = idf.getWarning();
@@ -468,7 +440,7 @@ public class DROIDIdentifier
 			this.fileErrorMessage = new Message(Severity.ERROR,
 					Context.PROCESS,
 					"org.jhove2.module.identify.DROIDIdentifier.fileErrorMessage",
-					messageParms);
+					messageParms, jhove2.getConfigInfo());
 			break;
 		default:
 			matchFound = true;

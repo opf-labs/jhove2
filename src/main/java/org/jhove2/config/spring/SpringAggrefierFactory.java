@@ -34,38 +34,27 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.module.identify;
+package org.jhove2.config.spring;
 
-import java.io.IOException;
-import java.util.Set;
-
-import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.source.ClumpSource;
-import org.jhove2.core.source.Source;
-import org.jhove2.module.Module;
+import org.jhove2.module.identify.Aggrefier;
+import org.jhove2.module.identify.AggrefierFactory;
 
 /**
- * Interface for JHOVE2 aggregate recognizer modules, capable of
- * detecting instances of Clump formats
- * 
- * @author smmorrissey
+ * @author smorrissey
+ *
  */
-public interface Recognizer
-	extends Module
-{
-	/**
-	 * Detect presumptive instances of a clump format in a source unit, and identify.
-	 * 
-	 * @param jhove2
-	 *            JHOVE2 framework
-	 * @param source
-	 *            Source unit
-	 * @return Presumptively identified presumptiveFormatIds
-	 * @throws IOException
-	 *             I/O exception encountered identifying the source unit
-	 * @throws JHOVE2Exception
+public class SpringAggrefierFactory implements AggrefierFactory {
+
+	/* (non-Javadoc)
+	 * @see org.jhove2.module.identify.factory.AggrefierFactory#makeAggrefier()
 	 */
-	public Set<ClumpSource> identify(JHOVE2 jhove2, Source source)
-			throws IOException, JHOVE2Exception;
+	@Override
+	public Aggrefier makeAggrefier() throws JHOVE2Exception {
+		Aggrefier aggrefier = 
+			SpringConfigInfo.getReportable(Aggrefier.class,
+					                       "AggrefierModule");
+		return aggrefier;
+	}
+
 }

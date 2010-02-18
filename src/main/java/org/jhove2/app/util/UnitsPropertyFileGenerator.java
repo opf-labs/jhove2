@@ -40,7 +40,7 @@ package org.jhove2.app.util;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 
-import org.jhove2.core.info.ReportablePropertyInfo;
+import org.jhove2.core.reportable.info.ReportablePropertyInfo;
 
 
 /**

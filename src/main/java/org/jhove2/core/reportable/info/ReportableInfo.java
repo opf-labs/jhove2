@@ -34,7 +34,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.core.info;
+package org.jhove2.core.reportable.info;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -46,8 +46,8 @@ import java.util.TreeSet;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.I8R;
-import org.jhove2.core.info.ReportableSourceInfo.Source;
 import org.jhove2.core.reportable.Reportable;
+import org.jhove2.core.reportable.info.ReportableSourceInfo.Source;
 
 /**
  * JHOVE2 introspection utility for retrieving the properties of

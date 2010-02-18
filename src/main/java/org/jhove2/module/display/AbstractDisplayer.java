@@ -48,13 +48,13 @@ import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import org.jhove2.config.ConfigInfo;
 import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.info.ReportableInfo;
-import org.jhove2.core.info.ReportablePropertyInfo;
-import org.jhove2.core.info.ReportableSourceInfo;
-import org.jhove2.core.reportable.ReportableFactory;
 import org.jhove2.core.reportable.Reportable;
+import org.jhove2.core.reportable.info.ReportableInfo;
+import org.jhove2.core.reportable.info.ReportablePropertyInfo;
+import org.jhove2.core.reportable.info.ReportableSourceInfo;
 import org.jhove2.module.AbstractModule;
 
 /**
@@ -82,15 +82,17 @@ Displayer {
 	/** Units of measure configured by the user. */
 	private static ConcurrentMap<String, String> units;
 
-	/** Displayer visbility flags configured by user to indicate whether
+	/** Displayer visibility flags configured by user to indicate whether
 	 *  or not a feature should be displayed.
 	 */
 	private static ConcurrentMap<String, DisplayVisibility> visibilities;
 
 	/** Indentation flag.  If true, displayed output is indented to indicate
-	 * subsidiarity relationships.
+	 * subsidiary relationships.
 	 */
 	protected boolean shouldIndent;
+	
+	protected ConfigInfo configInfo;
 
 	/**
 	 * Instantiate a new <code>AbstractDisplayer</code>.
@@ -165,8 +167,8 @@ Displayer {
 	{
 		this.getTimerInfo().setStartTime();
 		
-		Map<String, String> units = getUnits();
-		Map<String, DisplayVisibility> visibilities = getVisibilities();
+		Map<String, String> units = getUnits(this);
+		Map<String, DisplayVisibility> visibilities = getVisibilities(this);
 		
 		this.startDisplay(out, 0);
 		this.display     (out, reportable, 0, 0, units, visibilities);
@@ -432,15 +434,16 @@ Displayer {
 	}
 	
 	/** Utility method to get user-specified units of measure.
+	 * @param displayer TODO
 	 * @return TreeMap mapping from Reportable property I8R to a unit of measure
 	 * @throws JHOVE2Exception
 	 */
-	public static ConcurrentMap<String, String> getUnits()
+	public static ConcurrentMap<String, String> getUnits(Displayer displayer)
 		throws JHOVE2Exception
 {
 	if (units == null){
 		units =	new ConcurrentHashMap<String, String>();
-		Properties props = ReportableFactory.getProperties("DisplayUnits");
+		Properties props = displayer.getConfigInfo().getProperties("DisplayUnits");
 		if (props != null) {
 			Set<String> keys = props.stringPropertyNames();
 			for (String key : keys) {
@@ -455,15 +458,16 @@ Displayer {
 }
 	/**
 	 * Utility method to get user-specified restrictions on display visibility of Reportable properties
+	 * @param displayer TODO
 	 * @return TreeMap mapping from Reportable property I8R to a DisplayVisibility
 	 * @throws JHOVE2Exception
 	 */
-	public static ConcurrentMap<String, DisplayVisibility> getVisibilities()
+	public static ConcurrentMap<String, DisplayVisibility> getVisibilities(Displayer displayer)
 		throws JHOVE2Exception
 	{
 		if (visibilities == null){
 			visibilities = new ConcurrentHashMap<String, DisplayVisibility>();
-			Properties props = ReportableFactory.getProperties("DisplayVisibility");
+			Properties props = displayer.getConfigInfo().getProperties("DisplayVisibility");
 			if (props != null) {
 				Set<String> keys = props.stringPropertyNames();
 				for (String key : keys) {
@@ -506,5 +510,19 @@ Displayer {
 	@Override
 	public void setShouldIndent(boolean shouldIndent){
 		this.shouldIndent = shouldIndent;
+	}
+
+	/**
+	 * @return the configInfo
+	 */
+	public ConfigInfo getConfigInfo() {
+		return configInfo;
+	}
+
+	/**
+	 * @param configInfo the configInfo to set
+	 */
+	public void setConfigInfo(ConfigInfo info) {
+		configInfo = info;
 	}
 }

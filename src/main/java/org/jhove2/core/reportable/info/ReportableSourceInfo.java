@@ -34,38 +34,73 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.module.identify;
+package org.jhove2.core.reportable.info;
 
-import java.io.IOException;
 import java.util.Set;
 
-import org.jhove2.core.JHOVE2;
-import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.source.ClumpSource;
-import org.jhove2.core.source.Source;
-import org.jhove2.module.Module;
 
 /**
- * Interface for JHOVE2 aggregate recognizer modules, capable of
- * detecting instances of Clump formats
+ * Information about the source of JHOVE2 reportable properties, which is either
+ * an interface or superclass in which the properties are defined.
  * 
- * @author smmorrissey
+ * @author mstrong, slabrams
  */
-public interface Recognizer
-	extends Module
-{
+public class ReportableSourceInfo {
+	/** Source types for reportable properties. */
+	public enum Source {
+		Class, Interface
+	}
+
+	/** Source name. */
+	protected String name;
+
+	/** Reportable properties. */
+	protected Set<ReportablePropertyInfo> props;
+
+	/** Source scope of the reportable properties. */
+	protected Source source;
+
 	/**
-	 * Detect presumptive instances of a clump format in a source unit, and identify.
+	 * Instantiate a new <code>ReportableSourceInfo</code>.
 	 * 
-	 * @param jhove2
-	 *            JHOVE2 framework
+	 * @param name
+	 *            Source name
 	 * @param source
-	 *            Source unit
-	 * @return Presumptively identified presumptiveFormatIds
-	 * @throws IOException
-	 *             I/O exception encountered identifying the source unit
-	 * @throws JHOVE2Exception
+	 *            Source scope
+	 * @param props
+	 *            Reportable properties defined by source
 	 */
-	public Set<ClumpSource> identify(JHOVE2 jhove2, Source source)
-			throws IOException, JHOVE2Exception;
+	public ReportableSourceInfo(String name, Source source,
+			Set<ReportablePropertyInfo> props) {
+		this.name = name;
+		this.source = source;
+		this.props = props;
+	}
+
+	/**
+	 * Get source name.
+	 * 
+	 * @return Source name
+	 */
+	public String getName() {
+		return this.name;
+	}
+
+	/**
+	 * Get source reportable properties.
+	 * 
+	 * @return Source reportable properties
+	 */
+	public Set<ReportablePropertyInfo> getProperties() {
+		return this.props;
+	}
+
+	/**
+	 * Get source scope.
+	 * 
+	 * @return Source scope
+	 */
+	public Source getSource() {
+		return this.source;
+	}
 }

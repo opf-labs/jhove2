@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.config.ConfigInfo;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.source.FileSystemSource;
@@ -90,6 +91,8 @@ public class JHOVE2
 	/** Generic modules registered with the framework. */
 	protected List<Module> modules;
 	
+	protected ConfigInfo configInfo;
+
 	/**
 	 * Instantiate a new <code>JHOVE2</code> core framework with a default
 	 * configuration.
@@ -147,13 +150,13 @@ public class JHOVE2
                     source.addMessage(new Message(Severity.ERROR,
                         Context.PROCESS,
                         "org.jhove2.core.source.FileSystemSource.FileNotFoundMessage",
-                        new Object[]{name}));
+                        new Object[]{name}, this.getConfigInfo()));
                 }
                 else if (!fs.isReadable()) {
                     source.addMessage(new Message(Severity.ERROR,
                         Context.PROCESS,
                         "org.jhove2.core.source.FileSystemSource.FileNotReadableMessage",
-                        new Object[]{name}));
+                        new Object[]{name}, this.getConfigInfo()));
                 }
             }
 		    if (tryIt) {
@@ -307,4 +310,19 @@ public class JHOVE2
 	public void setSourceCounter(SourceCounter sourceCounter) {
 		this.sourceCounter = sourceCounter;
 	}
+
+	/**
+	 * @return the configInfo
+	 */
+	public ConfigInfo getConfigInfo() {
+		return configInfo;
+	}
+
+	/**
+	 * @param configInfo the configInfo to set
+	 */
+	public void setConfigInfo(ConfigInfo configInfo) {
+		this.configInfo = configInfo;
+	}
+
 }

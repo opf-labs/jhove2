@@ -39,12 +39,12 @@ package org.jhove2.app.util;
 import java.util.List;
 import java.util.Set;
 
+import org.jhove2.config.spring.SpringConfigInfo;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.info.ReportableInfo;
-import org.jhove2.core.info.ReportablePropertyInfo;
-import org.jhove2.core.info.ReportableSourceInfo;
-import org.jhove2.core.reportable.ReportableFactory;
 import org.jhove2.core.reportable.Reportable;
+import org.jhove2.core.reportable.info.ReportableInfo;
+import org.jhove2.core.reportable.info.ReportablePropertyInfo;
+import org.jhove2.core.reportable.info.ReportableSourceInfo;
 
 /**
  * JHOVE2 {@link org.jhove2.core.reportable.Reportable} documentation utility. The
@@ -70,10 +70,8 @@ public class JHOVE2Doc {
 		try {
 			int n = 0;
 			for (String arg : args) {
-//				Class<? extends Reportable> cl =
-//					(Class<? extends Reportable>) Class.forName(arg);
-				Reportable reportable = ReportableFactory.getReportable(Reportable.class,
-						arg);
+				Reportable reportable = 
+					SpringConfigInfo.getReportable(Reportable.class, arg);
 				ReportableInfo info = new ReportableInfo(reportable);
 
 				if (n > 0) {

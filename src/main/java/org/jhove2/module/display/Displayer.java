@@ -45,6 +45,7 @@ import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.reportable.Reportable;
 import org.jhove2.module.Module;
+import org.jhove2.config.ConfigInfo;
 
 /**
  * Interface for JHOVE2 displayer modules.
@@ -262,6 +263,12 @@ public interface Displayer
 	 */
 	public void endDisplay(PrintStream out, int level);
 	
+	/**
+	 * 
+	 * @return
+	 */
+	public ConfigInfo getConfigInfo();
+	
 	/** Get the output file pathname
 	 * @return Output file pathname
 	 */
@@ -287,6 +294,12 @@ public interface Displayer
 	@ReportableProperty(order = 2, value = "Displayer show identifiers flag; " +
 		"if true, show identifiers in non-XML display modes.")
 	public boolean getShowIdentifiers();
+	
+	/**
+	 * 
+	 * @param info
+	 */
+	public void setConfigInfo(ConfigInfo info);
 
 	/** Set the output file pathname
 	 * @param filePathname Output file pathname
@@ -307,4 +320,6 @@ public interface Displayer
 	 * @param shouldIndent Indentation flag
 	 */
 	public void setShouldIndent(boolean shouldIndent);
+	
+	
 }

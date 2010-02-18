@@ -41,7 +41,6 @@ import java.io.IOException;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.TimerInfo;
-import org.jhove2.core.reportable.ReportableFactory;
 import org.jhove2.core.source.AggregateSource;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.Source;
@@ -67,6 +66,8 @@ public class DigesterCommand
 		+ "Stanford Junior University. "
 		+ "Available under the terms of the BSD license.";
 	
+	protected DigesterFactory digesterFactory;
+	
 	/** Instantiate a new <code>DigesterCommand</code>.
 	 */
 	public DigesterCommand(){
@@ -90,8 +91,7 @@ public class DigesterCommand
 			if (jhove2.getInvocation().getCalcDigests()) {
 				try {	
 					Digester digester = 
-						ReportableFactory.getReportable(Digester.class,
-								                       "DigesterModule");
+						this.getDigesterFactory().makeDigester();
 					TimerInfo timer = digester.getTimerInfo();
 					timer.setStartTime();
 					try {
@@ -110,5 +110,19 @@ public class DigesterCommand
 				}
 			}
 		}
+	}
+
+	/**
+	 * @return the digesterFactory
+	 */
+	public DigesterFactory getDigesterFactory() {
+		return digesterFactory;
+	}
+
+	/**
+	 * @param digesterFactory the digesterFactory to set
+	 */
+	public void setDigesterFactory(DigesterFactory digesterFactory) {
+		this.digesterFactory = digesterFactory;
 	}
 }

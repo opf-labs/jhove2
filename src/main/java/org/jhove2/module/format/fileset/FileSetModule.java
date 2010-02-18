@@ -114,13 +114,13 @@ public class FileSetModule
 			            source.addMessage(new Message(Severity.ERROR,
 			                Context.PROCESS,
 			                "org.jhove2.core.source.FileSystemSource.FileNotFoundMessage",
-			                new Object[]{name}));
+			                new Object[]{name}, jhove2.getConfigInfo()));
 			        }
 			        else if (!fs.isReadable()) {
 			            source.addMessage(new Message(Severity.ERROR,
                             Context.PROCESS,
                             "org.jhove2.core.source.FileSysttemSource.FileNotReadableMessage",
-                            new Object[]{name}));
+                            new Object[]{name}, jhove2.getConfigInfo()));
 			        }
 			    }
 				jhove2.characterize(src);

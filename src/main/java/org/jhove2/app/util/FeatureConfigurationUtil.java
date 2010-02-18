@@ -45,15 +45,17 @@ import java.util.TreeSet;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.lang.reflect.ParameterizedType;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.info.ReportableInfo;
-import org.jhove2.core.info.ReportablePropertyComparator;
-import org.jhove2.core.info.ReportablePropertyInfo;
-import org.jhove2.core.info.ReportableSourceInfo;
 import org.jhove2.core.reportable.Reportable;
+import org.jhove2.core.reportable.info.ReportableInfo;
+import org.jhove2.core.reportable.info.ReportablePropertyComparator;
+import org.jhove2.core.reportable.info.ReportablePropertyInfo;
+import org.jhove2.core.reportable.info.ReportableSourceInfo;
 
 /**
  * Base class for utility applications to generate .properties files for
@@ -138,10 +140,10 @@ public class FeatureConfigurationUtil {
 		return propsList;
 	}
 	/**
-	 * Return list of all {@link org.jhove2.core.info.ReportablePropertyInfo} for all reportable properties
+	 * Return list of all {@link org.jhove2.core.reportable.info.ReportablePropertyInfo} for all reportable properties
 	 * of a {@link org.jhove2.core.reportable.Reportable} object
 	 * @param reportable {@link org.jhove2.core.reportable.Reportable} object
-	 * @return List containing all property {@link org.jhove2.core.info.ReportablePropertyInfo} for Reportable
+	 * @return List containing all property {@link org.jhove2.core.reportable.info.ReportablePropertyInfo} for Reportable
 	 */
 	public static List<ReportablePropertyInfo> getPropertiesAsReportablePropertyInfoList
 	(Reportable reportable){
@@ -155,10 +157,10 @@ public class FeatureConfigurationUtil {
 		return propsList;
 	}
 	/**
- 	 * Get set of all {@link org.jhove2.core.info.ReportablePropertyInfo} for a class if it is a
+ 	 * Get set of all {@link org.jhove2.core.reportable.info.ReportablePropertyInfo} for a class if it is a
 	 * {@link org.jhove2.core.reportable.Reportable} class
 	 * @param Class for which we want properties
-	 * @return set of all {@link org.jhove2.core.info.ReportablePropertyInfo} for that class
+	 * @return set of all {@link org.jhove2.core.reportable.info.ReportablePropertyInfo} for that class
 	 * @throws JHOVE2Exception if class does not implement {@link org.jhove2.core.reportable.Reportable}
 	 */
 	public static Set<ReportablePropertyInfo> getProperitiesAsReportablePropertyInfoSet (String className)
@@ -341,5 +343,30 @@ public class FeatureConfigurationUtil {
 			}
 		} catch (ClassNotFoundException e) {;}
 		return isReportable;
+	}
+	/**
+	 * Utility method to construct full path to a file on class path.  Used for example 
+	 * to locate DROID signature and configuration
+	 * files.  Assumes directory containing these files is on the classpath
+	 * @param fileName File to be found on class path
+	 * @param fileDescription descriptor of file to be used in any exception messages
+	 * @return String containing path to file
+	 * @throws JHOVE2Exception if file is not found or ClassLoader throws exception
+	 */
+	public static String getFilePathFromClasspath(String fileName, String fileDescription)throws JHOVE2Exception {
+	    URI fileURI = null;
+	    try {
+	        fileURI = ClassLoader.getSystemResource(fileName).toURI();
+	        if (fileURI == null){
+	            throw new JHOVE2Exception(fileDescription + " " + fileName
+	                    + " not found on classpath");
+	        }
+	    }
+	    catch (URISyntaxException e){
+	        throw new JHOVE2Exception("Exception thrown when attempting to find " + fileDescription 
+	                + " on classpath", e);
+	    }
+	    String path = fileURI.getPath();
+	    return path;        
 	}
 }

@@ -48,6 +48,7 @@ import java.util.Map.Entry;
 
 import org.apache.xerces.util.XMLCatalogResolver;
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
@@ -334,7 +335,7 @@ public class SaxParser
         }
     }
     
-    protected void parse(Source source) throws JHOVE2Exception, IOException {
+    protected void parse(Source source, JHOVE2 jhove2) throws JHOVE2Exception, IOException {
         
         /* The XMLReader does the parsing of the XML */
         XMLReader xmlReader = getXmlReader();
@@ -361,7 +362,7 @@ public class SaxParser
             xmlModule.saxParserMessages.add(new Message(Severity.ERROR,
                     Context.OBJECT,
                     "org.jhove2.module.format.xml.XmlModule.saxParserMessage",
-                    messageArgs));
+                    messageArgs, jhove2.getConfigInfo()));
         }
         catch (FileNotFoundException e) {
             xmlModule.wellFormed = false;
@@ -370,7 +371,7 @@ public class SaxParser
             xmlModule.saxParserMessages.add(new Message(Severity.ERROR,
                     Context.OBJECT,
                     "org.jhove2.module.format.xml.XmlModule.fileNotFoundMessage",
-                    messageArgs));
+                    messageArgs, jhove2.getConfigInfo()));
         }
  
     }

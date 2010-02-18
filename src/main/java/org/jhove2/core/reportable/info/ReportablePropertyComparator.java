@@ -34,72 +34,43 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.core.info;
+package org.jhove2.core.reportable.info;
 
-import java.util.Set;
+import java.lang.reflect.Method;
+import java.util.Comparator;
+
+import org.jhove2.annotation.ReportableProperty;
 
 /**
- * Information about the source of JHOVE2 reportable properties, which is either
- * an interface or superclass in which the properties are defined.
+ * {@link java.util.Comparator} for ordering reportable properties by their
+ * ordinal values. A reportable property is a named, typed value.
  * 
  * @author mstrong, slabrams
  */
-public class ReportableSourceInfo {
-	/** Source types for reportable properties. */
-	public enum Source {
-		Class, Interface
-	}
-
-	/** Source name. */
-	protected String name;
-
-	/** Reportable properties. */
-	protected Set<ReportablePropertyInfo> props;
-
-	/** Source scope of the reportable properties. */
-	protected Source source;
-
+public class ReportablePropertyComparator implements
+		Comparator<ReportablePropertyInfo> {
 	/**
-	 * Instantiate a new <code>ReportableSourceInfo</code>.
+	 * Compare two reportable properties for relative ordering.
 	 * 
-	 * @param name
-	 *            Source name
-	 * @param source
-	 *            Source scope
-	 * @param props
-	 *            Reportable properties defined by source
+	 * @param p1
+	 *            First reportable property
+	 * @param p2
+	 *            Second reportable property
 	 */
-	public ReportableSourceInfo(String name, Source source,
-			Set<ReportablePropertyInfo> props) {
-		this.name = name;
-		this.source = source;
-		this.props = props;
-	}
+	@Override
+	public int compare(ReportablePropertyInfo p1, ReportablePropertyInfo p2) {
+		int ret = 1;
 
-	/**
-	 * Get source name.
-	 * 
-	 * @return Source name
-	 */
-	public String getName() {
-		return this.name;
-	}
+		Method m1 = p1.getMethod();
+		Method m2 = p2.getMethod();
+		int v1 = m1.getAnnotation(ReportableProperty.class).order();
+		int v2 = m2.getAnnotation(ReportableProperty.class).order();
+		if (v1 < v2) {
+			return -1;
+		} else if (v1 > v2) {
+			return 1;
+		}
 
-	/**
-	 * Get source reportable properties.
-	 * 
-	 * @return Source reportable properties
-	 */
-	public Set<ReportablePropertyInfo> getProperties() {
-		return this.props;
-	}
-
-	/**
-	 * Get source scope.
-	 * 
-	 * @return Source scope
-	 */
-	public Source getSource() {
-		return this.source;
+		return ret;
 	}
 }

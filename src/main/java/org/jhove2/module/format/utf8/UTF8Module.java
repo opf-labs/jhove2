@@ -201,7 +201,7 @@ public class UTF8Module
 					if (jhove2.failFast(++numErrors)) {
 						this.failFastMessage = new Message(Severity.INFO,
 								Context.PROCESS,
-								"org.jhove2.module.format.utf8.UTF8Module.failFastMessage");
+								"org.jhove2.module.format.utf8.UTF8Module.failFastMessage", jhove2.getConfigInfo());
 						break;
 					}
 					this.invalidCharacters.add(ch);
@@ -232,7 +232,7 @@ public class UTF8Module
 					this.bomMessage = new Message(Severity.INFO,
 							Context.OBJECT,
 							"org.jhove2.module.format.utf8.UTF8Module.bomMessage",
-							messageParms);
+							messageParms, jhove2.getConfigInfo());
 				}
 				if (ch.isNonCharacter()) {
 					this.numNonCharacters++;
