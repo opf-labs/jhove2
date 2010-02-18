@@ -34,10 +34,11 @@
 		</property>
 		<property name="configFileName" value="DROID_config.xml"/>
 		<property name="sigFileName" value="DROID_SignatureFile_V20.xml"/>
+		<property name="wrappedProduct" ref="DROIDProduct"/>
 	</bean>
 	
 	<!-- DROID wrapped product bean -->
-	<bean id="DROIDProduct" class="org.jhove2.core.WrappedProduct"
+	<bean id="DROIDProduct" class="org.jhove2.module.identify.DROIDWrappedProduct"
 	      scope="prototype">
 	    <constructor-arg index="0" value="DROID"/>
 	    <constructor-arg index="1" value="4.0.0"/>

@@ -9,10 +9,7 @@
 		   http://www.springframework.org/schema/util 
 		   http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 		   
-	<!-- JHOVE2 command line application bean -->
-	<bean id="JHOVE2CommandLine" class="org.jhove2.app.JHOVE2CommandLine"
-	    scope="singleton"/>
-
+	
 	<!-- JHOVE2 framework bean -->
 	<bean id="JHOVE2" class="org.jhove2.core.JHOVE2" scope="prototype">
 		<property name="developers">
@@ -30,6 +27,7 @@
 				<ref bean="AggrefierCommand"/>
 			</list>
 		</property>
+		<property name="configInfo" ref="ConfigInfo"/>
 	</bean>
 	
 	<!-- Identifier command bean -->
@@ -42,6 +40,7 @@
 				<ref bean="StanfordAgent"/>
 			</list>
 		</property>
+		<property name="identifierFactory" ref="IdentifierFactory"/>
 	</bean>
 
 	<!-- Dispatcher command bean -->
@@ -54,6 +53,8 @@
 				<ref bean="StanfordAgent"/>
 			</list>
 		</property>
+		<property name="formatFactory" ref="FormatFactory"/>
+		<property name="formatModuleFactory" ref="FormatModuleFactory"/>
 	</bean>
 	
 	<!-- Aggrefier command Bean -->
@@ -66,6 +67,7 @@
 				<ref bean="StanfordAgent"/>
 			</list>
 		</property>
+		<property name="aggrefierFactory" ref="AggrefierFactory"/>
 	</bean>    
 
 	<!--  Digester command bean -->  
@@ -79,8 +81,37 @@
 				<ref bean="StanfordAgent"/>
 			</list>
 		</property>
+		<property name="digesterFactory" ref="DigesterFactory"/>
     </bean>
 
+	<!--  ConfigInfo bean -->
+	<bean id="ConfigInfo" class="org.jhove2.config.spring.SpringConfigInfo"
+		scope="singleton"/>
+	
+	<!-- Format factory bean -->
+	<bean id="FormatFactory" class="org.jhove2.config.spring.SpringFormatFactory" 
+		scope="singleton"/>
+		
+	<!--  Format module factory bean -->
+	<bean id="FormatModuleFactory" 
+	    class="org.jhove2.config.spring.SpringFormatModuleFactory" 
+		scope="singleton"/>
+		
+	<!--  Digester module factory bean -->
+	<bean id="DigesterFactory" 
+	    class="org.jhove2.config.spring.SpringDigesterFactory"
+		scope="singleton"/>
+	
+	<!-- Identifier module factory bean -->
+	<bean id="IdentifierFactory"
+	      class="org.jhove2.config.spring.SpringIdentifierFactory"
+	      scope="singleton"/>
+	
+	<!-- Aggrefier module factory bean -->
+	<bean id="AggrefierFactory"
+	      class="org.jhove2.config.spring.SpringAggrefierFactory"
+	      scope="singleton"/>
+	
 	<!-- CDL agent bean -->
 	<bean id="CDLAgent" class="org.jhove2.core.Agent" scope="singleton">
 		<constructor-arg type="java.lang.String" value="California Digital Library"/>
@@ -103,18 +134,18 @@
 	</bean>
 	
 
-   <bean id="DisplayVisibility" class="org.jhove2.core.reportable.PropertiesFactoryBean">
+   <bean id="DisplayVisibility" class="org.jhove2.config.spring.PropertiesFactoryBean">
   		<property name="propertyFileBaseName" value="displayer"/>
    </bean>
    
-      <bean id="DisplayUnits" class="org.jhove2.core.reportable.PropertiesFactoryBean">
+      <bean id="DisplayUnits" class="org.jhove2.config.spring.PropertiesFactoryBean">
   		<property name="propertyFileBaseName" value="unit"/>
    </bean>
 	             
     <!--  BEAN for message properties files (used for I18N ) -->
     <!--    NOTE  BEAN MUST HAVE id "messageSource" -->
       <bean id="messageSource" 
-              class="org.jhove2.core.reportable.ResourceBundleMessageSource">
+              class="org.jhove2.config.spring.ResourceBundleMessageSource">
           <property name="basename" >
              <!--  base name for localized message template properties files -->
           	<value>messages</value>
