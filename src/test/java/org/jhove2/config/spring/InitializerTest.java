@@ -31,15 +31,15 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.core.util;
+package org.jhove2.config.spring;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.Properties;
 
+import org.jhove2.config.spring.SpringConfigInfo;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.reportable.ReportableFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -67,7 +67,7 @@ public class InitializerTest {
 
 	/**
 	 * Test method for
-	 * {@link org.jhove2.core.reportable.ReportableFactory#getReportable(java.lang.Class, java.lang.String)}
+	 * {@link org.jhove2.config.spring.SpringConfigInfo#getReportable(java.lang.Class, java.lang.String)}
 	 * .
 	 */
 	@Ignore
@@ -78,7 +78,7 @@ public class InitializerTest {
 
 	/**
 	 * Test method for
-	 * {@link org.jhove2.core.reportable.ReportableFactory#getReportableNames(java.lang.Class)}
+	 * {@link org.jhove2.config.spring.SpringConfigInfo#getReportableNames(java.lang.Class)}
 	 * .
 	 */
 	@Ignore
@@ -89,23 +89,23 @@ public class InitializerTest {
 
 	/**
 	 * Test method for
-	 * {@link org.jhove2.core.reportable.ReportableFactory#getProperties(java.lang.String)}.
+	 * {@link org.jhove2.config.spring.SpringConfigInfo#getProperties(java.lang.String)}.
 	 * 
 	 * @throws JHOVE2Exception
 	 */
 	@Test
 	public void testGetProperties() throws JHOVE2Exception {
-
-		Properties props1 = ReportableFactory.getProperties("C0Control");
+		SpringConfigInfo springConfigInfo = new SpringConfigInfo();
+		Properties props1 = springConfigInfo.getProperties("C0Control");
 		assertTrue("Error loading C0Control", props1 != null);
 
-		Properties props2 = ReportableFactory.getProperties("C1Control");
+		Properties props2 = springConfigInfo.getProperties("C1Control");
 		assertTrue("Error loading C1Control", props2 != null);
 
-		Properties props3 = ReportableFactory.getProperties("CodeBlock");
+		Properties props3 = springConfigInfo.getProperties("CodeBlock");
 		assertTrue("Error loading block", props3 != null);
 
-		Properties props4 = ReportableFactory.getProperties("DisplayVisibility");
+		Properties props4 = springConfigInfo.getProperties("DisplayVisibility");
 		assertTrue("Error dispatch map", props4 != null);
 
 	}

@@ -9,10 +9,6 @@
 		   http://www.springframework.org/schema/util 
 		   http://www.springframework.org/schema/util/spring-util-2.0.xsd">
     
-	<bean id="IdentifierCommand" class="org.jhove2.module.identify.IdentifierCommand"
-	 	scope="prototype">
-	</bean>
-
 		<!-- Identifier module bean -->
 	<bean id="testIdentifier" class="org.jhove2.module.identify.IdentifierModule"
 	      scope="prototype">
@@ -26,6 +22,24 @@
 		<property name="fileSourceIdentifier"  ref="testDroidIdentifier"/>
 	</bean>
 	
+		<!-- Identifier command bean -->
+	<bean id="IdentifierCommand" class="org.jhove2.module.identify.IdentifierCommand"
+	 	scope="prototype">
+	 	 <property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+				<ref bean="PorticoAgent"/>
+				<ref bean="StanfordAgent"/>
+			</list>
+		</property>
+		<property name="identifierFactory" ref="IdentifierFactory"/>
+	</bean>
+	
+		<!-- Identifier module factory bean -->
+	<bean id="IdentifierFactory"
+	      class="org.jhove2.config.spring.SpringIdentifierFactory"
+	      scope="singleton"/>
+	      
 	<!-- DROID identifier bean -->
 	<bean id="testDroidIdentifier" class="org.jhove2.module.identify.DROIDIdentifier"
 	      scope="prototype">	
@@ -38,11 +52,37 @@
 		</property>
 		<property name="configFileName" value="DROID_config.xml"/>
 		<property name="sigFileName" value="DROID_SignatureFile_V20.xml"/>
+		<property name="wrappedProduct" ref="DROIDProduct"/>
+	</bean>
+	
+		<!-- DROID wrapped product bean -->
+	<bean id="DROIDProduct" class="org.jhove2.module.identify.DROIDWrappedProduct"
+	      scope="prototype">
+	    <constructor-arg index="0" value="DROID"/>
+	    <constructor-arg index="1" value="4.0.0"/>
+	    <constructor-arg index="2" value="2009-07-23"/>
+	    <constructor-arg index="3" value="BSD license"/>
+	    <property name="authority" value="The National Archives (TNA), UK"/>
+	    <property name="openSource" value="true"/>
 	</bean>
 	   
-    <!-- Aggrefier Command Bean -->
+ 	<!-- Aggrefier command Bean -->
 	<bean id="AggrefierCommand" class="org.jhove2.module.identify.AggrefierCommand"
-		scope="prototype" />   	             
+		scope="prototype" >
+		 <property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+				<ref bean="PorticoAgent"/>
+				<ref bean="StanfordAgent"/>
+			</list>
+		</property>
+		<property name="aggrefierFactory" ref="AggrefierFactory"/>
+	</bean> 
+		
+		<!-- Aggrefier module factory bean -->
+	<bean id="AggrefierFactory"
+	      class="org.jhove2.config.spring.SpringAggrefierFactory"
+	      scope="singleton"/>		             
 		             
 	<!-- Aggrefier module bean -->
 	<bean id="Aggrefier" class="org.jhove2.module.identify.AggrefierModule"

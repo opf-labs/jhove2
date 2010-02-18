@@ -8,8 +8,8 @@
            http://www.springframework.org/schema/context/spring-context-2.5.xsd
 		   http://www.springframework.org/schema/util 
 		   http://www.springframework.org/schema/util/spring-util-2.0.xsd">
-
-    	
+	
+		
 		<!-- JHOVE2 framework bean -->
 	<bean id="JHOVE2" class="org.jhove2.core.JHOVE2" scope="prototype">
 		<property name="developers">
@@ -22,14 +22,41 @@
 		<property name="commands">
 			<list value-type="org.jhove2.core.JHOVE2Command">
 				<ref bean="IdentifierCommand"/>
-				<ref bean="FeatureExtractorCommand"/>
+				<ref bean="DispatcherCommand"/>
 				<ref bean="AggrefierCommand"/>
 			</list>
 		</property>
-
+		<property name="configInfo" ref="ConfigInfo"/>
 	</bean>	
+		<bean id="ConfigInfo" class="org.jhove2.config.spring.SpringConfigInfo"
+		scope="singleton"/>
 	
 	
+		<!-- Dispatcher command bean -->
+	<bean id="DispatcherCommand" class="org.jhove2.module.format.DispatcherCommand"
+	      scope="prototype">
+	    <property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+				<ref bean="PorticoAgent"/>
+				<ref bean="StanfordAgent"/>
+			</list>
+		</property>
+		<property name="formatFactory" ref="FormatFactory"/>
+		<property name="formatModuleFactory" ref="FormatModuleFactory"/>
+	</bean>
+	
+
+		<!-- Format factory bean -->
+	<bean id="FormatFactory" class="org.jhove2.config.spring.SpringFormatFactory" 
+		scope="singleton"/>
+		
+	<!--  Format module factory bean -->
+	<bean id="FormatModuleFactory" 
+	    class="org.jhove2.config.spring.SpringFormatModuleFactory" 
+		scope="singleton"/>
+
+		
 		<!-- CDL agent bean -->
 	<bean id="CDLAgent" class="org.jhove2.core.Agent" scope="singleton">
 		<constructor-arg type="java.lang.String" value="California Digital Library"/>
@@ -52,7 +79,7 @@
 	</bean>
 		
 
-   <bean id="DisplayVisibility" class="org.jhove2.core.reportable.PropertiesFactoryBean">
+   <bean id="DisplayVisibility" class="org.jhove2.config.spring.PropertiesFactoryBean">
   		<property name="propertyFileBaseName" value="displayer"/>
    </bean>
 

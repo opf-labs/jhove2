@@ -42,11 +42,11 @@ import java.util.Set;
 
 import javax.annotation.Resource;
 
+import org.jhove2.app.util.FeatureConfigurationUtil;
 import org.jhove2.core.FormatIdentification;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.FormatIdentification.Confidence;
-import org.jhove2.core.reportable.ReportableFactory;
 import org.jhove2.core.source.FileSource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -82,7 +82,7 @@ public class IdentifierModuleTest {
 		String droidDirPath = null;
 		try {
 			droidDirPath = 
-				ReportableFactory.getFilePathFromClasspath(droidDirBasePath, "droid dir");
+				FeatureConfigurationUtil.getFilePathFromClasspath(droidDirBasePath, "droid dir");
 		} catch (JHOVE2Exception e1) {
 			fail("Could not create base directory");
 		}
@@ -109,7 +109,7 @@ public class IdentifierModuleTest {
 			String shapeDirPath = null;
 			try {
 				shapeDirPath = 
-					ReportableFactory.getFilePathFromClasspath(shapeDirBasePath, "shapefile dir");
+					FeatureConfigurationUtil.getFilePathFromClasspath(shapeDirBasePath, "shapefile dir");
 			}
 			catch (Exception e){
 				fail("unable to find shapefile sample dir");
@@ -132,7 +132,7 @@ public class IdentifierModuleTest {
 	public JHOVE2 getJHOVE2() {
 		return JHOVE2;
 	}
-	@Resource
+	@Resource (name="JHOVE2")
 	public void setJHOVE2(JHOVE2 jHOVE2) {
 		JHOVE2 = jHOVE2;
 	}

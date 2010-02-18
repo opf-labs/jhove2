@@ -40,8 +40,8 @@ import static org.junit.Assert.*;
 
 import javax.annotation.Resource;
 
+import org.jhove2.app.util.FeatureConfigurationUtil;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.reportable.ReportableFactory;
 import org.jhove2.core.source.SourceFactory;
 import org.jhove2.module.identify.DROIDWrappedProduct;
 import org.junit.Test;
@@ -74,14 +74,14 @@ public class DroidTest {
 		String samplesDirPath = null;
 		try {
 			samplesDirPath = 
-				ReportableFactory.getFilePathFromClasspath(droidDirBasePath, "droid samples dir");
+				FeatureConfigurationUtil.getFilePathFromClasspath(droidDirBasePath, "droid samples dir");
 		} catch (JHOVE2Exception e1) {
 			fail("Could not create base directory");
 		}
 		String sampleFilePath = samplesDirPath.concat(sampleFile);
 		try {	
-			String configFilePath = ReportableFactory.getFilePathFromClasspath(configFileName, "Droid config file");
-			String sigFilePath = ReportableFactory.getFilePathFromClasspath(sigFileName, "Droid signature file");
+			String configFilePath = FeatureConfigurationUtil.getFilePathFromClasspath(configFileName, "Droid config file");
+			String sigFilePath = FeatureConfigurationUtil.getFilePathFromClasspath(sigFileName, "Droid signature file");
 			
 			droid = new DROIDWrappedProduct(configFilePath, sigFilePath);
 			IdentificationFile idf = droid.identify(sampleFilePath);
@@ -104,8 +104,8 @@ public class DroidTest {
 		}
 		// now try it on an input stream
 		try {		
-			String configFilePath = ReportableFactory.getFilePathFromClasspath(configFileName, "Droid config file");
-			String sigFilePath = ReportableFactory.getFilePathFromClasspath(sigFileName, "Droid signature file");
+			String configFilePath = FeatureConfigurationUtil.getFilePathFromClasspath(configFileName, "Droid config file");
+			String sigFilePath = FeatureConfigurationUtil.getFilePathFromClasspath(sigFileName, "Droid signature file");
 			droid = new DROIDWrappedProduct(configFilePath, sigFilePath);			
 			IdentificationFile idf = droid.identify(SourceFactory.getSource(sampleFilePath));
 			assertEquals(JHOVE2IAnalysisController.FILE_CLASSIFICATION_POSITIVE,

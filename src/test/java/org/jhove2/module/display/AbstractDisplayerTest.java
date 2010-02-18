@@ -40,9 +40,10 @@ import static org.junit.Assert.*;
 import javax.annotation.Resource;
 
 
+import org.jhove2.app.util.FeatureConfigurationUtil;
+import org.jhove2.config.spring.SpringConfigInfo;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.reportable.ReportableFactory;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
 import org.junit.Test;
@@ -73,7 +74,7 @@ public class AbstractDisplayerTest {
 		String utf8DirPath = null;
 		try {
 			utf8DirPath = 
-				ReportableFactory.getFilePathFromClasspath(utf8DirBasePath, "utf8 dir");
+				FeatureConfigurationUtil.getFilePathFromClasspath(utf8DirBasePath, "utf8 dir");
 		} catch (JHOVE2Exception e1) {
 			fail("Could not create base directory");
 		}
@@ -81,8 +82,9 @@ public class AbstractDisplayerTest {
 			String filePath = utf8DirPath.concat(testFile01);
 			Source source = SourceFactory.getSource(filePath);
 			JHOVE2.characterize(source);
-			Displayer displayer = ReportableFactory.getReportable(Displayer.class,
+			Displayer displayer = SpringConfigInfo.getReportable(Displayer.class,
 					Displayer.DEFAULT_DISPLAYER_TYPE);
+			displayer.setConfigInfo(JHOVE2.getConfigInfo());
 			displayer.display(source);			
 		}
 		catch (Exception e){
@@ -93,7 +95,7 @@ public class AbstractDisplayerTest {
 	public JHOVE2 getJHOVE2() {
 		return JHOVE2;
 	}
-	@Resource
+	@Resource (name="JHOVE2")
 	public void setJHOVE2(JHOVE2 jHOVE2) {
 		JHOVE2 = jHOVE2;
 	}

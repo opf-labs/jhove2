@@ -41,8 +41,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.info.ReportablePropertyInfo;
 import org.jhove2.core.reportable.Reportable;
+import org.jhove2.core.reportable.info.ReportablePropertyInfo;
 import org.junit.Test;
 
 /**
@@ -61,7 +61,7 @@ public class DisplayerPropertyFileGeneratorTest {
 
 
 	/**
-	 * Test method for {@link org.jhove2.app.DisplayerPropertyFileGenerator#getDisplayChoices(org.jhove2.core.info.ReportablePropertyInfo)}.
+	 * Test method for {@link org.jhove2.app.DisplayerPropertyFileGenerator#getDisplayChoices(org.jhove2.core.reportable.info.ReportablePropertyInfo)}.
 	 */
 	@Test
 	public void testGetDisplayChoices() {

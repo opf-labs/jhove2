@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.jhove2.core.info;
+package org.jhove2.core.reportable.info;
 
 import static org.junit.Assert.*;
 
@@ -16,7 +16,7 @@ import org.junit.Test;
 public class ReportableInfoTest {
 	private Source source;
 	/**
-	 * Test method for {@link org.jhove2.core.info.ReportableInfo#ReportableInfo(org.jhove2.core.Reportable)}.
+	 * Test method for {@link org.jhove2.core.reportable.info.ReportableInfo#ReportableInfo(org.jhove2.core.Reportable)}.
 	 */
 	@Test
 	public void testReportableInfoReportable() {
@@ -24,7 +24,7 @@ public class ReportableInfoTest {
 	}
 
 	/**
-	 * Test method for {@link org.jhove2.core.info.ReportableInfo#ReportableInfo(java.lang.Class)}.
+	 * Test method for {@link org.jhove2.core.reportable.info.ReportableInfo#ReportableInfo(java.lang.Class)}.
 	 */
 	@Test
 	public void testReportableInfoClassOfQextendsReportable() {
@@ -40,7 +40,7 @@ public class ReportableInfoTest {
 	}
 
 	/**
-	 * Test method for {@link org.jhove2.core.info.ReportableInfo#getIdentifier()}.
+	 * Test method for {@link org.jhove2.core.reportable.info.ReportableInfo#getIdentifier()}.
 	 */
 	@Test
 	public void testGetIdentifier() {

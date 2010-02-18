@@ -47,9 +47,9 @@ import java.nio.ByteOrder;
 
 import javax.annotation.Resource;
 
+import org.jhove2.app.util.FeatureConfigurationUtil;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.io.Input.Type;
-import org.jhove2.core.reportable.ReportableFactory;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
 import org.junit.After;
@@ -82,7 +82,7 @@ public class MappedInputTest {
 		String utf8DirPath = null;
 		try {
 			utf8DirPath = 
-				ReportableFactory.getFilePathFromClasspath(utf8DirBasePath, "utf8 dir");
+				FeatureConfigurationUtil.getFilePathFromClasspath(utf8DirBasePath, "utf8 dir");
 		} catch (JHOVE2Exception e1) {
 			fail("Could not create base directory");
 		}

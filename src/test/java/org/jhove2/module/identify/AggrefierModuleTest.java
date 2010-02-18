@@ -45,11 +45,11 @@ import java.util.Set;
 
 import javax.annotation.Resource;
 
+import org.jhove2.app.util.FeatureConfigurationUtil;
 import org.jhove2.core.FormatIdentification;
 import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.reportable.ReportableFactory;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.DirectorySource;
 import org.jhove2.core.source.FileSetSource;
@@ -95,12 +95,12 @@ public class AggrefierModuleTest {
 		String emptyDirPath = null;
 		try {
 			shapeDirPath = 
-				ReportableFactory.getFilePathFromClasspath(shapeDirBasePath, "shapefile dir");
+				FeatureConfigurationUtil.getFilePathFromClasspath(shapeDirBasePath, "shapefile dir");
 			quickenDirPath = 
-				ReportableFactory.getFilePathFromClasspath(quickenDirBasePath, "quicken dir");
+				FeatureConfigurationUtil.getFilePathFromClasspath(quickenDirBasePath, "quicken dir");
 			
 			emptyDirPath = 
-				ReportableFactory.getFilePathFromClasspath(emptyDirBasePath, "empty dir");
+				FeatureConfigurationUtil.getFilePathFromClasspath(emptyDirBasePath, "empty dir");
 		} catch (JHOVE2Exception e1) {
 			fail("Could not create base directory");
 		}

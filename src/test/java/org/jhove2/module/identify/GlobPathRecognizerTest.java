@@ -54,10 +54,10 @@ import java.util.HashMap;
 import javax.annotation.Resource;
 
 
+import org.jhove2.app.util.FeatureConfigurationUtil;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.FormatIdentification;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.reportable.ReportableFactory;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.FileSetSource;
@@ -93,7 +93,7 @@ public class GlobPathRecognizerTest{
 		String samplesDirPath = null;
 		try {
 			samplesDirPath = 
-				ReportableFactory.getFilePathFromClasspath(shapeDirBasePath, "samples dir");
+				FeatureConfigurationUtil.getFilePathFromClasspath(shapeDirBasePath, "samples dir");
 		} catch (JHOVE2Exception e1) {
 			fail("Could not create base directory");
 		}
@@ -146,7 +146,7 @@ public class GlobPathRecognizerTest{
 		String samplesDirPath = null;
 		try {
 			samplesDirPath = 
-				ReportableFactory.getFilePathFromClasspath(shapeDirBasePath, "samples dir");
+				FeatureConfigurationUtil.getFilePathFromClasspath(shapeDirBasePath, "samples dir");
 		} catch (JHOVE2Exception e1) {
 			fail("Could not create base directory");
 		}
@@ -236,7 +236,7 @@ public class GlobPathRecognizerTest{
 		String samplesDirPath = null;
 		try {
 			samplesDirPath = 
-				ReportableFactory.getFilePathFromClasspath(shapeDirBasePath, "samples dir");
+				FeatureConfigurationUtil.getFilePathFromClasspath(shapeDirBasePath, "samples dir");
 		} catch (JHOVE2Exception e1) {
 			fail("Could not create base directory");
 		}

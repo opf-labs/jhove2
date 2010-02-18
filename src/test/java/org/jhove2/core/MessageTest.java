@@ -9,6 +9,7 @@ import java.util.Locale;
 
 import javax.annotation.Resource;
 
+import org.jhove2.config.ConfigInfo;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.junit.Test;
@@ -21,7 +22,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath*:**/message-test-config.xml"})
+@ContextConfiguration(locations={"classpath*:**/message-test-config.xml", "classpath*:**/test-config.xml"})
 public class MessageTest {
 
 	private String ASCIIProfilenonBasicLatinMessage;
@@ -34,10 +35,10 @@ public class MessageTest {
 	private String UTF8CharacterinvalidByteValueMessages01;
 	private String UTF8CharacterinvalidByteValueMessages02;
 	private String UTF8CharacterinvalidByteValueMessages03;
-
+	private JHOVE2 jhove2;
 
 	/**
-	 * Test method for {@link org.jhove2.core.Message#Message(org.jhove2.core.Message.Severity, org.jhove2.core.Message.Context, java.lang.String)}.
+	 * Test method for {@link org.jhove2.core.Message#Message(org.jhove2.core.Message.Severity, org.jhove2.core.Message.Context, java.lang.String, ConfigInfo)}.
 	 */
 	@Test
 	public void testMessageSeverityContextString() {
@@ -47,7 +48,7 @@ public class MessageTest {
 		try {
 			message = new Message(Severity.ERROR,
 					Context.OBJECT, 
-					"org.jhove2.module.format.utf8.UTF8Module.failFastMessage");
+					"org.jhove2.module.format.utf8.UTF8Module.failFastMessage", jhove2.getConfigInfo());
 			assertEquals(sb.toString(), message.getLocalizedMessageText());
 		} catch (JHOVE2Exception e) {
 			fail(e.getMessage());
@@ -55,7 +56,7 @@ public class MessageTest {
 	}
 
 	/**
-	 * Test method for {@link org.jhove2.core.Message#Message(org.jhove2.core.Message.Severity, org.jhove2.core.Message.Context, java.lang.String, java.lang.Object[])}.
+	 * Test method for {@link org.jhove2.core.Message#Message(org.jhove2.core.Message.Severity, org.jhove2.core.Message.Context, java.lang.String, java.lang.Object[], ConfigInfo)}.
 	 */
 	@Test
 	public void testMessageSeverityContextStringObjectArray() {
@@ -70,7 +71,7 @@ public class MessageTest {
 			message = new Message(Severity.ERROR,
 					Context.OBJECT, 
 					"org.jhove2.module.format.utf8.ascii.ASCIIProfile.nonBasicLatinMessage",
-					messageParms);
+					messageParms, jhove2.getConfigInfo());
 			assertEquals(sb.toString(), message.getLocalizedMessageText());
 			
 		sb = new StringBuffer(FeatureExtractorCommandmoduleNotFoundMessage);
@@ -79,7 +80,7 @@ public class MessageTest {
 		message = new Message(Severity.ERROR,
 				Context.PROCESS ,
 				"org.jhove2.module.format.DispatcherCommand.moduleNotFoundMessage",
-				messageParms);
+				messageParms, jhove2.getConfigInfo());
 		assertEquals(sb.toString(), message.getLocalizedMessageText());
 		
 		sb = new StringBuffer(FeatureExtractorCommandmoduleNotFormatModuleMessagePRE);
@@ -89,7 +90,7 @@ public class MessageTest {
 		message = new Message(Severity.ERROR,
 				Context.PROCESS,
 				"org.jhove2.module.format.DispatcherCommand.moduleNotFormatModuleMessage",
-				(Object[])messageParms);
+				(Object[])messageParms, jhove2.getConfigInfo());
 		assertEquals(sb.toString(), message.getLocalizedMessageText());
 		
 		sb = new StringBuffer(UTF8CharacterinvalidByteValueMessages01);
@@ -105,7 +106,7 @@ public class MessageTest {
 		message = new Message(Severity.ERROR,
 				Context.OBJECT,
 				"org.jhove2.module.format.utf8.UTF8Character.invalidByteValueMessages",
-				messageParms);
+				messageParms, jhove2.getConfigInfo());
 		assertEquals(sb.toString(), message.getLocalizedMessageText());
 		
 		sb = new StringBuffer("Code point out of range at offset ");
@@ -116,7 +117,7 @@ public class MessageTest {
 		message = new Message(Severity.ERROR,
 				Context.OBJECT,
 				"org.jhove2.module.format.utf8.UTF8Character.codePointOutOfRangeMessage",
-				messageParms);
+				messageParms, jhove2.getConfigInfo());
 		assertEquals(sb.toString(), message.getLocalizedMessageText());
 		
 		sb = new StringBuffer("Byte Order Mark (BOM) at byte offset ");
@@ -125,7 +126,7 @@ public class MessageTest {
 		message = new Message(Severity.INFO,
 				Context.OBJECT,
 				"org.jhove2.module.format.utf8.UTF8Module.bomMessage",
-				messageParms);
+				messageParms, jhove2.getConfigInfo());
 		assertEquals(sb.toString(), message.getLocalizedMessageText());
 		
 		sb = new StringBuffer("DROID identification warning message: ");
@@ -135,7 +136,7 @@ public class MessageTest {
 		message = new Message(Severity.WARNING,
 				Context.OBJECT,
 				"org.jhove2.module.identify.DROIDIdentifier.identify.idWarningMessage",
-				messageParms);
+				messageParms, jhove2.getConfigInfo());
 		assertEquals(sb.toString(), message.getLocalizedMessageText());
 		
 		sb = new StringBuffer("DROID hit warning message: ");
@@ -145,7 +146,7 @@ public class MessageTest {
 		message = new Message(Severity.WARNING,
 				Context.OBJECT,
 				"org.jhove2.module.identify.DROIDIdentifier.identify.hitWarningMsg",
-				messageParms);
+				messageParms, jhove2.getConfigInfo());
 		assertEquals(sb.toString(), message.getLocalizedMessageText());
 		
 		sb = new StringBuffer("Unmatched PUID: ");
@@ -155,7 +156,7 @@ public class MessageTest {
 		message = new Message(Severity.ERROR,
 				Context.PROCESS,
 				"org.jhove2.module.identify.DROIDIdentifier.identify.missingPUID",
-				messageParms);
+				messageParms, jhove2.getConfigInfo());
 		assertEquals(sb.toString(), message.getLocalizedMessageText());
 		
 		sb = new StringBuffer("No identification match on internal or external signatures found by DROID ");
@@ -165,7 +166,7 @@ public class MessageTest {
 		message = new Message(Severity.WARNING,
 				Context.OBJECT,
 				"org.jhove2.module.identify.DROIDIdentifier.fileNotIdentifiedMessage",
-				messageParms);
+				messageParms, jhove2.getConfigInfo());
 		assertEquals(sb.toString(), message.getLocalizedMessageText());
 		
 		sb = new StringBuffer("DROID returns file-not-run message  ");
@@ -173,7 +174,7 @@ public class MessageTest {
 		message = new Message(Severity.ERROR,
 				Context.PROCESS,
 				"org.jhove2.module.identify.DROIDIdentifier.fileNotRunMessage",
-				messageParms);
+				messageParms, jhove2.getConfigInfo());
 		assertEquals(sb.toString(), message.getLocalizedMessageText());
 		
 		sb = new StringBuffer("DROID returns file error message  ");
@@ -181,7 +182,7 @@ public class MessageTest {
 		message = new Message(Severity.ERROR,
 				Context.PROCESS,
 				"org.jhove2.module.identify.DROIDIdentifier.fileErrorMessage",
-				messageParms);
+				messageParms, jhove2.getConfigInfo());
 		assertEquals(sb.toString(), message.getLocalizedMessageText());
 		
 		} catch (JHOVE2Exception e) {
@@ -350,6 +351,21 @@ public class MessageTest {
 	public void setUTF8CharacterinvalidByteValueMessages03(
 			String uTF8CharacterinvalidByteValueMessages03) {
 		UTF8CharacterinvalidByteValueMessages03 = uTF8CharacterinvalidByteValueMessages03;
+	}
+
+	/**
+	 * @return the jhove2
+	 */
+	public JHOVE2 getJhove2() {
+		return jhove2;
+	}
+
+	/**
+	 * @param jhove2 the jhove2 to set
+	 */
+	@Resource(name="JHOVE2")
+	public void setJhove2(JHOVE2 jhove2) {
+		this.jhove2 = jhove2;
 	}
 
 }

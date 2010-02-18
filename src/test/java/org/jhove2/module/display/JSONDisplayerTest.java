@@ -74,6 +74,7 @@ public class JSONDisplayerTest {
 			JHOVE2.characterize(source);
 			Displayer displayer = new JSONDisplayer();
 			displayer.setShowIdentifiers(true);
+			displayer.setConfigInfo(JHOVE2.getConfigInfo());
 			displayer.display(source);			
 		}
 		catch (Exception e){

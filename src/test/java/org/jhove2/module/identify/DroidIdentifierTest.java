@@ -41,11 +41,11 @@ import java.util.Set;
 
 import javax.annotation.Resource;
 
+import org.jhove2.app.util.FeatureConfigurationUtil;
 import org.jhove2.core.FormatIdentification;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.FormatIdentification.Confidence;
-import org.jhove2.core.reportable.ReportableFactory;
 import org.jhove2.core.source.FileSource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -82,9 +82,9 @@ public class DroidIdentifierTest {
 	@Test
 	public void testGetPuidToJhoveId() {
 		try {
-			DROIDIdentifier.getPUIDtoJ2ID();
-			assertTrue(DROIDIdentifier.getPUIDtoJ2ID().containsKey(zipPuid));
-			assertEquals(zipJhoveId, DROIDIdentifier.getPUIDtoJ2ID().get(zipPuid));
+			DROIDIdentifier.getPUIDtoJ2ID(JHOVE2);
+			assertTrue(DROIDIdentifier.getPUIDtoJ2ID(JHOVE2).containsKey(zipPuid));
+			assertEquals(zipJhoveId, DROIDIdentifier.getPUIDtoJ2ID(JHOVE2).get(zipPuid));
 		} catch (JHOVE2Exception e) {
 			fail("exception" + e.getMessage());
 		}		
@@ -100,7 +100,7 @@ public class DroidIdentifierTest {
 		String samplesDirPath = null;
 		try {
 			samplesDirPath = 
-				ReportableFactory.getFilePathFromClasspath(droidDirBasePath, "droid samples dir");
+				FeatureConfigurationUtil.getFilePathFromClasspath(droidDirBasePath, "droid samples dir");
 		} catch (JHOVE2Exception e1) {
 			fail("Could not create base directory");
 		}
