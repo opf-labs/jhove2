@@ -43,7 +43,6 @@
 package uk.gov.nationalarchives.droid;
 
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 
 import javax.xml.parsers.SAXParser;
