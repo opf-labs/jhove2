@@ -34,7 +34,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.module.identify;
+package org.jhove2.module.aggrefy;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -95,7 +95,7 @@ public class AggrefierModule
 	 * @throws IOException
 	 *             I/O exception encountered identifying the source unit
 	 * @throws JHOVE2Exception
-	 * @see org.jhove2.module.identify.Aggrefier#identify(org.jhove2.core.JHOVE2,
+	 * @see org.jhove2.module.aggrefy.Aggrefier#identify(org.jhove2.core.JHOVE2,
 	 *      org.jhove2.core.source.Source)
 	 */
 	@Override

@@ -37,8 +37,8 @@
 package org.jhove2.config.spring;
 
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.module.identify.Aggrefier;
-import org.jhove2.module.identify.AggrefierFactory;
+import org.jhove2.module.aggrefy.Aggrefier;
+import org.jhove2.module.aggrefy.AggrefierFactory;
 
 /**
  * @author smorrissey

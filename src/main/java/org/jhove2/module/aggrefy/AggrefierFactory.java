@@ -34,22 +34,15 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.module.identify;
+package org.jhove2.module.aggrefy;
 
-import java.util.List;
+import org.jhove2.core.JHOVE2Exception;
 
 /**
- * Interface for JHOVE2 aggregate identifier modules, capable of
- * detecting instances of Clump formats
- * 
- * @author smmorrissey
+ * @author smorrissey
+ *
  */
-public interface Aggrefier
-	extends Recognizer
-{
-	/** Get aggregate recognizers.
-	 * @return Aggregate recognizers
-	 */
-	public List<Recognizer> getRecognizers();
-
+public interface AggrefierFactory {
+	
+	public Aggrefier makeAggrefier()throws JHOVE2Exception;
 }

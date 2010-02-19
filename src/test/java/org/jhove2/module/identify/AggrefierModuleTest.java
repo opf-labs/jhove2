@@ -56,7 +56,8 @@ import org.jhove2.core.source.FileSetSource;
 import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
-import org.jhove2.module.identify.GlobPathRecognizer;
+import org.jhove2.module.aggrefy.AggrefierModule;
+import org.jhove2.module.aggrefy.GlobPathRecognizer;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -85,7 +86,7 @@ public class AggrefierModuleTest {
 	private String emptyDirBasePath;
 
 	/**
-	 * Test method for {@link org.jhove2.module.identify.AggrefierModule#identify(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)}.
+	 * Test method for {@link org.jhove2.module.aggrefy.AggrefierModule#identify(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)}.
 	 */
 	@Test
 	public void testIdentify() {

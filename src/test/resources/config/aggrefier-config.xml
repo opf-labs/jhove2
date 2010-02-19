@@ -11,7 +11,7 @@
 
 
 	<!-- Aggrefier module bean -->
-	<bean id="TestAggrefier" class="org.jhove2.module.identify.AggrefierModule"
+	<bean id="TestAggrefier" class="org.jhove2.module.aggrefy.AggrefierModule"
 	      scope="prototype">
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">

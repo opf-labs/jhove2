@@ -34,38 +34,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.module.identify;
+package org.jhove2.module.aggrefy;
 
-import java.io.IOException;
-import java.util.Set;
+import java.util.List;
 
-import org.jhove2.core.JHOVE2;
-import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.source.ClumpSource;
-import org.jhove2.core.source.Source;
-import org.jhove2.module.Module;
 
 /**
- * Interface for JHOVE2 aggregate recognizer modules, capable of
+ * Interface for JHOVE2 aggregate identifier modules, capable of
  * detecting instances of Clump formats
  * 
  * @author smmorrissey
  */
-public interface Recognizer
-	extends Module
+public interface Aggrefier
+	extends Recognizer
 {
-	/**
-	 * Detect presumptive instances of a clump format in a source unit, and identify.
-	 * 
-	 * @param jhove2
-	 *            JHOVE2 framework
-	 * @param source
-	 *            Source unit
-	 * @return Presumptively identified presumptiveFormatIds
-	 * @throws IOException
-	 *             I/O exception encountered identifying the source unit
-	 * @throws JHOVE2Exception
+	/** Get aggregate recognizers.
+	 * @return Aggregate recognizers
 	 */
-	public Set<ClumpSource> identify(JHOVE2 jhove2, Source source)
-			throws IOException, JHOVE2Exception;
+	public List<Recognizer> getRecognizers();
+
 }

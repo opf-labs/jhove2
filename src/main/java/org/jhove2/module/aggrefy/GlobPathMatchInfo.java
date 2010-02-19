@@ -33,16 +33,78 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.jhove2.module.aggrefy;
 
-package org.jhove2.module.identify;
-
-import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.source.Source;
 
 /**
- * @author smorrissey
+ * Convenience class for managing information about a Source which is a member of
+ * a group of possibly related sources. Used by {@org.jhove2.GlobPathRecognizer}
+ * 
+ * @author smmorrissey
  *
  */
-public interface AggrefierFactory {
+public class GlobPathMatchInfo {
+	/** Source that is member of group */
+	protected Source source;
+	/** matches mustHave token */
+	protected boolean mustHave;
+	/** matchs mayHave token */
+	protected boolean mayHave;
 	
-	public Aggrefier makeAggrefier()throws JHOVE2Exception;
+	/**
+	 * Constructor
+	 */
+	public GlobPathMatchInfo(){}
+	/**
+	 * Constructor
+	 * @param Source that is member of group
+	 */
+	public GlobPathMatchInfo(Source source){
+		this();
+		this.source = source;
+	}
+	/**
+	 * Get Source that is member of group
+	 * @return
+	 */
+	public Source getSource() {
+		return source;
+	}
+	/**
+	 * Set Source that is member of group
+	 * @param Source that is member of group
+	 */
+	public void setSource(Source source) {
+		this.source = source;
+	}
+	/**
+	 * Get mustHave
+	 * @return mustHave
+	 */
+	public boolean isMustHave() {
+		return mustHave;
+	}
+	/**
+	 * Set mustHave
+	 * @param mustHave
+	 */
+	public void setMustHave(boolean mustHave) {
+		this.mustHave = mustHave;
+	}
+	/**
+	 * Get mayHave
+	 * @return mayHave
+	 */
+	public boolean isMayHave() {
+		return mayHave;
+	}
+	/**
+	 * Set mayHave
+	 * @param mayHave
+	 */
+	public void setMayHave(boolean mayHave) {
+		this.mayHave = mayHave;
+	}
+	
 }

@@ -41,7 +41,7 @@ import static org.junit.Assert.*;
 import javax.annotation.Resource;
 
 import org.jhove2.core.JHOVE2;
-import org.jhove2.module.identify.AggrefierModule;
+import org.jhove2.module.aggrefy.AggrefierModule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;

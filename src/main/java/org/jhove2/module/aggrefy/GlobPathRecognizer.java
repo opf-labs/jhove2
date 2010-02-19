@@ -33,7 +33,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.jhove2.module.identify;
+package org.jhove2.module.aggrefy;
 
 import java.io.File;
 import java.io.IOException;
@@ -171,7 +171,7 @@ public class GlobPathRecognizer
 	 * @param jhove2 JHOVE2 core framework
 	 * @param source Source unit
 	 * @return Recognized clump source units
-	 * @see org.jhove2.module.identify.Aggrefier#identify(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
+	 * @see org.jhove2.module.aggrefy.Aggrefier#identify(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
 	 */
 	@Override
 	public Set<ClumpSource> identify(JHOVE2 jhove2, Source source)

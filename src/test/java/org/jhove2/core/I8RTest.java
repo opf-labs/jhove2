@@ -42,7 +42,7 @@ import org.junit.Test;
 
 import org.jhove2.core.source.*;
 import org.jhove2.module.Module;
-import org.jhove2.module.identify.GlobPathRecognizer;
+import org.jhove2.module.aggrefy.GlobPathRecognizer;
 
 /**
  * @author smorrissey

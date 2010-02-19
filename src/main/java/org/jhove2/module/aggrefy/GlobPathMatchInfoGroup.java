@@ -33,10 +33,11 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.jhove2.module.identify;
+package org.jhove2.module.aggrefy;
 
 import java.util.List;
 import java.util.ArrayList;
+
 /**
  * Convenience class for managing information about a group of possibly 
  * related sources.  Used by {@org.jhove2.GlobPathRecognizer}

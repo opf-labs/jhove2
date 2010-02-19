@@ -33,7 +33,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.jhove2.module.identify;
+package org.jhove2.module.aggrefy;
 
 
 import static org.junit.Assert.*;
@@ -62,6 +62,8 @@ import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.FileSetSource;
 import org.jhove2.core.source.Source;
+import org.jhove2.module.aggrefy.GlobPathMatchInfoGroup;
+import org.jhove2.module.aggrefy.GlobPathRecognizer;
 
 
 /**
@@ -86,7 +88,7 @@ public class GlobPathRecognizerTest{
 	private JHOVE2 JHOVE2;
 
 	/**
-	 * Test method for {@link org.jhove2.module.identify.GlobPathRecognizer#groupSources(org.jhove2.core.source.Source)}.
+	 * Test method for {@link org.jhove2.module.aggrefy.GlobPathRecognizer#groupSources(org.jhove2.core.source.Source)}.
 	 */
 	@Test
 	public void testGroupSources() {
@@ -139,7 +141,7 @@ public class GlobPathRecognizerTest{
 	}
 
 	/**
-	 * Test method for {@link org.jhove2.module.identify.GlobPathRecognizer#recognizeGroupedSource(org.jhove2.module.identify.GlobPathMatchInfoGroup)}.
+	 * Test method for {@link org.jhove2.module.aggrefy.GlobPathRecognizer#recognizeGroupedSource(org.jhove2.module.aggrefy.GlobPathMatchInfoGroup)}.
 	 */
 	@Test
 	public void testRecognizeGroupedSource() {
@@ -229,7 +231,7 @@ public class GlobPathRecognizerTest{
 	}
 
 	/**
-	 * Test method for {@link org.jhove2.module.identify.GlobPathRecognizer#identify(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)}.
+	 * Test method for {@link org.jhove2.module.aggrefy.GlobPathRecognizer#identify(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)}.
 	 */
 	@Test
 	public void testIdentify() {

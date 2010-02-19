@@ -58,7 +58,7 @@
 	</bean>
 	
 	<!-- Aggrefier command Bean -->
-	<bean id="AggrefierCommand" class="org.jhove2.module.identify.AggrefierCommand"
+	<bean id="AggrefierCommand" class="org.jhove2.module.aggrefy.AggrefierCommand"
 		scope="prototype" >
 		 <property name="developers">
 			<list value-type="org.jhove2.core.Agent">
