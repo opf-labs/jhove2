@@ -44,14 +44,14 @@ import java.util.concurrent.ConcurrentMap;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.app.util.FeatureConfigurationUtil;
-import org.jhove2.core.FormatIdentification;
 import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
-import org.jhove2.core.FormatIdentification.Confidence;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
+import org.jhove2.core.format.FormatIdentification;
+import org.jhove2.core.format.FormatIdentification.Confidence;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractModule;
 

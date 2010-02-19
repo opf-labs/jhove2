@@ -38,15 +38,15 @@ package org.jhove2.module.format;
 import java.util.HashMap;
 import java.util.TreeSet;
 
-import org.jhove2.core.Format;
-import org.jhove2.core.FormatIdentification;
 import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
+import org.jhove2.core.format.Format;
 import org.jhove2.core.format.FormatFactory;
+import org.jhove2.core.format.FormatIdentification;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractCommand;
 import org.jhove2.module.Module;

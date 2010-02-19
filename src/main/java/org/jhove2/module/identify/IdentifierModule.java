@@ -40,12 +40,12 @@ import java.io.IOException;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.jhove2.core.FormatIdentification;
 import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.TimerInfo;
-import org.jhove2.core.FormatIdentification.Confidence;
+import org.jhove2.core.format.FormatIdentification;
+import org.jhove2.core.format.FormatIdentification.Confidence;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.DirectorySource;
 import org.jhove2.core.source.FileSetSource;

@@ -10,11 +10,11 @@
 		   http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
 		<!-- Directory format bean -->
-	<bean id="DirectoryFormat" class="org.jhove2.core.Format" scope="singleton">
+	<bean id="DirectoryFormat" class="org.jhove2.core.format.Format" scope="singleton">
 		<constructor-arg type="java.lang.String" value="Directory"/>
 		<constructor-arg ref="DirectoryIdentifier"/>
-		<constructor-arg type="org.jhove2.core.Format$Type" value="Format"/>
-		<constructor-arg type="org.jhove2.core.Format$Ambiguity" value="Unambiguous"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Type" value="Format"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity" value="Unambiguous"/>
 	</bean>				
 	<!-- Directory identifier bean -->  
 	<bean id="DirectoryIdentifier" class="org.jhove2.core.I8R" scope="singleton">

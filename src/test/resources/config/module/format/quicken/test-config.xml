@@ -11,11 +11,11 @@
 
     	
 <!-- Quicken format bean -->
-	<bean id="QuickenFormat" class="org.jhove2.core.Format" scope="singleton">
+	<bean id="QuickenFormat" class="org.jhove2.core.format.Format" scope="singleton">
 		<constructor-arg type="java.lang.String" value="Quicken"/>
 		<constructor-arg ref="QuickenIdentifier"/>
-		<constructor-arg type="org.jhove2.core.Format$Type" value="Format"/>
-		<constructor-arg type="org.jhove2.core.Format$Ambiguity" value="Unambiguous"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Type" value="Format"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity" value="Unambiguous"/>
 	</bean>
 	
 		<!-- Quicken identifier bean -->  

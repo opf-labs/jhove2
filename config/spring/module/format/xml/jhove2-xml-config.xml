@@ -56,11 +56,11 @@
 	</bean>
    
 	<!-- XML format bean -->
-	<bean id="XmlFormat" class="org.jhove2.core.Format" scope="singleton">
+	<bean id="XmlFormat" class="org.jhove2.core.format.Format" scope="singleton">
 		<constructor-arg type="java.lang.String" value="XML"/>
 		<constructor-arg ref="XmlIdentifier"/>
-		<constructor-arg type="org.jhove2.core.Format$Type" value="Format"/>
-		<constructor-arg type="org.jhove2.core.Format$Ambiguity" value="Unambiguous"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Type" value="Format"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity" value="Unambiguous"/>
 		<property name="aliasIdentifiers">
 			<set value-type="org.jhove2.core.I8R">
 				<ref bean="PUIDfmt101"/>

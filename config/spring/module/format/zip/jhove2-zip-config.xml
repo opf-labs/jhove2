@@ -25,11 +25,11 @@
 	</bean>
       
 	<!-- Zip format bean -->
-	<bean id="ZipFormat" class="org.jhove2.core.Format" scope="singleton">
+	<bean id="ZipFormat" class="org.jhove2.core.format.Format" scope="singleton">
 		<constructor-arg type="java.lang.String" value="Zip"/>
 		<constructor-arg ref="ZipIdentifier"/>
-		<constructor-arg type="org.jhove2.core.Format$Type" value="Family"/>
-		<constructor-arg type="org.jhove2.core.Format$Ambiguity" value="Unambiguous"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Type" value="Family"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity" value="Unambiguous"/>
 		<property name="aliasIdentifiers">
 			<set value-type="org.jhove2.core.I8R">
 				<ref bean="PUIDxfmt263"/>

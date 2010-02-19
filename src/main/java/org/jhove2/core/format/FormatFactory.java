@@ -34,7 +34,6 @@
  */
 package org.jhove2.core.format;
 
-import org.jhove2.core.Format;
 import org.jhove2.core.JHOVE2Exception;
 /**
  * @author smorrissey

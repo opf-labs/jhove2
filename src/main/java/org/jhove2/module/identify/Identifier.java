@@ -39,9 +39,9 @@ package org.jhove2.module.identify;
 import java.io.IOException;
 import java.util.Set;
 
-import org.jhove2.core.FormatIdentification;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.format.FormatIdentification;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.Module;
 

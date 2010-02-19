@@ -40,9 +40,9 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.util.List;
 
-import org.jhove2.core.Format;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.format.Format;
 import org.jhove2.core.source.DirectorySource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.BaseFormatModule;

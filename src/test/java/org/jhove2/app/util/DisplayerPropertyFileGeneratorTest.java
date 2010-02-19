@@ -57,7 +57,7 @@ public class DisplayerPropertyFileGeneratorTest {
 		"Always | Never | IfNegative | IfNonNegative | IfNonPositive | IfNonZero | IfPositive | IfZero";
 	private String memoryUsage = "http://jhove2.org/terms/property/org/jhove2/core/JHOVE2/MemoryUsage";
 	private String rClassName  = "org.jhove2.core.JHOVE2";
-	private String rClassName2 = "org.jhove2.core.FormatIdentification";
+	private String rClassName2 = "org.jhove2.core.format.FormatIdentification";
 
 
 	/**

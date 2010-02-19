@@ -11,11 +11,11 @@
 	
 	
 	<!-- Bytestream format bean -->
-	<bean id="BytestreamFormat" class="org.jhove2.core.Format" scope="singleton">
+	<bean id="BytestreamFormat" class="org.jhove2.core.format.Format" scope="singleton">
 		<constructor-arg type="java.lang.String" value="Bytestream"/>
 		<constructor-arg ref="BytestreamIdentifier"/>
-		<constructor-arg type="org.jhove2.core.Format$Type" value="Format"/>
-		<constructor-arg type="org.jhove2.core.Format$Ambiguity" value="Unambiguous"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Type" value="Format"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity" value="Unambiguous"/>
 		<property name="aliasIdentifiers" ref="BytestreamMIMEType"/>
 		<property name="note" value="A Bytestream is a JHOVE2-defined format representing arbitrary data."/>
 	</bean>		

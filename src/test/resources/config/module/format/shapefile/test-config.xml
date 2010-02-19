@@ -22,11 +22,11 @@
 	</bean>
       
     <!-- Shapefile format bean -->
-	<bean id="ShapefileFormat" class="org.jhove2.core.Format" scope="singleton">
+	<bean id="ShapefileFormat" class="org.jhove2.core.format.Format" scope="singleton">
 		<constructor-arg type="java.lang.String" value="Shapefile"/>
 		<constructor-arg ref="ShapefileIdentifier"/>
-		<constructor-arg type="org.jhove2.core.Format$Type" value="Format"/>
-		<constructor-arg type="org.jhove2.core.Format$Ambiguity" value="Unambiguous"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Type" value="Format"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity" value="Unambiguous"/>
 	</bean>
 		
 	<!-- Shapefile identifier bean -->  

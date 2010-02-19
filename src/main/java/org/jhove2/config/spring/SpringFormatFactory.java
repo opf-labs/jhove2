@@ -39,9 +39,9 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import org.jhove2.core.Format;
 import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.format.Format;
 import org.jhove2.core.format.FormatFactory;
 
 /**

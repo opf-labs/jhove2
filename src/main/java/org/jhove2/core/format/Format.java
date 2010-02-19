@@ -34,7 +34,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.core;
+package org.jhove2.core.format;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +42,8 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.Document;
+import org.jhove2.core.I8R;
 import org.jhove2.core.reportable.AbstractReportable;
 
 /**

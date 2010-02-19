@@ -41,9 +41,9 @@ import java.io.IOException;
 import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.Format;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.format.Format;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.NamedSource;
 import org.jhove2.core.source.Source;

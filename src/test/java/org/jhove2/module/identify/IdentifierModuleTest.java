@@ -43,10 +43,10 @@ import java.util.Set;
 import javax.annotation.Resource;
 
 import org.jhove2.app.util.FeatureConfigurationUtil;
-import org.jhove2.core.FormatIdentification;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.FormatIdentification.Confidence;
+import org.jhove2.core.format.FormatIdentification;
+import org.jhove2.core.format.FormatIdentification.Confidence;
 import org.jhove2.core.source.FileSource;
 import org.junit.Test;
 import org.junit.runner.RunWith;

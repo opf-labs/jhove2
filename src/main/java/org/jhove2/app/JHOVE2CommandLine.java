@@ -38,7 +38,6 @@ package org.jhove2.app;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import org.jhove2.config.spring.SpringConfigInfo;
@@ -51,7 +50,6 @@ import org.jhove2.core.io.Input;
 import org.jhove2.core.io.Input.Type;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
-import org.jhove2.module.display.AbstractDisplayer;
 import org.jhove2.module.display.Displayer;
 
 /**

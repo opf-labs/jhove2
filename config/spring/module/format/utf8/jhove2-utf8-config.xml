@@ -22,11 +22,11 @@
 	</bean>
 	
 	<!-- ASCII format bean -->
-	<bean id="ASCIIFormat" class="org.jhove2.core.Format" scope="singleton">
+	<bean id="ASCIIFormat" class="org.jhove2.core.format.Format" scope="singleton">
 		<constructor-arg type="java.lang.String" value="ASCII"/>
 		<constructor-arg ref="ASCIIIdentifier"/>
-		<constructor-arg type="org.jhove2.core.Format$Type" value="Format"/>
-		<constructor-arg type="org.jhove2.core.Format$Ambiguity" value="Unambiguous"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Type" value="Format"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity" value="Unambiguous"/>
 		<property name="aliasIdentifiers">
 			<set value-type="org.jhove2.core.I8R">
 				<ref bean="PUIDxfmt13"/>
@@ -117,11 +117,11 @@
 
 
 	<!-- UTF-8 format bean -->
-	<bean id="UTF8Format" class="org.jhove2.core.Format" scope="singleton">
+	<bean id="UTF8Format" class="org.jhove2.core.format.Format" scope="singleton">
 		<constructor-arg type="java.lang.String" value="UTF-8"/>
 		<constructor-arg ref="UTF8Identifier"/>
-		<constructor-arg type="org.jhove2.core.Format$Type" value="Family"/>
-		<constructor-arg type="org.jhove2.core.Format$Ambiguity" value="Unambiguous"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Type" value="Family"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity" value="Unambiguous"/>
 		<property name="aliasIdentifiers">
 			<set value-type="org.jhove2.core.I8R">
 				<ref bean="UTF8Charset"/>

@@ -11,11 +11,11 @@
 		   
 	
 	<!-- File set format bean -->
-	<bean id="FileSetFormat" class="org.jhove2.core.Format" scope="singleton">
+	<bean id="FileSetFormat" class="org.jhove2.core.format.Format" scope="singleton">
 		<constructor-arg type="java.lang.String" value="FileSet"/>
 		<constructor-arg ref="FileSetIdentifier"/>
-		<constructor-arg type="org.jhove2.core.Format$Type" value="Format"/>
-		<constructor-arg type="org.jhove2.core.Format$Ambiguity" value="Unambiguous"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Type" value="Format"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity" value="Unambiguous"/>
 	</bean>
 				
 	<!-- File set identifier bean -->  

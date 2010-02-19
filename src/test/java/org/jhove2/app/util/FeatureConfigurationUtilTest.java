@@ -55,7 +55,7 @@ import org.junit.Test;
 public class FeatureConfigurationUtilTest {
 
 	private String rClassName  = "org.jhove2.core.JHOVE2";
-	private String rClassName2 = "org.jhove2.core.FormatIdentification";
+	private String rClassName2 = "org.jhove2.core.format.FormatIdentification";
 	private String notRClassName = "org.jhove2.app.Parser";
 	private String phoneyClassName = "no.such.classname";
 

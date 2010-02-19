@@ -34,12 +34,14 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.core;
+package org.jhove2.core.format;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.I8R;
+import org.jhove2.core.Message;
 import org.jhove2.core.reportable.AbstractReportable;
 
 /**

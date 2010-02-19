@@ -40,12 +40,12 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.util.List;
 
-import org.jhove2.core.Format;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
+import org.jhove2.core.format.Format;
 import org.jhove2.core.source.FileSetSource;
 import org.jhove2.core.source.FileSystemSource;
 import org.jhove2.core.source.Source;

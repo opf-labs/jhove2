@@ -39,9 +39,9 @@ package org.jhove2.module.format.bytestream;
 import java.io.EOFException;
 import java.io.IOException;
 
-import org.jhove2.core.Format;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.format.Format;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.BaseFormatModule;
 

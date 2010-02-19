@@ -45,9 +45,9 @@ import java.util.List;
 import java.util.Set;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.FormatIdentification;
 import org.jhove2.core.Message;
 import org.jhove2.core.TimerInfo;
+import org.jhove2.core.format.FormatIdentification;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.io.Input.Type;
 import org.jhove2.core.reportable.Reportable;
