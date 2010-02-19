@@ -48,43 +48,6 @@
 	    <property name="openSource" value="true"/>
 	</bean>
 	
-	<!-- Aggrefier module bean -->
-	<bean id="AggrefierModule" class="org.jhove2.module.aggrefy.AggrefierModule"
-	      scope="prototype">
-		<property name="developers">
-			<list value-type="org.jhove2.core.Agent">
-				<ref bean="CDLAgent"/>
-				<ref bean="PorticoAgent"/>
-				<ref bean="StanfordAgent"/>
-			</list>
-		</property>
-		<property name="recognizers">
-			<list value-type="org.jhove2.module.aggrefy.Recognizer">
-				<ref bean="ShapeFileRecognizer"/>
-			</list>
-		</property>
-	</bean>
-	            	  
-	<!-- Shapefile recognizer bean -->
-	<bean id="ShapeFileRecognizer" class="org.jhove2.module.aggrefy.GlobPathRecognizer"
-	 scope="prototype">
-	 	<property name="developers">
-			<list value-type="org.jhove2.core.Agent">
-				<ref bean="CDLAgent"/>
-				<ref bean="PorticoAgent"/>
-				<ref bean="StanfordAgent"/>
-			</list>
-		</property>
-	 	<property name="formatIdentifier" ref="ShapefileIdentifier"/>
-	 	<property name="fileGroupingExpr" value="(.*[\\/]\w+).((?i:shp\.)?\w{3})"/>
-	 	<property name="mustHaveExpr" value="^((?i:shp)|(?i:shx)|(?i:dbf))$"/>
-	 	<property name="mayHaveExpr" 
-	 	          value="^((?i:shp.xml)|(?i:prj)|(?i:sbn)|(?i:sbx)|(?i:atx)|(?i:qix)|(?i:fix)|(?i:grx))$"/>
-	 	<property name="fileGroupingCaptureGroupIndex" value="1" />
-	 	<property name="mustHaveCaptureGroupIndex" value="2"/>
-	 	<property name="mayHaveCaptureGroupIndex" value="2"/>
-	 	<property name="minMustHavesToIdentify" value="3"/>
-	  	<property name="includeUnmatchedFromGroup" value="true"/>
-	</bean>            
+          
 	            
 </beans>		   
