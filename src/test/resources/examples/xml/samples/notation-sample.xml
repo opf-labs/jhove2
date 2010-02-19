@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE myRoot [
+  <!ELEMENT myRoot (#PCDATA)>
+  <!NOTATION notationName PUBLIC "notationValue">
+  <!ATTLIST myRoot lang NOTATION (notationName) #REQUIRED>
+]>
+<myRoot lang="notationName">Some VRML instructions</myRoot>

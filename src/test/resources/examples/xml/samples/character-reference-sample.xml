@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<characterReferences>
+	<!-- Character Entity References -->
+	<characterEntityReferences>
+		<cer>&amp;</cer>
+		<cer>&amp;&apos;</cer>
+		<cer>&amp;&apos;&lt;</cer>
+		<cer>&amp;&apos;&lt;&gt;</cer>
+		<cer>&amp;&apos;&lt;&gt;&quot;</cer>
+	</characterEntityReferences>
+	<!-- Numeric Character References (Unicode code points) -->
+	<numericCharacterReferences>
+		<ncr>&#x00B6;&#x2021;&#x12415;</ncr>
+		<ncr>&#9;&#9;&#x2021;</ncr>
+		<ncr>&#9;&#10;&#13;</ncr>
+	</numericCharacterReferences>
+</characterReferences>

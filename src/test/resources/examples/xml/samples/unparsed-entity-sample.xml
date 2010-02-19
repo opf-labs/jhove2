@@ -1,0 +1,11 @@
+<?xml version="1.0" standalone="no" ?>
+<!DOCTYPE myRoot [
+  <!ELEMENT myRoot EMPTY>
+  <!ATTLIST myRoot url ENTITY #REQUIRED>
+  <!ENTITY sulair SYSTEM
+    "http://sulair.stanford.edu/images/__o__/sulair_logo.gif" NDATA gif>
+  <!NOTATION gif PUBLIC "gif viewer">
+]>
+<!-- This is a comment -->
+<my_Root url="sulair"/>
+

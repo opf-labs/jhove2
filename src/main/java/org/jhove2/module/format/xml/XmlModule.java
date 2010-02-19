@@ -155,7 +155,7 @@ public class XmlModule
     /** Data store for XML entity references captured during the parse. */
     protected EntityReferences entityReferences = new EntityReferences();
 
-    /** Data store for XML entity references captured during the parse. */
+    /** Data store for XML numeric character references captured during the parse. */
     protected NumericCharacterReferences numericCharacterReferences = new NumericCharacterReferences();
 
     /** Data store for XML processing instruction information captured during the parse. */
@@ -197,7 +197,7 @@ public class XmlModule
         return saxParser;
     }
     
-    /** Sets the class name of the parser to be used for extracting numeric character references */
+    /** Sets the flag that specifies whether or not to collect comment text */
     public void setCollectCommentText(boolean collectCommentText) {
         this.commentInformation.collectCommentText = collectCommentText;
     }
@@ -228,9 +228,9 @@ public class XmlModule
     }
 
     /**
-     * Gets the list of documents document scope declarations.
+     * Gets the list of documents document scope declarations (DTDs).
      * 
-     * @return list of documents document scope declarations
+     * @return list of documents document scope declarations (DTDs)
      */
     @ReportableProperty(order = 4, value = "List of Document Scope Definitions (DTDs)")
     public List<DTD> getDTDs() {
