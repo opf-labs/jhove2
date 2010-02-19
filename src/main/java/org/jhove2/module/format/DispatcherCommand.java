@@ -109,8 +109,7 @@ public class DispatcherCommand extends AbstractCommand {
              * namespace.
              */
             if (fid.getJHOVE2Identifier() != null) {
-            	String formatIdString = fid.getJHOVE2Identifier().getValue();
-            	Format format = this.getFormatFactory().makeFormat(formatIdString);
+            	Format format = this.getFormatFactory().makeFormat(fid.getJHOVE2Identifier());
             	if (format != null){
             		jhoveFormats.put(fid.getJHOVE2Identifier(), format);
             	}

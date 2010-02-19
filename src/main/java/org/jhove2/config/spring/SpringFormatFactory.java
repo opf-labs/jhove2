@@ -57,14 +57,14 @@ public class SpringFormatFactory implements FormatFactory {
 	 * @see org.jhove2.core.format.FormatFactory#makeFormat(java.lang.String)
 	 */
 	@Override
-	public Format makeFormat(String formatIdentifier) throws JHOVE2Exception{
+	public Format makeFormat(I8R formatIdentifier) throws JHOVE2Exception{
 		/*
          * Use the JHOVE2 format id to get bean name for format in
          * Spring configuration file.
          */
 		Format format = null;
         String beanName =
-        	SpringFormatFactory.getJhoveIdToBeanName().get(formatIdentifier);
+        	SpringFormatFactory.getJhoveIdToBeanName().get(formatIdentifier.getValue());
         if (beanName != null) {
             format =
             	SpringConfigInfo.getReportable(Format.class,

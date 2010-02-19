@@ -34,11 +34,12 @@
  */
 package org.jhove2.core.format;
 
+import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2Exception;
 /**
  * @author smorrissey
  *
  */
 public interface FormatFactory {
-	public Format makeFormat(String formatIdentifier) throws JHOVE2Exception;
+	public Format makeFormat(I8R formatIdentifier) throws JHOVE2Exception;
 }
