@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.jhove2</groupId>
 	<artifactId>jhove2</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.9.5</version>
 	<name>JHOVE2</name>
 	<description>JHOVE2: a next-generation architecture for
 		format-aware digital object preservation processing</description>
@@ -76,14 +76,23 @@
 		<repository>
 			<id>JBOSS</id>
 			<name>JBoss Repository</name>
-			<url>http://repository.jboss.org/maven2/</url>
+			<url>http://repository.jboss.org/maven2/
+			</url>
+		</repository>
+		<!-- for app assembler -->
+		<repository>
+			<id>Codehaus Snapshots</id>
+			<name>codehaus.org</name>
+			<url>http://snapshots.repository.codehaus.org/
+			</url>
 		</repository>
 	</repositories>
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<testSourceDirectory>src/test/java</testSourceDirectory>
 		<outputDirectory>target/classes</outputDirectory>
-		<testOutputDirectory>target/test-classes</testOutputDirectory>
+		<testOutputDirectory>target/test-classes
+		</testOutputDirectory>
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
@@ -94,10 +103,21 @@
 				<directory>src/test/resources</directory>
 			</testResource>
 		</testResources>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>appassembler-maven-plugin
+					</artifactId>
+					<version>1.1-SNAPSHOT</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.1</version>
 				<configuration>
 					<source>1.6</source>
 					<target>1.6</target>
@@ -109,23 +129,119 @@
 				<version>2.5</version>
 				<configuration>
 					<additionalClasspathElements>
-						<additionalClasspathElement>config/droid</additionalClasspathElement>
+						<additionalClasspathElement>config/
+						</additionalClasspathElement>
+						<additionalClasspathElement>config/droid
+						</additionalClasspathElement>
+						<additionalClasspathElement>config/spring
+						</additionalClasspathElement>
 					</additionalClasspathElements>
 				</configuration>
 			</plugin>
 			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<version>2.2-beta-5</version>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/../lib</outputDirectory>
+						</configuration>
+					</execution>
+					<execution>
+						<id>build-classpath</id>
+						<phase>package</phase>
+						<goals>
+							<goal>build-classpath</goal>
+						</goals>
+						<configuration>
+							<prefix>$JHOVE2_HOME/lib</prefix>
+							<outputFile>${project.build.directory}/classpath_sh.out</outputFile>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<!--  move *.txt files into jar -->
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.4.1</version>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<!-- here the phase you need -->
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/src/main/resources</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}/</directory>
+									<includes>
+										<include>*.txt</include>
+									</includes>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- generate the JHOVE2 jar executable -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3</version>
 				<configuration>
-					<descriptors>
-						<descriptor>src/main/assembly/jhove2_release.xml</descriptor>
-					</descriptors>
 					<archive>
 						<addMavenDescriptor>false</addMavenDescriptor>
+						<!-- make jar executable -->
 						<manifest>
 							<mainClass>org.jhove2.app.JHOVE2CommandLine</mainClass>
 						</manifest>
+						<manifestEntries>
+							<Sealed>true</Sealed>
+						</manifestEntries>
 					</archive>
+					<forceCreation>true</forceCreation>
+					<!--
+						<outputDirectory>${project.build.directory}/../lib</outputDirectory>
+					-->
+				</configuration>
+			</plugin>
+			<!--
+				package the jar, artifacts,and bin scripts into zip and tar files
+				for JHOVE2 release
+			-->
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.2-beta-5</version>
+				<executions>
+					<execution>
+						<configuration>
+							<descriptors>
+								<descriptor>src/main/assembly/jhove2_release.xml</descriptor>
+							</descriptors>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>${basedir}/src/main/resources/</directory>
+							<includes>
+								<include>*.txt</include>
+							</includes>
+						</fileset>
+					</filesets>
 				</configuration>
 			</plugin>
 		</plugins>
