@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright © 2005 OCLC Online Computer Library Center and RLG Research Libraries Group -->
+<!-- PREMIS Preservation Metadata Schema: Object  -->
+<!-- Version 1.1, September 27, 2005 -->
+<!-- Changes applied to this schema (since Version 1.0, May 17, 2005):
+- September 27, 2005.  Ray Denenberg, Library of Congress.
+- version changed to 1.1.
+- namespace changed (both xmlns and targetNamespace 
+from http://www.loc.gov/standards/premis 
+to http://www.loc.gov/standards/premis/v1.
+- version attribute added.
+- element relatedEventIdentification (within element relationship)
+added  minOccurs="0"
+- element inhibitorTarget (within element inhibitors) added attribute type=xs:string
+- corrected xlink namespace URL to "http://www.w3.org/1999/xlink" (removed slash at end)
+- modified dateCreatedByApplication type attribute to type="dateType"
+  <xs:union memberTypes="xs:date xs:dateTime">
+- element storageMedium (within element storage) added maxOccurs="1"
+-October 20, 2005. Rebecca Guenther, Library of Congress
+- modified dateCreatedByApplication: take out type="dateType" change to:
+	<xs:simpleType> 
+	<xs:union memberTypes="xs:date xs:dateTime" /> 
+	</xs:simpleType>	
+-->
+
+
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.loc.gov/standards/premis/v1" xmlns="http://www.loc.gov/standards/premis/v1" elementFormDefault="qualified" attributeFormDefault="unqualified">
+  <xs:element name="object">
+    <xs:complexType>
+      <xs:sequence>
+	<xs:element name="objectIdentifier" minOccurs="1" maxOccurs="unbounded">
+	  
+	  <xs:complexType>
+	    <xs:sequence>
+	      <xs:element name="objectIdentifierType" minOccurs="1" maxOccurs="1" type="xs:string">
+		
+	      </xs:element>
+	      <xs:element name="objectIdentifierValue" minOccurs="1" maxOccurs="1" type="xs:string">
+		
+	      </xs:element>
+	    </xs:sequence>
+	    <xs:anyAttribute namespace="http://www.w3.org/1999/xlink"></xs:anyAttribute>
+	  </xs:complexType>
+	</xs:element>
+	<xs:element name="preservationLevel" minOccurs="0" maxOccurs="1" type="xs:string">
+	  
+	</xs:element>
+	<xs:element name="objectCategory" minOccurs="1" maxOccurs="1" type="xs:string">
+	  
+	</xs:element>
+	<xs:element name="objectCharacteristics" minOccurs="0" maxOccurs="unbounded">
+	  
+	  <xs:complexType>
+	    <xs:sequence>
+	      <xs:element name="compositionLevel" minOccurs="0" maxOccurs="1" type="xs:nonNegativeInteger">
+		
+	      </xs:element>
+	      <xs:element name="fixity" minOccurs="0" maxOccurs="unbounded">
+		
+		<xs:complexType>
+		  <xs:sequence>
+		    <xs:element name="messageDigestAlgorithm" minOccurs="1" maxOccurs="1" type="xs:string">
+		      
+		    </xs:element>
+		    <xs:element name="messageDigest" minOccurs="1" maxOccurs="1" type="xs:string">
+		      
+		    </xs:element>
+		    <xs:element name="messageDigestOriginator" minOccurs="0" maxOccurs="1" type="xs:string">
+		      
+		    </xs:element>
+		  </xs:sequence>
+		</xs:complexType>
+	      </xs:element>
+	      <xs:element name="size" minOccurs="0" maxOccurs="1" type="xs:long">
+		
+	      </xs:element>
+	      <xs:element name="format" minOccurs="0" maxOccurs="1">
+		
+		<xs:complexType>
+		  <xs:sequence>
+		    <xs:element name="formatDesignation" minOccurs="0" maxOccurs="1">
+		      
+		      <xs:complexType>
+			<xs:sequence>
+			  <xs:element name="formatName" minOccurs="1" maxOccurs="1" type="xs:string">
+			    
+			  </xs:element>
+			  <xs:element name="formatVersion" minOccurs="0" maxOccurs="1" type="xs:string">
+			    
+			  </xs:element>
+			</xs:sequence>
+		      </xs:complexType>
+		    </xs:element>
+		    <xs:element name="formatRegistry" minOccurs="0" maxOccurs="unbounded">
+		      
+		      <xs:complexType>
+			<xs:sequence>
+			  <xs:element name="formatRegistryName" minOccurs="1" maxOccurs="1" type="xs:string">
+			    
+			  </xs:element>
+			  <xs:element name="formatRegistryKey" minOccurs="1" maxOccurs="1" type="xs:string">
+			    
+			  </xs:element>
+			  <xs:element name="formatRegistryRole" minOccurs="0" maxOccurs="1" type="xs:string">
+			    
+			  </xs:element>
+			</xs:sequence>
+			<xs:anyAttribute namespace="http://www.w3.org/1999/xlink"></xs:anyAttribute>
+		      </xs:complexType>
+		    </xs:element>
+		  </xs:sequence>
+		</xs:complexType>
+	      </xs:element>
+	      <xs:element name="significantProperties" minOccurs="0" maxOccurs="unbounded">
+		<xs:complexType>
+		  <xs:sequence>
+		    <xs:any namespace="##any" processContents="lax"></xs:any>
+		  </xs:sequence>
+		</xs:complexType>                            
+	      </xs:element>
+	      <xs:element name="inhibitors" minOccurs="0" maxOccurs="unbounded">
+		
+		<xs:complexType>
+		  <xs:sequence>
+		    <xs:element name="inhibitorType" minOccurs="1" maxOccurs="1" type="xs:string">
+		      
+		    </xs:element>
+		    <xs:element name="inhibitorTarget" minOccurs="0" maxOccurs="unbounded" type="xs:string">
+		      
+		    </xs:element>
+		    <xs:element name="inhibitorKey" minOccurs="0" maxOccurs="1" type="xs:string">
+		      
+		    </xs:element>
+		  </xs:sequence>
+		</xs:complexType>
+	      </xs:element>
+	    </xs:sequence>
+	  </xs:complexType>
+	</xs:element>
+	<xs:element name="creatingApplication" minOccurs="0" maxOccurs="unbounded">
+	  
+	  <xs:complexType>
+	    <xs:sequence>
+	      <xs:element name="creatingApplicationName" minOccurs="0" maxOccurs="1" type="xs:string">
+		
+	      </xs:element>
+	      <xs:element name="creatingApplicationVersion" minOccurs="0" maxOccurs="1" type="xs:string">
+		
+	      </xs:element>
+	      <xs:element name="dateCreatedByApplication" minOccurs="0" maxOccurs="1">
+	      	<xs:annotation>
+	      		<xs:documentation>Element has data type of dateTime, which is a subset of ISO 8601, so the schema is more restrictive than the data dictionary.</xs:documentation>
+	      	</xs:annotation>
+	      	<xs:simpleType> 
+	      		<xs:union memberTypes="xs:date xs:dateTime" /> 
+	      	</xs:simpleType>
+
+	      </xs:element>
+	    </xs:sequence>
+	  </xs:complexType>
+	</xs:element>
+	<xs:element name="originalName" minOccurs="0" maxOccurs="1">                
+	  <xs:complexType>
+	    <xs:simpleContent>
+	      <xs:extension base="xs:string">
+		<xs:anyAttribute namespace="http://www.w3.org/1999/xlink"></xs:anyAttribute>
+	      </xs:extension>
+	    </xs:simpleContent>
+	  </xs:complexType>
+	</xs:element>
+	<xs:element name="storage" minOccurs="0" maxOccurs="unbounded">
+	  
+	  <xs:complexType>
+	    <xs:sequence>
+	      <xs:element name="contentLocation" minOccurs="0" maxOccurs="1">
+		
+		<xs:complexType>
+		  <xs:sequence>
+		    <xs:element name="contentLocationType" minOccurs="1" maxOccurs="1" type="xs:string">
+		      
+		    </xs:element>
+		    <xs:element name="contentLocationValue" minOccurs="1" maxOccurs="1" type="xs:string">
+		      
+		    </xs:element>
+		  </xs:sequence>
+		  <xs:anyAttribute namespace="http://www.w3.org/1999/xlink"></xs:anyAttribute>
+		</xs:complexType>
+	      </xs:element>
+	      <xs:element name="storageMedium" minOccurs="1" maxOccurs="1" type="xs:string">
+		
+	      </xs:element>
+	    </xs:sequence>
+	  </xs:complexType>    
+	</xs:element>
+	<xs:element name="environment" minOccurs="0" maxOccurs="unbounded">
+	  
+	  <xs:complexType>
+	    <xs:sequence>
+	      <xs:element name="environmentCharacteristic" minOccurs="0" maxOccurs="1" type="xs:string">
+		
+	      </xs:element>
+	      <xs:element name="environmentPurpose" minOccurs="0" maxOccurs="unbounded" type="xs:string">
+		
+	      </xs:element>
+	      <xs:element name="environmentNote" minOccurs="0" maxOccurs="unbounded" type="xs:string">
+		
+	      </xs:element>
+	      <xs:element name="dependency" minOccurs="0" maxOccurs="unbounded">
+		
+		<xs:complexType>
+		  <xs:sequence>
+		    <xs:element name="dependencyName" minOccurs="0" maxOccurs="unbounded" type="xs:string">
+		      
+		    </xs:element>
+		    <xs:element name="dependencyIdentifier" minOccurs="0" maxOccurs="unbounded">
+		      
+		      <xs:complexType>
+			<xs:sequence>
+			  <xs:element name="dependencyIdentifierType" minOccurs="1" maxOccurs="1" type="xs:string">
+			    
+			  </xs:element>
+			  <xs:element name="dependencyIdentifierValue" minOccurs="1" maxOccurs="1" type="xs:string">
+			    
+			  </xs:element>
+			</xs:sequence>
+		      </xs:complexType>
+		    </xs:element>
+		  </xs:sequence>
+		</xs:complexType>
+	      </xs:element>
+	      <xs:element name="software" minOccurs="0" maxOccurs="unbounded">
+		
+		<xs:complexType>
+		  <xs:sequence>
+		    <xs:element name="swName" minOccurs="1" maxOccurs="1" type="xs:string">
+		      
+		    </xs:element>
+		    <xs:element name="swVersion" minOccurs="0" maxOccurs="1" type="xs:string">
+		      
+		    </xs:element>
+		    <xs:element name="swType" minOccurs="1" maxOccurs="1" type="xs:string">
+		      
+		    </xs:element>
+		    <xs:element name="swOtherInformation" minOccurs="0" maxOccurs="unbounded" type="xs:string">
+		    </xs:element>                                    
+		    <xs:element name="swDependency" minOccurs="0" maxOccurs="unbounded" type="xs:string">
+		      
+		    </xs:element>
+		  </xs:sequence>
+		</xs:complexType>
+	      </xs:element>
+	      <xs:element name="hardware" minOccurs="0" maxOccurs="unbounded">
+		
+		<xs:complexType>
+		  <xs:sequence>
+		    <xs:element name="hwName" minOccurs="1" maxOccurs="1" type="xs:string">
+		      
+		    </xs:element>
+		    <xs:element name="hwType" minOccurs="1" maxOccurs="1" type="xs:string">
+		      
+		    </xs:element>
+		    <xs:element name="hwOtherInformation" minOccurs="0" maxOccurs="unbounded" type="xs:string">
+		      
+		    </xs:element>
+		  </xs:sequence>
+		</xs:complexType>
+	      </xs:element>
+	    </xs:sequence>
+	  </xs:complexType>
+	</xs:element>
+	<xs:element name="signatureInformation" minOccurs="0" maxOccurs="unbounded">
+	  
+	  <xs:complexType>
+	    <xs:sequence>
+	      <xs:element name="signatureInformationEncoding" minOccurs="1" maxOccurs="1" type="xs:string">
+		
+	      </xs:element>
+	      <xs:element name="signer" minOccurs="0" maxOccurs="1" type="xs:string">
+		
+	      </xs:element>
+	      <xs:element name="signatureMethod" minOccurs="1" maxOccurs="1" type="xs:string">
+		
+	      </xs:element>
+	      <xs:element name="signatureValue" minOccurs="1" maxOccurs="1" type="xs:string">
+		
+	      </xs:element>                      
+	      <xs:element name="signatureValidationRules" minOccurs="1" maxOccurs="1" type="xs:string">
+		
+	      </xs:element>
+	      <xs:element name="signatureProperties" minOccurs="0" maxOccurs="unbounded" type="xs:string">
+		
+	      </xs:element>
+	      <xs:element name="keyInformation" minOccurs="0" maxOccurs="1">
+		
+		<xs:complexType>
+		  <xs:sequence>
+		    <xs:element name="keyType" minOccurs="1" maxOccurs="1" type="xs:string">
+		      
+		    </xs:element>
+		    <xs:element name="keyValue" minOccurs="1" maxOccurs="1" type="xs:string">
+		      
+		    </xs:element>
+		    <xs:element name="keyVerificationInformation" minOccurs="0" maxOccurs="1" type="xs:string">
+		      
+		    </xs:element>
+		  </xs:sequence>
+		</xs:complexType>
+	      </xs:element>
+	    </xs:sequence>
+	  </xs:complexType>
+	</xs:element>
+	<xs:element name="relationship" minOccurs="0" maxOccurs="unbounded">
+	  
+	  <xs:complexType>
+	    <xs:sequence>
+	      <xs:element name="relationshipType" minOccurs="1" maxOccurs="1" type="xs:string">
+		
+	      </xs:element>
+	      <xs:element name="relationshipSubType" minOccurs="1" maxOccurs="1" type="xs:string">
+		
+	      </xs:element>
+	      <xs:element name="relatedObjectIdentification"  minOccurs="1" maxOccurs="unbounded">
+		
+		<xs:complexType>
+		  <xs:sequence>
+		    <xs:element name="relatedObjectIdentifierType" minOccurs="1" maxOccurs="1" type="xs:string">
+		      
+		    </xs:element>
+		    <xs:element name="relatedObjectIdentifierValue" minOccurs="1" maxOccurs="1" type="xs:string">
+		      
+		    </xs:element>
+		    <xs:element name="relatedObjectSequence" minOccurs="1" maxOccurs="1" type="xs:nonNegativeInteger">
+		      
+		    </xs:element>
+		  </xs:sequence>
+		  <xs:attribute name="RelObjectXmlID" type="xs:IDREF" use="optional"></xs:attribute>
+		  <xs:anyAttribute namespace="http://www.w3.org/1999/xlink"></xs:anyAttribute>
+		</xs:complexType>
+	      </xs:element>
+	      <xs:element name="relatedEventIdentification" minOccurs="0" maxOccurs="unbounded">
+		
+		<xs:complexType>
+		  <xs:sequence>
+		    <xs:element name="relatedEventIdentifierType" minOccurs="1" maxOccurs="1" type="xs:string">
+		      
+		    </xs:element>
+		    <xs:element name="relatedEventIdentifierValue" minOccurs="1" maxOccurs="1" type="xs:string">
+		      
+		    </xs:element>
+		    <xs:element name="relatedEventSequence" minOccurs="1" maxOccurs="1" type="xs:nonNegativeInteger">
+		      
+		    </xs:element>
+		  </xs:sequence>
+		  <xs:attribute name="RelEventXmlID" type="xs:IDREF" use="optional"></xs:attribute>
+		  <xs:anyAttribute namespace="http://www.w3.org/1999/xlink"></xs:anyAttribute>
+		</xs:complexType>
+	      </xs:element>
+	    </xs:sequence>
+	  </xs:complexType>
+	</xs:element>
+	<xs:element name="linkingEventIdentifier" minOccurs="0" maxOccurs="unbounded">
+	  
+	  <xs:complexType>
+	    <xs:sequence>
+	      <xs:element name="linkingEventIdentifierType" minOccurs="1" maxOccurs="1" type="xs:string">
+		
+	      </xs:element>
+	      <xs:element name="linkingEventIdentifierValue" minOccurs="1" maxOccurs="1" type="xs:string">
+		
+	      </xs:element>
+	    </xs:sequence>
+	    <xs:attribute name="LinkEventXmlID" type="xs:IDREF" use="optional"></xs:attribute>
+	    <xs:anyAttribute namespace="http://www.w3.org/1999/xlink"></xs:anyAttribute>
+	  </xs:complexType>
+	</xs:element>
+	<xs:element name="linkingIntellectualEntityIdentifier" minOccurs="0" maxOccurs="unbounded">
+	  
+	  <xs:complexType>
+	    <xs:sequence>
+	      <xs:element name="linkingIntellectualEntityIdentifierType" minOccurs="1" maxOccurs="1" type="xs:string">
+		
+	      </xs:element>
+	      <xs:element name="linkingIntellectualEntityIdentifierValue" minOccurs="1" maxOccurs="1" type="xs:string">
+		
+	      </xs:element>
+	    </xs:sequence>
+	    <xs:anyAttribute namespace="http://www.w3.org/1999/xlink"></xs:anyAttribute>
+	  </xs:complexType>
+	</xs:element>
+	<xs:element name="linkingPermissionStatementIdentifier" minOccurs="0" maxOccurs="unbounded">
+	  
+	  <xs:complexType>
+	    <xs:sequence>
+	      <xs:element name="linkingPermissionStatementIdentifierType" minOccurs="1" maxOccurs="1" type="xs:string">
+		
+	      </xs:element>
+	      <xs:element name="linkingPermissionStatementIdentifierValue" minOccurs="1" maxOccurs="1" type="xs:string">
+		
+	      </xs:element>
+	    </xs:sequence>
+	    <xs:attribute name="LinkPermissionStatementXmlID" type="xs:IDREF" use="optional"></xs:attribute>
+	    <xs:anyAttribute namespace="http://www.w3.org/1999/xlink"></xs:anyAttribute>
+	  </xs:complexType>
+	</xs:element>
+      </xs:sequence>
+      <xs:attribute name="type">
+	<xs:simpleType>
+	  <xs:restriction base="xs:string">
+	    <xs:enumeration value="representation"/>
+	    <xs:enumeration value="file"/>
+	    <xs:enumeration value="bitstream"/>
+	  </xs:restriction>
+	</xs:simpleType>            
+      </xs:attribute>
+      <xs:attribute name="xmlID" type="xs:ID"></xs:attribute>
+      <xs:attribute name="version" use="optional">
+	<xs:simpleType>
+	  <xs:restriction base="xs:string">
+	    <xs:enumeration value="1.1"/>
+	  </xs:restriction>
+	</xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType name="dateType">
+    <xs:union memberTypes="xs:date xs:dateTime"></xs:union>
+  </xs:simpleType>
+</xs:schema>

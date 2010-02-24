@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright © 2005 OCLC Online Computer Library Center and RLG Research Libraries Group -->
+<!-- PREMIS Preservation Metadata Schema: Agent  -->
+<!-- Version 1.1, September 27, 2005 -->
+<!-- Changes applied to this schema (since Version 1.0, May 17, 2005):
+- September 27, 2005.  Ray Denenberg, Library of Congress.
+- version changed to 1.1.
+- namespace changed (both xmlns and targetNamespace 
+from http://www.loc.gov/standards/premis 
+to http://www.loc.gov/standards/premis/v1.
+- version attribute added.
+- corrected xlink namespace URL to "http://www.w3.org/1999/xlink" (removed slash at end)
+
+-->
+
+
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.loc.gov/standards/premis/v1" xmlns="http://www.loc.gov/standards/premis/v1" elementFormDefault="qualified" attributeFormDefault="unqualified">
+  <xs:element name="agent">
+    <xs:complexType>
+      <xs:sequence>
+	<xs:element name="agentIdentifier" minOccurs="1" maxOccurs="unbounded">
+	  
+	  <xs:complexType>
+	    <xs:sequence>
+	      <xs:element name="agentIdentifierType" minOccurs="1" maxOccurs="1" type="xs:string">
+		
+	      </xs:element>
+	      <xs:element name="agentIdentifierValue" minOccurs="1" maxOccurs="1" type="xs:string">
+		
+	      </xs:element>
+	    </xs:sequence>
+	    <xs:anyAttribute namespace="http://www.w3.org/1999/xlink"></xs:anyAttribute>
+	  </xs:complexType>
+	</xs:element>
+	<xs:element name="agentName" minOccurs="0" maxOccurs="unbounded" type="xs:string">
+	  
+	</xs:element>
+	<xs:element name="agentType" minOccurs="0" maxOccurs="1" type="xs:string">
+	  
+	</xs:element>
+      </xs:sequence>
+      <xs:attribute name="xmlID" type="xs:ID"></xs:attribute>
+      <xs:attribute name="version" use="optional">
+	<xs:simpleType>
+	  <xs:restriction base="xs:string">
+	    <xs:enumeration value="1.1"/>
+	  </xs:restriction>
+	</xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -89,7 +89,7 @@ public class SaxParser
 
     /** The explicit class name of the SAX driver being used. */
     protected String parser;
-
+    
     /**
      * The set of SAX features (toggles) that have been set to fine tune the
      * behavior of the parser.
@@ -105,6 +105,9 @@ public class SaxParser
     /** If true, use XML Catalog files and external entity lookup */
     protected boolean useXmlCatalog;
     
+    /**  The object that does entity resolution. */
+    XMLCatalogResolver resolver;
+
     /** An ordered array list of absolute URIs for the catalog files to be used by the external entity resolver */
     protected String[] xmlCatalogList;
 
@@ -309,6 +312,7 @@ public class SaxParser
         if (useXmlCatalog && (xmlCatalogList != null)) {
             // Create catalog resolver.
             XMLCatalogResolver resolver = new XMLCatalogResolver();
+            this.resolver = resolver;
             // Set public identifier matches are preferred to system identifier matches
             resolver.setPreferPublic(true);
             // catalog list should be set from the Spring config file

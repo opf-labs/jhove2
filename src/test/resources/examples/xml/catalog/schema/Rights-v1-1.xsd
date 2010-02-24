@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright © 2005 OCLC Online Computer Library Center and RLG Research Libraries Group -->
+<!-- PREMIS Preservation Metadata Schema: Rights  -->
+<!-- Version 1.1 September 27, 2005 -->
+<!-- Changes applied to this schema (since Version 1.0, May 17, 2005):
+- September 27, 2005.  Ray Denenberg, Library of Congress.
+	- version changed to 1.1.
+	- namespace changed (both xmlns and targetNamespace 
+	from http://www.loc.gov/standards/premis 
+	to http://www.loc.gov/standards/premis/v1.
+	- version attribute added.
+	- corrected xlink namespace URL to "http://www.w3.org/1999/xlink" (removed slash at end)
+-->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.loc.gov/standards/premis/v1" xmlns="http://www.loc.gov/standards/premis/v1" elementFormDefault="qualified" attributeFormDefault="unqualified">
+  <xs:element name="rights">
+    <xs:complexType>
+      <xs:sequence>
+	<xs:element name="permissionStatement" minOccurs="1" maxOccurs="unbounded">
+	  
+	  <xs:complexType>
+	    <xs:sequence>
+	      <xs:element name="permissionStatementIdentifier" minOccurs="1" maxOccurs="1">
+		
+		<xs:complexType>
+		  <xs:sequence>
+		    <xs:element name="permissionStatementIdentifierType" type="xs:string" minOccurs="1" maxOccurs="1">
+		      
+		    </xs:element>
+		    <xs:element name="permissionStatementIdentifierValue" type="xs:string" minOccurs="1" maxOccurs="1">
+		      
+		    </xs:element>
+		  </xs:sequence>
+		  <xs:anyAttribute namespace="http://www.w3.org/1999/xlink"></xs:anyAttribute>
+		</xs:complexType>
+	      </xs:element>
+	      <xs:element name="linkingObject" minOccurs="1" maxOccurs="unbounded">                            
+		<xs:complexType>
+		  <xs:simpleContent>
+		    <xs:extension base="xs:string">
+		      <xs:attribute name="linkingObjectXmlID" type="xs:IDREF" use="optional">
+		      </xs:attribute>
+		    </xs:extension>
+		  </xs:simpleContent>
+		</xs:complexType>
+	      </xs:element>
+	      <xs:element name="grantingAgent" minOccurs="0" maxOccurs="unbounded">
+		
+		<xs:complexType>
+		  <xs:simpleContent>
+		    <xs:extension base="xs:string">
+		      <xs:attribute name="GrantAgentXmlID" type="xs:IDREF" use="optional"></xs:attribute>
+		      <xs:anyAttribute namespace="http://www.w3.org/1999/xlink"></xs:anyAttribute>
+		    </xs:extension>
+		  </xs:simpleContent>
+		</xs:complexType>
+	      </xs:element>
+	      <xs:element name="grantingAgreement" minOccurs="0" maxOccurs="1">
+		
+		<xs:complexType>
+		  <xs:sequence>
+		    <xs:element name="grantingAgreementIdentification" minOccurs="0" maxOccurs="1">
+		      <xs:complexType>
+			<xs:simpleContent>
+			  <xs:extension base="xs:string">
+			    <xs:anyAttribute namespace="http://www.w3.org/1999/xlink"></xs:anyAttribute>
+			  </xs:extension>
+			</xs:simpleContent>
+		      </xs:complexType>
+		    </xs:element>
+		    <xs:element name="grantingAgreementInformation" minOccurs="0" maxOccurs="1">
+		      <xs:complexType>
+			<xs:sequence>
+			  <xs:any namespace="##any" processContents="lax"></xs:any>
+			</xs:sequence>
+		      </xs:complexType>                                        
+		    </xs:element>
+		  </xs:sequence>
+		</xs:complexType>
+	      </xs:element>
+	      <xs:element name="permissionGranted" minOccurs="1" maxOccurs="unbounded">
+		
+		<xs:complexType>
+		  <xs:sequence>
+		    <xs:element name="act" minOccurs="1" maxOccurs="1" type="xs:string">
+		      
+		    </xs:element>
+		    <xs:element name="restriction" minOccurs="0" maxOccurs="unbounded" type="xs:string">
+		      
+		    </xs:element>
+		    <xs:element name="termOfGrant" minOccurs="1" maxOccurs="1">
+		      
+		      <xs:complexType>
+			<xs:sequence>
+			  <xs:element name="startDate" minOccurs="1" maxOccurs="1" type="xs:date"></xs:element>
+			  <xs:element name="endDate" minOccurs="1" maxOccurs="1" type="xs:date"></xs:element>
+			</xs:sequence>
+		      </xs:complexType>
+		    </xs:element>
+		    <xs:element name="permissionNote" minOccurs="0" maxOccurs="unbounded">
+		      <xs:complexType>
+			<xs:sequence>
+			  <xs:any namespace="##any" processContents="lax"></xs:any>
+			</xs:sequence>
+		      </xs:complexType>                                        
+		    </xs:element>
+		  </xs:sequence>
+		</xs:complexType>
+	      </xs:element>
+	    </xs:sequence>
+	    <xs:attribute name="xmlID" type="xs:ID"></xs:attribute>
+	  </xs:complexType>
+	</xs:element>
+      </xs:sequence>
+      <xs:attribute name="xmlID" type="xs:ID"></xs:attribute>
+      <xs:attribute name="version" use="optional">
+	<xs:simpleType>
+	  <xs:restriction base="xs:string">
+	    <xs:enumeration value="1.1"/>
+	  </xs:restriction>
+	</xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
