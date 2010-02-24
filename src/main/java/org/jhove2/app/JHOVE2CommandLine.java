@@ -50,6 +50,7 @@ import org.jhove2.core.io.Input;
 import org.jhove2.core.io.Input.Type;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
+import org.jhove2.module.display.AbstractDisplayer;
 import org.jhove2.module.display.Displayer;
 
 /**
@@ -274,7 +275,7 @@ public class JHOVE2CommandLine
                                                                  displayerType);
                 }
                 else {
-                    setDisplayer(SpringConfigInfo.getReportable(Displayer.class,
+                    setDisplayer((Displayer)SpringConfigInfo.getReportable(Displayer.class,
                                                                 displayerType));
                 }
             }
@@ -307,7 +308,7 @@ public class JHOVE2CommandLine
         }
         displayerType = (String)parser.getOptionValue(displayerTypeO);
         if (displayerType != null) {
-			this.setDisplayer(SpringConfigInfo.getReportable(Displayer.class,
+			this.setDisplayer((Displayer)SpringConfigInfo.getReportable(Displayer.class,
 					                                          displayerType));
         }
         if ((failFastLimit = (Integer)parser.getOptionValue(failFastLimitO)) != null) {
