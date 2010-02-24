@@ -71,14 +71,14 @@
 			<version>1.0</version>
 		</dependency>
 	</dependencies>
-<licenses>
-  <license>
-    <name>Apache 2</name>
-    <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-    <distribution>repo</distribution>
-    <comments>A business-friendly OSS license</comments>
-  </license>
-</licenses>
+	<licenses>
+		<license>
+			<name>Apache 2</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+			<comments>A business-friendly OSS license</comments>
+		</license>
+	</licenses>
 	<repositories>
 		<!-- for jargs GNU Command Line Parser -->
 		<repository>
@@ -99,8 +99,7 @@
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<testSourceDirectory>src/test/java</testSourceDirectory>
 		<outputDirectory>target/classes</outputDirectory>
-		<testOutputDirectory>target/test-classes
-		</testOutputDirectory>
+		<testOutputDirectory>target/test-classes</testOutputDirectory>
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>

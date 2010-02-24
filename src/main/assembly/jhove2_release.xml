@@ -8,6 +8,22 @@
 	</formats>
 	<fileSets>
 		<fileSet>
+			<directory>${project.basedir}/src/main/scripts</directory>
+			<includes>
+				<include>jhove2.bat</include>
+				<include>jhove2.sh</include>
+			</includes>
+			<outputDirectory>/</outputDirectory>
+			<fileMode>0755</fileMode>
+		</fileSet>
+		<fileSet>
+			<directory>${project.basedir}/src/main/resources</directory>
+			<includes>
+				<include>*.txt</include>
+			</includes>
+			<outputDirectory>/</outputDirectory>
+		</fileSet>
+		<fileSet>
 			<!--  move src dir and all top level files into assembly -->
 			<directory>${project.basedir}</directory>
 			<!-- exclude SVN files -->
@@ -15,6 +31,7 @@
 			<excludes>
 				<exclude>${project.build.directory}/**</exclude>
 				<exclude>${project.basedir}/src/main/assembly/</exclude>
+				<exclude>${project.basedir}/src/main/scripts/</exclude>
 				<exclude>.classpath</exclude>
 				<exclude>.project</exclude>
 				<exclude>.settings/**</exclude>
