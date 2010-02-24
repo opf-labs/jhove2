@@ -8,6 +8,7 @@
 	</formats>
 	<fileSets>
 		<fileSet>
+			<!--  move src dir and all top level files into assembly -->
 			<directory>${project.basedir}</directory>
 			<!-- exclude SVN files -->
 			<useDefaultExcludes>true</useDefaultExcludes>
@@ -19,18 +20,11 @@
 				<exclude>.settings/**</exclude>
 			</excludes>
 		</fileSet>
-		<fileSet>
-			<directory>${project.build.directory}</directory>
-			<includes>
-				<include>*.jar</include>
-			</includes>
-			<outputDirectory>lib/</outputDirectory>
-		</fileSet>
 	</fileSets>
-	<!--
-		<dependencySets> <dependencySet>
-		<outputDirectory>${project.basedir}/lib</outputDirectory> <includes>
-		<include>*.jar</include> </includes> </dependencySet>
-		</dependencySets>
-	-->
+	<!-- copy all project dependencies to lib/ -->
+	<dependencySets>
+		<dependencySet>
+			<outputDirectory>/lib</outputDirectory>
+		</dependencySet>
+	</dependencySets>
 </assembly>

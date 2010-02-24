@@ -71,6 +71,14 @@
 			<version>1.0</version>
 		</dependency>
 	</dependencies>
+<licenses>
+  <license>
+    <name>Apache 2</name>
+    <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    <distribution>repo</distribution>
+    <comments>A business-friendly OSS license</comments>
+  </license>
+</licenses>
 	<repositories>
 		<!-- for jargs GNU Command Line Parser -->
 		<repository>
@@ -143,14 +151,6 @@
 				<artifactId>maven-dependency-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>copy-dependencies</id>
-						<phase>package</phase>
-						<goals>
-							<goal>copy-dependencies</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${project.build.directory}/../lib</outputDirectory>
-						</configuration>
 					</execution>
 					<execution>
 						<id>build-classpath</id>
@@ -161,32 +161,6 @@
 						<configuration>
 							<prefix>$JHOVE2_HOME/lib</prefix>
 							<outputFile>${project.build.directory}/classpath_sh.out</outputFile>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<!--  move *.txt files into jar -->
-			<plugin>
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>2.4.1</version>
-				<executions>
-					<execution>
-						<id>copy-resources</id>
-						<!-- here the phase you need -->
-						<phase>validate</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${basedir}/src/main/resources</outputDirectory>
-							<resources>
-								<resource>
-									<directory>${basedir}/</directory>
-									<includes>
-										<include>*.txt</include>
-									</includes>
-								</resource>
-							</resources>
 						</configuration>
 					</execution>
 				</executions>
@@ -208,9 +182,6 @@
 						</manifestEntries>
 					</archive>
 					<forceCreation>true</forceCreation>
-					<!--
-						<outputDirectory>${project.build.directory}/../lib</outputDirectory>
-					-->
 				</configuration>
 			</plugin>
 			<!--
@@ -229,20 +200,6 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
-			<plugin>
-				<artifactId>maven-clean-plugin</artifactId>
-				<version>2.4</version>
-				<configuration>
-					<filesets>
-						<fileset>
-							<directory>${basedir}/src/main/resources/</directory>
-							<includes>
-								<include>*.txt</include>
-							</includes>
-						</fileset>
-					</filesets>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>
