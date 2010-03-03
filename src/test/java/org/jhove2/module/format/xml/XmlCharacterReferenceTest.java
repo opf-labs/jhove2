@@ -167,7 +167,7 @@ public class XmlCharacterReferenceTest  extends XmlModuleTestBase {
      */   
     @Test
     public void testValidatity() {
-        assertTrue(testXmlModule.isWellFormed());
+        assertEquals(Validity.True,testXmlModule.isWellFormed());
         assertEquals(Validity.True, testXmlModule.isValid());
     }
  

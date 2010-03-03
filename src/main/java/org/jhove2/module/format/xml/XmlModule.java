@@ -46,11 +46,14 @@ import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
+import org.jhove2.core.Message.Context;
+import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.module.format.Validator;
+import org.jhove2.module.format.Validator.Validity;
 
 /**
  * JHOVE2 XML module. This module parses and XML instance and captures selected
@@ -58,10 +61,7 @@ import org.jhove2.module.format.Validator;
  * 
  * @author rnanders
  */
-public class XmlModule 
-    extends BaseFormatModule
-    implements Validator
-{
+public class XmlModule extends BaseFormatModule implements Validator {
 
     /** Module version identifier. */
     public static final String VERSION = "1.9.5";
@@ -76,8 +76,14 @@ public class XmlModule
     /** Module validation coverage. */
     public static final Coverage COVERAGE = Coverage.Inclusive;
     
-    /** Source unit's validity status. */
-    protected Validity isValid;
+    /** The JHOVE2 object passed in by the parse method */
+    protected JHOVE2 jhove2; 
+    
+    /** The Source object passed in by the parse method */
+    protected  Source source;
+
+    /** XML validation status. */
+    protected Validity validity;
 
     /**
      * Get module validation coverage.
@@ -96,11 +102,18 @@ public class XmlModule
      */
     @Override
     public Validity isValid() {
-        return validationResults.getValidity();
+        if (validity == null) {
+            try {
+                validate(jhove2, source);
+            }
+            catch (JHOVE2Exception e) {
+            }
+        }
+        return validity;
     }
 
     /**
-     * Validate a source unit.
+     * Validate the XML parse results.
      * 
      * @param jhove2
      *            the jhove2
@@ -115,7 +128,57 @@ public class XmlModule
     @Override
     public Validity validate(JHOVE2 jhove2, Source source)
             throws JHOVE2Exception {
-        return validationResults.getValidity();
+        /* See if validity has been previously set to False, e.g. by parse exception trap */
+        if ((validity != null) && (validity == Validity.False)) {
+            return validity;
+        }            
+       /* Check to see if there were SAX parser errors of any sort */
+        if (validationResults.fatalParserErrors.getValidationMessageCount() > 0) {
+            Object[]messageArgs = new Object[]{"Fatal Parser Errors found"};
+            saxParserMessages.add(new Message(Severity.ERROR,
+                    Context.OBJECT,
+                    "org.jhove2.module.format.xml.XmlModule.validationErrorsFound",
+                    messageArgs, jhove2.getConfigInfo()));
+            return (validity = Validity.False);
+        }
+        else if (validationResults.parserErrors.getValidationMessageCount() > 0) {
+            Object[]messageArgs = new Object[]{"Parser Errors found"};
+            saxParserMessages.add(new Message(Severity.ERROR,
+                    Context.OBJECT,
+                    "org.jhove2.module.format.xml.XmlModule.validationErrorsFound",
+                    messageArgs, jhove2.getConfigInfo()));
+            return (validity = Validity.False);
+        }
+        /* See if validity has been previously set to undetermined, e.g. if schema file not found */
+        if ((validity != null) && (validity == Validity.Undetermined)) {
+            return validity;
+        }    
+        /* No validation errors found, but make sure schema validation was enabled, if appropriate */
+        if (namespaceInformation.hasSchemaLocations) {
+            if (! saxParser.hasFeature("http://apache.org/xml/features/validation/schema")) {
+                Object[]messageArgs = new Object[]{"Schema location(s) specified, but schema validation is disabled by SAX feature setting."};
+                saxParserMessages.add(new Message(Severity.WARNING,
+                        Context.OBJECT,
+                        "org.jhove2.module.format.xml.XmlModule.validationDisabled",
+                        messageArgs, jhove2.getConfigInfo()));
+                return (validity = Validity.Undetermined);
+            }
+        }
+        /* No validation errors found, but make sure validation was enabled */
+        if (saxParser.hasFeature("http://apache.org/xml/features/validation/dynamic")) {
+            return (validity = Validity.True);
+        }
+        else if (saxParser.hasFeature("http://xml.org/sax/features/validation")) {
+            return (validity = Validity.True);
+        }
+        else {
+            Object[]messageArgs = new Object[]{"XML validation is disabled by SAX feature setting."};
+            saxParserMessages.add(new Message(Severity.WARNING,
+                    Context.OBJECT,
+                    "org.jhove2.module.format.xml.XmlModule.validationDisabled",
+                    messageArgs, jhove2.getConfigInfo()));
+            return (validity = Validity.Undetermined);
+        }
     }
 
     /**
@@ -130,7 +193,7 @@ public class XmlModule
 
     /** The instance of a SAX2 XMLReader class used to parse XML instances. */
     protected SaxParser saxParser;
-    
+
     /** If true, run a separate parse to extract numeric character references */
     protected boolean ncrParser = false;
 
@@ -155,10 +218,16 @@ public class XmlModule
     /** Data store for XML entity references captured during the parse. */
     protected EntityReferences entityReferences = new EntityReferences();
 
-    /** Data store for XML numeric character references captured during the parse. */
+    /**
+     * Data store for XML numeric character references captured during the
+     * parse.
+     */
     protected NumericCharacterReferences numericCharacterReferences = new NumericCharacterReferences();
 
-    /** Data store for XML processing instruction information captured during the parse. */
+    /**
+     * Data store for XML processing instruction information captured during the
+     * parse.
+     */
     protected List<ProcessingInstruction> processingInstructions = new ArrayList<ProcessingInstruction>();
 
     /** Data store for XML comment information captured during the parse. */
@@ -174,8 +243,8 @@ public class XmlModule
     protected ArrayList<Message> saxParserMessages = new ArrayList<Message>();
 
     /** The well formed status of the source unit. */
-    protected boolean wellFormed = false;
-    
+    protected Validity wellFormed = Validity.Undetermined;
+
     /**
      * Sets the SaxParser object to be used for parsing the source unit.
      * 
@@ -196,17 +265,20 @@ public class XmlModule
     public SaxParser getSaxParser() {
         return saxParser;
     }
-    
+
     /** Sets the flag that specifies whether or not to collect comment text */
     public void setCollectCommentText(boolean collectCommentText) {
         this.commentInformation.collectCommentText = collectCommentText;
     }
 
-    /** Sets the class name of the parser to be used for extracting numeric character references */
+    /**
+     * Sets the class name of the parser to be used for extracting numeric
+     * character references
+     */
     public void setNcrParser(boolean ncrParser) {
         this.ncrParser = ncrParser;
     }
-    
+
     /**
      * Gets the XML Declaration data.
      * 
@@ -323,11 +395,11 @@ public class XmlModule
      * @return well-formedness status
      */
     @ReportableProperty(order = 13, value = "XML well-formed status")
-    public boolean isWellFormed() {
+    public Validity isWellFormed() {
         return wellFormed;
     }
-    
-   /**
+
+    /**
      * Get fail fast message.
      * 
      * @return Fail fast message
@@ -346,7 +418,7 @@ public class XmlModule
     public List<Message> getSaxParserMessages() {
         return this.saxParserMessages;
     }
-    
+
     /**
      * Parse a source unit.
      * 
@@ -365,26 +437,34 @@ public class XmlModule
      *             the JHOV e2 exception
      */
     @Override
-    public long parse(JHOVE2 jhove2, Source source) throws EOFException, IOException, 
-             JHOVE2Exception {
+    public long parse(JHOVE2 jhove2, Source source) throws EOFException,
+            IOException, JHOVE2Exception {
+
+        this.jhove2 = jhove2;
+        this.source = source;
         
         /* Use SAX2 to get what information is available from that mechanism */
         saxParser.parse(source, jhove2);
-        
+
         /* Get the input object */
         Invocation config = jhove2.getInvocation();
         Input input = source.getInput(config.getBufferSize(), config
                 .getBufferType());
 
-        /* Do a separate parse of the XML Declaration at the start of the document */
+        /*
+         * Do a separate parse of the XML Declaration at the start of the
+         * document
+         */
         input.setPosition(0L);
         xmlDeclaration.parse(input);
 
         /* Do a separate parse to inventory numeric character references */
         if (this.ncrParser) {
             input.setPosition(0L);
-            numericCharacterReferences.parse(input, xmlDeclaration.encodingFromSAX2, jhove2);            
+            numericCharacterReferences.parse(input,
+                    xmlDeclaration.encodingFromSAX2, jhove2);
         }
+        validate(jhove2,source);
         return 0;
     }
 

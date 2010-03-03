@@ -281,8 +281,21 @@ public class SaxParser
                 }
             }
         }
+     }
+    
+    /**
+     * test whether a given feature is set in the parser.
+     */
+    protected boolean hasFeature(String featureName) {
+        try {
+            boolean value = xmlReader.getFeature(featureName);
+            return value;
+        }
+        catch (Exception e) {
+            return false;
+        }
     }
-
+        
     /**
      * Initialize core event handlers.
      */
@@ -357,11 +370,11 @@ public class SaxParser
         /* Here's where the SAX parsing takes place */
         try {
             xmlReader.parse(saxInputSource);
-            xmlModule.wellFormed = true;
+            xmlModule.wellFormed = Validity.True;
         }
         catch (SAXException e) {
-            xmlModule.wellFormed = false;
-            xmlModule.validationResults.isValid = Validity.False;
+            xmlModule.wellFormed = Validity.False;
+            xmlModule.validity = Validity.False;
             Object[]messageArgs = new Object[]{e.getMessage()};
             xmlModule.saxParserMessages.add(new Message(Severity.ERROR,
                     Context.OBJECT,
@@ -369,12 +382,12 @@ public class SaxParser
                     messageArgs, jhove2.getConfigInfo()));
         }
         catch (FileNotFoundException e) {
-            xmlModule.wellFormed = false;
-            xmlModule.validationResults.isValid = Validity.False;
+            xmlModule.wellFormed = Validity.Undetermined;
+            xmlModule.validity = Validity.Undetermined;
             Object[]messageArgs = new Object[]{e.getMessage()};
             xmlModule.saxParserMessages.add(new Message(Severity.ERROR,
                     Context.OBJECT,
-                    "org.jhove2.module.format.xml.XmlModule.fileNotFoundMessage",
+                    "org.jhove2.module.format.xml.XmlModule.entityReferenceNotResolved",
                     messageArgs, jhove2.getConfigInfo()));
         }
  

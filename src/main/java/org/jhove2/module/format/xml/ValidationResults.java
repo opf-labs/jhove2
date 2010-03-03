@@ -52,9 +52,6 @@ import org.xml.sax.SAXParseException;
  */
 public class ValidationResults extends AbstractReportable {
 
-    /** XML validity status. */
-    protected Validity isValid = Validity.True;
-
     /** Warnings found during XML parsing. */
     protected ValidationMessageList parserWarnings = new ValidationMessageList();
 
@@ -111,7 +108,6 @@ public class ValidationResults extends AbstractReportable {
      *            the exception object containing the error message
      */
     protected void addParserError(SAXParseException exception) {
-        isValid = Validity.False;
         parserErrors.addMessage(exception);
     }
 
@@ -122,17 +118,7 @@ public class ValidationResults extends AbstractReportable {
      *            the exception object containing the fatal error message
      */
     protected void addFatalError(SAXParseException exception) {
-        isValid = Validity.False;
         fatalParserErrors.addMessage(exception);
-    }
-
-    /**
-     * Gets the validity.
-     * 
-     * @return the validity object
-     */
-    public Validity getValidity() {
-        return this.isValid;
     }
 
     /**

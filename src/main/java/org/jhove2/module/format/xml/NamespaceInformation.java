@@ -89,6 +89,9 @@ public class NamespaceInformation extends AbstractReportable {
     /** The de-duplicated list of namespaces declared in the XML document. */
     protected TreeMap<String, Namespace> namespaces = new TreeMap<String, Namespace>();
 
+    /** Flag to test if schemaLocations were specified */
+    protected boolean hasSchemaLocations;
+    
     /**
      * Gets the count of unique namespaces.
      * 
@@ -221,6 +224,7 @@ public class NamespaceInformation extends AbstractReportable {
      */
     protected void tallySchemaLocation(String uri, String location) {
         getNamespace(uri).tallySchemaLocation(location);
+        hasSchemaLocations = true;
     }
 
     /**

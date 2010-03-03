@@ -36,6 +36,11 @@
  */
 package org.jhove2.module.format.xml;
 
+import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.Message;
+import org.jhove2.core.Message.Context;
+import org.jhove2.core.Message.Severity;
+import org.jhove2.module.format.Validator.Validity;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
@@ -72,6 +77,24 @@ public class SaxParserErrorHandler extends DefaultHandler implements
     @Override
     public void warning(SAXParseException exception) throws SAXException {
         xmlModule.validationResults.addParserWarning(exception);
+        /* If we get an warning like the following, we cannot read the schema file
+         * schema_reference.4: Failed to read schema document 'file:myschema.xsd', 
+         * because 
+         * 1) could not find the document; 
+         * 2) the document could not be read; 
+         * 3) the root element of the document is not <xsd:schema>. */
+        if (exception.getMessage().contains("schema_reference.4:")) {
+            xmlModule.validity = Validity.Undetermined;
+            try {
+                Object[]messageArgs = new Object[]{exception.getMessage()};
+                xmlModule.saxParserMessages.add(new Message(Severity.ERROR,
+                        Context.OBJECT,
+                        "org.jhove2.module.format.xml.XmlModule.entityReferenceNotResolved",
+                        messageArgs, xmlModule.jhove2.getConfigInfo()));
+            }
+            catch (JHOVE2Exception e) {
+            }
+        }
     }
 
     /**

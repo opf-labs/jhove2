@@ -52,7 +52,7 @@ public class XmlNotWellFormedTest extends XmlModuleTestBase {
      */   
     @Test
     public void testValidatity() {
-        assertTrue(! testXmlModule.isWellFormed());
+        assertEquals(Validity.False, testXmlModule.isWellFormed());
         assertEquals(Validity.False, testXmlModule.isValid());
     }
 
