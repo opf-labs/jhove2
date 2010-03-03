@@ -48,6 +48,9 @@ import org.jhove2.module.format.FormatModuleFactory;
 import org.jhove2.module.format.FormatProfile;
 
 /**
+ * Spring-based implementation of Factory class for {@link org.jhove2.module.format.FormatModule} 
+ * objects
+ * 
  * @author smorrissey, rnanders
  *
  */

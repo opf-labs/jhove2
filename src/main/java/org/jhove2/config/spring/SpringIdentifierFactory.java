@@ -41,6 +41,9 @@ import org.jhove2.module.identify.Identifier;
 import org.jhove2.module.identify.IdentifierFactory;
 
 /**
+ * Spring-based implementation of Factory class for {@link org.jhove2.module.identify.Identifier} 
+ * objects
+ * 
  * @author smorrissey
  *
  */

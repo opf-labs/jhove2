@@ -39,10 +39,16 @@ package org.jhove2.module.aggrefy;
 import org.jhove2.core.JHOVE2Exception;
 
 /**
+ * Factory Interface for {@link org.jhove2.Aggrefier}instances
+ * 
  * @author smorrissey
  *
  */
 public interface AggrefierFactory {
-	
+	/**
+	 * Factory method for an Aggefier instance
+	 * @return Aggefier instance
+	 * @throws JHOVE2Exception
+	 */
 	public Aggrefier makeAggrefier()throws JHOVE2Exception;
 }

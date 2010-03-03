@@ -41,13 +41,16 @@ import org.jhove2.module.aggrefy.Aggrefier;
 import org.jhove2.module.aggrefy.AggrefierFactory;
 
 /**
+ * Spring-based implementation of Factory class for {@link org.jhove2.module.aggrefy.Aggrefier} 
+ * objects
+ * 
  * @author smorrissey
  *
  */
 public class SpringAggrefierFactory implements AggrefierFactory {
 
 	/* (non-Javadoc)
-	 * @see org.jhove2.module.identify.factory.AggrefierFactory#makeAggrefier()
+	 * @see org.jhove2.module.aggrefy.AggrefierFactory#makeAggrefier()
 	 */
 	@Override
 	public Aggrefier makeAggrefier() throws JHOVE2Exception {

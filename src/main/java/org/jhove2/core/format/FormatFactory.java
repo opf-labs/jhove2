@@ -37,9 +37,17 @@ package org.jhove2.core.format;
 import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2Exception;
 /**
+ * Factory Interface for {@link org.jhove2.core.format.Format}instances
+ * 
  * @author smorrissey
  *
  */
 public interface FormatFactory {
+	/**
+	 * Constructs {@link org.jhove2.core.format.Format}instance
+	 * @param formatIdentifier {@link org.jhove2.core.I8R} that uniquely identifies this Format
+	 * @return Format instances corresponding to the formatIdentifier
+	 * @throws JHOVE2Exception
+	 */
 	public Format makeFormat(I8R formatIdentifier) throws JHOVE2Exception;
 }

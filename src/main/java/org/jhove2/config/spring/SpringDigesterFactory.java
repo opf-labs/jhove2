@@ -41,6 +41,9 @@ import org.jhove2.module.digest.Digester;
 import org.jhove2.module.digest.DigesterFactory;
 
 /**
+ * Spring-based implementation of Factory class for {@link org.jhove2.module.digest.Digestser} 
+ * objects
+ * 
  * @author smorrissey
  *
  */

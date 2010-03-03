@@ -44,14 +44,27 @@ import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.reportable.Reportable;
 
 /**
+ * Interface for methods necessary to obtain configuration information
  * @author smorrissey
  *
  */
 public interface ConfigInfo {
-	
+	/**
+	 * Method t construct an instance of a {@link org.jhove2.core.reportable.Reportable} object
+	 * @param <R>
+	 * @param reportableClass instance of a Class that implements or extends {@link org.jhove2.core.reportable.Reportable}
+	 * @return instance of a {@link org.jhove2.core.reportable.Reportable} object
+	 * @throws JHOVE2Exception
+	 */
 	public <R extends Reportable> R getReportable(Class<? super R> reportableClass)
 	throws JHOVE2Exception;
-	
+	/**
+	 * Method to construct a mapping of all Format aliases in a given Namespace available via configuration
+	 * to the JHOVE2 {@link org.jhove2.core.I8R} for that Format
+	 * @param namespace {@link org.jhove2.core.I8R} identifier for Namespace whose aliases we wish to map
+	 * @return mapping from all configuration instances of aliases in the namespace to the JHOVE2 namespace
+	 * @throws JHOVE2Exception
+	 */
 	public ConcurrentMap<String,String> getFormatAliasIdsToJ2Ids(I8R.Namespace namespace)
 	throws JHOVE2Exception;
 	

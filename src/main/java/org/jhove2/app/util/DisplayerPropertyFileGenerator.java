@@ -45,7 +45,7 @@ import org.jhove2.module.display.AbstractDisplayer;
 
 /**
  * Class to generate editable Java properties file for Displayer settings for
- * Reportable features
+ * {@link org.jhove2.core.reportable.Reportable} features
  * @author smorrissey
  *
  */
@@ -66,12 +66,14 @@ public class DisplayerPropertyFileGenerator extends PropertyFileGenerator {
      * Convention for naming file is {CLASSNAME}_displayer.properties
      */
 	public static final String PROP_BASE_NAME = "_displayer";
-	
+	/** Usage string */
 	public static final String USAGE = 
 		"USAGE:  java -cp CLASSPATH org.jhove2.app.DisplayerPropertyFileGenerator fully-qualified-class-name output-dir-path";
-	
+	/** Error return code for erroneous command line invocation */
 	public static final int EUSAGE = 1;
+	/** Error return code if any exception is thrown while executing program */
 	public static final int EEXCEPTION = 2;
+	/** Return code for successful execution */
 	public static final int SUCCESS = 0;
 	
 	/**
@@ -94,6 +96,7 @@ public class DisplayerPropertyFileGenerator extends PropertyFileGenerator {
 		return map;
 	}
 	/**
+	 * Main method invoked to generate Displayer properties files.
 	 * @param args 2 arguments:  fully qualified class name for Reportable class for which
 	 * property file is to be generated, and directory path to which file should be written
 	 * File with be written to base-path plus sub-directories corresponding to class's package

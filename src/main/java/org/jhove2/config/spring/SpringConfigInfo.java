@@ -55,7 +55,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
- * Implementation of ReportableFactory using Spring.
+ * Implementation of ConfigInfo using Spring.
  * Uses static instance of org.springframework.context.ApplicationContext to create and configure Reportable objects
  * 
  * @author mstrong, slabrams, smorrissey, rnanders

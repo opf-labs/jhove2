@@ -39,10 +39,16 @@ package org.jhove2.module.digest;
 import org.jhove2.core.JHOVE2Exception;
 
 /**
+ * Factory Interface for {@link org.jhove2.module.digest.Digester}instances
+ * 
  * @author smorrissey
  *
  */
 public interface DigesterFactory {
-
+	/**
+	 * Factory method for Digester instances
+	 * @return Digester instance
+	 * @throws JHOVE2Exception
+	 */
 	public Digester makeDigester() throws JHOVE2Exception;
 }

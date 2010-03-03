@@ -45,6 +45,9 @@ import org.jhove2.core.format.Format;
 import org.jhove2.core.format.FormatFactory;
 
 /**
+ * Spring-based implementation of Factory class for {@link org.jhove2.core.format.Format} 
+ * objects
+ * 
  * @author smorrissey
  *
  */

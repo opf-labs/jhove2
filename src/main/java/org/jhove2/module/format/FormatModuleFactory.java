@@ -39,11 +39,19 @@ import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.module.Module;
 
 /**
+ * Factory Interface for {@link org.jhove2.module.format.FormatModule}instances
+ * 
  * @author smorrissey
  *
  */
 public interface FormatModuleFactory {
-	
+	/**
+	 * Construct FormatModule instance for FormatModule able to parse an instance of Format
+	 * identified by the I8R parameters
+	 * @param {@link org.jhove2.core.I8R} for Format for which corresponding FormatModule instance is to be created
+	 * @return FormatModule if one is found, otherwise null
+	 * @throws JHOVE2Exception
+	 */
 	public Module makeFormatModule(I8R identifier)
 		throws JHOVE2Exception;
 	

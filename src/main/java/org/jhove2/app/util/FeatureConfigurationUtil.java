@@ -64,8 +64,9 @@ import org.jhove2.core.reportable.info.ReportableSourceInfo;
  *
  */
 public class FeatureConfigurationUtil {
-
+	/** list of Strings representing all boolean class type names */
 	public static ArrayList<String> booleanTypes;
+	/** list of Strings representing all numeric class type names */
 	public static ArrayList<String> numericTypes;
 
 	public static final String BOOLEAN_TYPE = "boolean";
@@ -87,6 +88,7 @@ public class FeatureConfigurationUtil {
 	public static final String ATOMIC_INTEGER = "java.util.concurrent.atomic.AtomicInteger";
 	public static final String ATOMIC_LONG = "java.util.concurrent.atomic.AtomicLong";
 
+	/** separator character for choices in editable properties files */
 	public static final String OR = " | ";
 
 	/**

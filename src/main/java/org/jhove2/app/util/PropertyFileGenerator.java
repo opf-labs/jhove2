@@ -49,20 +49,32 @@ import org.jhove2.core.reportable.info.ReportablePropertyInfo;
 
 /**
  * Base class for generating editable Java properties files for features of 
- * Reportable classes
+ * {@link org.jhove2.core.reportable.Reportable} classes (for example, properties
+ * files for configuring display of {@link org.jhove2.core.reportable.Reportable} properties, 
+ * or units of measure for {@link org.jhove2.core.reportable.Reportable} properties)
+ * 
  * @author smorrissey
  *
  */
 public abstract class PropertyFileGenerator {
-
+	/** File extension for JHOVE2 properties files*/
 	public static final String EXTENSION = ".properties";
-
+	/** Boiler plate text for head of JHOVE2 properties files*, specific to each class of file */
 	protected String headerInfo;
+	/** Fully-qualified class name for which properties file is to be generated */
 	protected String className;
+	/** Key-Value map to be serialized as property file */
 	protected HashMap<String, String> prop2Value;
+	/** Base name for property file */
 	protected String propertyFileBaseName;
+	/** Base directory for output file.  Intermediate directories corresponding to segments in
+	 * the fully qualified class name will be created as subdirectories of this base directory
+	 * when the property file is created */
 	protected String baseOutputDirectory;
+	/**  Full path to property file to be created */
 	protected String fullFilePath;
+	/** A set of all {@link org.jhove2.core.reportable.info.ReportablePropertyInfo} descriptors of a
+	 * {@link org.jhove2.core.reportable.Reportable} class */
 	protected Set<ReportablePropertyInfo> propsList;
 
 	/**
