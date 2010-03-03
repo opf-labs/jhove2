@@ -1,5 +1,5 @@
 /*
- * � The National Archives 2005-2006.  All rights reserved.
+ * Copyright The National Archives 2005-2006.  All rights reserved.
  * See Licence.txt for full licence details.
  *
  * Developed by:
