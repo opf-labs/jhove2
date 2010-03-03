@@ -145,6 +145,7 @@
 					</additionalClasspathElements>
 				</configuration>
 			</plugin>
+			<!-- build the classpath from the project dependencies -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
@@ -164,7 +165,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- generate the JHOVE2 jar executable -->
+			<!-- generate the JHOVE2 Command Line jar executable -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
@@ -181,6 +182,31 @@
 						</manifestEntries>
 					</archive>
 					<forceCreation>true</forceCreation>
+					<finalName>${project.build.finalName}</finalName>
+					<!--
+						generate the JHOVE2 Units Property File Generator jar executable
+						TODO:  not working! fix this so we can have mulitple jars!
+					-->
+					<archive>
+						<addMavenDescriptor>false</addMavenDescriptor>
+						<!-- make jar executable -->
+						<manifest>
+							<mainClass>org.jhove2.app.UnitsPropertyFileGenerator</mainClass>
+						</manifest>
+						<manifestEntries>
+							<Sealed>true</Sealed>
+						</manifestEntries>
+					</archive>
+					<forceCreation>true</forceCreation>
+					<finalName>${project.build.finalName}_UnitsPropertyFileGenerator</finalName>
+				</configuration>
+			</plugin>
+			<!-- generate the javadoc -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.6.1</version>
+				<configuration>
 				</configuration>
 			</plugin>
 			<!--

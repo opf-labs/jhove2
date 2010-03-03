@@ -37,6 +37,13 @@
 				<exclude>.settings/**</exclude>
 			</excludes>
 		</fileSet>
+		<!-- add the javadoc -->
+		<fileSet>
+			<directory>${project.build.directory}/site/</directory>
+			<includes>
+			</includes>
+			<outputDirectory>/</outputDirectory>
+		</fileSet>
 	</fileSets>
 	<!-- copy all project dependencies to lib/ -->
 	<dependencySets>
