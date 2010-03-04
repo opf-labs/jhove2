@@ -140,8 +140,6 @@
 						</additionalClasspathElement>
 						<additionalClasspathElement>config/droid
 						</additionalClasspathElement>
-						<additionalClasspathElement>config/spring
-						</additionalClasspathElement>
 					</additionalClasspathElements>
 				</configuration>
 			</plugin>
@@ -183,22 +181,6 @@
 					</archive>
 					<forceCreation>true</forceCreation>
 					<finalName>${project.build.finalName}</finalName>
-					<!--
-						generate the JHOVE2 Units Property File Generator jar executable
-						TODO:  not working! fix this so we can have mulitple jars!
-					-->
-					<archive>
-						<addMavenDescriptor>false</addMavenDescriptor>
-						<!-- make jar executable -->
-						<manifest>
-							<mainClass>org.jhove2.app.UnitsPropertyFileGenerator</mainClass>
-						</manifest>
-						<manifestEntries>
-							<Sealed>true</Sealed>
-						</manifestEntries>
-					</archive>
-					<forceCreation>true</forceCreation>
-					<finalName>${project.build.finalName}_UnitsPropertyFileGenerator</finalName>
 				</configuration>
 			</plugin>
 			<!-- generate the javadoc -->
@@ -216,15 +198,11 @@
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<version>2.2-beta-5</version>
-				<executions>
-					<execution>
-						<configuration>
-							<descriptors>
-								<descriptor>src/main/assembly/jhove2_release.xml</descriptor>
-							</descriptors>
-						</configuration>
-					</execution>
-				</executions>
+				<configuration>
+					<descriptors>
+						<descriptor>src/main/assembly/jhove2_release.xml</descriptor>
+					</descriptors>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
