@@ -64,7 +64,7 @@ public class UnitsPropertyFileGenerator extends PropertyFileGenerator {
 	public static final String PROP_BASE_NAME = "_unit";
 	/** Usage string */
 	public static final String USAGE = 
-		"USAGE:  java -cp CLASSPATH org.jhove2.app.UnitsPropertyFileGenerator fully-qualified-class-name output-dir-path";
+		"USAGE:  java -cp CLASSPATH org.jhove2.app.util.UnitsPropertyFileGenerator fully-qualified-class-name output-dir-path";
 	/** Error return code for erroneous command line invocation */
 	public static final int EUSAGE = 1;
 	/** Error return code if any exception is thrown while executing program */
