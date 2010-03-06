@@ -49,7 +49,6 @@ import org.jhove2.core.io.Input.Type;
  * @author mstrong, slabrams
  */
 public class InputFactory {
-
 	/**
 	 * Factory to create an appropriate <code>AbstractInput</code>.
 	 * 
@@ -66,7 +65,8 @@ public class InputFactory {
 	 *             I/O exception instantiating input
 	 */
 	public static Input getInput(File file, int bufferSize, Type type)
-			throws FileNotFoundException, IOException {
+		throws FileNotFoundException, IOException
+	{
 		return getInput(file, bufferSize, type, ByteOrder.LITTLE_ENDIAN);
 	}
 
@@ -84,7 +84,6 @@ public class InputFactory {
 	 * if the java heap needs to be increased beyond its default. 
 	 * If sharing is enabled then the maximum will be reduced 
 	 * to about ~1-1.1GB.
-
 	 * 
 	 * @param file
 	 *            Java {java.io.File} underlying the inputable
@@ -101,21 +100,26 @@ public class InputFactory {
 	 *             I/O exception instantiating input
 	 */
 	public static Input getInput(File file, int bufferSize, Type type,
-			ByteOrder order) throws FileNotFoundException, IOException {
+	                             ByteOrder order)
+	    throws FileNotFoundException, IOException
+	{
 		AbstractInput abstractInput = null;
 		if (type.equals(Type.Direct)) {
 			abstractInput = new DirectInput(file, bufferSize, order);
-		} else if (type.equals(Type.NonDirect)) {
+		}
+		else if (type.equals(Type.NonDirect)) {
 			abstractInput = new NonDirectInput(file, bufferSize, order);
-		} else if (type.equals(Type.Mapped)) {
+		}
+		else if (type.equals(Type.Mapped)) {
 			/* Only files smaller than Input.MAX_MAPPED_FILESIZE can utilize 
 			 * MappedByteBuffers 
 			 */
-			long length;
-			if ((length = file.length()) < Input.MAX_MAPPED_FILE)
+			if (file.length() < Input.MAX_MAPPED_FILE) {
 				abstractInput = new MappedInput(file, bufferSize, order);
-			else
+			}
+			else {
 				abstractInput = new DirectInput(file, bufferSize, order);
+			}
 		}
 
 		return abstractInput;

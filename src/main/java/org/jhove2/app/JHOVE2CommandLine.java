@@ -50,7 +50,6 @@ import org.jhove2.core.io.Input;
 import org.jhove2.core.io.Input.Type;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
-import org.jhove2.module.display.AbstractDisplayer;
 import org.jhove2.module.display.Displayer;
 
 /**
@@ -65,7 +64,7 @@ public class JHOVE2CommandLine
 	public static final String VERSION = "1.9.5";
 
 	/** JHOVE2 application release date. */
-	public static final String RELEASE = "2010-02-16";
+	public static final String RELEASE = "2010-03-05";
 
 	/** JHOVE2 application rights statement. */
 	public static final String RIGHTS = "Copyright 2010 by The Regents of the University of California, "

@@ -53,7 +53,6 @@ import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.module.format.Validator;
-import org.jhove2.module.format.Validator.Validity;
 
 /**
  * JHOVE2 XML module. This module parses and XML instance and captures selected

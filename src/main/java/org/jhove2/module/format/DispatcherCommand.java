@@ -58,12 +58,14 @@ import org.jhove2.module.Module;
  * 
  * @author smorrissey, rnanders
  */
-public class DispatcherCommand extends AbstractCommand {
+public class DispatcherCommand
+    extends AbstractCommand
+{
     /** Module version identifier. */
     public static final String VERSION = "1.9.5";
 
     /** Module release date. */
-    public static final String RELEASE = "2010-02-16";
+    public static final String RELEASE = "2010-03-05";
 
     /** Module rights statement. */
     public static final String RIGHTS = "Copyright 2009 by The Regents of the University of California, "
@@ -96,7 +98,9 @@ public class DispatcherCommand extends AbstractCommand {
      *      org.jhove2.core.source.Source)
      */
     @Override
-    public void execute(JHOVE2 jhove2, Source source) throws JHOVE2Exception {
+    public void execute(JHOVE2 jhove2, Source source)
+        throws JHOVE2Exception
+    {
         /*
          * Sometimes more than one format identifier will match to the same
          * JHOVE2 format; eliminate duplicates from list of JHOVE2 format
@@ -114,7 +118,8 @@ public class DispatcherCommand extends AbstractCommand {
             		jhoveFormats.put(fid.getJHOVE2Identifier(), format);
             	}
             }
-        }        
+        }
+        
         /*
          * More than one JHOVE2 format might map to the same format module, so
          * we will keep track of the modules we run so as not to run them more
@@ -162,7 +167,6 @@ public class DispatcherCommand extends AbstractCommand {
         }
     }
 
-
 	/**
 	 * @return the formatFactory
 	 */
@@ -190,5 +194,4 @@ public class DispatcherCommand extends AbstractCommand {
 	public void setFormatModuleFactory(FormatModuleFactory formatModuleFactory) {
 		this.formatModuleFactory = formatModuleFactory;
 	}
-
 }
