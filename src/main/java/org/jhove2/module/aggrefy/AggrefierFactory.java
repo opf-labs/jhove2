@@ -50,5 +50,6 @@ public interface AggrefierFactory {
 	 * @return Aggefier instance
 	 * @throws JHOVE2Exception
 	 */
-	public Aggrefier makeAggrefier()throws JHOVE2Exception;
+	public Aggrefier getAggrefier()
+	    throws JHOVE2Exception;
 }

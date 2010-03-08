@@ -52,7 +52,7 @@ public interface FormatModuleFactory {
 	 * @return FormatModule if one is found, otherwise null
 	 * @throws JHOVE2Exception
 	 */
-	public Module makeFormatModule(I8R identifier)
+	public Module getFormatModule(I8R identifier)
 		throws JHOVE2Exception;
 	
     /**

@@ -113,7 +113,7 @@ public class DispatcherCommand
              * namespace.
              */
             if (fid.getJHOVE2Identifier() != null) {
-            	Format format = this.getFormatFactory().makeFormat(fid.getJHOVE2Identifier());
+            	Format format = this.getFormatFactory().getFormat(fid.getJHOVE2Identifier());
             	if (format != null){
             		jhoveFormats.put(fid.getJHOVE2Identifier(), format);
             	}
@@ -130,7 +130,7 @@ public class DispatcherCommand
         for (I8R id : jhoveFormats.keySet()) {
             Format format = jhoveFormats.get(id);
             Module module = this.getFormatModuleFactory()
-            	.makeFormatModule(id);
+            	.getFormatModule(id);
             if (module == null) {
                 BaseFormatModule bFormatModule = new BaseFormatModule();
                 String[] parms = new String[] { id.getValue() };

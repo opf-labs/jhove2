@@ -47,17 +47,18 @@ import org.jhove2.module.digest.DigesterFactory;
  * @author smorrissey
  *
  */
-public class SpringDigesterFactory implements DigesterFactory {
-
-	/* (non-Javadoc)
-	 * @see org.jhove2.module.digest.DigesterFactory#makeDigester()
+public class SpringDigesterFactory
+    implements DigesterFactory
+{
+	/** Instantiate a new digester module.
+	 * @see org.jhove2.module.digest.DigesterFactory#getDigester()
 	 */
 	@Override
-	public Digester makeDigester() throws JHOVE2Exception {
-		Digester digester = 
-			SpringConfigInfo.getReportable(Digester.class,
-					                       "DigesterModule");
+	public Digester getDigester()
+	    throws JHOVE2Exception
+	{
+		Digester digester =	SpringConfigInfo.getReportable(Digester.class,
+					                                       "DigesterModule");
 		return digester;
 	}
-
 }

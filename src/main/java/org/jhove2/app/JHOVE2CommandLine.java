@@ -274,7 +274,7 @@ public class JHOVE2CommandLine
                                                                  displayerType);
                 }
                 else {
-                    setDisplayer((Displayer)SpringConfigInfo.getReportable(Displayer.class,
+                    setDisplayer(SpringConfigInfo.getReportable(Displayer.class,
                                                                 displayerType));
                 }
             }
@@ -308,7 +308,7 @@ public class JHOVE2CommandLine
         displayerType = (String)parser.getOptionValue(displayerTypeO);
         if (displayerType != null) {
 			this.setDisplayer((Displayer)SpringConfigInfo.getReportable(Displayer.class,
-					                                          displayerType));
+					                                                    displayerType));
         }
         if ((failFastLimit = (Integer)parser.getOptionValue(failFastLimitO)) != null) {
 			config.setFailFastLimit(failFastLimit.intValue());

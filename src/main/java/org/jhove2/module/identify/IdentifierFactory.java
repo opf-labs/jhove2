@@ -39,7 +39,7 @@ package org.jhove2.module.identify;
 import org.jhove2.core.JHOVE2Exception;
 
 /**
- * Factory Interface for {@link org.jhove2.module.identify.Identifier}instances
+ * Factory Interface for {@link org.jhove2.module.identify.Identifier} instances
  * 
  * @author smorrissey
  *
@@ -50,5 +50,6 @@ public interface IdentifierFactory {
 	 * @return Identifier instance
 	 * @throws JHOVE2Exception
 	 */
-	public Identifier makeIdentifer() throws JHOVE2Exception; 
+	public Identifier getIdentifier()
+	    throws JHOVE2Exception; 
 }

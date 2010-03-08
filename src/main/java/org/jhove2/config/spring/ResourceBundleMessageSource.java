@@ -58,9 +58,9 @@ import org.springframework.util.Assert;
  * any changes required to the Spring configuration files
  * @author smorrissey
  */
-public class ResourceBundleMessageSource extends
-		org.springframework.context.support.ResourceBundleMessageSource {
-	
+public class ResourceBundleMessageSource
+    extends	org.springframework.context.support.ResourceBundleMessageSource
+{	
 	public static final String CLASSPATH_DIRS_PATH = "classpath*:";
 	
 	public static final String MESSAGE_FILE_BASE_MASK = "classpath*:/messages/**/*_";
@@ -196,5 +196,4 @@ public class ResourceBundleMessageSource extends
 		}
 		return messageDirs;
 	}
-
 }

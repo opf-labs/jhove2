@@ -32,15 +32,16 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.jhove2.core.format;
 
 import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2Exception;
+
 /**
  * Factory Interface for {@link org.jhove2.core.format.Format}instances
  * 
  * @author smorrissey
- *
  */
 public interface FormatFactory {
 	/**
@@ -49,5 +50,6 @@ public interface FormatFactory {
 	 * @return Format instances corresponding to the formatIdentifier
 	 * @throws JHOVE2Exception
 	 */
-	public Format makeFormat(I8R formatIdentifier) throws JHOVE2Exception;
+	public Format getFormat(I8R formatIdentifier)
+	    throws JHOVE2Exception;
 }

@@ -93,7 +93,7 @@ public class AggrefierCommand
 		if (source instanceof AggregateSource){
 			try {
 				Aggrefier aggrefier = 
-					this.getAggrefierFactory().makeAggrefier();
+					this.getAggrefierFactory().getAggrefier();
 				TimerInfo timer = aggrefier.getTimerInfo();
 				timer.setStartTime();
 				try {

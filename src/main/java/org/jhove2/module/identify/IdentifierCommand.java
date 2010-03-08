@@ -89,7 +89,7 @@ public class IdentifierCommand
 	{
 		try {		
 			Identifier identifier =
-				this.getIdentifierFactory().makeIdentifer();
+				this.getIdentifierFactory().getIdentifier();
 			TimerInfo timer = identifier.getTimerInfo();
 			timer.setStartTime();
 			try {

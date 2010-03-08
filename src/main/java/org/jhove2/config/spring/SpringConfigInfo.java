@@ -60,49 +60,55 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * 
  * @author mstrong, slabrams, smorrissey, rnanders
  */
-public class SpringConfigInfo implements ConfigInfo {
+public class SpringConfigInfo
+    implements ConfigInfo
+{
 	/** Spring configuration classpath. */
 	public static final String CLASSPATH = "classpath*:**/*-config.xml";
 
 	/** Spring application context. */
 	protected static ApplicationContext context;
 
-
 	@Override
-	public <R extends Reportable> R getReportable(Class<? super R> reportableClass)
-	throws JHOVE2Exception {
+	public <R extends Reportable> R getReportable(Class<? super R> cl)
+	    throws JHOVE2Exception
+	{
 		R reportable = null;
 		try {
-			Map<String, Object> beans = getObjectsForType(reportableClass);
+			Map<String, Object> beans = getObjectsForType(cl);
 			if (beans.size()==0){
-				throw new JHOVE2Exception("No beans found matching name " + reportableClass.getCanonicalName());
+				throw new JHOVE2Exception("No beans found matching name " +
+				                          cl.getCanonicalName());
 			}
 			ArrayList<Reportable> matchingBeans = new ArrayList<Reportable>();
 			for (String beanName:beans.keySet()){
 				Reportable repBean = (Reportable)beans.get(beanName);
-				Class beanClass = repBean.getClass();
-				if (beanClass.getCanonicalName().equals(reportableClass.getCanonicalName())){
+				Class<?> beanClass = repBean.getClass();
+				if (beanClass.getCanonicalName().equals(cl.getCanonicalName())){
 					matchingBeans.add(repBean);
 				}
 			}
-			if (matchingBeans.size()==0){
-				throw new JHOVE2Exception("No beans found matching class " + reportableClass.getCanonicalName());
+			if (matchingBeans.size() == 0) {
+				throw new JHOVE2Exception("No beans found matching class " +
+				                          cl.getCanonicalName());
 			}
-			else if (matchingBeans.size()>1){
-				throw new JHOVE2Exception("Duplicate beans found matching class " + reportableClass.getCanonicalName());
+			else if (matchingBeans.size() > 1) {
+				throw new JHOVE2Exception("Duplicate beans found matching class " +
+				                          cl.getCanonicalName());
 			}
-			else reportable = (R) matchingBeans.get(0);
+			else {
+			    reportable = (R) matchingBeans.get(0);
+			}
 		}
 		catch (JHOVE2Exception e) {
 			throw e;
 		}
 		catch (Exception e){
-			throw new JHOVE2Exception("Exception thrown when attempting to create a bean for class "
-					+ reportableClass.getCanonicalName(), e);
+			throw new JHOVE2Exception("Exception thrown when attempting to create a bean for class " +
+					  cl.getCanonicalName(), e);
 		}
 		return reportable;
 	}
-
 
 	/**
 	 * Get reportable by bean name.
@@ -117,16 +123,17 @@ public class SpringConfigInfo implements ConfigInfo {
 	 * @throws JHOVE2Exception
 	 */
 	@SuppressWarnings("unchecked")
-	public static synchronized <R extends Reportable> R getReportable(
-			Class<? super R> cl, String name) throws JHOVE2Exception {
+	public static synchronized <R extends Reportable> R getReportable(Class<? super R> cl,
+	                                                                  String name)
+	    throws JHOVE2Exception
+	{
 		R reportable = null;
 		try {
 			ApplicationContext context = getContext();
 			reportable = (R) context.getBean(name, cl);
 		}
 		catch (BeansException e) {
-			throw new JHOVE2Exception("Can't instantiate reportable: " + name,
-					e);
+			throw new JHOVE2Exception("Can't instantiate reportable: " + name, e);
 		}
 
 		return reportable;
@@ -140,8 +147,9 @@ public class SpringConfigInfo implements ConfigInfo {
 	 * @return Reportable names
 	 * @throws JHOVE2Exception
 	 */
-	public static synchronized String[] getReportableNames(
-			Class<? extends Reportable> reportable) throws JHOVE2Exception {
+	public static synchronized String[] getReportableNames(Class<? extends Reportable> reportable)
+	    throws JHOVE2Exception
+	{
 		String[] names = null;
 		try {
 			ApplicationContext context = getContext();
@@ -164,7 +172,8 @@ public class SpringConfigInfo implements ConfigInfo {
 	 * @throws JHOVE2Exception
 	 */
 	public Properties getProperties(String name)
-	throws JHOVE2Exception {
+	    throws JHOVE2Exception
+	{
 		Properties props = null;
 		try {
 			ApplicationContext context = getContext();
@@ -172,7 +181,7 @@ public class SpringConfigInfo implements ConfigInfo {
 		}
 		catch (BeansException e) {
 			throw new JHOVE2Exception("Can't instantiate properties: " + name,
-					e);
+					                  e);
 		}
 		return props;
 	}
@@ -190,18 +199,18 @@ public class SpringConfigInfo implements ConfigInfo {
 	 * @throws JHOVE2Exception
 	 */
 	@Override
-	public String getLocalizedMessageText(
-			String messageCode, Object[] messageArgs, Locale locale)
-	throws JHOVE2Exception {
+	public String getLocalizedMessageText(String messageCode, Object[] messageArgs,
+	                                      Locale locale)
+	    throws JHOVE2Exception
+	{
 		String messageText = null;
 		try {
 			ApplicationContext context = getContext();
 			messageText = context.getMessage(messageCode, messageArgs, locale);
 		}
 		catch (BeansException e) {
-			throw new JHOVE2Exception(
-					"Can't retrieve localized message for messageCode "
-					+ messageCode, e);
+			throw new JHOVE2Exception("Can't retrieve localized message for messageCode " +
+					                  messageCode, e);
 		}
 		return messageText;
 	}
@@ -228,25 +237,30 @@ public class SpringConfigInfo implements ConfigInfo {
 	 */
 
 	@SuppressWarnings("unchecked")
-	public static Map<String, Object> getObjectsForType(Class type) throws JHOVE2Exception {
+	public static Map<String, Object> getObjectsForType(Class type)
+	    throws JHOVE2Exception
+	{
 		Map<String, Object> objectMap = null;
 		try {
 			ApplicationContext context = getContext();  		
 			objectMap = context.getBeansOfType(type);
 		}
-		catch (BeansException e){
-			throw new JHOVE2Exception("Exception thrown attempting to get Spring Context", e);
+		catch (BeansException e) {
+			throw new JHOVE2Exception("Exception thrown attempting to get Spring Context",
+			                          e);
 		}
 		return objectMap;
 	}
+	
 	/**
 	 * Accessor for static ApplicationContext instance.
 	 * Creates instance if it does not exist
 	 * @return Spring ApplicationContext instance
 	 * @throws BeansException
 	 */
-	protected static synchronized ApplicationContext  getContext()
-	throws BeansException {
+	protected static synchronized ApplicationContext getContext()
+	    throws BeansException
+	{
 		if (context == null) {
 			ApplicationContext newContext =
 				new ClassPathXmlApplicationContext(CLASSPATH);
@@ -255,10 +269,10 @@ public class SpringConfigInfo implements ConfigInfo {
 		return context;
 	}
 
-
 	@Override
 	public ConcurrentMap<String, String> getFormatAliasIdsToJ2Ids(Namespace namespace) 
-	throws JHOVE2Exception {
+	    throws JHOVE2Exception
+	{
 		ConcurrentHashMap<String, String> map = new ConcurrentHashMap<String, String>();
 		Map<String, Object> formatMap = SpringConfigInfo.getObjectsForType(Format.class);
 		/* For each of the formats */
@@ -272,11 +286,9 @@ public class SpringConfigInfo implements ConfigInfo {
 				if (alias.getNamespace().equals(namespace)) {
 					/* Add an entry into the format identifier to module map */
 					map.put(alias.getValue(), formatID.getValue());
-					//System.out.println(alias.getValue() + " = " + formatID.getValue());
 				}
 			}			
 		}
 		return map;
 	}
-
 }

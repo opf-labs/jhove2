@@ -47,17 +47,18 @@ import org.jhove2.module.identify.IdentifierFactory;
  * @author smorrissey
  *
  */
-public class SpringIdentifierFactory implements IdentifierFactory {
-
-	/* (non-Javadoc)
-	 * @see org.jhove2.module.identify.factory.IdentifierFactory#makeIdentifer()
+public class SpringIdentifierFactory
+    implements IdentifierFactory
+{
+	/** Instantiate a new identifier module.
+	 * @see org.jhove2.module.identify.factory.IdentifierFactory#getIdentifier()
 	 */
 	@Override
-	public Identifier makeIdentifer() throws JHOVE2Exception {
-		Identifier identifier =
-			SpringConfigInfo.getReportable(Identifier.class,
-				                           "IdentifierModule");
+	public Identifier getIdentifier()
+	    throws JHOVE2Exception
+	{
+		Identifier identifier =	SpringConfigInfo.getReportable(Identifier.class,
+		                                                      "IdentifierModule");
 		return identifier;
 	}
-
 }

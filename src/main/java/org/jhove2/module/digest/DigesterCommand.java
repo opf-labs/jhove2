@@ -91,7 +91,7 @@ public class DigesterCommand
 			if (jhove2.getInvocation().getCalcDigests()) {
 				try {	
 					Digester digester = 
-						this.getDigesterFactory().makeDigester();
+						this.getDigesterFactory().getDigester();
 					TimerInfo timer = digester.getTimerInfo();
 					timer.setStartTime();
 					try {

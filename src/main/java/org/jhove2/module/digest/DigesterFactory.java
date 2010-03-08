@@ -50,5 +50,6 @@ public interface DigesterFactory {
 	 * @return Digester instance
 	 * @throws JHOVE2Exception
 	 */
-	public Digester makeDigester() throws JHOVE2Exception;
+	public Digester getDigester()
+	    throws JHOVE2Exception;
 }

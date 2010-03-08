@@ -57,7 +57,8 @@ import org.springframework.util.Assert;
  *
  */
 public class PropertiesFactoryBean 
-extends org.springframework.beans.factory.config.PropertiesFactoryBean {
+    extends org.springframework.beans.factory.config.PropertiesFactoryBean
+{
 	/**
 	 * base name to be used in search for related Java .properties files, for example,
 	 * "displayer" for all files on the classpath that match the pattern
@@ -93,7 +94,4 @@ extends org.springframework.beans.factory.config.PropertiesFactoryBean {
 		}
 		this.setLocations(resources);
 	}
-
-	
-	
 }

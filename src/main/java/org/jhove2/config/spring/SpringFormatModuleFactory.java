@@ -32,6 +32,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.jhove2.config.spring;
 
 import java.util.Map;
@@ -54,19 +55,23 @@ import org.jhove2.module.format.FormatProfile;
  * @author smorrissey, rnanders
  *
  */
-public class SpringFormatModuleFactory implements FormatModuleFactory {
-
+public class SpringFormatModuleFactory
+    implements FormatModuleFactory
+{
 	/**
 	 * Dispatch map. Maps from unique identifiers to Spring bean names for the
 	 * modules associated with the formats.
 	 */
 	static ConcurrentMap<String, String> dispatchMap;
 
-	/* (non-Javadoc)
-	 * @see org.jhove2.module.format.FormatModuleFactory#makeFormatModule(java.lang.String)
+	/** Instantiate a new format module by identifier.
+	 * @param identifier Format identifier
+	 * @see org.jhove2.module.format.FormatModuleFactory#getFormatModule(java.lang.String)
 	 */
 	@Override
-	public Module makeFormatModule(I8R identifier) throws JHOVE2Exception {
+	public Module getFormatModule(I8R identifier)
+	    throws JHOVE2Exception
+	{
 		return getModuleFromIdentifier(identifier);
 	}
 
@@ -79,7 +84,8 @@ public class SpringFormatModuleFactory implements FormatModuleFactory {
 	 * @throws JHOVE2Exception
 	 */
 	public static ConcurrentMap<String, String> getDispatchMap()
-	        throws JHOVE2Exception {
+	    throws JHOVE2Exception
+	{
 	    if (dispatchMap == null) {
 	        dispatchMap = new ConcurrentHashMap<String, String>();
 	        /*
@@ -92,22 +98,21 @@ public class SpringFormatModuleFactory implements FormatModuleFactory {
 	        for (Entry<String, Object> entry : map.entrySet()) {
 	            /* Get the Spring bean name for the format module */
 	            String moduleBeanName = entry.getKey();
+	            
 	            /* Get the JHOVE format identifier that the module references */
 	            BaseFormatModule module = (BaseFormatModule) entry.getValue();
 	            Format format = module.getFormat();
 	            I8R formatID = format.getIdentifier();
+	            
 	            /* Add an entry into the format identifier to module map */
 	            dispatchMap.put(formatID.getValue(), moduleBeanName);
-	            /*
-	             * Now get the format profiles that the module references and
+	            /* Now get the format profiles that the module references and
 	             * add them to the map
 	             */
 	            for (FormatProfile profile : module.getProfiles()) {
 	                I8R profileID = profile.getFormat().getIdentifier();
 	                dispatchMap.put(profileID.getValue(), moduleBeanName);
-	                // System.out.println(profileID.getValue() + " = " + moduleBeanName);
 	            }
-	            // System.out.println(formatID.getValue() + " = " + moduleBeanName);
 	        }
 	    }
 	    return dispatchMap;
@@ -115,7 +120,8 @@ public class SpringFormatModuleFactory implements FormatModuleFactory {
 
 	@Override
     public Module getModuleFromIdentifier(I8R identifier)
-            throws JHOVE2Exception {
+        throws JHOVE2Exception
+    {
         Module module = null;
         String name = SpringFormatModuleFactory.getDispatchMap().get(identifier.getValue());
         if (name != null) {
@@ -123,5 +129,4 @@ public class SpringFormatModuleFactory implements FormatModuleFactory {
         }
         return module;
     }
-
 }

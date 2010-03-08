@@ -47,17 +47,18 @@ import org.jhove2.module.aggrefy.AggrefierFactory;
  * @author smorrissey
  *
  */
-public class SpringAggrefierFactory implements AggrefierFactory {
-
-	/* (non-Javadoc)
+public class SpringAggrefierFactory
+    implements AggrefierFactory
+{
+	/** Instantiate a new aggrefier module.
 	 * @see org.jhove2.module.aggrefy.AggrefierFactory#makeAggrefier()
 	 */
 	@Override
-	public Aggrefier makeAggrefier() throws JHOVE2Exception {
-		Aggrefier aggrefier = 
-			SpringConfigInfo.getReportable(Aggrefier.class,
-					                       "AggrefierModule");
+	public Aggrefier getAggrefier()
+	    throws JHOVE2Exception
+	{
+		Aggrefier aggrefier = SpringConfigInfo.getReportable(Aggrefier.class,
+					                                        "AggrefierModule");
 		return aggrefier;
 	}
-
 }

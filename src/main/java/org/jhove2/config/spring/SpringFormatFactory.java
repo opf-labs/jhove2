@@ -51,16 +51,20 @@ import org.jhove2.core.format.FormatFactory;
  * @author smorrissey
  *
  */
-public class SpringFormatFactory implements FormatFactory {
-
+public class SpringFormatFactory
+    implements FormatFactory
+{
 	/** Map from JHOVE2 format identifiers to bean name for format */
 	public static ConcurrentMap<String, String> jhoveIdToBeanName;
 
-	/* (non-Javadoc)
-	 * @see org.jhove2.core.format.FormatFactory#makeFormat(java.lang.String)
+	/** Instantiate a new format by identifier.
+	 * @param formatIdentifier Format identifier
+	 * @see org.jhove2.core.format.FormatFactory#getFormat(java.lang.String)
 	 */
 	@Override
-	public Format makeFormat(I8R formatIdentifier) throws JHOVE2Exception{
+	public Format getFormat(I8R formatIdentifier)
+	    throws JHOVE2Exception
+	{
 		/*
          * Use the JHOVE2 format id to get bean name for format in
          * Spring configuration file.
