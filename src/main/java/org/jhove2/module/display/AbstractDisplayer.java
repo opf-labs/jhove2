@@ -62,9 +62,10 @@ import org.jhove2.module.AbstractModule;
  * 
  * @author mstrong, slabrams, smorrissey
  */
-public abstract class AbstractDisplayer extends AbstractModule implements
-Displayer {
-
+public abstract class AbstractDisplayer
+    extends AbstractModule
+    implements Displayer
+{
 	/** Feature display visibilities. */
 	public enum DisplayVisibility {
 		Always, IfFalse, IfNegative, IfNonNegative, IfNonPositive, IfNonZero, IfPositive, IfTrue, IfZero, Never

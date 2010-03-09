@@ -47,6 +47,7 @@
 			</list>
 		</property>
 		<property name="configInfo" ref="ConfigInfo"/>
+		<property name="shouldIndent" value="false"/>
 	</bean>
 	
 	<!-- Displayer ConfigInfo bean -->
