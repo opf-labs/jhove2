@@ -274,7 +274,7 @@ public class JHOVE2CommandLine
                                                                  displayerType);
                 }
                 else {
-                    setDisplayer(SpringConfigInfo.getReportable(Displayer.class,
+                    setDisplayer((Displayer)SpringConfigInfo.getReportable(Displayer.class,
                                                                 displayerType));
                 }
             }
