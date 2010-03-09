@@ -16,8 +16,8 @@
 #  -B scope     I/O buffer type (default=Direct)
 #  -d format   Results format (default=Text)
 #  -f limit    Fail fast limit (default=0; no limit on the number of reported errors.
-#  -t temp     Temporary directory (default=java.io.tmpdir)
-#  -T  		   Keep, do not delete temporary files
+#  -t temp     Temporary file directory (default=java.io.tmpdir)
+#  -T  		   Save temporary files
 #  -o file     Output file (default=standard output unit)
 #  -h  Display a help message
 #  file ...    One or more files or directories to be characterized.

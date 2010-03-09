@@ -14,8 +14,8 @@ REM  -b size     I/O buffer size (default=131072)
 REM  -B scope     I/O buffer type (default=Direct)
 REM  -d format   Results format (default=Text)
 REM  -f limit    Fail fast limit (default=0; no limit on the number of reported errors.
-REM  -t temp     Temporary directory (default=java.io.tmpdir)
-REM  -T  		 Keep, do not delete temporary files
+REM  -t temp     Temporary file directory (default=java.io.tmpdir)
+REM  -T  		 Save temporary files
 REM  -o file     Output file (default=standard output unit)
 REM  -h  Display a help message
 REM  file ...    One or more files or directories to be characterized.
