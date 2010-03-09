@@ -171,7 +171,7 @@ public class JHOVE2CommandLine
     *  -d format   Results format (default=Text)
     *  -f limit    Fail fast limit (default=0; no limit on the number of reported errors.
     *  -t temp     Temporary directory (default=java.io.tmpdir)
-    *  -T  Delete temporary files
+    *  -T  		   Keep, Do not delete temporary files
     *  -o file     Output file (default=standard output unit)
     *  -h  Display a help message
     *  file ...    One or more files or directories to be characterized.
@@ -244,8 +244,8 @@ public class JHOVE2CommandLine
     		               "<tempDirectory>",
     		               "Temporary directory (default=java.io.tmpdir)");
         Parser.Option deleteTempFilesO =
-        	parser.addHelp(parser.addBooleanOption('T', "delete-temp-files"),
-                           "Delete temporary files");
+        	parser.addHelp(parser.addBooleanOption('T', "keep-temp-files"),
+                           "do not delete temporary files");
 		Parser.Option filePathnameO =
 			parser.addHelp(parser.addStringOption('o', "output"),
     		               "<outfile>",

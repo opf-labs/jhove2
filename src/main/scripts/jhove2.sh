@@ -17,7 +17,7 @@
 #  -d format   Results format (default=Text)
 #  -f limit    Fail fast limit (default=0; no limit on the number of reported errors.
 #  -t temp     Temporary directory (default=java.io.tmpdir)
-#  -T  Delete temporary files
+#  -T  		   Keep, do not delete temporary files
 #  -o file     Output file (default=standard output unit)
 #  -h  Display a help message
 #  file ...    One or more files or directories to be characterized.

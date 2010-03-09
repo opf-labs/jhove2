@@ -39,10 +39,10 @@
 		</fileSet>
 		<!-- add the javadoc -->
 		<fileSet>
-			<directory>${project.build.directory}/site/</directory>
+			<directory>${project.build.directory}/site/apidocs</directory>
 			<includes>
 			</includes>
-			<outputDirectory>/</outputDirectory>
+			<outputDirectory>/docs</outputDirectory>
 		</fileSet>
 	</fileSets>
 	<!-- copy all project dependencies to lib/ -->
