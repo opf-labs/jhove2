@@ -38,6 +38,7 @@ package org.jhove2.module.display;
 
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Date;
@@ -48,6 +49,7 @@ import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.config.ConfigInfo;
 import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2Exception;
@@ -87,14 +89,18 @@ public abstract class AbstractDisplayer
 	 *  or not a feature should be displayed.
 	 */
 	private static ConcurrentMap<String, DisplayVisibility> visibilities;
+    
+    /** Character encoding. */
+    protected String characterEncoding;
 
-	/** Indentation flag.  If true, displayed output is indented to indicate
-	 * subsidiary relationships.
-	 */
-	protected boolean shouldIndent;
-	
+    /** Configuration. */
 	protected ConfigInfo configInfo;
 
+    /** Indentation flag.  If true, displayed output is indented to indicate
+     * subsidiary relationships.
+     */
+    protected boolean shouldIndent;
+    
 	/**
 	 * Instantiate a new <code>AbstractDisplayer</code>.
 	 * 
@@ -107,6 +113,8 @@ public abstract class AbstractDisplayer
 	 */
 	public AbstractDisplayer(String version, String date, String rights) {
 		super(version, date, rights, Scope.Generic);
+		
+		this.setCharacterEncoding(DEFAULT_CHARACTER_ENCODING);
 		this.setShowIdentifiers(DEFAULT_SHOW_IDENTIFIERS);
 	}
 
@@ -122,7 +130,7 @@ public abstract class AbstractDisplayer
 	 */
 	@Override
 	public void display(Reportable reportable)
-		throws FileNotFoundException, JHOVE2Exception
+		throws FileNotFoundException, JHOVE2Exception, UnsupportedEncodingException
 	{
 		this.display(reportable, this.getFilePathname());
 	}
@@ -138,15 +146,19 @@ public abstract class AbstractDisplayer
 	 *             Can't create output file
 	 * @throws JHOVE2Exception
 	 *             Can't instantiate displayer
+	 * @throws UnsupportedEncodingException 
 	 */
 	@Override
 	public void display(Reportable reportable, String filePathname)
-		throws FileNotFoundException, JHOVE2Exception
+		throws FileNotFoundException, JHOVE2Exception, UnsupportedEncodingException
 	{
 		PrintStream out = System.out;
-		if (filePathname != null) {
+		if (filePathname == null) {
+		    out = new PrintStream(System.out, false, this.characterEncoding);
+		}
+		else {
 			this.filePathname = filePathname;
-			out = new PrintStream(filePathname);
+			out = new PrintStream(filePathname, this.characterEncoding);
 		}	
 		this.display(reportable, out);
 	}
@@ -382,6 +394,21 @@ public abstract class AbstractDisplayer
 			                    I8R identifier, Object value, int order) {
 		this.displayProperty(out, level, name, identifier, value, order, null);
 	}
+    
+    /** Get the character encoding.
+     * @return Character encoding
+     */
+    @Override
+    public String getCharacterEncoding() {
+        return this.characterEncoding;
+    }
+
+    /**
+     * @return the configInfo
+     */
+    public ConfigInfo getConfigInfo() {
+        return configInfo;
+    }
 
 	/** Get output file pathname.
 	 * @return Output file pathname
@@ -482,7 +509,21 @@ public abstract class AbstractDisplayer
 		}
 		return visibilities;
 	}
+	   
+    /** Set character encoding.
+     * @param encoding Character encoding
+     */
+    public void setCharacterEncoding(String encoding) {
+        this.characterEncoding = encoding;
+    }
 
+    /**
+     * @param configInfo the configInfo to set
+     */
+    public void setConfigInfo(ConfigInfo info) {
+        configInfo = info;
+    }
+    
 	/** Set output file pathname
 	 * @param filePathname Output file pathname
 	 */
@@ -511,19 +552,5 @@ public abstract class AbstractDisplayer
 	@Override
 	public void setShouldIndent(boolean shouldIndent){
 		this.shouldIndent = shouldIndent;
-	}
-
-	/**
-	 * @return the configInfo
-	 */
-	public ConfigInfo getConfigInfo() {
-		return configInfo;
-	}
-
-	/**
-	 * @param configInfo the configInfo to set
-	 */
-	public void setConfigInfo(ConfigInfo info) {
-		configInfo = info;
 	}
 }

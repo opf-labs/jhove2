@@ -38,6 +38,7 @@ package org.jhove2.module.display;
 
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 
 import org.jhove2.annotation.ReportableProperty;
@@ -58,16 +59,19 @@ public interface Displayer
 	/** ISO 8601 date/time format. */
 	public static final SimpleDateFormat ISO8601 = new SimpleDateFormat(
 			"yyyy-MM-ss'T'hh:mm:ssZ");
-	
-	/** Default show identifiers flag: don't show identifiers. */
-	public static final boolean DEFAULT_SHOW_IDENTIFIERS = false;
-	
-	/** Default {@link org.jhove2.module.display.Displayer}. */
+   
+    /** Default UTF-8 output character set. */
+    public static final String DEFAULT_CHARACTER_ENCODING = "UTF-8";
+
+    /** Default Displayer class. */
+    public static final String DEFAULT_DISPLAYER_CLASS = "org.jhove2.module.display.TextDisplayer";
+       
+	/** Default Displayer. */
 	public static final String DEFAULT_DISPLAYER_TYPE = "Text";
 
-	/** Default {@link org.jhove2.module.display.Displayer}. */
-	public static final String DEFAULT_DISPLAYER_CLASS = "org.jhove2.module.display.TextDisplayer";
-
+    /** Default show identifiers flag: don't show identifiers. */
+    public static final boolean DEFAULT_SHOW_IDENTIFIERS = false;
+    
 	/**
 	 * Display {@link org.jhove2.core.reportable.Reportable} to the standard output stream.
 	 * 
@@ -79,7 +83,7 @@ public interface Displayer
 	 *             Can't instantiate displayer
 	 */
 	public void display(Reportable reportable)
-		throws FileNotFoundException, JHOVE2Exception;
+		throws FileNotFoundException, JHOVE2Exception, UnsupportedEncodingException;
 	
 	/**
 	 * Display {@link org.jhove2.core.reportable.Reportable} to a named file.
@@ -94,7 +98,7 @@ public interface Displayer
 	 *             Can't instantiate displayer
 	 */
 	public void display(Reportable reportable, String filePathname)
-		throws FileNotFoundException, JHOVE2Exception;
+		throws FileNotFoundException, JHOVE2Exception, UnsupportedEncodingException;
 	
 	/**
 	 * Display {@link org.jhove2.core.reportable.Reportable} to a
@@ -262,13 +266,19 @@ public interface Displayer
 	 *            Nesting level
 	 */
 	public void endDisplay(PrintStream out, int level);
-	
+	   
+    /** Get the character encoding.
+     * @return Character encoding
+     */
+    @ReportableProperty(order = 2, value = "Character encoding.")
+    public String getCharacterEncoding();
+    
 	/**
-	 * 
+	 * Get the configuration object.
 	 * @return
 	 */
 	public ConfigInfo getConfigInfo();
-	
+
 	/** Get the output file pathname
 	 * @return Output file pathname
 	 */
@@ -276,27 +286,32 @@ public interface Displayer
 	public String getFilePathname();
 
 	/**
-	 * Get indentation flag.  If true, displayed output is indented to indicate
-	 * subsidiarity relationships.
-	 * 
-	 * @return Identation flag
-	 */
-	@ReportableProperty(order = 3, value = "Displayer indentation flag; " +
-		"if true, output is indented to indicate subsidiarity relationships.")
-	public boolean getShouldIndent();
-	
-	/**
 	 * Get show identifiers flag.
 	 * 
 	 * @return Show identifier flag; if true, show identifiers in non-XML
 	 *         display modes
 	 */
-	@ReportableProperty(order = 2, value = "Displayer show identifiers flag; " +
+	@ReportableProperty(order = 3, value = "Displayer show identifiers flag; " +
 		"if true, show identifiers in non-XML display modes.")
 	public boolean getShowIdentifiers();
-	
+
+    /**
+     * Get indentation flag.  If true, displayed output is indented to indicate
+     * subsidiarity relationships.
+     * 
+     * @return Identation flag
+     */
+    @ReportableProperty(order = 4, value = "Displayer indentation flag; " +
+        "if true, output is indented to indicate subsidiarity relationships.")
+    public boolean getShouldIndent();
+    
+    /** Set character encoding.
+     * @param encoding Character encoding
+     */
+    public void setCharacterEncoding(String encoding);
+
 	/**
-	 * 
+	 * Set the configuration object.
 	 * @param info
 	 */
 	public void setConfigInfo(ConfigInfo info);
