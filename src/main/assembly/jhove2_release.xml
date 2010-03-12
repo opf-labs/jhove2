@@ -10,8 +10,8 @@
 		<fileSet>
 			<directory>${project.basedir}/src/main/scripts</directory>
 			<includes>
-				<include>jhove2.bat</include>
-				<include>jhove2.sh</include>
+				<include>jhove2*.bat</include>
+				<include>jhove2*.sh</include>
 			</includes>
 			<outputDirectory>/</outputDirectory>
 			<fileMode>0755</fileMode>
