@@ -236,7 +236,7 @@ public class JSONDisplayer
 		if (order == 0) {
 			buffer.append(" ");
 		} else {
-			buffer.append(",");
+			buffer.append(",");   
 		}
 		buffer.append("\"" + name + "\": ");
 		boolean showIdentifiers = this.getShowIdentifiers();
@@ -263,7 +263,7 @@ public class JSONDisplayer
 		}
 		else {
 			buffer.append("\"");
-			buffer.append(escape(value.toString()));
+			buffer.append(escapeCntrlChars(escape(value.toString()).toString()));
 			buffer.append("\"");
 		}
 		if (mustBracket) {
@@ -358,6 +358,21 @@ public class JSONDisplayer
 	protected String escape(String value) {
 		value = value.replace("\\", "\\\\");
 		return value.replace("\"", "\\\"");
+	}
+	/**
+	 * Replace control characters with escaped values. The escape character is a
+	 * backslash (\). 
+	 * 
+	 * @param value
+	 *            String value
+	 * @return Escaped version of the string
+	 */
+	protected String escapeCntrlChars(String value) {
+		value = value.replace("\b", "\\b");
+		value = value.replace("\f", "\\f");
+		value = value.replace("\n", "\\n");
+		value = value.replace("\r", "\\r");
+		return value.replace("\t", "\\t");
 	}
 
 }
