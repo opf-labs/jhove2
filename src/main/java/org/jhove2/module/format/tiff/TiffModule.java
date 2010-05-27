@@ -6,6 +6,7 @@ package org.jhove2.module.format.tiff;
 import java.io.EOFException;
 import java.io.IOException;
 import java.nio.ByteOrder;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.jhove2.core.Invocation;
@@ -61,6 +62,9 @@ public class TiffModule
     /** TIFF version, defaults to 4.  As features are recognized, update the version accordingly */
     protected int version = 4;
 
+    /** List of IFDs */
+    List<IFD> ifdList = new LinkedList<IFD>();
+    
     private Message failFastMessage;
 
     /**
@@ -174,9 +178,9 @@ public class TiffModule
                         "org.jhove2.module.format.tiff.TIFFModule.ByteOffsetNotWordAlignedMessage",
                         messageArgs, jhove2.getConfigInfo()));               
             }
-            /* Parse the IFDs */
-            IFD ifd = new IFD();
-            ifd.parse(jhove2, input, offset);
+            /* Parse the list of IFDs */           
+            ifdList = parseIFDList();
+            //ifd.parse(jhove2, input, offset);
             
         } catch (EOFException e) {
             // TODO:  Report error message Premature EOF
@@ -192,6 +196,14 @@ public class TiffModule
 
         return consumed;
     }
+
+    /** process the chain of IFDs */
+    private List parseIFDList() {
+        
+        // TODO Auto-generated method stub
+        return ifdList;
+    }
+
 
     /**
      * Get module validation coverage.
