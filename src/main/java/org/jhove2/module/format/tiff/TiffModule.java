@@ -132,7 +132,7 @@ public class TiffModule
                 Object[]messageArgs = new Object[]{0, input.getPosition(), b[0]};
                 this.invalidFieldMessage.add(new Message(Severity.ERROR,
                         Context.OBJECT,
-                        "org.jhove2.module.format.tiff.TIFFModule.invalidFieldMessages",
+                        "org.jhove2.module.format.tiff.TIFFModule.invalidFirstTwoBytesMessage",
                         messageArgs, jhove2.getConfigInfo()));
             }
             
@@ -152,7 +152,12 @@ public class TiffModule
             int magic = input.readUnsignedShort();
             if (magic != 43 || magic != 42) {
                 //TODO:  error message
-                // invalid TIFF File
+                Object[]messageArgs = new Object[]{0, input.getPosition(), magic};
+                this.invalidFieldMessage.add(new Message(Severity.ERROR,
+                        Context.OBJECT,
+                        "org.jhove2.module.format.tiff.TIFFModule.invalidMagicNumberMessage",
+                        messageArgs, jhove2.getConfigInfo()));
+               
             }
             else if(magic == 43) {
                 // we got a Big TIFF here
