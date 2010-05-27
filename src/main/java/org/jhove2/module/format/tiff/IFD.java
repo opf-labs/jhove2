@@ -5,6 +5,7 @@ package org.jhove2.module.format.tiff;
 
 import java.io.EOFException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
@@ -24,7 +25,7 @@ import org.jhove2.module.format.Validator.Validity;
 public class IFD 
     extends AbstractReportable {
 	
-	protected List<IFDEntry> entries;
+	protected List<IFDEntry> entries = new ArrayList<IFDEntry>();
 	protected long nextIFD;
 	protected int numEntries;
 	protected long offset;
@@ -85,9 +86,6 @@ public class IFD
             ifdEntry.parse(input);
             entries.add(ifdEntry);
         }
-        
-            
-        
     }
 	
     
