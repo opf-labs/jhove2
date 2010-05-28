@@ -6,6 +6,8 @@ package org.jhove2.module.format.tiff;
 import java.io.IOException;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.JHOVE2;
+import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
@@ -22,7 +24,7 @@ public class IFDEntry
     public enum Type {
         BYTE(1), ASCII(2), SHORT(3), LONG(4), RATIONAL(5), SBYTE(6),
         UNDEFINED(7), SSHORT(8), SLONG(9), SRATIONAL(10), FLOAT(11),
-        DOUBLE(12);
+        DOUBLE(12), IFD(13);
 
         private int fieldType;
 
@@ -45,6 +47,8 @@ public class IFDEntry
 
     /** Contains the value iff the value is 4 or less bytes.  Otherwise is offset to value */
 	protected long valueOffset;
+
+    private Object ByteOffsetNotWordAlignedMessage;
  	
     /** TIFF Version - some field types define the TIFF version */
     protected static int version = 4;
@@ -74,28 +78,37 @@ public class IFDEntry
         return valueOffset;
     }
 
-    public long getVersion() {
+    public int getVersion() {
         return version;
     }
 
 	public IFDEntry() {
 	}
-    public void parse(Input input) {
+	
+    public void parse(JHOVE2 jhove2, Input input) {
         try {
             this.tag = input.readUnsignedShort();
             this.type = Type.values()[input.readUnsignedShort()];
             
             /* type values of 6-12 were defined in TIFF 6.0 */
-            if (this.type.ordinal() >= Type.SBYTE.ordinal()) {
+            if (this.type.ordinal() >= Type.IFD.ordinal()) {
                 version = 6;
             }
             this.count = input.readUnsignedInt();
             this.valueOffset = input.readUnsignedInt();
             if ((this.valueOffset & 1) != 0){
                 /* TODO: Report an 'offset not word aligned' error */
+                Object[]messageArgs = new Object[]{0, input.getPosition(), this.valueOffset};
+                this.ByteOffsetNotWordAlignedMessage = (new Message(Severity.ERROR,
+                        Context.OBJECT,
+                        "org.jhove2.module.format.tiff.IFDEntry.ValueByteOffsetNotWordAlignedMessage",
+                        messageArgs, jhove2.getConfigInfo()));               
             }
         }
         catch (IOException e) {
+            e.printStackTrace();
+        }        
+        catch (JHOVE2Exception e) {
             e.printStackTrace();
         }        
     }

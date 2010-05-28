@@ -9,6 +9,7 @@ import java.nio.ByteOrder;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
@@ -32,8 +33,8 @@ import org.jhove2.module.format.utf8.unicode.Unicode.EOL;
  *
  */
 public class TiffModule 
-    extends BaseFormatModule 
-    implements Validator 
+extends BaseFormatModule 
+implements Validator 
 {
 
     /** UTF-8 module version identifier. */
@@ -55,16 +56,28 @@ public class TiffModule
 
     /** TIFF IFH - Image File Header */
     protected IFH ifh = new IFH();
-    
+
     /** TIFF Invalid Field Message */
     protected List<Message> invalidFieldMessage;
-    
+
+    /** TIFF Invalid Field Message */
+    protected List<Message> invalidFirstTwoBytesMessage;
+
+    /** TIFF Invalid Field Message */
+    protected List<Message> PrematureEOFMessage;
+
+    /** TIFF Invalid Field Message */
+    protected List<Message> invalidMagicNumberMessage;
+
+    /** TIFF Invalid Field Message */
+    protected List<Message> ByteOffsetNotWordAlignedMessage;
+
     /** TIFF version, defaults to 4.  As features are recognized, update the version accordingly */
     protected int version = 4;
 
     /** List of IFDs */
     List<IFD> ifdList = new LinkedList<IFD>();
-    
+
     private Message failFastMessage;
 
     /**
@@ -77,6 +90,13 @@ public class TiffModule
         super(VERSION, RELEASE, RIGHTS, format);
     }
 
+    @ReportableProperty(order = 2, value="IFDs.")
+    public List<IFD> getIFDs() {
+        return ifdList;}
+
+    @ReportableProperty(order = 1, value="IFH")
+    public IFH getIFH() {
+        return ifh;}
 
     /**
      * Parse a source unit.
@@ -96,7 +116,7 @@ public class TiffModule
      */
     @Override
     public long parse(JHOVE2 jhove2, Source source)
-        throws EOFException, IOException, JHOVE2Exception
+    throws EOFException, IOException, JHOVE2Exception
     {
         long consumed = 0L;
         this.isValid = Validity.Undetermined;
@@ -130,69 +150,53 @@ public class TiffModule
                 numErrors++;
                 //TODO: fix this message
                 Object[]messageArgs = new Object[]{0, input.getPosition(), b[0]};
-                this.invalidFieldMessage.add(new Message(Severity.ERROR,
+                this.invalidFirstTwoBytesMessage.add(new Message(Severity.ERROR,
                         Context.OBJECT,
                         "org.jhove2.module.format.tiff.TIFFModule.invalidFirstTwoBytesMessage",
                         messageArgs, jhove2.getConfigInfo()));
             }
-            
+
             if (b[0] == 0x49) {  // 'I'
                 byteOrder = ByteOrder.LITTLE_ENDIAN;
             }
             else if (b[0] ==0x4D) {  // 'M'
                 byteOrder = ByteOrder.BIG_ENDIAN;
             }
-            
+
             ifh.setByteOrdering(new String(b));
             ifh.setByteOrder(byteOrder);
 
             // set the endianess so subsequent reads are the correct endianess
             input.setByteOrder(byteOrder);
-            
+
             int magic = input.readUnsignedShort();
-            if (magic != 43 || magic != 42) {
+            if (magic != 43 && magic != 42) {
                 //TODO:  error message
-                Object[]messageArgs = new Object[]{0, input.getPosition(), magic};
-                this.invalidFieldMessage.add(new Message(Severity.ERROR,
+                Object[]messageArgs = new Object[]{magic};
+                this.invalidMagicNumberMessage.add(new Message(Severity.ERROR,
                         Context.OBJECT,
                         "org.jhove2.module.format.tiff.TIFFModule.invalidMagicNumberMessage",
                         messageArgs, jhove2.getConfigInfo()));
-               
+
             }
             else if(magic == 43) {
                 // we got a Big TIFF here
             }
             ifh.setMagicNumber(magic);
-                        
-            long offset = input.readUnsignedInt();
-            if (offset == 0L) {
-                // no IFD in file
-                this.isValid = Validity.False;
-                Object[]messageArgs = new Object[]{0, input.getPosition(), offset};
-                this.invalidFieldMessage.add(new Message(Severity.ERROR,
-                        Context.OBJECT,
-                        "org.jhove2.module.format.tiff.TIFFModule.NoIFDInTIFFFileMessage",
-                        messageArgs, jhove2.getConfigInfo()));               
-            }
-            
-            if ((offset & 1) != 0) {
-                this.isValid = Validity.False;
-                Object[]messageArgs = new Object[]{0, input.getPosition(), offset};
-                this.invalidFieldMessage.add(new Message(Severity.ERROR,
-                        Context.OBJECT,
-                        "org.jhove2.module.format.tiff.TIFFModule.ByteOffsetNotWordAlignedMessage",
-                        messageArgs, jhove2.getConfigInfo()));               
-            }
-            /* Parse the list of IFDs */           
-            ifdList = parseIFDList();
-            //ifd.parse(jhove2, input, offset);
-            
+
+            ifdList = parseIFDs(jhove2, input);    
+
         } catch (EOFException e) {
             // TODO:  Report error message Premature EOF
             this.isValid = Validity.False;
+            this.PrematureEOFMessage.add(new Message(Severity.ERROR,
+                    Context.OBJECT,
+                    "org.jhove2.module.format.tiff.TIFFModule.PrematureEOFMessage",
+                    jhove2.getConfigInfo()));               
         }
-        
-       
+
+
+
         finally {
             if (input != null) {
                 input.close();
@@ -202,11 +206,88 @@ public class TiffModule
         return consumed;
     }
 
-    /** process the chain of IFDs */
-    private List parseIFDList() {
+    /** parse the IFDs 
+     * 
+     */
+
+    private List<IFD> parseIFDs(JHOVE2 jhove2, Input input){
+        long offset = 0L;
+        try {
+            // read the offset to the 0th IFD
+            offset = input.readUnsignedInt();
+            ifh.setFirstIFD(offset);
+
+            /* must have at least 1 IFD */
+            if (offset == 0L) {
+                this.isValid = Validity.False;
+                this.invalidFieldMessage.add(new Message(Severity.ERROR,
+                        Context.OBJECT,
+                        "org.jhove2.module.format.tiff.TIFFModule.NoIFDInTIFFFileMessage",
+                        jhove2.getConfigInfo()));               
+            }
+
+            /* offset must be word aligned (even number) */
+            if ((offset & 1) != 0) {
+                this.isValid = Validity.False;
+                Object[]messageArgs = new Object[]{0, input.getPosition(), offset};
+                this.ByteOffsetNotWordAlignedMessage.add(new Message(Severity.ERROR,
+                        Context.OBJECT,
+                        "org.jhove2.module.format.tiff.TIFFModule.ByteOffsetNotWordAlignedMessage",
+                        messageArgs, jhove2.getConfigInfo()));               
+            }
+        }
+        catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         
-        // TODO Auto-generated method stub
+        long nextIfdOffset = offset;
+        while (nextIfdOffset != 0L) {
+            /* Parse the list of IFDs */           
+            IFD ifd = parseIFDList(nextIfdOffset, jhove2, input);
+            nextIfdOffset  = ifd.getNextIFD(); 
+        }
         return ifdList;
+
+    }
+
+
+    /** following the offsets, process the list of IFDs 
+     * @param offset 
+     * */
+    private IFD parseIFDList(long ifdOffset, JHOVE2 jhove2, Input input) {
+
+        IFD ifd = new IFD();
+        ifd.setOffset(ifdOffset);
+
+        try {
+            ifd.parse(jhove2, input, ifdOffset);
+            if (ifdList.size () == 0) {
+                ifd.setFirst (true);
+            }
+            else if (ifdList.size() == 1 ) {
+                // For some profiles, the second IFD is assumed to
+                // be the thumbnail.  This may not be valid under
+                // all circumstances.
+                ifd.setThumbnail (true);
+            }
+            ifdList.add(ifd);
+            version = ifd.getVersion();
+        }  
+
+        catch (EOFException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        catch (JHOVE2Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } 
+        return ifd;
     }
 
 
@@ -232,7 +313,7 @@ public class TiffModule
      *      org.jhove2.core.source.Source)
      *      
      */
-   @Override
+    @Override
     public Validity validate(JHOVE2 jhove2, Source source) throws JHOVE2Exception {
         return this.isValid;
     }

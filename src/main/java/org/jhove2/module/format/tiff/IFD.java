@@ -25,16 +25,38 @@ import org.jhove2.module.format.Validator.Validity;
 public class IFD 
     extends AbstractReportable {
 	
+    /** IFD Entries in the IFD */
 	protected List<IFDEntry> entries = new ArrayList<IFDEntry>();
+	
+    /** True if this is the first IFD. */
+    private boolean first;
+    
+    /** validity of IFD */
+    protected Validity isValid;
+    
+    /** offset to the next IFD */
 	protected long nextIFD;
+	
+	/** number of IFD Entries in the IFD */ 
 	protected int numEntries;
+	
+    /** offset of the IFD */ 
 	protected long offset;
-	protected Validity isValid;
-    private List<Message> invalidFieldMessage;
+	
+    /** True if the is the "thumbnail" IFD. */
+    private boolean thumbnail;
+
+    /** TIFF version determined by data in IFD */
+    private int version;
+    
+    /* Message for Zero IFD Entries */
+    private Message zeroIFDEntriesMessage;
+    
 	
 	@ReportableProperty(order = 3, value="IFD entries.")
 	public List<IFDEntry> getIFDEntries() {
-		return entries;}
+		return entries;
+	}
 	  
 	@ReportableProperty(order = 4, value = "Offset of next IFD.")
 	public long getNextIFD() {
@@ -71,19 +93,21 @@ public class IFD
 
         /* Read the first byte. */
         input.setPosition(offset);
-        int numberOfEntries = input.readUnsignedShort();
-        if (numberOfEntries < 1){
+        numEntries = input.readUnsignedShort();
+        if (numEntries < 1){
             this.isValid = Validity.False;
-            Object[]messageArgs = new Object[]{0, input.getPosition(), numberOfEntries};
-            this.invalidFieldMessage.add(new Message(Severity.ERROR,
+            Object[]messageArgs = new Object[]{0, input.getPosition(), numEntries};
+            this.zeroIFDEntriesMessage = new Message(Severity.ERROR,
                     Context.OBJECT,
                     "org.jhove2.module.format.tiff.IFD.zeroIFDEntriesMessage",
-                    messageArgs, jhove2.getConfigInfo()));  
+                    messageArgs, jhove2.getConfigInfo());  
         }
+
         // parse through the list of IFDs
-        for (int i=0; i<numberOfEntries; i++) {
+        for (int i=0; i<numEntries; i++) {
             IFDEntry ifdEntry = new IFDEntry();
-            ifdEntry.parse(input);
+            ifdEntry.parse(jhove2, input);
+            version = ifdEntry.getVersion();
             entries.add(ifdEntry);
         }
     }
@@ -93,4 +117,29 @@ public class IFD
         this.isValid = Validity.Undetermined;
         
      }
+
+    public int getVersion() {
+        // TODO Auto-generated method stub
+        return this.version;
+    }
+
+    public void setFirst(boolean first) {
+        this.first = first;
+    }
+
+    public boolean isFirst() {
+        return first;
+    }
+
+    public void setThumbnail(boolean thumbnail) {
+        this.thumbnail = thumbnail;
+    }
+
+    public boolean isThumbnail() {
+        return thumbnail;
+    }
+
+    public void setOffset(long offset) {
+        this.offset = offset;
+    }
 }

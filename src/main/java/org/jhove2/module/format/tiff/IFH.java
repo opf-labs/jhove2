@@ -34,22 +34,22 @@ public class IFH
 		return byteOrder;
 	}
 	
-	@ReportableProperty(order = 2, value = "IFH byte order.")
+	@ReportableProperty(order = 1, value = "IFH byte order.")
 	public String getByteOrdering() {
 		return byteOrdering;
 	}
 	
-	@ReportableProperty(order = 4, value = "Offset of first IFD.") 
+	@ReportableProperty(order = 3, value = "Offset of first IFD.") 
 	public long getFirstIFD() {
 		return firstIFD;
 	}
 	
-	@ReportableProperty(order = 3, value = "IFH magic number.") 
+	@ReportableProperty(order = 2, value = "IFH magic number.") 
 	public int getMagicNumber() {
 		return magicNumber;
 	}
 	
-	@ReportableProperty(order = 1, value = "Byte offset of IFH.")
+	@ReportableProperty(order = 4, value = "Byte offset of IFH.")
 	public long getByteOffset() {
 		return offset;
 	}
@@ -64,6 +64,13 @@ public class IFH
 
     public void setMagicNumber(int magic) {
         this.magicNumber = magic;
+    }
+
+    public void setOffset(long next) {
+        this.offset = next;
+    }
+    public void setFirstIFD(long next) {
+        this.firstIFD = next;
     }
 	
 
