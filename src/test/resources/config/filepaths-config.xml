@@ -33,9 +33,14 @@
 	        value="examples/utf8/"/>
 	</bean>
 	
-		<bean id="xmlDirBasePath" class="java.lang.String" >
+	<bean id="xmlDirBasePath" class="java.lang.String" >
 		<constructor-arg type="java.lang.String" 
 	        value="examples/xml/"/>
+	</bean>
+	
+	<bean id="sgmlDirBasePath" class="java.lang.String" >
+		<constructor-arg type="java.lang.String" 
+	        value="examples/sgml/"/>
 	</bean>
 
 </beans>

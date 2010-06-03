@@ -1,0 +1,6960 @@
+pISO 8879:1986//ENTITIES Numeric and Special Graphic//EN
+f<OSFILE SOIBASE='/cygdrive/c/svn_repository/portico-docs/data/RequiredFiles/requiredFiles/AMETS_AllenPress_Online_Journals_DTD_1.1/catalog'>iso-num.ent
+TISOnum
+pISO 8879:1986//ENTITIES Publishing//EN
+f<OSFILE SOIBASE='/cygdrive/c/svn_repository/portico-docs/data/RequiredFiles/requiredFiles/AMETS_AllenPress_Online_Journals_DTD_1.1/catalog'>iso-pub.ent
+TISOpub
+pISO 8879:1986//ENTITIES General Technical//EN
+f<OSFILE SOIBASE='/cygdrive/c/svn_repository/portico-docs/data/RequiredFiles/requiredFiles/AMETS_AllenPress_Online_Journals_DTD_1.1/catalog'>iso-tech.ent
+TISOtech
+pISO 8879:1986//ENTITIES Diacritical Marks//EN
+f<OSFILE SOIBASE='/cygdrive/c/svn_repository/portico-docs/data/RequiredFiles/requiredFiles/AMETS_AllenPress_Online_Journals_DTD_1.1/catalog'>iso-dia.ent
+TISOdia
+pISO 8879:1986//ENTITIES Added Latin 1//EN
+f<OSFILE SOIBASE='/cygdrive/c/svn_repository/portico-docs/data/RequiredFiles/requiredFiles/AMETS_AllenPress_Online_Journals_DTD_1.1/catalog'>iso-lat1.ent
+TISOlat1
+pISO 8879:1986//ENTITIES Added Latin 2//EN
+f<OSFILE SOIBASE='/cygdrive/c/svn_repository/portico-docs/data/RequiredFiles/requiredFiles/AMETS_AllenPress_Online_Journals_DTD_1.1/catalog'>iso-lat2.ent
+TISOlat2
+pISO 8879:1986//ENTITIES Added Math Symbols: Arrow Relations//EN
+f<OSFILE SOIBASE='/cygdrive/c/svn_repository/portico-docs/data/RequiredFiles/requiredFiles/AMETS_AllenPress_Online_Journals_DTD_1.1/catalog'>iso-amsa.ent
+TISOamsa
+pISO 8879:1986//ENTITIES Added Math Symbols: Binary Operators//EN
+f<OSFILE SOIBASE='/cygdrive/c/svn_repository/portico-docs/data/RequiredFiles/requiredFiles/AMETS_AllenPress_Online_Journals_DTD_1.1/catalog'>iso-amsb.ent
+TISOamsb
+pISO 8879:1986//ENTITIES Added Math Symbols: Delimiters//EN
+f<OSFILE SOIBASE='/cygdrive/c/svn_repository/portico-docs/data/RequiredFiles/requiredFiles/AMETS_AllenPress_Online_Journals_DTD_1.1/catalog'>iso-amsc.ent
+TISOamsc
+pISO 8879:1986//ENTITIES Added Math Symbols: Negated Relations//EN
+f<OSFILE SOIBASE='/cygdrive/c/svn_repository/portico-docs/data/RequiredFiles/requiredFiles/AMETS_AllenPress_Online_Journals_DTD_1.1/catalog'>iso-amsn.ent
+TISOamsn
+pISO 8879:1986//ENTITIES Added Math Symbols: Ordinary//EN
+f<OSFILE SOIBASE='/cygdrive/c/svn_repository/portico-docs/data/RequiredFiles/requiredFiles/AMETS_AllenPress_Online_Journals_DTD_1.1/catalog'>iso-amso.ent
+TISOamso
+pISO 8879:1986//ENTITIES Added Math Symbols: Relations//EN
+f<OSFILE SOIBASE='/cygdrive/c/svn_repository/portico-docs/data/RequiredFiles/requiredFiles/AMETS_AllenPress_Online_Journals_DTD_1.1/catalog'>iso-amsr.ent
+TISOamsr
+pISO 8879:1986//ENTITIES Greek Letters//EN
+f<OSFILE SOIBASE='/cygdrive/c/svn_repository/portico-docs/data/RequiredFiles/requiredFiles/AMETS_AllenPress_Online_Journals_DTD_1.1/catalog'>iso-grk1.ent
+TISOgrk1
+pISO 8879:1986//ENTITIES Monotoniko Greek//EN
+f<OSFILE SOIBASE='/cygdrive/c/svn_repository/portico-docs/data/RequiredFiles/requiredFiles/AMETS_AllenPress_Online_Journals_DTD_1.1/catalog'>iso-grk2.ent
+TISOgrk2
+pISO 8879:1986//ENTITIES Greek Symbols//EN
+f<OSFILE SOIBASE='/cygdrive/c/svn_repository/portico-docs/data/RequiredFiles/requiredFiles/AMETS_AllenPress_Online_Journals_DTD_1.1/catalog'>iso-grk3.ent
+TISOgrk3
+p-//Allen Press//ENTITIES Special Non-ISO Characters//EN
+f<OSFILE SOIBASE='/cygdrive/c/svn_repository/portico-docs/data/RequiredFiles/requiredFiles/AMETS_AllenPress_Online_Journals_DTD_1.1/catalog'>apchar.ent
+Tapchar
+Iimacrscript SDATA [imacrscript]
+IItildescript SDATA [Itildescript]
+Isccue SDATA [sccue ]
+Iqmacr SDATA [qmacr]
+Iecircquest SDATA [ecircquest]
+Iacirc SDATA [acirc ]
+IGunder SDATA [Gunder]
+Isetmn SDATA [setmn ]
+Iwscriptover SDATA [wscriptover]
+IEEgrdotB SDATA [EEgrdotB]
+Iwprthetaprover SDATA [wprthetaprover]
+Iuml SDATA [uml   ]
+IEEgrdotI SDATA [EEgrdot]
+IPsidot SDATA [Psidot]
+IBrarr SDATA [Brarr]
+Iiquest SDATA [iquest]
+Ifmacrscript SDATA [fmacrscript]
+IOring SDATA [Oring]
+Ilambda SDATA [lambda]
+IMover SDATA [Mover]
+Ilrhar2 SDATA [lrhar2]
+Iuscripttilde SDATA [uscripttilde]
+Ispades SDATA [spades]
+Ii SDATA [i]
+Itscriptover SDATA [tscriptover]
+Inspar SDATA [nspar ]
+IBmacr SDATA [Bmacr]
+IIacgr SDATA [Iacgr ]
+IKHgr SDATA [KHgr  ]
+IUpsidot SDATA [Upsidot]
+IntildeI SDATA [ntildeI]
+Isolover SDATA [solover]
+Ioudot SDATA [oudot]
+Ideltacirccirc SDATA [deltacirccirc]
+IBtilde SDATA [Btilde]
+ICcaron SDATA [Ccaron]
+Ivarr SDATA [varr  ]
+Issetmn SDATA [ssetmn]
+Icmacrscript SDATA [cmacrscript]
+Iudot SDATA [udot]
+Iaunder SDATA [aunder]
+INunderscript SDATA [Nunderscript]
+Ialphaover SDATA [alphaover]
+Iocircgrave SDATA [ocircgrave]
+Iomega SDATA [omega ]
+ITHORN SDATA [THORN ]
+Ilcirccursive SDATA [lcirccursive]
+IOcircsansserB SDATA [OcircsansserB]
+IPrimeover SDATA [Primeover]
+IUtildescript SDATA [Utildescript]
+Iqscriptover SDATA [qscriptover]
+IocaronI SDATA [ocaronI]
+Idutrif SDATA [dutrif]
+Iffilig SDATA [ffilig]
+Iphissubtilde SDATA [phissubtilde]
+Isqufgry SDATA [squfgry]
+Ircirc SDATA [rcirc]
+IPiover SDATA [Piover]
+ISigmadot SDATA [Sigmadot]
+Iprimeover SDATA [primeover]
+IVdot SDATA [Vdot]
+IRscript SDATA [Rscript]
+IGsansserB SDATA [GsansserB]
+IDscripttilde SDATA [Dscripttilde]
+IPsicirc SDATA [Psicirc]
+IubreveI SDATA [ubreveI]
+Inscriptover SDATA [nscriptover]
+Inap SDATA [nap   ]
+Itauover SDATA [tauover]
+IgsansserB SDATA [gsansserB]
+Inotin SDATA [notin ]
+IEEgroverBI SDATA [EEgroverBI]
+IOgrdot SDATA [Ogrdot]
+Ivltri SDATA [vltri ]
+ISmacr SDATA [Smacr]
+IOmegatilde SDATA [Omegatilde]
+Imuover SDATA [muover]
+ImuoverB SDATA [muoverB]
+ICcirc SDATA [Ccirc ]
+Ipoundcirc SDATA [poundcirc]
+ImuoverI SDATA [muoverI]
+Irlhar2 SDATA [rlhar2]
+IZunderscript SDATA [Zunderscript]
+Ithksim SDATA [thksim]
+IHmacrI SDATA [HmacrI]
+IvDash SDATA [vDash ]
+Ikscriptover SDATA [kscriptover]
+IBcircmacr SDATA [Bcircmacr]
+Iatildescript SDATA [atildescript]
+Ivtilde SDATA [vtilde]
+Ipivcirc SDATA [pivcirc]
+IZmacrscript SDATA [Zmacrscript]
+Iemsp SDATA [emsp  ]
+Idtrif SDATA [dtrif ]
+Ilozf SDATA [lozf  ]
+Ietacirc SDATA [etacirc]
+IHscript SDATA [Hscript]
+IIgrave SDATA [Igrave]
+Iwuml SDATA [wuml]
+ImuoverBI SDATA [muoverBI]
+Ibarwed SDATA [barwed]
+IPscripttilde SDATA [Pscripttilde]
+Ihscriptover SDATA [hscriptover]
+Ipsgr SDATA [psgr  ]
+Idrarr SDATA [drarr ]
+Ixutri SDATA [xutri ]
+Irdquor SDATA [rdquor]
+ILstrok SDATA [Lstrok]
+Isqsupe SDATA [sqsupe]
+Iequiv SDATA [equiv ]
+Ioover SDATA [oover]
+IWmacrscript SDATA [Wmacrscript]
+IngE SDATA [ngE   ]
+Idiam SDATA [diam  ]
+Imiddotover SDATA [middotover]
+IEcircsansserB SDATA [EcircsansserB]
+IXuml SDATA [Xuml]
+Idmacr SDATA [dmacr]
+Ithetavover SDATA [thetavover]
+Iszlig SDATA [szlig ]
+Iisinslash SDATA [isinslash]
+Ithetasdot SDATA [thetasdot]
+IVunder SDATA [Vunder]
+ITcirc SDATA [Tcirc]
+Iescriptover SDATA [escriptover]
+Icgrave SDATA [cgrave]
+Ifunderscript SDATA [funderscript]
+Inge SDATA [nge   ]
+IHdotU SDATA [HdotU]
+Ingr SDATA [ngr   ]
+Iscap SDATA [scap  ]
+Ingt SDATA [ngt   ]
+Idarr SDATA [darr  ]
+Icdot SDATA [cdot  ]
+ITmacrscript SDATA [Tmacrscript]
+Iodash SDATA [odash ]
+Imtildescript SDATA [mtildescript]
+IOgrtilde SDATA [Ogrtilde]
+Idash SDATA [dash  ]
+Iutrif SDATA [utrif ]
+Iupsiprthetasprover SDATA [upsiprthetasprover]
+IPtildeI SDATA [PtildeI]
+ICcircI SDATA [CcircI]
+Ibscriptover SDATA [bscriptover]
+Inbsp SDATA [nbsp  ]
+Ibreve SDATA [breve ]
+IPiunder SDATA [Piunder]
+IXsansserB SDATA [XsansserB]
+IQsim SDATA [Qsim]
+IQtilde SDATA [Qtilde]
+Iperiod SDATA [period]
+IPhicirc SDATA [Phicirc]
+Isigmavover SDATA [sigmavover]
+IRcaron SDATA [Rcaron]
+IsogonB SDATA [sogonB]
+IQmacrscript SDATA [Qmacrscript]
+IDdot SDATA [Ddot]
+Iurarr SDATA [urarr]
+Ipunder SDATA [punder]
+IxsansserB SDATA [xsansserB]
+IPsitilde SDATA [Psitilde]
+IVerbar SDATA [Verbar]
+IPgr SDATA [Pgr   ]
+Ithetassub SDATA [thetassub]
+Iumacr SDATA [umacr ]
+Iudiagr SDATA [udiagr]
+InlE SDATA [nlE   ]
+IPhi SDATA [Phi   ]
+IrhobreveI SDATA [rhobreveI]
+Irunderscript SDATA [runderscript]
+Iecirc SDATA [ecirc ]
+INmacrscript SDATA [Nmacrscript]
+Isbreve SDATA [sbreve]
+Iyscript SDATA [yscript]
+IAgr SDATA [Agr   ]
+IFrarr SDATA [Frarr]
+Iktilde SDATA [ktilde]
+Iogrgrave SDATA [ogrgrave]
+Inle SDATA [nle   ]
+Ilcaron SDATA [lcaron]
+Iytildescript SDATA [ytildescript]
+Irhodot SDATA [rhodot]
+IQover SDATA [Qover]
+Inlt SDATA [nlt   ]
+Ilpar SDATA [lpar  ]
+Ipirarr SDATA [pirarr]
+IKmacrscript SDATA [Kmacrscript]
+Invdash SDATA [nvdash]
+IFmacr SDATA [Fmacr]
+ITsansserBsup SDATA [TsansserBsup]
+Ihscripttilde SDATA [hscripttilde]
+Ieuml SDATA [euml  ]
+Ieegrtilde SDATA [eegrtilde]
+IChidot SDATA [Chidot]
+Ipimacr SDATA [pimacr]
+IYscriptover SDATA [Yscriptover]
+Ivbar SDATA [vbar]
+IZetaover SDATA [Zetaover]
+IAunderscript SDATA [Aunderscript]
+Ipdot SDATA [pdot]
+Iscsim SDATA [scsim ]
+IHmacrscript SDATA [Hmacrscript]
+IMucirc SDATA [Mucirc]
+Ioscript SDATA [oscript]
+IKunder SDATA [Kunder]
+IHtildescript SDATA [Htildescript]
+Inot SDATA [not   ]
+Iscir SDATA [scir]
+Ivcirc SDATA [vcirc]
+Ilarrhk SDATA [larrhk]
+IVscriptover SDATA [Vscriptover]
+IIsansserB SDATA [IsansserB]
+IGammathruline SDATA [Gammathruline]
+Inpr SDATA [npr   ]
+Ioverthinsp SDATA [overthinsp]
+IQdot SDATA [Qdot]
+IRarr SDATA [Rarr  ]
+Iemspmacr SDATA [emspmacr]
+IEmacrscript SDATA [Emacrscript]
+Ibover SDATA [bover]
+IisansserB SDATA [isansserB]
+Ivprime SDATA [vprime]
+Iogon SDATA [ogon  ]
+IFtilde SDATA [Ftilde]
+IWmacr SDATA [Wmacr]
+INurarr SDATA [Nurarr]
+IGcaron SDATA [Gcaron]
+Itscripttilde SDATA [tscripttilde]
+Ieunder SDATA [eunder]
+ISscriptover SDATA [Sscriptover]
+IGcirc SDATA [Gcirc ]
+Iscnsim SDATA [scnsim]
+Icursel SDATA [cursel]
+Irtimes SDATA [rtimes]
+IVcircsansserB SDATA [VcircsansserB]
+IGammararr SDATA [Gammararr]
+Igap SDATA [gap   ]
+Ipsub SDATA [psub]
+Iescript SDATA [escript]
+IBmacrscript SDATA [Bmacrscript]
+Ieuro SDATA [euro]
+IMunderscript SDATA [Munderscript]
+Insc SDATA [nsc   ]
+INumacr SDATA [Numacr]
+Ithetasunder SDATA [thetasunder]
+Ipsiover SDATA [psiover]
+IscnE SDATA [scnE  ]
+IogrB SDATA [ogrB]
+IogrI SDATA [ogrI]
+IwtildeI SDATA [wtildeI]
+Izeta SDATA [zeta  ]
+ITtildescript SDATA [Ttildescript]
+ISmacrcirc SDATA [Smacrcirc]
+IRcircI SDATA [RcircI]
+IBgrcirc SDATA [Bgrcirc]
+Igammararr SDATA [gammararr]
+IRhotilde SDATA [Rhotilde]
+Irectsol SDATA [rectsol]
+ILacute SDATA [Lacute]
+IPscriptover SDATA [Pscriptover]
+IDeltararr SDATA [Deltararr]
+Ireversee SDATA [reversee]
+IOgrover SDATA [Ogrover]
+IGammamacr SDATA [Gammamacr]
+ILcedil SDATA [Lcedil]
+Ilarrlp SDATA [larrlp]
+IxrArr SDATA [xrArr ]
+Iacaron SDATA [acaron]
+Inapos SDATA [napos ]
+Ideltararr SDATA [deltararr]
+Iuring SDATA [uring ]
+Igammamacr SDATA [gammamacr]
+Icircled1 SDATA [circled1]
+Icircled2 SDATA [circled2]
+Icircled6 SDATA [circled6]
+IDeltamacr SDATA [Deltamacr]
+Isover SDATA [sover]
+Inum SDATA [num   ]
+IscpL SDATA [scpL]
+IUpsitilde SDATA [Upsitilde]
+IMscriptover SDATA [Mscriptover]
+Igammad SDATA [gammad]
+IPsi SDATA [Psi   ]
+Ihmacr SDATA [hmacr]
+Ioacgr SDATA [oacgr ]
+Ideltamacr SDATA [deltamacr]
+Iupsitilde SDATA [upsitilde]
+Igammatilde SDATA [gammatilde]
+Igel SDATA [gel   ]
+ILambdararr SDATA [Lambdararr]
+IXcirc SDATA [Xcirc]
+Iges SDATA [ges   ]
+Igsdot SDATA [gsdot ]
+IYunderscript SDATA [Yunderscript]
+Iztilde SDATA [ztilde]
+IeunderI SDATA [wunder]
+IEgrover SDATA [Egrover]
+IJscriptover SDATA [Jscriptover]
+IDover SDATA [Dover]
+Iupsicirc SDATA [upsicirc]
+ILambdamacr SDATA [Lambdamacr]
+IChirarr SDATA [Chirarr]
+IZsansserB SDATA [ZsansserB]
+Iggr SDATA [ggr   ]
+Iyrarr SDATA [yrarr]
+IChimacr SDATA [Chimacr]
+IOscripttilde SDATA [Oscripttilde]
+ICbreve SDATA [Cbreve]
+IGscriptover SDATA [Gscriptover]
+IzsansserB SDATA [zsansserB]
+Iominus SDATA [ominus]
+InlArr SDATA [nlArr ]
+IQscript SDATA [Qscript]
+Ioctfill SDATA [octfill]
+ILcircsansserB SDATA [LcircsansserB]
+Ilcursivemacr SDATA [lcursivemacr]
+IXgr SDATA [Xgr   ]
+Ithgr SDATA [thgr  ]
+IZunder SDATA [Zunder]
+Iymacr SDATA [ymacr]
+Insime SDATA [nsime ]
+IctildeI SDATA [ctildeI]
+Ilang SDATA [lang  ]
+Isaucer SDATA [saucer]
+Iicirc SDATA [icirc ]
+Ichicirc SDATA [chicirc]
+IDscriptover SDATA [Dscriptover]
+Ieunderscript SDATA [eunderscript]
+ILambdaunder SDATA [Lambdaunder]
+IJrarr SDATA [Jrarr]
+IIgr SDATA [Igr   ]
+Ifatcross SDATA [fatcross]
+Ilarrtl SDATA [larrtl]
+IUover SDATA [Uover]
+Iltildescript SDATA [ltildescript]
+IAacute SDATA [Aacute]
+IAtildesansserB SDATA [AtildesansserB]
+IEEgrover SDATA [EEgrover]
+Ipidot SDATA [pidot]
+IAcedil SDATA [Acedil]
+IUtilde SDATA [Utilde]
+IJmacr SDATA [Jmacr]
+Itunder SDATA [tunder]
+IAscriptover SDATA [Ascriptover]
+IFtildesansserB SDATA [FtildesansserB]
+IDeltatilde SDATA [Deltatilde]
+IGscript SDATA [Gscript]
+Iaelig SDATA [aelig ]
+Icross SDATA [ballot]
+Ioslash SDATA [oslash]
+IgnE SDATA [gnE   ]
+IKtildesansserB SDATA [KtildesansserB]
+Iolarr SDATA [olarr ]
+Iwbreve SDATA [wbreve]
+Ilarr SDATA [larr  ]
+Ikdot SDATA [kdot]
+Igne SDATA [gne   ]
+Izcirc SDATA [zcirc]
+Ignsim SDATA [gnsim ]
+Iotilde SDATA [otilde]
+IPtildesansserB SDATA [PtildesansserB]
+Ipcaron SDATA [pcaron]
+Iqunderscript SDATA [qunderscript]
+IKsansserB SDATA [KsansserB]
+IAuml SDATA [Auml  ]
+Ixtildescript SDATA [xtildescript]
+Ifover SDATA [fover]
+Iutri SDATA [utri  ]
+Isogon SDATA [sogon]
+Isigmav SDATA [sigmav]
+IUtildesansserB SDATA [UtildesansserB]
+IksansserB SDATA [ksansserB]
+ILdot SDATA [Ldot]
+IBcircsansserB SDATA [BcircsansserB]
+Iuacute SDATA [uacute]
+IKcirc SDATA [Kcirc]
+IZtildesansserB SDATA [ZtildesansserB]
+Igscripttilde SDATA [gscripttilde]
+IUdigr SDATA [Udigr ]
+Iomegatilde SDATA [omegatilde]
+Iyoverscript SDATA [yoverscript]
+IOunder SDATA [Ounder]
+Irdiagbox SDATA [rdiagbox]
+Iulcrop SDATA [ulcrop]
+Iltrie SDATA [ltrie ]
+Iltrif SDATA [ltrif ]
+IUdblac SDATA [Udblac]
+IGtildescript SDATA [Gtildescript]
+Isquare SDATA [square]
+Ioplus SDATA [oplus ]
+Iplus SDATA [plus  ]
+IRbreve SDATA [Rbreve]
+Ivoverscript SDATA [voverscript]
+Iyring SDATA [yring]
+Ipitilde SDATA [pitilde]
+Ixscript SDATA [xscript]
+Ixcircscript SDATA [xcircscript]
+Iwover SDATA [wover]
+Idihrdi SDATA [dihrdi]
+Iensp SDATA [ensp  ]
+IJtilde SDATA [Jtilde]
+IEgrunder SDATA [Egrunder]
+IEtildeI SDATA [EtildeI]
+Ithetasrarr SDATA [thetasrarr]
+Icompfn SDATA [compfn]
+Iutildeover SDATA [utildeover]
+Iiunder SDATA [iunder]
+Iblank SDATA [blank ]
+Idrcrop SDATA [drcrop]
+Idharl SDATA [dharl ]
+Ilmacr SDATA [lmacr]
+Idharr SDATA [dharr ]
+Icuvee SDATA [cuvee ]
+Isscripttilde SDATA [sscripttilde]
+IChiI SDATA [ChiI]
+Ixdot SDATA [xdot]
+Iecircudot SDATA [ecircudot]
+Isoverscript SDATA [soverscript]
+Iodblac SDATA [odblac]
+Iucircscript SDATA [ucircscript]
+Ithetasmacr SDATA [thetasmacr]
+IPhitilde SDATA [Phitilde]
+Ibottom SDATA [bottom]
+Iphiscircmacr SDATA [phiscircmacr]
+IXiover SDATA [Xiover]
+ILunderscript SDATA [Lunderscript]
+IVcircI SDATA [VcircI]
+Ilstroke SDATA [lstroke]
+IHover SDATA [Hover]
+IUogon SDATA [Uogon ]
+Icent SDATA [cent  ]
+Iffllig SDATA [ffllig]
+Isbond SDATA [sbond]
+Idtilde SDATA [dtilde]
+Iecaron SDATA [ecaron]
+IStildescript SDATA [Stildescript]
+IYdot SDATA [Ydot]
+Ipoverscript SDATA [poverscript]
+Inscript SDATA [nscript]
+Iogr SDATA [ogr   ]
+Ircircscript SDATA [rcircscript]
+IEEgrdotBI SDATA [EEgrdotBI]
+IxunderI SDATA [xunderI]
+Iohm SDATA [ohm   ]
+IBscripttilde SDATA [Bscripttilde]
+Ixtildesansserb SDATA [xtildesansserb]
+IpcircI SDATA [pcircI]
+IToverI SDATA [ToverI]
+Ieegrrarr SDATA [eegrrarr]
+Iuharl SDATA [uharl ]
+Imoverscript SDATA [moverscript]
+IRhorarr SDATA [Rhorarr]
+Idlcorn SDATA [dlcorn]
+Iuharr SDATA [uharr ]
+InVDash SDATA [nVDash]
+Iocircscript SDATA [ocircscript]
+Iensptilde SDATA [ensptilde]
+Iminus SDATA [minus ]
+Imcirc SDATA [mcirc]
+Iohgr SDATA [ohgr  ]
+IEEgrtilde SDATA [EEgrtilde]
+IsigmaoverI SDATA [sigmaoverI]
+IDunder SDATA [Dunder]
+INrarr SDATA [Nrarr]
+Ieegrmacr SDATA [eegrmacr]
+IXunderscript SDATA [Xunderscript]
+IRhomacr SDATA [Rhomacr]
+Iexist SDATA [exist ]
+IYover SDATA [Yover]
+Idscript SDATA [dscript]
+Iangmsd SDATA [angmsd]
+Ijoverscript SDATA [joverscript]
+Ilcircscript SDATA [lcircscript]
+ITstrok SDATA [Tstrok]
+Izuml SDATA [zuml]
+Idagger SDATA [dagger]
+Ilcursive SDATA [lcursive]
+Iijlig SDATA [ijlig ]
+INmacr SDATA [Nmacr]
+IUacgr SDATA [Uacgr ]
+IBgr SDATA [Bgr   ]
+IGbreve SDATA [Gbreve]
+IAgrcirc SDATA [Agrcirc]
+Irhocirc SDATA [rhocirc]
+IScircsansserB SDATA [ScircsansserB]
+INscripttilde SDATA [Nscripttilde]
+Igoverscript SDATA [goverscript]
+Iphone SDATA [phone ]
+Iicircscript SDATA [icircscript]
+Iincare SDATA [incare]
+Ithetavdot SDATA [thetavdot]
+Ialphatilde SDATA [Zetatilde]
+IZetadot SDATA [Zetadot]
+IHTmacr SDATA [HTmacr]
+Ifdot SDATA [fdot]
+IMsansserB SDATA [MsansserB]
+IZscript SDATA [Zscript]
+IlAarr SDATA [lAarr ]
+Idunderscript SDATA [dunderscript]
+Idoverscript SDATA [doverscript]
+Iabreve SDATA [abreve]
+IrArr SDATA [rArr  ]
+IEacute SDATA [Eacute]
+IBgrunder SDATA [Bgrunder]
+Ifcircscript SDATA [fcircscript]
+Iiotaacute SDATA [iotaacute]
+Ijover SDATA [jover]
+IYtilde SDATA [Ytilde]
+IZcaron SDATA [Zcaron]
+ImsansserB SDATA [msansserB]
+Iktildescript SDATA [ktildescript]
+Itilde SDATA [tilde ]
+Ichiunder SDATA [chiunder]
+Ikappadot SDATA [kappadot]
+Ixunder SDATA [xunder]
+ITsim SDATA [Tsim]
+Iflat SDATA [flat  ]
+Isquaredim SDATA [squaredim]
+IGdot SDATA [Gdot  ]
+IOcirc SDATA [Ocirc ]
+Iaoverscript SDATA [aoverscript]
+Imiddottilde SDATA [middottilde]
+Iccircscript SDATA [ccircscript]
+Ibetaunder SDATA [betaunder]
+IZscripttilde SDATA [Zscripttilde]
+Ilfloor SDATA [lfloor]
+Inrtri SDATA [nrtri ]
+IEmacrI SDATA [EmacrI]
+Iperp SDATA [perp  ]
+Iwedgeq SDATA [wedgeq]
+Istilde SDATA [stilde]
+IPscript SDATA [Pscript]
+Itcaron SDATA [tcaron]
+IetadotI SDATA [etadotI]
+Ideltadot SDATA [deltadot]
+IkappaoverI SDATA [kappaoverI]
+IthetascircI SDATA [thetascircI]
+Idivonx SDATA [divonx]
+Ixirarr SDATA [xirarr]
+Ibetacircover SDATA [betacircover]
+IbtildeI SDATA [btildeI]
+Inabla SDATA [nabla ]
+Ipunderscript SDATA [punderscript]
+Iwtildescript SDATA [wtildescript]
+Imiddot SDATA [middot]
+Iximacr SDATA [ximacr]
+IxhArr SDATA [xhArr ]
+IIcircsansserB SDATA [IcircsansserB]
+Iyacute SDATA [yacute]
+Itrade SDATA [trade ]
+Ipmacr SDATA [pmacr]
+IUpsicirc SDATA [Upsicirc]
+IPWover SDATA [PWover]
+Iinodot SDATA [inodot]
+Ifscripttilde SDATA [fscripttilde]
+Isigmavdot SDATA [sigmavdot]
+ITdotU SDATA [TdotU]
+ISunder SDATA [Sunder]
+IArarr SDATA [Ararr]
+Ilambdararr SDATA [lambdararr]
+Isdot SDATA [sdot  ]
+IFscript SDATA [Fscript]
+ILover SDATA [Lover]
+IXoverscript SDATA [Xoverscript]
+IZcircscript SDATA [Zcircscript]
+IXtildeI SDATA [XtildeI]
+Iphivover SDATA [phivover]
+Idblac SDATA [dblac ]
+IIuml SDATA [Iuml  ]
+Inablaover SDATA [nablaover]
+Iyngyng SDATA [yngyng]
+IXiunder SDATA [Xiunder]
+IUpsi SDATA [Upsi  ]
+IAmacr SDATA [Amacr ]
+Ilambdamacr SDATA [lambdamacr]
+Ihex SDATA [hex]
+Inudot SDATA [nudot]
+Ildiagbox SDATA [ldiagbox]
+IVbreve SDATA [Vbreve]
+ItauB SDATA [tauB]
+IFtildescript SDATA [Ftildescript]
+ITdot SDATA [Tdot]
+Iblk12 SDATA [blk12 ]
+Iblk14 SDATA [blk14 ]
+INtilde SDATA [Ntilde]
+Inuunder SDATA [nuunder]
+IUoverscript SDATA [Uoverscript]
+Insce SDATA [nsce  ]
+Imunder SDATA [munder]
+IWcircscript SDATA [Wcircscript]
+Iepsiunder SDATA [epsiunder]
+Izgrave SDATA [zgrave]
+Isline SDATA [sime]
+IAgrdot SDATA [Agrdot]
+Itauunder SDATA [tauunder]
+INsubtilde SDATA [Nsubtilde]
+Iqcirc SDATA [qcirc]
+Ibumpe SDATA [bumpe ]
+Irscripttilde SDATA [rscripttilde]
+Iblk34 SDATA [blk34 ]
+IAElig SDATA [AElig ]
+IRoverscript SDATA [Roverscript]
+IZcircI SDATA [ZcircI]
+INtildeI SDATA [NtildeI]
+ITcircscript SDATA [Tcircscript]
+Ipercnt SDATA [percnt]
+ITcedil SDATA [Tcedil]
+Ihtilde SDATA [htilde]
+Iicaron SDATA [icaron]
+IKunderscript SDATA [Kunderscript]
+Ixidot SDATA [xidot]
+IRmacr SDATA [Rmacr]
+IRtildescript SDATA [Rtildescript]
+Ithetavtilde SDATA [thetavtilde]
+ITsub SDATA [Tsub]
+IOoverscript SDATA [Ooverscript]
+IBcirc SDATA [Bcirc]
+Iuuml SDATA [uuml  ]
+IQcircscript SDATA [Qcircscript]
+Ideltatilde SDATA [deltatilde]
+ItcircI SDATA [tcircI]
+Inacute SDATA [nacute]
+Iocircacute SDATA [ocircacute]
+IAscripttilde SDATA [Ascripttilde]
+Ihyphen SDATA [hyphen]
+Iwscript SDATA [wscript]
+IThetararr SDATA [Thetararr]
+Incedil SDATA [ncedil]
+IogrBI SDATA [ogrBI]
+ILoverscript SDATA [Loverscript]
+Iprime SDATA [prime ]
+IchiBI SDATA [chiBI]
+IHunder SDATA [Hunder]
+Iiotararr SDATA [iotararr]
+INcircscript SDATA [Ncircscript]
+Isigmavunder SDATA [sigmavunder]
+ITauover SDATA [Tauover]
+IUgrave SDATA [Ugrave]
+IDeltaB SDATA [DeltaB]
+IOsansserB SDATA [OsansserB]
+Insim SDATA [nsim  ]
+IThetamacr SDATA [Thetamacr]
+Iogrrarr SDATA [ogrrarr]
+Iadot SDATA [adot]
+IWunderscript SDATA [Wunderscript]
+Inover SDATA [nover]
+IosansserB SDATA [osansserB]
+Iiotamacr SDATA [iotamacr]
+InmacrB SDATA [nmacrB]
+IIoverscript SDATA [Ioverscript]
+InmacrI SDATA [nmacrI]
+Iemsp13 SDATA [emsp3 ]
+Iemsp14 SDATA [emsp4 ]
+IKcircscript SDATA [Kcircscript]
+Icmacr SDATA [cmacr]
+Iogrmacr SDATA [ogrmacr]
+IhdotIU SDATA [hdotIU]
+IScirc SDATA [Scirc ]
+ICtilde SDATA [Ctilde]
+IDcaron SDATA [Dcaron]
+IZcircsansserB SDATA [ZcircsansserB]
+Ibunder SDATA [bunder]
+Imscript SDATA [mscript]
+Iograve SDATA [ograve]
+IBdot SDATA [Bdot]
+Ithorn SDATA [thorn ]
+Indash SDATA [ndash ]
+IAring SDATA [Aring ]
+Iotimes SDATA [otimes]
+Irsquf SDATA [rsquf]
+IMscripttilde SDATA [Mscripttilde]
+IFoverscript SDATA [Foverscript]
+Irsquo SDATA [rsquo ]
+IHcircscript SDATA [Hcircscript]
+Izmacrscript SDATA [zmacrscript]
+Iebreve SDATA [ebreve]
+Iphaaa SDATA [phaaa]
+IIacute SDATA [Iacute]
+IEEgr SDATA [EEgr  ]
+Ipar SDATA [par   ]
+Icircledstar SDATA [circledstar]
+ICoverscript SDATA [Coverscript]
+Icunderscript SDATA [cunderscript]
+IEcircscript SDATA [Ecircscript]
+Ithetasbreve SDATA [thetasbreve]
+Ilhard SDATA [lhard ]
+IGg SDATA [Gg    ]
+Iwmacrscript SDATA [wmacrscript]
+Ijtildescript SDATA [jtildescript]
+IefDot SDATA [efDot ]
+Itmacr SDATA [tmacr]
+Iuhblk SDATA [uhblk ]
+Ivprop SDATA [vprop ]
+Ibetaover SDATA [betaover]
+Icscript SDATA [cscript]
+IGt SDATA [Gt    ]
+Ilharu SDATA [lharu ]
+IHT SDATA [HT]
+Inuover SDATA [nuover]
+Istarf SDATA [starf ]
+Idcirc SDATA [dcirc]
+ISigmararr SDATA [Sigmararr]
+Iasymp SDATA [asymp ]
+IrhooverI SDATA [rhooverI]
+Icuml SDATA [cuml]
+Iwmsdots SDATA [wmsdots]
+Icacute SDATA [cacute]
+IBcircscript SDATA [Bcircscript]
+IIR SDATA [IR]
+IYscripttilde SDATA [Yscripttilde]
+Imellip SDATA [mellip]
+Iccedil SDATA [ccedil]
+Iwtilde SDATA [wtilde]
+Isigmararr SDATA [sigmararr]
+IKappaover SDATA [Kappaover]
+IPover SDATA [Pover]
+Itmacrscript SDATA [tmacrscript]
+ISigmamacr SDATA [Sigmamacr]
+Indot SDATA [ndot]
+Icuwed SDATA [cuwed ]
+IEmacr SDATA [Emacr ]
+Ikappaover SDATA [kappaover]
+ICap SDATA [Cap   ]
+Isstarf SDATA [sstarf]
+Isigmamacr SDATA [sigmamacr]
+Ioast SDATA [oast  ]
+Istar SDATA [star  ]
+Iounderscript SDATA [ounderscript]
+Iqmacrscript SDATA [qmacrscript]
+Ibowtie SDATA [bowtie]
+IYscript SDATA [Yscript]
+IPcircsansserB SDATA [PcircsansserB]
+IOdot SDATA [Odot]
+Ivtildescript SDATA [vtildescript]
+Itwixt SDATA [twixt ]
+Ipgr SDATA [pgr   ]
+IepsivoverI SDATA [epsivoverI]
+IIJlig SDATA [IJlig ]
+ISigma SDATA [Sigma ]
+IWunder SDATA [Wunder]
+Iucirc SDATA [ucirc ]
+ILl SDATA [Ll    ]
+ILt SDATA [Lt    ]
+Iphi SDATA [phi]
+Inmacrscript SDATA [nmacrscript]
+Iescripttilde SDATA [escripttilde]
+Ipsubtilde SDATA [psubtilde]
+Insub SDATA [nsub  ]
+Iagr SDATA [agr   ]
+Iogracute SDATA [ogracute]
+Iaover SDATA [aover]
+Insup SDATA [nsup  ]
+Iraquo SDATA [raquo ]
+IDEG SDATA [deg]
+Inldr SDATA [nldr  ]
+Ipiv SDATA [piv   ]
+IZbreve SDATA [Zbreve]
+Isect SDATA [sect  ]
+Idotbox SDATA [dotbox]
+IVmacr SDATA [Vmacr]
+Iphisdot SDATA [phisdot]
+IRtilde SDATA [Rtilde]
+Ikmacrscript SDATA [kmacrscript]
+IOscript SDATA [Oscript]
+IScaron SDATA [Scaron]
+IZetatilde SDATA [Zetatilde]
+IFcirc SDATA [Fcirc]
+IRgr SDATA [Rgr   ]
+IEtildescript SDATA [Etildescript]
+Iqunder SDATA [qunder]
+Icrosshatch SDATA [crosshatch]
+Inles SDATA [nles  ]
+Ipicirc SDATA [picirc]
+IEgrdot SDATA [Egrdot]
+Izetatilde SDATA [zetatilde]
+Iyscriptover SDATA [yscriptover]
+ILmidot SDATA [Lmidot]
+IEEgrdot SDATA [EEgrdot]
+IPi SDATA [Pi    ]
+Ihmacrscript SDATA [hmacrscript]
+Igamma SDATA [gamma ]
+IQsansserB SDATA [QsansserB]
+IChiunder SDATA [Chiunder]
+IKappadot SDATA [Kappadot]
+IChi SDATA [Chi]
+Isqcap SDATA [sqcap ]
+Iqscripttilde SDATA [qscripttilde]
+IEtildesansserB SDATA [EtildesansserB]
+Iltilde SDATA [ltilde]
+Ietadot SDATA [etadot]
+Ivscriptover SDATA [vscriptover]
+Irover SDATA [rover]
+IqsansserB SDATA [qsansserB]
+Iisin SDATA [isin  ]
+Itaucaron SDATA [taucaron]
+IJunderscript SDATA [Junderscript]
+IEscript SDATA [Escript]
+Ifronline SDATA [fronline]
+IJtildesansserB SDATA [JtildesansserB]
+Iemacrscript SDATA [emacrscript]
+Iphissub SDATA [phissub]
+IFcircsansserB SDATA [FcircsansserB]
+IPsiover SDATA [Psiover]
+Igmacr SDATA [gmacr]
+IhArr SDATA [hArr  ]
+Ietabreve SDATA [etabreve]
+ITovercirc SDATA [Tovercirc]
+IQtildescript SDATA [Qtildescript]
+IWcirc SDATA [Wcirc ]
+Iamp SDATA [amp   ]
+Ieudotcirc SDATA [eudotcirc]
+IOtildesansserB SDATA [OtildesansserB]
+Isscriptover SDATA [sscriptover]
+Iracute SDATA [racute]
+Iand SDATA [and   ]
+IDeltadot SDATA [Deltadot]
+Ircedil SDATA [rcedil]
+IxidotBI SDATA [xidotBI]
+Iang SDATA [ang   ]
+Ivrtri SDATA [vrtri ]
+Ibmacrscript SDATA [bmacrscript]
+IqcircmacrI SDATA [qcircmacrI]
+ICover SDATA [Cover]
+Imuunder SDATA [muunder]
+INucirc SDATA [Nucirc]
+ITtildesansserB SDATA [TtildesansserB]
+ILunder SDATA [Lunder]
+Ifemale SDATA [female]
+Iepsivdot SDATA [epsivdot]
+IYgrave SDATA [Ygrave]
+Igrave SDATA [grave ]
+Izeroneginf SDATA [zeroneginf]
+Ipscriptover SDATA [pscriptover]
+Itimes SDATA [times ]
+IGammacirc SDATA [Gammacirc]
+Ifflig SDATA [fflig ]
+IYtildesansserB SDATA [YtildesansserB]
+Ixrarr SDATA [xrarr]
+Igequaltilde SDATA [gequaltilde]
+Ixitilde SDATA [xitilde]
+IvoverB SDATA [voverB]
+Iape SDATA [ape   ]
+Igammacirc SDATA [gammacirc]
+Ipre SDATA [pre   ]
+IVunderscript SDATA [Vunderscript]
+IDeltacirc SDATA [Deltacirc]
+IGtilde SDATA [Gtilde]
+Ixmacr SDATA [xmacr]
+Imscriptover SDATA [mscriptover]
+Ifunder SDATA [funder]
+Ihcirc SDATA [hcirc ]
+Ideltacirc SDATA [deltacirc]
+Ipsi SDATA [psi   ]
+Isemi SDATA [semi  ]
+IXi SDATA [Xi    ]
+IBsansserB SDATA [BsansserB]
+IVring SDATA [Vring]
+Iequals SDATA [equals]
+Iphisrarr SDATA [phisrarr]
+ITover SDATA [Tover]
+ILscripttilde SDATA [Lscripttilde]
+Iaogon SDATA [aogon ]
+Iurcorn SDATA [urcorn]
+Ijscriptover SDATA [jscriptover]
+IScircI SDATA [ScircI]
+Iibreve SDATA [ibreve]
+IOmegararr SDATA [Omegararr]
+ILambdacirc SDATA [Lambdacirc]
+IbsansserB SDATA [bsansserB]
+Iicy SDATA [icy]
+Iast SDATA [ast   ]
+Irthree SDATA [rthree]
+Ivscript SDATA [vscript]
+IImacr SDATA [Imacr ]
+Iidot SDATA [idot]
+IYmacrscript SDATA [Ymacrscript]
+Iatilde SDATA [atilde]
+IThetaunder SDATA [Thetaunder]
+Iphismacr SDATA [phismacr]
+IuArr SDATA [uArr  ]
+ICtildeI SDATA [CtildeI]
+Iomegararr SDATA [omegararr]
+Ialpha SDATA [alpha ]
+ITauunder SDATA [Tauunder]
+IOmegamacr SDATA [Omegamacr]
+Iminusb SDATA [minusb]
+Ibunderscript SDATA [bunderscript]
+IChicirc SDATA [Chicirc]
+Igscriptover SDATA [gscriptover]
+IPhiover SDATA [Phiover]
+Inlarr SDATA [nlarr ]
+ILambda SDATA [Lambda]
+Ieovercirc SDATA [eovercirc]
+Izetararr SDATA [zetararr]
+Iomegamacr SDATA [omegamacr]
+IVmacrscript SDATA [Vmacrscript]
+Iitildescript SDATA [itildescript]
+IJdot SDATA [Jdot]
+Ixgr SDATA [xgr   ]
+Iiff SDATA [iff   ]
+Igacute SDATA [gacute]
+Iycirc SDATA [ycirc ]
+ISigmaunder SDATA [Sigmaunder]
+Idscriptover SDATA [dscriptover]
+Iiotadot SDATA [iotadot]
+Iscnap SDATA [scnap ]
+Izetamacr SDATA [zetamacr]
+Iepsivacute SDATA [epsivacute]
+IepsiI SDATA [epsiI]
+IAunder SDATA [Aunder]
+Irhov SDATA [rhov  ]
+IXscripttilde SDATA [Xscripttilde]
+Ilambdaunder SDATA [lambdaunder]
+Ieover SDATA [eover]
+Ilscript SDATA [lscript]
+Iigr SDATA [igr   ]
+ISmacrscript SDATA [Smacrscript]
+Idivide SDATA [divide]
+Iepsidot SDATA [epsidot]
+IZmacr SDATA [Zmacr]
+IvunderI SDATA [zunder]
+Iaacgr SDATA [aacgr ]
+Iepsis SDATA [epsis ]
+Iepsiv SDATA [epsiv ]
+ICup SDATA [Cup   ]
+IJcirc SDATA [Jcirc ]
+Iascriptover SDATA [ascriptover]
+IZgr SDATA [Zgr   ]
+Irpar SDATA [rpar  ]
+Igcedilla SDATA [gcedilla]
+IWcircsansserB SDATA [WcircsansserB]
+Inunderscript SDATA [nunderscript]
+IIotararr SDATA [Iotararr]
+IPmacrscript SDATA [Pmacrscript]
+IJrarrI SDATA [JrarrI]
+Iphivunder SDATA [phivunder]
+Iutildescript SDATA [utildescript]
+Ibetadot SDATA [betadot]
+IKgr SDATA [Kgr   ]
+IeegroverI SDATA [eegroverI]
+Itauxi SDATA [tauxi]
+Igimel SDATA [gimel ]
+IIotamacr SDATA [Iotamacr]
+ISsansserB SDATA [SsansserB]
+Ibscript SDATA [bscript]
+Ivdot SDATA [vdot]
+IMuover SDATA [Muover]
+Ikrarr SDATA [krarr]
+Ithetassubtilde SDATA [thetassubtilde]
+IMmacrscript SDATA [Mmacrscript]
+Iuprthetaprover SDATA [uprthetaprover]
+Idscripttilde SDATA [dscripttilde]
+Iap SDATA [ap    ]
+Ivover SDATA [vover]
+IssansserB SDATA [ssansserB]
+IBacute SDATA [Bacute]
+Itriangle SDATA [triangle]
+IVtilde SDATA [Vtilde]
+Ilhblk SDATA [lhblk ]
+Ikmacr SDATA [kmacr]
+Iuunder SDATA [uunder]
+IEEgrtildeB SDATA [EEgrtildeB]
+IPSgr SDATA [PSgr  ]
+IWdot SDATA [Wdot]
+IEEgrtildeI SDATA [EEgrtildeI]
+IJmacrscript SDATA [Jmacrscript]
+Isext SDATA [sext  ]
+IDtildescript SDATA [Dtildescript]
+Izunderscript SDATA [zunderscript]
+Ismid SDATA [smid  ]
+IVstroke SDATA [Vstroke]
+INcircmacr SDATA [Ncircmacr]
+IBarwed SDATA [Barwed]
+Ivdash SDATA [vdash ]
+Imarker SDATA [marker]
+IGover SDATA [Gover]
+IXscriptover SDATA [Xscriptover]
+IbcircI SDATA [bcircI]
+Iint SDATA [int   ]
+IPitilde SDATA [Pitilde]
+Ixbreve SDATA [xbreve]
+IXscript SDATA [Xscript]
+Isigmaoverdot SDATA [sigmaoverdot]
+IEEgrrarrB SDATA [EEgrrarrB]
+IGmacrscript SDATA [Gmacrscript]
+Iptilde SDATA [ptilde]
+IEEgrrarrI SDATA [EEgrrarrI]
+Iiudot SDATA [iudot]
+Ifcirccirc SDATA [fcirccirc]
+Iepsirarr SDATA [epsirarr]
+IKappaunder SDATA [Kappaunder]
+Isqcup SDATA [sqcup ]
+Inrtrie SDATA [nrtrie]
+Ipscripttilde SDATA [pscripttilde]
+IBgrover SDATA [Bgrover]
+Iomegaring SDATA [omegaring]
+ITovercircI SDATA [TovercircI]
+IUscriptover SDATA [Uscriptover]
+Ilcub SDATA [lcub  ]
+Iboxvl SDATA [boxvl]
+IgE SDATA [gE    ]
+IMcircsansserB SDATA [McircsansserB]
+Iepsimacr SDATA [epsimacr]
+Ihorizbox SDATA [horizbox]
+Ildquor SDATA [ldquor]
+IIunderscript SDATA [Iunderscript]
+IDmacrscript SDATA [Dmacrscript]
+Ixuml SDATA [xuml]
+Ivacute SDATA [vacute]
+Ige SDATA [ge    ]
+Ilcirc SDATA [lcirc]
+Igl SDATA [gl    ]
+IPtildescript SDATA [Ptildescript]
+Igt SDATA [gt    ]
+Icupre SDATA [cupre ]
+IRscriptover SDATA [Rscriptover]
+INscript SDATA [Nscript]
+IDsansserB SDATA [DsansserB]
+Ithetascirc SDATA [thetascirc]
+IPunder SDATA [Punder]
+IXover SDATA [Xover]
+Ieogon SDATA [eogon ]
+IAmacrscript SDATA [Amacrscript]
+IdsansserB SDATA [dsansserB]
+IYuml SDATA [Yuml  ]
+IgammaoverI SDATA [gammaoverI]
+Icularr SDATA [cularr]
+Iexcl SDATA [excl  ]
+IMmacr SDATA [Mmacr]
+Iepsi SDATA [epsi  ]
+Ialphararr SDATA [alphararr]
+Iupsiover SDATA [upsiover]
+IOscriptover SDATA [Oscriptover]
+ISbreve SDATA [Sbreve]
+Iddot SDATA [ddot]
+Irarr2 SDATA [rarr2 ]
+Irarr3 SDATA [rarr3]
+Irarr4 SDATA [rarr4]
+IoudotI SDATA [oudotI]
+IKtilde SDATA [Ktilde]
+ILcaron SDATA [Lcaron]
+IUunderscript SDATA [Uunderscript]
+Ijunder SDATA [junder]
+Ialphamacr SDATA [alphamacr]
+IRhodot SDATA [Rhodot]
+IsubE SDATA [subE  ]
+IPirarr SDATA [Pirarr]
+ITsubtilde SDATA [Tsubtilde]
+IlE SDATA [lE    ]
+INmacrcirc SDATA [Nmacrcirc]
+Ibecaus SDATA [becaus]
+IDscript SDATA [Dscript]
+ILscriptover SDATA [Lscriptover]
+InrArr SDATA [nrArr ]
+IEdot SDATA [Edot  ]
+Irarrw SDATA [rarrw ]
+Isube SDATA [sube  ]
+Ile SDATA [le    ]
+Ilg SDATA [lg    ]
+IPimacr SDATA [Pimacr]
+Ilt SDATA [lt    ]
+Itaurarr SDATA [taurarr]
+Ieegrcirc SDATA [eegrcirc]
+Iiover SDATA [iover]
+Irang SDATA [rang  ]
+IRhocirc SDATA [Rhocirc]
+Ialphadot SDATA [alphadot]
+Ichiover SDATA [chiover]
+IKscripttilde SDATA [Kscripttilde]
+Ietilde SDATA [etilde]
+Ifcaron SDATA [fcaron]
+Imurarr SDATA [murarr]
+IIscriptover SDATA [Iscriptover]
+Imu SDATA [mu    ]
+Ieacgr SDATA [eacgr ]
+Ialtsig SDATA [altsig]
+ICcircsansserB SDATA [CcircsansserB]
+Ifrown SDATA [frown ]
+Itaumacr SDATA [taumacr]
+INcirc SDATA [Ncirc]
+Irceil SDATA [rceil ]
+Ine SDATA [ne    ]
+Ini SDATA [ni    ]
+Ibgr SDATA [bgr   ]
+Ithetastilde SDATA [thetastilde]
+Iback6x SDATA [back6x]
+IoS SDATA [oS    ]
+IthetadotoverI SDATA [thetadotoverI]
+Inu SDATA [nu    ]
+Imumacr SDATA [mumacr]
+Iwssaline SDATA [wssaline]
+Inumsp SDATA [numsp ]
+Iaunderscript SDATA [aunderscript]
+IQmacrB SDATA [QmacrB]
+ITheta SDATA [Theta ]
+IFscriptover SDATA [Fscriptover]
+Iplanck SDATA [planck]
+Ithetavuml SDATA [thetavuml]
+Ior SDATA [or    ]
+ISgr SDATA [Sgr   ]
+IIotaunder SDATA [Iotaunder]
+Ikcedil SDATA [kcedil]
+Ihtildescript SDATA [htildescript]
+Itrie SDATA [trie  ]
+IUsansserB SDATA [UsansserB]
+Ipi SDATA [pi    ]
+Isfrown SDATA [sfrown]
+Ipr SDATA [pr    ]
+IEunder SDATA [Eunder]
+Iorarr SDATA [orarr ]
+Ixdtri SDATA [xdtri ]
+Iiotaunder SDATA [iotaunder]
+Ieegracute SDATA [eegracute]
+ICscriptover SDATA [Cscriptover]
+IusansserB SDATA [usansserB]
+Izover SDATA [zover]
+Irarr SDATA [rarr  ]
+Iqdot SDATA [qdot]
+IDgr SDATA [Dgr   ]
+IWscripttilde SDATA [Wscripttilde]
+Igammacircover SDATA [gammacircover]
+Ithetavrarr SDATA [thetavrarr]
+Iomacr SDATA [omacr ]
+Imacr SDATA [macr  ]
+Irx SDATA [rx    ]
+Iuscript SDATA [uscript]
+Iidigr SDATA [idigr ]
+Ithetavmacr SDATA [thetavmacr]
+Isfgr SDATA [sfgr  ]
+IAcaron SDATA [Acaron]
+Isc SDATA [sc    ]
+IRdot SDATA [Rdot]
+IBtildeI SDATA [BtildeI]
+Imunderscript SDATA [munderscript]
+Inmid SDATA [nmid  ]
+IKover SDATA [Kover]
+Iepsivcirc SDATA [epsivcirc]
+Iltimes SDATA [ltimes]
+Ibepsi SDATA [bepsi ]
+ICccripttilde SDATA [Cscripttilde]
+Ittildescript SDATA [ttildescript]
+Isigmavrarr SDATA [sigmavrarr]
+IvsupnE SDATA [vsupnE]
+Imudot SDATA [mudot]
+Idelta SDATA [delta ]
+IomegaoverI SDATA [omegaoverI]
+Iu-tilde SDATA [u-tilde]
+IYAcy SDATA [YAcy]
+Iqsub SDATA [qsub]
+Ivsupne SDATA [vsupne]
+Isigmavmacr SDATA [sigmavmacr]
+Irdquo SDATA [rdquo ]
+IZtilde SDATA [Ztilde]
+Iumacrover SDATA [umacrover]
+Iyunder SDATA [yunder]
+Iphivdot SDATA [phivdot]
+Ikscript SDATA [kscript]
+Ixicirc SDATA [xicirc]
+Isquare1 SDATA [square1]
+Isquare2 SDATA [square2]
+Ixharr SDATA [xharr ]
+Iocircudot SDATA [ocircudot]
+Ipcirc SDATA [pcirc]
+ILambdatilde SDATA [Lambdatilde]
+IuunderI SDATA [yunder]
+IpioverI SDATA [pioverI]
+Iplankh SDATA [plankh]
+IddotU SDATA [ddotU]
+IFsansserB SDATA [FsansserB]
+Icestflwr SDATA [cestflwr]
+ICtildescript SDATA [Ctildescript]
+Iyunderscript SDATA [yunderscript]
+ITHgr SDATA [THgr  ]
+IENG SDATA [ENG   ]
+Iiogon SDATA [iogon ]
+Isung SDATA [sung  ]
+Ixi SDATA [xi    ]
+INuunder SDATA [Nuunder]
+IfsansserB SDATA [fsansserB]
+Ittilde SDATA [ttilde]
+Ixoverscript SDATA [xoverscript]
+Iucaron SDATA [ucaron]
+Isup1 SDATA [sup1  ]
+Isup2 SDATA [sup2  ]
+Isup3 SDATA [sup3  ]
+Izcircscript SDATA [zcircscript]
+IQmacr SDATA [Qmacr]
+IsupE SDATA [supE  ]
+Isearr SDATA [drarr]
+IAcirc SDATA [Acirc ]
+Ilambdacirc SDATA [lambdacirc]
+IDot SDATA [Dot   ]
+Igammadot SDATA [gammadot]
+IZetararr SDATA [Zetararr]
+ITcircsansserB SDATA [TcircsansserB]
+Iupsiacute SDATA [upsiacute]
+Ioscripttilde SDATA [oscripttilde]
+Ilsim SDATA [lsim  ]
+Iascript SDATA [ascript]
+Imusicnote SDATA [musicnote]
+Isupe SDATA [supe  ]
+Idollar SDATA [dollar]
+Iuoverscript SDATA [uoverscript]
+Iyen SDATA [yen   ]
+Izacute SDATA [zacute]
+Ietatilde SDATA [etatilde]
+Iwcircscript SDATA [wcircscript]
+IstildeI SDATA [stildeI]
+Icomp SDATA [comp  ]
+IZetamacr SDATA [Zetamacr]
+IHunderscript SDATA [Hunderscript]
+Imale SDATA [male  ]
+IEEgrtildeBI SDATA [EEgrtildeBI]
+Icong SDATA [cong  ]
+Iordf SDATA [ordf  ]
+Ijnodot SDATA [jnodot]
+Imalt SDATA [malt  ]
+Iordm SDATA [ordm  ]
+ITunder SDATA [Tunder]
+Ipmacrcirc SDATA [pmacrcirc]
+IOtildescript SDATA [Otildescript]
+Iagrave SDATA [agrave]
+Ioctopen SDATA [octopen]
+Ibrarr SDATA [brarr]
+Ioring SDATA [oring]
+Iroverscript SDATA [roverscript]
+IboardA SDATA [boardA]
+IOslash SDATA [Oslash]
+IOmega SDATA [Omega ]
+Imover SDATA [mover]
+Itcircscript SDATA [tcircscript]
+IboardC SDATA [boardC]
+IboardD SDATA [boardD]
+IboardH SDATA [boardH]
+Isigmaunder SDATA [sigmaunder]
+Iring SDATA [ring  ]
+IboardI SDATA [boardI]
+IboardP SDATA [boardP]
+IboardL SDATA [boardL]
+IboardO SDATA [boardO]
+IboardN SDATA [boardN]
+Idstrok SDATA [dstrok]
+Ioslashuml SDATA [oslashuml]
+IboardR SDATA [boardR]
+IboardS SDATA [boardS]
+IboardT SDATA [boardT]
+IboardU SDATA [boardU]
+IboardV SDATA [boardV]
+IboardW SDATA [boardW]
+IEEgroverB SDATA [EEgroverB]
+IboardZ SDATA [boardZ]
+Ibmacr SDATA [bmacr]
+Iiacgr SDATA [iacgr ]
+IEEgroverI SDATA [EEgroverI]
+ISub SDATA [Sub   ]
+Ifilig SDATA [filig ]
+IWscript SDATA [Wscript]
+IRcirc SDATA [Rcirc]
+ISup SDATA [Sup   ]
+Icopy SDATA [copy  ]
+Iooverscript SDATA [ooverscript]
+Iwprthetaprthetaover SDATA [wprthetaprthetaover]
+IETH SDATA [ETH   ]
+IOtilde SDATA [Otilde]
+Ipsirarr SDATA [psirarr]
+IPcaron SDATA [Pcaron]
+Iqcircscript SDATA [qcircscript]
+Inunder SDATA [nunder]
+Imdash SDATA [mdash ]
+IAgrover SDATA [Agrover]
+Iacircgrave SDATA [acircgrave]
+Iutriverbartilde SDATA [utriverbartilde]
+IAoversansserB SDATA [AoversansserB]
+IOgrrarr SDATA [Ogrrarr]
+IBgrdot SDATA [Bgrdot]
+Irhoover SDATA [rhoover]
+ITunderscript SDATA [Tunderscript]
+Ipsimacr SDATA [psimacr]
+Ithinspover SDATA [thinspover]
+IWsansserB SDATA [WsansserB]
+Iecirctilde SDATA [ecirctilde]
+Ilowast SDATA [lowast]
+Iloverscript SDATA [loverscript]
+Incircscript SDATA [ncircscript]
+IUacute SDATA [Uacute]
+IOgrmacr SDATA [Ogrmacr]
+Irsquor SDATA [rsquor]
+Iauml SDATA [auml  ]
+IEgrtilde SDATA [Egrtilde]
+IThetacirc SDATA [Thetacirc]
+IwsansserB SDATA [wsansserB]
+Iitilde SDATA [itilde]
+IMscript SDATA [Mscript]
+IrhovoverI SDATA [rhovoverI]
+ILgr SDATA [Lgr   ]
+IalphaoverI SDATA [alphaoverI]
+IJcircsansserB SDATA [JcircsansserB]
+Iiotacirc SDATA [iotacirc]
+IJscripttilde SDATA [Jscripttilde]
+Ilsqb SDATA [lsqb  ]
+Ildot SDATA [ldot  ]
+Ismacr SDATA [smacr]
+Iioverscript SDATA [ioverscript]
+Ikcircscript SDATA [kcircscript]
+Iccirc SDATA [ccirc ]
+Iogrcirc SDATA [ogrcirc]
+Iocir SDATA [ocir  ]
+IEgrrarr SDATA [Egrrarr]
+IDtildesansserB SDATA [DtildesansserB]
+Ioacute SDATA [oacute]
+Idiamh SDATA [diamh]
+Ifnof SDATA [fnof  ]
+IOover SDATA [Oover]
+Idiams SDATA [diams ]
+IMdot SDATA [Mdot]
+Ifoverscript SDATA [foverscript]
+IItildesansserB SDATA [ItildesansserB]
+Ihcircscript SDATA [hcircscript]
+IEgrmacr SDATA [Egrmacr]
+IIunder SDATA [Iunder]
+IDmacr SDATA [Dmacr]
+Ihearts SDATA [hearts]
+IRdoubleoversansser SDATA [Rdoubleoversansser]
+Igtildescript SDATA [gtildescript]
+Isqsub SDATA [sqsub ]
+Irussian1 SDATA [russian1]
+Irussian2 SDATA [russian2]
+ICscript SDATA [Cscript]
+Isqsup SDATA [sqsup ]
+INtildesansserB SDATA [NtildesansserB]
+Iradic SDATA [radic ]
+Ithumbup SDATA [thumbup]
+IOdblac SDATA [Odblac]
+Ikappaunder SDATA [kappaunder]
+Icoverscript SDATA [coverscript]
+IOHacgr SDATA [OHacgr]
+Iclubs SDATA [clubs ]
+Iomegaacute SDATA [omegaacute]
+Iecircscript SDATA [ecircscript]
+IVscripttilde SDATA [Vscripttilde]
+ILbreve SDATA [Lbreve]
+IStildesansserB SDATA [StildesansserB]
+Ibcong SDATA [bcong ]
+Itprime SDATA [tprime]
+Ihexsol SDATA [hexsol]
+IDtilde SDATA [Dtilde]
+Itcirc SDATA [tcirc]
+IchiB SDATA [chiB]
+IEcaron SDATA [Ecaron]
+IchiI SDATA [chiI]
+Icunder SDATA [cunder]
+IhdotU SDATA [hdotU]
+IEEacgr SDATA [EEacgr]
+IHsansserB SDATA [HsansserB]
+IXtildesansserB SDATA [XtildesansserB]
+Ithere4 SDATA [there4]
+Iambtfrog SDATA [ambtfrog]
+Ibcircscript SDATA [bcircscript]
+IEEgrrarr SDATA [EEgrrarr]
+IUpsiover SDATA [Upsiover]
+Ilunderscript SDATA [lunderscript]
+IhsansserB SDATA [hsansserB]
+IOHgr SDATA [OHgr  ]
+ISigmacirc SDATA [Sigmacirc]
+Ienspover SDATA [enspover]
+Ilrarr2 SDATA [lrarr2]
+IPcircI SDATA [PcircI]
+IUmacr SDATA [Umacr ]
+IAgrunder SDATA [Agrunder]
+Istildescript SDATA [stildescript]
+Ifbreve SDATA [fbreve]
+Iydot SDATA [ydot]
+Ialtsigover SDATA [altsigover]
+IEcirc SDATA [Ecirc ]
+IEEgrmacr SDATA [EEgrmacr]
+Isigmacirc SDATA [sigmacirc]
+Icap SDATA [cap   ]
+Icolon SDATA [colon ]
+IOuml SDATA [Ouml  ]
+Ipermil SDATA [permil]
+Ibscripttilde SDATA [bscripttilde]
+Igsim SDATA [gsim  ]
+IZdot SDATA [Zdot  ]
+InVdash SDATA [nVdash]
+Iplusb SDATA [plusb ]
+Ihairsp SDATA [hairsp]
+IDagger SDATA [Dagger]
+IThetabreve SDATA [Thetabreve]
+IZoverscript SDATA [Zoverscript]
+IeDot SDATA [eDot  ]
+IBgrtilde SDATA [Bgrtilde]
+Itaudot SDATA [taudot]
+Ihalf SDATA [half  ]
+Imnplusover SDATA [mnplusover]
+Ireg SDATA [reg   ]
+Ihorbar SDATA [horbar]
+Isring SDATA [sring]
+Ichitilde SDATA [chitilde]
+Iogrunder SDATA [ogrunder]
+IBtildescript SDATA [Btildescript]
+Itscript SDATA [tscript]
+Ixtilde SDATA [xtilde]
+Ixunderscript SDATA [xunderscript]
+Iycaron SDATA [ycaron]
+Iqover SDATA [qover]
+Idtri SDATA [dtri  ]
+IAtildeB SDATA [AtildeB]
+InhArr SDATA [nhArr ]
+Idlcrop SDATA [dlcrop]
+IWoverscript SDATA [Woverscript]
+Ifmacr SDATA [fmacr]
+Iphgl SDATA [phgl]
+Ibetatilde SDATA [betatilde]
+IYcircscript SDATA [Ycircscript]
+Iphgr SDATA [phgr  ]
+IVcirc SDATA [Vcirc]
+Ibmacrtilde SDATA [bmacrtilde]
+Iesdot SDATA [esdot ]
+Icopysr SDATA [copysr]
+IPhidot SDATA [Phidot]
+Ipsiunder SDATA [psiunder]
+Irgr SDATA [rgr   ]
+IAbreve SDATA [Abreve]
+Irlarr2 SDATA [rlarr2]
+Inscripttilde SDATA [nscripttilde]
+IBover SDATA [Bover]
+IToverscript SDATA [Toverscript]
+Ilowbar SDATA [lowbar]
+Irho SDATA [rho   ]
+Iprsim SDATA [prsim ]
+IVcircscript SDATA [Vcircscript]
+Iphisunder SDATA [phisunder]
+Iphis SDATA [phis  ]
+IXunder SDATA [Xunder]
+Iphiv SDATA [phiv  ]
+IYsansserB SDATA [YsansserB]
+IGunderscript SDATA [Gunderscript]
+Iegrave SDATA [egrave]
+Ijscript SDATA [jscript]
+Isdottilde SDATA [sdottilde]
+Ithetasmacrcirc SDATA [thetasmacrcirc]
+IdeltaoverI SDATA [deltaoverI]
+Ichi SDATA [chi   ]
+INtildescript SDATA [Ntildescript]
+IysansserB SDATA [ysansserB]
+Ihstrok SDATA [hstrok]
+IgermanC SDATA [germanC]
+IgermanE SDATA [germanE]
+IQoverscript SDATA [Qoverscript]
+IgermanL SDATA [germanL]
+IgermanN SDATA [germanN]
+IEEgrmacrB SDATA [EEgrmacrB]
+IScircscript SDATA [Scircscript]
+IgermanP SDATA [germanP]
+ITgr SDATA [Tgr   ]
+IEEgrmacrI SDATA [EEgrmacrI]
+Iwmacr SDATA [wmacr]
+IThetadot SDATA [Thetadot]
+Icir SDATA [cir   ]
+IMuunder SDATA [Muunder]
+IEEgrunderB SDATA [EEgrunderB]
+IStilde SDATA [Stilde]
+ITcaron SDATA [Tcaron]
+Igcirc SDATA [gcirc ]
+IEEgrunderI SDATA [EEgrunderI]
+Iharr SDATA [harr  ]
+Igdot SDATA [gdot  ]
+Irunder SDATA [runder]
+Igermanz SDATA [germanz]
+IXirarr SDATA [Xirarr]
+Ialphaacute SDATA [alphaacute]
+INoverscript SDATA [Noverscript]
+IEgr SDATA [Egr   ]
+IHrarr SDATA [Hrarr]
+Izscripttilde SDATA [zscripttilde]
+IUring SDATA [Uring ]
+IPcircscript SDATA [Pcircscript]
+IVvdash SDATA [Vvdash]
+ISover SDATA [Sover]
+IXitilde SDATA [Xitilde]
+InablaB SDATA [nablaB]
+IXimacr SDATA [Ximacr]
+ISunderscript SDATA [Sunderscript]
+Iubreve SDATA [ubreve]
+IHmacr SDATA [Hmacr]
+IYacute SDATA [Yacute]
+IOacgr SDATA [Oacgr ]
+Iphng SDATA [phng]
+IHdot SDATA [Hdot]
+IGammatildeover SDATA [Gammatildeover]
+Iacute SDATA [acute ]
+Inutilde SDATA [nutilde]
+IKoverscript SDATA [Koverscript]
+IZtildescript SDATA [Ztildescript]
+Iepsitilde SDATA [epsitilde]
+Imtilde SDATA [mtilde]
+Icedil SDATA [cedil ]
+Incaron SDATA [ncaron]
+IThetacircBI SDATA [ThetacircBI]
+IMcircscript SDATA [Mcircscript]
+IStildecircsansser SDATA [Stildecircsansser]
+Irpargt SDATA [rpargt]
+Ihybull SDATA [hybull]
+IQcircsansserB SDATA [QcircsansserB]
+Ilbull SDATA [lbull]
+Itautilde SDATA [tautilde]
+IIscripttilde SDATA [Iscripttilde]
+IHoverscript SDATA [Hoverscript]
+Ixcirc SDATA [xcirc ]
+IJcircscript SDATA [Jcircscript]
+Isacute SDATA [sacute]
+Icircdot SDATA [circdot]
+IJsansserB SDATA [JsansserB]
+IVscript SDATA [Vscript]
+IYrarr SDATA [Yrarr]
+IvsubnE SDATA [vsubnE]
+Iscedil SDATA [scedil]
+IthetasdotI SDATA [thetasdotI]
+Imumap SDATA [mumap ]
+Idover SDATA [dover]
+Ithetaprime2over SDATA [thetaprime2over]
+Irhounder SDATA [rhounder]
+IjsansserB SDATA [jsansserB]
+IGammadot SDATA [Gammadot]
+IMunder SDATA [Munder]
+IZgrave SDATA [Zgrave]
+Ivsubne SDATA [vsubne]
+IEoverscript SDATA [Eoverscript]
+Iiuml SDATA [iuml  ]
+IYmacr SDATA [Ymacr]
+IGcircscript SDATA [Gcircscript]
+Iupsi SDATA [upsi  ]
+Ioquest SDATA [oquest]
+IGammaunder SDATA [Gammaunder]
+IIcirc SDATA [Icirc ]
+Iftildescript SDATA [ftildescript]
+Iymacrscript SDATA [ymacrscript]
+Iphsh SDATA [phsh]
+Iphiscirc SDATA [phiscirc]
+Iuarr SDATA [uarr  ]
+Itdot SDATA [tdot  ]
+IOmegacirc SDATA [Omegacirc]
+Irsh SDATA [rsh   ]
+IBoverscript SDATA [Boverscript]
+IIotadot SDATA [Iotadot]
+IHtilde SDATA [Htilde]
+Ismile SDATA [smile ]
+Isigmavtilde SDATA [sigmavtilde]
+IDcircscript SDATA [Dcircscript]
+IUscripttilde SDATA [Uscripttilde]
+IPidot SDATA [Pidot]
+ILscript SDATA [Lscript]
+Igunder SDATA [gunder]
+Icoprod SDATA [coprod]
+Inwarr SDATA [nwarr ]
+Iomegacirc SDATA [omegacirc]
+Ibsim SDATA [bsim  ]
+Ivmacrscript SDATA [vmacrscript]
+IEEgrmacrBI SDATA [EEgrmacrBI]
+Ipsidot SDATA [psidot]
+Ithinsp SDATA [thinsp]
+IUdot SDATA [Udot]
+Iuover SDATA [uover]
+IeegrdotI SDATA [eegrdotI]
+Izetacirc SDATA [zetacirc]
+ITcircB SDATA [TcircB]
+IAcircscript SDATA [Acircscript]
+Ikunderscript SDATA [kunderscript]
+INacute SDATA [Nacute]
+IGcircsansserB SDATA [GcircsansserB]
+Ijmacr SDATA [jmacr]
+Ismacrscript SDATA [smacrscript]
+ICsim SDATA [Csim]
+Issmile SDATA [ssmile]
+INcedil SDATA [Ncedil]
+Ibtilde SDATA [btilde]
+Iccaron SDATA [ccaron]
+Irtildescript SDATA [rtildescript]
+IZcirc SDATA [Zcirc]
+Insmid SDATA [nsmid ]
+Icup SDATA [cup   ]
+Ikhgr SDATA [khgr  ]
+Ilarrsolid SDATA [larrsolid]
+Izgr SDATA [zgr   ]
+IBscript SDATA [Bscript]
+IlEg SDATA [lEg   ]
+IFover SDATA [Fover]
+Iascripttilde SDATA [ascripttilde]
+Ipmacrscript SDATA [pmacrscript]
+Ipiover SDATA [piover]
+Ivuml SDATA [vuml]
+Ikgr SDATA [kgr   ]
+IStildecirc SDATA [Stildecirc]
+IIotacirc SDATA [Iotacirc]
+Iphzh SDATA [phzh]
+IBunder SDATA [Bunder]
+Ibetacircmacr SDATA [betacircmacr]
+IOgrave SDATA [Ograve]
+Immacrscript SDATA [mmacrscript]
+IAtildescript SDATA [Atildescript]
+Iwunderscript SDATA [wunderscript]
+Iogrdot SDATA [ogrdot]
+Ibsol SDATA [bsol  ]
+Isharp SDATA [sharp ]
+Ioudotcirc SDATA [oudotcirc]
+IsupnE SDATA [supnE ]
+IEmacrcirc SDATA [Emacrcirc]
+Inatur SDATA [natur ]
+Iconint SDATA [conint]
+Ikcirc SDATA [kcirc]
+Iemspover SDATA [emspover]
+Iveebar SDATA [veebar]
+Iudigr SDATA [udigr ]
+Ijmacrscript SDATA [jmacrscript]
+IMgr SDATA [Mgr   ]
+IaudotI SDATA [audotI]
+Ibdot SDATA [bdot]
+Isupne SDATA [supne ]
+Iphivrarr SDATA [phivrarr]
+Inges SDATA [nges  ]
+IPsiB SDATA [PsiB]
+IWover SDATA [Wover]
+Imscripttilde SDATA [mscripttilde]
+Iigrave SDATA [igrave]
+Iecir SDATA [ecir  ]
+Ixscriptover SDATA [xscriptover]
+ILmacr SDATA [Lmacr]
+Inearr SDATA [nearr ]
+IFunderscript SDATA [Funderscript]
+Iphivmacr SDATA [phivmacr]
+Iltri SDATA [ltri  ]
+Ikgreen SDATA [kgreen]
+Ilstrok SDATA [lstrok]
+INuover SDATA [Nuover]
+Igmacrscript SDATA [gmacrscript]
+IOmegaunder SDATA [Omegaunder]
+ICdot SDATA [Cdot  ]
+IMtildescript SDATA [Mtildescript]
+ICacute SDATA [Cacute]
+InsubE SDATA [nsubE ]
+IGammaover SDATA [Gammaover]
+ICcedil SDATA [Ccedil]
+Iuscriptover SDATA [uscriptover]
+Isscript SDATA [sscript]
+IWtilde SDATA [Wtilde]
+Ifllig SDATA [fllig ]
+Iepsicirc SDATA [epsicirc]
+Ivunder SDATA [vunder]
+Idmacrscript SDATA [dmacrscript]
+Insube SDATA [nsube ]
+Igammaover SDATA [gammaover]
+Imiddotoverpar SDATA [middotoverpar]
+IDeltaover SDATA [Deltaover]
+ILsansserB SDATA [LsansserB]
+Iohacgr SDATA [ohacgr]
+Icolone SDATA [colone]
+Iyscripttilde SDATA [yscripttilde]
+Irscriptover SDATA [rscriptover]
+Ihover SDATA [hover]
+Ideltaover SDATA [deltaover]
+Iuogon SDATA [uogon ]
+IlsansserB SDATA [lsansserB]
+IccircI SDATA [ccircI]
+Iybreve SDATA [ybreve]
+Ifork SDATA [fork  ]
+IRunderscript SDATA [Runderscript]
+Ithkap SDATA [thkap ]
+Iamacrscript SDATA [amacrscript]
+Ifrac18 SDATA [frac18]
+Iqtilde SDATA [qtilde]
+IPcircmacrI SDATA [PcircmacrI]
+Iosol SDATA [osol  ]
+Ifrac13 SDATA [frac13]
+Ifrac12 SDATA [frac12]
+Ibetamacrcirc SDATA [betamacrcirc]
+Ifrac14 SDATA [frac14]
+Ifrac15 SDATA [frac15]
+Ifrac16 SDATA [frac16]
+Ircaron SDATA [rcaron]
+IEEgrB SDATA [EEgrB]
+Iutriverbar SDATA [utriverbar]
+Ieeacgr SDATA [eeacgr]
+IEEgrI SDATA [EEgrI]
+Icomma SDATA [comma ]
+IMcirc SDATA [Mcirc]
+IXcircsansserB SDATA [XcircsansserB]
+ILambdaover SDATA [Lambdaover]
+Iiscript SDATA [iscript]
+IYtildescript SDATA [Ytildescript]
+Ioscriptover SDATA [oscriptover]
+Ifrac23 SDATA [frac23]
+Iverbar SDATA [verbar]
+Ifrac25 SDATA [frac25]
+Ipara SDATA [para  ]
+ICIcirc SDATA [CIcirc]
+Iquest SDATA [quest ]
+Ilsquo SDATA [lsquo ]
+Iodot SDATA [odot  ]
+Ipart SDATA [part  ]
+Idbond SDATA [dbond]
+Ifrac38 SDATA [frac38]
+InvDash SDATA [nvDash]
+Iorimkey SDATA [orimkey]
+ITaurarr SDATA [Taurarr]
+Ifrac34 SDATA [frac34]
+Ifrac35 SDATA [frac35]
+IChitilde SDATA [Chitilde]
+IOgrunder SDATA [Ogrunder]
+Ifrac37 SDATA [frac37]
+Ialphacirc SDATA [alphacirc]
+IHscripttilde SDATA [Hscripttilde]
+IChiover SDATA [Chiover]
+IEuml SDATA [Euml  ]
+Isce SDATA [sce   ]
+Ilscriptover SDATA [lscriptover]
+Ibprime SDATA [bprime]
+Ifrac45 SDATA [frac45]
+Inrarr SDATA [nrarr ]
+ITaumacr SDATA [Taumacr]
+IQunder SDATA [Qunder]
+Iyover SDATA [yover]
+IPdot SDATA [Pdot]
+IPicirc SDATA [Picirc]
+Ifrac56 SDATA [frac56]
+ILslash SDATA [Lslash]
+Irarrhk SDATA [rarrhk]
+Ifrac58 SDATA [frac58]
+IPsiunder SDATA [Psiunder]
+Inmacr SDATA [nmacr]
+Iuacgr SDATA [uacgr ]
+Inequiv SDATA [nequiv]
+Iiscriptover SDATA [iscriptover]
+Ichidot SDATA [chidot]
+IwmacrI SDATA [wmacrI]
+Itaucirc SDATA [taucirc]
+Ietildescript SDATA [etildescript]
+IDotDot SDATA [DotDot]
+IXmacrscript SDATA [Xmacrscript]
+Imutilde SDATA [mutilde]
+ILtilde SDATA [Ltilde]
+Imucirc SDATA [mucirc]
+Ipound SDATA [pound ]
+IJover SDATA [Jover]
+IQuartile SDATA [Quartile]
+Ikunder SDATA [kunder]
+Ifrac78 SDATA [frac78]
+Ideg SDATA [deg   ]
+Ifscriptover SDATA [fscriptover]
+ITscripttilde SDATA [Tscripttilde]
+Ieegrdot SDATA [eegrdot]
+Isgr SDATA [sgr   ]
+IUmacrscript SDATA [Umacrscript]
+IEEgrBI SDATA [EEgrBI]
+IEuro SDATA [Euro]
+Imicro SDATA [micro ]
+Idarr2 SDATA [darr2 ]
+IphiscircI SDATA [phiscircI]
+Ieegrunder SDATA [eegrunder]
+Inbreve SDATA [nbreve]
+Isbsol SDATA [sbsol ]
+IRacute SDATA [Racute]
+IUscript SDATA [Uscript]
+INcircsansserB SDATA [NcircsansserB]
+Icscriptover SDATA [cscriptover]
+Ishy SDATA [shy   ]
+IRcedil SDATA [Rcedil]
+Irarrlp SDATA [rarrlp]
+Ibetararr SDATA [betararr]
+IZeta SDATA [Zeta]
+Idlarr SDATA [dlarr ]
+Iftilde SDATA [ftilde]
+Inurarr SDATA [nurarr]
+Igcaron SDATA [gcaron]
+Ijunderscript SDATA [junderscript]
+Idgr SDATA [dgr   ]
+Isim SDATA [sim   ]
+IRmacrscript SDATA [Rmacrscript]
+Iafsabstract SDATA [afsabstract]
+Iocirc SDATA [ocirc ]
+Iqtildescript SDATA [qtildescript]
+Ibetamacr SDATA [betamacr]
+Icirc SDATA [circ  ]
+Icire SDATA [cire  ]
+IKappararr SDATA [Kappararr]
+Inumacr SDATA [numacr]
+Iquot SDATA [quot  ]
+Ithetavcirc SDATA [thetavcirc]
+IUgr SDATA [Ugr   ]
+Idie SDATA [die   ]
+IVoverB SDATA [VoverB]
+IRmacrB SDATA [RmacrB]
+IrcircI SDATA [rcircI]
+Ilacute SDATA [lacute]
+Ilaquo SDATA [laquo ]
+Ikappararr SDATA [kappararr]
+IOmacrscript SDATA [Omacrscript]
+IThetatilde SDATA [Thetatilde]
+InsupE SDATA [nsupE ]
+Ivellip SDATA [vellip]
+Ilcedil SDATA [lcedil]
+IKappamacr SDATA [Kappamacr]
+IPmacr SDATA [Pmacr]
+ITautilde SDATA [Tautilde]
+IKscript SDATA [Kscript]
+IFunder SDATA [Funder]
+Iparttilde SDATA [parttilde]
+Insupe SDATA [nsupe ]
+Iuarr2 SDATA [uarr2 ]
+Ipsimacrcirc SDATA [psimacrcirc]
+Ikappamacr SDATA [kappamacr]
+ICtildesansserB SDATA [CtildesansserB]
+ILmacrscript SDATA [Lmacrscript]
+Isigmavcirc SDATA [sigmavcirc]
+Ivunderscript SDATA [vunderscript]
+Incong SDATA [ncong ]
+IHtildesansserB SDATA [HtildesansserB]
+ISigmatilde SDATA [Sigmatilde]
+Iphaauu SDATA [phaauu]
+IRhounder SDATA [Rhounder]
+IZscriptover SDATA [Zscriptover]
+INudot SDATA [Nudot]
+Ircub SDATA [rcub  ]
+IEEgrunderBI SDATA [EEgrunderBI]
+INsansserB SDATA [NsansserB]
+ItdotU SDATA [tdotU]
+IAtilde SDATA [Atilde]
+Ilambdatilde SDATA [lambdatilde]
+IMtildesansserB SDATA [MtildesansserB]
+IImacrscript SDATA [Imacrscript]
+Ilover SDATA [lover]
+Isol SDATA [sol   ]
+InsansserB SDATA [nsansserB]
+Ilscripttilde SDATA [lscripttilde]
+IAscript SDATA [Ascript]
+IepsioverBI SDATA [epsioverBI]
+IUpsiunder SDATA [Upsiunder]
+Icestchinlong SDATA [cestchinlong]
+IRtildesansserB SDATA [RtildesansserB]
+Iamacr SDATA [amacr ]
+Ikappav SDATA [kappav]
+Itimesb SDATA [timesb]
+Ithetasover SDATA [thetasover]
+IDcircsansserB SDATA [DcircsansserB]
+IWscriptover SDATA [Wscriptover]
+IStildeI SDATA [StildeI]
+Iomegadot SDATA [omegadot]
+IQcirc SDATA [Qcirc]
+Iparenover SDATA [parenover]
+Irarrtl SDATA [rarrtl]
+Icbreve SDATA [cbreve]
+IEunderscript SDATA [Eunderscript]
+IFmacrscript SDATA [Fmacrscript]
+Iupsiunder SDATA [upsiunder]
+Icommat SDATA [commat]
+Igammaunder SDATA [gammaunder]
+Ilthree SDATA [lthree]
+Idot SDATA [dot   ]
+IGcedil SDATA [Gcedil]
+Iphivtilde SDATA [phivtilde]
+IWtildesansserB SDATA [WtildesansserB]
+Icurarr SDATA [curarr]
+ILtildescript SDATA [Ltildescript]
+Izunder SDATA [zunder]
+Isqu SDATA [squ   ]
+Iurcrop SDATA [urcrop]
+Iang90 SDATA [ang90 ]
+ITscriptover SDATA [Tscriptover]
+Irtrie SDATA [rtrie ]
+Irtrif SDATA [rtrif ]
+IXidot SDATA [Xidot]
+IesaQ SDATA [esaQ]
+Ijdot SDATA [jdot]
+IZetacirc SDATA [Zetacirc]
+Iuplus SDATA [uplus ]
+IvArr SDATA [vArr  ]
+ICmacrscript SDATA [Cmacrscript]
+Ilap SDATA [lap   ]
+IzovercircI SDATA [zovercircI]
+Irrarr SDATA [rrarr]
+Iaacute SDATA [aacute]
+Ixscripttilde SDATA [xscripttilde]
+IQscriptover SDATA [Qscriptover]
+Iacedil SDATA [acedil]
+IPsirarr SDATA [Psirarr]
+IItildeI SDATA [ItildeI]
+Iutilde SDATA [utilde]
+Iupsidot SDATA [upsidot]
+ILarr SDATA [Larr  ]
+IKdot SDATA [Kdot]
+Irmacr SDATA [rmacr]
+IPrime SDATA [Prime ]
+Ieegrover SDATA [eegrover]
+Ibcirc SDATA [bcirc]
+IQunderscript SDATA [Qunderscript]
+IRhoover SDATA [Rhoover]
+Itarget SDATA [target]
+Ilcy SDATA [lcy]
+Isub SDATA [sub   ]
+IBuprthetaprover SDATA [Buprthetaprover]
+IPsimacr SDATA [Psimacr]
+Icartbox SDATA [cartbox]
+Isum SDATA [sum   ]
+Icircledot SDATA [circledot]
+Isup SDATA [sup   ]
+Iprnsim SDATA [prnsim]
+ICrarr SDATA [Crarr]
+IXtildescript SDATA [Xtildescript]
+INscriptover SDATA [Nscriptover]
+INover SDATA [Nover]
+Iulcorn SDATA [ulcorn]
+Iacircacute SDATA [acircacute]
+Ileg SDATA [leg   ]
+IKappatilde SDATA [Kappatilde]
+Iplusover SDATA [plusover]
+Iles SDATA [les   ]
+ICmacr SDATA [Cmacr]
+Irscript SDATA [rscript]
+IGscripttilde SDATA [Gscripttilde]
+Ipsicirc SDATA [psicirc]
+IthetasoverI SDATA [thetasoverI]
+IUunder SDATA [Uunder]
+Ispar SDATA [spar  ]
+IKscriptover SDATA [Kscriptover]
+IxlArr SDATA [xlArr ]
+IDeltaunder SDATA [Deltaunder]
+IOgrcirc SDATA [Ogrcirc]
+Inablatilde SDATA [nablatilde]
+Ietamacr SDATA [etamacr]
+Iamalg SDATA [amalg ]
+Ilgr SDATA [lgr   ]
+IEEgrrarrBI SDATA [EEgrrarrBI]
+Idrcorn SDATA [drcorn]
+Iaeligacute SDATA [aeligacute]
+Iscirc SDATA [scirc ]
+IHscriptover SDATA [Hscriptover]
+Iwdot SDATA [wdot]
+IPtilde SDATA [Ptilde]
+Iharrw SDATA [harrw ]
+Idtildescript SDATA [dtildescript]
+Iztildesansserb SDATA [ztildesansserb]
+Iounder SDATA [ounder]
+ICsansserthrulineB SDATA [CsansserthrulineB]
+Iaring SDATA [aring ]
+IMuml SDATA [Muml]
+Ihscript SDATA [hscript]
+Imnplus SDATA [mnplus]
+Iudblac SDATA [udblac]
+Isamalg SDATA [samalg]
+IEscriptover SDATA [Escriptover]
+ITmacr SDATA [Tmacr]
+IrunderI SDATA [xunder]
+ISscripttilde SDATA [Sscripttilde]
+IXdot SDATA [Xdot]
+IEgrcirc SDATA [Egrcirc]
+Iepsivover SDATA [epsivover]
+IDcirc SDATA [Dcirc]
+Irbreve SDATA [rbreve]
+INgr SDATA [Ngr   ]
+IdArr SDATA [dArr  ]
+IPsimacrunder SDATA [Psimacrunder]
+IUcircsansserB SDATA [UcircsansserB]
+IPhirarr SDATA [Phirarr]
+Ijtilde SDATA [jtilde]
+IsubnE SDATA [subnE ]
+Ibrvbar SDATA [brvbar]
+Iecolon SDATA [ecolon]
+Iomegaunder SDATA [omegaunder]
+IBscriptover SDATA [Bscriptover]
+Ilagran SDATA [lagran]
+Iiunderscript SDATA [iunderscript]
+Isubne SDATA [subne ]
+IPhimacr SDATA [Phimacr]
+Ilnap SDATA [lnap  ]
+IPsansserB SDATA [PsansserB]
+Iptildescript SDATA [ptildescript]
+IrAarr SDATA [rAarr ]
+Ixiover SDATA [xiover]
+IlnE SDATA [lnE   ]
+IptildeI SDATA [ptildeI]
+Ipover SDATA [pover]
+Ikappa SDATA [kappa ]
+IpsansserB SDATA [psansserB]
+Ipiunder SDATA [piunder]
+Iorder SDATA [order ]
+Ilne SDATA [lne   ]
+Iepsivrulecirc SDATA [epsivrulecirc]
+IJunder SDATA [Junder]
+Iyuml SDATA [yuml  ]
+Iemacr SDATA [emacr ]
+Ithetas SDATA [thetas]
+Ithetascirccirc SDATA [thetascirccirc]
+Ithetav SDATA [thetav]
+IUcirc SDATA [Ucirc ]
+Ibeta SDATA [beta  ]
+Ibeth SDATA [beth  ]
+IEEgrcirc SDATA [EEgrcirc]
+Iloz SDATA [loz   ]
+Idashv SDATA [dashv ]
+Irhobreve SDATA [rhobreve]
+Ilambdaover SDATA [lambdaover]
+IAover SDATA [Aover]
+IIotatilde SDATA [Iotatilde]
+IPhiunder SDATA [Phiunder]
+IMbreve SDATA [Mbreve]
+Iuunderscript SDATA [uunderscript]
+ITscript SDATA [Tscript]
+Isigma SDATA [sigma ]
+IEtilde SDATA [Etilde]
+IGammabreve SDATA [Gammabreve]
+IMurarr SDATA [Murarr]
+Iiotatilde SDATA [iotatilde]
+Idunder SDATA [dunder]
+Itau SDATA [tau   ]
+Izoverscript SDATA [zoverscript]
+Iedot SDATA [edot  ]
+Ivrarr SDATA [vrarr]
+Inltrie SDATA [nltrie]
+IetaoverI SDATA [etaoverI]
+IMumacr SDATA [Mumacr]
+Itstrok SDATA [tstrok]
+Iwreath SDATA [wreath]
+IKcircsansserB SDATA [KcircsansserB]
+Iidiagr SDATA [idiagr]
+Ikscripttilde SDATA [kscripttilde]
+IQcircI SDATA [QcircI]
+Ivmacr SDATA [vmacr]
+Igbreve SDATA [gbreve]
+Inharr SDATA [nharr ]
+IGamma SDATA [Gamma ]
+Ifcirc SDATA [fcirc]
+Ilsh SDATA [lsh   ]
+Iwoverscript SDATA [woverscript]
+IKcedil SDATA [Kcedil]
+IFdot SDATA [Fdot]
+Iycircscript SDATA [ycircscript]
+IDunderscript SDATA [Dunderscript]
+IJscript SDATA [Jscript]
+IEEgrunder SDATA [EEgrunder]
+IAsansserB SDATA [AsansserB]
+ITring SDATA [Tring]
+IRover SDATA [Rover]
+IKtildescript SDATA [Ktildescript]
+Iiexcl SDATA [iexcl ]
+IasansserB SDATA [asansserB]
+Itoverscript SDATA [toverscript]
+IGmacr SDATA [Gmacr]
+Ivcircscript SDATA [vcircscript]
+IBgrrarr SDATA [Bgrrarr]
+Irfloor SDATA [rfloor]
+IkcircI SDATA [kcircI]
+Ieacute SDATA [eacute]
+Ilarr2 SDATA [larr2 ]
+Iecedil SDATA [ecedil]
+Iytilde SDATA [ytilde]
+Izcaron SDATA [zcaron]
+Inpar SDATA [npar  ]
+IpmacrcircI SDATA [pmacrcircI]
+IBgrmacr SDATA [Bgrmacr]
+Iwscripttilde SDATA [wscripttilde]
+ILgrave SDATA [Lgrave]
+Iqoverscript SDATA [qoverscript]
+Iscircscript SDATA [scircscript]
+Itgr SDATA [tgr   ]
+IQsubtilde SDATA [Qsubtilde]
+Iaquest SDATA [aquest]
+IThetaover SDATA [Thetaover]
+Ipartover SDATA [partover]
+Iwcirc SDATA [wcirc ]
+Iepsivrule SDATA [epsivrule]
+Imidast SDATA [midast]
+IPunderscript SDATA [Punderscript]
+Ialphaunder SDATA [alphaunder]
+Iiotaover SDATA [iotaover]
+Iiota SDATA [iota  ]
+Iqsubtilde SDATA [qsubtilde]
+INutilde SDATA [Nutilde]
+Irsqb SDATA [rsqb  ]
+Irdot SDATA [rdot]
+IWtildescript SDATA [Wtildescript]
+Inoverscript SDATA [noverscript]
+Iegs SDATA [egs   ]
+Iegr SDATA [egr   ]
+Icover SDATA [cover]
+Iogrover SDATA [ogrover]
+Ipcircscript SDATA [pcircscript]
+IQprthetaproverI SDATA [Qprthetaprover]
+IthetasI SDATA [thetasI]
+IthetasmacrI SDATA [thetasmacrI]
+Itcirccirc SDATA [tcirccirc]
+IYunder SDATA [Yunder]
+Iupsirarr SDATA [upsirarr]
+IXmacr SDATA [Xmacr]
+Icccripttilde SDATA [cscripttilde]
+Inexist SDATA [nexist]
+IXicirc SDATA [Xicirc]
+IAcircsansserB SDATA [AcircsansserB]
+Ilceil SDATA [lceil ]
+IHcirc SDATA [Hcirc ]
+IFscripttilde SDATA [Fscripttilde]
+Ioelig SDATA [oelig ]
+Iacircquest SDATA [acircquest]
+ISdot SDATA [Sdot]
+Ikoverscript SDATA [koverscript]
+Iistrok SDATA [istrok]
+Imcircscript SDATA [mcircscript]
+Iupsimacr SDATA [upsimacr]
+IAogon SDATA [Aogon ]
+Iplusdo SDATA [plusdo]
+IGgr SDATA [Ggr   ]
+ITtilde SDATA [Ttilde]
+IUcaron SDATA [Ucaron]
+Isunder SDATA [sunder]
+IRsansserB SDATA [RsansserB]
+Ihoverscript SDATA [hoverscript]
+Ijcircscript SDATA [jcircscript]
+Isigmatilde SDATA [sigmatilde]
+Ignap SDATA [gnap  ]
+Ictildescript SDATA [ctildescript]
+Ichirarr SDATA [chirarr]
+IEEgrcircBI SDATA [EEgrcircBI]
+IOmegadot SDATA [Omegadot]
+Itover SDATA [tover]
+IrsansserB SDATA [rsansserB]
+Iapos SDATA [apos  ]
+Iell SDATA [ell   ]
+Iels SDATA [els   ]
+Iimacr SDATA [imacr ]
+IZacute SDATA [Zacute]
+Iempty SDATA [empty ]
+Ieoverscript SDATA [eoverscript]
+Ichimacr SDATA [chimacr]
+IRscripttilde SDATA [Rscripttilde]
+IYcirc SDATA [Ycirc ]
+Igcircscript SDATA [gcircscript]
+Icheck SDATA [check ]
+Intilde SDATA [ntilde]
+Iocaron SDATA [ocaron]
+Iocirctilde SDATA [ocirctilde]
+Iqscript SDATA [qscript]
+ISigmaover SDATA [Sigmaover]
+IMcircmacr SDATA [Mcircmacr]
+Iuovercirc SDATA [uovercirc]
+Itop SDATA [top   ]
+IAgrave SDATA [Agrave]
+Ieng SDATA [eng   ]
+IEover SDATA [Eover]
+IupsicircI SDATA [upsicircI]
+Isigmaover SDATA [sigmaover]
+Iboverscript SDATA [boverscript]
+Iprap SDATA [prap  ]
+IDstrok SDATA [Dstrok]
+Idcircscript SDATA [dcircscript]
+Ihunderscript SDATA [hunderscript]
+IAacgr SDATA [Aacgr ]
+IUuml SDATA [Uuml  ]
+Itacute SDATA [tacute]
+Idxtri SDATA [dxtri]
+Itcedil SDATA [tcedil]
+Iotildescript SDATA [otildescript]
+Iprnap SDATA [prnap ]
+Iimage SDATA [image ]
+Ildquo SDATA [ldquo ]
+INunder SDATA [Nunder]
+IlArr SDATA [lArr  ]
+Irhard SDATA [rhard ]
+Iacircscript SDATA [acircscript]
+Igscript SDATA [gscript]
+Izmacr SDATA [zmacr]
+Imap SDATA [map   ]
+Ihamilt SDATA [hamilt]
+Irharu SDATA [rharu ]
+IEbreveI SDATA [EbreveI]
+Isdotsim SDATA [sdotsim]
+ILambdadot SDATA [Lambdadot]
+Ijcirc SDATA [jcirc ]
+Isime SDATA [sime  ]
+IchioverI SDATA [chioverI]
+IxoverI SDATA [xoverI]
+ICsansserB SDATA [CsansserB]
+IAdot SDATA [Adot]
+Iphmmat SDATA [phmmat]
+Ilambdadot SDATA [lambdadot]
+IVover SDATA [Vover]
+Icogon SDATA [cogon]
+Isigmadot SDATA [sigmadot]
+IItilde SDATA [Itilde]
+Iplusmn SDATA [plusmn]
+IbetaoverI SDATA [betaoverI]
+IcsansserB SDATA [csansserB]
+Ihunder SDATA [hunder]
+Itunderscript SDATA [tunderscript]
+Inltri SDATA [nltri ]
+Iugrave SDATA [ugrave]
+Ifjlig SDATA [fjlig ]
+IKmacr SDATA [Kmacr]
+Ieta SDATA [eta   ]
+Ikappatilde SDATA [kappatilde]
+Ieth SDATA [eth   ]
+IYoverscript SDATA [Yoverscript]
+Iacircdot SDATA [acircdot]
+Ithetavunder SDATA [thetavunder]
+Icaret SDATA [caret ]
+IRcircsansserB SDATA [RcircsansserB]
+IVdash SDATA [Vdash ]
+IOacute SDATA [Oacute]
+Ilarropen SDATA [larropen]
+Ilsquor SDATA [lsquor]
+Ideltaunder SDATA [deltaunder]
+Ibull SDATA [bull  ]
+Ijscripttilde SDATA [jscripttilde]
+Ictilde SDATA [ctilde]
+Inpre SDATA [npre  ]
+Idcaron SDATA [dcaron]
+IVoverscript SDATA [Voverscript]
+IXcircscript SDATA [Xcircscript]
+Ibump SDATA [bump  ]
+IlvnE SDATA [lvnE  ]
+ICunderscript SDATA [Cunderscript]
+Idiamfour SDATA [diamfour]
+Iecircacute SDATA [ecircacute]
+Igover SDATA [gover]
+Imgr SDATA [mgr   ]
+IaudotBI SDATA [audotBI]
+IAgrtilde SDATA [Agrtilde]
+IJtildescript SDATA [Jtildescript]
+Imdot SDATA [mdot]
+Iiacute SDATA [iacute]
+ISoverscript SDATA [Soverscript]
+ISscript SDATA [Sscript]
+Ivertbox SDATA [vertbox]
+IUcircscript SDATA [Ucircscript]
+ILcirc SDATA [Lcirc]
+Ibetamacrtilde SDATA [betamacrtilde]
+Iphivcirc SDATA [phivcirc]
+Imid SDATA [mid   ]
+Inablacirc SDATA [nablacirc]
+ICunder SDATA [Cunder]
+Ieegr SDATA [eegr  ]
+Iminusover SDATA [minusover]
+IepsivB SDATA [epsivB]
+Idaleth SDATA [daleth]
+INdot SDATA [Ndot]
+IEogon SDATA [Eogon ]
+Ivscripttilde SDATA [vscripttilde]
+IPoverscript SDATA [Poverscript]
+Ireal SDATA [real  ]
+InuoverI SDATA [nuoverI]
+IOgr SDATA [Ogr   ]
+IRcircscript SDATA [Rcircscript]
+IepsioverB SDATA [epsioverB]
+ITsansserB SDATA [TsansserB]
+IprnE SDATA [prnE  ]
+IepsioverI SDATA [epsioverI]
+Iogrtilde SDATA [ogrtilde]
+IFbreve SDATA [Fbreve]
+IbetaB SDATA [betaB]
+IOunderscript SDATA [Ounderscript]
+ItauoverI SDATA [tauoverI]
+ItsansserB SDATA [tsansserB]
+Ixover SDATA [xover]
+IBtildesansserB SDATA [BtildesansserB]
+IVtildescript SDATA [Vtildescript]
+IMoverscript SDATA [Moverscript]
+IIscript SDATA [Iscript]
+IOcircscript SDATA [Ocircscript]
+IHcircsansserB SDATA [HcircsansserB]
+Immacr SDATA [mmacr]
+Irect SDATA [rect  ]
+Imldr SDATA [mldr  ]
+Ibsime SDATA [bsime ]
+Iprod SDATA [prod  ]
+IGtildesansserB SDATA [GtildesansserB]
+IerDot SDATA [erDot ]
+Ipsitilde SDATA [psitilde]
+Iprop SDATA [prop  ]
+IHairsp SDATA [Hairsp]
+IEscripttilde SDATA [Escripttilde]
+ITaudot SDATA [Taudot]
+IAgrrarr SDATA [Agrrarr]
+INsub SDATA [Nsub]
+ISEcirc SDATA [SEcirc]
+IJoverscript SDATA [Joverscript]
+Ioslashacute SDATA [oslashacute]
+Iouml SDATA [ouml  ]
+Iforall SDATA [forall]
+ILtildesansserB SDATA [LtildesansserB]
+Irhorarr SDATA [rhorarr]
+Iskullbones SDATA [skullbones]
+ILcircscript SDATA [Lcircscript]
+IIover SDATA [Iover]
+Iphistilde SDATA [phistilde]
+IXtilde SDATA [Xtilde]
+Ialeph SDATA [aleph ]
+IPacuteI SDATA [PacuteI]
+Iweierp SDATA [weierp]
+Iphisover SDATA [phisover]
+IPHgr SDATA [PHgr  ]
+Icaron SDATA [caron ]
+Iwunder SDATA [wunder]
+IAgrmacr SDATA [Agrmacr]
+Izdot SDATA [zdot  ]
+IEacgr SDATA [Eacgr ]
+Imodels SDATA [models]
+IQtildesansserB SDATA [QtildesansserB]
+IOmegaover SDATA [Omegaover]
+Ibernou SDATA [bernou]
+Irhomacr SDATA [rhomacr]
+Iinfin SDATA [infin ]
+Iupsibreve SDATA [upsibreve]
+IGoverscript SDATA [Goverscript]
+IIcircscript SDATA [Icircscript]
+Iomegaover SDATA [omegaover]
+Ibtildescript SDATA [btildescript]
+IVtildesansserB SDATA [VtildesansserB]
+ITaucirc SDATA [Taucirc]
+IQtildeI SDATA [QtildeI]
+Izbreve SDATA [zbreve]
+IMutilde SDATA [Mutilde]
+Isoloct SDATA [soloct]
+Ihellip SDATA [hellip]
+Irtilde SDATA [rtilde]
+Iscaron SDATA [scaron]
+Incirc SDATA [ncirc]
+Izetaover SDATA [zetaover]
+IDoverscript SDATA [Doverscript]
+IQscripttilde SDATA [Qscripttilde]
+IEgrave SDATA [Egrave]
+IFcircscript SDATA [Fcircscript]
+Icuepr SDATA [cuepr ]
+IEsansserB SDATA [EsansserB]
+Ilmidot SDATA [lmidot]
+Icurren SDATA [curren]
+Ixmacrscript SDATA [xmacrscript]
+IZover SDATA [Zover]
+IHstrok SDATA [Hstrok]
+Izetadot SDATA [zetadot]
+IesansserB SDATA [esansserB]
+IEEgrcircB SDATA [EEgrcircB]
+IEEgrcircI SDATA [EEgrcircI]
+Izscript SDATA [zscript]
+IAoverscript SDATA [Aoverscript]
+Ihamilttilde SDATA [hamilttilde]
+IOmacr SDATA [Omacr ]
+ICcircscript SDATA [Ccircscript]
+Igunderscript SDATA [gunderscript]
+Iumacrscript SDATA [umacrscript]
+IIdigr SDATA [Idigr ]
+IRunder SDATA [Runder]
+Iblankcross SDATA [blankcross]
+IZetaunder SDATA [Zetaunder]
+Icuesc SDATA [cuesc ]
+Intildescript SDATA [ntildescript]
+Itelrec SDATA [telrec]
+Isbull SDATA [sbull]
+IIotaover SDATA [Iotaover]
+Izetaunder SDATA [zetaunder]
+Ilnsim SDATA [lnsim ]
+IxmacrI SDATA [xmacrI]
+IDelta SDATA [Delta ]
+IUbreve SDATA [Ubreve]
+IMudot SDATA [Mudot]
+Irmacrscript SDATA [rmacrscript]
+IsdotU SDATA [sdotU]
+IOElig SDATA [OElig ]
+IUpsirarr SDATA [Upsirarr]
+Irhotilde SDATA [rhotilde]
+Isdotb SDATA [sdotb ]
+Ibetacirc SDATA [betacirc]
+IMtilde SDATA [Mtilde]
+INcaron SDATA [Ncaron]
+Inucirc SDATA [nucirc]
+Ipscript SDATA [pscript]
+Ikover SDATA [kover]
+Ilunder SDATA [lunder]
+Iugr SDATA [ugr   ]
+IgvnE SDATA [gvnE  ]
+IGammatilde SDATA [Gammatilde]
+IgEl SDATA [gEl   ]
+Ipuncsp SDATA [puncsp]
+Iintcal SDATA [intcal]
+Iangsph SDATA [angsph]
+IUpsimacr SDATA [Upsimacr]
+Isunderscript SDATA [sunderscript]
+Iomacrscript SDATA [omacrscript]
+IKappacirc SDATA [Kappacirc]
+Ihdot SDATA [hdot]
+IPcirc SDATA [Pcirc]
+Isqsube SDATA [sqsube]
+IYcircsansserB SDATA [YcircsansserB]
+IDdotU SDATA [DdotU]
+Iztildescript SDATA [ztildescript]
+Iobreve SDATA [obreve]
+ISacute SDATA [Sacute]
+Iblock SDATA [block ]
+Iytildesansserb SDATA [ytildesansserb]
+Ikappacirc SDATA [kappacirc]
+IScedil SDATA [Scedil]
+Igtilde SDATA [gtilde]
+IIogon SDATA [Iogon ]
+Isquf SDATA [squf  ]
+Irtri SDATA [rtri  ]
+Ilmacrscript SDATA [lmacrscript]
+Ilpargt SDATA [lpargt]
+IIdot SDATA [Idot  ]
+Iiscripttilde SDATA [iscripttilde]
+Iurarri SDATA [urarri]
+IVsansserB SDATA [VsansserB]
+Ithumbdown SDATA [thumbdown]
+Iepsivtilde SDATA [epsivtilde]
+Ifscript SDATA [fscript]
+Ithetavcaron SDATA [thetavcaron]
+Iqrarr SDATA [qrarr]
+Izscriptover SDATA [zscriptover]
+Iepsiover SDATA [epsiover]
+IBunderscript SDATA [Bunderscript]
+IvsansserB SDATA [vsansserB]
+Iangst SDATA [angst ]
+ISmacrI SDATA [SmacrI]
+Ixiunder SDATA [xiunder]
+o
+AID IMPLIED
+o
+AVER IMPLIED
+(SERIAL
+(SERFRONT
+o
+AALPHABET TOKEN LATIN
+(TITLE
+)TITLE
+(SERPUBFR
+(PUBNAME
+-Biology of Reproduction
+)PUBNAME
+ATYPE TOKEN PRINT
+(ISSN
+-0006-3363
+)ISSN
+(VOLID
+-62
+)VOLID
+(ISSUEID
+(ISSUENO
+-1
+)ISSUENO
+)ISSUEID
+(FPAGE
+-16
+)FPAGE
+(LPAGE
+-22
+)LPAGE
+(PAGECOUNT
+-7
+)PAGECOUNT
+o
+ATYPE IMPLIED
+(DATE
+-200001
+)DATE
+(CPYRT
+o
+ATYPE IMPLIED
+(DATE
+-2000
+)DATE
+(CPYRTNME
+-Society for the Study of Reproduction
+)CPYRTNME
+)CPYRT
+o
+ATYPE TOKEN ARTICLE
+(DOI
+-10.1043/0006-3363(2000)062<0016:LRPUAM>2.0.CO;2
+)DOI
+)SERPUBFR
+)SERFRONT
+(SERBODY
+ATYPE CDATA ARTICLE
+(SERSEC
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-Print Version
+)TITLE
+(SERSUBSEC
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-Contents
+)TITLE
+)SERSUBSEC
+o
+AHYTIME TOKEN HYDOC
+o
+AID IMPLIED
+(ARTICLE
+(FRONT
+(TITLEGRP
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-Lactate Regulates Pyruvate Uptake and Metabolism in the PreimplantationMouse Embryo
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN N1
+(FNOTEREF
+-1
+)FNOTEREF
+)TITLE
+)TITLEGRP
+(AUTHGRP
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+ARIDS TOKEN AFF1 AFF2 AFF3
+(AUTHOR
+(FNAME
+-Michelle
+)FNAME
+(SURNAME
+-Lane
+)SURNAME
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN N2
+i
+(FNOTEREF
+-2
+)FNOTEREF
+)AUTHOR
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+ARIDS TOKEN AFF1 AFF2
+(AUTHOR
+(FNAME
+-David K.
+)FNAME
+(SURNAME
+-Gardner
+)SURNAME
+)AUTHOR
+AID ID AFF1
+(AFF
+-Institute of Reproduction and Development, Monash University, Monash Medical Centre, Clayton, Victoria 3168, Australia
+)AFF
+AID ID AFF2
+(AFF
+-Colorado Center for Reproductive Medicine, Englewood, Colorado 80110
+)AFF
+)AUTHGRP
+(PUBFRONT
+(HISTORY
+(RECEIVED
+o
+ATYPE IMPLIED
+(DATE
+-May 6, 1999
+)DATE
+)RECEIVED
+(ACCEPTED
+o
+ATYPE IMPLIED
+(DATE
+-August 18, 1999
+)DATE
+)ACCEPTED
+)HISTORY
+)PUBFRONT
+o
+AID IMPLIED
+(ABSTRACT
+o
+AALPHABET TOKEN LATIN
+o
+AID IMPLIED
+o
+ATYPE TOKEN INDENT
+(P
+-This study was an investigation of the interaction of lactate on pyruvate and glucose metabolism in the early mouse embryo. Pyruvate uptake and metabolism by mouse embryos were significantly affected by increasing the lactate concentration in the culture medium. In contrast, glucose uptake was not affected by lactate in the culture medium. At the zygote stage, the percentage of pyruvate taken up and oxidized was significantly reduced in the presence of increasing lactate, while at the blastocyst stage, increasing the lactate concentration increased the percentage of pyruvate oxidized. Lactate oxidation was determined to be 3-fold higher (when lactate was present at 20 mM) at the blastocyst stage compared to the zygote. Analysis of the kinetics of lactate dehydrogenase (LDH) determined that while the 
+o
+ATYPE IMPLIED
+(IT
+-V
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(INF
+-max
+)INF
+)IT
+- of LDH was higher at the zygote stage, the 
+o
+ATYPE IMPLIED
+(IT
+-K
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(INF
+-m
+)INF
+)IT
+- of LDH was identical for both stages of development, confirming that the LDH isozyme was the same. Furthermore, the activity of LDH isolated from both stages was reduced by 40
+Ipercnt SDATA [percnt]
+-\|[percnt]\| in the presence of 20 mM lactate. The observed differences in lactate metabolism between the zygote and blastocyst must therefore be attributed to in situ regulation of LDH. Activity of isolated LDH was found to be affected by nicotinamide adenine dinucleotide
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(SUP
+Iplus SDATA [plus  ]
+-\|[plus  ]\|
+)SUP
+- (NAD
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(SUP
+Iplus SDATA [plus  ]
+-\|[plus  ]\|
+)SUP
+-) concentration. In the presence of increasing concentrations of lactate, zygotes exhibited an increase in autofluorescence consistent with a depletion of NAD
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(SUP
+Iplus SDATA [plus  ]
+-\|[plus  ]\|
+)SUP
+- in the cytosol. No increase was observed for later-stage embryos. Therefore it is proposed that the differences in pyruvate and lactate metabolism at the different stages of development are due to differences in the in situ regulation of LDH by cytosolic redox potential.
+)P
+)ABSTRACT
+)FRONT
+(BODY
+AID ID S1
+(SECTION
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-INTRODUCTION
+)TITLE
+o
+AALPHABET TOKEN LATIN
+o
+AID IMPLIED
+o
+ATYPE TOKEN INDENT
+(P
+-Early studies on the development of preimplantation mouse embryos in culture determined that the development of the zygote to the 2-cell stage had an absolute requirement for pyruvate 
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-B1
+(CITEREF
+Ilsqb SDATA [lsqb  ]
+-\|[lsqb  ]\|1
+Irsqb SDATA [rsqb  ]
+-\|[rsqb  ]\|
+)CITEREF
+-. Lactate was able to support development from the 2-cell stage 
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-B2
+(CITEREF
+Ilsqb SDATA [lsqb  ]
+-\|[lsqb  ]\|2,3
+Irsqb SDATA [rsqb  ]
+-\|[rsqb  ]\|
+)CITEREF
+-, while glucose could support embryo development from the late 4-cell/8-cell stage 
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-B4
+(CITEREF
+Ilsqb SDATA [lsqb  ]
+-\|[lsqb  ]\|4
+Irsqb SDATA [rsqb  ]
+-\|[rsqb  ]\|
+)CITEREF
+-. In support of these early studies, subsequent analysis of nutrient uptake showed that initially the early mouse embryo takes up pyruvate preferentially. After the 8-cell stage, pyruvate uptake declines, and by the blastocyst stage, glucose is the preferred nutrient 
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-B5
+(CITEREF
+Ilsqb SDATA [lsqb  ]
+-\|[lsqb  ]\|5,6
+Irsqb SDATA [rsqb  ]
+-\|[rsqb  ]\|
+)CITEREF
+-. Despite the inability of lactate alone to support the first cleavage division, lactate is readily oxidized by both the 1-cell and 2-cell mouse embryo 
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-B7
+(CITEREF
+Ilsqb SDATA [lsqb  ]
+-\|[lsqb  ]\|7,8
+Irsqb SDATA [rsqb  ]
+-\|[rsqb  ]\|
+)CITEREF
+-. Pyruvate oxidation by the mouse 2-cell embryo is reduced in the presence of lactate 
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-B8
+(CITEREF
+Ilsqb SDATA [lsqb  ]
+-\|[lsqb  ]\|8
+Irsqb SDATA [rsqb  ]
+-\|[rsqb  ]\|
+)CITEREF
+-. However, the effect of lactate on nutrient uptake has not been determined, nor has the interaction of pyruvate and lactate utilization at all stages of development.
+)P
+o
+AALPHABET TOKEN LATIN
+o
+AID IMPLIED
+o
+ATYPE TOKEN INDENT
+(P
+-The enzyme lactate dehydrogenase (LDH), a reversible near-to-equilibrium enzyme, converts lactate to pyruvate to enable its entry into the tricarboxylic acid cycle for subsequent oxidation. The activity of LDH in mouse embryos has been assessed in several studies. LDH activity was shown to be highest at the zygote stage, decreasing at the blastocyst stage 
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-B9
+(CITEREF
+Ilsqb SDATA [lsqb  ]
+-\|[lsqb  ]\|9
+Irsqb SDATA [rsqb  ]
+-\|[rsqb  ]\|
+)CITEREF
+-. While studies have compared the activity of LDH in extracts from embryos 
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-B9
+(CITEREF
+Ilsqb SDATA [lsqb  ]
+-\|[lsqb  ]\|9
+Indash SDATA [ndash ]
+-\|[ndash ]\|11
+Irsqb SDATA [rsqb  ]
+-\|[rsqb  ]\|
+)CITEREF
+-, there is no information regarding the kinetics of LDH in the preimplantation embryo. Moreover, the effect of lactate concentration on the regulation of LDH activity and therefore pyruvate and lactate utilization has not been determined.
+)P
+o
+AALPHABET TOKEN LATIN
+o
+AID IMPLIED
+o
+ATYPE TOKEN INDENT
+(P
+-The aim of this study was to assess the metabolism of lactate and its role in the regulation of pyruvate and glucose metabolism. The effect of lactate in the medium on the nicotinamide adenine dinucleotide
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(SUP
+Iplus SDATA [plus  ]
+-\|[plus  ]\|
+)SUP
+- (NAD
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(SUP
+Iplus SDATA [plus  ]
+-\|[plus  ]\|
+)SUP
+-):NADH ratio of the cytoplasm at different stages of development was also examined. The kinetics of the enzyme LDH were assessed at the zygote and blastocyst stages, and the regulation of LDH by the NAD
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(SUP
+Iplus SDATA [plus  ]
+-\|[plus  ]\|
+)SUP
+-:NADH ratio was determined.
+)P
+)SECTION
+AID ID S2
+(SECTION
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-MATERIALS AND METHODS
+)TITLE
+AID ID S2A
+(SUBSECT1
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-Animals
+)TITLE
+o
+AALPHABET TOKEN LATIN
+o
+AID IMPLIED
+o
+ATYPE TOKEN INDENT
+(P
+-Embryos were obtained from F1 hybrid (C57BL/6 
+Itimes SDATA [times ]
+-\|[times ]\| CBA/Ca) females that were superovulated with 5 IU of eCG (Folligon; Intervet, Lyppard, Australia) followed 48 h later by 5 IU of hCG (Chorulon; Intervet). Immediately after the second injection, females were placed with males of the same strain. Mating was indicated by the presence of a vaginal plug the following morning.
+)P
+)SUBSECT1
+AID ID S2B
+(SUBSECT1
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-Media Composition
+)TITLE
+o
+AALPHABET TOKEN LATIN
+o
+AID IMPLIED
+o
+ATYPE TOKEN INDENT
+(P
+-Media used in this study were based on modified Mouse Tubal Fluid medium 
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-B12
+(CITEREF
+Ilsqb SDATA [lsqb  ]
+-\|[lsqb  ]\|12
+Irsqb SDATA [rsqb  ]
+-\|[rsqb  ]\|
+)CITEREF
+- in which 20 mM NaHCO
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(INF
+-3
+)INF
+- was replaced with 20 mM Hepes at pH 7.4 (H-mMTF). Media, prepared weekly from stock solutions, had the following composition: 103.4 mM NaCl, 4.79 mM KCl, 1.19 mM MgSO
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(INF
+-4
+)INF
+-, 1.19 mM KH
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(INF
+-2
+)INF
+-PO
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(INF
+-4
+)INF
+-, 1.71 mM CaCl
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(INF
+-2
+)INF
+-, 5.0 mM NaHCO
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(INF
+-3
+)INF
+-, 20 mM Hepes, 0.37 mM sodium pyruvate, 4.79 mM 
+o
+ATYPE IMPLIED
+(SCP
+-l
+)SCP
+--sodium lactate, 3.4 mM glucose, 0.10 mM phenol red, 0.06 g/L penicillin, 0.05 g/L streptomycin, supplemented with 4 g/L BSA. Media with increased lactate concentrations had reduced NaCl concentrations to maintain osmolarity. All salts were of high purity (AnalaR brand; BDH, Poole, Dorset, UK); carbohydrates, antibiotics, and Hepes were of embryo-tested grade (Sigma Chemical Co., St. Louis, MO); and BSA was purchased from Bayer Diagnostics (Miles Pentex Crystalline, lot 97; Kankakee, IL).
+)P
+)SUBSECT1
+AID ID S2C
+(SUBSECT1
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-Collection of Embryos
+)TITLE
+o
+AALPHABET TOKEN LATIN
+o
+AID IMPLIED
+o
+ATYPE TOKEN INDENT
+(P
+-Zygotes were collected at 21 h post-hCG and denuded by a 1-min incubation with 1 mg/ml hyaluronidase (bovine testes; Sigma). Two-cell embryos were flushed from the oviduct at 46 h post-hCG; 8-cell embryos were flushed from the uterotubal junction at 64 h post-hCG; and blastocysts were flushed from the uterus at 88 h post-hCG. Embryos were washed twice in H-mMTF, and either their metabolism or LDH activity was assessed.
+)P
+)SUBSECT1
+AID ID S2D
+(SUBSECT1
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-Determination of Pyruvate and Glucose Uptakes
+)TITLE
+o
+AALPHABET TOKEN LATIN
+o
+AID IMPLIED
+o
+ATYPE TOKEN INDENT
+(P
+-Pyruvate and glucose uptakes were assessed in individual embryos using quantitative microfluorescence 
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-B5
+(CITEREF
+Ilsqb SDATA [lsqb  ]
+-\|[lsqb  ]\|5,6,13,14
+Irsqb SDATA [rsqb  ]
+-\|[rsqb  ]\|
+)CITEREF
+-. Assays were based on conventional methods of enzymatic analysis employing the pyridine nucleotides NAD(P)H in coupled reactions. Individual embryos were placed in a 25-nl drop of medium H-mMTF modified to contain 0.5 mM glucose, 0.5 mM pyruvate, and lactate concentrations of either 0, 5, 10, 20, or 40 mM. Embryos were incubated at 37
+Ideg SDATA [deg   ]
+-\|[deg   ]\|C for up to 2 h. Serial 1-nl samples were taken at 15-min intervals, and glucose and pyruvate concentrations were determined. Linear rates of glucose and pyruvate uptakes were determined for individual embryos and expressed as pmol/embryo per hour. Pyruvate and glucose assays were not affected by the presence of 40 mM lactate.
+)P
+)SUBSECT1
+AID ID S2E
+(SUBSECT1
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-Analysis of Pyruvate and Lactate Oxidation
+)TITLE
+o
+AALPHABET TOKEN LATIN
+o
+AID IMPLIED
+o
+ATYPE TOKEN INDENT
+(P
+-Pyruvate and lactate oxidation was assessed by incubation with radiolabeled substrates in a microcentrifuge tube 
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-B15
+(CITEREF
+Ilsqb SDATA [lsqb  ]
+-\|[lsqb  ]\|15
+Irsqb SDATA [rsqb  ]
+-\|[rsqb  ]\|
+)CITEREF
+-. Pyruvate oxidation by single embryos was determined by incubation with mMTF (with 0.5 mM glucose and no Hepes), 
+Ilsqb SDATA [lsqb  ]
+-\|[lsqb  ]\|2-
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(SUP
+-14
+)SUP
+-C
+Irsqb SDATA [rsqb  ]
+-\|[rsqb  ]\|pyruvate (0.5 mM; 0.085 mCi/ml) in the presence of 0
+Indash SDATA [ndash ]
+-\|[ndash ]\|40 mM lactate concentrations. Lactate oxidation by individual embryos was determined by incubation in mMTF with 0.5 mM pyruvate and 
+Ilsqb SDATA [lsqb  ]
+-\|[lsqb  ]\|U-
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(SUP
+-14
+)SUP
+-C
+Irsqb SDATA [rsqb  ]
+-\|[rsqb  ]\|lactate at increasing concentrations (5
+Indash SDATA [ndash ]
+-\|[ndash ]\|40 mM). The amount of labeled lactate in the medium was constant (0.746 mM; 0.117 mCi/ml). The increase in lactate concentration in the medium was achieved by increasing the concentration of unlabeled lactate.
+)P
+o
+AALPHABET TOKEN LATIN
+o
+AID IMPLIED
+o
+ATYPE TOKEN INDENT
+(P
+-Individual embryos were incubated in 3-
+Imu SDATA [mu    ]
+-\|[mu    ]\|l drops of medium containing the appropriate labeled substrate on the lid of a microcentrifuge vial. A volume of 1.5 ml of 25 mM NaHCO
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(INF
+-3
+)INF
+- pregassed with 5
+Ipercnt SDATA [percnt]
+-\|[percnt]\| CO
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(INF
+-2
+)INF
+- in air was added to each vial. The air space between the trap of NaHCO
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(INF
+-3
+)INF
+- and the embryo on the lid was filled with 5
+Ipercnt SDATA [percnt]
+-\|[percnt]\| CO
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(INF
+-2
+)INF
+- in air, and the vial was sealed. Embryos were incubated for 3 h at 37
+Ideg SDATA [deg   ]
+-\|[deg   ]\|C. Controls were included that contained a 3-
+Imu SDATA [mu    ]
+-\|[mu    ]\|l drop of medium on the lid without an embryo in order to control for spontaneous breakdown of the label. Total counts were determined by the addition of a 3-
+Imu SDATA [mu    ]
+-\|[mu    ]\|l drop of medium straight into the 1.5 ml NaHCO
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(INF
+-3
+)INF
+-. After 3 h the vials were opened, and 1 ml of the NaHCO
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(INF
+-3
+)INF
+- was removed and placed into a scintillation vial containing 200 
+Imu SDATA [mu    ]
+-\|[mu    ]\|l of 0.1 M NaOH. Vials were then sealed and stored at 4
+Ideg SDATA [deg   ]
+-\|[deg   ]\|C overnight. The following morning, 10 ml of scintillation fluid was added to each vial. The vials were vortexed and counted for 4 min each. Oxidation of labeled substrate was determined from the recovery of CO
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(INF
+-2
+)INF
+- in the vials corrected for the recovery efficiency, which had been previously determined by incubating 3 
+Imu SDATA [mu    ]
+-\|[mu    ]\|l of 
+Ilsqb SDATA [lsqb  ]
+-\|[lsqb  ]\|
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(SUP
+-14
+)SUP
+-C
+Irsqb SDATA [rsqb  ]
+-\|[rsqb  ]\|sodium bicarbonate on the lid of a vial containing 1.5 ml of NaHCO
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(INF
+-3
+)INF
+-. Samples (1 ml) were taken at 30-min intervals for 5 h where the recovery efficiency reached plateau by 3 h 
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-B15
+(CITEREF
+Ilsqb SDATA [lsqb  ]
+-\|[lsqb  ]\|15
+Irsqb SDATA [rsqb  ]
+-\|[rsqb  ]\|
+)CITEREF
+-.
+)P
+)SUBSECT1
+AID ID S2F
+(SUBSECT1
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-Enzyme Extraction
+)TITLE
+o
+AALPHABET TOKEN LATIN
+o
+AID IMPLIED
+o
+ATYPE TOKEN INDENT
+(P
+-Individual embryos were washed twice in saline with 4 g/L BSA and placed in 500 nl of enzyme extraction buffer containing 100 mM K
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(INF
+-2
+)INF
+-HPO
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(INF
+-4
+)INF
+-, 30 mM KF, 1 mM EDTA, 5 mM mercaptoethanol, 2 g/L BSA, and 0.5 g/L PMSF at pH 7.5 
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-B11
+(CITEREF
+Ilsqb SDATA [lsqb  ]
+-\|[lsqb  ]\|11
+Irsqb SDATA [rsqb  ]
+-\|[rsqb  ]\|
+)CITEREF
+-. Extraction buffer containing embryos was taken up in a glass capillary tube, sealed in a plastic straw, and plunged into liquid nitrogen. Individual embryos were stored for up to a week at 
+Iminus SDATA [minus ]
+-\|[minus ]\|80
+Ideg SDATA [deg   ]
+-\|[deg   ]\|C. Immediately prior to analysis, the extracted embryo was thawed and expelled under oil onto a siliconized glass slide, where it was kept at 4
+Ideg SDATA [deg   ]
+-\|[deg   ]\|C until analysis was completed (around 10 min). This extraction was used to assess enzyme activity as described by Martin et al. 
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-B11
+(CITEREF
+Ilsqb SDATA [lsqb  ]
+-\|[lsqb  ]\|11
+Irsqb SDATA [rsqb  ]
+-\|[rsqb  ]\|
+)CITEREF
+-. It is not necessary to purify the enzyme for assessment of kinetics, as the extraction and assay conditions themselves result in a 2.5 
+Itimes SDATA [times ]
+-\|[times ]\| 10
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(SUP
+-6
+)SUP
+- dilution in the assay mixture. It is not feasible that endogenous regulators would still be active at this dilution.
+)P
+)SUBSECT1
+AID ID S2G
+(SUBSECT1
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-Determination of LDH Activity
+)TITLE
+o
+AALPHABET TOKEN LATIN
+o
+AID IMPLIED
+o
+ATYPE TOKEN INDENT
+(P
+-LDH activity was determined using quantitative microfluorescence based on the following reaction: pyruvate 
+Iplus SDATA [plus  ]
+-\|[plus  ]\| NADH 
+Iplus SDATA [plus  ]
+-\|[plus  ]\| H
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(SUP
+Iplus SDATA [plus  ]
+-\|[plus  ]\|
+)SUP
+- 
+Irarr SDATA [rarr  ]
+-\|[rarr  ]\| lactate 
+Iplus SDATA [plus  ]
+-\|[plus  ]\| NAD
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(SUP
+Iplus SDATA [plus  ]
+-\|[plus  ]\|
+)SUP
+-. The composition of the reaction buffer was 50 mM K
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(INF
+-2
+)INF
+-HPO
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(INF
+-4
+)INF
+-, 0.8 mM KH
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(INF
+-2
+)INF
+-PO
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(INF
+-4
+)INF
+-, 0.63 mM pyruvate, 0.116 mM NaHCO
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(INF
+-3
+)INF
+-, and 0.057 mM NADH. Reactions were performed at 37
+Ideg SDATA [deg   ]
+-\|[deg   ]\|C, and all reagents were at the concentrations required for assessment of maximal activity 
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-B16
+(CITEREF
+Ilsqb SDATA [lsqb  ]
+-\|[lsqb  ]\|16
+Irsqb SDATA [rsqb  ]
+-\|[rsqb  ]\|
+)CITEREF
+-.
+)P
+o
+AALPHABET TOKEN LATIN
+o
+AID IMPLIED
+o
+ATYPE TOKEN INDENT
+(P
+-For the assay of each embryo, the enzyme extraction buffer containing the embryo was thawed and expelled under mineral oil onto a siliconized slide, and a 10-nl drop was removed and placed under oil onto a second slide. The initial sample was maintained at 4
+Ideg SDATA [deg   ]
+-\|[deg   ]\|C. A 70-nl drop of the reagents was placed onto a siliconized slide and warmed to 37
+Ideg SDATA [deg   ]
+-\|[deg   ]\|C, and its fluorescence was quantitated in the presence of UV light. The 10-nl drop of sample was warmed to 37
+Ideg SDATA [deg   ]
+-\|[deg   ]\|C; then 3 nl was removed and added to the reagent drop. The change in fluorescence was determined at 5- to 10-sec intervals until a plateau was reached (1
+Indash SDATA [ndash ]
+-\|[ndash ]\|2 min). The change in fluorescence was calculated by a series of standard curves run each day. A control drop of cocktail without sample was warmed to 37
+Ideg SDATA [deg   ]
+-\|[deg   ]\|C, and the fluorescence was determined at 5-sec intervals to ascertain the amount of photo-oxidation of NADH by exposure to UV light. A further control drop of sample and reagents in the absence of substrate (pyruvate) was also used to control for nonspecific oxidation. Enzyme activity was determined from a plot of NADH oxidized over time for each embryo. A tangent to the initial linear rate of oxidation of NADH was drawn to determine velocity (Vi). The activity of the enzyme was then calculated from the gradient and has been expressed as nmol NADH oxidized/embryo per hour. The exact amount of enzyme can be calculated for each embryo, as the extraction is in a known volume.
+)P
+o
+AALPHABET TOKEN LATIN
+o
+AID IMPLIED
+o
+ATYPE TOKEN INDENT
+(P
+-The 
+o
+ATYPE IMPLIED
+(IT
+-K
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(INF
+-m
+)INF
+)IT
+- and 
+o
+ATYPE IMPLIED
+(IT
+-V
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(INF
+-max
+)INF
+)IT
+- of LDH for pyruvate in the zygote and blastocyst were determined in the presence of increasing pyruvate concentrations: 0, 0.04, 0.08, 0.16, 0.32, 0.63, and 1.26 mM (0.63 mM was the concentration present in the assays to determine maximal activity). In each case the buffer solutions for the assay were prepared individually to contain the required pyruvate concentration. The activity of LDH was determined over the range of pyruvate concentrations for each individual embryo. As LDH activity obeys Michaelis-Menten kinetics, initially a plot of reaction velocity (V) as a function of substrate concentration (S) was determined for each embryo. This was then converted to a Lineweaver-Burk plot, and the 
+o
+ATYPE IMPLIED
+(IT
+-V
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(INF
+-max
+)INF
+)IT
+- and 
+o
+ATYPE IMPLIED
+(IT
+-K
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(INF
+-m
+)INF
+)IT
+- were determined for the enzyme of each embryo.
+)P
+)SUBSECT1
+AID ID S2H
+(SUBSECT1
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-Autofluorescence
+)TITLE
+o
+AALPHABET TOKEN LATIN
+o
+AID IMPLIED
+o
+ATYPE TOKEN INDENT
+(P
+-The relative redox potential (NAD
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(SUP
+Iplus SDATA [plus  ]
+-\|[plus  ]\|
+)SUP
+-:NADH ratio) of the cytoplasm of cells was estimated by determining autofluorescence 
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-B17
+(CITEREF
+Ilsqb SDATA [lsqb  ]
+-\|[lsqb  ]\|17
+Irsqb SDATA [rsqb  ]
+-\|[rsqb  ]\|
+)CITEREF
+-. In this study the relative redox potential of the cytoplasm was estimated for mouse embryos at the zygote (27 h post-hCG after cumulus cells have dispersed), 2-cell, and morula stage. Embryos were incubated in medium containing 0.5 mM pyruvate and increasing lactate concentrations for 45 min prior to analysis. The relative autofluorescence of the cells was assessed by exposing embryos to UV light (500 
+Imu SDATA [mu    ]
+-\|[mu    ]\|sec), and the fluorescence from a fixed area within the exposed embryo was quantitated using a photometer and photomultiplier attachment. Values are expressed as a scale of arbitrary units where 850 units represents maximum fluorescence.
+)P
+)SUBSECT1
+AID ID S2I
+(SUBSECT1
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-Statistical Analysis
+)TITLE
+o
+AALPHABET TOKEN LATIN
+o
+AID IMPLIED
+o
+ATYPE TOKEN INDENT
+(P
+-Data for pyruvate uptake, oxidation, and autofluorescence were found to be normally distributed and were examined using ANOVA. Differences in metabolism between stages of development or concentrations were determined using Duncan
+Iapos SDATA [apos  ]
+-\|[apos  ]\|s Multiple Range test. Analysis of LDH activity in blastocysts and zygotes was also found to be normally distributed, and differences were therefore determined using Student
+Iapos SDATA [apos  ]
+-\|[apos  ]\|s 
+o
+ATYPE IMPLIED
+(IT
+-t
+)IT
+--test.
+)P
+)SUBSECT1
+)SECTION
+AID ID S3
+(SECTION
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-RESULTS
+)TITLE
+AID ID S3A
+(SUBSECT1
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-Effect of Lactate on Pyruvate and Glucose Uptake by Preimplantation Embryos
+)TITLE
+o
+AALPHABET TOKEN LATIN
+o
+AID IMPLIED
+o
+ATYPE TOKEN INDENT
+(P
+-Pyruvate uptake by zygotes and 2-cell embryos was found to be around 4 pmol/embryo per hour at lactate concentrations up to 20 mM (
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-F01
+(FIGREF
+-Fig. 1a
+)FIGREF
+-). Increasing the lactate concentration to 40 mM significantly reduced pyruvate uptake by both zygotes and 2-cell embryos (
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-F01
+(FIGREF
+-Fig. 1a
+)FIGREF
+-). Pyruvate uptake by 8-cell-stage embryos was found to be constant at around 4 pmol/embryo per hour at lactate concentrations between 0 and 10 mM. Increasing the lactate concentration in the medium to 20 mM or above significantly reduced pyruvate uptake of the 8-cell embryos (
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-F01
+(FIGREF
+-Fig. 1a
+)FIGREF
+-). In contrast to the earlier stages, pyruvate uptake at the blastocyst stage was significantly reduced at lactate concentrations of 5 mM. Increasing the lactate concentration to 20 mM resulted in further reductions in pyruvate uptake. Further increasing the lactate concentration to 40 mM did not further reduce pyruvate uptake at the blastocyst stage (
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-F01
+(FIGREF
+-Fig. 1a
+)FIGREF
+-). The concentration of lactate in the culture medium therefore significantly affected the pattern of pyruvate uptake by the developing mouse embryo. In the presence of 20 mM lactate, pyruvate uptake was initially high at the zygote stage, with pyruvate uptake decreasing at the blastocyst stage to less than 1 pmol/embryo per hour. In contrast, in either the absence of lactate or the presence of physiological levels of lactate (5 mM) 
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-B13
+(CITEREF
+Ilsqb SDATA [lsqb  ]
+-\|[lsqb  ]\|13
+Irsqb SDATA [rsqb  ]
+-\|[rsqb  ]\|
+)CITEREF
+-, pyruvate uptake was initially high (around 4 pmol/embryo per hour) in the cleavage-stage embryo and remained high to the blastocyst stage. In contrast to its marked effect on pyruvate uptake, lactate had no effect on glucose uptake at any of the concentrations studied (
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-F01
+(FIGREF
+-Fig. 1b
+)FIGREF
+-).
+)P
+)SUBSECT1
+AID ID S3B
+(SUBSECT1
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-Effect of Lactate Concentration on the Oxidation of Pyruvate and Lactate
+)TITLE
+o
+AALPHABET TOKEN LATIN
+o
+AID IMPLIED
+o
+ATYPE TOKEN INDENT
+(P
+-The effect of increasing the lactate concentration in the medium on pyruvate and lactate oxidation was assessed at the zygote and blastocyst stages. At the zygote stage there was an inverse relationship between decreasing pyruvate oxidation and increasing lactate concentration in the medium (
+o
+ATYPE IMPLIED
+(IT
+-r
+)IT
+- 
+Iequals SDATA [equals]
+-\|[equals]\| 0.94; 
+o
+ATYPE IMPLIED
+(IT
+-P
+)IT
+- 
+Ilt SDATA [lt    ]
+-\|[lt    ]\| 0.05) (
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-F02
+(FIGREF
+-Fig. 2a
+)FIGREF
+-). Calculation of the percentage of pyruvate taken up by the zygote that was oxidized to CO
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(INF
+-2
+)INF
+- revealed that the percentage of pyruvate oxidized was also significantly reduced by increasing lactate concentration in the medium (
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-F02
+(FIGREF
+-Fig. 2b
+)FIGREF
+-).
+)P
+o
+AALPHABET TOKEN LATIN
+o
+AID IMPLIED
+o
+ATYPE TOKEN INDENT
+(P
+-At the blastocyst stage, pyruvate oxidation was also significantly reduced in the presence of an increasing lactate concentration (
+o
+ATYPE IMPLIED
+(IT
+-r
+)IT
+- 
+Iequals SDATA [equals]
+-\|[equals]\| 0.97, 
+o
+ATYPE IMPLIED
+(IT
+-P
+)IT
+- 
+Ilt SDATA [lt    ]
+-\|[lt    ]\| 0.05). However, in contrast to observations in the zygote, the percentage of pyruvate taken up and oxidized by blastocysts increased linearly with increasing lactate concentration in the medium (
+o
+ATYPE IMPLIED
+(IT
+-r
+)IT
+- 
+Iequals SDATA [equals]
+-\|[equals]\| 0.97; 
+o
+ATYPE IMPLIED
+(IT
+-P
+)IT
+- 
+Ilt SDATA [lt    ]
+-\|[lt    ]\| 0.05) (
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-F03
+(FIGREF
+-Fig. 3
+)FIGREF
+-). At a lactate concentration of 20 mM, 60
+Ipercnt SDATA [percnt]
+-\|[percnt]\| of the pyruvate taken up by the blastocyst was oxidized as compared to 35
+Ipercnt SDATA [percnt]
+-\|[percnt]\| in the absence of lactate (
+o
+ATYPE IMPLIED
+(IT
+-P
+)IT
+- 
+Ilt SDATA [lt    ]
+-\|[lt    ]\| 0.01).
+)P
+o
+AALPHABET TOKEN LATIN
+o
+AID IMPLIED
+o
+ATYPE TOKEN INDENT
+(P
+-At the zygote stage, lactate oxidation was similar at concentrations of 5 and 10 mM. However, at 20 mM, lactate oxidation was significantly increased (
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-F04
+(FIGREF
+-Fig. 4
+)FIGREF
+-). At the blastocyst stage, lactate oxidation significantly increased linearly with concentrations from 5 to 20 mM (
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-F04
+(FIGREF
+-Fig. 4
+)FIGREF
+-).
+)P
+)SUBSECT1
+AID ID S3C
+(SUBSECT1
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-Effect of Lactate Concentration on LDH Activity
+)TITLE
+o
+AALPHABET TOKEN LATIN
+o
+AID IMPLIED
+o
+ATYPE TOKEN INDENT
+(P
+-The activity of LDH for the conversion of pyruvate to lactate was determined at both the zygote and blastocyst stages. The activity of LDH isolated from zygotes was significantly higher than that present in the blastocyst (
+o
+ATYPE IMPLIED
+(IT
+-P
+)IT
+- 
+Ilt SDATA [lt    ]
+-\|[lt    ]\| 0.01) (
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-T01
+(TABLEREF
+-Table 1
+)TABLEREF
+-). There was a significant reduction in the activity of LDH measured in the presence of 20 mM lactate isolated from both zygotes and blastocysts (
+o
+ATYPE IMPLIED
+(IT
+-P
+)IT
+- 
+Ilt SDATA [lt    ]
+-\|[lt    ]\| 0.01) (
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-T01
+(TABLEREF
+-Table 1
+)TABLEREF
+-). This represented a reduction in LDH activity of around 40
+Ipercnt SDATA [percnt]
+-\|[percnt]\| in the presence of 20 mM lactate at both stages of development.
+)P
+o
+AALPHABET TOKEN LATIN
+o
+AID IMPLIED
+o
+ATYPE TOKEN INDENT
+(P
+-Examination of the kinetics of isolated LDH from both zygotes and blastocysts revealed that the 
+o
+ATYPE IMPLIED
+(IT
+-K
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(INF
+-m
+)INF
+)IT
+- values of LDH for pyruvate were similar at the zygote and blastocyst stages, indicating that the isozymes were the same (
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-T02
+(TABLEREF
+-Table 2
+)TABLEREF
+-). However, the 
+o
+ATYPE IMPLIED
+(IT
+-V
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(INF
+-max
+)INF
+)IT
+- of LDH isolated from zygotes was significantly higher than that in the blastocyst (
+o
+ATYPE IMPLIED
+(IT
+-P
+)IT
+- 
+Ilt SDATA [lt    ]
+-\|[lt    ]\| 0.05), confirming that the activity of LDH was higher in the zygote (
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-T02
+(TABLEREF
+-Table 2
+)TABLEREF
+-).
+)P
+o
+AALPHABET TOKEN LATIN
+o
+AID IMPLIED
+o
+ATYPE TOKEN INDENT
+(P
+-Changing the NAD
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(SUP
+Iplus SDATA [plus  ]
+-\|[plus  ]\|
+)SUP
+-:NADH ratio in the enzyme assay significantly altered the activity of isolated LDH in the blastocyst. Only one stage of development was tested here as the isozymes have been shown to be the same in the two stages of development. Increasing the concentration of NAD
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(SUP
+Iplus SDATA [plus  ]
+-\|[plus  ]\|
+)SUP
+- in the incubation buffer from 0 mM for the measurement of maximal activity to 15.0 mM significantly reduced the activity of isolated LDH (
+o
+ATYPE IMPLIED
+(IT
+-P
+)IT
+- 
+Ilt SDATA [lt    ]
+-\|[lt    ]\| 0.05) (
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-T03
+(TABLEREF
+-Table 3
+)TABLEREF
+-).
+)P
+)SUBSECT1
+AID ID S3D
+(SUBSECT1
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-Autofluorescence of Embryos
+)TITLE
+o
+AALPHABET TOKEN LATIN
+o
+AID IMPLIED
+o
+ATYPE TOKEN INDENT
+(P
+-The autofluorescence of embryos at the zygote, 2-cell, and morula stage was determined in order to estimate the relative values of the NAD
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(SUP
+Iplus SDATA [plus  ]
+-\|[plus  ]\|
+)SUP
+-:NADH ratio, as autofluorescence is indicative of the inverse of the NAD
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(SUP
+Iplus SDATA [plus  ]
+-\|[plus  ]\|
+)SUP
+-:NADH ratio 
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-B18
+(CITEREF
+Ilsqb SDATA [lsqb  ]
+-\|[lsqb  ]\|18
+Irsqb SDATA [rsqb  ]
+-\|[rsqb  ]\|
+)CITEREF
+-. Increasing the lactate concentration in the medium linearly increased the autofluorescence of zygotes (
+o
+ATYPE IMPLIED
+(IT
+-r
+)IT
+- 
+Iequals SDATA [equals]
+-\|[equals]\| 0.96; 
+o
+ATYPE IMPLIED
+(IT
+-P
+)IT
+- 
+Ilt SDATA [lt    ]
+-\|[lt    ]\| 0.05). However, at the 2-cell and morula stages, increasing the lactate concentration in the medium did not alter the autofluorescence (
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-F05
+(FIGREF
+-Fig. 5
+)FIGREF
+-). At lactate concentrations of 10 mM or above, the autofluorescence of the zygote was significantly higher than in the later stages (
+o
+ATYPE IMPLIED
+(IT
+-P
+)IT
+- 
+Ilt SDATA [lt    ]
+-\|[lt    ]\| 0.01) (
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-F05
+(FIGREF
+-Fig. 5
+)FIGREF
+-).
+)P
+)SUBSECT1
+)SECTION
+AID ID S4
+(SECTION
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-DISCUSSION
+)TITLE
+o
+AALPHABET TOKEN LATIN
+o
+AID IMPLIED
+o
+ATYPE TOKEN INDENT
+(P
+-The concentration of lactate in the incubation medium was found to significantly alter pyruvate uptake and metabolism between different stages of embryo development. However, the effect of lactate on pyruvate metabolism differed with stage of embryo development. In contrast to pyruvate uptake, lactate had no effect on glucose uptake. A more detailed analysis of pyruvate metabolism at the zygote and blastocyst stages revealed differences in the metabolic fate of pyruvate in the presence of lactate as well as different capacities to oxidize lactate. The pattern of embryo metabolism by the developing mouse embryo was in contrast to that observed previously for mouse embryos, although it was similar to that observed for embryos of other species. Analysis of the regulation and kinetics of enzyme activity revealed that lactate concentration and NAD
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(SUP
+Iplus SDATA [plus  ]
+-\|[plus  ]\|
+)SUP
+-:NADH ratio (redox potential) were both found to regulate LDH activity isolated from embryos. The 
+o
+ATYPE IMPLIED
+(IT
+-K
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(INF
+-m
+)INF
+)IT
+- of LDH for pyruvate in the zygote and blastocyst were found to be similar, indicating that the isozyme of LDH was the same at both stages of development. It is therefore plausible that differences in the activity of LDH at the different stages of development result from regulation in situ. In support of this hypothesis, the ratio of NAD
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(SUP
+Iplus SDATA [plus  ]
+-\|[plus  ]\|
+)SUP
+-:NADH, as determined by autofluorescence, at the zygote stage was reduced in the presence of increasing lactate concentration in the medium and significantly different from that of the later-stage embryo.
+)P
+o
+AALPHABET TOKEN LATIN
+o
+AID IMPLIED
+o
+ATYPE TOKEN INDENT
+(P
+-It has been accepted for many years that the preimplantation mouse embryo has an initial preference for pyruvate at the cleavage stages 
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-B1
+(CITEREF
+Ilsqb SDATA [lsqb  ]
+-\|[lsqb  ]\|1
+Irsqb SDATA [rsqb  ]
+-\|[rsqb  ]\|
+)CITEREF
+-, with glucose uptake remaining low. Two studies have shown that a switch then occurs in nutrient uptake by the blastocyst stage such that pyruvate uptake declines and glucose uptake increases 
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-B5
+(CITEREF
+Ilsqb SDATA [lsqb  ]
+-\|[lsqb  ]\|5,6
+Irsqb SDATA [rsqb  ]
+-\|[rsqb  ]\|
+)CITEREF
+-; both of these studies were performed in the presence of 23.3 mM lactate. However, Gardner and Leese 
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-B19
+(CITEREF
+Ilsqb SDATA [lsqb  ]
+-\|[lsqb  ]\|19
+Irsqb SDATA [rsqb  ]
+-\|[rsqb  ]\|
+)CITEREF
+- observed that when pyruvate was present as the sole energy substrate, the documented decrease in pyruvate uptake at the blastocyst stage no longer occurred. The data presented in the present study demonstrate that this reported switch in carbohydrate preference by the preimplantation mouse embryo is dependent on the incubation conditions used for the metabolic assessment. In the presence of high concentrations of lactate (around 20 mM), a significant reduction in pyruvate uptake was observed after the 8-cell stage as previously described. However, in the presence of no lactate or a lactate concentration of less than 10 mM (physiological concentration of lactate is 4.79 mM in mouse oviduct fluid 
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-B13
+(CITEREF
+Ilsqb SDATA [lsqb  ]
+-\|[lsqb  ]\|13
+Irsqb SDATA [rsqb  ]
+-\|[rsqb  ]\|
+)CITEREF
+-), the uptake of pyruvate remains high throughout development. Therefore, at the blastocyst stage in the presence of a physiological lactate concentration, pyruvate and glucose uptakes were both approximately 5 pmol/embryo per hour. Similar uptake studies on the in vivo-developed sheep embryo in the absence of lactate showed that pyruvate uptake at the cleavage stages was initially high while glucose uptake was low. After compaction, the uptake of glucose increased while pyruvate uptake remained high and further increased at the blastocyst stage 
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-B20
+(CITEREF
+Ilsqb SDATA [lsqb  ]
+-\|[lsqb  ]\|20
+Irsqb SDATA [rsqb  ]
+-\|[rsqb  ]\|
+)CITEREF
+-. Similarly, studies on the nutrient preferences of in vitro-produced human preimplantation embryos demonstrated that the human embryo continues to take up pyruvate throughout development to the blastocyst stage 
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-B21
+(CITEREF
+Ilsqb SDATA [lsqb  ]
+-\|[lsqb  ]\|21,22
+Irsqb SDATA [rsqb  ]
+-\|[rsqb  ]\|
+)CITEREF
+-. These studies on pyruvate uptake by the human embryo were also performed in medium either devoid of lactate 
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-B22
+(CITEREF
+Ilsqb SDATA [lsqb  ]
+-\|[lsqb  ]\|22
+Irsqb SDATA [rsqb  ]
+-\|[rsqb  ]\|
+)CITEREF
+- or containing low lactate concentrations 
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-B21
+(CITEREF
+Ilsqb SDATA [lsqb  ]
+-\|[lsqb  ]\|21
+Irsqb SDATA [rsqb  ]
+-\|[rsqb  ]\|
+)CITEREF
+-. Therefore the nutrient preferences observed in mouse embryos in this study are similar to that reported in other species. The previously reported decrease in pyruvate uptake by the mouse blastocyst appears to be an artifact of the high concentration of lactate in the medium. This highlights that culture conditions can have a significant effect on the energy metabolism of the preimplantation embryo. This metabolic adaptation by embryos in culture has been demonstrated previously 
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-B19
+(CITEREF
+Ilsqb SDATA [lsqb  ]
+-\|[lsqb  ]\|19,23
+Irsqb SDATA [rsqb  ]
+-\|[rsqb  ]\|
+)CITEREF
+-. However, it is also known that perturbations in normal embryo metabolism come at a cost of developmental competence 
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-B24
+(CITEREF
+Ilsqb SDATA [lsqb  ]
+-\|[lsqb  ]\|24
+Irsqb SDATA [rsqb  ]
+-\|[rsqb  ]\|
+)CITEREF
+-.
+)P
+o
+AALPHABET TOKEN LATIN
+o
+AID IMPLIED
+o
+ATYPE TOKEN INDENT
+(P
+-Lactate in the incubation medium not only altered pyruvate uptake but also altered the metabolic fate of the pyruvate. Increasing the lactate concentration up to 20 mM significantly reduced pyruvate oxidation at both the zygote and blastocyst stages. Conversely, increasing the lactate concentration in the medium significantly increased lactate oxidation at both stages of development. This pattern of oxidative metabolism has previously been reported for the 2-cell mouse embryo 
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-B7
+(CITEREF
+Ilsqb SDATA [lsqb  ]
+-\|[lsqb  ]\|7,8
+Irsqb SDATA [rsqb  ]
+-\|[rsqb  ]\|
+)CITEREF
+-, indicating substantial interaction between these two substrates in embryo metabolism. While lactate oxidation increased at the zygote stage when the lactate concentration was increased in the medium, pyruvate oxidation always remained higher than lactate oxidation. However, at the blastocyst stage the reverse was true, with lactate oxidation exceeding pyruvate oxidation at lactate concentrations of 10 and 20 mM. This indicates substantial differences in the abilities of these two stages of embryo development to regulate oxidative metabolism.
+)P
+o
+AALPHABET TOKEN LATIN
+o
+AID IMPLIED
+o
+ATYPE TOKEN INDENT
+(P
+-In this study, measurement of both pyruvate uptake and oxidation by embryos enabled the interaction between uptake and oxidative metabolism to be determined. Expression of pyruvate oxidation as a percentage of pyruvate uptake revealed that there were striking differences in pyruvate metabolism between the zygote and blastocyst in response to increasing lactate concentrations. For the zygote, increasing the lactate concentration decreased the percentage of pyruvate taken up by the embryo that was oxidized by the tricarboxylic acid cycle. The remaining pyruvate taken up by the embryo was presumably converted to lactate. In contrast to findings for the zygote, the majority of the pyruvate taken up by the blastocyst (68
+Ipercnt SDATA [percnt]
+-\|[percnt]\|) in the presence of 20 mM lactate was oxidized by the tricarboxylic acid cycle. Presumably only 32
+Ipercnt SDATA [percnt]
+-\|[percnt]\| was converted to lactate. Therefore, the zygote and blastocyst appear to have different capacities to regulate pyruvate metabolism. This difference in regulation of metabolism in response to increasing lactate concentrations may reflect the differing ability of the zygote and blastocyst to utilize lactate as an energy source. Mouse zygote division to the 2-cell stage is supported only by pyruvate or phosphoenolpyruvate 
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-B1
+(CITEREF
+Ilsqb SDATA [lsqb  ]
+-\|[lsqb  ]\|1
+Irsqb SDATA [rsqb  ]
+-\|[rsqb  ]\|
+)CITEREF
+-, while from the 2-cell stage, development can be supported by both pyruvate and lactate 
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-B3
+(CITEREF
+Ilsqb SDATA [lsqb  ]
+-\|[lsqb  ]\|3
+Irsqb SDATA [rsqb  ]
+-\|[rsqb  ]\|
+)CITEREF
+-. This inability of the zygote to cleave when lactate is the sole energy substrate is seen despite the observation that the zygote can oxidize lactate from the medium. The similar decrease in pyruvate uptake with increasing lactate concentration observed at both the zygote and blastocyst stages can be attributed to competition for the carboxylic acid transporter on the plasma membrane. The higher the lactate concentration, the less pyruvate is able to compete for the transporter. However, once pyruvate is inside the embryo, its fate is determined by cytosolic factors, which appear to differ between the zygote and blastocyst stages. One possible explanation for the different abilities of the zygote and later stages to regulate pyruvate metabolism may be related to differences in the kinetics of the enzyme LDH that catalyses the near-to-equilibrium reaction of pyruvate to lactate with the concomitant conversion of NADH to NAD
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(SUP
+Iplus SDATA [plus  ]
+-\|[plus  ]\|
+)SUP
+-. The activity of LDH in the zygote and blastocyst, which differed in their response to exogenous lactate, was therefore determined. Although LDH activity was found to be higher in the zygote compared to the blastocyst, the enzyme activity present at both stages was significantly higher than that required to account for maximal pyruvate utilization. LDH activity has previously been reported to be highest at the zygote, decreasing throughout development to the blastocyst stage 
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-B9
+(CITEREF
+Ilsqb SDATA [lsqb  ]
+-\|[lsqb  ]\|9
+Irsqb SDATA [rsqb  ]
+-\|[rsqb  ]\|
+)CITEREF
+-. The levels of LDH reported in this study are higher than those previously reported 
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-B9
+(CITEREF
+Ilsqb SDATA [lsqb  ]
+-\|[lsqb  ]\|9,11
+Irsqb SDATA [rsqb  ]
+-\|[rsqb  ]\|
+)CITEREF
+-. This apparent discrepancy can be explained by the incubation conditions used for LDH measurement. In this study, LDH activity was assessed at 37
+Ideg SDATA [deg   ]
+-\|[deg   ]\|C, and activity has been expressed as linear initial velocity. Previous studies employed endpoint determinations after several minutes, which tends to reduce the calculated activity.
+)P
+o
+AALPHABET TOKEN LATIN
+o
+AID IMPLIED
+o
+ATYPE TOKEN INDENT
+(P
+-LDH isolated from the zygote and the blastocyst were found to be identical in their response to 20 mM lactate, showing a 40
+Ipercnt SDATA [percnt]
+-\|[percnt]\| decrease in conversion of pyruvate to lactate at both stages of development. The 
+o
+ATYPE IMPLIED
+(IT
+-K
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(INF
+-m
+)INF
+)IT
+- of the enzymes at both stages of development were also found to be the same, indicating that the LDH present at both stages is the same isozyme. The kinetic data presented here confirm previous studies that have identified the isozyme present in mouse preimplantation embryos as LDH-1 through gel separation 
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-B9
+(CITEREF
+Ilsqb SDATA [lsqb  ]
+-\|[lsqb  ]\|9,25
+Indash SDATA [ndash ]
+-\|[ndash ]\|28
+Irsqb SDATA [rsqb  ]
+-\|[rsqb  ]\|
+)CITEREF
+-. The LDH in the embryo switches to isozyme LDH-5 at the time of implantation 
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-B25
+(CITEREF
+Ilsqb SDATA [lsqb  ]
+-\|[lsqb  ]\|25,29
+Irsqb SDATA [rsqb  ]
+-\|[rsqb  ]\|
+)CITEREF
+- after the stages used in this study. As the activity of the LDH enzyme of the zygote and blastocyst behaved similarly in isolation in vitro, it appears that the differential activity of the embryos in response to lactate must be due to the action of specific effectors acting on this enzyme in situ.
+)P
+o
+AALPHABET TOKEN LATIN
+o
+AID IMPLIED
+o
+ATYPE TOKEN INDENT
+(P
+-Increasing the lactate concentration in the medium resulted in a significant decrease in the NAD
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(SUP
+Iplus SDATA [plus  ]
+-\|[plus  ]\|
+)SUP
+-:NADH ratio (or increase in autofluorescence) of the zygote. The ratio of NAD
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(SUP
+Iplus SDATA [plus  ]
+-\|[plus  ]\|
+)SUP
+-:NADH of 2-cell and morula-stage embryos appears not to be affected by increasing lactate concentrations, as there were no changes in autofluorescence. Cellular utilization of lactate as an oxidative energy substrate requires that NAD
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(SUP
+Iplus SDATA [plus  ]
+-\|[plus  ]\|
+)SUP
+- must be regenerated for further flux to proceed. Two mechanisms commonly used for the regeneration of NAD
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(SUP
+Iplus SDATA [plus  ]
+-\|[plus  ]\|
+)SUP
+- are the conversion of pyruvate to lactate by LDH or by an indirect method involving mitochondrial shuttles such as the malate/aspartate shuttle that transport protons into the mitochondria and regenerates NAD
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(SUP
+Iplus SDATA [plus  ]
+-\|[plus  ]\|
+)SUP
+- in the cytosol 
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-B18
+(CITEREF
+Ilsqb SDATA [lsqb  ]
+-\|[lsqb  ]\|18
+Irsqb SDATA [rsqb  ]
+-\|[rsqb  ]\|
+)CITEREF
+-. The effect of altering the NAD
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(SUP
+Iplus SDATA [plus  ]
+-\|[plus  ]\|
+)SUP
+-:NADH ratio on isolated LDH indicated that increasing the level of NAD
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(SUP
+Iplus SDATA [plus  ]
+-\|[plus  ]\|
+)SUP
+- in the assay resulted in reduced activity of LDH conversion of pyruvate to lactate. It is plausible that the inability of the zygote to utilize lactate as an energy source is due to exhaustion of the NAD
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(SUP
+Iplus SDATA [plus  ]
+-\|[plus  ]\|
+)SUP
+- pools within the zygote resulting from the increased conversion of lactate to pyruvate. As the measurements of lactate oxidation in this study and previous studies 
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-B7
+(CITEREF
+Ilsqb SDATA [lsqb  ]
+-\|[lsqb  ]\|7,8,30
+Irsqb SDATA [rsqb  ]
+-\|[rsqb  ]\|
+)CITEREF
+- have been endpoint determinations after a 3-h incubation and linear rates of oxidation were not determined, the reduced rates of lactate oxidation in the zygote may actually reflect initial activity similar to pyruvate oxidation that declines or stops due to exhaustion of NAD
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(SUP
+Iplus SDATA [plus  ]
+-\|[plus  ]\|
+)SUP
+- pools within the embryo.
+)P
+o
+AALPHABET TOKEN LATIN
+o
+AID IMPLIED
+o
+ATYPE TOKEN INDENT
+(P
+-In conclusion, this study has demonstrated that pyruvate metabolism in the zygote and blastocyst is regulated differently in the presence of increasing lactate in the medium. In the presence of lactate the percentage of pyruvate that is oxidized decreases in the zygote, while in the blastocyst the percentage of pyruvate oxidation increases, despite the fact that total oxidation of pyruvate decreases at both stages. Importantly, this work confirms that the mouse blastocyst has a high oxidative capacity when developed in vivo. The high oxidative turnover by the blastocyst coincides with more developed mitochondria 
+o
+AHYNAMES CDATA rid linkends
+o
+AHYTIME TOKEN CLINK
+o
+AID IMPLIED
+ARID TOKEN I0006-3363-62-1-16-B31
+(CITEREF
+Ilsqb SDATA [lsqb  ]
+-\|[lsqb  ]\|31
+Irsqb SDATA [rsqb  ]
+-\|[rsqb  ]\|
+)CITEREF
+-. This study highlights the need to measure both nutrient uptake and oxidation before conclusions are made as to the regulation of embryo metabolism. This difference in regulation of pyruvate metabolism was not due to differences in LDH. Although the 
+o
+ATYPE IMPLIED
+(IT
+-V
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(INF
+-max
+)INF
+)IT
+- of LDH activity was higher in the zygote, the 
+o
+ATYPE IMPLIED
+(IT
+-K
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(INF
+-m
+)INF
+)IT
+- and inhibition of activity caused by lactate were similar in the zygote and blastocyst. Therefore the differential effect of lactate on pyruvate metabolism appears to be due to in situ regulation of LDH activity, plausibly by differences in redox potential of the cytosol, which may be due to a reduced capacity of reducing equivalent shuttles in the mitochondria at the zygote.
+)P
+)SECTION
+)BODY
+(BACK
+o
+ATYPE TOKEN CITATION
+(BIBLIST
+(HEAD
+-REFERENCES
+)HEAD
+o
+AHYTIME TOKEN BIBLOC
+ADOI CDATA 10.1043/0027-8424(1967)058<0560:TPOEMI>2.0.CO;2
+AID ID I0006-3363-62-1-16-B1
+o
+APMID IMPLIED
+(CITATION
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Biggers
+)SURNAME
+(FNAME
+-JD
+)FNAME
+)AUTHOR
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Whittingham
+)SURNAME
+(FNAME
+-DG
+)FNAME
+)AUTHOR
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Donahue
+)SURNAME
+(FNAME
+-RP
+)FNAME
+)AUTHOR
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-The pattern of energy metabolism in the mouse oocyte and zygote
+)TITLE
+(SERTITLE
+-Proc Natl Acad Sci USA
+)SERTITLE
+o
+ATYPE IMPLIED
+(DATE
+-1967
+)DATE
+(VOLID
+-58
+)VOLID
+(FPAGE
+-560
+)FPAGE
+(LPAGE
+-567
+)LPAGE
+)CITATION
+o
+AHYTIME TOKEN BIBLOC
+ADOI CDATA 10.1043/0028-0836(1957)179<1081:COTO>2.0.CO;2
+AID ID I0006-3363-62-1-16-B2
+o
+APMID IMPLIED
+(CITATION
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Whitten
+)SURNAME
+(FNAME
+-WK
+)FNAME
+)AUTHOR
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-Culture of tubal ova
+)TITLE
+(SERTITLE
+-Nature (Lond)
+)SERTITLE
+o
+ATYPE IMPLIED
+(DATE
+-1957
+)DATE
+(VOLID
+-179
+)VOLID
+(FPAGE
+-1081
+)FPAGE
+(LPAGE
+-1082
+)LPAGE
+)CITATION
+o
+AHYTIME TOKEN BIBLOC
+ADOI CDATA 10.1043/0022-4251(1965)010<0227:SOTDOM>2.0.CO;2
+AID ID I0006-3363-62-1-16-B3
+o
+APMID IMPLIED
+(CITATION
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Brinster
+)SURNAME
+(FNAME
+-RL
+)FNAME
+)AUTHOR
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-Studies on the development of mouse embryos in vitro IV. Interaction of energy sources
+)TITLE
+(SERTITLE
+-J Reprod Fertil
+)SERTITLE
+o
+ATYPE IMPLIED
+(DATE
+-1965
+)DATE
+(VOLID
+-10
+)VOLID
+(FPAGE
+-227
+)FPAGE
+(LPAGE
+-240
+)LPAGE
+)CITATION
+o
+AHYTIME TOKEN BIBLOC
+ADOI CDATA 10.1043/0014-4827(1966)042<0308:DOECME>2.0.CO;2
+AID ID I0006-3363-62-1-16-B4
+o
+APMID IMPLIED
+(CITATION
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Brinster
+)SURNAME
+(FNAME
+-RL
+)FNAME
+)AUTHOR
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Thomson
+)SURNAME
+(FNAME
+-JL
+)FNAME
+)AUTHOR
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-Development of eight-cell mouse embryos in vitro
+)TITLE
+(SERTITLE
+-Exp Cell Res
+)SERTITLE
+o
+ATYPE IMPLIED
+(DATE
+-1966
+)DATE
+(VOLID
+-42
+)VOLID
+(FPAGE
+-308
+)FPAGE
+(LPAGE
+-315
+)LPAGE
+)CITATION
+o
+AHYTIME TOKEN BIBLOC
+ADOI CDATA 10.1043/0022-4251(1984)072<0009:PAGUBM>2.0.CO;2
+AID ID I0006-3363-62-1-16-B5
+o
+APMID IMPLIED
+(CITATION
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Leese
+)SURNAME
+(FNAME
+-HJ
+)FNAME
+)AUTHOR
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Barton
+)SURNAME
+(FNAME
+-AM
+)FNAME
+)AUTHOR
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-Pyruvate and glucose uptake by mouse ova and preimplantation embryos
+)TITLE
+(SERTITLE
+-J Reprod Fertil
+)SERTITLE
+o
+ATYPE IMPLIED
+(DATE
+-1984
+)DATE
+(VOLID
+-72
+)VOLID
+(FPAGE
+-9
+)FPAGE
+(LPAGE
+-13
+)LPAGE
+)CITATION
+o
+AHYTIME TOKEN BIBLOC
+ADOI CDATA 10.1043/0268-1161(1986)001<0025:NIMONU>2.0.CO;2
+AID ID I0006-3363-62-1-16-B6
+o
+APMID IMPLIED
+(CITATION
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Gardner
+)SURNAME
+(FNAME
+-DK
+)FNAME
+)AUTHOR
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Leese
+)SURNAME
+(FNAME
+-HJ
+)FNAME
+)AUTHOR
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-Non-invasive measurement of nutrient uptake by single cultured pre-implantation mouse embryos
+)TITLE
+(SERTITLE
+-Hum Reprod
+)SERTITLE
+o
+ATYPE IMPLIED
+(DATE
+-1986
+)DATE
+(VOLID
+-1
+)VOLID
+(FPAGE
+-25
+)FPAGE
+(LPAGE
+-27
+)LPAGE
+)CITATION
+o
+AHYTIME TOKEN BIBLOC
+o
+ADOI IMPLIED
+AID ID I0006-3363-62-1-16-B7
+o
+APMID IMPLIED
+(CITATION
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Wales
+)SURNAME
+(FNAME
+-RG
+)FNAME
+)AUTHOR
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Whittingham
+)SURNAME
+(FNAME
+-DG
+)FNAME
+)AUTHOR
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-A comparison of the uptake and utilization of lactate and pyruvate by one- and two-cell mouse embryos
+)TITLE
+(SERTITLE
+-Biochim Biophys Acta
+)SERTITLE
+o
+ATYPE IMPLIED
+(DATE
+-1967
+)DATE
+(VOLID
+-148
+)VOLID
+(FPAGE
+-703
+)FPAGE
+(LPAGE
+-712
+)LPAGE
+)CITATION
+o
+AHYTIME TOKEN BIBLOC
+ADOI CDATA 10.1043/0022-4251(1973)033<0207:TMOSLL>2.0.CO;2
+AID ID I0006-3363-62-1-16-B8
+o
+APMID IMPLIED
+(CITATION
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Wales
+)SURNAME
+(FNAME
+-RG
+)FNAME
+)AUTHOR
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Whittingham
+)SURNAME
+(FNAME
+-DG
+)FNAME
+)AUTHOR
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-The metabolism of specifically labeled lactate and pyruvate by two-cell mouse embryos
+)TITLE
+(SERTITLE
+-J Reprod Fertil
+)SERTITLE
+o
+ATYPE IMPLIED
+(DATE
+-1973
+)DATE
+(VOLID
+-33
+)VOLID
+(FPAGE
+-207
+)FPAGE
+(LPAGE
+-222
+)LPAGE
+)CITATION
+o
+AHYTIME TOKEN BIBLOC
+ADOI CDATA 10.1043/0014-5793(1971)017<0041:TLDITP>2.0.CO;2
+AID ID I0006-3363-62-1-16-B9
+o
+APMID IMPLIED
+(CITATION
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Brinster
+)SURNAME
+(FNAME
+-RL
+)FNAME
+)AUTHOR
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-The lactate dehydrogenase in the preimplantation embryos of Quackenbush and Swiss mice
+)TITLE
+(SERTITLE
+-FEBS Lett
+)SERTITLE
+o
+ATYPE IMPLIED
+(DATE
+-1971
+)DATE
+(VOLID
+-17
+)VOLID
+(FPAGE
+-41
+)FPAGE
+(LPAGE
+-44
+)LPAGE
+)CITATION
+o
+AHYTIME TOKEN BIBLOC
+ADOI CDATA 10.1043/0006-3363(1988)039<0295:CILOME>2.0.CO;2
+AID ID I0006-3363-62-1-16-B10
+o
+APMID IMPLIED
+(CITATION
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Chi
+)SURNAME
+(FNAME
+-MM
+)FNAME
+)AUTHOR
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Manchester
+)SURNAME
+(FNAME
+-JK
+)FNAME
+)AUTHOR
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Yang
+)SURNAME
+(FNAME
+-VC
+)FNAME
+)AUTHOR
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Curato
+)SURNAME
+(FNAME
+-AD
+)FNAME
+)AUTHOR
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Stricker
+)SURNAME
+(FNAME
+-RC
+)FNAME
+)AUTHOR
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Lowry
+)SURNAME
+(FNAME
+-OH
+)FNAME
+)AUTHOR
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-Contrast in levels of metabolic enzymes in human and mouse ova
+)TITLE
+(SERTITLE
+-Biol Reprod
+)SERTITLE
+o
+ATYPE IMPLIED
+(DATE
+-1988
+)DATE
+(VOLID
+-39
+)VOLID
+(FPAGE
+-295
+)FPAGE
+(LPAGE
+-307
+)LPAGE
+)CITATION
+o
+AHYTIME TOKEN BIBLOC
+ADOI CDATA 10.1043/0022-4251(1993)099<0259:AOEOEM>2.0.CO;2
+AID ID I0006-3363-62-1-16-B11
+o
+APMID IMPLIED
+(CITATION
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Martin
+)SURNAME
+(FNAME
+-KL
+)FNAME
+)AUTHOR
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Hardy
+)SURNAME
+(FNAME
+-K
+)FNAME
+)AUTHOR
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Winston
+)SURNAME
+(FNAME
+-RML
+)FNAME
+)AUTHOR
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Leese
+)SURNAME
+(FNAME
+-HJ
+)FNAME
+)AUTHOR
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-Activity of enzymes of energy metabolism in single human preimplantation embryos
+)TITLE
+(SERTITLE
+-J Reprod Fertil
+)SERTITLE
+o
+ATYPE IMPLIED
+(DATE
+-1993
+)DATE
+(VOLID
+-99
+)VOLID
+(FPAGE
+-259
+)FPAGE
+(LPAGE
+-266
+)LPAGE
+)CITATION
+o
+AHYTIME TOKEN BIBLOC
+ADOI CDATA 10.1043/0006-3363(1993)048<0377:AAAART>2.0.CO;2
+AID ID I0006-3363-62-1-16-B12
+o
+APMID IMPLIED
+(CITATION
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Gardner
+)SURNAME
+(FNAME
+-DK
+)FNAME
+)AUTHOR
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Lane
+)SURNAME
+(FNAME
+-M
+)FNAME
+)AUTHOR
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-Amino acids and ammonium regulate the development of preimplantation mouse embryos in culture
+)TITLE
+(SERTITLE
+-Biol Reprod
+)SERTITLE
+o
+ATYPE IMPLIED
+(DATE
+-1993
+)DATE
+(VOLID
+-48
+)VOLID
+(FPAGE
+-377
+)FPAGE
+(LPAGE
+-385
+)LPAGE
+)CITATION
+o
+AHYTIME TOKEN BIBLOC
+ADOI CDATA 10.1043/0022-4251(1990)088<0361:CONIMO>2.0.CO;2
+AID ID I0006-3363-62-1-16-B13
+o
+APMID IMPLIED
+(CITATION
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Gardner
+)SURNAME
+(FNAME
+-DK
+)FNAME
+)AUTHOR
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Leese
+)SURNAME
+(FNAME
+-HJ
+)FNAME
+)AUTHOR
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-Concentrations of nutrients in mouse oviduct fluid and their effects on embryo development and metabolism in vitro
+)TITLE
+(SERTITLE
+-J Reprod Fertil
+)SERTITLE
+o
+ATYPE IMPLIED
+(DATE
+-1990
+)DATE
+(VOLID
+-88
+)VOLID
+(FPAGE
+-361
+)FPAGE
+(LPAGE
+-368
+)LPAGE
+)CITATION
+o
+AHYTIME TOKEN BIBLOC
+o
+ADOI IMPLIED
+AID ID I0006-3363-62-1-16-B14
+o
+APMID IMPLIED
+(CITATION
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Gardner
+)SURNAME
+(FNAME
+-DK
+)FNAME
+)AUTHOR
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Leese
+)SURNAME
+(FNAME
+-HJ
+)FNAME
+)AUTHOR
+(OTHINFO
+-Assessment of embryo metabolism and viability. In: Trounson A, Gardner DK (eds.), Handbook of In Vitro Fertilization, 2nd Edition. Boca Raton, FL: CRC Press; 1999: 205
+Indash SDATA [ndash ]
+-\|[ndash ]\|264
+)OTHINFO
+)CITATION
+o
+AHYTIME TOKEN BIBLOC
+ADOI CDATA 10.1043/0022-4251(1992)095<0585:DRCITM>2.0.CO;2
+AID ID I0006-3363-62-1-16-B15
+o
+APMID IMPLIED
+(CITATION
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Rieger
+)SURNAME
+(FNAME
+-D
+)FNAME
+)AUTHOR
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Loskutoff
+)SURNAME
+(FNAME
+-NM
+)FNAME
+)AUTHOR
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Betteridge
+)SURNAME
+(FNAME
+-KJ
+)FNAME
+)AUTHOR
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-Developmentally related changes in the metabolism of glucose and glutamine by cattle embryos produced and co-cultured in vitro
+)TITLE
+(SERTITLE
+-J Reprod Fertil
+)SERTITLE
+o
+ATYPE IMPLIED
+(DATE
+-1992
+)DATE
+(VOLID
+-95
+)VOLID
+(FPAGE
+-585
+)FPAGE
+(LPAGE
+-595
+)LPAGE
+)CITATION
+o
+AHYTIME TOKEN BIBLOC
+o
+ADOI IMPLIED
+AID ID I0006-3363-62-1-16-B16
+o
+APMID IMPLIED
+(CITATION
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Passonneau
+)SURNAME
+(FNAME
+-JV
+)FNAME
+)AUTHOR
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Lowry
+)SURNAME
+(FNAME
+-OH
+)FNAME
+)AUTHOR
+(OTHINFO
+-Enzymatic analysis: a practical guide. New York: Humana Press; 1993
+)OTHINFO
+)CITATION
+o
+AHYTIME TOKEN BIBLOC
+ADOI CDATA 10.1043/0022-1554(1979)027<0036:AOVCMC>2.0.CO;2
+AID ID I0006-3363-62-1-16-B17
+o
+APMID IMPLIED
+(CITATION
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Aubin
+)SURNAME
+(FNAME
+-JE
+)FNAME
+)AUTHOR
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-Autofluorescence of viable cultured mammalian cells
+)TITLE
+(SERTITLE
+-J Histochem Cytochem
+)SERTITLE
+o
+ATYPE IMPLIED
+(DATE
+-1979
+)DATE
+(VOLID
+-27
+)VOLID
+(FPAGE
+-36
+)FPAGE
+(LPAGE
+-43
+)LPAGE
+)CITATION
+o
+AHYTIME TOKEN BIBLOC
+o
+ADOI IMPLIED
+AID ID I0006-3363-62-1-16-B18
+o
+APMID IMPLIED
+(CITATION
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Newsholme
+)SURNAME
+(FNAME
+-EA
+)FNAME
+)AUTHOR
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Leech
+)SURNAME
+(FNAME
+-AR
+)FNAME
+)AUTHOR
+(OTHINFO
+-Biochemistry for the Medical Sciences. Chichester: John Wiley and Sons; 1983
+)OTHINFO
+)CITATION
+o
+AHYTIME TOKEN BIBLOC
+ADOI CDATA 10.1043/0950-1991(1988)104<0423:TROGAP>2.0.CO;2
+AID ID I0006-3363-62-1-16-B19
+o
+APMID IMPLIED
+(CITATION
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Gardner
+)SURNAME
+(FNAME
+-DK
+)FNAME
+)AUTHOR
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Leese
+)SURNAME
+(FNAME
+-HJ
+)FNAME
+)AUTHOR
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-The role of glucose and pyruvate transport in regulating nutrient utilization by preimplantation mouse embryos
+)TITLE
+(SERTITLE
+-Development
+)SERTITLE
+o
+ATYPE IMPLIED
+(DATE
+-1988
+)DATE
+(VOLID
+-104
+)VOLID
+(FPAGE
+-423
+)FPAGE
+(LPAGE
+-429
+)LPAGE
+)CITATION
+o
+AHYTIME TOKEN BIBLOC
+ADOI CDATA 10.1043/1040-452X(1993)036<0313:UAMOPA>2.0.CO;2
+AID ID I0006-3363-62-1-16-B20
+o
+APMID IMPLIED
+(CITATION
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Gardner
+)SURNAME
+(FNAME
+-DK
+)FNAME
+)AUTHOR
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Lane
+)SURNAME
+(FNAME
+-M
+)FNAME
+)AUTHOR
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Batt
+)SURNAME
+(FNAME
+-PA
+)FNAME
+)AUTHOR
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-Uptake and metabolism of pyruvate and glucose by individual sheep pre-attachment embryos in vivo
+)TITLE
+(SERTITLE
+-Mol Reprod Dev
+)SERTITLE
+o
+ATYPE IMPLIED
+(DATE
+-1993
+)DATE
+(VOLID
+-36
+)VOLID
+(FPAGE
+-313
+)FPAGE
+(LPAGE
+-319
+)LPAGE
+)CITATION
+o
+AHYTIME TOKEN BIBLOC
+ADOI CDATA 10.1043/0268-1161(1989)004<0188:NIMOGA>2.0.CO;2
+AID ID I0006-3363-62-1-16-B21
+o
+APMID IMPLIED
+(CITATION
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Hardy
+)SURNAME
+(FNAME
+-K
+)FNAME
+)AUTHOR
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Hooper
+)SURNAME
+(FNAME
+-MAK
+)FNAME
+)AUTHOR
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Handyside
+)SURNAME
+(FNAME
+-AH
+)FNAME
+)AUTHOR
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Rutherford
+)SURNAME
+(FNAME
+-AJ
+)FNAME
+)AUTHOR
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Winston
+)SURNAME
+(FNAME
+-RML
+)FNAME
+)AUTHOR
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Leese
+)SURNAME
+(FNAME
+-HJ
+)FNAME
+)AUTHOR
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-Non-invasive measurement of glucose and pyruvate uptake by individual human oocytes and preimplantation embryos
+)TITLE
+(SERTITLE
+-Hum Reprod
+)SERTITLE
+o
+ATYPE IMPLIED
+(DATE
+-1989
+)DATE
+(VOLID
+-4
+)VOLID
+(FPAGE
+-188
+)FPAGE
+(LPAGE
+-191
+)LPAGE
+)CITATION
+o
+AHYTIME TOKEN BIBLOC
+ADOI CDATA 10.1043/0268-1161(1990)005<0104:NIMOPA>2.0.CO;2
+AID ID I0006-3363-62-1-16-B22
+o
+APMID IMPLIED
+(CITATION
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Gott
+)SURNAME
+(FNAME
+-AL
+)FNAME
+)AUTHOR
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Hardy
+)SURNAME
+(FNAME
+-K
+)FNAME
+)AUTHOR
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Winston
+)SURNAME
+(FNAME
+-RML
+)FNAME
+)AUTHOR
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Leese
+)SURNAME
+(FNAME
+-HJ
+)FNAME
+)AUTHOR
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-Non-invasive measurement of pyruvate and glucose uptake and lactate production by single human preimplantation embryos
+)TITLE
+(SERTITLE
+-Hum Reprod
+)SERTITLE
+o
+ATYPE IMPLIED
+(DATE
+-1990
+)DATE
+(VOLID
+-5
+)VOLID
+(FPAGE
+-104
+)FPAGE
+(LPAGE
+-108
+)LPAGE
+)CITATION
+o
+AHYTIME TOKEN BIBLOC
+ADOI CDATA 10.1043/1355-4786(1995)001<0063:MCDPMD>2.0.CO;2
+AID ID I0006-3363-62-1-16-B23
+o
+APMID IMPLIED
+(CITATION
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Leese
+)SURNAME
+(FNAME
+-HJ
+)FNAME
+)AUTHOR
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-Metabolic control during preimplantation mammalian development
+)TITLE
+(SERTITLE
+-Hum Reprod Update
+)SERTITLE
+o
+ATYPE IMPLIED
+(DATE
+-1995
+)DATE
+(VOLID
+-1
+)VOLID
+(FPAGE
+-63
+)FPAGE
+(LPAGE
+-72
+)LPAGE
+)CITATION
+o
+AHYTIME TOKEN BIBLOC
+ADOI CDATA 10.1043/0268-1161(1998)013<0991:AAAVPC>2.0.CO;2
+AID ID I0006-3363-62-1-16-B24
+o
+APMID IMPLIED
+(CITATION
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Lane
+)SURNAME
+(FNAME
+-M
+)FNAME
+)AUTHOR
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Gardner
+)SURNAME
+(FNAME
+-DK
+)FNAME
+)AUTHOR
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-Amino acids and vitamins prevent culture-induced metabolic perturbations and associated loss of viability of mouse blastocysts
+)TITLE
+(SERTITLE
+-Hum Reprod
+)SERTITLE
+o
+ATYPE IMPLIED
+(DATE
+-1998
+)DATE
+(VOLID
+-13
+)VOLID
+(FPAGE
+-991
+)FPAGE
+(LPAGE
+-997
+)LPAGE
+)CITATION
+o
+AHYTIME TOKEN BIBLOC
+ADOI CDATA 10.1043/0014-4827(1967)046<0089:LDIITE>2.0.CO;2
+AID ID I0006-3363-62-1-16-B25
+o
+APMID IMPLIED
+(CITATION
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Auerbach
+)SURNAME
+(FNAME
+-S
+)FNAME
+)AUTHOR
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Brinster
+)SURNAME
+(FNAME
+-RL
+)FNAME
+)AUTHOR
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-Lactate dehydrogenase isozymes in the early mouse embryo
+)TITLE
+(SERTITLE
+-Exp Cell Res
+)SERTITLE
+o
+ATYPE IMPLIED
+(DATE
+-1967
+)DATE
+(VOLID
+-46
+)VOLID
+(FPAGE
+-89
+)FPAGE
+(LPAGE
+-92
+)LPAGE
+)CITATION
+o
+AHYTIME TOKEN BIBLOC
+ADOI CDATA 10.1043/0036-8075(1967)157<1311:EEPCOT>2.0.CO;2
+AID ID I0006-3363-62-1-16-B26
+o
+APMID IMPLIED
+(CITATION
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Rapola
+)SURNAME
+(FNAME
+-J
+)FNAME
+)AUTHOR
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Koskimies
+)SURNAME
+(FNAME
+-O
+)FNAME
+)AUTHOR
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-Embryonic enzyme patterns: characterization of the single lactate dehydrogenase isozyme in preimplanted mouse ova
+)TITLE
+(SERTITLE
+-Science
+)SERTITLE
+o
+ATYPE IMPLIED
+(DATE
+-1967
+)DATE
+(VOLID
+-157
+)VOLID
+(FPAGE
+-1311
+)FPAGE
+(LPAGE
+-1312
+)LPAGE
+)CITATION
+o
+AHYTIME TOKEN BIBLOC
+ADOI CDATA 10.1043/0014-5793(1971)013<0045:TSOLDI>2.0.CO;2
+AID ID I0006-3363-62-1-16-B27
+o
+APMID IMPLIED
+(CITATION
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Epstein
+)SURNAME
+(FNAME
+-CJ
+)FNAME
+)AUTHOR
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Kwok
+)SURNAME
+(FNAME
+-L
+)FNAME
+)AUTHOR
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Smith
+)SURNAME
+(FNAME
+-CW
+)FNAME
+)AUTHOR
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-The source of lactate dehydrogenase in preimplantation mouse embryos
+)TITLE
+(SERTITLE
+-FEBS Lett
+)SERTITLE
+o
+ATYPE IMPLIED
+(DATE
+-1971
+)DATE
+(VOLID
+-13
+)VOLID
+(FPAGE
+-45
+)FPAGE
+(LPAGE
+-48
+)LPAGE
+)CITATION
+o
+AHYTIME TOKEN BIBLOC
+o
+ADOI IMPLIED
+AID ID I0006-3363-62-1-16-B28
+o
+APMID IMPLIED
+(CITATION
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Erickson
+)SURNAME
+(FNAME
+-RP
+)FNAME
+)AUTHOR
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Spielmann
+)SURNAME
+(FNAME
+-H
+)FNAME
+)AUTHOR
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Mangia
+)SURNAME
+(FNAME
+-F
+)FNAME
+)AUTHOR
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Tennenbaum
+)SURNAME
+(FNAME
+-D
+)FNAME
+)AUTHOR
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Epstein
+)SURNAME
+(FNAME
+-CJ
+)FNAME
+)AUTHOR
+(OTHINFO
+-Studies on lactate dehydrogenase isozymes in gametes and early development of mice. In: Markert CL (ed.), Isozymes III. New York: Academic Press; 1975: 134
+Indash SDATA [ndash ]
+-\|[ndash ]\|165
+)OTHINFO
+)CITATION
+o
+AHYTIME TOKEN BIBLOC
+ADOI CDATA 10.1043/0014-4827(1968)053<0313:LDIIMB>2.0.CO;2
+AID ID I0006-3363-62-1-16-B29
+o
+APMID IMPLIED
+(CITATION
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Auerbach
+)SURNAME
+(FNAME
+-S
+)FNAME
+)AUTHOR
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Brinster
+)SURNAME
+(FNAME
+-RL
+)FNAME
+)AUTHOR
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-Lactate dehydrogenase isozymes in mouse blastocyst cultures
+)TITLE
+(SERTITLE
+-Exp Cell Res
+)SERTITLE
+o
+ATYPE IMPLIED
+(DATE
+-1968
+)DATE
+(VOLID
+-53
+)VOLID
+(FPAGE
+-313
+)FPAGE
+(LPAGE
+-315
+)LPAGE
+)CITATION
+o
+AHYTIME TOKEN BIBLOC
+ADOI CDATA 10.1043/0014-4827(1967)047<0634:CDPFLA>2.0.CO;2
+AID ID I0006-3363-62-1-16-B30
+o
+APMID IMPLIED
+(CITATION
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Brinster
+)SURNAME
+(FNAME
+-RL
+)FNAME
+)AUTHOR
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-Carbon dioxide production from lactate and pyruvate by the preimplantation mouse embryo
+)TITLE
+(SERTITLE
+-Exp Cell Res
+)SERTITLE
+o
+ATYPE IMPLIED
+(DATE
+-1967
+)DATE
+(VOLID
+-47
+)VOLID
+(FPAGE
+-634
+)FPAGE
+(LPAGE
+-637
+)LPAGE
+)CITATION
+o
+AHYTIME TOKEN BIBLOC
+ADOI CDATA 10.1043/0002-9106(1969)126<0151:UAASOM>2.0.CO;2
+AID ID I0006-3363-62-1-16-B31
+o
+APMID IMPLIED
+(CITATION
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Hillman
+)SURNAME
+(FNAME
+-N
+)FNAME
+)AUTHOR
+o
+AILINK IMPLIED
+o
+AITYPE TOKEN NORM
+o
+ARIDS IMPLIED
+(AUTHOR
+(SURNAME
+-Tasca
+)SURNAME
+(FNAME
+-RJ
+)FNAME
+)AUTHOR
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-Ultrastructural and autoradiographic studies of mouse cleavage stages
+)TITLE
+(SERTITLE
+-Am J Anat
+)SERTITLE
+o
+ATYPE IMPLIED
+(DATE
+-1969
+)DATE
+(VOLID
+-126
+)VOLID
+(FPAGE
+-151
+)FPAGE
+(LPAGE
+-174
+)LPAGE
+)CITATION
+)BIBLIST
+)BACK
+AID ID I0006-3363-62-1-16-T01
+i
+(TABLEGRP
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-TABLE 1. Effect of lactate concentration on the activity of isolated LDH from zygotes and blastocysts.
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(SUP
+-a
+)SUP
+)TITLE
+AFILE CDATA i0006-3363-62-1-16-t01
+o
+AID IMPLIED
+o
+ANAME IMPLIED
+o
+ASCALE TOKEN 100
+o
+ASICI IMPLIED
+o
+ASIZEX IMPLIED
+o
+ASIZEY IMPLIED
+o
+ATYPE IMPLIED
+o
+AUNIT IMPLIED
+(FIG
+)FIG
+)TABLEGRP
+AID ID I0006-3363-62-1-16-T02
+i
+(TABLEGRP
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-TABLE 2. Kinetics of LDH isolated from zygotes and blastocysts (mean 
+Iplusmn SDATA [plusmn]
+-\|[plusmn]\| SEM)
+)TITLE
+AFILE CDATA i0006-3363-62-1-16-t02
+o
+AID IMPLIED
+o
+ANAME IMPLIED
+o
+ASCALE TOKEN 100
+o
+ASICI IMPLIED
+o
+ASIZEX IMPLIED
+o
+ASIZEY IMPLIED
+o
+ATYPE IMPLIED
+o
+AUNIT IMPLIED
+(FIG
+)FIG
+)TABLEGRP
+AID ID I0006-3363-62-1-16-T03
+i
+(TABLEGRP
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-TABLE 3. Effect of the NAD
+o
+AARRANGE TOKEN COMPACT
+o
+ALOCATION TOKEN POST
+(SUP
+Iplus SDATA [plus  ]
+-\|[plus  ]\|
+)SUP
+-:NADH ratio on the activity of LDH in blastocysts
+)TITLE
+AFILE CDATA i0006-3363-62-1-16-t03
+o
+AID IMPLIED
+o
+ANAME IMPLIED
+o
+ASCALE TOKEN 100
+o
+ASICI IMPLIED
+o
+ASIZEX IMPLIED
+o
+ASIZEY IMPLIED
+o
+ATYPE IMPLIED
+o
+AUNIT IMPLIED
+(FIG
+)FIG
+)TABLEGRP
+AID ID I0006-3363-62-1-16-F01
+i
+(FIGGRP
+AFILE CDATA i0006-3363-62-1-16-f01
+o
+AID IMPLIED
+o
+ANAME IMPLIED
+o
+ASCALE TOKEN 100
+o
+ASICI IMPLIED
+o
+ASIZEX IMPLIED
+o
+ASIZEY IMPLIED
+o
+ATYPE IMPLIED
+o
+AUNIT IMPLIED
+(FIG
+)FIG
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-FIG. 1. Effect of lactate concentration on pyruvate and glucose uptakes by embryos throughout development; n 
+Iequals SDATA [equals]
+-\|[equals]\| 20 embryos per lactate concentration at each stage of development. Triangles, zygote; circles, 2-cell embryo; squares, 8-cell embryo; diamonds, blastocyst. 
+o
+ATYPE IMPLIED
+(B
+-a
+)B
+-) Pyruvate uptakes (pmol/embryo per hour). 
+o
+ATYPE IMPLIED
+(B
+-b
+)B
+-) Glucose uptakes (pmol/embryo per hour). 
+Iast SDATA [ast   ]
+-\|[ast   ]\| Significantly different from 0 mM lactate (
+o
+ATYPE IMPLIED
+(IT
+-P
+)IT
+- 
+Ilt SDATA [lt    ]
+-\|[lt    ]\| 0.05). 
+Iast SDATA [ast   ]
+-\|[ast   ]\|
+Iast SDATA [ast   ]
+-\|[ast   ]\| Significantly different from 0 mM lactate: (
+o
+ATYPE IMPLIED
+(IT
+-P
+)IT
+- 
+Ilt SDATA [lt    ]
+-\|[lt    ]\| 0.01)
+)TITLE
+)FIGGRP
+AID ID I0006-3363-62-1-16-F02
+i
+(FIGGRP
+AFILE CDATA i0006-3363-62-1-16-f02
+o
+AID IMPLIED
+o
+ANAME IMPLIED
+o
+ASCALE TOKEN 100
+o
+ASICI IMPLIED
+o
+ASIZEX IMPLIED
+o
+ASIZEY IMPLIED
+o
+ATYPE IMPLIED
+o
+AUNIT IMPLIED
+(FIG
+)FIG
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-FIG. 2. Effect of lactate concentration in the medium on pyruvate oxidation by zygotes. 
+o
+ATYPE IMPLIED
+(B
+-a
+)B
+-) Pyruvate oxidation (pmol/embryo/3 h) 
+o
+ATYPE IMPLIED
+(IT
+-r
+)IT
+- 
+Iequals SDATA [equals]
+-\|[equals]\| 0.94. 
+o
+ATYPE IMPLIED
+(B
+-b
+)B
+-) Pyruvate oxidation/pyruvate uptake (
+Ipercnt SDATA [percnt]
+-\|[percnt]\|) 
+o
+ATYPE IMPLIED
+(IT
+-r
+)IT
+- 
+Iequals SDATA [equals]
+-\|[equals]\| 0.96. 
+Iast SDATA [ast   ]
+-\|[ast   ]\| Significantly different from 0 mM lactate (
+o
+ATYPE IMPLIED
+(IT
+-P
+)IT
+- 
+Ilt SDATA [lt    ]
+-\|[lt    ]\| 0.05). 
+Iast SDATA [ast   ]
+-\|[ast   ]\|
+Iast SDATA [ast   ]
+-\|[ast   ]\| Significantly different from 0 mM lactate (
+o
+ATYPE IMPLIED
+(IT
+-P
+)IT
+- 
+Ilt SDATA [lt    ]
+-\|[lt    ]\| 0.01)
+)TITLE
+)FIGGRP
+AID ID I0006-3363-62-1-16-F03
+i
+(FIGGRP
+AFILE CDATA i0006-3363-62-1-16-f03
+o
+AID IMPLIED
+o
+ANAME IMPLIED
+o
+ASCALE TOKEN 100
+o
+ASICI IMPLIED
+o
+ASIZEX IMPLIED
+o
+ASIZEY IMPLIED
+o
+ATYPE IMPLIED
+o
+AUNIT IMPLIED
+(FIG
+)FIG
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-FIG. 3. Effect of lactate concentration in the medium on pyruvate oxidation by blastocysts. 
+o
+ATYPE IMPLIED
+(B
+-a
+)B
+-) Pyruvate oxidation (pmol/embryo/3 h) 
+o
+ATYPE IMPLIED
+(IT
+-r
+)IT
+- 
+Iequals SDATA [equals]
+-\|[equals]\| 0.97. 
+o
+ATYPE IMPLIED
+(B
+-b
+)B
+-) Pyruvate oxidation/pyruvate uptake (
+Ipercnt SDATA [percnt]
+-\|[percnt]\|) 
+o
+ATYPE IMPLIED
+(IT
+-r
+)IT
+- 
+Iequals SDATA [equals]
+-\|[equals]\| 0.97. 
+Iast SDATA [ast   ]
+-\|[ast   ]\| Significantly different from 0 mM lactate (
+o
+ATYPE IMPLIED
+(IT
+-P
+)IT
+- 
+Ilt SDATA [lt    ]
+-\|[lt    ]\| 0.05). 
+Iast SDATA [ast   ]
+-\|[ast   ]\|
+Iast SDATA [ast   ]
+-\|[ast   ]\| Significantly different from 0 mM lactate (
+o
+ATYPE IMPLIED
+(IT
+-P
+)IT
+- 
+Ilt SDATA [lt    ]
+-\|[lt    ]\| 0.01)
+)TITLE
+)FIGGRP
+AID ID I0006-3363-62-1-16-F04
+i
+(FIGGRP
+AFILE CDATA i0006-3363-62-1-16-f04
+o
+AID IMPLIED
+o
+ANAME IMPLIED
+o
+ASCALE TOKEN 100
+o
+ASICI IMPLIED
+o
+ASIZEX IMPLIED
+o
+ASIZEY IMPLIED
+o
+ATYPE IMPLIED
+o
+AUNIT IMPLIED
+(FIG
+)FIG
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-FIG. 4. Effect of increasing lactate concentration in the medium on lactate oxidation. Solid bars, zygotes; open bars, blastocysts. 
+Iast SDATA [ast   ]
+-\|[ast   ]\| Significantly different from 5 mM lactate (
+o
+ATYPE IMPLIED
+(IT
+-P
+)IT
+- 
+Ilt SDATA [lt    ]
+-\|[lt    ]\| 0.05). a
+Indash SDATA [ndash ]
+-\|[ndash ]\|c: Same superscripts are significantly different (
+o
+ATYPE IMPLIED
+(IT
+-P
+)IT
+- 
+Ilt SDATA [lt    ]
+-\|[lt    ]\| 0.01)
+)TITLE
+)FIGGRP
+AID ID I0006-3363-62-1-16-F05
+i
+(FIGGRP
+AFILE CDATA i0006-3363-62-1-16-f05
+o
+AID IMPLIED
+o
+ANAME IMPLIED
+o
+ASCALE TOKEN 100
+o
+ASICI IMPLIED
+o
+ASIZEX IMPLIED
+o
+ASIZEY IMPLIED
+o
+ATYPE IMPLIED
+o
+AUNIT IMPLIED
+(FIG
+)FIG
+o
+AALPHABET TOKEN LATIN
+(TITLE
+-FIG. 5. Effect of lactate concentration in the medium on the autofluorescence of embryos. Solid bars, zygotes; open bars, 2-cells; hatched bars, morulae. 
+Iast SDATA [ast   ]
+-\|[ast   ]\| Significantly different from 5 mM lactate (
+o
+ATYPE IMPLIED
+(IT
+-P
+)IT
+- 
+Ilt SDATA [lt    ]
+-\|[lt    ]\| 0.05). 
+Iplus SDATA [plus  ]
+-\|[plus  ]\| Significantly different from all other stages of development (
+o
+ATYPE IMPLIED
+(IT
+-P
+)IT
+- 
+Ilt SDATA [lt    ]
+-\|[lt    ]\| 0.01)
+)TITLE
+)FIGGRP
+AID ID N1
+o
+ATYPE TOKEN AFF
+i
+(FOOTNOTE
+o
+AALPHABET TOKEN LATIN
+o
+AID IMPLIED
+o
+ATYPE TOKEN INDENT
+(P
+-M.L. was the recipient of a Dora Lush Biomedical Studentship from the Australian National Health and Medical Research Council. D.K.G. was the recipient of a Fellowship from the Australian Research Council.
+)P
+)FOOTNOTE
+AID ID N2
+o
+ATYPE TOKEN AFF
+i
+(FOOTNOTE
+o
+AALPHABET TOKEN LATIN
+o
+AID IMPLIED
+o
+ATYPE TOKEN INDENT
+(P
+AID ID AFF3
+(AFF
+-Correspondence: Michelle Lane, Colorado Center for Reproductive Medicine, 799 East Hampden Ave., Suite 300, Englewood, CO 80110. FAX: 303 788 4438; 
+(EMAIL
+-mlane
+Icommat SDATA [commat]
+-\|[commat]\|colocrm.com
+)EMAIL
+)AFF
+)P
+)FOOTNOTE
+)ARTICLE
+)SERSEC
+)SERBODY
+)SERIAL
+C

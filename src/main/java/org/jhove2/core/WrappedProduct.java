@@ -48,6 +48,7 @@ import org.jhove2.core.reportable.AbstractReportable;
 public class WrappedProduct
 	extends AbstractReportable
 {
+
 	/** Product maintenance authority . */
 	protected String authority;
 	
@@ -81,9 +82,22 @@ public class WrappedProduct
 	/** Product version. */
 	protected String version;
 	
+	
+	/** I
+	 * Instantiate a new <code>WrappedProduct</code>.
+	 * 
+	 */
+	public WrappedProduct(){
+		super();
+	}
+	
 	/** Instantiate a new <code>WrappedProduct</code>.
 	 * @param name Product name
+	 * @param version Product version
+	 * @param releaseDate Product release date
+	 * @param rightsStatement Product rights statement
 	 */
+	
 	public WrappedProduct(String name, String version, String releaseDate,
 			              String rightsStatement) {
 		super();
@@ -179,7 +193,7 @@ public class WrappedProduct
 	 */
 	@ReportableProperty(order = 10, value = "Product open source status")
 	public boolean isOpenSource() {
-		return this.isOpenSource;
+		return isOpenSource;
 	}
 
 	/** Set product maintenance authority.
@@ -217,13 +231,20 @@ public class WrappedProduct
 		this.languages = languages;
 	}
 	
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	/** Set product informative note.
 	 * @param note Product informative note
 	 */
 	public void setNote(String note) {
 		this.note = note;
 	}
-	
+
 	/** Set product release date.
 	 * @param releaseDate Product release date
 	 */
@@ -238,13 +259,13 @@ public class WrappedProduct
 		this.rightsStatement = rightsStatement;
 	}
 
-	/** Set product open source status.
-	 * @param isOpenSource Product open source status
+	/**Set isOpenSource value
+	 * @param isOpenSource the isOpenSource to set
 	 */
 	public void setOpenSource(boolean isOpenSource) {
 		this.isOpenSource = isOpenSource;
 	}
-	
+		
 	/** Set product version.
 	 * @param version Product version
 	 */
