@@ -30,6 +30,7 @@ public class EsisCommandsTest{
         g = new ESISCommandsParser(tokens);
         try {
         	g.esis();
+        	System.out.println("Processing bad file");
         	printInfo(g);
         }
         catch (Exception e){
