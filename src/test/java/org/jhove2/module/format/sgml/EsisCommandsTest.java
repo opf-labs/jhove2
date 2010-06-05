@@ -12,7 +12,7 @@ public class EsisCommandsTest{
 	
     public static void main(String args[]) throws Exception {
     	ESISCommandsLexer lex = new ESISCommandsLexer(new ANTLRFileStream(
-    			"C:\\cvs_repository\\TestData\\samplefiles\\portico\\workarea\\biobatch\\input\\file01.sgm.out", 
+    			"C:\\jhove2_hg_smm\\src\\test\\resources\\examples\\sgml\\esisfiles\\valid.01.esis", 
     			"UTF8"));
         CommonTokenStream tokens = new CommonTokenStream(lex);
         ESISCommandsParser g = new ESISCommandsParser(tokens);

@@ -37,30 +37,106 @@ package org.jhove2.module.format.sgml;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.annotation.Resource;
+
+import org.antlr.runtime.ANTLRFileStream;
+import org.antlr.runtime.CommonTokenStream;
+import org.jhove2.app.util.FeatureConfigurationUtil;
+import org.jhove2.core.JHOVE2Exception;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * @author smorrissey
  *
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations={"classpath*:**/test-config.xml", 
+		"classpath*:**/filepaths-config.xml"})
 public class EsisParserTest {
 
 	public static final String TESTKEY = "testkey";
-	HashMap<String,Integer> map;
-	HashMap<String, List<String>> listMap;
+	protected HashMap<String,Integer> map;
+	protected HashMap<String, List<String>> listMap;
+	protected String validEsisFileName;
+	protected String invalidEsisFileName;
+	protected String sgmlDirBasePath;
+	protected String validEsisFilePath;
+	protected String invalidEsisFilePath;
+	protected String samplesDirPath;
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
 		map = new HashMap<String,Integer>();
-		listMap = new HashMap<String, List<String>>();
+		listMap = new HashMap<String, List<String>>();		
 	}
 
+	/**
+	 * Test method for {@link org.jhove2.module.format.sgml.EsisParser#parseEsisFile(java.lang.String)}.
+	 */
+	@Test
+	public void testParseEsisFile(){
+		try {
+			samplesDirPath = 
+				FeatureConfigurationUtil.getFilePathFromClasspath(sgmlDirBasePath, "sgml samples dir");
+		} catch (JHOVE2Exception e1) {
+			fail("Could not create base directory");
+		}
+		validEsisFilePath = samplesDirPath.concat(validEsisFileName);
+    	ESISCommandsLexer lex = null;
+    	CommonTokenStream tokens = null;
+    	ESISCommandsParser g = null;
+		try {
+			lex = new ESISCommandsLexer(new ANTLRFileStream(
+					validEsisFilePath, 
+					"UTF8"));
+		} catch (IOException e1) {
+			e1.printStackTrace();
+			fail("Could not create base directory");
+		}
+        tokens = new CommonTokenStream(lex);
+        g = new ESISCommandsParser(tokens);
+        try {
+        	g.esis();
+        	assertTrue(g.isSgmlValid);
+        	assertEquals(196, g.sDataCount);
+        	assertEquals(16, g.publicIdCount);
+        	assertEquals(16, g.fileNamesCount);
+        	assertEquals(16, g.extTextEntCount);
+        	assertEquals(2615, g.intDataEntCount);
+        }
+        catch (Exception e){
+        	fail(e.getMessage());
+        }
+        invalidEsisFilePath = samplesDirPath.concat(invalidEsisFileName);
+        try {
+			lex = new ESISCommandsLexer(new ANTLRFileStream(
+					invalidEsisFilePath, 
+					"UTF8"));
+		} catch (IOException e1) {
+			e1.printStackTrace();
+			fail("Could not create base directory");
+		}
+        tokens = new CommonTokenStream(lex);
+        g = new ESISCommandsParser(tokens);
+        try {
+        	g.esis();
+        	assertFalse(g.isSgmlValid);
+        }
+        catch (Exception e){
+        	fail(e.getMessage());
+        }
+	}
+	
 	/**
 	 * Test method for {@link org.jhove2.module.format.sgml.EsisParser#updateMapCounter(java.util.HashMap, java.lang.String)}.
 	 */
@@ -86,6 +162,51 @@ public class EsisParserTest {
 		List<String> itemList = listMap.get(TESTKEY);
 		assertTrue(itemList.contains("item1"));
 		assertTrue(itemList.contains("item2"));
+	}
+
+	/**
+	 * @return the validEsisFileName
+	 */
+	public String getValidEsisFileName() {
+		return validEsisFileName;
+	}
+
+	/**
+	 * @param validEsisFileName the validEsisFileName to set
+	 */
+	@Resource
+	public void setValidEsisFileName(String validEsisFileName) {
+		this.validEsisFileName = validEsisFileName;
+	}
+
+	/**
+	 * @return the invalidEsisFileName
+	 */
+	public String getInvalidEsisFileName() {
+		return invalidEsisFileName;
+	}
+
+	/**
+	 * @param invalidEsisFileName the invalidEsisFileName to set
+	 */
+	@Resource
+	public void setInvalidEsisFileName(String invalidEsisFileName) {
+		this.invalidEsisFileName = invalidEsisFileName;
+	}
+
+	/**
+	 * @return the sgmlDirBasePath
+	 */
+	public String getSgmlDirBasePath() {
+		return sgmlDirBasePath;
+	}
+
+	/**
+	 * @param sgmlDirBasePath the sgmlDirBasePath to set
+	 */
+	@Resource
+	public void setSgmlDirBasePath(String sgmlDirBasePath) {
+		this.sgmlDirBasePath = sgmlDirBasePath;
 	}
 	
 }

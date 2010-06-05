@@ -99,7 +99,7 @@ public class SgmlModule extends BaseFormatModule implements Validator {
     protected boolean shouldFindDoctype;
     
     /** DOCTYPE statement for SGML instance */
-    protected String docTypeString;
+    protected String docTypeString = null;
     
     /** ANTLR-generated parser instance for ongmsl output */
     protected ESISCommandsParser grammarParser;
@@ -297,11 +297,22 @@ public class SgmlModule extends BaseFormatModule implements Validator {
 	/**
 	 * @return the docTypeString
 	 */
-	@ReportableProperty(order = 31, value = "SGML Doctype string, returns 'NOT determined' if not found or not requested")
+	@ReportableProperty(order = 31, value = "SGML Doctype string, will be null if not found or not requested")
 	public String getDocTypeString() {
 		return docTypeString;
 	}
 
+	/**
+	 * @return the docTypeString
+	 */
+	@ReportableProperty(order = 31, value = "Was doctype statement determined")
+	public boolean getDocTypeFound() {
+		boolean foundDoctpe = false;
+		if (docTypeString != null){
+			foundDoctpe = true;
+		}
+		return foundDoctpe;                           
+	}
 	/**
 	 * @return the rootElementName
 	 */
