@@ -48,6 +48,7 @@ import java.util.TreeSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import org.jhove2.module.format.sgml.EsisParser;
 }
@@ -109,6 +110,19 @@ HashMap<String, List<String>> extEntName2dataAttrNames = new HashMap<String, Lis
 
 List<String> progInstructions = new ArrayList<String>();
 List<String> appInfos = new ArrayList<String>();
+
+// members and methods to trap any errors during parse so they can be reported
+ private List<String> esisParseErrors = new LinkedList<String>();
+ public void displayRecognitionError(String[] tokenNames,
+                                        RecognitionException e) {
+        String hdr = getErrorHeader(e);
+        String msg = getErrorMessage(e, tokenNames);
+        esisParseErrors.add(hdr + " " + msg);
+    }
+    public List<String> getEsisParseErrors() {
+        return esisParseErrors;
+    }
+
 }
 
 
@@ -479,7 +493,6 @@ conformingCommand : conformcmd NEWLINE? EOF
         isSgmlValid=true;
       };
 conformcmd : CCMD;
-
                     
 commandChar : (POUND|AMP|LEFTPAREN|RIGHTPAREN|DASH|PI|ACMD|CCMD|DCMD|ECMD|
                ICMD|LCMD|NCMD|SCMD|TCMD|UNDER|LACMD|LECMD|FCMD|LCICMD|OCMD|PCMD|

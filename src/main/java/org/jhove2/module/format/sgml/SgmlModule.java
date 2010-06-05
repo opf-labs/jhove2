@@ -707,4 +707,12 @@ public class SgmlModule extends BaseFormatModule implements Validator {
 		return this.grammarParser.appInfos;
 	}
 
+	/**
+	 * @return list of errors from ANTRL parse of ESIS file
+	 */
+	@ReportableProperty(order = 67, 
+			value = "List of errors encountered when parsing ESIS output of onsgmls")
+	public List<String> getEsisParseErrors(){
+		return this.grammarParser.getEsisParseErrors();
+	}
 }
