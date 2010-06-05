@@ -67,12 +67,14 @@ public class EsisParserTest {
 	protected HashMap<String, List<String>> listMap;
 	protected String validEsisFileName;
 	protected String validEsisFileName02;
+	protected String validEsisFileName03;
 	protected String invalidEsisFileName;
 	protected String emptyEsisFileName;
 	protected String unrecognizedEsisFileName;
 	protected String sgmlDirBasePath;
 	protected String validEsisFilePath;
 	protected String validEsisFilePath02;
+	protected String validEsisFilePath03;
 	protected String emptyEsisFilePath;
 	protected String invalidEsisFilePath;
 	protected String unrecognizedEsisFilePath;
@@ -150,6 +152,24 @@ public class EsisParserTest {
         	assertTrue(g.elemAttributeType2Count.containsKey("CDATA"));
         	count = g.elemAttributeType2Count.get("CDATA");
         	assertEquals(2,count);
+        }
+        catch (Exception e){
+        	fail(e.getMessage());
+        }
+        validEsisFilePath03 = samplesDirPath.concat(validEsisFileName03);
+        try {
+			lex = new ESISCommandsLexer(new ANTLRFileStream(
+					validEsisFilePath03, 
+					"UTF8"));
+		} catch (IOException e1) {
+			e1.printStackTrace();
+			fail("Could not create base directory");
+		}
+        tokens = new CommonTokenStream(lex);
+        g = new ESISCommandsParser(tokens);
+        try {
+        	g.esis();
+        	assertTrue(g.isSgmlValid);       	
         }
         catch (Exception e){
         	fail(e.getMessage());
@@ -356,6 +376,21 @@ public class EsisParserTest {
 	@Resource
 	public void setValidEsisFileName02(String validEsisFileName02) {
 		this.validEsisFileName02 = validEsisFileName02;
+	}
+
+	/**
+	 * @return the validEsisFileName03
+	 */
+	public String getValidEsisFileName03() {
+		return validEsisFileName03;
+	}
+
+	/**
+	 * @param validEsisFileName03 the validEsisFileName03 to set
+	 */
+	@Resource
+	public void setValidEsisFileName03(String validEsisFileName03) {
+		this.validEsisFileName03 = validEsisFileName03;
 	}
 	
 }

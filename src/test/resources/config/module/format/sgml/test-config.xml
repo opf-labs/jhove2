@@ -20,6 +20,11 @@
 	        value="esisfiles/valid.02.esis"/>
 	</bean>
 	
+		<bean id="validEsisFileName03" class="java.lang.String" >
+		<constructor-arg type="java.lang.String" 
+	        value="esisfiles/valid.03.esis"/>
+	</bean>
+	
 	<bean id="invalidEsisFileName" class="java.lang.String" >
 		<constructor-arg type="java.lang.String" 
 	        value="esisfiles/nonconform.01.esis"/>
