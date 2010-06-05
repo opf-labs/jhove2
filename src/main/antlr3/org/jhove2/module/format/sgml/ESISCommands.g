@@ -100,6 +100,7 @@ SortedSet<String> sdataNames = new TreeSet<String>();
 HashMap<String, String> intEnt2Value = new HashMap<String, String>();
 HashMap<String, String> intEnt2Type = new HashMap<String, String>();
 
+HashMap<String, Integer> intEntType2Count = new HashMap<String, Integer>();
 HashMap<String, Integer> elemAttributeType2Count = new HashMap<String, Integer>();
 HashMap<String, Integer> dataAttributeType2Count = new HashMap<String, Integer>();
 HashMap<String, Integer> linkAttributeType2Count = new HashMap<String, Integer>();
@@ -246,6 +247,7 @@ internalDataEntityDefCommand : icmd iename SPACE ietype SPACE ietext NEWLINE
              {intDataEntCount++; 
               intEnt2Value.put($iename.text, $ietext.text);
               intEnt2Type.put($iename.text, $ietype.text);
+              EsisParser.updateMapCounter(intEntType2Count, $ietype.text);
              };
 icmd: ICMD;
 iename: (commandChar|OTHERASCII|BCKSLASH|BAR|LESSTHAN|GRTTHAN)+;
