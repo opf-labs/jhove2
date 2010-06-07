@@ -272,6 +272,7 @@ iename: (commandChar|OTHERASCII|BCKSLASH|BAR|LESSTHAN|GRTTHAN)+;
 ietype: (commandChar|OTHERASCII|BCKSLASH|BAR|LESSTHAN|GRTTHAN)+;
 ietext: (commandChar|OTHERASCII|BCKSLASH|BAR|LESSTHAN|GRTTHAN|SPACE)+;
 
+
 /**
 Sename 
 Define a subdocument entity named ename. This command will be preceded by 
@@ -545,7 +546,8 @@ fragment
 BARCHAR:        '|';   //124  x7C
 
 OTHERASCII : UU1|UU2 |UU3|UU3A|UU4|UU5|UU6|UU7|UU7A|UU7B|UU8|UU9|UU10|UU11|
-             UU12|UU13|UU14|UU14A|UU15|UU16|UU17|UU18|UU19|UU20|UU21|DIGITS;
+             UU12|UU13|UU14|UU14A|UU15|UU16|UU17|UU18|UU19|UU20|UU21|DIGITS|
+             OTHERUU;
 fragment
 UU1: '\u0009'; //tab
 fragment
@@ -598,5 +600,7 @@ fragment
 UU20: '\u0074'..'\u007A';  // t u v w x y z
 fragment
 UU21: '\u007E'..'\u007F';  //~ DEL
+fragment
+OTHERUU: '\u0080'..'\uFFFF';
 
 

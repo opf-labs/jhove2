@@ -177,6 +177,4 @@ public class ForkShellHandlerTest {
 		this.filter = filter;
 	}
 
-
-
 }

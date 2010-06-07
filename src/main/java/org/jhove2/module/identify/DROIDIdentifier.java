@@ -398,7 +398,7 @@ public class DROIDIdentifier
 	 *                       if DROID returns warning message, this method populates 
 	 *                       the relevant Message member of this object instance
 	 * @param idf DROID {@link uk.gov.nationalarchives.droid.IdentificationFile} object
-	 * @param jhove2 TODO
+	 * @param jhove2 
 	 * @return true if DROID able to identify file; otherwise false
 	 * @throws JHOVE2Exception 
 	 */

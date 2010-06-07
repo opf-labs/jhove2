@@ -37,7 +37,6 @@
 package org.jhove2.module.format.sgml;
 
 import java.io.EOFException;
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -89,8 +88,6 @@ public class SgmlModule extends BaseFormatModule implements Validator {
     /** ANTLR-generated parser instance for ongmsl output */
     protected ESISCommandsParser grammarParser;
     
-    /** path to SGML instance, from Source object passed to module */
-    protected String sgmFilePath;
 
     protected OpenSpWrapper sgmlParser;
 
@@ -116,17 +113,9 @@ public class SgmlModule extends BaseFormatModule implements Validator {
         this.jhove2 = jhove2;
         this.source = source;
         this.validity = Validity.Undetermined;
-        File sgmFile = source.getFile();
-		try {
-			this.sgmFilePath = sgmFile.getCanonicalPath();
-		} catch (IOException e) {
-			throw new JHOVE2Exception(
-					"IO Exception thrown attempting to determine canonical path for SGML source",
-					e);
-		}
         this.grammarParser = sgmlParser.parseFile(this);
         if (this.isShouldFindDoctype()){
-        	this.docTypeString = sgmlParser.createDoctype(this.sgmFilePath);
+        	this.docTypeString = sgmlParser.createDoctype(this);
         }
         this.validity = this.validate(jhove2, source);
 		return 0;
