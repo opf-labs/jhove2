@@ -20,13 +20,24 @@
 			</list>
 		</property>
         <property name="wrappedProduct" ref="OpenSgml"/>
-        <property name="catalogPath" value="/usr/local/etc/sgml/catalog"/><!--  use catalog PathToCatalog  if empty or null, does not use catalog -->
+        <property name="sgmlParser" ref="OpenSpWrapper"/>     
+	</bean>
+	
+	<bean id="OpenSpWrapper" class="org.jhove2.module.format.sgml.OpenSpWrapper">
+	<property name="catalogPath" value="/usr/local/etc/sgml/catalog"/><!--  use catalog PathToCatalog  if empty or null, does not use catalog -->
         <property name="maxErrors" value="0"/><!--  max errors, if 0, no limit; if unspecified default is 200 -->
         <property name="showOpenEntitiesInErrMsg" value="true"/>
         <property name="showOpenElementsInErrMsg" value="true"/>
         <property name="showErrNumberInErrMsg"  value="true"/>
+        <property name="processHandler" ref="ExternalProcessHandler"/>
 	</bean>
    
+   <bean id="ExternalProcessHandler" class="org.jhove2.util.externalprocess.ForkShellHandler" >
+		<property name="shellEnv" value="c:\cygwin\bin\bash"/>
+		<property name="shellParms" value="-c"/>
+		<property name="shouldQuoteCommand" value="true"/>
+	</bean>
+	
    <!-- OpenSGML wrapped product bean -->
    <bean id="OpenSgml" class="org.jhove2.core.WrappedProduct" scope="singleton" >
    		<property name="authority" value="Open Jade:  http://openjade.sourceforge.net/"/>

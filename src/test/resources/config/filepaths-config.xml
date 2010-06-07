@@ -42,5 +42,10 @@
 		<constructor-arg type="java.lang.String" 
 	        value="examples/sgml/"/>
 	</bean>
+	
+	<bean id="tempDirBasePath" class="java.lang.String" >
+		<constructor-arg type="java.lang.String" 
+	        value="examples/temp/"/>
+	</bean>
 
 </beans>
