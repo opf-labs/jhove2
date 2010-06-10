@@ -74,6 +74,7 @@ public class OpenSpWrapperTest {
 	protected String catalogFile;
 	protected String validSgmlFile;
 	protected String sgmlDirBasePath;
+	protected String invalidSgmlFile;
 	
 	protected String sgmlDirPath;
 	protected String catalogPath;
@@ -99,6 +100,8 @@ public class OpenSpWrapperTest {
 		}
 		catalogPath = sgmlDirPath.concat(catalogFile);
 		sp.setCatalogPath(catalogPath);
+		sp.sgmFilePath = null;
+		testSgmlModule.source = null;
 	}
 
 	/**
@@ -109,7 +112,8 @@ public class OpenSpWrapperTest {
 		String goodFilePath = sgmlDirBasePath.concat(validSgmlFile);
 		try {
 			goodFilePath = 
-				FeatureConfigurationUtil.getFilePathFromClasspath(goodFilePath, "valid sgm file");
+				FeatureConfigurationUtil.getFilePathFromClasspath(goodFilePath, 
+						"valid sgm file");
 		} catch (JHOVE2Exception e1) {
 			fail("Could not create base directory");
 		}
@@ -130,6 +134,34 @@ public class OpenSpWrapperTest {
 			fail("unable to get esis parser");
 		}
 		assertTrue(parser.isSgmlValid);
+		
+		testSgmlModule.source = null;
+		sp.sgmFilePath = null;
+		String badFilePath = sgmlDirBasePath.concat(invalidSgmlFile);
+		try {
+			badFilePath = 
+				FeatureConfigurationUtil.getFilePathFromClasspath(badFilePath, 
+						"invalid sgm file");
+		} catch (JHOVE2Exception e1) {
+			fail("Could not create base directory");
+		}
+		File fBadFile = new File(badFilePath);
+		badFilePath = fBadFile.getPath();
+		try {
+			inputSource = SourceFactory.getSource(badFilePath);
+		}catch (Exception e){
+			e.printStackTrace();
+			fail("Failed to create source for input file");
+		}
+		testSgmlModule.source = inputSource;
+		parser = null;
+		try {
+			parser = sp.parseFile(testSgmlModule);
+		} catch (JHOVE2Exception e) {
+			e.printStackTrace();
+			fail("unable to get esis parser");
+		}
+		assertFalse(parser.isSgmlValid);
 	}
 
 	/**
@@ -171,13 +203,37 @@ public class OpenSpWrapperTest {
 		assertEquals(0,size);
 	}
 
-//	/**
-//	 * Test method for {@link org.jhove2.module.format.sgml.OpenSpWrapper#createDoctype(org.jhove2.module.format.sgml.SgmlModule)}.
-//	 */
-//	@Test
-//	public void testCreateDoctype() {
-//		fail("Not yet implemented");
-//	}
+	/**
+	 * Test method for {@link org.jhove2.module.format.sgml.OpenSpWrapper#createDoctype(org.jhove2.module.format.sgml.SgmlModule)}.
+	 */
+	@Test
+	public void testCreateDoctype() {
+		String goodFilePath = sgmlDirBasePath.concat(validSgmlFile);
+		try {
+			goodFilePath = 
+				FeatureConfigurationUtil.getFilePathFromClasspath(goodFilePath, 
+						"valid sgm file");
+		} catch (JHOVE2Exception e1) {
+			fail("Could not create base directory");
+		}
+		File fGoodFile = new File(goodFilePath);
+		goodFilePath = fGoodFile.getPath();
+		try {
+			inputSource = SourceFactory.getSource(goodFilePath);
+		}catch (Exception e){
+			e.printStackTrace();
+			fail("Failed to create source for input file");
+		}
+		testSgmlModule.source = inputSource;
+		String doctype = null;
+		try {
+			doctype = sp.createDoctype(testSgmlModule);
+		} catch (JHOVE2Exception e) {
+			e.printStackTrace();
+			fail("Failed to run createDoctype method");
+		}
+		assertNull(doctype);
+	}
 
 	/**
 	 * @return the jHOVE2
@@ -252,6 +308,21 @@ public class OpenSpWrapperTest {
 	@Resource
 	public void setSgmlDirBasePath(String sgmlDirBasePath) {
 		this.sgmlDirBasePath = sgmlDirBasePath;
+	}
+
+	/**
+	 * @return the invalidSgmlFile
+	 */
+	public String getInvalidSgmlFile() {
+		return invalidSgmlFile;
+	}
+
+	/**
+	 * @param invalidSgmlFile the invalidSgmlFile to set
+	 */
+	@Resource
+	public void setInvalidSgmlFile(String invalidSgmlFile) {
+		this.invalidSgmlFile = invalidSgmlFile;
 	}
 
 }

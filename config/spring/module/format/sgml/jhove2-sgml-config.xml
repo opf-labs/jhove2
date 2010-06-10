@@ -32,6 +32,7 @@
         <property name="processHandler" ref="ExternalProcessHandler"/>
         <property name="onsgmlsPath" value="/usr/bin/onsgmls"/>
         <property name="filepathFilter" ref="OpenSpFilepathFilter"/>
+        <property name="sgmlnormPath" value="/usr/bin/sgmlnorm"/>
 	</bean>
    
    <bean id="ExternalProcessHandler" class="org.jhove2.util.externalprocess.ForkShellHandler" >

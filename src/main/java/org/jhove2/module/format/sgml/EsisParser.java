@@ -56,7 +56,7 @@ import org.jhove2.core.JHOVE2Exception;
  */
 public class EsisParser {
 	/**
-	 * Invokeds ANTLR parser on ESIS file passed as input parameter.
+	 * Invokes ANTLR parser on ESIS file passed as input parameter.
 	 * Returns parser object which, after parse, maintains accumulated
 	 * feature information about the SGML file, which will be accessed
 	 * by the SgmlModule class to report properties about the file

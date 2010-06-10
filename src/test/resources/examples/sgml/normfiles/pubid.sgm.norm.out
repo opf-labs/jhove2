@@ -1,0 +1,125 @@
+<!DOCTYPE ARTICLE PUBLIC "-//ISO 99999:9999//DTD dtd0300//EN">
+<ARTICLE>
+<FRONT>
+<TITLEGRP>
+<TITLE>:LORED ipsmum bonum</TITLE>
+</TITLEGRP>
+<AUTHGRP>
+<AUTHOR>
+<FNAME>John </FNAME>
+<SURNAME>Homer</SURNAME>
+<PUNCT> and </PUNCT>
+</AUTHOR>
+<AUTHOR>
+<FNAME>John Q. </FNAME>
+<SURNAME>Public </SURNAME>
+</AUTHOR>
+<AFFGRP>
+<AFF>
+<ORGNAME>Chemical stuff</ORGNAME>
+</AFF>
+</AFFGRP>
+</AUTHGRP>
+<AUTHGRP>
+<AUTHOR>
+<FNAME>JANE Q. </FNAME>
+<SURNAME>PRIVATE </SURNAME>
+</AUTHOR>
+<AFFGRP>
+<AFF>
+<ORGNAME>MYLORG, D-76287&thinsp;Rheinstetten, Germany </ORGNAME>
+</AFF>
+</AFFGRP>
+</AUTHGRP>
+<PUBFRONT>
+<TCLINK>obufs</TCLINK>
+<ULINK>9999</ULINK>
+<ARTID>9999p</ARTID>
+<STITLE>J.Of. Someth.</STITLE>
+<CCC>999-99999/0000000</CCC>
+<PACYR></PACYR>
+<PAC></PAC>
+<CODEN>DONON6</CODEN>
+<VOLUME>1</VOLUME>
+<ISSUE>1</ISSUE>
+<FPAGE>1</FPAGE>
+<LPAGE>1</LPAGE>
+<SISAC>eomwetsuf1L.1;1</SISAC>
+<ISSN>0000-0000</ISSN>
+<SEQ>1</SEQ>
+<IDATE>1 January 1000</IDATE>
+<CPYRT>
+<DATE>1000</DATE>
+<CPYRTNME>
+<ORGNAME>American Institute of Something or other/ORGNAME>
+</CPYRTNME>
+</CPYRT>
+<HISTORY>
+<RECEIVED>
+<DATE>01 Jan 1000</DATE>
+</RECEIVED>
+<ACCEPTED>
+<DATE>01 Jan 1000</DATE>
+</ACCEPTED>
+</HISTORY>
+<DOI>10.9999/9.999999</DOI>
+<AIPKEY>1.49999999999999999/AIPKEY>
+</PUBFRONT>
+<SECTHEAD>
+<HD1>COMMUNICATIONS</HD1>
+</SECTHEAD>
+<SPIN>
+<DOCANAL TYPE="ME" KIND="KL">
+<PACYR>1000</PACYR>
+<PAC>3325+k</PAC>
+</DOCANAL>
+<JOUIDX>
+<COUNTRY>UT</COUNTRY>
+<TOTALIDX>2</TOTALIDX>
+<ADDIDX>magnetic </ADDIDX>
+<ADDIDX>effects</ADDIDX>
+</JOUIDX>
+</SPIN>
+<ABSTRACT>
+<P>For stuff <FORMULA><SUP><ROMAN>13</ROMAN></SUP><ROMAN>C</ROMAN></FORMULA> studies.  <EMPH TYPE="1">1 Institute of something.</EMPH>  <II>somesuff</II></P>
+</ABSTRACT>
+</FRONT>
+<BODY>
+<PART>
+<CHAPTER>
+<TITLE>INTRODUCTION</TITLE>
+<P> elaxation time, <FORMULA>T<INF>1</INF>,</FORMULA>  se of dipolar solids the values of <FORMULA>T<INF>1</INF></FORMULA> can be so long that initial l hours.<CITEREF RID="R1" STYLE="SUPERIOR">1</CITEREF> Even  relatively short values of <FORMULA>T<INF>1</INF></FORMULA> of tructural determinations spectroscopy.<CITEREF RID="R2" STYLE="SUPERIOR">2</CITEREF><CITEREF RID="R3" STYLE="SUPERIOR">3</CITEREF> eral such methods have been reported.  to liquids.<CITEREF RID="R4" STYLE="SUPERIOR">4</CITEREF> A less well known, and certainly more complicated samples.<CITEREF RID="R5" STYLE="SUPERIOR">5</CITEREF><CITEREF RID="R6" STYLE="SUPERIOR">6</CITEREF><CITEREF RID="R7" STYLE="SUPERIOR">7</CITEREF> Ultrasound has also been used to reduce <FORMULA>T<INF>1</INF></FORMULA> in solids.<CITEREF RID="R8" STYLE="SUPERIOR">8</CITEREF> The present paper proposes a method of reducing <FORMULA>T<INF>1</INF></FORMULA> for dipolar nuclei that, although relying on the well-known dependence of <FORMULA>T<INF>1</INF></FORMULA> on the previously. </P>
+</CHAPTER>
+</PART>
+</BODY>
+<BACK>
+<BIBLIST>
+<CITATION ID="R1"><REF>
+<ART>
+<OTHINFO>See, e.g.</OTHINFO>
+<PUNCT>, </PUNCT>
+<AUTHGRP>
+<AUTHOR>
+<FNAME>D. C. </FNAME>
+<SURNAME>Public</SURNAME>
+</AUTHOR>
+<PUNCT>, and </PUNCT>
+<AUTHOR>
+<FNAME>D. P. </FNAME>
+<SURNAME>Private</SURNAME>
+</AUTHOR>
+</AUTHGRP>
+<PUNCT>, </PUNCT>
+<JOURNAL>J. Am. Something. Soc. </JOURNAL>
+<CODEN>JJJJJJ/CODEN>
+<VOL>1</VOL>
+<PUNCT>, </PUNCT>
+<PP>1</PP>
+<PUNCT> (</PUNCT>
+<YEAR>1000</YEAR>
+<PUNCT>).</PUNCT>
+</ART>
+</REF></CITATION>
+</BIBLIST>
+</BACK>
+</ARTICLE>

@@ -1,0 +1,31 @@
+<!DOCTYPE ARTICLE SYSTEM "somefilename_2.dtd">
+<ARTICLE DTDVER="2.2" TYPE="HEAD"><HEADER><ISSUE><PINFO><PNM>Cambridge University Press</PNM>
+<LOC>SOmeQuaintVilage, UK</LOC></PINFO>
+<JINFO><JID>NTS</JID>
+<JTL>Sine h bane</JTL>
+<JABT>Sine hi, Stud.</JABT>
+<ISSN>9999-9999</ISSN>
+<EISSN>999-9999</EISSN></JINFO>
+<PUBINFO><VID>54</VID>
+<IID>2</IID>
+<CD YEAR="1000" MONTH="1"></CD></PUBINFO></ISSUE>
+<ARTCON><GENHDR LANGUAGE="EN"><ARTINFO><AID>somecode54.2</AID>
+<FTARTICLE>somefile.pdf</FTARTICLE>
+<DOI>obfuscated</DOI>
+<ALTID><PII>obfuscated</PII></ALTID>
+<ARTTY ARTTY="RA"><DISPART>Articles</DISPART>
+<PPCT COUNT="15"><PPF>161</PPF>
+<PPL>175</PPL>
+<CRN CRT="full">obfuscated</CRN>
+<HST><LIVE YEAR="1000" MONTH="01" DAY="01"></LIVE></HST></PPCT></ARTTY></ARTINFO>
+<TIG><ATL>obfuscated</ATL>
+<ATL PURPOSE="recto" ABBREV="abatl">obfuscated</ATL>
+<ATL PURPOSE="verso" ABBREV="abau">obfuscated</ATL></TIG>
+<AUG><AU><FNMS>VICKY</FNMS><SNM>obfuscated</SNM><ORF RID="a1"><NORM>obfuscated</NORM></ORF></AU>
+<AFF><OID ID="a1"><ONM>Some University of SOmewhere</ONM>, Some college, 34 Somestreet, Sometown xx 9999999, <CNY>Utopia</CNY></OID></AFF></AUG>
+<ABS SOURCE="PR"><P>lore ispusm bonum 10. Vthew 24 and the mission to the nations as imperative.</P></ABS>
+<KWDG><KWD>Some guy</KWD>
+<KWD>Mission</KWD>
+<KWD><E1>Very special keyword</E1></KWD>
+<KWD>A keykword</KWD>
+<KWD>Keyowrd1</KWD></KWDG></GENHDR></ARTCON></HEADER></ARTICLE>

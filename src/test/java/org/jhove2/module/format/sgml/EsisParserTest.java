@@ -109,7 +109,7 @@ public class EsisParserTest {
 					"UTF8"));
 		} catch (IOException e1) {
 			e1.printStackTrace();
-			fail("Could not create base directory");
+			fail("Could not lexer");
 		}
         tokens = new CommonTokenStream(lex);
         g = new ESISCommandsParser(tokens);
@@ -127,7 +127,7 @@ public class EsisParserTest {
 					"UTF8"));
 		} catch (IOException e1) {
 			e1.printStackTrace();
-			fail("Could not create base directory");
+			fail("Could not create lexer");
 		}
         tokens = new CommonTokenStream(lex);
         g = new ESISCommandsParser(tokens);
@@ -163,7 +163,7 @@ public class EsisParserTest {
 					"UTF8"));
 		} catch (IOException e1) {
 			e1.printStackTrace();
-			fail("Could not create base directory");
+			fail("Could not create lexer");
 		}
         tokens = new CommonTokenStream(lex);
         g = new ESISCommandsParser(tokens);
@@ -182,7 +182,7 @@ public class EsisParserTest {
 					"UTF8"));
 		} catch (IOException e1) {
 			e1.printStackTrace();
-			fail("Could not create base directory");
+			fail("Could not create lexer");
 		}
         tokens = new CommonTokenStream(lex);
         g = new ESISCommandsParser(tokens);
@@ -200,7 +200,7 @@ public class EsisParserTest {
 					"UTF8"));
 		} catch (IOException e1) {
 			e1.printStackTrace();
-			fail("Could not create base directory");
+			fail("Could not create lexer");
 		}
         tokens = new CommonTokenStream(lex);
         g = new ESISCommandsParser(tokens);
@@ -219,7 +219,7 @@ public class EsisParserTest {
 					"UTF8"));
 		} catch (IOException e1) {
 			e1.printStackTrace();
-			fail("Could not create base directory");
+			fail("Could not create lexer");
 		}
         tokens = new CommonTokenStream(lex);
         g = new ESISCommandsParser(tokens);

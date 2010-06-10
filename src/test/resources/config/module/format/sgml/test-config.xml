@@ -24,6 +24,7 @@
         <property name="processHandler" ref="testExternalProcessHandler"/>
         <property name="onsgmlsPath" value="/usr/bin/onsgmls"/>
         <property name="filepathFilter" ref="testOpenSpFilepathFilter"/>
+        <property name="sgmlnormPath" value="/usr/bin/sgmlnorm"/>
 	</bean>
    
    <bean id="testExternalProcessHandler" class="org.jhove2.util.externalprocess.ForkShellHandler" >
@@ -137,4 +138,31 @@
 		<constructor-arg type="java.lang.String" 
 	        value="sgmlfiles/html4_0_spec.htm"/>
 	</bean>
+	
+	<bean id="invalidSgmlFile" class="java.lang.String">
+		<constructor-arg type="java.lang.String" 
+	        value="sgmlfiles/invalid_html4_0_spec.htm"/>
+	</bean>
+	
+	<bean id="normOutNoDoctype" class="java.lang.String">
+			<constructor-arg type="java.lang.String" 
+	        value="normfiles/nodoctype.gml.norm.out"/>
+	</bean>
+	
+	<bean id="normOutPubid" class="java.lang.String">
+			<constructor-arg type="java.lang.String" 
+	        value="normfiles/pubid.sgm.norm.out"/>
+	</bean>
+	
+	<bean id="normOutSysid" class="java.lang.String">
+			<constructor-arg type="java.lang.String" 
+	        value="normfiles/sysid.sgm.norm.out"/>
+	</bean>
+	
+	
+	<bean id="normOutZero" class="java.lang.String">
+			<constructor-arg type="java.lang.String" 
+	        value="normfiles/zerolength.sgm.norm.out"/>
+	</bean>
+	
 </beans>

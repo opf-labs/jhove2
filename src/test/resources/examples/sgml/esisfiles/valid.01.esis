@@ -1,50 +1,50 @@
 pISO 8879:1986//ENTITIES Numeric and Special Graphic//EN
-f<OSFILE SOIBASE='/cygdrive/c/svn_repository/portico-docs/data/RequiredFiles/requiredFiles/AMETS_AllenPress_Online_Journals_DTD_1.1/catalog'>iso-num.ent
+f<OSFILE SOIBASE='/cygdrive/c/some_DTD_1.1/catalog'>iso-num.ent
 TISOnum
 pISO 8879:1986//ENTITIES Publishing//EN
-f<OSFILE SOIBASE='/cygdrive/c/svn_repository/portico-docs/data/RequiredFiles/requiredFiles/AMETS_AllenPress_Online_Journals_DTD_1.1/catalog'>iso-pub.ent
+f<OSFILE SOIBASE='/cygdrive/c/some_DTD_1.1/catalog'>iso-pub.ent
 TISOpub
 pISO 8879:1986//ENTITIES General Technical//EN
-f<OSFILE SOIBASE='/cygdrive/c/svn_repository/portico-docs/data/RequiredFiles/requiredFiles/AMETS_AllenPress_Online_Journals_DTD_1.1/catalog'>iso-tech.ent
+f<OSFILE SOIBASE='/cygdrive/c/some_DTD_1.1/catalog'>iso-tech.ent
 TISOtech
 pISO 8879:1986//ENTITIES Diacritical Marks//EN
-f<OSFILE SOIBASE='/cygdrive/c/svn_repository/portico-docs/data/RequiredFiles/requiredFiles/AMETS_AllenPress_Online_Journals_DTD_1.1/catalog'>iso-dia.ent
+f<OSFILE SOIBASE='/cygdrive/c/some_DTD_1.1/catalog'>iso-dia.ent
 TISOdia
 pISO 8879:1986//ENTITIES Added Latin 1//EN
-f<OSFILE SOIBASE='/cygdrive/c/svn_repository/portico-docs/data/RequiredFiles/requiredFiles/AMETS_AllenPress_Online_Journals_DTD_1.1/catalog'>iso-lat1.ent
+f<OSFILE SOIBASE='/cygdrive/c/some_DTD_1.1/catalog'>iso-lat1.ent
 TISOlat1
 pISO 8879:1986//ENTITIES Added Latin 2//EN
-f<OSFILE SOIBASE='/cygdrive/c/svn_repository/portico-docs/data/RequiredFiles/requiredFiles/AMETS_AllenPress_Online_Journals_DTD_1.1/catalog'>iso-lat2.ent
+f<OSFILE SOIBASE='/cygdrive/c/some_DTD_1.1/catalog'>iso-lat2.ent
 TISOlat2
 pISO 8879:1986//ENTITIES Added Math Symbols: Arrow Relations//EN
-f<OSFILE SOIBASE='/cygdrive/c/svn_repository/portico-docs/data/RequiredFiles/requiredFiles/AMETS_AllenPress_Online_Journals_DTD_1.1/catalog'>iso-amsa.ent
+f<OSFILE SOIBASE='/cygdrive/c/some_DTD_1.1/catalog'>iso-amsa.ent
 TISOamsa
 pISO 8879:1986//ENTITIES Added Math Symbols: Binary Operators//EN
-f<OSFILE SOIBASE='/cygdrive/c/svn_repository/portico-docs/data/RequiredFiles/requiredFiles/AMETS_AllenPress_Online_Journals_DTD_1.1/catalog'>iso-amsb.ent
+f<OSFILE SOIBASE='/cygdrive/c/some_DTD_1.1/catalog'>iso-amsb.ent
 TISOamsb
 pISO 8879:1986//ENTITIES Added Math Symbols: Delimiters//EN
-f<OSFILE SOIBASE='/cygdrive/c/svn_repository/portico-docs/data/RequiredFiles/requiredFiles/AMETS_AllenPress_Online_Journals_DTD_1.1/catalog'>iso-amsc.ent
+f<OSFILE SOIBASE='/cygdrive/c/some_DTD_1.1/catalog'>iso-amsc.ent
 TISOamsc
 pISO 8879:1986//ENTITIES Added Math Symbols: Negated Relations//EN
-f<OSFILE SOIBASE='/cygdrive/c/svn_repository/portico-docs/data/RequiredFiles/requiredFiles/AMETS_AllenPress_Online_Journals_DTD_1.1/catalog'>iso-amsn.ent
+f<OSFILE SOIBASE='/cygdrive/c/some_DTD_1.1/catalog'>iso-amsn.ent
 TISOamsn
 pISO 8879:1986//ENTITIES Added Math Symbols: Ordinary//EN
-f<OSFILE SOIBASE='/cygdrive/c/svn_repository/portico-docs/data/RequiredFiles/requiredFiles/AMETS_AllenPress_Online_Journals_DTD_1.1/catalog'>iso-amso.ent
+f<OSFILE SOIBASE='/cygdrive/c/some_DTD_1.1/catalog'>iso-amso.ent
 TISOamso
 pISO 8879:1986//ENTITIES Added Math Symbols: Relations//EN
-f<OSFILE SOIBASE='/cygdrive/c/svn_repository/portico-docs/data/RequiredFiles/requiredFiles/AMETS_AllenPress_Online_Journals_DTD_1.1/catalog'>iso-amsr.ent
+f<OSFILE SOIBASE='/cygdrive/c/some_DTD_1.1/catalog'>iso-amsr.ent
 TISOamsr
 pISO 8879:1986//ENTITIES Greek Letters//EN
-f<OSFILE SOIBASE='/cygdrive/c/svn_repository/portico-docs/data/RequiredFiles/requiredFiles/AMETS_AllenPress_Online_Journals_DTD_1.1/catalog'>iso-grk1.ent
+f<OSFILE SOIBASE='/cygdrive/c/some_DTD_1.1/catalog'>iso-grk1.ent
 TISOgrk1
 pISO 8879:1986//ENTITIES Monotoniko Greek//EN
-f<OSFILE SOIBASE='/cygdrive/c/svn_repository/portico-docs/data/RequiredFiles/requiredFiles/AMETS_AllenPress_Online_Journals_DTD_1.1/catalog'>iso-grk2.ent
+f<OSFILE SOIBASE='/cygdrive/c/some_DTD_1.1/catalog'>iso-grk2.ent
 TISOgrk2
 pISO 8879:1986//ENTITIES Greek Symbols//EN
-f<OSFILE SOIBASE='/cygdrive/c/svn_repository/portico-docs/data/RequiredFiles/requiredFiles/AMETS_AllenPress_Online_Journals_DTD_1.1/catalog'>iso-grk3.ent
+f<OSFILE SOIBASE='/cygdrive/c/some_DTD_1.1/catalog'>iso-grk3.ent
 TISOgrk3
 p-//Allen Press//ENTITIES Special Non-ISO Characters//EN
-f<OSFILE SOIBASE='/cygdrive/c/svn_repository/portico-docs/data/RequiredFiles/requiredFiles/AMETS_AllenPress_Online_Journals_DTD_1.1/catalog'>apchar.ent
+f<OSFILE SOIBASE='/cygdrive/c/some_DTD_1.1/catalog'>apchar.ent
 Tapchar
 Iimacrscript SDATA [imacrscript]
 IItildescript SDATA [Itildescript]
