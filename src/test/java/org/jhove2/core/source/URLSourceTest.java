@@ -87,6 +87,9 @@ public class URLSourceTest {
 					                        config.getTempSuffix(),
 					                        config.getBufferSize(),
 					                        cdlURL);
+			uPtc.setDeleteTempFiles(true);
+			uPtc2.setDeleteTempFiles(true);
+			uCdl.setDeleteTempFiles(true);
 			assertEquals(uPtc,uPtc);
 			// this will fail, because the temp file underlying each URL will be different
 			assertFalse(uPtc.equals(uPtc2));
@@ -102,6 +105,9 @@ public class URLSourceTest {
 			clump2.deleteChildSource(uPtc);
 			clump2.addChildSource(uCdl);
 			assertFalse(clump.equals(clump2));
+			uPtc.close();
+			uPtc2.close();
+			uCdl.close();
 		} catch (MalformedURLException e) {
 			fail("Malformed URL " + e.getMessage());
 		} catch (IOException e) {
@@ -127,12 +133,16 @@ public class URLSourceTest {
 					                        config.getTempSuffix(),
 					                        config.getBufferSize(),
 					                        ptcURL);
+			uPtc.setDeleteTempFiles(true);
+			uPtc2.setDeleteTempFiles(true);
 			assertEquals(0,uPtc.compareTo(uPtc));
 			assertEquals(1, uPtc.compareTo(null));
 			boolean notEq = uPtc.compareTo(uPtc2)!=0;
 			assertTrue(notEq);
 			ClumpSource clump = new ClumpSource();
 			assertEquals(1,uPtc.compareTo(clump));
+			uPtc.close();
+			uPtc2.close();
 		} catch (MalformedURLException e) {
 			fail("Malformed URL " + e.getMessage());
 		} catch (IOException e) {

@@ -222,7 +222,9 @@ public class OpenSpWrapper implements SgmlParser {
 					"IOException attemtping to create temporary OpenSp output file",
 					e);
 		}
-//		tempOutFile.deleteOnExit();
+		if (sgm.jhove2.getInvocation().getDeleteTempFiles()){
+			tempOutFile.deleteOnExit();
+		}
 		parseOutputFilePath = tempOutFile.getPath();
 		if (this.filepathFilter != null){
 			parseOutputFilePath = this.filepathFilter.filter(parseOutputFilePath);
@@ -237,7 +239,9 @@ public class OpenSpWrapper implements SgmlParser {
 					"IOException attemtping to create temporary OpenSp error file",
 					e);
 		}
-//		tempErrFile.deleteOnExit();
+		if (sgm.jhove2.getInvocation().getDeleteTempFiles()){
+			tempErrFile.deleteOnExit();
+		}
 		parseErrFilePath = tempErrFile.getPath();
 		if (this.filepathFilter != null){
 			parseErrFilePath = this.filepathFilter.filter(parseErrFilePath);

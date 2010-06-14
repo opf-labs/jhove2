@@ -43,6 +43,7 @@ public class InputFactoryTest {
 					                           config.getTempSuffix(),
 					                           config.getBufferSize(),
 					                           yahoo);
+			yahooURL.setDeleteTempFiles(true);
 			Input input = yahooURL.getInput(8192, Type.Direct);
 			// this closes the channel and the stream associated with any temp
 			// file created

@@ -90,7 +90,6 @@ doctype : LESSTHAN BANG DCHAR OCHAR CCHAR TCHAR YCHAR PCHAR ECHAR  SPACE+ elemen
     {
       if (!foundDoctype){
         foundDoctype = true;
-        System.out.println("Set foundDoctyp = true");
           if ($pubidDecl.text != null){
             foundPubid = true;
             String tmpPubid = lastPubid;
@@ -104,8 +103,7 @@ doctype : LESSTHAN BANG DCHAR OCHAR CCHAR TCHAR YCHAR PCHAR ECHAR  SPACE+ elemen
       }
     };
  
-element : (OTHERCHARS|BCHAR |CCHAR|DCHAR |ECHAR|ICHAR|LCHAR |MCHAR |OCHAR |PCHAR|SCHAR|TCHAR|UCHAR|YCHAR)+
- { System.out.println("in element");};
+element : (OTHERCHARS|BCHAR |CCHAR|DCHAR |ECHAR|ICHAR|LCHAR |MCHAR |OCHAR |PCHAR|SCHAR|TCHAR|UCHAR|YCHAR)+ ;
 
 pubidDecl : PCHAR UCHAR BCHAR LCHAR ICHAR CCHAR SPACE+ pubid  ;
 
