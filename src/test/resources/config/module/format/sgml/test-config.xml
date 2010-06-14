@@ -17,10 +17,6 @@
 	</bean>
 	
 	<bean id="testOpenSpWrapper" class="org.jhove2.module.format.sgml.OpenSpWrapper">
-        <property name="maxErrors" value="0"/><!--  max errors, if 0, no limit; if unspecified default is 200 -->
-        <property name="showOpenEntitiesInErrMsg" value="true"/>
-        <property name="showOpenElementsInErrMsg" value="true"/>
-        <property name="showErrNumberInErrMsg"  value="true"/>
         <property name="processHandler" ref="testExternalProcessHandler"/>
         <property name="onsgmlsPath" value="/usr/bin/onsgmls"/>
         <property name="filepathFilter" ref="testOpenSpFilepathFilter"/>

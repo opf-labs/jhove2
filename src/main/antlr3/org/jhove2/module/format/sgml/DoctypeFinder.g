@@ -44,6 +44,8 @@ package org.jhove2.module.format.sgml;
 
 import java.util.LinkedList;
 import java.util.List;
+
+import org.jhove2.module.format.sgml.DoctypeParser;
 }
 
 @lexer::header{
@@ -61,11 +63,12 @@ package org.jhove2.module.format.sgml;
   
   // members and methods to trap any errors during parse so they can be reported
  private List<String> doctypeFinderParseErrors = new LinkedList<String>();
+
  public void displayRecognitionError(String[] tokenNames,
                                         RecognitionException e) {
         String hdr = getErrorHeader(e);
         String msg = getErrorMessage(e, tokenNames);
-        doctypeFinderParseErrors.add(hdr + " " + msg);
+        doctypeFinderParseErrors.add(DoctypeParser.DOCTYPEERR + hdr + " " + msg);
     }
     public List<String> getDoctypeFinderParseErrors() {
         return doctypeFinderParseErrors;
@@ -87,6 +90,7 @@ doctype : LESSTHAN BANG DCHAR OCHAR CCHAR TCHAR YCHAR PCHAR ECHAR  SPACE+ elemen
     {
       if (!foundDoctype){
         foundDoctype = true;
+        System.out.println("Set foundDoctyp = true");
           if ($pubidDecl.text != null){
             foundPubid = true;
             String tmpPubid = lastPubid;

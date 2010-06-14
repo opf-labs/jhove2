@@ -113,11 +113,12 @@ List<String> appInfos = new ArrayList<String>();
 
 // members and methods to trap any errors during parse so they can be reported
  private List<String> esisParseErrors = new LinkedList<String>();
+
  public void displayRecognitionError(String[] tokenNames,
                                         RecognitionException e) {
         String hdr = getErrorHeader(e);
         String msg = getErrorMessage(e, tokenNames);
-        esisParseErrors.add(hdr + " " + msg);
+        esisParseErrors.add(EsisParser.ESISERR + hdr + " " + msg);
     }
     public List<String> getEsisParseErrors() {
         return esisParseErrors;

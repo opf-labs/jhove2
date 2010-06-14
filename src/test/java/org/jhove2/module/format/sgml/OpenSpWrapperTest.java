@@ -86,7 +86,7 @@ public class OpenSpWrapperTest {
 	@Before
 	public void setUp() throws Exception {
 		testSgmlModule.jhove2 = JHOVE2;
-		sp = testSgmlModule.sgmlParser;
+		sp = (OpenSpWrapper) testSgmlModule.sgmlParser;
 		try {
 			sgmlDirPath = 
 				FeatureConfigurationUtil.getFilePathFromClasspath(sgmlDirBasePath, "temp dir");
@@ -96,7 +96,7 @@ public class OpenSpWrapperTest {
 		File fsgml = new File(sgmlDirPath);
 		sgmlDirPath = fsgml.getPath();
 		if (sp.filepathFilter != null){
-			sgmlDirPath = testSgmlModule.sgmlParser.filepathFilter.filter(sgmlDirPath);
+			sgmlDirPath = sp.filepathFilter.filter(sgmlDirPath);
 		}
 		catalogPath = sgmlDirPath.concat(catalogFile);
 		sp.setCatalogPath(catalogPath);
@@ -126,14 +126,13 @@ public class OpenSpWrapperTest {
 			fail("Failed to create source for input file");
 		}
 		testSgmlModule.source = inputSource;
-		ESISCommandsParser parser = null;
 		try {
-			parser = sp.parseFile(testSgmlModule);
+			sp.parseFile(testSgmlModule);
 		} catch (JHOVE2Exception e) {
 			e.printStackTrace();
 			fail("unable to get esis parser");
 		}
-		assertTrue(parser.isSgmlValid);
+		assertTrue(sp.isSgmlValid());
 		
 		testSgmlModule.source = null;
 		sp.sgmFilePath = null;
@@ -154,14 +153,13 @@ public class OpenSpWrapperTest {
 			fail("Failed to create source for input file");
 		}
 		testSgmlModule.source = inputSource;
-		parser = null;
 		try {
-			parser = sp.parseFile(testSgmlModule);
+			sp.parseFile(testSgmlModule);
 		} catch (JHOVE2Exception e) {
 			e.printStackTrace();
 			fail("unable to get esis parser");
 		}
-		assertFalse(parser.isSgmlValid);
+		assertFalse(sp.isSgmlValid());
 	}
 
 	/**
@@ -187,7 +185,7 @@ public class OpenSpWrapperTest {
 		testSgmlModule.source = inputSource;
 		String[] outputFiles = null;
 		try {
-			outputFiles = sp.parseSgmlFile(testSgmlModule);
+			outputFiles = sp.parseSgmlFile(testSgmlModule,OpenSpWrapper.ESIS_SUFFIX,sp.onsgmlsPath,OpenSpWrapper.ESISCOMMANDPARMS);
 		} catch (JHOVE2Exception e) {
 			e.printStackTrace();
 			fail("Failed to parse sgml file");
@@ -225,14 +223,13 @@ public class OpenSpWrapperTest {
 			fail("Failed to create source for input file");
 		}
 		testSgmlModule.source = inputSource;
-		String doctype = null;
 		try {
-			doctype = sp.createDoctype(testSgmlModule);
+			sp.determineDoctype(testSgmlModule);
 		} catch (JHOVE2Exception e) {
 			e.printStackTrace();
 			fail("Failed to run createDoctype method");
 		}
-		assertNull(doctype);
+		assertTrue(sp.getDocTypeFound());
 	}
 
 	/**
