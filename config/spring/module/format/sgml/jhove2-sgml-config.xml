@@ -21,9 +21,11 @@
 		</property>
         <property name="wrappedProduct" ref="OpenSgml"/>
         <property name="sgmlParser" ref="OpenSpWrapper"/>     
+        <property name="shouldFindDoctype" value="true"/>
 	</bean>
 	
-	<bean id="OpenSpWrapper" class="org.jhove2.module.format.sgml.OpenSpWrapper">
+	<bean id="OpenSpWrapper" class="org.jhove2.module.format.sgml.OpenSpWrapper"
+	    scope="prototype">
 		<property name="catalogPath" value="/usr/local/etc/sgml/catalog"/><!--  use catalog PathToCatalog  if empty or null, does not use catalog -->
         <property name="processHandler" ref="ExternalProcessHandler"/>
         <property name="onsgmlsPath" value="/usr/bin/onsgmls"/>
@@ -31,14 +33,14 @@
         <property name="sgmlnormPath" value="/usr/bin/sgmlnorm"/>
 	</bean>
    
-   <bean id="ExternalProcessHandler" class="org.jhove2.util.externalprocess.ForkShellHandler" >
+   <bean id="ExternalProcessHandler" class="org.jhove2.util.externalprocess.ForkShellHandler" scope="prototype">
 		<property name="shellEnv" value="c:\cygwin\bin\bash"/>
 		<property name="shellParms" value="-c"/>
 		<property name="shouldQuoteCommand" value="true"/>
 	</bean>
 	
 	<bean id="OpenSpFilepathFilter" 
-			class="org.jhove2.util.externalprocess.FileSeparatorFilter">
+			class="org.jhove2.util.externalprocess.FileSeparatorFilter" scope="prototype">
     </bean>
 	
    <!-- OpenSGML wrapped product bean -->

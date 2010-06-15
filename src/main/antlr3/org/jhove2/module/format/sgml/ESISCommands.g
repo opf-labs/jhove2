@@ -112,7 +112,7 @@ List<String> progInstructions = new ArrayList<String>();
 List<String> appInfos = new ArrayList<String>();
 
 // members and methods to trap any errors during parse so they can be reported
- private List<String> esisParseErrors = new LinkedList<String>();
+ List<String> esisParseErrors = new LinkedList<String>();
 
  public void displayRecognitionError(String[] tokenNames,
                                         RecognitionException e) {
@@ -262,7 +262,7 @@ it can also be PI or TEXT (for an SGML text entity). If the -oentity option is n
 specified, an internal data entity will only be defined if it is referenced in 
 an A command for an attribute whose declared value is ENTITY or ENTITIES
 */
-internalDataEntityDefCommand : icmd iename SPACE ietype SPACE ietext NEWLINE 
+internalDataEntityDefCommand : icmd iename SPACE ietype SPACE ietext? NEWLINE 
              {intDataEntCount++; 
               intEnt2Value.put($iename.text, $ietext.text);
               intEnt2Type.put($iename.text, $ietype.text);
@@ -347,7 +347,7 @@ The next element to start has an attribute name with value val which takes one o
       This is used for attributes whose declared value is DATA. It will be output only if the 
       -odata-attribute option is specified. Otherwise CDATA will be used for DATA values. 
 */
-elementAttributeCommand : attrcdm attrname SPACE attrType (SPACE attrVal)* NEWLINE
+elementAttributeCommand : attrcdm attrname SPACE attrType (attrVal)* NEWLINE
         {
          elementAttributeCount++;
          EsisParser.updateMapCounter(elemAttributeType2Count,$attrType.text);
@@ -355,7 +355,7 @@ elementAttributeCommand : attrcdm attrname SPACE attrType (SPACE attrVal)* NEWLI
 attrcdm: ACMD;
 attrname:(commandChar|OTHERASCII)+;
 attrType: (commandChar|OTHERASCII)+;
-attrVal:  (commandChar|OTHERASCII|BCKSLASH|BAR|LESSTHAN|GRTTHAN)+;
+attrVal:  (commandChar|OTHERASCII|BCKSLASH|BAR|LESSTHAN|GRTTHAN|SPACE)+;
 
 /**
 Dename name val 
@@ -447,7 +447,7 @@ commentText : (commandChar|OTHERASCII|BCKSLASH|BAR|LESSTHAN|GRTTHAN|SPACE)+ ;
 \| 
 Internal SDATA entities are bracketed by these. 
 */
-sdataEntity : (SDATASEP sdataEntityName SDATASEP) 
+sdataEntity : (BCKSLASH BAR sdataEntityName BCKSLASH BAR) 
            {sDataCount++;
             sdataNames.add($sdataEntityName.text);
            };
@@ -539,7 +539,7 @@ GRTTHAN:    '>';   //62  x3E
 
 BCKSLASH:   BCKSLASHCHAR;   //92  x5C
 BAR:        BARCHAR;   //124  x7C
-SDATASEP: BCKSLASHCHAR BARCHAR;
+//SDATASEP: BCKSLASHCHAR BARCHAR;
 
 fragment 
 BCKSLASHCHAR:   '\\';   //92  x5C

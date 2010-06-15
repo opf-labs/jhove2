@@ -183,7 +183,7 @@ public class OpenSpWrapper implements SgmlParser {
 		}
 		return;		
 	}
-	
+
 	/**
 	 * 
 	 * @param sgm
@@ -395,162 +395,252 @@ public class OpenSpWrapper implements SgmlParser {
 
 	@Override
 	public int getAppInfoCount() {
-		return this.esisParser.appInfoCount;
+		if (this.esisParser != null){
+			return this.esisParser.appInfoCount;
+		}
+		else {
+			return 0;
+		}
 	}
 
 	@Override
 	public List<String> getAppInfos() {
-		return this.esisParser.appInfos;
+		if (this.esisParser != null){
+			return this.esisParser.appInfos;
+		}
+		else return null;
 	}
 
 	@Override
 	public int getCommentsCount() {
-		return this.esisParser.commentsCount;
+		if (this.esisParser != null){
+			return this.esisParser.commentsCount;
+		}
+		else {return 0;}
 	}
 
 	@Override
 	public int getDataAttrCount() {
-		return this.esisParser.dataAttrCount;
+		if (this.esisParser != null){
+			return this.esisParser.dataAttrCount;
+		}
+		else {return 0;}
 	}
 
 	@Override
 	public HashMap<String, Integer> getDataAttributeType2Count() {
-		return this.esisParser.dataAttributeType2Count;
+		if (this.esisParser != null){
+			return this.esisParser.dataAttributeType2Count;
+		}
+		else {return null;}
 	}
 
 	@Override
 	public int getDataCount() {
-		return this.esisParser.dataCount;
-	}
-
-	@Override
-	public boolean getDocTypeFound() {
-		return this.doctypeFinderParser.foundDoctype;
+		if (this.esisParser != null){
+			return this.esisParser.dataCount;
+		}
+		else {return 0;}
 	}
 
 	@Override
 	public HashMap<String, Integer> getElemAttributeType2Count() {
-		return this.esisParser.elemAttributeType2Count;
+		if (this.esisParser != null){
+			return this.esisParser.elemAttributeType2Count;
+		}
+		else {return null;}
 	}
 
 	@Override
 	public int getElementAttributeCount() {
-		return this.esisParser.elementAttributeCount;
+		if (this.esisParser != null){
+			return this.esisParser.elementAttributeCount;
+		}
+		else {return 0;}
 	}
 
 	@Override
 	public int getElementCount() {
-		return this.esisParser.elementCount;
+		if (this.esisParser != null){
+			return this.esisParser.elementCount;
+		}
+		else {return 0;}
 	}
 
 	@Override
 	public SortedSet<String> getElementNames() {
-		return this.esisParser.elementNames;
+		if (this.esisParser != null){
+			return this.esisParser.elementNames;
+		}
+		else {return null;}
 	}
 
 	@Override
 	public int getEmptyElementsCount() {
-		return this.esisParser.emptyElementsCount;
+		if (this.esisParser != null){
+			return this.esisParser.emptyElementsCount;
+		}
+		else {return 0;}
 	}
 
 	@Override
 	public SortedSet<String> getEntRefNames() {
-		return this.esisParser.entRefNames;
+		if (this.esisParser != null){
+			return this.esisParser.entRefNames;
+		}
+		else {return null;}
 	}
 
 	@Override
 	public int getEntityFileNamesCount() {
-		return this.esisParser.fileNamesCount;
+		if (this.esisParser != null){
+			return this.esisParser.fileNamesCount;
+		}
+		else {return 0;}
 	}
 
 	@Override
 	public int getEntrefCount() {
-		return this.esisParser.entrefCount;
+		if (this.esisParser != null){
+			return this.esisParser.entrefCount;
+		}
+		else {return 0;}
 	}
 
 	@Override
 	public int getExtDataEntCount() {
-		return this.esisParser.extDataEntCount;
+		if (this.esisParser != null){
+			return this.esisParser.extDataEntCount;
+		}
+		else {return 0;}
 	}
 
 	@Override
 	public SortedSet<String> getExtDataEntNames() {
-		return this.esisParser.extDataEntNames;
+		if (this.esisParser != null){
+			return this.esisParser.extDataEntNames;
+		}
+		else {return null;}
 	}
 
 	@Override
 	public SortedSet<String> getExtEntFileNames() {
-		return this.esisParser.extEntFileNames;
+		if (this.esisParser != null){
+			return this.esisParser.extEntFileNames;
+		}
+		else {return null;}
 	}
 
 	@Override
 	public HashMap<String, List<String>> getExtEntName2dataAttrNames() {
-		return this.esisParser.extEntName2dataAttrNames;
+		if (this.esisParser != null){
+			return this.esisParser.extEntName2dataAttrNames;
+		}
+		else {return null;}
 	}
 
 	@Override
 	public SortedSet<String> getExtEntSysidNames() {
-		return this.esisParser.extEntSysidNames;
+		if (this.esisParser != null){
+			return this.esisParser.extEntSysidNames;
+		}
+		else {return null;}
 	}
 
 	@Override
 	public int getExtTextEntCount() {
-		return this.esisParser.extTextEntCount;
+		if (this.esisParser != null){
+			return this.esisParser.extTextEntCount;
+		}
+		else {return 0;}
 	}
 
 	@Override
 	public SortedSet<String> getExtTextEntNames() {
-		return this.esisParser.extTextEntNames;
+		if (this.esisParser != null){
+			return this.esisParser.extTextEntNames;
+		}
+		else {return null;}
 	}
 
 	@Override
 	public int getIncludedSubElementsCount() {
-		return this.esisParser.includedSubElementsCount;
+		if (this.esisParser != null){
+			return this.esisParser.includedSubElementsCount;
+		}
+		else {return 0;}
 	}
 
 	@Override
 	public int getIntDataEntCount() {
-		return this.esisParser.intDataEntCount;
+		if (this.esisParser != null){
+			return this.esisParser.intDataEntCount;
+		}
+		else {return 0;}
 	}
 
 	@Override
 	public HashMap<String, String> getIntEnt2Type() {
-		return this.esisParser.intEnt2Type;
+		if (this.esisParser != null){
+			return this.esisParser.intEnt2Type;
+		}
+		else {return null;}
 	}
 
 	@Override
 	public HashMap<String, String> getInternalDataEntitytName2Value() {
-		return this.esisParser.intEnt2Value;
+		if (this.esisParser != null){
+			return this.esisParser.intEnt2Value;
+		}
+		else {return null;}
 	}
 
 	@Override
 	public HashMap<String, Integer> getInternalEntType2Count() {
-		return this.esisParser.intEntType2Count;
+		if (this.esisParser != null){
+			return this.esisParser.intEntType2Count;
+		}
+		else {return null;}
 	}
 
 	@Override
 	public int getLinkAttrCount() {
-		return this.esisParser.linkAttrCount;
+		if (this.esisParser != null){
+			return this.esisParser.linkAttrCount;
+		}
+		else {return 0;}
 	}
 
 	@Override
 	public HashMap<String, Integer> getLinkAttributeType2Count() {
-		return this.esisParser.linkAttributeType2Count;
+		if (this.esisParser != null){
+			return this.esisParser.linkAttributeType2Count;
+		}
+		else {return null;}
 	}
 
 	@Override
 	public int getNotatDefCount() {
-		return this.esisParser.notatDefCount;
+		if (this.esisParser != null){	
+			return this.esisParser.notatDefCount;
+		}
+		else {return 0;}
 	}
 
 	@Override
 	public SortedSet<String> getNotatNames() {
-		return this.esisParser.notatNames;
+		if (this.esisParser != null){
+			return this.esisParser.notatNames;
+		}
+		else {return null;}
 	}
 
 	@Override
 	public int getOmitCommandCount() {
-		return this.esisParser.omitCommandCount;
+		if (this.esisParser != null){
+			return this.esisParser.omitCommandCount;
+		}
+		else {return 0;}
 	}
 
 	@Override
@@ -560,87 +650,147 @@ public class OpenSpWrapper implements SgmlParser {
 
 	@Override
 	public int getProcessingInstructionsCount() {
-		return this.esisParser.piCount;
+		if (this.esisParser != null){
+			return this.esisParser.piCount;
+		}
+		else {return 0;}
 	}
 
 	@Override
 	public List<String> getProcessingInstructions() {
-		return this.esisParser.progInstructions;
+		if (this.esisParser != null){
+			return this.esisParser.progInstructions;
+		}
+		else {return null;}
 	}
 
 	@Override
 	public SortedSet<String> getPubIds() {
-		return this.esisParser.pubIds;
+		if (this.esisParser != null){
+			return this.esisParser.pubIds;
+		}
+		else {return null;}
 	}
 
 	@Override
 	public int getPublicIdCount() {
-		return this.esisParser.publicIdCount;
+		if (this.esisParser != null){
+			return this.esisParser.publicIdCount;
+		}
+		else {return 0;}
 	}
 
 	@Override
 	public String getRootElementName() {
-		return this.esisParser.rootElementName;
+		if (this.esisParser != null){
+			return this.esisParser.rootElementName;
+		}
+		else {return null;}
 	}
 
 	@Override
 	public int getSDataCount() {
-		return this.esisParser.sDataCount;
+		if (this.esisParser != null){
+			return this.esisParser.sDataCount;
+		}
+		else {return 0;}
 	}
 
 	@Override
 	public SortedSet<String> getSdataNames() {
-		return this.esisParser.sdataNames;
+		if (this.esisParser != null){
+			return this.esisParser.sdataNames;
+		}
+		else {return null;}
 	}
 
 	@Override
 	public int getSubDocCommandCount() {
-		return this.esisParser.subDocCommandCount;
+		if (this.esisParser != null){
+			return this.esisParser.subDocCommandCount;
+		}
+		else {return 0;}
 	}
 
 	@Override
 	public SortedSet<String> getSubDocCommandNames() {
-		return this.esisParser.subDocCommandNames;
+		if (this.esisParser != null){
+			return this.esisParser.subDocCommandNames;
+		}
+		else {return null;}
 	}
 
 	@Override
 	public SortedSet<String> getSubDocEntDefNames() {
-		return this.esisParser.subDocEntDefNames;
+		if (this.esisParser != null){
+			return this.esisParser.subDocEntDefNames;
+		}
+		else {return null;}
 	}
 
 	@Override
 	public int getSubDocEntityDefCount() {
-		return this.esisParser.subDocEntityDefCount;
+		if (this.esisParser != null){
+			return this.esisParser.subDocEntityDefCount;
+		}
+		else {return 0;}
 	}
 
 	@Override
 	public int getSysidsCount() {
-		return this.esisParser.sysidsCount;
+		if (this.esisParser != null){
+			return this.esisParser.sysidsCount;
+		}
+		else {return 0;}
 	}
 
 	@Override
-	public boolean isSgmlValid() {
+	public boolean isSgmlValid() 
+	{if (this.esisParser != null){
 		return this.esisParser.isSgmlValid;
+	}
+	else {return false;}
+	}
+
+
+	@Override
+	public boolean getDocTypeFound() {
+		if (this.doctypeFinderParser != null){
+			return this.doctypeFinderParser.foundDoctype;
+		}
+		else {return false;}
 	}
 
 	@Override
 	public String getPublicIdentifier() {
-		return this.doctypeFinderParser.pubid;
+		if (this.doctypeFinderParser != null){
+			return this.doctypeFinderParser.pubid;
+		}
+		else {return null;}
 	}
 
 	@Override
 	public boolean getPublicIdentifierFound() {
-		return this.doctypeFinderParser.foundPubid;
+		if (this.doctypeFinderParser != null){
+			return this.doctypeFinderParser.foundPubid;
+		}
+		else {return false;}
 	}
 
 	@Override
 	public String getSystemIdentifier() {
-		return this.doctypeFinderParser.systemId;
+		if (this.doctypeFinderParser != null){
+			return this.doctypeFinderParser.systemId;
+		}
+		else {return null;}
 	}
 
 	@Override
 	public boolean getSystemIdentifierFound() {
-		return this.doctypeFinderParser.foundSysid;
+		if (this.doctypeFinderParser != null){
+			return this.doctypeFinderParser.foundSysid;
+		}
+		else {return false;}
 	}
 
 }

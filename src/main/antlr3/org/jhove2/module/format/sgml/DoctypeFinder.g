@@ -61,6 +61,7 @@ package org.jhove2.module.format.sgml;
   String systemId = null;
   String lastSystemId = null;
   
+
   // members and methods to trap any errors during parse so they can be reported
  private List<String> doctypeFinderParseErrors = new LinkedList<String>();
 
@@ -73,7 +74,6 @@ package org.jhove2.module.format.sgml;
     public List<String> getDoctypeFinderParseErrors() {
         return doctypeFinderParseErrors;
     }
-
 }
 
 /**

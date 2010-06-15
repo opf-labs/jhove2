@@ -197,11 +197,7 @@ public class SgmlModule extends BaseFormatModule implements Validator {
 	 */
 	@ReportableProperty(order = 31, value = "Was doctype statement determined")
 	public boolean getDocTypeFound() {
-		boolean foundDoctpe = false;
-		if (docTypeString != null){
-			foundDoctpe = true;
-		}
-		return foundDoctpe;                           
+		return this.sgmlParser.getDocTypeFound();                     
 	}
 	/**
 	 * @return the rootElementName
@@ -549,7 +545,7 @@ public class SgmlModule extends BaseFormatModule implements Validator {
 	@ReportableProperty(order = 62, 
 			value = "Map from element attribute types to count of that type in document")
 	public HashMap<String, Integer> getElemAttributeType2Count() {
-		return this.sgmlParser.getDataAttributeType2Count();
+		return this.sgmlParser.getElemAttributeType2Count();
 	}
 
 	/**
