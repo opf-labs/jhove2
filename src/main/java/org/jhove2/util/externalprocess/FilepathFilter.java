@@ -36,9 +36,15 @@
 package org.jhove2.util.externalprocess;
 
 /**
+ * Interface for filepath filters
  * @author smorrissey
  *
  */
 public interface FilepathFilter {
+	/**
+	 * Filter filepath string
+	 * @param filepath string to be filtered
+	 * @return filtered filepath
+	 */
 	public String filter(String filepath);
 }

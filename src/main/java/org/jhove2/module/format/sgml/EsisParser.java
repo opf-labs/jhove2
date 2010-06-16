@@ -43,7 +43,9 @@ import java.util.List;
 import org.antlr.runtime.ANTLRFileStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
+
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.util.CopyUtils;
 
 /**
  * Class to process ESIS output from ongmls.
@@ -54,10 +56,10 @@ import org.jhove2.core.JHOVE2Exception;
  * @author smorrissey
  */
 public class EsisParser {
-	
+
 	/** prefix for parser error messages to indicate which grammar generated parse errors */
-	 public static final String ESISERR = "ESIS: ";
-	 
+	public static final String ESISERR = "ESIS: ";
+
 	/**
 	 * Invokes ANTLR parser on ESIS file passed as input parameter.
 	 * Returns parser object which, after parse, maintains accumulated
@@ -78,18 +80,77 @@ public class EsisParser {
 					"IO Exception thrown creating ESIS lexer for file path " + esisPath,
 					e);
 		}
-        CommonTokenStream tokens = new CommonTokenStream(lex);
-        parser = new ESISCommandsParser(tokens);
-        try {
+		CommonTokenStream tokens = new CommonTokenStream(lex);
+		parser = new ESISCommandsParser(tokens);
+		try {
 			parser.esis();
 		} catch (RecognitionException e) {
 			throw new JHOVE2Exception(
 					"RecognitionException Exception thrown parsing file at file path " + esisPath,
 					e);
 		}
-        return parser;		
+		return parser;		
 	}
-
+	/**
+	 * Method to extract fields from ANTLR parser and make deep copy into SgmlDocumentProperties object.
+	 * Clears those objects in the ANTLR parser.
+	 * @param esisParser ANTLR parser object containing extracted data
+	 * @param props updated SgmlDocumentProperties object with content of ANTLR parser fields
+	 */
+	public void extractDocProperties(ESISCommandsParser esisParser, SgmlDocumentProperties props){
+		if (esisParser.getEsisParseErrors() != null){
+			if (props.getParseErrors() == null){
+				props.setParseErrors(new ArrayList<String>());
+			}
+			props.getParseErrors().addAll(
+					CopyUtils.copyAndClearList(esisParser.getEsisParseErrors()));
+		}		
+		props.setAppInfoCount(esisParser.appInfoCount);
+		props.setAppInfos(CopyUtils.copyAndClearList(esisParser.appInfos));
+		props.setCommentsCount(esisParser.commentsCount);
+		props.setDataAttrCount(esisParser.dataAttrCount);
+		props.setDataAttributeType2Count(CopyUtils.copyAndClearIntMap(esisParser.dataAttributeType2Count));
+		props.setDataCount(esisParser.dataCount);
+		props.setElemAttributeType2Count(CopyUtils.copyAndClearIntMap(esisParser.elemAttributeType2Count));
+		props.setElementAttributeCount(esisParser.elementAttributeCount);
+		props.setElementCount(esisParser.elementCount);
+		props.setElementNames(CopyUtils.copyAndClearSet(esisParser.elementNames));
+		props.setEmptyElementsCount(esisParser.emptyElementsCount);
+		props.setEntRefNames(CopyUtils.copyAndClearSet(esisParser.entRefNames));
+		props.setEntityFileNamesCount(esisParser.fileNamesCount);
+		props.setEntrefCount(esisParser.entrefCount);
+		props.setExtDataEntCount(esisParser.extDataEntCount);
+		props.setExtDataEntNames(CopyUtils.copyAndClearSet(esisParser.extDataEntNames));
+		props.setExtEntFileNames(CopyUtils.copyAndClearSet(esisParser.extEntFileNames));
+		props.setExtEntName2dataAttrNames(CopyUtils.copyAndClearListMap(esisParser.extEntName2dataAttrNames));
+		props.setExtEntSysidNames(CopyUtils.copyAndClearSet(esisParser.extEntSysidNames));
+		props.setExtTextEntCount(esisParser.extTextEntCount);
+		props.setExtTextEntNames(CopyUtils.copyAndClearSet(esisParser.extTextEntNames));
+		props.setIncludedSubElementsCount(esisParser.includedSubElementsCount);
+		props.setIntDataEntCount(esisParser.intDataEntCount);
+		props.setIntEnt2Type(CopyUtils.copyAndClearStringMap(esisParser.intEnt2Type));
+		props.setInternalDataEntitytName2Value(CopyUtils.copyAndClearStringMap(esisParser.intEnt2Value));
+		props.setInternalEntType2Count(CopyUtils.copyAndClearIntMap(esisParser.intEntType2Count));
+		props.setLinkAttrCount(esisParser.linkAttrCount);
+		props.setLinkAttributeType2Count(CopyUtils.copyAndClearIntMap(esisParser.linkAttributeType2Count));
+		props.setNotatDefCount(esisParser.notatDefCount);
+		props.setNotatNames(CopyUtils.copyAndClearSet(esisParser.notatNames));
+		props.setOmitCommandCount(esisParser.omitCommandCount);
+		props.setProcessingInstructionsCount(esisParser.piCount);
+		props.setProcessingInstructions(CopyUtils.copyAndClearList(esisParser.progInstructions));
+		props.setPubIds(CopyUtils.copyAndClearSet(esisParser.pubIds));
+		props.setPublicIdCount(esisParser.publicIdCount);
+		props.setRootElementName(esisParser.rootElementName);
+		props.setsDataCount(esisParser.sDataCount);
+		props.setSdataNames(CopyUtils.copyAndClearSet(esisParser.sdataNames));
+		props.setSubDocCommandCount(esisParser.subDocCommandCount);
+		props.setSubDocCommandNames(CopyUtils.copyAndClearSet(esisParser.subDocCommandNames));
+		props.setSubDocEntDefNames(CopyUtils.copyAndClearSet(esisParser.subDocEntDefNames));
+		props.setSubDocEntityDefCount(esisParser.subDocEntityDefCount);
+		props.setSysidsCount(esisParser.sysidsCount);
+		props.setSgmlValid(esisParser.isSgmlValid);		
+		return;
+	}
 
 	/**
 	 * Utility method to update list in a map; used in ESIS grammar

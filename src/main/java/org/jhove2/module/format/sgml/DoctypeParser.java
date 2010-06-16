@@ -36,11 +36,14 @@
 package org.jhove2.module.format.sgml;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.antlr.runtime.ANTLRFileStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
+
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.util.CopyUtils;
 
 /**
  * Class to process "normalized" output from ongmls to extract DOCTYPE declaration information.
@@ -80,5 +83,26 @@ public class DoctypeParser {
 						e);
 			}
 		return parser;
+	}
+	/**
+	 * Method to extract fields from ANTLR parser and make deep copy into SgmlDocumentProperties object.
+	 * Clears those objects in the ANTLR parser. 
+	 * @param doctypeFinderParser contains data extracted by ANTLR parser
+	 * @param props updated SgmlDocumentProperties object with content of ANTLR parser fields
+	 */
+	public void extractDocProperties(DoctypeFinderParser doctypeFinderParser, SgmlDocumentProperties props){
+		if (doctypeFinderParser.getDoctypeFinderParseErrors()!= null){
+			if (props.getParseErrors() == null){
+				props.setParseErrors(new ArrayList<String>());
+			}
+			props.getParseErrors().addAll(
+					CopyUtils.copyAndClearList(doctypeFinderParser.getDoctypeFinderParseErrors()));
+		}
+		props.setFoundDoctype(doctypeFinderParser.foundDoctype);
+		props.setPublicIdentifier(doctypeFinderParser.pubid);
+		props.setFoundPubid(doctypeFinderParser.foundPubid);
+		props.setSystemIdentifier(doctypeFinderParser.systemId);
+		props.setFoundSysid(doctypeFinderParser.foundSysid);
+		return;
 	}
 }

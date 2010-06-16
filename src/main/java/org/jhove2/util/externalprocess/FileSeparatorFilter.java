@@ -36,6 +36,7 @@
 package org.jhove2.util.externalprocess;
 
 /**
+ * Filter to "normalize" paths to unix-like path strings
  * @author smorrissey
  *
  */

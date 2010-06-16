@@ -100,7 +100,6 @@ public class OpenSpWrapperTest {
 		}
 		catalogPath = sgmlDirPath.concat(catalogFile);
 		sp.setCatalogPath(catalogPath);
-		sp.sgmFilePath = null;
 		testSgmlModule.source = null;
 	}
 
@@ -127,15 +126,15 @@ public class OpenSpWrapperTest {
 		}
 		testSgmlModule.source = inputSource;
 		try {
-			sp.parseFile(testSgmlModule);
+			testSgmlModule.setDocumentProperties(sp.parseFile(testSgmlModule));
 		} catch (JHOVE2Exception e) {
 			e.printStackTrace();
 			fail("unable to get esis parser");
 		}
-		assertTrue(sp.isSgmlValid());
+		assertTrue(testSgmlModule.getDocumentProperties().isSgmlValid());
 		
 		testSgmlModule.source = null;
-		sp.sgmFilePath = null;
+		testSgmlModule.setDocumentProperties(null);
 		String badFilePath = sgmlDirBasePath.concat(invalidSgmlFile);
 		try {
 			badFilePath = 
@@ -154,12 +153,12 @@ public class OpenSpWrapperTest {
 		}
 		testSgmlModule.source = inputSource;
 		try {
-			sp.parseFile(testSgmlModule);
+			testSgmlModule.setDocumentProperties(sp.parseFile(testSgmlModule));
 		} catch (JHOVE2Exception e) {
 			e.printStackTrace();
 			fail("unable to get esis parser");
 		}
-		assertFalse(sp.isSgmlValid());
+		assertFalse(testSgmlModule.getDocumentProperties().isSgmlValid());
 	}
 
 	/**
@@ -223,13 +222,14 @@ public class OpenSpWrapperTest {
 			fail("Failed to create source for input file");
 		}
 		testSgmlModule.source = inputSource;
+		testSgmlModule.setDocumentProperties(new SgmlDocumentProperties());
 		try {
 			sp.determineDoctype(testSgmlModule);
 		} catch (JHOVE2Exception e) {
 			e.printStackTrace();
 			fail("Failed to run createDoctype method");
 		}
-		assertTrue(sp.getDocTypeFound());
+		assertTrue(testSgmlModule.getDocumentProperties().getDocTypeFound());
 	}
 
 	/**
