@@ -1,0 +1,116 @@
+L1 C:/sgmlModule/examples/dir/file.sgm
+(SERIAL
+(SERFRONT
+(TITLE
+)TITLE
+-\n\n
+(SERPUBFR
+(PUBNAME
+-Bulletin of the Some Society
+)PUBNAME
+ATYPE CDATA PRINT
+(ISSN
+-0000-0000
+)ISSN
+ATYPE CDATA ONLINE
+(ISSN
+-0000-0000
+)ISSN
+(VOLID
+-00
+)VOLID
+(ISSUEID
+(ISSUENO
+-0
+)ISSUENO
+)ISSUEID
+(FPAGE
+-00
+)FPAGE
+(LPAGE
+-99
+)LPAGE
+(PAGECOUNT
+-2
+)PAGECOUNT
+(DATE
+-19990909
+)DATE
+(CPYRT
+(DATE
+-1999
+)DATE
+(CPYRTNME
+-American Some Society
+)CPYRTNME
+)CPYRT
+(DOI
+-11.1111/1111-11-1-11
+)DOI
+)SERPUBFR
+)SERFRONT
+-\n\n
+(SERBODY
+- 
+ATYPE CDATA ARTICLE
+(SERSEC
+(TITLE
+-Print Version
+)TITLE
+-\n\n
+(ARTICLE
+L8
+-\n
+(FRONT
+(TITLEGRP
+(TITLE
+-FORUM ON MODELING NEW CLOTHES
+)TITLE
+)TITLEGRP
+-\n\n
+(AUTHGRP
+- 
+ARIDS CDATA aff1
+(AUTHOR
+(FNAME
+-John Q.
+)FNAME
+(SURNAME
+-Public
+)SURNAME
+(PD
+-Sr.
+)PD
+)AUTHOR
+-\n
+ARIDS CDATA aff2
+(AUTHOR
+(FNAME
+-Tom
+)FNAME
+(SURNAME
+-Public
+)SURNAME
+)AUTHOR
+-\n
+AID CDATA aff1
+(AFF
+-Department of Something, Some City, SomeState
+)AFF
+-\n
+AID CDATA aff2
+(AFF
+-Cooperative Institute for RSomething, Some City, SomeState
+)AFF
+)AUTHGRP
+-\n\n
+(ABSTRACT
+(P
+-No Abstract Available.
+)P
+)ABSTRACT
+)FRONT
+)ARTICLE
+)SERSEC
+)SERBODY
+)SERIAL
