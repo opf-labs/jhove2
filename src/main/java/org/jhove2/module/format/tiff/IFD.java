@@ -7,8 +7,10 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.config.ConfigInfo;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
@@ -51,7 +53,8 @@ public class IFD
     
     /* Message for Zero IFD Entries */
     private Message zeroIFDEntriesMessage;
-    
+        
+
 	
 	@ReportableProperty(order = 3, value="IFD entries.")
 	public List<IFDEntry> getIFDEntries() {
@@ -112,7 +115,6 @@ public class IFD
         }
     }
 	
-    
     public void parse(long offset) {
         this.isValid = Validity.Undetermined;
         
@@ -142,4 +144,6 @@ public class IFD
     public void setOffset(long offset) {
         this.offset = offset;
     }
+    
+
 }
