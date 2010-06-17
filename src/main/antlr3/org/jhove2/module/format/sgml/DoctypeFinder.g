@@ -84,6 +84,8 @@ This command is part of the Open Jade distribution (see http://sourceforge.net/p
 which is based on James Clark's OpenSP(http://www.jclark.com/sp/index.htm) 
 
 */
+
+
 normdoc : doctype? otherstuff;
 
 doctype : LESSTHAN BANG DCHAR OCHAR CCHAR TCHAR YCHAR PCHAR ECHAR  SPACE+ element (SPACE+ pubidDecl)? (SPACE+ sysidDecl)? 

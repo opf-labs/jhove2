@@ -59,6 +59,8 @@ int xLevelMessageCount = 0;
 int qLevelMessageCount = 0;
 int totMessageCount = 0;
 
+List<String> openSpMessages = new ArrayList<String>();
+
 // members and methods to trap any errors during parse so they can be reported
  List<String> esisErrorsParseErrors = new LinkedList<String>();
 
@@ -76,10 +78,16 @@ int totMessageCount = 0;
 
 errMessages : errMessage* EOF;
 
-errMessage :  (codedMessage|uncodedMessage) NEWLINE?;
+errMessage :  (codedMessage|uncodedMessage) NEWLINE?
+  {
+    totMessageCount++;
+  };
 
 codedMessage : 
-                 cmdPath COLON sgmlFilepath COLON lineNumber COLON posNumber COLON somenumber DOT messageCode COLON messageLevel COLON messagetext;
+  cmdPath COLON sgmlFilepath COLON lineNumber COLON posNumber COLON somenumber DOT messageCode COLON messageLevel COLON messagetext 
+  {
+  
+  };
 
 uncodedMessage : cmdPath COLON sgmlFilepath COLON lineNumber COLON posNumber COLON messagetext ;
 
