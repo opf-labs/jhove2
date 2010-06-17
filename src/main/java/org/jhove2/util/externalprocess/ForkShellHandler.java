@@ -95,7 +95,7 @@ public class ForkShellHandler implements ExternalProcessHandler {
 			cmdArray = cmds.toArray(cmdArray);
 			Runtime currentRuntime = Runtime.getRuntime();
 	        Process openProcess = currentRuntime.exec(cmdArray);
-	        openProcess.waitFor();        
+	        openProcess.waitFor();   
 		} catch (Exception exception) {
 			throw new JHOVE2Exception("Exception thrown executing command " + command,
 					exception);

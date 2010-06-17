@@ -65,35 +65,35 @@ public class SgmlModule extends BaseFormatModule implements Validator {
 		+ "Available under the terms of the BSD license.";
 	/** Module validation coverage. */
 	public static final Coverage COVERAGE = Coverage.Inclusive;
-   
+
 	/** SGML validation status. */
 	protected Validity validity;
 
-    /** The JHOVE2 object passed in by the parse method */
-    protected JHOVE2 jhove2; 
-    
-    /** The Source object passed in by the parse method */
-    protected  Source source;
-   
-    /** parser directive -- should sgmlnorm be run in order to extract doctype statement; default is false */
-    protected boolean shouldFindDoctype;
-    
-    /** Parser engine for parsing SGML files and extracting significant properties */
-    protected SgmlParser sgmlParser;
+	/** The JHOVE2 object passed in by the parse method */
+	protected JHOVE2 jhove2; 
 
-    /** Container for SGML document properties extracted by parser */
-    protected SgmlDocumentProperties documentProperties;
+	/** The Source object passed in by the parse method */
+	protected  Source source;
+
+	/** parser directive -- should sgmlnorm be run in order to extract doctype statement; default is false */
+	protected boolean shouldFindDoctype;
+
+	/** Parser engine for parsing SGML files and extracting significant properties */
+	protected SgmlParser sgmlParser;
+
+	/** Container for SGML document properties extracted by parser */
+	protected SgmlDocumentProperties documentProperties;
 
 	/**
-     * Instantiates a new SgmlModule instance.
-     * 
-     * @param format
-     *            the Format object
-     */
-    public SgmlModule(Format format) {
-        super(VERSION, RELEASE, RIGHTS, format);
-    }
-    
+	 * Instantiates a new SgmlModule instance.
+	 * 
+	 * @param format
+	 *            the Format object
+	 */
+	public SgmlModule(Format format) {
+		super(VERSION, RELEASE, RIGHTS, format);
+	}
+
 	/** Parse the format.
 	 * @param jhove2 JHOVE2 framework
 	 * @param source Source unit
@@ -102,17 +102,18 @@ public class SgmlModule extends BaseFormatModule implements Validator {
 	public long parse(JHOVE2 jhove2, Source source)
 	throws EOFException, IOException, JHOVE2Exception
 	{
-        this.jhove2 = jhove2;
-        this.source = source;
-        this.validity = Validity.Undetermined;
-        this.documentProperties = sgmlParser.parseFile(this);
-        if (this.isShouldFindDoctype()){
-        	sgmlParser.determineDoctype(this);
-        }    
-        this.jhove2 = null;
-        this.source = null;
-        this.sgmlParser.cleanUp();
-        this.sgmlParser = null;
+		this.jhove2 = jhove2;
+		this.source = source;
+		this.documentProperties = sgmlParser.parseFile(this);
+		if (this.documentProperties != null){
+			if (this.isShouldFindDoctype()){
+				sgmlParser.determineDoctype(this);
+			}    
+		}
+		this.jhove2 = null;
+		this.source = null;
+		this.sgmlParser.cleanUp();
+		this.sgmlParser = null;
 		return 0;
 	}
 
@@ -124,12 +125,15 @@ public class SgmlModule extends BaseFormatModule implements Validator {
 	@Override
 	public Validity validate(JHOVE2 jhove2, Source source)
 	throws JHOVE2Exception {
-		 if (this.getDocumentProperties() != null && this.getDocumentProperties().isSgmlValid()){
-	        	this.validity = Validity.True;
-	        }
-	        else {
-	        	this.validity = Validity.False;
-	        }
+		this.validity = Validity.Undetermined;
+		if (this.getDocumentProperties() != null){
+			if (this.getDocumentProperties().isSgmlValid()){
+				this.validity = Validity.True;
+		    }
+		    else {
+			    this.validity = Validity.False;
+		    }
+		}
 		return this.validity;
 	}
 
@@ -156,7 +160,7 @@ public class SgmlModule extends BaseFormatModule implements Validator {
 		return validity;
 	}
 
-    /**
+	/**
 	 * @return the sgmlParser
 	 */
 	public SgmlParser getSgmlParser() {

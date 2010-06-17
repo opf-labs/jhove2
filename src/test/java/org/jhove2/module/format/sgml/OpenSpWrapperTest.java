@@ -47,6 +47,7 @@ import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
+import org.jhove2.module.format.Validator.Validity;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -159,6 +160,46 @@ public class OpenSpWrapperTest {
 			fail("unable to get esis parser");
 		}
 		assertFalse(testSgmlModule.getDocumentProperties().isSgmlValid());
+		
+		goodFilePath = sgmlDirBasePath.concat(validSgmlFile);
+		try {
+			goodFilePath = 
+				FeatureConfigurationUtil.getFilePathFromClasspath(goodFilePath, 
+						"valid sgm file");
+		} catch (JHOVE2Exception e1) {
+			fail("Could not create base directory");
+		}
+		// now alter path to opensp; should cause error message and null sgml properties,
+		// even with good sgml file
+		testSgmlModule.source = null;
+		testSgmlModule.setDocumentProperties(null);
+		fGoodFile = new File(goodFilePath);
+		goodFilePath = fGoodFile.getPath();
+		try {
+			inputSource = SourceFactory.getSource(goodFilePath);
+		}catch (Exception e){
+			e.printStackTrace();
+			fail("Failed to create source for input file");
+		}
+		testSgmlModule.source = inputSource;
+		String oldPath = sp.getOnsgmlsPath();
+		sp.setOnsgmlsPath("/invalid/path/ongmls");
+		int oldMessageLength = testSgmlModule.source.getMessages().size();
+		try {
+			testSgmlModule.setDocumentProperties(sp.parseFile(testSgmlModule));
+		} catch (JHOVE2Exception e) {
+			e.printStackTrace();
+			fail("unable to get esis parser");
+		}
+		sp.setOnsgmlsPath(oldPath);
+		assertNull(testSgmlModule.getDocumentProperties());
+		try {
+			assertEquals(Validity.Undetermined, testSgmlModule.validate(JHOVE2, testSgmlModule.source));
+		} catch (JHOVE2Exception e) {
+			fail("sgml module Validate method threw exception " + e.getMessage());
+			e.printStackTrace();
+		}
+		assertEquals(oldMessageLength+1, testSgmlModule.source.getMessages().size());
 	}
 
 	/**
