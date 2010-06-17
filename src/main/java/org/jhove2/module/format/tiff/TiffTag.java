@@ -17,13 +17,13 @@ public class TiffTag implements Comparable<TiffTag> {
 
     private static int print = 0;
     // Name Type Cardinality Default
-    public int tag;
-    public String name;
-    public String type;
-    public String cardinality;
-    public String defaultValue;
+    protected int tag;
+    protected String name;
+    protected int type;
+    protected String cardinality;
+    protected String defaultValue;
 
-    public TiffTag(int tag, String name, String type, String cardinality) {
+    public TiffTag(int tag, String name, int type, String cardinality) {
         this.tag = tag;
         this.name = name;
         this.type = type;
@@ -33,7 +33,7 @@ public class TiffTag implements Comparable<TiffTag> {
     public int getTag() {
         return tag;
     }
-    public String getType() {
+    public int getType() {
         return type;
     }
     public String getName() {
@@ -54,14 +54,14 @@ public class TiffTag implements Comparable<TiffTag> {
 
                     String key = (String) e.nextElement();
                     String name = null;
-                    String type;
+                    int type;
                     String cardinality = null;
 
                     String[] values = props.getProperty(key).split("\t");
                     // tag has Name Type Cardinality Default
                     int tag = Integer.parseInt(key);
                     name = values[0];
-                    type = values[1];
+                    type = Integer.parseInt(values[1]);
                     if (values.length >= 3) {
                         cardinality = values[2];
                     }

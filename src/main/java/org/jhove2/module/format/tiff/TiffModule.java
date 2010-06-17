@@ -184,8 +184,8 @@ implements Validator
             }
             ifh.setMagicNumber(magic);
 
-            ifdList = parseIFDs(jhove2, input);    
-
+            ifdList = parseIFDs(jhove2, input);  
+            
         } catch (EOFException e) {
             // TODO:  Report error message Premature EOF
             this.isValid = Validity.False;
@@ -241,10 +241,11 @@ implements Validator
             e.printStackTrace();
         }
         
+        List list = new LinkedList();
         long nextIfdOffset = offset;
         while (nextIfdOffset != 0L) {
             /* Parse the list of IFDs */           
-            IFD ifd = parseIFDList(nextIfdOffset, jhove2, input);
+            IFD ifd = parseIFDList(nextIfdOffset, list, jhove2, input);
             nextIfdOffset  = ifd.getNextIFD(); 
         }
         return ifdList;
@@ -255,13 +256,15 @@ implements Validator
     /** following the offsets, process the list of IFDs 
      * @param offset 
      * */
-    private IFD parseIFDList(long ifdOffset, JHOVE2 jhove2, Input input) {
+    private IFD parseIFDList(long ifdOffset, List list, JHOVE2 jhove2, Input input) {
 
-        IFD ifd = new IFD();
+        IFD ifd = new IFD();  
         ifd.setOffset(ifdOffset);
 
         try {
+            // TODO: parse for the appropriate IFD type
             ifd.parse(jhove2, input, ifdOffset);
+            
             if (ifdList.size () == 0) {
                 ifd.setFirst (true);
             }
@@ -271,8 +274,12 @@ implements Validator
                 // all circumstances.
                 ifd.setThumbnail (true);
             }
-            ifdList.add(ifd);
+            list.add(ifd);
             version = ifd.getVersion();
+            
+            // TODO:  parse subIFDs chains here
+            
+            // TODO: parse EXIF/GPS/InterOP/GlobalParms IFDChains here
         }  
 
         catch (EOFException e) {

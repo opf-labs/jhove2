@@ -45,7 +45,7 @@ public class IFD
     /** offset of the IFD */ 
 	protected long offset;
 	
-    /** True if the is the "thumbnail" IFD. */
+    /** True if this is the "thumbnail" IFD. */
     private boolean thumbnail;
 
     /** TIFF version determined by data in IFD */
@@ -145,5 +145,17 @@ public class IFD
         this.offset = offset;
     }
     
+    /**
+     * Calculate how many bytes a given number of fields of a given
+     * type will require.
+     * @param type Field type
+     * @param count Field count
+     */
+    public static long calcValueSize (int type, long count)
+    {
+        int fieldSize = 0;
+        fieldSize = TiffType.getType(type).getSize();
+        return  count*fieldSize;
+    }
 
 }

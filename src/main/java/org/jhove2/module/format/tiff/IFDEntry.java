@@ -21,7 +21,7 @@ import org.jhove2.core.reportable.AbstractReportable;
  *
  */
 public class IFDEntry 
-extends AbstractReportable
+extends IFD
 implements Comparable {
 
     /*   public enum Type {
@@ -61,6 +61,10 @@ implements Comparable {
 
     private Message TagSortOrderErrorMessage;
 
+    private Message ValueOffsetReferenceLocationFileMessage;
+
+    private Message UnknownTypeMessage;
+
     /** TIFF Version - some field types define the TIFF version */
     protected static int version = 4;
 
@@ -79,9 +83,9 @@ implements Comparable {
         return tag;
     }
 
-    @ReportableProperty(order = 3, value="Entry type.")
+    @ReportableProperty(order = 3, value="Tag type.")
     public TiffType getType(){
-        return tiffType;
+        return this.tiffType;
     }
 
     @ReportableProperty(order=5, value = "Entry value/offset.")
@@ -113,27 +117,63 @@ implements Comparable {
                         "org.jhove2.module.format.tiff.IFDEntry.TagSortOrderErrorMessage",
                         messageArgs, jhove2.getConfigInfo()));
             }               
- 
+
             int type = input.readUnsignedShort();
 
             TiffTag tifftag = TiffTag.getTag(tag, getTiffTags(jhove2.getConfigInfo()));
             this.tiffType = TiffType.getType(type, getTiffType(jhove2.getConfigInfo()));
 
-            /* type values of 6-12 were defined in TIFF 6.0 */
-            if (this.tiffType.num > TiffType.getType("SBYTE").num){
-                version = 6;
-            }
-
-            this.count = input.readUnsignedInt();
-            this.valueOffset = input.readUnsignedInt();
-            if ((this.valueOffset & 1) != 0){
-                /* TODO: Report an 'offset not word aligned' error */
-                Object[]messageArgs = new Object[]{0, input.getPosition(), this.valueOffset};
-                this.ByteOffsetNotWordAlignedMessage = (new Message(Severity.ERROR,
+            /* Skip over tags with unknown type. */
+            if (type < TiffType.getType("BYTE").num|| type > TiffType.getType("IFD").num) {
+                Object[]messageArgs = new Object[]{type, this.valueOffset };
+                this.UnknownTypeMessage = (new Message(Severity.ERROR,
                         Context.OBJECT,
-                        "org.jhove2.module.format.tiff.IFDEntry.ValueByteOffsetNotWordAlignedMessage",
+                        "org.jhove2.module.format.tiff.IFDEntry.UnknownTypeMessage",
                         messageArgs, jhove2.getConfigInfo()));               
             }
+            else {
+                /* type values of 6-12 were defined in TIFF 6.0 */
+                if (type > TiffType.getType("SBYTE").num){
+                    version = 6;
+                }
+
+                this.count = input.readUnsignedInt();
+                
+                /* keep track of where we are in the file */
+                long valueOffset = input.getPosition(); 
+                long value = input.readUnsignedInt();
+                
+                /* the value is the offset to the value */
+                if (calcValueSize(type, count) > 4) {
+                    long size = input.getSize();
+
+                    /* test that the value offset is within the file */
+                    if (value > size) {
+                        Object[]messageArgs = new Object[]{0, input.getPosition(), this.valueOffset};
+                        this.ValueOffsetReferenceLocationFileMessage = (new Message(Severity.ERROR,
+                                Context.OBJECT,
+                                "org.jhove2.module.format.tiff.IFDEntry.ValueOffsetReferenceLocationFileMessage",
+                                messageArgs, jhove2.getConfigInfo()));               
+
+                    }
+
+                    /* test off set is word aligned */
+                    if ((value & 1) != 0){
+                        Object[]messageArgs = new Object[]{0, input.getPosition(), this.valueOffset};
+                        this.ByteOffsetNotWordAlignedMessage = (new Message(Severity.ERROR,
+                                Context.OBJECT,
+                                "org.jhove2.module.format.tiff.IFDEntry.ValueByteOffsetNotWordAlignedMessage",
+                                messageArgs, jhove2.getConfigInfo()));               
+                    }
+
+                }
+                else {
+                    /* the value is the actual value */
+                    this.valueOffset = value;
+                }
+                validateTag(jhove2, tag, type, count, valueOffset);
+            }
+            
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -143,15 +183,19 @@ implements Comparable {
         }        
     }
 
-    protected void validateTag(JHOVE2 jhove2, int tagNum, String type, String count) throws JHOVE2Exception {
+    protected void validateTag(JHOVE2 jhove2, int tagNum, int type, long count, long valueOffset) throws JHOVE2Exception {
         TiffTag tag = TiffTag.getTag(tagNum, getTiffTags(jhove2.getConfigInfo()));
-        if (!(tag.getType().equalsIgnoreCase(type))) {
+        
+        /* validate that the type read in matches the type for that tag */
+        if (!(tag.getType() != type)) {
             Object[]messageArgs = new Object[]{tagNum, type, this.valueOffset};
             this.TypeMismatchMessage = (new Message(Severity.ERROR,
                     Context.OBJECT,
                     "org.jhove2.module.format.tiff.IFDEntry.TypeMismatchMessage",
                     messageArgs, jhove2.getConfigInfo()));               
         }
+        
+        /* TODO for each tag do some validation */
     }
 
 

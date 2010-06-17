@@ -16,14 +16,16 @@ public class TiffType implements Comparable<TiffType> {
     /** Singleton TIFF Type. */
     protected static SortedSet<TiffType> types;
 
-    public String type;
-    public int num;
-
+    protected String type;
+    protected int num;
+    protected int size;
+    
     private static int print = 0;
 
-    public TiffType(String type, int num) {
+    public TiffType(String type, int num, int size) {
         this.type = type;
         this.num = num;
+        this.size = size;
     }
     @ReportableProperty(order=1, value = "Tag Type.")
     public String getType() {
@@ -32,6 +34,10 @@ public class TiffType implements Comparable<TiffType> {
     @ReportableProperty(order=2, value = "Type Number.")
     public int getNum() {
         return num;
+    }
+    @ReportableProperty(order=3, value = "Type Field Size.")
+    public int getSize() {
+        return size;
     }
 
     public static TiffType getType(int typeNum, Properties props){
@@ -42,12 +48,13 @@ public class TiffType implements Comparable<TiffType> {
                 Enumeration<?> e = props.propertyNames();
                 while (e.hasMoreElements()){
                     String type = (String) e.nextElement();
-                    int num = Integer.parseInt(props.getProperty(type));
-                    
-                    TiffType ttype = new TiffType(type, num);
+                    String [] values = props.getProperty(type).split(" ");
+                    int num = Integer.parseInt(values[0]);
+                    int size = Integer.parseInt(values[1]);
+                    TiffType ttype = new TiffType(type, num, size);
                     types.add(ttype);
                     if (print == 0)
-                        System.out.println("tiff type ordinal =" + ttype.getNum()+ " Type = " + ttype.getType()   );
+                        System.out.println("tiff type ordinal =" + ttype.getNum()+ " Type = " + ttype.getType() + " Size = " + ttype.getSize() );
                     
                 }
             } 
@@ -78,8 +85,39 @@ public class TiffType implements Comparable<TiffType> {
         return tiffType;
     }
     
+    public static TiffType getType(int type){
+        TiffType tiffType = null;
+        Iterator<TiffType> iter = types.iterator();
+        while (iter.hasNext()) {
+            TiffType ttype = iter.next();
+            if (type == ttype.getNum()) {
+                tiffType = ttype;
+                break;
+            }
+        }
+        return tiffType;
+    }
     public Set<TiffType> getTypes() {
         return types;
+    }
+
+    /**
+     * Get the type name.
+     * 
+     * @return Type name
+     */
+    public String getName() {
+        return this.type;
+    }
+
+
+    /**
+     * Convert the tiff type to a Java string.
+     * 
+     * @return Java string representation of the type
+     */
+    public String toString() {
+        return this.getName();
     }
 
     @Override
