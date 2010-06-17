@@ -33,7 +33,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
 */
-grammar EsisErrors;
+grammar SgmlParseMessages;
 
 options {
   language = Java;
@@ -44,6 +44,8 @@ package org.jhove2.module.format.sgml;
 
 import java.util.List;
 import java.util.LinkedList;
+
+import org.jhove2.module.format.sgml.OpenSpMessageParser;
 }
 
 @lexer::header{
@@ -62,16 +64,16 @@ int totMessageCount = 0;
 List<String> openSpMessages = new ArrayList<String>();
 
 // members and methods to trap any errors during parse so they can be reported
- List<String> esisErrorsParseErrors = new LinkedList<String>();
+ List<String> sgmlMessagesParseErrors = new LinkedList<String>();
 
  public void displayRecognitionError(String[] tokenNames,
                                         RecognitionException e) {
         String hdr = getErrorHeader(e);
         String msg = getErrorMessage(e, tokenNames);
-        esisErrorsParseErrors.add(EsisParser.ESISERR + hdr + " " + msg);
+        sgmlMessagesParseErrors.add(OpenSpMessageParser.OSPMESSAGEERR + hdr + " " + msg);
     }
-    public List<String> getEsisErrorsParseErrors() {
-        return esisErrorsParseErrors;
+    public List<String> getSgmlMessagesParseErrors() {
+        return sgmlMessagesParseErrors;
     }
 }
 
@@ -86,10 +88,37 @@ errMessage :  (codedMessage|uncodedMessage) NEWLINE?
 codedMessage : 
   cmdPath COLON sgmlFilepath COLON lineNumber COLON posNumber COLON somenumber DOT messageCode COLON messageLevel COLON messagetext 
   {
-  
+    String messageStr = 
+        OpenSpMessageParser.createCodedMessageString($sgmlFilepath.text,
+                $lineNumber.text, $posNumber.text, 
+                 $messagetext.text, $messageLevel.text, $messageCode.text);
+    openSpMessages.add(messageStr);
+    String level = $messageLevel.text;
+    if (level.equals("E")){
+         eLevelMessageCount++;
+    }
+    else if (level.equals("W")){
+         wLevelMessageCount++;
+    }
+    else if (level.equals("I")){
+         iLevelMessageCount++;
+    }
+    else if (level.equals("Q")){
+         qLevelMessageCount++;
+    }
+    else if (level.equals("X")){
+         xLevelMessageCount++;
+    }
   };
 
-uncodedMessage : cmdPath COLON sgmlFilepath COLON lineNumber COLON posNumber COLON messagetext ;
+uncodedMessage : cmdPath COLON sgmlFilepath COLON lineNumber COLON posNumber COLON messagetext 
+  {
+       String messageStr = 
+        OpenSpMessageParser.createMessageString($sgmlFilepath.text,
+                $lineNumber.text, $posNumber.text, 
+                 $messagetext.text);
+       openSpMessages.add(messageStr);
+  };
 
 cmdPath :  unixPath | winpath ;
 
@@ -111,18 +140,19 @@ messageCode : DIGIT+;
 
 messageLevel : MESSAGELEVEL;
 
-messagetext : SPACE  (~(NEWLINE|EOF))* ;
+messagetext : SPACE (COLON|DOT|SLASH|BCKSLASH|MESSAGELEVEL|DIGIT|OTHERALPHA|OTHERCHAR|SPACE)*;
 
 
-NEWLINE   :    '\r'? '\n';  //13  x0D  10  x0A
-SPACE     :    ' ';   //32  x20
-COLON     :    ':';
-DOT       :    '.';
-SLASH     :    '/';
-BCKSLASH  :    '\\';
-MESSAGELEVEL : MESSAGELEVELS;
-DIGIT     :    DIGITS;
-OTHERALPHA :   OTHERALPHAS;
+NEWLINE       :    '\r'? '\n';  // x0D   x0A
+SPACE         :    ' ';         // x20
+COLON         :    ':';         //003A
+DOT           :    '.';         //U+002E
+SLASH         :    '/';         //U+002F
+BCKSLASH      :    '\\';        //U+005C
+MESSAGELEVEL  :    MESSAGELEVELS;
+DIGIT         :    DIGITS;
+OTHERALPHA    :    OTHERALPHAS;
+OTHERCHAR     :    U2|U3|U4|U5|U6;
 
 fragment
 MESSAGELEVELS : 'E'|'W'|'I'|'Q'|'X';
@@ -130,3 +160,16 @@ fragment
 DIGITS        : '0'..'9';
 fragment
 OTHERALPHAS   : 'a'..'z'|'A'..'D'|'F'..'H'|'J'..'P'|'R'..'V'|'Y'|'Z';
+
+
+fragment
+U2 : '\u0021'..'\u002D';
+fragment
+U3 : '\u003B'..'\u0040';
+fragment
+U4:  '\u005B';
+fragment
+U5:  '\u005D'..'\u0060';
+fragment
+U6 : '\u007B'..'\uFFFF' ;
+

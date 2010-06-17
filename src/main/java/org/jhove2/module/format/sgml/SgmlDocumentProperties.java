@@ -50,7 +50,12 @@ import org.jhove2.core.reportable.AbstractReportable;
  *
  */
 public class SgmlDocumentProperties extends AbstractReportable {
-    protected boolean isSgmlValid; // is this a conforming SGML file; indicated by presence of "C" command at end of file
+    protected boolean isSgmlValid; // is this a conforming SGML file; indicated by presence of "C" command at end of file    
+    protected boolean foundDoctype;
+    protected boolean foundPubid;
+    protected boolean foundSysid;
+    protected String pubid;
+    protected String systemId;
     protected String rootElementName; // element name of first startElementCommand
     protected int publicIdCount;
     protected int fileNamesCount;
@@ -74,6 +79,12 @@ public class SgmlDocumentProperties extends AbstractReportable {
     protected int sDataCount;
     protected int piCount;
     protected int appInfoCount;
+    protected int eLevelMessageCount;
+    protected int wLevelMessageCount;
+    protected int iLevelMessageCount;
+    protected int xLevelMessageCount;
+    protected int qLevelMessageCount;
+    protected int totMessageCount;
 
     protected SortedSet<String> pubIds;
     protected SortedSet<String> extEntFileNames;
@@ -99,15 +110,9 @@ public class SgmlDocumentProperties extends AbstractReportable {
 
     protected List<String> processingInstructions ;
     protected List<String> appInfos;
-
-    // members and methods to trap any errors during parse so they can be reported
+    protected List<String> sgmlParserMessages;
     protected  List<String> parseErrors;
-    
-    protected boolean foundDoctype;
-    protected boolean foundPubid;
-    protected boolean foundSysid;
-    protected String pubid;
-    protected String systemId;
+
     
 	/**
 	 * @return boolean indicating if DOCTYPE statement was determines
@@ -558,6 +563,70 @@ public class SgmlDocumentProperties extends AbstractReportable {
 	public boolean getSystemIdentifierFound() {
 		return this.foundSysid;
 	}
+	
+	/**
+	 * Return list of error, warning, info or other validation messages returned by SGML parser
+	 * @return List of messages
+	 */
+	@ReportableProperty(order = 72, 
+			value = "List of error, warning, info or other validation messages returned by SGML parser")
+	public List<String> getSgmlParserMessages() {
+		return sgmlParserMessages;
+	}
+	/**
+	 * Return count of error-level validation messages returned by SGML parser
+	 * @return count of error-level validation messages
+	 */
+	@ReportableProperty(order = 73, 
+			value = "Count of error-level validation messages returned by SGML parser")
+	public int getErrorLevelMessageCount() {
+		return eLevelMessageCount;
+	}
+	/**
+	 * Return count of warning-level validation messages returned by SGML parser
+	 * @return count of warning level validation messages
+	 */
+	@ReportableProperty(order = 74, 
+			value = "Count of warning-level validation messages returned by SGML parser")
+	public int getWarningLevelMessageCount() {
+		return wLevelMessageCount;
+	}
+	/**
+	 * Return count of info-level validation messages returned by SGML parser
+	 * @return count of info level validation messages
+	 */
+	@ReportableProperty(order = 75, 
+			value = "Count of info-level validation messages returned by SGML parser")
+	public int getInfoLevelMessageCount() {
+		return iLevelMessageCount;
+	}
+	/**
+	 * Return count of cross-ref validation messages returned by SGML parser
+	 * @return count of cross-ref validation messages
+	 */
+	@ReportableProperty(order = 76, 
+			value = "Count of cross-ref validation messages returned by SGML parser")
+	public int getXrefLevelMessageCount() {
+		return xLevelMessageCount;
+	}
+	/**
+	 * Return count of quantity (name-length) validation messages returned by SGML parser
+	 * @return count of quantity (name-length) validation messages
+	 */
+	@ReportableProperty(order = 77, 
+			value = "Count of quantity (name-length) validation messages returned by SGML parser")
+	public int getQnameLevelMessageCount() {
+		return qLevelMessageCount;
+	}
+	/**
+	 * Return count of all validation messages returned by SGML parser
+	 * @return count of all validation messages
+	 */
+	@ReportableProperty(order = 78, 
+			value = "Count of all validation messages returned by SGML parser")
+	public int getTotMessageCount() {
+		return totMessageCount;
+	}
 	/**
 	 * @param isSgmlValid the isSgmlValid to set
 	 */
@@ -862,4 +931,47 @@ public class SgmlDocumentProperties extends AbstractReportable {
 	public void setSystemIdentifier(String systemId) {
 		this.systemId = systemId;
 	}
+	/**
+	 * @param sgmlParserMessages the sgmlParserMessages to set
+	 */
+	public void setSgmlParserMessages(List<String> sgmlParserMessages) {
+		this.sgmlParserMessages = sgmlParserMessages;
+	}
+	/**
+	 * @param eLevelMessageCount the eLevelMessageCount to set
+	 */
+	public void setErrorLevelMessageCount(int eLevelMessageCount) {
+		this.eLevelMessageCount = eLevelMessageCount;
+	}
+	/**
+	 * @param wLevelMessageCount the wLevelMessageCount to set
+	 */
+	public void setWarningLevelMessageCount(int wLevelMessageCount) {
+		this.wLevelMessageCount = wLevelMessageCount;
+	}
+	/**
+	 * @param iLevelMessageCount the iLevelMessageCount to set
+	 */
+	public void setInfoLevelMessageCount(int iLevelMessageCount) {
+		this.iLevelMessageCount = iLevelMessageCount;
+	}
+	/**
+	 * @param xLevelMessageCount the xLevelMessageCount to set
+	 */
+	public void setXrefLevelMessageCount(int xLevelMessageCount) {
+		this.xLevelMessageCount = xLevelMessageCount;
+	}
+	/**
+	 * @param qLevelMessageCount the qLevelMessageCount to set
+	 */
+	public void setQnameLevelMessageCount(int qLevelMessageCount) {
+		this.qLevelMessageCount = qLevelMessageCount;
+	}
+	/**
+	 * @param totMessageCount the totMessageCount to set
+	 */
+	public void setTotMessageCount(int totMessageCount) {
+		this.totMessageCount = totMessageCount;
+	}
+
 }

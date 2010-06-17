@@ -112,7 +112,9 @@ public class OpenSpWrapper implements SgmlParser {
 			this.parseSgmlFile(sgm, ESIS_SUFFIX, this.onsgmlsPath, ESISCOMMANDPARMS);
 		String esisFilePath = onsgmlOutputs[0];
 		String esisErrFilePath = onsgmlOutputs[1];
+		
 		if (esisFilePath != null && esisErrFilePath != null){
+			// parse the ESIS output file from onsgmls to extract features of SGML file
 			EsisParser esisFileParser = new EsisParser();
 			/** ANTLR-generated ESIS file (output from ongmls) parser*/
 			ESISCommandsParser esisParser = null;
@@ -127,7 +129,11 @@ public class OpenSpWrapper implements SgmlParser {
 				}
 				esisFileParser.extractDocProperties(esisParser, props);
 			}
-		}
+			OpenSpMessageParser messageParser = new OpenSpMessageParser();
+			SgmlParseMessagesParser errParser = null;
+			errParser = messageParser.parseMessageFile(esisErrFilePath);
+			messageParser.extractDocProperties(errParser, props);
+		}	
 		return props;
 	}
 

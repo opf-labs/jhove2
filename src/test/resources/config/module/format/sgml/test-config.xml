@@ -161,4 +161,34 @@
 	        value="normfiles/zerolength.sgm.norm.out"/>
 	</bean>
 	
+	<bean id="conformButWarn" class="java.lang.String">
+			<constructor-arg type="java.lang.String" 
+	        value="esiserrfiles/conformButWarn.esis.err"/>
+	</bean>
+	
+	<bean id="conformNoErr" class="java.lang.String">
+			<constructor-arg type="java.lang.String" 
+	        value="esiserrfiles/conformnoerr.esis.err"/>
+	</bean>
+	
+	<bean id="noDoctype" class="java.lang.String">
+			<constructor-arg type="java.lang.String" 
+	        value="esiserrfiles/nodoctype.esis.err"/>
+	</bean>
+	
+	<bean id="spaceBeforeDoctype" class="java.lang.String">
+			<constructor-arg type="java.lang.String" 
+	        value="esiserrfiles/spacebeforedocytpe.esis.err"/>
+	</bean>
+	
+	<bean id="unmatchedPubid" class="java.lang.String">
+			<constructor-arg type="java.lang.String" 
+	        value="esiserrfiles/unmatchedpubid.esis.err"/>
+	</bean>
+	
+	<bean id="unmatchedSysid" class="java.lang.String">
+			<constructor-arg type="java.lang.String" 
+	        value="esiserrfiles/unmatchedSysid.esis.err"/>
+	</bean>
+						
 </beans>
