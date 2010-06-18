@@ -111,7 +111,8 @@ public class SgmlDocumentProperties extends AbstractReportable {
     protected List<String> processingInstructions ;
     protected List<String> appInfos;
     protected List<String> sgmlParserMessages;
-    protected  List<String> parseErrors;
+    protected List<String> sgmlParserConfigSettings;
+    protected List<String> parseErrors;
 
     
 	/**
@@ -627,6 +628,16 @@ public class SgmlDocumentProperties extends AbstractReportable {
 	public int getTotMessageCount() {
 		return totMessageCount;
 	}
+	
+	/**
+	 * Returns ist of configuration options for SGML parser(s
+	 * @return the list of configuration options for SGML parser(s)
+	 */
+	@ReportableProperty(order = 79, 
+			value = "Count of all SGML parser configuratin settings")
+	public List<String> getSgmlParserConfigSettings() {
+		return sgmlParserConfigSettings;
+	}
 	/**
 	 * @param isSgmlValid the isSgmlValid to set
 	 */
@@ -972,6 +983,12 @@ public class SgmlDocumentProperties extends AbstractReportable {
 	 */
 	public void setTotMessageCount(int totMessageCount) {
 		this.totMessageCount = totMessageCount;
+	}
+	/**
+	 * @param sgmlParserConfigSettings the sgmlParserConfigSettings to set
+	 */
+	public void setSgmlParserConfigSettings(List<String> sgmlParserConfigSettings) {
+		this.sgmlParserConfigSettings = sgmlParserConfigSettings;
 	}
 
 }

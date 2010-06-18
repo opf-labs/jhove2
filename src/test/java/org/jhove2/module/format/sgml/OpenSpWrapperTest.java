@@ -100,7 +100,8 @@ public class OpenSpWrapperTest {
 			sgmlDirPath = sp.filepathFilter.filter(sgmlDirPath);
 		}
 		catalogPath = sgmlDirPath.concat(catalogFile);
-		sp.setCatalogPath(catalogPath);
+		sp.getOnsgmlsOptions().setCatalogPath(catalogPath);
+		sp.getSgmlnormOptions().setCatalogPath(catalogPath);
 		testSgmlModule.source = null;
 	}
 
@@ -225,7 +226,8 @@ public class OpenSpWrapperTest {
 		testSgmlModule.source = inputSource;
 		String[] outputFiles = null;
 		try {
-			outputFiles = sp.parseSgmlFile(testSgmlModule,OpenSpWrapper.ESIS_SUFFIX,sp.onsgmlsPath,OpenSpWrapper.ESISCOMMANDPARMS);
+			outputFiles = sp.parseSgmlFile(
+					testSgmlModule,OpenSpWrapper.ESIS_SUFFIX,sp.onsgmlsPath,sp.getOnsgmlsOptions().getOptionString());
 		} catch (JHOVE2Exception e) {
 			e.printStackTrace();
 			fail("Failed to parse sgml file");
