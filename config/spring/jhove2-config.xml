@@ -24,6 +24,7 @@
 				<ref bean="IdentifierCommand"/>
 				<ref bean="DispatcherCommand"/>
 				<ref bean="DigesterCommand"/>
+				<ref bean="AssessorCommand"/>
 				<ref bean="AggrefierCommand"/>
 			</list>
 		</property>
@@ -84,6 +85,19 @@
 		<property name="digesterFactory" ref="DigesterFactory"/>
     </bean>
 
+	<!-- Assessor command bean -->
+	<bean id="AssessorCommand" class="org.jhove2.module.assess.AssessorCommand"
+	 	scope="prototype">
+	 	 <property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+				<ref bean="PorticoAgent"/>
+				<ref bean="StanfordAgent"/>
+			</list>
+		</property>
+		<property name="assessorFactory" ref="AssessorFactory"/>
+	</bean>
+
 	<!--  ConfigInfo bean -->
 	<bean id="ConfigInfo" class="org.jhove2.config.spring.SpringConfigInfo"
 		scope="singleton"/>
@@ -112,6 +126,11 @@
 	      class="org.jhove2.config.spring.SpringAggrefierFactory"
 	      scope="singleton"/>
 	
+	<!-- Assessment module factory bean -->
+	<bean id="AssessorFactory"
+	      class="org.jhove2.config.spring.SpringAssessorFactory"
+	      scope="singleton"/>
+
 	<!-- CDL agent bean -->
 	<bean id="CDLAgent" class="org.jhove2.core.Agent" scope="singleton">
 		<constructor-arg type="java.lang.String" value="California Digital Library"/>

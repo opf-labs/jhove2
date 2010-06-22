@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:util="http://www.springframework.org/schema/util"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans 
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-2.5.xsd
+		   http://www.springframework.org/schema/util 
+		   http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+		   	
+	<!-- RuleSet bean for the XmlModule -->
+	<bean id="MockModuleRuleSet" class="org.jhove2.module.assess.RuleSet"  scope="singleton">
+	    <property name="name" value="MockRuleSet"/>  
+	    <property name="description" value="RuleSet for testing Mock Module"/>  
+	    <property name="objectFilter" value="org.jhove2.module.assess.MockModule"/>  
+		<property name="rules">
+			<list value-type="org.jhove2.module.assess.Rule">
+				<ref bean="MockModuleRule0"/>
+				<ref bean="MockModuleRule1"/>
+				<ref bean="MockModuleRule2"/>
+				<ref bean="MockModuleRule3"/>
+				<ref bean="MockModuleRule4"/>
+				<ref bean="MockModuleRule5"/>
+				<ref bean="MockModuleRule6"/>
+				<ref bean="MockModuleRule7"/>
+				<ref bean="MockModuleRule8"/>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="MockModuleRule0" class="org.jhove2.module.assess.Rule" scope="singleton">
+	    <property name="name" value="MockModuleRule0"/>  
+	    <property name="description" value="all equality comparisons expected true for module primitives"/>
+	    <property name="quantifier" value="ALL_OF"/>
+		<property name="consequent" value="true expected"/>  
+		<property name="alternative" value="false not expected"/> 
+		<property name="predicates">
+			<list value-type="java.lang.String">
+				<value>mpBoolean == false</value>
+				<value>mpString == 'Module mock string'</value>
+				<value>mpLong == 9876543</value>
+				<value>mpEV == empty</value>
+			</list>
+		</property>
+	</bean>        
+	            
+	<bean id="MockModuleRule1" class="org.jhove2.module.assess.Rule" scope="singleton">
+	    <property name="name" value="MockModuleRule1"/>  
+	    <property name="description" value="at least one equality comparison expected true for module primitives"/>
+	    <property name="quantifier" value="ANY_OF"/>
+		<property name="consequent" value="true expected"/>  
+		<property name="alternative" value="false not expected"/> 
+		<property name="predicates">
+			<list value-type="java.lang.String">
+				<value>mpBoolean == true</value>
+				<value>mpString == 'Module mock string'</value>
+				<value>mpLong == 10</value>
+			</list>
+		</property>
+	</bean>     
+
+	<bean id="MockModuleRule2" class="org.jhove2.module.assess.Rule" scope="singleton">
+	    <property name="name" value="MockModuleRule2"/>  
+	    <property name="description" value="at least one equality comparison expected false for module primitives"/>
+	    <property name="quantifier" value="ALL_OF"/>
+		<property name="consequent" value="true not expected"/>  
+		<property name="alternative" value="false expected"/> 
+		<property name="predicates">
+			<list value-type="java.lang.String">
+				<value>mpBoolean == true</value>
+				<value>mpString == 'Module mock string'</value>
+				<value>mpLong == 10</value>
+			</list>
+		</property>
+	</bean>     
+	
+	<bean id="MockModuleRule3" class="org.jhove2.module.assess.Rule" scope="singleton">
+	    <property name="name" value="MockModuleRule3"/>  
+	    <property name="description" value="all not equals comparison expected true for module primitives"/>
+	    <property name="quantifier" value="ALL_OF"/>
+		<property name="consequent" value="true expected"/>  
+		<property name="alternative" value="false not expected"/> 
+		<property name="predicates">
+			<list value-type="java.lang.String">
+				<value>mpBoolean != true</value>
+				<value>mpString != 'wrong value'</value>
+				<value>mpLong != 10</value>
+			</list>
+		</property>
+	</bean>     
+
+	<bean id="MockModuleRule4" class="org.jhove2.module.assess.Rule" scope="singleton">
+	    <property name="name" value="MockModuleRule4"/>  
+	    <property name="description" value="all less/greater than comparisons expected true for module primitives"/>
+	    <property name="quantifier" value="ALL_OF"/>
+		<property name="consequent" value="true expected"/>  
+		<property name="alternative" value="false not expected"/> 
+		<property name="predicates">
+			<list value-type="java.lang.String">
+				<value>mpString &lt;  'Next'</value>
+				<value>mpString &lt;= 'Module mock string'</value>
+				<value>mpString &gt;= 'Module'</value>
+				<value>mpLong &lt;  9876544</value>
+				<value>mpLong &lt;= 9876543</value>
+				<value>mpLong &gt;  9876542</value>
+			</list>
+		</property>
+	</bean>        
+
+	<bean id="MockModuleRule5" class="org.jhove2.module.assess.Rule" scope="singleton">
+	    <property name="name" value="MockModuleRule0"/>  
+	    <property name="description" value="all contains comparisons expected true for module field"/>
+	    <property name="quantifier" value="ALL_OF"/>
+		<property name="consequent" value="true expected"/>  
+		<property name="alternative" value="false not expected"/> 
+		<property name="predicates">
+			<list value-type="java.lang.String">
+				<value>mpString contains 'mock'</value>
+				<value>mpListString contains 'mock list string 1'</value>				
+			</list>
+		</property>
+	</bean>     
+	
+	<bean id="MockModuleRule6" class="org.jhove2.module.assess.Rule" scope="singleton">
+	    <property name="name" value="MockModuleRule6"/>  
+	    <property name="description" value="all collection size comparisons expected true for module fields"/>
+	    <property name="quantifier" value="ALL_OF"/>
+		<property name="consequent" value="true expected"/>  
+		<property name="alternative" value="false not expected"/> 
+		<property name="predicates">
+			<list value-type="java.lang.String">
+				<value>mpListString.size() == 4</value>				
+				<value>mpListReportable.size() == 5</value>				
+			</list>
+		</property>
+	</bean>        
+	   
+	<bean id="MockModuleRule7" class="org.jhove2.module.assess.Rule" scope="singleton">
+	    <property name="name" value="MockModuleRule7"/>  
+	    <property name="description" value="check values in child Reportable object"/>
+	    <property name="quantifier" value="ALL_OF"/>
+		<property name="consequent" value="true expected"/>  
+		<property name="alternative" value="false not expected"/> 
+		<property name="predicates">
+			<list value-type="java.lang.String">
+				<value>mpListReportable[0].cpEV.toString() == 'EV0'</value>
+				<value>mpListReportable[1].cpBoolean == true</value>
+				<value>mpListReportable[2].cpLong == 1234567</value>
+				<value>mpListReportable[3].cpString == 'mock string value'</value>
+			</list>
+		</property>
+	</bean>        
+
+	<bean id="MockModuleRule8" class="org.jhove2.module.assess.Rule" scope="singleton">
+	    <property name="name" value="MockModuleRule8"/>  
+	    <property name="description" value="bad syntax used in predicates (should use size instead of count"/>
+	    <property name="quantifier" value="ALL_OF"/>
+		<property name="consequent" value="true not expected"/>  
+		<property name="alternative" value="false not expected"/> 
+		<property name="predicates">
+			<list value-type="java.lang.String">
+				<value>mpListString.count() == 4</value>				
+				<value>mpListReportable.count() == 5</value>				
+			</list>
+		</property>
+	</bean>        
+	
+</beans>		   
