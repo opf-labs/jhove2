@@ -1,0 +1,86 @@
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:1:69:1844095592.337:W: cannot generate system identifier for public text "-//Some Publisher//DTD for Online Journals//EN"
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:1:69:1844095592.325:E: reference to entity "SERIAL" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:1:0: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:1:69:1844095592.323:E: DTD did not contain element declaration for document type name
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:1:69: relevant clauses:  ISO 8879:1986 11.1p10
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:1:78:1844095592.76:E: element "SERIAL" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:1:88:1844095592.76:E: element "SERFRONT" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:1:88: open elements: SERIAL
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:1:95:1844095592.76:E: element "TITLE" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:1:95: open elements: SERIAL SERFRONT
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:3:9:1844095592.76:E: element "SERPUBFR" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:3:9: open elements: SERIAL SERFRONT
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:3:18:1844095592.76:E: element "PUBNAME" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:3:18: open elements: SERIAL SERFRONT SERPUBFR
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:3:87:1844095592.108:E: there is no attribute "TYPE"
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:3:87: open elements: SERIAL SERFRONT SERPUBFR
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:3:94:1844095592.76:E: element "ISSN" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:3:94: open elements: SERIAL SERFRONT SERPUBFR
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:3:130:1844095592.76:E: element "ISSN" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:3:130: open elements: SERIAL SERFRONT SERPUBFR
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:3:153:1844095592.76:E: element "VOLID" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:3:153: open elements: SERIAL SERFRONT SERPUBFR
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:3:172:1844095592.76:E: element "ISSUEID" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:3:172: open elements: SERIAL SERFRONT SERPUBFR
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:3:181:1844095592.76:E: element "ISSUENO" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:3:181: open elements: SERIAL SERFRONT SERPUBFR ISSUEID
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:3:209:1844095592.76:E: element "FPAGE" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:3:209: open elements: SERIAL SERFRONT SERPUBFR
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:3:226:1844095592.76:E: element "LPAGE" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:3:226: open elements: SERIAL SERFRONT SERPUBFR
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:3:247:1844095592.76:E: element "PAGECOUNT" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:3:247: open elements: SERIAL SERFRONT SERPUBFR
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:3:266:1844095592.76:E: element "DATE" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:3:266: open elements: SERIAL SERFRONT SERPUBFR
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:3:286:1844095592.76:E: element "CPYRT" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:3:286: open elements: SERIAL SERFRONT SERPUBFR
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:3:292:1844095592.76:E: element "DATE" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:3:292: open elements: SERIAL SERFRONT SERPUBFR CPYRT
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:3:313:1844095592.76:E: element "CPYRTNME" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:3:313: open elements: SERIAL SERFRONT SERPUBFR CPYRT
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:3:368:1844095592.76:E: element "DOI" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:3:368: open elements: SERIAL SERFRONT SERPUBFR
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:5:8:1844095592.76:E: element "SERBODY" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:5:8: open elements: SERIAL
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:5:23:1844095592.108:E: there is no attribute "TYPE"
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:5:23: open elements: SERIAL SERBODY
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:5:32:1844095592.76:E: element "SERSEC" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:5:32: open elements: SERIAL SERBODY
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:5:39:1844095592.76:E: element "TITLE" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:5:39: open elements: SERIAL SERBODY SERSEC
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:7:8:1844095592.76:E: element "ARTICLE" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:7:8: open elements: SERIAL SERBODY SERSEC
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:9:6:1844095592.76:E: element "FRONT" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:9:6: open elements: SERIAL SERBODY SERSEC ARTICLE
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:9:16:1844095592.76:E: element "TITLEGRP" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:9:16: open elements: SERIAL SERBODY SERSEC ARTICLE FRONT
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:9:23:1844095592.76:E: element "TITLE" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:9:23: open elements: SERIAL SERBODY SERSEC ARTICLE FRONT TITLEGRP
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:11:8:1844095592.76:E: element "AUTHGRP" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:11:8: open elements: SERIAL SERBODY SERSEC ARTICLE FRONT
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:11:23:1844095592.108:E: there is no attribute "RIDS"
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:11:23: open elements: SERIAL SERBODY SERSEC ARTICLE FRONT AUTHGRP
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:11:29:1844095592.76:E: element "AUTHOR" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:11:29: open elements: SERIAL SERBODY SERSEC ARTICLE FRONT AUTHGRP
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:11:36:1844095592.76:E: element "FNAME" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:11:36: open elements: SERIAL SERBODY SERSEC ARTICLE FRONT AUTHGRP AUTHOR
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:11:61:1844095592.76:E: element "SURNAME" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:11:61: open elements: SERIAL SERBODY SERSEC ARTICLE FRONT AUTHGRP AUTHOR
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:11:81:1844095592.76:E: element "PD" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:11:81: open elements: SERIAL SERBODY SERSEC ARTICLE FRONT AUTHGRP AUTHOR
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:12:19:1844095592.76:E: element "AUTHOR" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:12:19: open elements: SERIAL SERBODY SERSEC ARTICLE FRONT AUTHGRP
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:12:26:1844095592.76:E: element "FNAME" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:12:26: open elements: SERIAL SERBODY SERSEC ARTICLE FRONT AUTHGRP AUTHOR
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:12:52:1844095592.76:E: element "SURNAME" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:12:52: open elements: SERIAL SERBODY SERSEC ARTICLE FRONT AUTHGRP AUTHOR
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:13:8:1844095592.108:E: there is no attribute "ID"
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:13:8: open elements: SERIAL SERBODY SERSEC ARTICLE FRONT AUTHGRP
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:13:14:1844095592.76:E: element "AFF" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:13:14: open elements: SERIAL SERBODY SERSEC ARTICLE FRONT AUTHGRP
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:14:14:1844095592.76:E: element "AFF" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:14:14: open elements: SERIAL SERBODY SERSEC ARTICLE FRONT AUTHGRP
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:16:9:1844095592.76:E: element "ABSTRACT" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:16:9: open elements: SERIAL SERBODY SERSEC ARTICLE FRONT
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:16:12:1844095592.76:E: element "P" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/someFn.sgm:16:12: open elements: SERIAL SERBODY SERSEC ARTICLE FRONT ABSTRACT

@@ -48,15 +48,22 @@ public class IFD
     /** True if this is the "thumbnail" IFD. */
     private boolean thumbnail;
 
-    /** TIFF version determined by data in IFD */
+    /** TIFF version determined by data in IFDEntry */
     private int version;
     
     /* Message for Zero IFD Entries */
     private Message zeroIFDEntriesMessage;
         
+    protected static Properties tiffTagProps;
 
-	
-	@ReportableProperty(order = 3, value="IFD entries.")
+    protected static Properties tiffTypeProps;
+
+
+	public IFD() {
+        super();
+    }
+
+    @ReportableProperty(order = 3, value="IFD entries.")
 	public List<IFDEntry> getIFDEntries() {
 		return entries;
 	}
@@ -158,4 +165,23 @@ public class IFD
         return  count*fieldSize;
     }
 
+    /**
+     * @return Properties the Tiff Tag Properties stored in the Java Properties file
+     */
+    public static Properties getTiffTags(ConfigInfo config)  throws JHOVE2Exception {
+        if (tiffTagProps==null){
+            tiffTagProps = config.getProperties("TiffTag");
+        }
+        return tiffTagProps;
+    }
+
+    /**
+     * @return Properties the Tiff Type Properties stored in the Java Properties file
+     */
+    public static Properties getTiffType(ConfigInfo config)  throws JHOVE2Exception {
+        if (tiffTypeProps==null){
+            tiffTypeProps = config.getProperties("TiffType");
+        }
+        return tiffTypeProps;
+    }
 }

@@ -1,0 +1,2 @@
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/nodoctype.sgml:1:0:1844095592.435:E: prolog can't be omitted unless CONCUR NO and LINK EXPLICIT NO and either IMPLYDEF ELEMENT YES or IMPLYDEF DOCTYPE YES
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/nodoctype.sgml:1:0:1844095592.187:E: no document type declaration; will parse without validation

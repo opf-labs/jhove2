@@ -90,13 +90,24 @@ implements Validator
         super(VERSION, RELEASE, RIGHTS, format);
     }
 
+    /**
+     * returns the list of IFDs for this TIFF object
+     * 
+     * @return List<IFD>
+     */
     @ReportableProperty(order = 2, value="IFDs.")
     public List<IFD> getIFDs() {
-        return ifdList;}
+        return ifdList;
+    }
 
+    /**
+     * 
+     * @return IFH Image File Header
+     */
     @ReportableProperty(order = 1, value="IFH")
     public IFH getIFH() {
-        return ifh;}
+        return ifh;
+    }
 
     /**
      * Parse a source unit.
@@ -122,56 +133,52 @@ implements Validator
         this.isValid = Validity.Undetermined;
         int numErrors = 0;
         Input input = null;
-        try {
-            Invocation config = jhove2.getInvocation();
-            input = source.getInput(config.getBufferSize(), 
-                    config.getBufferType());
-            long start = 0L;
-            long end = 0L;
-            if (source instanceof FileSource) {
-                end = ((FileSource) source).getSize();
-            } else if (source instanceof ZipFileSource) {
-                end = ((ZipFileSource) source).getSize();
-            }
-            ;
-            input.setPosition(start);
+        Invocation config = jhove2.getInvocation();
+        input = source.getInput(config.getBufferSize(), 
+                config.getBufferType());
+        long start = 0L;
+        long end = 0L;
+        
+        if (source instanceof FileSource) {
+            end = ((FileSource) source).getSize();
+        } else if (source instanceof ZipFileSource) {
+            end = ((ZipFileSource) source).getSize();
+        }
 
-            EOL eol = null;
-            long position = start;
+        try {
+            input.setPosition(start);
 
             // read the first two bytes to determine the endianess
             byte[] b = new byte[2];
             b[0] = input.readSignedByte();
             b[1] = input.readSignedByte();
             ByteOrder byteOrder = null;
-            // test for little endian ("II")
-            if ((b[0] != b[1]) && (b[0] == 0x49 || b[0] == 0x4D)) {
+
+            /* validate first 2 bytes */
+            if ((b[0] != b[1]) && 
+                (b[0] == 0x49 || b[0] == 0x4D)) {
                 this.isValid = Validity.False;
                 numErrors++;
-                //TODO: fix this message
                 Object[]messageArgs = new Object[]{0, input.getPosition(), b[0]};
                 this.invalidFirstTwoBytesMessage.add(new Message(Severity.ERROR,
                         Context.OBJECT,
                         "org.jhove2.module.format.tiff.TIFFModule.invalidFirstTwoBytesMessage",
                         messageArgs, jhove2.getConfigInfo()));
             }
-
             if (b[0] == 0x49) {  // 'I'
                 byteOrder = ByteOrder.LITTLE_ENDIAN;
             }
             else if (b[0] ==0x4D) {  // 'M'
                 byteOrder = ByteOrder.BIG_ENDIAN;
             }
-
             ifh.setByteOrdering(new String(b));
             ifh.setByteOrder(byteOrder);
-
-            // set the endianess so subsequent reads are the correct endianess
+            
+            /* set the endianess so subsequent reads are the correct endianess */
             input.setByteOrder(byteOrder);
 
             int magic = input.readUnsignedShort();
             if (magic != 43 && magic != 42) {
-                //TODO:  error message
                 Object[]messageArgs = new Object[]{magic};
                 this.invalidMagicNumberMessage.add(new Message(Severity.ERROR,
                         Context.OBJECT,
@@ -185,35 +192,35 @@ implements Validator
             ifh.setMagicNumber(magic);
 
             ifdList = parseIFDs(jhove2, input);  
-            
+
         } catch (EOFException e) {
-            // TODO:  Report error message Premature EOF
             this.isValid = Validity.False;
             this.PrematureEOFMessage.add(new Message(Severity.ERROR,
                     Context.OBJECT,
                     "org.jhove2.module.format.tiff.TIFFModule.PrematureEOFMessage",
-                    jhove2.getConfigInfo()));               
+                    jhove2.getConfigInfo()));       
+            throw new JHOVE2Exception("TiffModuel.parse(): EOFException", e);
         }
-
-
-
         finally {
             if (input != null) {
                 input.close();
             }
         }
-
-        return consumed;
+        return 0;
     }
 
-    /** parse the IFDs 
+    /** 
+     * parse the IFD validating that there is at least one offset
+     * and that it is word-aligned.  Following the offset
+     * of the first IFD, parse the linked list of IFDs 
+     *  
+     * @throws JHOVE2Exception 
      * 
      */
-
-    private List<IFD> parseIFDs(JHOVE2 jhove2, Input input){
+    private List<IFD> parseIFDs(JHOVE2 jhove2, Input input) throws JHOVE2Exception{
         long offset = 0L;
         try {
-            // read the offset to the 0th IFD
+            /* read the offset to the 0th IFD */
             offset = input.readUnsignedInt();
             ifh.setFirstIFD(offset);
 
@@ -236,15 +243,14 @@ implements Validator
                         messageArgs, jhove2.getConfigInfo()));               
             }
         }
-        catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        catch (IOException e) {
+            throw new JHOVE2Exception ("TiffModule.parseIFDs(): IOException",e);
         }
-        
+
+        /* Parse the list of IFDs */                  
         List list = new LinkedList();
         long nextIfdOffset = offset;
         while (nextIfdOffset != 0L) {
-            /* Parse the list of IFDs */           
             IFD ifd = parseIFDList(nextIfdOffset, list, jhove2, input);
             nextIfdOffset  = ifd.getNextIFD(); 
         }
@@ -255,16 +261,21 @@ implements Validator
 
     /** following the offsets, process the list of IFDs 
      * @param offset 
+     * @throws JHOVE2Exception 
      * */
-    private IFD parseIFDList(long ifdOffset, List list, JHOVE2 jhove2, Input input) {
+    private IFD parseIFDList(long ifdOffset, List<IFD> list, JHOVE2 jhove2, Input input) throws JHOVE2Exception {
 
         IFD ifd = new IFD();  
+
+        TiffTag.getTiffTags(IFD.getTiffTags(jhove2.getConfigInfo()));
+        TiffType.getTiffTypes(IFD.getTiffType(jhove2.getConfigInfo()));
+
         ifd.setOffset(ifdOffset);
 
         try {
             // TODO: parse for the appropriate IFD type
             ifd.parse(jhove2, input, ifdOffset);
-            
+
             if (ifdList.size () == 0) {
                 ifd.setFirst (true);
             }
@@ -276,9 +287,9 @@ implements Validator
             }
             list.add(ifd);
             version = ifd.getVersion();
-            
+
             // TODO:  parse subIFDs chains here
-            
+
             // TODO: parse EXIF/GPS/InterOP/GlobalParms IFDChains here
         }  
 

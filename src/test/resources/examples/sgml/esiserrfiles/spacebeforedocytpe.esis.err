@@ -1,0 +1,165 @@
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:17:73:1844095592.338:W: cannot generate system identifier for general entity "uml"
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:17:73: open elements: ARTICLE FRONT[1] AUTHGRP[1] AUTHOR[1] SURNAME[1] (#PCDATA[1])
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:17:73:1844095592.25:E: general entity "uml" not defined and no default entity
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:17:73: relevant clauses:  ISO 8879:1986 9.4.4.1p2
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:17:73: open elements: ARTICLE FRONT[1] AUTHGRP[1] AUTHOR[1] SURNAME[1] (#PCDATA[1])
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:17:76:1844095592.325:E: reference to entity "uml" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:17:72: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:17:76: open elements: ARTICLE FRONT[1] AUTHGRP[1] AUTHOR[1] SURNAME[1] (#PCDATA[1])
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:24:30:1844095592.338:W: cannot generate system identifier for general entity "dollar"
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:24:30: open elements: ARTICLE FRONT[1] PUBFRONT[1] CCC[1] (#PCDATA[1])
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:24:30:1844095592.25:E: general entity "dollar" not defined and no default entity
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:24:30: relevant clauses:  ISO 8879:1986 9.4.4.1p2
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:24:30: open elements: ARTICLE FRONT[1] PUBFRONT[1] CCC[1] (#PCDATA[1])
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:24:36:1844095592.325:E: reference to entity "dollar" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:24:29: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:24:36: open elements: ARTICLE FRONT[1] PUBFRONT[1] CCC[1] (#PCDATA[1])
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:63:729:1844095592.338:W: cannot generate system identifier for general entity "copy"
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:63:729: open elements: ARTICLE FRONT[1] ABSTRACT[1] P[1] (#PCDATA[1])
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:63:729:1844095592.25:E: general entity "copy" not defined and no default entity
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:63:729: relevant clauses:  ISO 8879:1986 9.4.4.1p2
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:63:729: open elements: ARTICLE FRONT[1] ABSTRACT[1] P[1] (#PCDATA[1])
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:63:733:1844095592.325:E: reference to entity "copy" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:63:728: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:63:733: open elements: ARTICLE FRONT[1] ABSTRACT[1] P[1] (#PCDATA[1])
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:63:799:1844095592.338:W: cannot generate system identifier for general entity "lsqb"
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:63:799: open elements: ARTICLE FRONT[1] ABSTRACT[1] P[1] II[1]
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:63:799:1844095592.25:E: general entity "lsqb" not defined and no default entity
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:63:799: relevant clauses:  ISO 8879:1986 9.4.4.1p2
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:63:799: open elements: ARTICLE FRONT[1] ABSTRACT[1] P[1] II[1]
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:63:803:1844095592.325:E: reference to entity "lsqb" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:63:798: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:63:803: open elements: ARTICLE FRONT[1] ABSTRACT[1] P[1] II[1]
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:63:826:1844095592.338:W: cannot generate system identifier for general entity "rsqb"
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:63:826: open elements: ARTICLE FRONT[1] ABSTRACT[1] P[1] II[1] (#PCDATA[1])
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:63:826:1844095592.25:E: general entity "rsqb" not defined and no default entity
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:63:826: relevant clauses:  ISO 8879:1986 9.4.4.1p2
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:63:826: open elements: ARTICLE FRONT[1] ABSTRACT[1] P[1] II[1] (#PCDATA[1])
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:63:830:1844095592.325:E: reference to entity "rsqb" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:63:825: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:63:830: open elements: ARTICLE FRONT[1] ABSTRACT[1] P[1] II[1] (#PCDATA[1])
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:80:20:1844095592.338:W: cannot generate system identifier for general entity "minus"
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:80:20: open elements: ARTICLE BODY[1] PART[1] CHAPTER[1] P[1] DFORMULA[1] FRACTION[1] NUM[1] (INF[1])
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:80:20:1844095592.25:E: general entity "minus" not defined and no default entity
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:80:20: relevant clauses:  ISO 8879:1986 9.4.4.1p2
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:80:20: open elements: ARTICLE BODY[1] PART[1] CHAPTER[1] P[1] DFORMULA[1] FRACTION[1] NUM[1] (INF[1])
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:80:25:1844095592.325:E: reference to entity "minus" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:80:19: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:80:25: open elements: ARTICLE BODY[1] PART[1] CHAPTER[1] P[1] DFORMULA[1] FRACTION[1] NUM[1] (INF[1])
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:82:315:1844095592.325:E: reference to entity "minus" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:80:19: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:82:315: open elements: ARTICLE BODY[1] PART[1] CHAPTER[1] P[1] DFORMULA[1] (#PCDATA[1])
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:82:328:1844095592.325:E: reference to entity "minus" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:80:19: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:82:328: open elements: ARTICLE BODY[1] PART[1] CHAPTER[1] P[1] DFORMULA[1] SUP[1]
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:82:378:1844095592.325:E: reference to entity "minus" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:80:19: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:82:378: open elements: ARTICLE BODY[1] PART[1] CHAPTER[1] P[1] DFORMULA[1] SUP[1]
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:83:250:1844095592.338:W: cannot generate system identifier for general entity "ohgr"
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:83:250: open elements: ARTICLE BODY[1] PART[1] CHAPTER[1] P[1] FORMULA[1] (#PCDATA[1])
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:83:250:1844095592.25:E: general entity "ohgr" not defined and no default entity
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:83:250: relevant clauses:  ISO 8879:1986 9.4.4.1p2
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:83:250: open elements: ARTICLE BODY[1] PART[1] CHAPTER[1] P[1] FORMULA[1] (#PCDATA[1])
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:83:254:1844095592.325:E: reference to entity "ohgr" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:83:249: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:83:254: open elements: ARTICLE BODY[1] PART[1] CHAPTER[1] P[1] FORMULA[1] (#PCDATA[1])
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:83:501:1844095592.338:W: cannot generate system identifier for general entity "prop"
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:83:501: open elements: ARTICLE BODY[1] PART[1] CHAPTER[1] P[1] DFORMULA[1] (INF[1])
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:83:501:1844095592.25:E: general entity "prop" not defined and no default entity
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:83:501: relevant clauses:  ISO 8879:1986 9.4.4.1p2
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:83:501: open elements: ARTICLE BODY[1] PART[1] CHAPTER[1] P[1] DFORMULA[1] (INF[1])
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:83:505:1844095592.325:E: reference to entity "prop" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:83:500: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:83:505: open elements: ARTICLE BODY[1] PART[1] CHAPTER[1] P[1] DFORMULA[1] (INF[1])
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:83:511:1844095592.325:E: reference to entity "ohgr" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:83:249: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:83:511: open elements: ARTICLE BODY[1] PART[1] CHAPTER[1] P[1] DFORMULA[1] (INF[1])
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:83:584:1844095592.325:E: reference to entity "prop" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:83:500: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:83:584: open elements: ARTICLE BODY[1] PART[1] CHAPTER[1] P[1] DFORMULA[1] (INF[1])
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:83:593:1844095592.325:E: reference to entity "ohgr" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:83:249: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:83:593: open elements: ARTICLE BODY[1] PART[1] CHAPTER[1] P[1] DFORMULA[1] (#PCDATA[1])
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:83:619:1844095592.338:W: cannot generate system identifier for general entity "tgr"
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:83:619: open elements: ARTICLE BODY[1] PART[1] CHAPTER[1] P[1] DFORMULA[1] (SUP[1])
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:83:619:1844095592.25:E: general entity "tgr" not defined and no default entity
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:83:619: relevant clauses:  ISO 8879:1986 9.4.4.1p2
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:83:619: open elements: ARTICLE BODY[1] PART[1] CHAPTER[1] P[1] DFORMULA[1] (SUP[1])
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:83:622:1844095592.325:E: reference to entity "tgr" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:83:618: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:83:622: open elements: ARTICLE BODY[1] PART[1] CHAPTER[1] P[1] DFORMULA[1] (SUP[1])
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:83:704:1844095592.325:E: reference to entity "minus" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:80:19: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:83:704: open elements: ARTICLE BODY[1] PART[1] CHAPTER[1] P[1] DFORMULA[1] SUP[1]
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:83:717:1844095592.325:E: reference to entity "prop" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:83:500: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:83:717: open elements: ARTICLE BODY[1] PART[1] CHAPTER[1] P[1] DFORMULA[1] (SUP[1])
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:83:727:1844095592.325:E: reference to entity "ohgr" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:83:249: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:83:727: open elements: ARTICLE BODY[1] PART[1] CHAPTER[1] P[1] DFORMULA[1] (#PCDATA[1])
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:83:775:1844095592.325:E: reference to entity "tgr" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:83:618: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:83:775: open elements: ARTICLE BODY[1] PART[1] CHAPTER[1] P[1] (#PCDATA[1])
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:84:1085:1844095592.325:E: reference to entity "lsqb" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:63:798: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:84:1085: open elements: ARTICLE BODY[1] PART[1] CHAPTER[1] P[1] (#PCDATA[1])
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:84:1126:1844095592.325:E: reference to entity "rsqb" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:63:825: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:84:1126: open elements: ARTICLE BODY[1] PART[1] CHAPTER[1] P[1] (#PCDATA[1])
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:90:580:1844095592.338:W: cannot generate system identifier for general entity "deg"
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:90:580: open elements: ARTICLE BODY[1] PART[1] CHAPTER[1] P[1] (#PCDATA[1])
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:90:580:1844095592.25:E: general entity "deg" not defined and no default entity
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:90:580: relevant clauses:  ISO 8879:1986 9.4.4.1p2
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:90:580: open elements: ARTICLE BODY[1] PART[1] CHAPTER[1] P[1] (#PCDATA[1])
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:90:583:1844095592.325:E: reference to entity "deg" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:90:579: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:90:583: open elements: ARTICLE BODY[1] PART[1] CHAPTER[1] P[1] (#PCDATA[1])
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:91:887:1844095592.338:W: cannot generate system identifier for general entity "plusmn"
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:91:887: open elements: ARTICLE BODY[1] PART[1] CHAPTER[1] P[1] (#PCDATA[1])
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:91:887:1844095592.25:E: general entity "plusmn" not defined and no default entity
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:91:887: relevant clauses:  ISO 8879:1986 9.4.4.1p2
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:91:887: open elements: ARTICLE BODY[1] PART[1] CHAPTER[1] P[1] (#PCDATA[1])
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:91:893:1844095592.325:E: reference to entity "plusmn" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:91:886: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:91:893: open elements: ARTICLE BODY[1] PART[1] CHAPTER[1] P[1] (#PCDATA[1])
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:92:219:1844095592.325:E: reference to entity "deg" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:90:579: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:92:219: open elements: ARTICLE BODY[1] PART[1] CHAPTER[1] P[1] (#PCDATA[1])
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:92:409:1844095592.325:E: reference to entity "deg" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:90:579: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:92:409: open elements: ARTICLE BODY[1] PART[1] CHAPTER[1] P[1] (#PCDATA[1])
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:92:641:1844095592.325:E: reference to entity "minus" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:80:19: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:92:641: open elements: ARTICLE BODY[1] PART[1] CHAPTER[1] P[1] EMPH[1]
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:98:427:1844095592.325:E: reference to entity "ohgr" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:83:249: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:98:427: open elements: ARTICLE BODY[1] PART[1] CHAPTER[1] P[1] FORMULA[1]
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:99:320:1844095592.325:E: reference to entity "ohgr" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:83:249: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:99:320: open elements: ARTICLE BODY[1] PART[1] CHAPTER[1] P[1] FORMULA[1]
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:100:735:1844095592.325:E: reference to entity "lsqb" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:63:798: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:100:735: open elements: ARTICLE BODY[1] PART[1] CHAPTER[1] P[1] (#PCDATA[1])
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:100:823:1844095592.325:E: reference to entity "rsqb" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:63:825: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:100:823: open elements: ARTICLE BODY[1] PART[1] CHAPTER[1] P[1] (FIGREF[1])
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:100:1195:1844095592.325:E: reference to entity "lsqb" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:63:798: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:100:1195: open elements: ARTICLE BODY[1] PART[1] CHAPTER[1] P[1] (#PCDATA[1])
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:100:1257:1844095592.325:E: reference to entity "rsqb" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:63:825: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:100:1257: open elements: ARTICLE BODY[1] PART[1] CHAPTER[1] P[1] (FIGREF[1])
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:106:639:1844095592.325:E: reference to entity "deg" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:90:579: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:106:639: open elements: ARTICLE BODY[1] PART[1] CHAPTER[1] P[1] (#PCDATA[1])
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:117:68:1844095592.338:W: cannot generate system identifier for general entity "ngr"
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:117:68: open elements: ARTICLE BODY[1] PART[1] CHAPTER[1] P[1] TABLE[1] TGROUP[1] TBODY[1] ROW[1] ENTRY[1] FORMULA[1]
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:117:68:1844095592.25:E: general entity "ngr" not defined and no default entity
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:117:68: relevant clauses:  ISO 8879:1986 9.4.4.1p2
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:117:68: open elements: ARTICLE BODY[1] PART[1] CHAPTER[1] P[1] TABLE[1] TGROUP[1] TBODY[1] ROW[1] ENTRY[1] FORMULA[1]
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:117:71:1844095592.325:E: reference to entity "ngr" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:117:67: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:117:71: open elements: ARTICLE BODY[1] PART[1] CHAPTER[1] P[1] TABLE[1] TGROUP[1] TBODY[1] ROW[1] ENTRY[1] FORMULA[1]
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:233:348:1844095592.325:E: reference to entity "deg" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:90:579: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/spacebeforedocytpe.sgm:233:348: open elements: ARTICLE (BACK[1]) FIGGRP TITLE[1] (#PCDATA[1])

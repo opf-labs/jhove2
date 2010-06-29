@@ -1,5 +1,5 @@
 pISO 8879:1986//ENTITIES Numeric and Special Graphic//EN
-f<OSFILE SOIBASE='/cygdrive/c/svn_repository/portico-docs/data/RequiredFiles/requiredFiles/AMETS_AllenPress_Online_Journals_DTD_1.1/catalog'>iso-num.ent
+f<OSFILE SOIBASE='/cygdrive/c/svn_repository/SOME_DTD_1.1/catalog'>iso-num.ent
 TISOnum
 IItildescript SDATA [Itildescript]
 o
@@ -11,8 +11,8 @@ ARIDS TOKEN AFF1 AFF2 AFF3
 ATYPE CDATA ARTICLE
 AHYNAMES CDATA rid linkends
 (SUP
--Society for the Study of Reproduction
--10.1043/0006-3363(2000)062<0016:LRPUAM>2.0.CO;2
--\|[percnt]\| in the presence of 20 mM lactate. The observed differences in lactate metabolism between the zygote and blastocyst must therefore be attributed to in situ regulation of LDH. Activity of isolated LDH was found to be affected by nicotinamide adenine dinucleotide
-- in the presence of 20 mM lactate. The observed differences in \|[percnt]\| lactate metabolism between the zygote and blastocyst must therefore be attributed to in situ regulation of LDH. Activity of isolated LDH was found to be affected by nicotinamide adenine dinucleotide
+-Society for the Study of SOMETHING
+-10.1043/2<0016:LRPUA.CO;2
+-\|[percnt]\| somethstdufsanfskldfj;sdkj    uted to H was found to be affected by something
+
 )SUP

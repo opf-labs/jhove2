@@ -66,44 +66,34 @@ public class SgmlModule extends BaseFormatModule implements Validator {
 	/** Module validation coverage. */
 	public static final Coverage COVERAGE = Coverage.Inclusive;
 
-
 	/** SGML validation status. */
 	protected Validity validity;
 
-    /** The JHOVE2 object passed in by the parse method */
-    protected JHOVE2 jhove2; 
-    
-    /** The Source object passed in by the parse method */
-    protected  Source source;
-    
+	/** The JHOVE2 object passed in by the parse method */
+	protected JHOVE2 jhove2; 
 
-    /** parser directive: path to catalog file; if empty or null, no catalog is assumed */
-    protected String catalogPath;
-    
-    /** parser directive: max number of errors detected after which parser halts; default is 200; 0 means unlimited
-        if < 0, will use onsgmls default */
-    protected int maxErrors = -1; 
-    
-    /** parser directive: Show open entities in error messages */
-    protected boolean showOpenEntitiesInErrMsg;  
-    
-    /** parser directive: Show open elements in error messages */
-    protected boolean showOpenElementsInErrMsg;
-    
-    /** parser directive: include error number in error messages */
-    protected boolean showErrNumberInErrMsg;
-    
-    
-    /**
-     * Instantiates a new XmlModule instance.
-     * 
-     * @param format
-     *            the Format object
-     */
-    public SgmlModule(Format format) {
-        super(VERSION, RELEASE, RIGHTS, format);
-    }
-    
+	/** The Source object passed in by the parse method */
+	protected  Source source;
+
+	/** parser directive -- should sgmlnorm be run in order to extract doctype statement; default is false */
+	protected boolean shouldFindDoctype;
+
+	/** Parser engine for parsing SGML files and extracting significant properties */
+	protected SgmlParser sgmlParser;
+
+	/** Container for SGML document properties extracted by parser */
+	protected SgmlDocumentProperties documentProperties;
+
+	/**
+	 * Instantiates a new SgmlModule instance.
+	 * 
+	 * @param format
+	 *            the Format object
+	 */
+	public SgmlModule(Format format) {
+		super(VERSION, RELEASE, RIGHTS, format);
+	}
+
 	/** Parse the format.
 	 * @param jhove2 JHOVE2 framework
 	 * @param source Source unit
@@ -112,21 +102,39 @@ public class SgmlModule extends BaseFormatModule implements Validator {
 	public long parse(JHOVE2 jhove2, Source source)
 	throws EOFException, IOException, JHOVE2Exception
 	{
-
-        this.jhove2 = jhove2;
-        this.source = source;
+		this.jhove2 = jhove2;
+		this.source = source;
+		this.documentProperties = sgmlParser.parseFile(this);
+		if (this.documentProperties != null){
+			if (this.isShouldFindDoctype()){
+				sgmlParser.determineDoctype(this);
+			}    
+		}
+		this.jhove2 = null;
+		this.source = null;
+		this.sgmlParser.cleanUp();
+		this.sgmlParser = null;
 		return 0;
 	}
 
 
 	/* (non-Javadoc)
 	 * @see org.jhove2.module.format.Validator#validate(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
+	 * There are no profiles of the SGML format; this method will return the validation status of the SGML document
 	 */
 	@Override
 	public Validity validate(JHOVE2 jhove2, Source source)
 	throws JHOVE2Exception {
-		// TODO Auto-generated method stub
-		return null;
+		this.validity = Validity.Undetermined;
+		if (this.getDocumentProperties() != null){
+			if (this.getDocumentProperties().isSgmlValid()){
+				this.validity = Validity.True;
+		    }
+		    else {
+			    this.validity = Validity.False;
+		    }
+		}
+		return this.validity;
 	}
 
 	/* (non-Javadoc)
@@ -152,89 +160,55 @@ public class SgmlModule extends BaseFormatModule implements Validator {
 		return validity;
 	}
 
-
 	/**
-	 * @return the catalogPath
+	 * @return the sgmlParser
 	 */
-	@ReportableProperty(order = 20, value = "Full path to catalog file")
-	public String getCatalogPath() {
-		return catalogPath;
+	public SgmlParser getSgmlParser() {
+		return sgmlParser;
 	}
 
-
 	/**
-	 * @param catalogPath the catalogPath to set
+	 * @param sgmlParser the sgmlParser to set
 	 */
-	public void setCatalogPath(String catalogPath) {
-		this.catalogPath = catalogPath;
+	public void setSgmlParser(SgmlParser sgmlParser) {
+		this.sgmlParser = sgmlParser;
 	}
 
-
 	/**
-	 * @return the maxErrors
+	 * @return the findDoctype
 	 */
-	@ReportableProperty(order = 21, value = "Parser setting:  Error limit before abandoning parse")
-	public int getMaxErrors() {
-		return maxErrors;
+	@ReportableProperty(order = 25, value = "Parser setting:  Run normalizer to construct DOCTYPE statement")
+	public boolean isShouldFindDoctype() {
+		return shouldFindDoctype;
 	}
 
-
 	/**
-	 * @param maxErrors the maxErrors to set
+	 * @param findDoctype the findDoctype to set
 	 */
-	public void setMaxErrors(int maxErrors) {
-		this.maxErrors = maxErrors;
+	public void setShouldFindDoctype(boolean findDoctype) {
+		this.shouldFindDoctype = findDoctype;
 	}
 
-
 	/**
-	 * @return the showOpenEntitiesInErrMsg
+	 * @return the source
 	 */
-	@ReportableProperty(order = 22, value = "Parser setting:  Show open entities in error messages")
-	public boolean isShowOpenEntitiesInErrMsg() {
-		return showOpenEntitiesInErrMsg;
+	public Source getSource() {
+		return source;
 	}
 
-
 	/**
-	 * @param showOpenEntitiesInErrMsg the showOpenEntitiesInErrMsg to set
+	 * @return the documentProperties
 	 */
-	public void setShowOpenEntitiesInErrMsg(boolean showOpenEntitiesInErrMsg) {
-		this.showOpenEntitiesInErrMsg = showOpenEntitiesInErrMsg;
+	@ReportableProperty(order = 26, value = "SGML document properties")
+	public SgmlDocumentProperties getDocumentProperties() {
+		return documentProperties;
 	}
 
-
 	/**
-	 * @return the showOpenElementsInErrMsg
+	 * @param documentProperties the documentProperties to set
 	 */
-	@ReportableProperty(order = 23, value = "Parser setting:  Show open elements in error messages")
-	public boolean isShowOpenElementsInErrMsg() {
-		return showOpenElementsInErrMsg;
-	}
-
-
-	/**
-	 * @param showOpenElementsInErrMsg the showOpenElementsInErrMsg to set
-	 */
-	public void setShowOpenElementsInErrMsg(boolean showOpenElementsInErrMsg) {
-		this.showOpenElementsInErrMsg = showOpenElementsInErrMsg;
-	}
-
-
-	/**
-	 * @return the showErrNumberInErrMsg
-	 */
-	@ReportableProperty(order = 22, value = "Parser setting:  Show error message number in error messages")
-	public boolean isShowErrNumberInErrMsg() {
-		return showErrNumberInErrMsg;
-	}
-
-
-	/**
-	 * @param showErrNumberInErrMsg the showErrNumberInErrMsg to set
-	 */
-	public void setShowErrNumberInErrMsg(boolean showErrNumberInErrMsg) {
-		this.showErrNumberInErrMsg = showErrNumberInErrMsg;
+	public void setDocumentProperties(SgmlDocumentProperties documentProperties) {
+		this.documentProperties = documentProperties;
 	}
 
 }

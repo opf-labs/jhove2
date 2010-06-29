@@ -8,58 +8,88 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.module.format.utf8.unicode.C0Control;
+import org.jhove2.core.JHOVE2Exception;
 
 
 public class TiffType implements Comparable<TiffType> {
 
-    /** Singleton TIFF Type. */
+    /** Singleton Set of TIFF Types. */
     protected static SortedSet<TiffType> types;
 
-    protected String type;
-    protected int num;
-    protected int size;
-    
-    private static int print = 0;
+    /** the type of the tiff tag */
+    protected String typeName;
 
+    /** the number assigned to this field type */
+    protected int num;
+
+    /** the size of the type */
+    protected int size;
+
+    /**
+     * Instantiate a new <code>TiffType</code>
+     *      
+     * @param type - descriptive name of the type     
+     * @param num - the number assigned to the tiff type
+     * @param size - the size of the type
+     */
     public TiffType(String type, int num, int size) {
-        this.type = type;
+        this.typeName = type;
         this.num = num;
         this.size = size;
     }
-    @ReportableProperty(order=1, value = "Tag Type.")
-    public String getType() {
-        return type;
-    }
-    @ReportableProperty(order=2, value = "Type Number.")
-    public int getNum() {
-        return num;
-    }
-    @ReportableProperty(order=3, value = "Type Field Size.")
-    public int getSize() {
-        return size;
+
+    /**
+     * Returns a TiffType given the name associated with this type
+     * @param typeString - name of the type (ex: "BYTE")
+     * @return TiffType
+     */
+    public static TiffType getType(String typeString){
+        TiffType tiffType = null;
+        Iterator<TiffType> iter = types.iterator();
+        while (iter.hasNext()) {
+            TiffType ttype = iter.next();
+            if (typeString.equalsIgnoreCase(ttype.getTypeName())) {
+                tiffType = ttype;
+                break;
+            }
+        }
+        return tiffType;
     }
 
-    public static TiffType getType(int typeNum, Properties props){
-        if (types == null) {
-            /* Initialize the tags from the properties. */
-            types = new TreeSet<TiffType>();
-            if (props != null) {
-                Enumeration<?> e = props.propertyNames();
-                while (e.hasMoreElements()){
-                    String type = (String) e.nextElement();
-                    String [] values = props.getProperty(type).split(" ");
-                    int num = Integer.parseInt(values[0]);
-                    int size = Integer.parseInt(values[1]);
-                    TiffType ttype = new TiffType(type, num, size);
-                    types.add(ttype);
-                    if (print == 0)
-                        System.out.println("tiff type ordinal =" + ttype.getNum()+ " Type = " + ttype.getType() + " Size = " + ttype.getSize() );
-                    
-                }
-            } 
+    /**
+     * Return a type given a number assigned to the type
+     * 
+     * @param number - the number associated with this type (ex: 1=Byte)
+     * @return TiffType
+     */
+    public static TiffType getType(int number)
+    {
+        TiffType tiffType = null;
+        Iterator<TiffType> iter = types.iterator();
+        while (iter.hasNext()) {
+            TiffType ttype = iter.next();
+            if (number == ttype.getNum()) {
+                tiffType = ttype;
+                break;
+            }
         }
-        print++;
+        return tiffType;
+    }
+
+    /**
+     * Given a type number, return the TiffType object associated with it
+     * 
+     * @param typeNum - number which defines the type
+     * @param props - Properties object which stores the tiff type definitions
+     * @return TiffType
+     * @throws JHOVE2Exception 
+     */
+    public static TiffType getType(int typeNum, Properties props) 
+        throws JHOVE2Exception
+    {
+        if (types == null) {
+            types = getTiffTypes(props);
+        } 
         TiffType ttype = null;
         Iterator<TiffType> iter = types.iterator();
         while (iter.hasNext()) {
@@ -72,44 +102,58 @@ public class TiffType implements Comparable<TiffType> {
         return ttype;
     }
 
-    public static TiffType getType(String typeString){
-        TiffType tiffType = null;
-        Iterator<TiffType> iter = types.iterator();
-        while (iter.hasNext()) {
-            TiffType ttype = iter.next();
-            if (typeString.equalsIgnoreCase(ttype.getType())) {
-                tiffType = ttype;
-                break;
-            }
+    /**
+     * Initialize the set of Tiff Types from the properties
+     *  
+     * @param Properties - Properties retrieved from Java Properties file
+     * @return SortedSet<TiffType> - the sorted set of TIFF type definitions
+     * @throws JHOVE2Exception
+
+     * @param props
+     */
+    protected static SortedSet<TiffType> getTiffTypes(Properties props) 
+        throws JHOVE2Exception 
+    {
+        if (types == null) {
+            types = new TreeSet<TiffType>();
+            if (props != null) {
+                Enumeration<?> e = props.propertyNames();
+                while (e.hasMoreElements()){
+                    String num = (String) e.nextElement();
+                    String [] values = props.getProperty(num).split(" ");
+                    int number = Integer.parseInt(num);
+                    String type = values[0];
+                    int size = Integer.parseInt(values[1]);
+                    TiffType ttype = new TiffType(type, number, size);
+                    types.add(ttype);
+                }
+            } 
         }
-        return tiffType;
-    }
-    
-    public static TiffType getType(int type){
-        TiffType tiffType = null;
-        Iterator<TiffType> iter = types.iterator();
-        while (iter.hasNext()) {
-            TiffType ttype = iter.next();
-            if (type == ttype.getNum()) {
-                tiffType = ttype;
-                break;
-            }
-        }
-        return tiffType;
-    }
-    public Set<TiffType> getTypes() {
         return types;
     }
 
-    /**
-     * Get the type name.
-     * 
-     * @return Type name
-     */
-    public String getName() {
-        return this.type;
-    }
 
+
+    @ReportableProperty(order=1, value = "Tag Type.")
+    public String getTypeName() {
+        return typeName;
+    }
+    @ReportableProperty(order=2, value = "Type Number.")
+    public int getNum() {
+        return num;
+    }
+    @ReportableProperty(order=3, value = "Type Field Size.")
+    public int getSize() {
+        return size;
+    }
+    
+    /** 
+     * Return the sorted set of the TIFF types
+     * @return SortedSet<TiffType>
+     */
+    public SortedSet<TiffType> getTypes() {
+        return types;
+    }
 
     /**
      * Convert the tiff type to a Java string.
@@ -117,7 +161,7 @@ public class TiffType implements Comparable<TiffType> {
      * @return Java string representation of the type
      */
     public String toString() {
-        return this.getName();
+        return this.typeName;
     }
 
     @Override

@@ -65,6 +65,8 @@ implements Comparable {
 
     private Message UnknownTypeMessage;
 
+    private Message UnknownTagMessage;
+
     /** TIFF Version - some field types define the TIFF version */
     protected static int version = 4;
 
@@ -97,10 +99,6 @@ implements Comparable {
         return version;
     }
 
-    protected static Properties tiffTagProps;
-
-    protected static Properties tiffTypeProps;
-
 
     public IFDEntry() {
     }
@@ -117,11 +115,13 @@ implements Comparable {
                         "org.jhove2.module.format.tiff.IFDEntry.TagSortOrderErrorMessage",
                         messageArgs, jhove2.getConfigInfo()));
             }               
-
             int type = input.readUnsignedShort();
 
-            TiffTag tifftag = TiffTag.getTag(tag, getTiffTags(jhove2.getConfigInfo()));
-            this.tiffType = TiffType.getType(type, getTiffType(jhove2.getConfigInfo()));
+            TiffType.getTiffTypes(getTiffType(jhove2.getConfigInfo()));
+            this.tiffType = TiffType.getType(type);
+
+            TiffTag tifftag = TiffTag.getTag(tag);
+            //, getTiffTags(jhove2.getConfigInfo()));
 
             /* Skip over tags with unknown type. */
             if (type < TiffType.getType("BYTE").num|| type > TiffType.getType("IFD").num) {
@@ -138,11 +138,11 @@ implements Comparable {
                 }
 
                 this.count = input.readUnsignedInt();
-                
+
                 /* keep track of where we are in the file */
                 long valueOffset = input.getPosition(); 
                 long value = input.readUnsignedInt();
-                
+
                 /* the value is the offset to the value */
                 if (calcValueSize(type, count) > 4) {
                     long size = input.getSize();
@@ -173,7 +173,7 @@ implements Comparable {
                 }
                 validateTag(jhove2, tag, type, count, valueOffset);
             }
-            
+
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -184,17 +184,32 @@ implements Comparable {
     }
 
     protected void validateTag(JHOVE2 jhove2, int tagNum, int type, long count, long valueOffset) throws JHOVE2Exception {
-        TiffTag tag = TiffTag.getTag(tagNum, getTiffTags(jhove2.getConfigInfo()));
-        
-        /* validate that the type read in matches the type for that tag */
-        if (!(tag.getType() != type)) {
-            Object[]messageArgs = new Object[]{tagNum, type, this.valueOffset};
-            this.TypeMismatchMessage = (new Message(Severity.ERROR,
-                    Context.OBJECT,
-                    "org.jhove2.module.format.tiff.IFDEntry.TypeMismatchMessage",
-                    messageArgs, jhove2.getConfigInfo()));               
+        TiffTag tag = TiffTag.getTag(tagNum);
+
+        /* validate that the type read in matches possible types for that tag */
+        if (tag != null) {
+            String[] tagType = tag.getType();
+            boolean match = false;
+            for (String typeEntry:tagType){
+                if (tiffType.getType(typeEntry).num == type) 
+                    match = true;
+            }
+            if (!match) {
+                Object[]messageArgs = new Object[]{tagNum, type, this.valueOffset};
+                this.TypeMismatchMessage = (new Message(Severity.ERROR,
+                        Context.OBJECT,
+                        "org.jhove2.module.format.tiff.IFDEntry.TypeMismatchMessage",
+                        messageArgs, jhove2.getConfigInfo()));               
+            }
         }
-        
+        else {
+            Object[]messageArgs = new Object[]{tagNum, type, this.valueOffset};
+            this.UnknownTagMessage = (new Message(Severity.ERROR,
+                    Context.OBJECT,
+                    "org.jhove2.module.format.tiff.IFDEntry.UnknownTagMessage",
+                    messageArgs, jhove2.getConfigInfo()));               
+            
+        }
         /* TODO for each tag do some validation */
     }
 
@@ -214,25 +229,7 @@ implements Comparable {
         boolean valid = true;
         return valid;
     }
-    /**
-     * @return the Tiff Tag Properties
-     */
-    public static Properties getTiffTags(ConfigInfo config)  throws JHOVE2Exception {
-        if (tiffTagProps==null){
-            tiffTagProps = config.getProperties("TiffTag");
-        }
-        return tiffTagProps;
-    }
 
-    /**
-     * @return the Tiff Type Properties
-     */
-    public static Properties getTiffType(ConfigInfo config)  throws JHOVE2Exception {
-        if (tiffTypeProps==null){
-            tiffTypeProps = config.getProperties("TiffType");
-        }
-        return tiffTypeProps;
-    }
 
 
 }

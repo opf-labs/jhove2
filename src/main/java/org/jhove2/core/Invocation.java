@@ -74,10 +74,7 @@ public class Invocation
 
 	/** Default {@link org.jhove2.core.io.Input} buffer size. */
 	public static final int DEFAULT_BUFFER_SIZE = 131072;
-	
-//	/** Environment variable name from JHOVE2 home directory */
-//	public static final String JHOVE2_HOME_ENV = "jhove2.home";
-//	
+		
 	/** {@link org.jhove2.core.io.Input} buffer size. */
 	protected int bufferSize;
 
@@ -123,7 +120,6 @@ public class Invocation
 		this.tempDirectory    = props.getProperty("java.io.tmpdir");
 		this.userName         = props.getProperty("user.name");
 		this.workingDirectory = props.getProperty("user.dir");
-//		this.jhove2Home       = getJHOVE2HomeFromEnv(props);
 		
 		this.bufferSize       = DEFAULT_BUFFER_SIZE;
 		this.bufferType       = DEFAULT_BUFFER_TYPE;
@@ -188,28 +184,6 @@ public class Invocation
 		return this.failFastLimit;
 	}
 	
-//	/**
-//	 * Get JHOVE2 home directory
-//	 * @return JHOVE2 home directory
-//	 */
-//	@ReportableProperty(order = 2, value = "JHOVE2 home directory.")
-//	public String getJHOVE2Home() {
-//		return jhove2Home;
-//	}
-
-//	/** Get JHOVE2 home directory from the "jhove2.home" environmental
-//	 * variable.  If the variable isn't set, the value of "user.dir" is
-//	 * used.
-//	 * @param props Environment properties
-//	 * @return JHOVE2 home directory
-//	 */
-//	public static String getJHOVE2HomeFromEnv(Properties props){
-//		String jhove2Home = System.getenv(JHOVE2_HOME_ENV);
-//		if (jhove2Home == null){
-//			jhove2Home = props.getProperty("user.dir");
-//		}
-//		return jhove2Home;
-//	}
 	
 	/**
 	 * Get temporary directory.
@@ -343,11 +317,4 @@ public class Invocation
 		this.tempSuffix = tempSuffix;
 	}
 
-//	/**
-//	 * Mutator for JHOVE2 home directory
-//	 * @param jhove2Home setting for JHOVE2 home directory
-//	 */
-//	public void setJHOVE2Home(String jhove2Home) {
-//		this.jhove2Home = jhove2Home;
-//	}
 }
