@@ -1,0 +1,198 @@
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:1:40:1844095592.2208:E: cannot find "mydtd_2.dtd"; tried "C:/sgmlModule/examples/dir/mydtd_2.dtd", "/usr/share/sgml/mydtd_2.dtd"
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:1:40:1844095592.323:E: DTD did not contain element declaration for document type name
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:1:40: relevant clauses:  ISO 8879:1986 11.1p10
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:2:16:1844095592.108:E: there is no attribute "DTDVER"
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:2:27:1844095592.108:E: there is no attribute "TYPE"
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:2:33:1844095592.76:E: element "ARTICLE" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:3:7:1844095592.76:E: element "HEADER" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:3:7: open elements: ARTICLE
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:4:6:1844095592.76:E: element "ISSUE" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:4:6: open elements: ARTICLE HEADER
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:5:6:1844095592.76:E: element "PINFO" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:5:6: open elements: ARTICLE HEADER ISSUE
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:6:4:1844095592.76:E: element "PNM" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:6:4: open elements: ARTICLE HEADER ISSUE PINFO
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:7:4:1844095592.76:E: element "LOC" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:7:4: open elements: ARTICLE HEADER ISSUE PINFO
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:9:6:1844095592.76:E: element "JINFO" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:9:6: open elements: ARTICLE HEADER ISSUE
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:10:4:1844095592.76:E: element "JID" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:10:4: open elements: ARTICLE HEADER ISSUE JINFO
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:11:4:1844095592.76:E: element "JTL" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:11:4: open elements: ARTICLE HEADER ISSUE JINFO
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:12:5:1844095592.76:E: element "JABT" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:12:5: open elements: ARTICLE HEADER ISSUE JINFO
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:13:5:1844095592.76:E: element "ISSN" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:13:5: open elements: ARTICLE HEADER ISSUE JINFO
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:14:6:1844095592.76:E: element "EISSN" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:14:6: open elements: ARTICLE HEADER ISSUE JINFO
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:16:8:1844095592.76:E: element "PUBINFO" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:16:8: open elements: ARTICLE HEADER ISSUE
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:17:4:1844095592.76:E: element "VID" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:17:4: open elements: ARTICLE HEADER ISSUE PUBINFO
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:18:4:1844095592.76:E: element "IID" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:18:4: open elements: ARTICLE HEADER ISSUE PUBINFO
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:19:9:1844095592.108:E: there is no attribute "YEAR"
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:19:9: open elements: ARTICLE HEADER ISSUE PUBINFO
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:19:22:1844095592.108:E: there is no attribute "MONTH"
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:19:22: open elements: ARTICLE HEADER ISSUE PUBINFO
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:19:25:1844095592.76:E: element "CD" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:19:25: open elements: ARTICLE HEADER ISSUE PUBINFO
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:22:7:1844095592.76:E: element "ARTCON" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:22:7: open elements: ARTICLE HEADER
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:23:17:1844095592.108:E: there is no attribute "LANGUAGE"
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:23:17: open elements: ARTICLE HEADER ARTCON
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:23:21:1844095592.76:E: element "GENHDR" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:23:21: open elements: ARTICLE HEADER ARTCON
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:24:8:1844095592.76:E: element "ARTINFO" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:24:8: open elements: ARTICLE HEADER ARTCON GENHDR
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:25:4:1844095592.76:E: element "AID" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:25:4: open elements: ARTICLE HEADER ARTCON GENHDR ARTINFO
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:26:10:1844095592.76:E: element "FTARTICLE" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:26:10: open elements: ARTICLE HEADER ARTCON GENHDR ARTINFO
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:27:4:1844095592.76:E: element "DOI" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:27:4: open elements: ARTICLE HEADER ARTCON GENHDR ARTINFO
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:28:6:1844095592.76:E: element "ALTID" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:28:6: open elements: ARTICLE HEADER ARTCON GENHDR ARTINFO
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:28:11:1844095592.76:E: element "PII" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:28:11: open elements: ARTICLE HEADER ARTCON GENHDR ARTINFO ALTID
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:29:13:1844095592.108:E: there is no attribute "ARTTY"
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:29:13: open elements: ARTICLE HEADER ARTCON GENHDR ARTINFO
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:29:17:1844095592.76:E: element "ARTTY" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:29:17: open elements: ARTICLE HEADER ARTCON GENHDR ARTINFO
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:30:8:1844095592.76:E: element "DISPART" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:30:8: open elements: ARTICLE HEADER ARTCON GENHDR ARTINFO ARTTY
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:31:12:1844095592.108:E: there is no attribute "COUNT"
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:31:12: open elements: ARTICLE HEADER ARTCON GENHDR ARTINFO ARTTY
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:31:16:1844095592.76:E: element "PPCT" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:31:16: open elements: ARTICLE HEADER ARTCON GENHDR ARTINFO ARTTY
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:32:4:1844095592.76:E: element "PPF" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:32:4: open elements: ARTICLE HEADER ARTCON GENHDR ARTINFO ARTTY PPCT
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:33:4:1844095592.76:E: element "PPL" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:33:4: open elements: ARTICLE HEADER ARTCON GENHDR ARTINFO ARTTY PPCT
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:34:10:1844095592.108:E: there is no attribute "CRT"
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:34:10: open elements: ARTICLE HEADER ARTCON GENHDR ARTINFO ARTTY PPCT
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:34:16:1844095592.76:E: element "CRN" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:34:16: open elements: ARTICLE HEADER ARTCON GENHDR ARTINFO ARTTY PPCT
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:35:4:1844095592.76:E: element "HST" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:35:4: open elements: ARTICLE HEADER ARTCON GENHDR ARTINFO ARTTY PPCT
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:36:11:1844095592.108:E: there is no attribute "YEAR"
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:36:11: open elements: ARTICLE HEADER ARTCON GENHDR ARTINFO ARTTY PPCT HST
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:36:24:1844095592.108:E: there is no attribute "MONTH"
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:36:24: open elements: ARTICLE HEADER ARTCON GENHDR ARTINFO ARTTY PPCT HST
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:36:33:1844095592.108:E: there is no attribute "DAY"
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:36:33: open elements: ARTICLE HEADER ARTCON GENHDR ARTINFO ARTTY PPCT HST
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:36:37:1844095592.76:E: element "LIVE" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:36:37: open elements: ARTICLE HEADER ARTCON GENHDR ARTINFO ARTTY PPCT HST
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:39:4:1844095592.76:E: element "TIG" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:39:4: open elements: ARTICLE HEADER ARTCON GENHDR
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:40:4:1844095592.76:E: element "ATL" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:40:4: open elements: ARTICLE HEADER ARTCON GENHDR TIG
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:41:13:1844095592.108:E: there is no attribute "PURPOSE"
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:41:13: open elements: ARTICLE HEADER ARTCON GENHDR TIG
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:41:28:1844095592.108:E: there is no attribute "ABBREV"
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:41:28: open elements: ARTICLE HEADER ARTCON GENHDR TIG
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:41:35:1844095592.76:E: element "ATL" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:41:35: open elements: ARTICLE HEADER ARTCON GENHDR TIG
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:42:34:1844095592.76:E: element "ATL" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:42:34: open elements: ARTICLE HEADER ARTCON GENHDR TIG
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:44:4:1844095592.76:E: element "AUG" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:44:4: open elements: ARTICLE HEADER ARTCON GENHDR
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:45:3:1844095592.76:E: element "AU" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:45:3: open elements: ARTICLE HEADER ARTCON GENHDR AUG
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:45:9:1844095592.76:E: element "FNMS" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:45:9: open elements: ARTICLE HEADER ARTCON GENHDR AUG AU
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:45:26:1844095592.76:E: element "SNM" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:45:26: open elements: ARTICLE HEADER ARTCON GENHDR AUG AU
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:45:52:1844095592.108:E: there is no attribute "RID"
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:45:52: open elements: ARTICLE HEADER ARTCON GENHDR AUG AU
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:45:56:1844095592.76:E: element "ORF" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:45:56: open elements: ARTICLE HEADER ARTCON GENHDR AUG AU
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:46:5:1844095592.76:E: element "NORM" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:46:5: open elements: ARTICLE HEADER ARTCON GENHDR AUG AU ORF
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:48:4:1844095592.76:E: element "AFF" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:48:4: open elements: ARTICLE HEADER ARTCON GENHDR AUG
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:48:13:1844095592.108:E: there is no attribute "ID"
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:48:13: open elements: ARTICLE HEADER ARTCON GENHDR AUG AFF
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:48:17:1844095592.76:E: element "OID" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:48:17: open elements: ARTICLE HEADER ARTCON GENHDR AUG AFF
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:48:22:1844095592.76:E: element "ONM" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:48:22: open elements: ARTICLE HEADER ARTCON GENHDR AUG AFF OID
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:48:146:1844095592.76:E: element "CNY" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:48:146: open elements: ARTICLE HEADER ARTCON GENHDR AUG AFF OID
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:12:1844095592.108:E: there is no attribute "SOURCE"
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:12: open elements: ARTICLE HEADER ARTCON GENHDR
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:16:1844095592.76:E: element "ABS" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:16: open elements: ARTICLE HEADER ARTCON GENHDR
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:19:1844095592.76:E: element "P" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:19: open elements: ARTICLE HEADER ARTCON GENHDR ABS
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:39:1844095592.338:W: cannot generate system identifier for general entity "apos"
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:39: open elements: ARTICLE HEADER ARTCON GENHDR ABS P
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:39:1844095592.25:E: general entity "apos" not defined and no default entity
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:39: relevant clauses:  ISO 8879:1986 9.4.4.1p2
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:39: open elements: ARTICLE HEADER ARTCON GENHDR ABS P
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:43:1844095592.325:E: reference to entity "apos" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:38: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:43: open elements: ARTICLE HEADER ARTCON GENHDR ABS P
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:100:1844095592.338:W: cannot generate system identifier for general entity "ndash"
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:100: open elements: ARTICLE HEADER ARTCON GENHDR ABS P
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:100:1844095592.25:E: general entity "ndash" not defined and no default entity
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:100: relevant clauses:  ISO 8879:1986 9.4.4.1p2
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:100: open elements: ARTICLE HEADER ARTCON GENHDR ABS P
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:105:1844095592.325:E: reference to entity "ndash" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:99: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:105: open elements: ARTICLE HEADER ARTCON GENHDR ABS P
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:123:1844095592.325:E: reference to entity "ndash" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:99: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:123: open elements: ARTICLE HEADER ARTCON GENHDR ABS P
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:197:1844095592.325:E: reference to entity "ndash" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:99: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:197: open elements: ARTICLE HEADER ARTCON GENHDR ABS P
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:220:1844095592.325:E: reference to entity "ndash" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:99: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:220: open elements: ARTICLE HEADER ARTCON GENHDR ABS P
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:337:1844095592.325:E: reference to entity "apos" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:38: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:337: open elements: ARTICLE HEADER ARTCON GENHDR ABS P
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:426:1844095592.325:E: reference to entity "ndash" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:99: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:426: open elements: ARTICLE HEADER ARTCON GENHDR ABS P
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:579:1844095592.325:E: reference to entity "ndash" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:99: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:579: open elements: ARTICLE HEADER ARTCON GENHDR ABS P
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:595:1844095592.325:E: reference to entity "apos" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:38: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:595: open elements: ARTICLE HEADER ARTCON GENHDR ABS P
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:670:1844095592.325:E: reference to entity "apos" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:38: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:670: open elements: ARTICLE HEADER ARTCON GENHDR ABS P
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:674:1844095592.338:W: cannot generate system identifier for general entity "lsquo"
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:674: open elements: ARTICLE HEADER ARTCON GENHDR ABS P
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:674:1844095592.25:E: general entity "lsquo" not defined and no default entity
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:674: relevant clauses:  ISO 8879:1986 9.4.4.1p2
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:674: open elements: ARTICLE HEADER ARTCON GENHDR ABS P
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:679:1844095592.325:E: reference to entity "lsquo" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:673: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:679: open elements: ARTICLE HEADER ARTCON GENHDR ABS P
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:689:1844095592.338:W: cannot generate system identifier for general entity "rsquo"
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:689: open elements: ARTICLE HEADER ARTCON GENHDR ABS P
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:689:1844095592.25:E: general entity "rsquo" not defined and no default entity
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:689: relevant clauses:  ISO 8879:1986 9.4.4.1p2
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:689: open elements: ARTICLE HEADER ARTCON GENHDR ABS P
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:694:1844095592.325:E: reference to entity "rsquo" for which no system identifier could be generated
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:688: entity was defined here
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:50:694: open elements: ARTICLE HEADER ARTCON GENHDR ABS P
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:51:5:1844095592.76:E: element "KWDG" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:51:5: open elements: ARTICLE HEADER ARTCON GENHDR
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:52:4:1844095592.76:E: element "KWD" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:52:4: open elements: ARTICLE HEADER ARTCON GENHDR KWDG
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:53:4:1844095592.76:E: element "KWD" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:53:4: open elements: ARTICLE HEADER ARTCON GENHDR KWDG
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:54:4:1844095592.76:E: element "KWD" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:54:4: open elements: ARTICLE HEADER ARTCON GENHDR KWDG
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:54:8:1844095592.76:E: element "E1" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:54:8: open elements: ARTICLE HEADER ARTCON GENHDR KWDG KWD
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:55:4:1844095592.76:E: element "KWD" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:55:4: open elements: ARTICLE HEADER ARTCON GENHDR KWDG
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:56:4:1844095592.76:E: element "KWD" undefined
+/usr/bin/onsgmls:C:/sgmlModule/examples/dir/somefile.sgm:56:4: open elements: ARTICLE HEADER ARTCON GENHDR KWDG

@@ -1,0 +1,18 @@
+pISO 8879:1986//ENTITIES Numeric and Special Graphic//EN
+f<OSFILE SOIBASE='/cygdrive/c/svn_repository/SOME_DTD_1.1/catalog'>iso-num.ent
+TISOnum
+IItildescript SDATA [Itildescript]
+o
+AID IMPLIED
+AID ID S3A
+AALPHABET TOKEN LATIN
+ARIDS TOKEN AFF1 AFF2
+ARIDS TOKEN AFF1 AFF2 AFF3
+ATYPE CDATA ARTICLE
+AHYNAMES CDATA rid linkends
+(SUP
+-Society for the Study of SOMETHING
+-10.1043/2<0016:LRPUA.CO;2
+-\|[percnt]\| somethstdufsanfskldfj;sdkj    uted to H was found to be affected by something
+
+)SUP

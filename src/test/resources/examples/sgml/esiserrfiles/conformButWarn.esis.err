@@ -1,0 +1,12 @@
+/usr/bin/onsgmls:/cygdrive/c/dtds/SomePub/dtd999.dtd:827:231:1844095592.327:W: content model is mixed but does not allow #PCDATA everywhere
+/usr/bin/onsgmls:/cygdrive/c/dtds/SomePub/dtd999.dtd:827:231: relevant clauses:  ISO 8879:1986 11.2.4p11
+/usr/bin/onsgmls:/cygdrive/c/dtds/SomePub/dtd999.dtd:878:242:1844095592.327:W: content model is mixed but does not allow #PCDATA everywhere
+/usr/bin/onsgmls:/cygdrive/c/dtds/SomePub/dtd999.dtd:878:242: relevant clauses:  ISO 8879:1986 11.2.4p11
+/usr/bin/onsgmls:/cygdrive/c/dtds/SomePub/dtd999.dtd:972:257:1844095592.327:W: content model is mixed but does not allow #PCDATA everywhere
+/usr/bin/onsgmls:/cygdrive/c/dtds/SomePub/dtd999.dtd:972:257: relevant clauses:  ISO 8879:1986 11.2.4p11
+/usr/bin/onsgmls:/cygdrive/c/dtds/SomePub/dtd999.dtd:1006:231:1844095592.327:W: content model is mixed but does not allow #PCDATA everywhere
+/usr/bin/onsgmls:/cygdrive/c/dtds/SomePub/dtd999.dtd:1006:231: relevant clauses:  ISO 8879:1986 11.2.4p11
+/usr/bin/onsgmls:/cygdrive/c/dtds/SomePub/dtd999.dtd:1140:233:1844095592.327:W: content model is mixed but does not allow #PCDATA everywhere
+/usr/bin/onsgmls:/cygdrive/c/dtds/SomePub/dtd999.dtd:1140:233: relevant clauses:  ISO 8879:1986 11.2.4p11
+/usr/bin/onsgmls:/cygdrive/c/dtds/SomePub/dtd999.dtd:1146:244:1844095592.327:W: content model is mixed but does not allow #PCDATA everywhere
+/usr/bin/onsgmls:/cygdrive/c/dtds/SomePub/dtd999.dtd:1146:244: relevant clauses:  ISO 8879:1986 11.2.4p11

@@ -89,7 +89,6 @@ public class C0Control implements Comparable<C0Control> {
 		if (controls == null) {
 			/* Initialize the controls from s Java resource bundle. */
 			controls = new TreeSet<C0Control>();
-//			Properties props = SpringConfigInfo.getProperties("C0Control");
 			if (props != null) {
 				Set<String> set = props.stringPropertyNames();
 				Iterator<String> iter = set.iterator();

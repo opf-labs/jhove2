@@ -106,7 +106,6 @@ public class CodeBlock implements Comparable<CodeBlock> {
 		if (codeBlocks == null) {
 			/* Initialize the code blocks from Java Properties. */
 			codeBlocks = new TreeSet<CodeBlock>();
-//			Properties props = SpringConfigInfo.getProperties("CodeBlock");
 			if (props != null) {
 				Set<String> set = props.stringPropertyNames();
 				Iterator<String> iter = set.iterator();

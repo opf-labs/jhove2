@@ -1,0 +1,110 @@
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:1:40:1844095592.2208:E: cannot find "somefilename_2.dtd"; tried "/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.dtd", "/usr/share/sgml/somefilename_2.dtd"
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:1:40:1844095592.323:E: DTD did not contain element declaration for document type name
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:1:40: relevant clauses:  ISO 8879:1986 11.1p10
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:2:16:1844095592.108:E: there is no attribute "DTDVER"
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:2:27:1844095592.108:E: there is no attribute "TYPE"
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:2:33:1844095592.76:E: element "ARTICLE" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:3:7:1844095592.76:E: element "HEADER" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:4:6:1844095592.76:E: element "ISSUE" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:5:6:1844095592.76:E: element "PINFO" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:6:4:1844095592.76:E: element "PNM" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:7:4:1844095592.76:E: element "LOC" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:9:6:1844095592.76:E: element "JINFO" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:10:4:1844095592.76:E: element "JID" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:11:4:1844095592.76:E: element "JTL" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:12:5:1844095592.76:E: element "JABT" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:13:5:1844095592.76:E: element "ISSN" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:14:6:1844095592.76:E: element "EISSN" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:16:8:1844095592.76:E: element "PUBINFO" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:17:4:1844095592.76:E: element "VID" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:18:4:1844095592.76:E: element "IID" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:19:9:1844095592.108:E: there is no attribute "YEAR"
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:19:22:1844095592.108:E: there is no attribute "MONTH"
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:19:25:1844095592.76:E: element "CD" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:22:7:1844095592.76:E: element "ARTCON" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:23:17:1844095592.108:E: there is no attribute "LANGUAGE"
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:23:21:1844095592.76:E: element "GENHDR" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:24:8:1844095592.76:E: element "ARTINFO" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:25:4:1844095592.76:E: element "AID" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:26:10:1844095592.76:E: element "FTARTICLE" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:27:4:1844095592.76:E: element "DOI" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:28:6:1844095592.76:E: element "ALTID" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:28:11:1844095592.76:E: element "PII" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:29:13:1844095592.108:E: there is no attribute "ARTTY"
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:29:17:1844095592.76:E: element "ARTTY" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:30:8:1844095592.76:E: element "DISPART" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:31:12:1844095592.108:E: there is no attribute "COUNT"
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:31:16:1844095592.76:E: element "PPCT" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:32:4:1844095592.76:E: element "PPF" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:33:4:1844095592.76:E: element "PPL" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:34:10:1844095592.108:E: there is no attribute "CRT"
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:34:16:1844095592.76:E: element "CRN" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:35:4:1844095592.76:E: element "HST" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:36:11:1844095592.108:E: there is no attribute "YEAR"
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:36:24:1844095592.108:E: there is no attribute "MONTH"
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:36:33:1844095592.108:E: there is no attribute "DAY"
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:36:37:1844095592.76:E: element "LIVE" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:39:4:1844095592.76:E: element "TIG" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:40:4:1844095592.76:E: element "ATL" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:41:13:1844095592.108:E: there is no attribute "PURPOSE"
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:41:28:1844095592.108:E: there is no attribute "ABBREV"
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:41:35:1844095592.76:E: element "ATL" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:42:34:1844095592.76:E: element "ATL" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:44:4:1844095592.76:E: element "AUG" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:45:3:1844095592.76:E: element "AU" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:45:9:1844095592.76:E: element "FNMS" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:45:26:1844095592.76:E: element "SNM" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:45:52:1844095592.108:E: there is no attribute "RID"
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:45:56:1844095592.76:E: element "ORF" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:46:5:1844095592.76:E: element "NORM" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:48:4:1844095592.76:E: element "AFF" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:48:13:1844095592.108:E: there is no attribute "ID"
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:48:17:1844095592.76:E: element "OID" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:48:22:1844095592.76:E: element "ONM" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:48:146:1844095592.76:E: element "CNY" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:50:12:1844095592.108:E: there is no attribute "SOURCE"
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:50:16:1844095592.76:E: element "ABS" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:50:19:1844095592.76:E: element "P" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:50:39:1844095592.338:W: cannot generate system identifier for general entity "apos"
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:50:39:1844095592.25:E: general entity "apos" not defined and no default entity
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:50:39: relevant clauses:  ISO 8879:1986 9.4.4.1p2
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:50:43:1844095592.325:E: reference to entity "apos" for which no system identifier could be generated
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:50:38: entity was defined here
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:50:100:1844095592.338:W: cannot generate system identifier for general entity "ndash"
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:50:100:1844095592.25:E: general entity "ndash" not defined and no default entity
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:50:100: relevant clauses:  ISO 8879:1986 9.4.4.1p2
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:50:105:1844095592.325:E: reference to entity "ndash" for which no system identifier could be generated
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:50:99: entity was defined here
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:50:123:1844095592.325:E: reference to entity "ndash" for which no system identifier could be generated
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:50:99: entity was defined here
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:50:197:1844095592.325:E: reference to entity "ndash" for which no system identifier could be generated
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:50:99: entity was defined here
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:50:220:1844095592.325:E: reference to entity "ndash" for which no system identifier could be generated
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:50:99: entity was defined here
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:50:337:1844095592.325:E: reference to entity "apos" for which no system identifier could be generated
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:50:38: entity was defined here
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:50:426:1844095592.325:E: reference to entity "ndash" for which no system identifier could be generated
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:50:99: entity was defined here
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:50:579:1844095592.325:E: reference to entity "ndash" for which no system identifier could be generated
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:50:99: entity was defined here
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:50:595:1844095592.325:E: reference to entity "apos" for which no system identifier could be generated
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:50:38: entity was defined here
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:50:670:1844095592.325:E: reference to entity "apos" for which no system identifier could be generated
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:50:38: entity was defined here
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:50:674:1844095592.338:W: cannot generate system identifier for general entity "lsquo"
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:50:674:1844095592.25:E: general entity "lsquo" not defined and no default entity
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:50:674: relevant clauses:  ISO 8879:1986 9.4.4.1p2
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:50:679:1844095592.325:E: reference to entity "lsquo" for which no system identifier could be generated
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:50:673: entity was defined here
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:50:689:1844095592.338:W: cannot generate system identifier for general entity "rsquo"
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:50:689:1844095592.25:E: general entity "rsquo" not defined and no default entity
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:50:689: relevant clauses:  ISO 8879:1986 9.4.4.1p2
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:50:694:1844095592.325:E: reference to entity "rsquo" for which no system identifier could be generated
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:50:688: entity was defined here
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:51:5:1844095592.76:E: element "KWDG" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:52:4:1844095592.76:E: element "KWD" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:53:4:1844095592.76:E: element "KWD" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:54:4:1844095592.76:E: element "KWD" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:54:8:1844095592.76:E: element "E1" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:55:4:1844095592.76:E: element "KWD" undefined
+/usr/bin/sgmlnorm:/cygdrive/c/jhove2_hg_smm/src/test/resources/examples/sgml/sgmlfiles/somefilename_2.sgm:56:4:1844095592.76:E: element "KWD" undefined

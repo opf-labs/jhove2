@@ -1,0 +1,2527 @@
+p-//W3C//ENTITIES Latin1//EN//HTML
+f<OSFILE SOIBASE='examples/sgml/dtds/html4/HTML4.cat'>ISOlat1.ent
+THTMLlat1
+p-//W3C//ENTITIES Symbols//EN//HTML
+f<OSFILE SOIBASE='examples/sgml/dtds/html4/HTML4.cat'>HTMLsym.ent
+THTMLsymbol
+p-//W3C//ENTITIES Special//EN//HTML
+f<OSFILE SOIBASE='examples/sgml/dtds/html4/HTML4.cat'>HTMLmisc.ent
+THTMLspecial
+IScript TEXT CDATA
+IScript TEXT CDATA
+IScript TEXT CDATA
+IScript TEXT CDATA
+IScript TEXT CDATA
+IScript TEXT CDATA
+IScript TEXT CDATA
+IScript TEXT CDATA
+IScript TEXT CDATA
+IScript TEXT CDATA
+Icoreattrs TEXT id          ID         #IMPLIED  -- document-wide unique id --\n\012  class       CDATA      #IMPLIED  -- space separated list of classes --\n\012  style       CDATA      #IMPLIED  -- associated style info --\n\012  title       CDATA      #IMPLIED  -- advisory title/amplification --
+Ii18n TEXT lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text --
+Ievents TEXT onclick     CDATA    #IMPLIED  -- the pointing device button was clicked --\n\012  ondblclick  CDATA    #IMPLIED  -- the pointing device button was double clicked --\n\012  onmousedown CDATA    #IMPLIED  -- the pointing device button was pressed down --\n\012  onmouseup   CDATA    #IMPLIED  -- the pointing device button was released --\n\012  onmouseover CDATA    #IMPLIED  -- the pointing device was moved over --\n\012  onmousemove CDATA    #IMPLIED  -- the pointing device was moved --\n\012  onmouseout  CDATA    #IMPLIED  -- the pointing device was moved away --\n\012  onkeypress  CDATA    #IMPLIED  -- a key was pressed and released --\n\012  onkeydown   CDATA    #IMPLIED  -- a key was pressed down --\n\012  onkeyup     CDATA    #IMPLIED  -- a key was released --
+Ifont TEXT TT | I | B | U | S | STRIKE | BIG | SMALL
+Iphrase TEXT EM | STRONG | DFN | CODE |\n\012                   SAMP | KBD | VAR | CITE | ACRONYM
+Ispecial TEXT A | IMG | APPLET | OBJECT | FONT | BASEFONT | BR | SCRIPT |\n\012    MAP | Q | SUB | SUP | SPAN | BDO | IFRAME
+Iformctrl TEXT INPUT | SELECT | TEXTAREA | LABEL | BUTTON
+Ifont TEXT TT | I | B | U | S | STRIKE | BIG | SMALL
+Iphrase TEXT EM | STRONG | DFN | CODE |\n\012                   SAMP | KBD | VAR | CITE | ACRONYM
+Iinline TEXT #PCDATA | TT | I | B | U | S | STRIKE | BIG | SMALL | EM | STRONG | DFN | CODE |\n\012                   SAMP | KBD | VAR | CITE | ACRONYM | A | IMG | APPLET | OBJECT | FONT | BASEFONT | BR | SCRIPT |\n\012    MAP | Q | SUB | SUP | SPAN | BDO | IFRAME | INPUT | SELECT | TEXTAREA | LABEL | BUTTON
+Ifont TEXT TT | I | B | U | S | STRIKE | BIG | SMALL
+Iphrase TEXT EM | STRONG | DFN | CODE |\n\012                   SAMP | KBD | VAR | CITE | ACRONYM
+Iattrs TEXT id          ID         #IMPLIED  -- document-wide unique id --\n\012  class       CDATA      #IMPLIED  -- space separated list of classes --\n\012  style       CDATA      #IMPLIED  -- associated style info --\n\012  title       CDATA      #IMPLIED  -- advisory title/amplification -- lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text -- onclick     CDATA    #IMPLIED  -- the pointing device button was clicked --\n\012  ondblclick  CDATA    #IMPLIED  -- the pointing device button was double clicked --\n\012  onmousedown CDATA    #IMPLIED  -- the pointing device button was pressed down --\n\012  onmouseup   CDATA    #IMPLIED  -- the pointing device button was released --\n\012  onmouseover CDATA    #IMPLIED  -- the pointing device was moved over --\n\012  onmousemove CDATA    #IMPLIED  -- the pointing device was moved --\n\012  onmouseout  CDATA    #IMPLIED  -- the pointing device was moved away --\n\012  onkeypress  CDATA    #IMPLIED  -- a key was pressed and released --\n\012  onkeydown   CDATA    #IMPLIED  -- a key was pressed down --\n\012  onkeyup     CDATA    #IMPLIED  -- a key was released --
+Iinline TEXT #PCDATA | TT | I | B | U | S | STRIKE | BIG | SMALL | EM | STRONG | DFN | CODE |\n\012                   SAMP | KBD | VAR | CITE | ACRONYM | A | IMG | APPLET | OBJECT | FONT | BASEFONT | BR | SCRIPT |\n\012    MAP | Q | SUB | SUP | SPAN | BDO | IFRAME | INPUT | SELECT | TEXTAREA | LABEL | BUTTON
+Iattrs TEXT id          ID         #IMPLIED  -- document-wide unique id --\n\012  class       CDATA      #IMPLIED  -- space separated list of classes --\n\012  style       CDATA      #IMPLIED  -- associated style info --\n\012  title       CDATA      #IMPLIED  -- advisory title/amplification -- lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text -- onclick     CDATA    #IMPLIED  -- the pointing device button was clicked --\n\012  ondblclick  CDATA    #IMPLIED  -- the pointing device button was double clicked --\n\012  onmousedown CDATA    #IMPLIED  -- the pointing device button was pressed down --\n\012  onmouseup   CDATA    #IMPLIED  -- the pointing device button was released --\n\012  onmouseover CDATA    #IMPLIED  -- the pointing device was moved over --\n\012  onmousemove CDATA    #IMPLIED  -- the pointing device was moved --\n\012  onmouseout  CDATA    #IMPLIED  -- the pointing device was moved away --\n\012  onkeypress  CDATA    #IMPLIED  -- a key was pressed and released --\n\012  onkeydown   CDATA    #IMPLIED  -- a key was pressed down --\n\012  onkeyup     CDATA    #IMPLIED  -- a key was released --
+Iinline TEXT #PCDATA | TT | I | B | U | S | STRIKE | BIG | SMALL | EM | STRONG | DFN | CODE |\n\012                   SAMP | KBD | VAR | CITE | ACRONYM | A | IMG | APPLET | OBJECT | FONT | BASEFONT | BR | SCRIPT |\n\012    MAP | Q | SUB | SUP | SPAN | BDO | IFRAME | INPUT | SELECT | TEXTAREA | LABEL | BUTTON
+Iattrs TEXT id          ID         #IMPLIED  -- document-wide unique id --\n\012  class       CDATA      #IMPLIED  -- space separated list of classes --\n\012  style       CDATA      #IMPLIED  -- associated style info --\n\012  title       CDATA      #IMPLIED  -- advisory title/amplification -- lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text -- onclick     CDATA    #IMPLIED  -- the pointing device button was clicked --\n\012  ondblclick  CDATA    #IMPLIED  -- the pointing device button was double clicked --\n\012  onmousedown CDATA    #IMPLIED  -- the pointing device button was pressed down --\n\012  onmouseup   CDATA    #IMPLIED  -- the pointing device button was released --\n\012  onmouseover CDATA    #IMPLIED  -- the pointing device was moved over --\n\012  onmousemove CDATA    #IMPLIED  -- the pointing device was moved --\n\012  onmouseout  CDATA    #IMPLIED  -- the pointing device was moved away --\n\012  onkeypress  CDATA    #IMPLIED  -- a key was pressed and released --\n\012  onkeydown   CDATA    #IMPLIED  -- a key was pressed down --\n\012  onkeyup     CDATA    #IMPLIED  -- a key was released --
+Iinline TEXT #PCDATA | TT | I | B | U | S | STRIKE | BIG | SMALL | EM | STRONG | DFN | CODE |\n\012                   SAMP | KBD | VAR | CITE | ACRONYM | A | IMG | APPLET | OBJECT | FONT | BASEFONT | BR | SCRIPT |\n\012    MAP | Q | SUB | SUP | SPAN | BDO | IFRAME | INPUT | SELECT | TEXTAREA | LABEL | BUTTON
+Iattrs TEXT id          ID         #IMPLIED  -- document-wide unique id --\n\012  class       CDATA      #IMPLIED  -- space separated list of classes --\n\012  style       CDATA      #IMPLIED  -- associated style info --\n\012  title       CDATA      #IMPLIED  -- advisory title/amplification -- lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text -- onclick     CDATA    #IMPLIED  -- the pointing device button was clicked --\n\012  ondblclick  CDATA    #IMPLIED  -- the pointing device button was double clicked --\n\012  onmousedown CDATA    #IMPLIED  -- the pointing device button was pressed down --\n\012  onmouseup   CDATA    #IMPLIED  -- the pointing device button was released --\n\012  onmouseover CDATA    #IMPLIED  -- the pointing device was moved over --\n\012  onmousemove CDATA    #IMPLIED  -- the pointing device was moved --\n\012  onmouseout  CDATA    #IMPLIED  -- the pointing device was moved away --\n\012  onkeypress  CDATA    #IMPLIED  -- a key was pressed and released --\n\012  onkeydown   CDATA    #IMPLIED  -- a key was pressed down --\n\012  onkeyup     CDATA    #IMPLIED  -- a key was released --
+IURL TEXT CDATA
+Iinline TEXT #PCDATA | TT | I | B | U | S | STRIKE | BIG | SMALL | EM | STRONG | DFN | CODE |\n\012                   SAMP | KBD | VAR | CITE | ACRONYM | A | IMG | APPLET | OBJECT | FONT | BASEFONT | BR | SCRIPT |\n\012    MAP | Q | SUB | SUP | SPAN | BDO | IFRAME | INPUT | SELECT | TEXTAREA | LABEL | BUTTON
+Iinline TEXT #PCDATA | TT | I | B | U | S | STRIKE | BIG | SMALL | EM | STRONG | DFN | CODE |\n\012                   SAMP | KBD | VAR | CITE | ACRONYM | A | IMG | APPLET | OBJECT | FONT | BASEFONT | BR | SCRIPT |\n\012    MAP | Q | SUB | SUP | SPAN | BDO | IFRAME | INPUT | SELECT | TEXTAREA | LABEL | BUTTON
+Icoreattrs TEXT id          ID         #IMPLIED  -- document-wide unique id --\n\012  class       CDATA      #IMPLIED  -- space separated list of classes --\n\012  style       CDATA      #IMPLIED  -- associated style info --\n\012  title       CDATA      #IMPLIED  -- advisory title/amplification --
+Iheading TEXT H1|H2|H3|H4|H5|H6
+Ilist TEXT UL | OL |  DIR | MENU
+Ipreformatted TEXT PRE
+Iblocklevel TEXT P | H1|H2|H3|H4|H5|H6 | UL | OL |  DIR | MENU | PRE | DL | DIV | CENTER |\n\012      NOSCRIPT | NOFRAMES | BLOCKQUOTE | FORM | ISINDEX | HR |\n\012      TABLE | FIELDSET | ADDRESS
+Iinline TEXT #PCDATA | TT | I | B | U | S | STRIKE | BIG | SMALL | EM | STRONG | DFN | CODE |\n\012                   SAMP | KBD | VAR | CITE | ACRONYM | A | IMG | APPLET | OBJECT | FONT | BASEFONT | BR | SCRIPT |\n\012    MAP | Q | SUB | SUP | SPAN | BDO | IFRAME | INPUT | SELECT | TEXTAREA | LABEL | BUTTON
+IColor TEXT CDATA
+IColor TEXT CDATA
+IColor TEXT CDATA
+IColor TEXT CDATA
+IColor TEXT CDATA
+Iblock TEXT (P | H1|H2|H3|H4|H5|H6 | UL | OL |  DIR | MENU | PRE | DL | DIV | CENTER |\n\012      NOSCRIPT | NOFRAMES | BLOCKQUOTE | FORM | ISINDEX | HR |\n\012      TABLE | FIELDSET | ADDRESS | #PCDATA | TT | I | B | U | S | STRIKE | BIG | SMALL | EM | STRONG | DFN | CODE |\n\012                   SAMP | KBD | VAR | CITE | ACRONYM | A | IMG | APPLET | OBJECT | FONT | BASEFONT | BR | SCRIPT |\n\012    MAP | Q | SUB | SUP | SPAN | BDO | IFRAME | INPUT | SELECT | TEXTAREA | LABEL | BUTTON)*
+Iattrs TEXT id          ID         #IMPLIED  -- document-wide unique id --\n\012  class       CDATA      #IMPLIED  -- space separated list of classes --\n\012  style       CDATA      #IMPLIED  -- associated style info --\n\012  title       CDATA      #IMPLIED  -- advisory title/amplification -- lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text -- onclick     CDATA    #IMPLIED  -- the pointing device button was clicked --\n\012  ondblclick  CDATA    #IMPLIED  -- the pointing device button was double clicked --\n\012  onmousedown CDATA    #IMPLIED  -- the pointing device button was pressed down --\n\012  onmouseup   CDATA    #IMPLIED  -- the pointing device button was released --\n\012  onmouseover CDATA    #IMPLIED  -- the pointing device was moved over --\n\012  onmousemove CDATA    #IMPLIED  -- the pointing device was moved --\n\012  onmouseout  CDATA    #IMPLIED  -- the pointing device was moved away --\n\012  onkeypress  CDATA    #IMPLIED  -- a key was pressed and released --\n\012  onkeydown   CDATA    #IMPLIED  -- a key was pressed down --\n\012  onkeyup     CDATA    #IMPLIED  -- a key was released --
+IURL TEXT CDATA
+Ibodycolors TEXT \n\012  bgcolor CDATA #IMPLIED\n\012  text  CDATA   #IMPLIED\n\012  link  CDATA   #IMPLIED\n\012  vlink CDATA   #IMPLIED\n\012  alink CDATA   #IMPLIED\n\012  
+IScript TEXT CDATA
+IScript TEXT CDATA
+Iinline TEXT #PCDATA | TT | I | B | U | S | STRIKE | BIG | SMALL | EM | STRONG | DFN | CODE |\n\012                   SAMP | KBD | VAR | CITE | ACRONYM | A | IMG | APPLET | OBJECT | FONT | BASEFONT | BR | SCRIPT |\n\012    MAP | Q | SUB | SUP | SPAN | BDO | IFRAME | INPUT | SELECT | TEXTAREA | LABEL | BUTTON
+Iattrs TEXT id          ID         #IMPLIED  -- document-wide unique id --\n\012  class       CDATA      #IMPLIED  -- space separated list of classes --\n\012  style       CDATA      #IMPLIED  -- associated style info --\n\012  title       CDATA      #IMPLIED  -- advisory title/amplification -- lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text -- onclick     CDATA    #IMPLIED  -- the pointing device button was clicked --\n\012  ondblclick  CDATA    #IMPLIED  -- the pointing device button was double clicked --\n\012  onmousedown CDATA    #IMPLIED  -- the pointing device button was pressed down --\n\012  onmouseup   CDATA    #IMPLIED  -- the pointing device button was released --\n\012  onmouseover CDATA    #IMPLIED  -- the pointing device was moved over --\n\012  onmousemove CDATA    #IMPLIED  -- the pointing device was moved --\n\012  onmouseout  CDATA    #IMPLIED  -- the pointing device was moved away --\n\012  onkeypress  CDATA    #IMPLIED  -- a key was pressed and released --\n\012  onkeydown   CDATA    #IMPLIED  -- a key was pressed down --\n\012  onkeyup     CDATA    #IMPLIED  -- a key was released --
+Iblock TEXT (P | H1|H2|H3|H4|H5|H6 | UL | OL |  DIR | MENU | PRE | DL | DIV | CENTER |\n\012      NOSCRIPT | NOFRAMES | BLOCKQUOTE | FORM | ISINDEX | HR |\n\012      TABLE | FIELDSET | ADDRESS | #PCDATA | TT | I | B | U | S | STRIKE | BIG | SMALL | EM | STRONG | DFN | CODE |\n\012                   SAMP | KBD | VAR | CITE | ACRONYM | A | IMG | APPLET | OBJECT | FONT | BASEFONT | BR | SCRIPT |\n\012    MAP | Q | SUB | SUP | SPAN | BDO | IFRAME | INPUT | SELECT | TEXTAREA | LABEL | BUTTON)*
+Iattrs TEXT id          ID         #IMPLIED  -- document-wide unique id --\n\012  class       CDATA      #IMPLIED  -- space separated list of classes --\n\012  style       CDATA      #IMPLIED  -- associated style info --\n\012  title       CDATA      #IMPLIED  -- advisory title/amplification -- lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text -- onclick     CDATA    #IMPLIED  -- the pointing device button was clicked --\n\012  ondblclick  CDATA    #IMPLIED  -- the pointing device button was double clicked --\n\012  onmousedown CDATA    #IMPLIED  -- the pointing device button was pressed down --\n\012  onmouseup   CDATA    #IMPLIED  -- the pointing device button was released --\n\012  onmouseover CDATA    #IMPLIED  -- the pointing device was moved over --\n\012  onmousemove CDATA    #IMPLIED  -- the pointing device was moved --\n\012  onmouseout  CDATA    #IMPLIED  -- the pointing device was moved away --\n\012  onkeypress  CDATA    #IMPLIED  -- a key was pressed and released --\n\012  onkeydown   CDATA    #IMPLIED  -- a key was pressed down --\n\012  onkeyup     CDATA    #IMPLIED  -- a key was released --
+Ialign TEXT align (left|center|right|justify)  #IMPLIED
+Iblock TEXT (P | H1|H2|H3|H4|H5|H6 | UL | OL |  DIR | MENU | PRE | DL | DIV | CENTER |\n\012      NOSCRIPT | NOFRAMES | BLOCKQUOTE | FORM | ISINDEX | HR |\n\012      TABLE | FIELDSET | ADDRESS | #PCDATA | TT | I | B | U | S | STRIKE | BIG | SMALL | EM | STRONG | DFN | CODE |\n\012                   SAMP | KBD | VAR | CITE | ACRONYM | A | IMG | APPLET | OBJECT | FONT | BASEFONT | BR | SCRIPT |\n\012    MAP | Q | SUB | SUP | SPAN | BDO | IFRAME | INPUT | SELECT | TEXTAREA | LABEL | BUTTON)*
+Iattrs TEXT id          ID         #IMPLIED  -- document-wide unique id --\n\012  class       CDATA      #IMPLIED  -- space separated list of classes --\n\012  style       CDATA      #IMPLIED  -- associated style info --\n\012  title       CDATA      #IMPLIED  -- advisory title/amplification -- lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text -- onclick     CDATA    #IMPLIED  -- the pointing device button was clicked --\n\012  ondblclick  CDATA    #IMPLIED  -- the pointing device button was double clicked --\n\012  onmousedown CDATA    #IMPLIED  -- the pointing device button was pressed down --\n\012  onmouseup   CDATA    #IMPLIED  -- the pointing device button was released --\n\012  onmouseover CDATA    #IMPLIED  -- the pointing device was moved over --\n\012  onmousemove CDATA    #IMPLIED  -- the pointing device was moved --\n\012  onmouseout  CDATA    #IMPLIED  -- the pointing device was moved away --\n\012  onkeypress  CDATA    #IMPLIED  -- a key was pressed and released --\n\012  onkeydown   CDATA    #IMPLIED  -- a key was pressed down --\n\012  onkeyup     CDATA    #IMPLIED  -- a key was released --
+Iinline TEXT #PCDATA | TT | I | B | U | S | STRIKE | BIG | SMALL | EM | STRONG | DFN | CODE |\n\012                   SAMP | KBD | VAR | CITE | ACRONYM | A | IMG | APPLET | OBJECT | FONT | BASEFONT | BR | SCRIPT |\n\012    MAP | Q | SUB | SUP | SPAN | BDO | IFRAME | INPUT | SELECT | TEXTAREA | LABEL | BUTTON
+Iattrs TEXT id          ID         #IMPLIED  -- document-wide unique id --\n\012  class       CDATA      #IMPLIED  -- space separated list of classes --\n\012  style       CDATA      #IMPLIED  -- associated style info --\n\012  title       CDATA      #IMPLIED  -- advisory title/amplification -- lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text -- onclick     CDATA    #IMPLIED  -- the pointing device button was clicked --\n\012  ondblclick  CDATA    #IMPLIED  -- the pointing device button was double clicked --\n\012  onmousedown CDATA    #IMPLIED  -- the pointing device button was pressed down --\n\012  onmouseup   CDATA    #IMPLIED  -- the pointing device button was released --\n\012  onmouseover CDATA    #IMPLIED  -- the pointing device was moved over --\n\012  onmousemove CDATA    #IMPLIED  -- the pointing device was moved --\n\012  onmouseout  CDATA    #IMPLIED  -- the pointing device was moved away --\n\012  onkeypress  CDATA    #IMPLIED  -- a key was pressed and released --\n\012  onkeydown   CDATA    #IMPLIED  -- a key was pressed down --\n\012  onkeyup     CDATA    #IMPLIED  -- a key was released --
+IURL TEXT CDATA
+IShape TEXT (rect|circle|poly|default)
+ICoords TEXT CDATA
+Icoreattrs TEXT id          ID         #IMPLIED  -- document-wide unique id --\n\012  class       CDATA      #IMPLIED  -- space separated list of classes --\n\012  style       CDATA      #IMPLIED  -- associated style info --\n\012  title       CDATA      #IMPLIED  -- advisory title/amplification --
+IShape TEXT (rect|circle|poly|default)
+ICoords TEXT CDATA
+IURL TEXT CDATA
+Iattrs TEXT id          ID         #IMPLIED  -- document-wide unique id --\n\012  class       CDATA      #IMPLIED  -- space separated list of classes --\n\012  style       CDATA      #IMPLIED  -- associated style info --\n\012  title       CDATA      #IMPLIED  -- advisory title/amplification -- lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text -- onclick     CDATA    #IMPLIED  -- the pointing device button was clicked --\n\012  ondblclick  CDATA    #IMPLIED  -- the pointing device button was double clicked --\n\012  onmousedown CDATA    #IMPLIED  -- the pointing device button was pressed down --\n\012  onmouseup   CDATA    #IMPLIED  -- the pointing device button was released --\n\012  onmouseover CDATA    #IMPLIED  -- the pointing device was moved over --\n\012  onmousemove CDATA    #IMPLIED  -- the pointing device was moved --\n\012  onmouseout  CDATA    #IMPLIED  -- the pointing device was moved away --\n\012  onkeypress  CDATA    #IMPLIED  -- a key was pressed and released --\n\012  onkeydown   CDATA    #IMPLIED  -- a key was pressed down --\n\012  onkeyup     CDATA    #IMPLIED  -- a key was released --
+IURL TEXT CDATA
+IContentType TEXT CDATA
+Iattrs TEXT id          ID         #IMPLIED  -- document-wide unique id --\n\012  class       CDATA      #IMPLIED  -- space separated list of classes --\n\012  style       CDATA      #IMPLIED  -- associated style info --\n\012  title       CDATA      #IMPLIED  -- advisory title/amplification -- lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text -- onclick     CDATA    #IMPLIED  -- the pointing device button was clicked --\n\012  ondblclick  CDATA    #IMPLIED  -- the pointing device button was double clicked --\n\012  onmousedown CDATA    #IMPLIED  -- the pointing device button was pressed down --\n\012  onmouseup   CDATA    #IMPLIED  -- the pointing device button was released --\n\012  onmouseover CDATA    #IMPLIED  -- the pointing device was moved over --\n\012  onmousemove CDATA    #IMPLIED  -- the pointing device was moved --\n\012  onmouseout  CDATA    #IMPLIED  -- the pointing device was moved away --\n\012  onkeypress  CDATA    #IMPLIED  -- a key was pressed and released --\n\012  onkeydown   CDATA    #IMPLIED  -- a key was pressed down --\n\012  onkeyup     CDATA    #IMPLIED  -- a key was released --
+IURL TEXT CDATA
+IIAlign TEXT (top|middle|bottom|left|right)
+IPixels TEXT CDATA
+IPixels TEXT CDATA
+IPixels TEXT CDATA
+IPixels TEXT CDATA
+IPixels TEXT CDATA
+IURL TEXT CDATA
+Iblock TEXT (P | H1|H2|H3|H4|H5|H6 | UL | OL |  DIR | MENU | PRE | DL | DIV | CENTER |\n\012      NOSCRIPT | NOFRAMES | BLOCKQUOTE | FORM | ISINDEX | HR |\n\012      TABLE | FIELDSET | ADDRESS | #PCDATA | TT | I | B | U | S | STRIKE | BIG | SMALL | EM | STRONG | DFN | CODE |\n\012                   SAMP | KBD | VAR | CITE | ACRONYM | A | IMG | APPLET | OBJECT | FONT | BASEFONT | BR | SCRIPT |\n\012    MAP | Q | SUB | SUP | SPAN | BDO | IFRAME | INPUT | SELECT | TEXTAREA | LABEL | BUTTON)*
+Iattrs TEXT id          ID         #IMPLIED  -- document-wide unique id --\n\012  class       CDATA      #IMPLIED  -- space separated list of classes --\n\012  style       CDATA      #IMPLIED  -- associated style info --\n\012  title       CDATA      #IMPLIED  -- advisory title/amplification -- lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text -- onclick     CDATA    #IMPLIED  -- the pointing device button was clicked --\n\012  ondblclick  CDATA    #IMPLIED  -- the pointing device button was double clicked --\n\012  onmousedown CDATA    #IMPLIED  -- the pointing device button was pressed down --\n\012  onmouseup   CDATA    #IMPLIED  -- the pointing device button was released --\n\012  onmouseover CDATA    #IMPLIED  -- the pointing device was moved over --\n\012  onmousemove CDATA    #IMPLIED  -- the pointing device was moved --\n\012  onmouseout  CDATA    #IMPLIED  -- the pointing device was moved away --\n\012  onkeypress  CDATA    #IMPLIED  -- a key was pressed and released --\n\012  onkeydown   CDATA    #IMPLIED  -- a key was pressed down --\n\012  onkeyup     CDATA    #IMPLIED  -- a key was released --
+IURL TEXT CDATA
+IURL TEXT CDATA
+IURL TEXT CDATA
+IContentType TEXT CDATA
+IContentType TEXT CDATA
+IOAlign TEXT (texttop|middle|textmiddle|baseline|\n\012                             textbottom|left|center|right)
+ILength TEXT CDATA
+ILength TEXT CDATA
+ILength TEXT CDATA
+ILength TEXT CDATA
+ILength TEXT CDATA
+IURL TEXT CDATA
+IURL TEXT CDATA
+Iinline TEXT #PCDATA | TT | I | B | U | S | STRIKE | BIG | SMALL | EM | STRONG | DFN | CODE |\n\012                   SAMP | KBD | VAR | CITE | ACRONYM | A | IMG | APPLET | OBJECT | FONT | BASEFONT | BR | SCRIPT |\n\012    MAP | Q | SUB | SUP | SPAN | BDO | IFRAME | INPUT | SELECT | TEXTAREA | LABEL | BUTTON
+IURL TEXT CDATA
+IPixels TEXT CDATA
+IPixels TEXT CDATA
+IIAlign TEXT (top|middle|bottom|left|right)
+IPixels TEXT CDATA
+IPixels TEXT CDATA
+Icoreattrs TEXT id          ID         #IMPLIED  -- document-wide unique id --\n\012  class       CDATA      #IMPLIED  -- space separated list of classes --\n\012  style       CDATA      #IMPLIED  -- associated style info --\n\012  title       CDATA      #IMPLIED  -- advisory title/amplification --
+Ievents TEXT onclick     CDATA    #IMPLIED  -- the pointing device button was clicked --\n\012  ondblclick  CDATA    #IMPLIED  -- the pointing device button was double clicked --\n\012  onmousedown CDATA    #IMPLIED  -- the pointing device button was pressed down --\n\012  onmouseup   CDATA    #IMPLIED  -- the pointing device button was released --\n\012  onmouseover CDATA    #IMPLIED  -- the pointing device was moved over --\n\012  onmousemove CDATA    #IMPLIED  -- the pointing device was moved --\n\012  onmouseout  CDATA    #IMPLIED  -- the pointing device was moved away --\n\012  onkeypress  CDATA    #IMPLIED  -- a key was pressed and released --\n\012  onkeydown   CDATA    #IMPLIED  -- a key was pressed down --\n\012  onkeyup     CDATA    #IMPLIED  -- a key was released --
+IPixels TEXT CDATA
+ILength TEXT CDATA
+Iinline TEXT #PCDATA | TT | I | B | U | S | STRIKE | BIG | SMALL | EM | STRONG | DFN | CODE |\n\012                   SAMP | KBD | VAR | CITE | ACRONYM | A | IMG | APPLET | OBJECT | FONT | BASEFONT | BR | SCRIPT |\n\012    MAP | Q | SUB | SUP | SPAN | BDO | IFRAME | INPUT | SELECT | TEXTAREA | LABEL | BUTTON
+Iattrs TEXT id          ID         #IMPLIED  -- document-wide unique id --\n\012  class       CDATA      #IMPLIED  -- space separated list of classes --\n\012  style       CDATA      #IMPLIED  -- associated style info --\n\012  title       CDATA      #IMPLIED  -- advisory title/amplification -- lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text -- onclick     CDATA    #IMPLIED  -- the pointing device button was clicked --\n\012  ondblclick  CDATA    #IMPLIED  -- the pointing device button was double clicked --\n\012  onmousedown CDATA    #IMPLIED  -- the pointing device button was pressed down --\n\012  onmouseup   CDATA    #IMPLIED  -- the pointing device button was released --\n\012  onmouseover CDATA    #IMPLIED  -- the pointing device was moved over --\n\012  onmousemove CDATA    #IMPLIED  -- the pointing device was moved --\n\012  onmouseout  CDATA    #IMPLIED  -- the pointing device was moved away --\n\012  onkeypress  CDATA    #IMPLIED  -- a key was pressed and released --\n\012  onkeydown   CDATA    #IMPLIED  -- a key was pressed down --\n\012  onkeyup     CDATA    #IMPLIED  -- a key was released --
+Ialign TEXT align (left|center|right|justify)  #IMPLIED
+Iheading TEXT H1|H2|H3|H4|H5|H6
+Iinline TEXT #PCDATA | TT | I | B | U | S | STRIKE | BIG | SMALL | EM | STRONG | DFN | CODE |\n\012                   SAMP | KBD | VAR | CITE | ACRONYM | A | IMG | APPLET | OBJECT | FONT | BASEFONT | BR | SCRIPT |\n\012    MAP | Q | SUB | SUP | SPAN | BDO | IFRAME | INPUT | SELECT | TEXTAREA | LABEL | BUTTON
+Iheading TEXT H1|H2|H3|H4|H5|H6
+Iattrs TEXT id          ID         #IMPLIED  -- document-wide unique id --\n\012  class       CDATA      #IMPLIED  -- space separated list of classes --\n\012  style       CDATA      #IMPLIED  -- associated style info --\n\012  title       CDATA      #IMPLIED  -- advisory title/amplification -- lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text -- onclick     CDATA    #IMPLIED  -- the pointing device button was clicked --\n\012  ondblclick  CDATA    #IMPLIED  -- the pointing device button was double clicked --\n\012  onmousedown CDATA    #IMPLIED  -- the pointing device button was pressed down --\n\012  onmouseup   CDATA    #IMPLIED  -- the pointing device button was released --\n\012  onmouseover CDATA    #IMPLIED  -- the pointing device was moved over --\n\012  onmousemove CDATA    #IMPLIED  -- the pointing device was moved --\n\012  onmouseout  CDATA    #IMPLIED  -- the pointing device was moved away --\n\012  onkeypress  CDATA    #IMPLIED  -- a key was pressed and released --\n\012  onkeydown   CDATA    #IMPLIED  -- a key was pressed down --\n\012  onkeyup     CDATA    #IMPLIED  -- a key was released --
+Ialign TEXT align (left|center|right|justify)  #IMPLIED
+Iinline TEXT #PCDATA | TT | I | B | U | S | STRIKE | BIG | SMALL | EM | STRONG | DFN | CODE |\n\012                   SAMP | KBD | VAR | CITE | ACRONYM | A | IMG | APPLET | OBJECT | FONT | BASEFONT | BR | SCRIPT |\n\012    MAP | Q | SUB | SUP | SPAN | BDO | IFRAME | INPUT | SELECT | TEXTAREA | LABEL | BUTTON
+Ipre.exclusion TEXT IMG|BIG|SMALL|SUB|SUP|FONT
+Iattrs TEXT id          ID         #IMPLIED  -- document-wide unique id --\n\012  class       CDATA      #IMPLIED  -- space separated list of classes --\n\012  style       CDATA      #IMPLIED  -- associated style info --\n\012  title       CDATA      #IMPLIED  -- advisory title/amplification -- lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text -- onclick     CDATA    #IMPLIED  -- the pointing device button was clicked --\n\012  ondblclick  CDATA    #IMPLIED  -- the pointing device button was double clicked --\n\012  onmousedown CDATA    #IMPLIED  -- the pointing device button was pressed down --\n\012  onmouseup   CDATA    #IMPLIED  -- the pointing device button was released --\n\012  onmouseover CDATA    #IMPLIED  -- the pointing device was moved over --\n\012  onmousemove CDATA    #IMPLIED  -- the pointing device was moved --\n\012  onmouseout  CDATA    #IMPLIED  -- the pointing device was moved away --\n\012  onkeypress  CDATA    #IMPLIED  -- a key was pressed and released --\n\012  onkeydown   CDATA    #IMPLIED  -- a key was pressed down --\n\012  onkeyup     CDATA    #IMPLIED  -- a key was released --
+Iinline TEXT #PCDATA | TT | I | B | U | S | STRIKE | BIG | SMALL | EM | STRONG | DFN | CODE |\n\012                   SAMP | KBD | VAR | CITE | ACRONYM | A | IMG | APPLET | OBJECT | FONT | BASEFONT | BR | SCRIPT |\n\012    MAP | Q | SUB | SUP | SPAN | BDO | IFRAME | INPUT | SELECT | TEXTAREA | LABEL | BUTTON
+Iattrs TEXT id          ID         #IMPLIED  -- document-wide unique id --\n\012  class       CDATA      #IMPLIED  -- space separated list of classes --\n\012  style       CDATA      #IMPLIED  -- associated style info --\n\012  title       CDATA      #IMPLIED  -- advisory title/amplification -- lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text -- onclick     CDATA    #IMPLIED  -- the pointing device button was clicked --\n\012  ondblclick  CDATA    #IMPLIED  -- the pointing device button was double clicked --\n\012  onmousedown CDATA    #IMPLIED  -- the pointing device button was pressed down --\n\012  onmouseup   CDATA    #IMPLIED  -- the pointing device button was released --\n\012  onmouseover CDATA    #IMPLIED  -- the pointing device was moved over --\n\012  onmousemove CDATA    #IMPLIED  -- the pointing device was moved --\n\012  onmouseout  CDATA    #IMPLIED  -- the pointing device was moved away --\n\012  onkeypress  CDATA    #IMPLIED  -- a key was pressed and released --\n\012  onkeydown   CDATA    #IMPLIED  -- a key was pressed down --\n\012  onkeyup     CDATA    #IMPLIED  -- a key was released --
+IURL TEXT CDATA
+Iblock TEXT (P | H1|H2|H3|H4|H5|H6 | UL | OL |  DIR | MENU | PRE | DL | DIV | CENTER |\n\012      NOSCRIPT | NOFRAMES | BLOCKQUOTE | FORM | ISINDEX | HR |\n\012      TABLE | FIELDSET | ADDRESS | #PCDATA | TT | I | B | U | S | STRIKE | BIG | SMALL | EM | STRONG | DFN | CODE |\n\012                   SAMP | KBD | VAR | CITE | ACRONYM | A | IMG | APPLET | OBJECT | FONT | BASEFONT | BR | SCRIPT |\n\012    MAP | Q | SUB | SUP | SPAN | BDO | IFRAME | INPUT | SELECT | TEXTAREA | LABEL | BUTTON)*
+Iattrs TEXT id          ID         #IMPLIED  -- document-wide unique id --\n\012  class       CDATA      #IMPLIED  -- space separated list of classes --\n\012  style       CDATA      #IMPLIED  -- associated style info --\n\012  title       CDATA      #IMPLIED  -- advisory title/amplification -- lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text -- onclick     CDATA    #IMPLIED  -- the pointing device button was clicked --\n\012  ondblclick  CDATA    #IMPLIED  -- the pointing device button was double clicked --\n\012  onmousedown CDATA    #IMPLIED  -- the pointing device button was pressed down --\n\012  onmouseup   CDATA    #IMPLIED  -- the pointing device button was released --\n\012  onmouseover CDATA    #IMPLIED  -- the pointing device was moved over --\n\012  onmousemove CDATA    #IMPLIED  -- the pointing device was moved --\n\012  onmouseout  CDATA    #IMPLIED  -- the pointing device was moved away --\n\012  onkeypress  CDATA    #IMPLIED  -- a key was pressed and released --\n\012  onkeydown   CDATA    #IMPLIED  -- a key was pressed down --\n\012  onkeyup     CDATA    #IMPLIED  -- a key was released --
+IURL TEXT CDATA
+Iattrs TEXT id          ID         #IMPLIED  -- document-wide unique id --\n\012  class       CDATA      #IMPLIED  -- space separated list of classes --\n\012  style       CDATA      #IMPLIED  -- associated style info --\n\012  title       CDATA      #IMPLIED  -- advisory title/amplification -- lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text -- onclick     CDATA    #IMPLIED  -- the pointing device button was clicked --\n\012  ondblclick  CDATA    #IMPLIED  -- the pointing device button was double clicked --\n\012  onmousedown CDATA    #IMPLIED  -- the pointing device button was pressed down --\n\012  onmouseup   CDATA    #IMPLIED  -- the pointing device button was released --\n\012  onmouseover CDATA    #IMPLIED  -- the pointing device was moved over --\n\012  onmousemove CDATA    #IMPLIED  -- the pointing device was moved --\n\012  onmouseout  CDATA    #IMPLIED  -- the pointing device was moved away --\n\012  onkeypress  CDATA    #IMPLIED  -- a key was pressed and released --\n\012  onkeydown   CDATA    #IMPLIED  -- a key was pressed down --\n\012  onkeyup     CDATA    #IMPLIED  -- a key was released --
+Iinline TEXT #PCDATA | TT | I | B | U | S | STRIKE | BIG | SMALL | EM | STRONG | DFN | CODE |\n\012                   SAMP | KBD | VAR | CITE | ACRONYM | A | IMG | APPLET | OBJECT | FONT | BASEFONT | BR | SCRIPT |\n\012    MAP | Q | SUB | SUP | SPAN | BDO | IFRAME | INPUT | SELECT | TEXTAREA | LABEL | BUTTON
+Iblock TEXT (P | H1|H2|H3|H4|H5|H6 | UL | OL |  DIR | MENU | PRE | DL | DIV | CENTER |\n\012      NOSCRIPT | NOFRAMES | BLOCKQUOTE | FORM | ISINDEX | HR |\n\012      TABLE | FIELDSET | ADDRESS | #PCDATA | TT | I | B | U | S | STRIKE | BIG | SMALL | EM | STRONG | DFN | CODE |\n\012                   SAMP | KBD | VAR | CITE | ACRONYM | A | IMG | APPLET | OBJECT | FONT | BASEFONT | BR | SCRIPT |\n\012    MAP | Q | SUB | SUP | SPAN | BDO | IFRAME | INPUT | SELECT | TEXTAREA | LABEL | BUTTON)*
+Iattrs TEXT id          ID         #IMPLIED  -- document-wide unique id --\n\012  class       CDATA      #IMPLIED  -- space separated list of classes --\n\012  style       CDATA      #IMPLIED  -- associated style info --\n\012  title       CDATA      #IMPLIED  -- advisory title/amplification -- lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text -- onclick     CDATA    #IMPLIED  -- the pointing device button was clicked --\n\012  ondblclick  CDATA    #IMPLIED  -- the pointing device button was double clicked --\n\012  onmousedown CDATA    #IMPLIED  -- the pointing device button was pressed down --\n\012  onmouseup   CDATA    #IMPLIED  -- the pointing device button was released --\n\012  onmouseover CDATA    #IMPLIED  -- the pointing device was moved over --\n\012  onmousemove CDATA    #IMPLIED  -- the pointing device was moved --\n\012  onmouseout  CDATA    #IMPLIED  -- the pointing device was moved away --\n\012  onkeypress  CDATA    #IMPLIED  -- a key was pressed and released --\n\012  onkeydown   CDATA    #IMPLIED  -- a key was pressed down --\n\012  onkeyup     CDATA    #IMPLIED  -- a key was released --
+Iattrs TEXT id          ID         #IMPLIED  -- document-wide unique id --\n\012  class       CDATA      #IMPLIED  -- space separated list of classes --\n\012  style       CDATA      #IMPLIED  -- associated style info --\n\012  title       CDATA      #IMPLIED  -- advisory title/amplification -- lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text -- onclick     CDATA    #IMPLIED  -- the pointing device button was clicked --\n\012  ondblclick  CDATA    #IMPLIED  -- the pointing device button was double clicked --\n\012  onmousedown CDATA    #IMPLIED  -- the pointing device button was pressed down --\n\012  onmouseup   CDATA    #IMPLIED  -- the pointing device button was released --\n\012  onmouseover CDATA    #IMPLIED  -- the pointing device was moved over --\n\012  onmousemove CDATA    #IMPLIED  -- the pointing device was moved --\n\012  onmouseout  CDATA    #IMPLIED  -- the pointing device was moved away --\n\012  onkeypress  CDATA    #IMPLIED  -- a key was pressed and released --\n\012  onkeydown   CDATA    #IMPLIED  -- a key was pressed down --\n\012  onkeyup     CDATA    #IMPLIED  -- a key was released --
+IOLStyle TEXT CDATA
+Iattrs TEXT id          ID         #IMPLIED  -- document-wide unique id --\n\012  class       CDATA      #IMPLIED  -- space separated list of classes --\n\012  style       CDATA      #IMPLIED  -- associated style info --\n\012  title       CDATA      #IMPLIED  -- advisory title/amplification -- lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text -- onclick     CDATA    #IMPLIED  -- the pointing device button was clicked --\n\012  ondblclick  CDATA    #IMPLIED  -- the pointing device button was double clicked --\n\012  onmousedown CDATA    #IMPLIED  -- the pointing device button was pressed down --\n\012  onmouseup   CDATA    #IMPLIED  -- the pointing device button was released --\n\012  onmouseover CDATA    #IMPLIED  -- the pointing device was moved over --\n\012  onmousemove CDATA    #IMPLIED  -- the pointing device was moved --\n\012  onmouseout  CDATA    #IMPLIED  -- the pointing device was moved away --\n\012  onkeypress  CDATA    #IMPLIED  -- a key was pressed and released --\n\012  onkeydown   CDATA    #IMPLIED  -- a key was pressed down --\n\012  onkeyup     CDATA    #IMPLIED  -- a key was released --
+IULStyle TEXT disc|square|circle
+Iblocklevel TEXT P | H1|H2|H3|H4|H5|H6 | UL | OL |  DIR | MENU | PRE | DL | DIV | CENTER |\n\012      NOSCRIPT | NOFRAMES | BLOCKQUOTE | FORM | ISINDEX | HR |\n\012      TABLE | FIELDSET | ADDRESS
+Iattrs TEXT id          ID         #IMPLIED  -- document-wide unique id --\n\012  class       CDATA      #IMPLIED  -- space separated list of classes --\n\012  style       CDATA      #IMPLIED  -- associated style info --\n\012  title       CDATA      #IMPLIED  -- advisory title/amplification -- lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text -- onclick     CDATA    #IMPLIED  -- the pointing device button was clicked --\n\012  ondblclick  CDATA    #IMPLIED  -- the pointing device button was double clicked --\n\012  onmousedown CDATA    #IMPLIED  -- the pointing device button was pressed down --\n\012  onmouseup   CDATA    #IMPLIED  -- the pointing device button was released --\n\012  onmouseover CDATA    #IMPLIED  -- the pointing device was moved over --\n\012  onmousemove CDATA    #IMPLIED  -- the pointing device was moved --\n\012  onmouseout  CDATA    #IMPLIED  -- the pointing device was moved away --\n\012  onkeypress  CDATA    #IMPLIED  -- a key was pressed and released --\n\012  onkeydown   CDATA    #IMPLIED  -- a key was pressed down --\n\012  onkeyup     CDATA    #IMPLIED  -- a key was released --
+Iattrs TEXT id          ID         #IMPLIED  -- document-wide unique id --\n\012  class       CDATA      #IMPLIED  -- space separated list of classes --\n\012  style       CDATA      #IMPLIED  -- associated style info --\n\012  title       CDATA      #IMPLIED  -- advisory title/amplification -- lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text -- onclick     CDATA    #IMPLIED  -- the pointing device button was clicked --\n\012  ondblclick  CDATA    #IMPLIED  -- the pointing device button was double clicked --\n\012  onmousedown CDATA    #IMPLIED  -- the pointing device button was pressed down --\n\012  onmouseup   CDATA    #IMPLIED  -- the pointing device button was released --\n\012  onmouseover CDATA    #IMPLIED  -- the pointing device was moved over --\n\012  onmousemove CDATA    #IMPLIED  -- the pointing device was moved --\n\012  onmouseout  CDATA    #IMPLIED  -- the pointing device was moved away --\n\012  onkeypress  CDATA    #IMPLIED  -- a key was pressed and released --\n\012  onkeydown   CDATA    #IMPLIED  -- a key was pressed down --\n\012  onkeyup     CDATA    #IMPLIED  -- a key was released --
+Iblock TEXT (P | H1|H2|H3|H4|H5|H6 | UL | OL |  DIR | MENU | PRE | DL | DIV | CENTER |\n\012      NOSCRIPT | NOFRAMES | BLOCKQUOTE | FORM | ISINDEX | HR |\n\012      TABLE | FIELDSET | ADDRESS | #PCDATA | TT | I | B | U | S | STRIKE | BIG | SMALL | EM | STRONG | DFN | CODE |\n\012                   SAMP | KBD | VAR | CITE | ACRONYM | A | IMG | APPLET | OBJECT | FONT | BASEFONT | BR | SCRIPT |\n\012    MAP | Q | SUB | SUP | SPAN | BDO | IFRAME | INPUT | SELECT | TEXTAREA | LABEL | BUTTON)*
+Iattrs TEXT id          ID         #IMPLIED  -- document-wide unique id --\n\012  class       CDATA      #IMPLIED  -- space separated list of classes --\n\012  style       CDATA      #IMPLIED  -- associated style info --\n\012  title       CDATA      #IMPLIED  -- advisory title/amplification -- lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text -- onclick     CDATA    #IMPLIED  -- the pointing device button was clicked --\n\012  ondblclick  CDATA    #IMPLIED  -- the pointing device button was double clicked --\n\012  onmousedown CDATA    #IMPLIED  -- the pointing device button was pressed down --\n\012  onmouseup   CDATA    #IMPLIED  -- the pointing device button was released --\n\012  onmouseover CDATA    #IMPLIED  -- the pointing device was moved over --\n\012  onmousemove CDATA    #IMPLIED  -- the pointing device was moved --\n\012  onmouseout  CDATA    #IMPLIED  -- the pointing device was moved away --\n\012  onkeypress  CDATA    #IMPLIED  -- a key was pressed and released --\n\012  onkeydown   CDATA    #IMPLIED  -- a key was pressed down --\n\012  onkeyup     CDATA    #IMPLIED  -- a key was released --
+ILIStyle TEXT CDATA
+Iblock TEXT (P | H1|H2|H3|H4|H5|H6 | UL | OL |  DIR | MENU | PRE | DL | DIV | CENTER |\n\012      NOSCRIPT | NOFRAMES | BLOCKQUOTE | FORM | ISINDEX | HR |\n\012      TABLE | FIELDSET | ADDRESS | #PCDATA | TT | I | B | U | S | STRIKE | BIG | SMALL | EM | STRONG | DFN | CODE |\n\012                   SAMP | KBD | VAR | CITE | ACRONYM | A | IMG | APPLET | OBJECT | FONT | BASEFONT | BR | SCRIPT |\n\012    MAP | Q | SUB | SUP | SPAN | BDO | IFRAME | INPUT | SELECT | TEXTAREA | LABEL | BUTTON)*
+Iattrs TEXT id          ID         #IMPLIED  -- document-wide unique id --\n\012  class       CDATA      #IMPLIED  -- space separated list of classes --\n\012  style       CDATA      #IMPLIED  -- associated style info --\n\012  title       CDATA      #IMPLIED  -- advisory title/amplification -- lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text -- onclick     CDATA    #IMPLIED  -- the pointing device button was clicked --\n\012  ondblclick  CDATA    #IMPLIED  -- the pointing device button was double clicked --\n\012  onmousedown CDATA    #IMPLIED  -- the pointing device button was pressed down --\n\012  onmouseup   CDATA    #IMPLIED  -- the pointing device button was released --\n\012  onmouseover CDATA    #IMPLIED  -- the pointing device was moved over --\n\012  onmousemove CDATA    #IMPLIED  -- the pointing device was moved --\n\012  onmouseout  CDATA    #IMPLIED  -- the pointing device was moved away --\n\012  onkeypress  CDATA    #IMPLIED  -- a key was pressed and released --\n\012  onkeydown   CDATA    #IMPLIED  -- a key was pressed down --\n\012  onkeyup     CDATA    #IMPLIED  -- a key was released --
+IURL TEXT CDATA
+IContentType TEXT CDATA
+IScript TEXT CDATA
+IScript TEXT CDATA
+Iinline TEXT #PCDATA | TT | I | B | U | S | STRIKE | BIG | SMALL | EM | STRONG | DFN | CODE |\n\012                   SAMP | KBD | VAR | CITE | ACRONYM | A | IMG | APPLET | OBJECT | FONT | BASEFONT | BR | SCRIPT |\n\012    MAP | Q | SUB | SUP | SPAN | BDO | IFRAME | INPUT | SELECT | TEXTAREA | LABEL | BUTTON
+Iattrs TEXT id          ID         #IMPLIED  -- document-wide unique id --\n\012  class       CDATA      #IMPLIED  -- space separated list of classes --\n\012  style       CDATA      #IMPLIED  -- associated style info --\n\012  title       CDATA      #IMPLIED  -- advisory title/amplification -- lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text -- onclick     CDATA    #IMPLIED  -- the pointing device button was clicked --\n\012  ondblclick  CDATA    #IMPLIED  -- the pointing device button was double clicked --\n\012  onmousedown CDATA    #IMPLIED  -- the pointing device button was pressed down --\n\012  onmouseup   CDATA    #IMPLIED  -- the pointing device button was released --\n\012  onmouseover CDATA    #IMPLIED  -- the pointing device was moved over --\n\012  onmousemove CDATA    #IMPLIED  -- the pointing device was moved --\n\012  onmouseout  CDATA    #IMPLIED  -- the pointing device was moved away --\n\012  onkeypress  CDATA    #IMPLIED  -- a key was pressed and released --\n\012  onkeydown   CDATA    #IMPLIED  -- a key was pressed down --\n\012  onkeyup     CDATA    #IMPLIED  -- a key was released --
+IScript TEXT CDATA
+IScript TEXT CDATA
+Iattrs TEXT id          ID         #IMPLIED  -- document-wide unique id --\n\012  class       CDATA      #IMPLIED  -- space separated list of classes --\n\012  style       CDATA      #IMPLIED  -- associated style info --\n\012  title       CDATA      #IMPLIED  -- advisory title/amplification -- lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text -- onclick     CDATA    #IMPLIED  -- the pointing device button was clicked --\n\012  ondblclick  CDATA    #IMPLIED  -- the pointing device button was double clicked --\n\012  onmousedown CDATA    #IMPLIED  -- the pointing device button was pressed down --\n\012  onmouseup   CDATA    #IMPLIED  -- the pointing device button was released --\n\012  onmouseover CDATA    #IMPLIED  -- the pointing device was moved over --\n\012  onmousemove CDATA    #IMPLIED  -- the pointing device was moved --\n\012  onmouseout  CDATA    #IMPLIED  -- the pointing device was moved away --\n\012  onkeypress  CDATA    #IMPLIED  -- a key was pressed and released --\n\012  onkeydown   CDATA    #IMPLIED  -- a key was pressed down --\n\012  onkeyup     CDATA    #IMPLIED  -- a key was released --
+IInputType TEXT (TEXT | PASSWORD | CHECKBOX |\n\012    RADIO | SUBMIT | RESET |\n\012    FILE | HIDDEN | IMAGE | BUTTON)
+IURL TEXT CDATA
+IURL TEXT CDATA
+IIAlign TEXT (top|middle|bottom|left|right)
+IScript TEXT CDATA
+IScript TEXT CDATA
+IScript TEXT CDATA
+IScript TEXT CDATA
+Iattrs TEXT id          ID         #IMPLIED  -- document-wide unique id --\n\012  class       CDATA      #IMPLIED  -- space separated list of classes --\n\012  style       CDATA      #IMPLIED  -- associated style info --\n\012  title       CDATA      #IMPLIED  -- advisory title/amplification -- lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text -- onclick     CDATA    #IMPLIED  -- the pointing device button was clicked --\n\012  ondblclick  CDATA    #IMPLIED  -- the pointing device button was double clicked --\n\012  onmousedown CDATA    #IMPLIED  -- the pointing device button was pressed down --\n\012  onmouseup   CDATA    #IMPLIED  -- the pointing device button was released --\n\012  onmouseover CDATA    #IMPLIED  -- the pointing device was moved over --\n\012  onmousemove CDATA    #IMPLIED  -- the pointing device was moved --\n\012  onmouseout  CDATA    #IMPLIED  -- the pointing device was moved away --\n\012  onkeypress  CDATA    #IMPLIED  -- a key was pressed and released --\n\012  onkeydown   CDATA    #IMPLIED  -- a key was pressed down --\n\012  onkeyup     CDATA    #IMPLIED  -- a key was released --
+IScript TEXT CDATA
+IScript TEXT CDATA
+IScript TEXT CDATA
+IScript TEXT CDATA
+Iattrs TEXT id          ID         #IMPLIED  -- document-wide unique id --\n\012  class       CDATA      #IMPLIED  -- space separated list of classes --\n\012  style       CDATA      #IMPLIED  -- associated style info --\n\012  title       CDATA      #IMPLIED  -- advisory title/amplification -- lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text -- onclick     CDATA    #IMPLIED  -- the pointing device button was clicked --\n\012  ondblclick  CDATA    #IMPLIED  -- the pointing device button was double clicked --\n\012  onmousedown CDATA    #IMPLIED  -- the pointing device button was pressed down --\n\012  onmouseup   CDATA    #IMPLIED  -- the pointing device button was released --\n\012  onmouseover CDATA    #IMPLIED  -- the pointing device was moved over --\n\012  onmousemove CDATA    #IMPLIED  -- the pointing device was moved --\n\012  onmouseout  CDATA    #IMPLIED  -- the pointing device was moved away --\n\012  onkeypress  CDATA    #IMPLIED  -- a key was pressed and released --\n\012  onkeydown   CDATA    #IMPLIED  -- a key was pressed down --\n\012  onkeyup     CDATA    #IMPLIED  -- a key was released --
+Iattrs TEXT id          ID         #IMPLIED  -- document-wide unique id --\n\012  class       CDATA      #IMPLIED  -- space separated list of classes --\n\012  style       CDATA      #IMPLIED  -- associated style info --\n\012  title       CDATA      #IMPLIED  -- advisory title/amplification -- lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text -- onclick     CDATA    #IMPLIED  -- the pointing device button was clicked --\n\012  ondblclick  CDATA    #IMPLIED  -- the pointing device button was double clicked --\n\012  onmousedown CDATA    #IMPLIED  -- the pointing device button was pressed down --\n\012  onmouseup   CDATA    #IMPLIED  -- the pointing device button was released --\n\012  onmouseover CDATA    #IMPLIED  -- the pointing device was moved over --\n\012  onmousemove CDATA    #IMPLIED  -- the pointing device was moved --\n\012  onmouseout  CDATA    #IMPLIED  -- the pointing device was moved away --\n\012  onkeypress  CDATA    #IMPLIED  -- a key was pressed and released --\n\012  onkeydown   CDATA    #IMPLIED  -- a key was pressed down --\n\012  onkeyup     CDATA    #IMPLIED  -- a key was released --
+IScript TEXT CDATA
+IScript TEXT CDATA
+IScript TEXT CDATA
+IScript TEXT CDATA
+Iblock TEXT (P | H1|H2|H3|H4|H5|H6 | UL | OL |  DIR | MENU | PRE | DL | DIV | CENTER |\n\012      NOSCRIPT | NOFRAMES | BLOCKQUOTE | FORM | ISINDEX | HR |\n\012      TABLE | FIELDSET | ADDRESS | #PCDATA | TT | I | B | U | S | STRIKE | BIG | SMALL | EM | STRONG | DFN | CODE |\n\012                   SAMP | KBD | VAR | CITE | ACRONYM | A | IMG | APPLET | OBJECT | FONT | BASEFONT | BR | SCRIPT |\n\012    MAP | Q | SUB | SUP | SPAN | BDO | IFRAME | INPUT | SELECT | TEXTAREA | LABEL | BUTTON)*
+Iattrs TEXT id          ID         #IMPLIED  -- document-wide unique id --\n\012  class       CDATA      #IMPLIED  -- space separated list of classes --\n\012  style       CDATA      #IMPLIED  -- associated style info --\n\012  title       CDATA      #IMPLIED  -- advisory title/amplification -- lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text -- onclick     CDATA    #IMPLIED  -- the pointing device button was clicked --\n\012  ondblclick  CDATA    #IMPLIED  -- the pointing device button was double clicked --\n\012  onmousedown CDATA    #IMPLIED  -- the pointing device button was pressed down --\n\012  onmouseup   CDATA    #IMPLIED  -- the pointing device button was released --\n\012  onmouseover CDATA    #IMPLIED  -- the pointing device was moved over --\n\012  onmousemove CDATA    #IMPLIED  -- the pointing device was moved --\n\012  onmouseout  CDATA    #IMPLIED  -- the pointing device was moved away --\n\012  onkeypress  CDATA    #IMPLIED  -- a key was pressed and released --\n\012  onkeydown   CDATA    #IMPLIED  -- a key was pressed down --\n\012  onkeyup     CDATA    #IMPLIED  -- a key was released --
+Iinline TEXT #PCDATA | TT | I | B | U | S | STRIKE | BIG | SMALL | EM | STRONG | DFN | CODE |\n\012                   SAMP | KBD | VAR | CITE | ACRONYM | A | IMG | APPLET | OBJECT | FONT | BASEFONT | BR | SCRIPT |\n\012    MAP | Q | SUB | SUP | SPAN | BDO | IFRAME | INPUT | SELECT | TEXTAREA | LABEL | BUTTON
+Iattrs TEXT id          ID         #IMPLIED  -- document-wide unique id --\n\012  class       CDATA      #IMPLIED  -- space separated list of classes --\n\012  style       CDATA      #IMPLIED  -- associated style info --\n\012  title       CDATA      #IMPLIED  -- advisory title/amplification -- lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text -- onclick     CDATA    #IMPLIED  -- the pointing device button was clicked --\n\012  ondblclick  CDATA    #IMPLIED  -- the pointing device button was double clicked --\n\012  onmousedown CDATA    #IMPLIED  -- the pointing device button was pressed down --\n\012  onmouseup   CDATA    #IMPLIED  -- the pointing device button was released --\n\012  onmouseover CDATA    #IMPLIED  -- the pointing device was moved over --\n\012  onmousemove CDATA    #IMPLIED  -- the pointing device was moved --\n\012  onmouseout  CDATA    #IMPLIED  -- the pointing device was moved away --\n\012  onkeypress  CDATA    #IMPLIED  -- a key was pressed and released --\n\012  onkeydown   CDATA    #IMPLIED  -- a key was pressed down --\n\012  onkeyup     CDATA    #IMPLIED  -- a key was released --
+ILAlign TEXT (top|bottom|left|right)
+Iinline TEXT #PCDATA | TT | I | B | U | S | STRIKE | BIG | SMALL | EM | STRONG | DFN | CODE |\n\012                   SAMP | KBD | VAR | CITE | ACRONYM | A | IMG | APPLET | OBJECT | FONT | BASEFONT | BR | SCRIPT |\n\012    MAP | Q | SUB | SUP | SPAN | BDO | IFRAME | INPUT | SELECT | TEXTAREA | LABEL | BUTTON
+Iblocklevel TEXT P | H1|H2|H3|H4|H5|H6 | UL | OL |  DIR | MENU | PRE | DL | DIV | CENTER |\n\012      NOSCRIPT | NOFRAMES | BLOCKQUOTE | FORM | ISINDEX | HR |\n\012      TABLE | FIELDSET | ADDRESS
+Iformctrl TEXT INPUT | SELECT | TEXTAREA | LABEL | BUTTON
+Iattrs TEXT id          ID         #IMPLIED  -- document-wide unique id --\n\012  class       CDATA      #IMPLIED  -- space separated list of classes --\n\012  style       CDATA      #IMPLIED  -- associated style info --\n\012  title       CDATA      #IMPLIED  -- advisory title/amplification -- lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text -- onclick     CDATA    #IMPLIED  -- the pointing device button was clicked --\n\012  ondblclick  CDATA    #IMPLIED  -- the pointing device button was double clicked --\n\012  onmousedown CDATA    #IMPLIED  -- the pointing device button was pressed down --\n\012  onmouseup   CDATA    #IMPLIED  -- the pointing device button was released --\n\012  onmouseover CDATA    #IMPLIED  -- the pointing device was moved over --\n\012  onmousemove CDATA    #IMPLIED  -- the pointing device was moved --\n\012  onmouseout  CDATA    #IMPLIED  -- the pointing device was moved away --\n\012  onkeypress  CDATA    #IMPLIED  -- a key was pressed and released --\n\012  onkeydown   CDATA    #IMPLIED  -- a key was pressed down --\n\012  onkeyup     CDATA    #IMPLIED  -- a key was released --
+IScript TEXT CDATA
+IScript TEXT CDATA
+Iinline TEXT #PCDATA | TT | I | B | U | S | STRIKE | BIG | SMALL | EM | STRONG | DFN | CODE |\n\012                   SAMP | KBD | VAR | CITE | ACRONYM | A | IMG | APPLET | OBJECT | FONT | BASEFONT | BR | SCRIPT |\n\012    MAP | Q | SUB | SUP | SPAN | BDO | IFRAME | INPUT | SELECT | TEXTAREA | LABEL | BUTTON
+Iblock TEXT (P | H1|H2|H3|H4|H5|H6 | UL | OL |  DIR | MENU | PRE | DL | DIV | CENTER |\n\012      NOSCRIPT | NOFRAMES | BLOCKQUOTE | FORM | ISINDEX | HR |\n\012      TABLE | FIELDSET | ADDRESS | #PCDATA | TT | I | B | U | S | STRIKE | BIG | SMALL | EM | STRONG | DFN | CODE |\n\012                   SAMP | KBD | VAR | CITE | ACRONYM | A | IMG | APPLET | OBJECT | FONT | BASEFONT | BR | SCRIPT |\n\012    MAP | Q | SUB | SUP | SPAN | BDO | IFRAME | INPUT | SELECT | TEXTAREA | LABEL | BUTTON)*
+Iattrs TEXT id          ID         #IMPLIED  -- document-wide unique id --\n\012  class       CDATA      #IMPLIED  -- space separated list of classes --\n\012  style       CDATA      #IMPLIED  -- associated style info --\n\012  title       CDATA      #IMPLIED  -- advisory title/amplification -- lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text -- onclick     CDATA    #IMPLIED  -- the pointing device button was clicked --\n\012  ondblclick  CDATA    #IMPLIED  -- the pointing device button was double clicked --\n\012  onmousedown CDATA    #IMPLIED  -- the pointing device button was pressed down --\n\012  onmouseup   CDATA    #IMPLIED  -- the pointing device button was released --\n\012  onmouseover CDATA    #IMPLIED  -- the pointing device was moved over --\n\012  onmousemove CDATA    #IMPLIED  -- the pointing device was moved --\n\012  onmouseout  CDATA    #IMPLIED  -- the pointing device was moved away --\n\012  onkeypress  CDATA    #IMPLIED  -- a key was pressed and released --\n\012  onkeydown   CDATA    #IMPLIED  -- a key was pressed down --\n\012  onkeyup     CDATA    #IMPLIED  -- a key was released --
+ITAlign TEXT (left|center|right)
+IColor TEXT CDATA
+ITFrame TEXT (void|above|below|hsides|lhs|rhs|vsides|box|border)
+ITRules TEXT (none | groups | rows | cols | all)
+Iattrs TEXT id          ID         #IMPLIED  -- document-wide unique id --\n\012  class       CDATA      #IMPLIED  -- space separated list of classes --\n\012  style       CDATA      #IMPLIED  -- associated style info --\n\012  title       CDATA      #IMPLIED  -- advisory title/amplification -- lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text -- onclick     CDATA    #IMPLIED  -- the pointing device button was clicked --\n\012  ondblclick  CDATA    #IMPLIED  -- the pointing device button was double clicked --\n\012  onmousedown CDATA    #IMPLIED  -- the pointing device button was pressed down --\n\012  onmouseup   CDATA    #IMPLIED  -- the pointing device button was released --\n\012  onmouseover CDATA    #IMPLIED  -- the pointing device was moved over --\n\012  onmousemove CDATA    #IMPLIED  -- the pointing device was moved --\n\012  onmouseout  CDATA    #IMPLIED  -- the pointing device was moved away --\n\012  onkeypress  CDATA    #IMPLIED  -- a key was pressed and released --\n\012  onkeydown   CDATA    #IMPLIED  -- a key was pressed down --\n\012  onkeyup     CDATA    #IMPLIED  -- a key was released --
+ICAlign TEXT (top|bottom|left|right)
+Iattrs TEXT id          ID         #IMPLIED  -- document-wide unique id --\n\012  class       CDATA      #IMPLIED  -- space separated list of classes --\n\012  style       CDATA      #IMPLIED  -- associated style info --\n\012  title       CDATA      #IMPLIED  -- advisory title/amplification -- lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text -- onclick     CDATA    #IMPLIED  -- the pointing device button was clicked --\n\012  ondblclick  CDATA    #IMPLIED  -- the pointing device button was double clicked --\n\012  onmousedown CDATA    #IMPLIED  -- the pointing device button was pressed down --\n\012  onmouseup   CDATA    #IMPLIED  -- the pointing device button was released --\n\012  onmouseover CDATA    #IMPLIED  -- the pointing device was moved over --\n\012  onmousemove CDATA    #IMPLIED  -- the pointing device was moved --\n\012  onmouseout  CDATA    #IMPLIED  -- the pointing device was moved away --\n\012  onkeypress  CDATA    #IMPLIED  -- a key was pressed and released --\n\012  onkeydown   CDATA    #IMPLIED  -- a key was pressed down --\n\012  onkeyup     CDATA    #IMPLIED  -- a key was released --
+Icellhalign TEXT align (left|center|right|justify|char) #IMPLIED\n\012   char       CDATA      #IMPLIED  -- alignment char, e.g. char=':' --\n\012   charoff    CDATA      #IMPLIED  -- offset for alignment char --
+Icellvalign TEXT valign (top|middle|bottom|baseline) #IMPLIED
+Iattrs TEXT id          ID         #IMPLIED  -- document-wide unique id --\n\012  class       CDATA      #IMPLIED  -- space separated list of classes --\n\012  style       CDATA      #IMPLIED  -- associated style info --\n\012  title       CDATA      #IMPLIED  -- advisory title/amplification -- lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text -- onclick     CDATA    #IMPLIED  -- the pointing device button was clicked --\n\012  ondblclick  CDATA    #IMPLIED  -- the pointing device button was double clicked --\n\012  onmousedown CDATA    #IMPLIED  -- the pointing device button was pressed down --\n\012  onmouseup   CDATA    #IMPLIED  -- the pointing device button was released --\n\012  onmouseover CDATA    #IMPLIED  -- the pointing device was moved over --\n\012  onmousemove CDATA    #IMPLIED  -- the pointing device was moved --\n\012  onmouseout  CDATA    #IMPLIED  -- the pointing device was moved away --\n\012  onkeypress  CDATA    #IMPLIED  -- a key was pressed and released --\n\012  onkeydown   CDATA    #IMPLIED  -- a key was pressed down --\n\012  onkeyup     CDATA    #IMPLIED  -- a key was released --
+Icellhalign TEXT align (left|center|right|justify|char) #IMPLIED\n\012   char       CDATA      #IMPLIED  -- alignment char, e.g. char=':' --\n\012   charoff    CDATA      #IMPLIED  -- offset for alignment char --
+Icellvalign TEXT valign (top|middle|bottom|baseline) #IMPLIED
+Iattrs TEXT id          ID         #IMPLIED  -- document-wide unique id --\n\012  class       CDATA      #IMPLIED  -- space separated list of classes --\n\012  style       CDATA      #IMPLIED  -- associated style info --\n\012  title       CDATA      #IMPLIED  -- advisory title/amplification -- lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text -- onclick     CDATA    #IMPLIED  -- the pointing device button was clicked --\n\012  ondblclick  CDATA    #IMPLIED  -- the pointing device button was double clicked --\n\012  onmousedown CDATA    #IMPLIED  -- the pointing device button was pressed down --\n\012  onmouseup   CDATA    #IMPLIED  -- the pointing device button was released --\n\012  onmouseover CDATA    #IMPLIED  -- the pointing device was moved over --\n\012  onmousemove CDATA    #IMPLIED  -- the pointing device was moved --\n\012  onmouseout  CDATA    #IMPLIED  -- the pointing device was moved away --\n\012  onkeypress  CDATA    #IMPLIED  -- a key was pressed and released --\n\012  onkeydown   CDATA    #IMPLIED  -- a key was pressed down --\n\012  onkeyup     CDATA    #IMPLIED  -- a key was released --
+Icellhalign TEXT align (left|center|right|justify|char) #IMPLIED\n\012   char       CDATA      #IMPLIED  -- alignment char, e.g. char=':' --\n\012   charoff    CDATA      #IMPLIED  -- offset for alignment char --
+Icellvalign TEXT valign (top|middle|bottom|baseline) #IMPLIED
+Iattrs TEXT id          ID         #IMPLIED  -- document-wide unique id --\n\012  class       CDATA      #IMPLIED  -- space separated list of classes --\n\012  style       CDATA      #IMPLIED  -- associated style info --\n\012  title       CDATA      #IMPLIED  -- advisory title/amplification -- lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text -- onclick     CDATA    #IMPLIED  -- the pointing device button was clicked --\n\012  ondblclick  CDATA    #IMPLIED  -- the pointing device button was double clicked --\n\012  onmousedown CDATA    #IMPLIED  -- the pointing device button was pressed down --\n\012  onmouseup   CDATA    #IMPLIED  -- the pointing device button was released --\n\012  onmouseover CDATA    #IMPLIED  -- the pointing device was moved over --\n\012  onmousemove CDATA    #IMPLIED  -- the pointing device was moved --\n\012  onmouseout  CDATA    #IMPLIED  -- the pointing device was moved away --\n\012  onkeypress  CDATA    #IMPLIED  -- a key was pressed and released --\n\012  onkeydown   CDATA    #IMPLIED  -- a key was pressed down --\n\012  onkeyup     CDATA    #IMPLIED  -- a key was released --
+Icellhalign TEXT align (left|center|right|justify|char) #IMPLIED\n\012   char       CDATA      #IMPLIED  -- alignment char, e.g. char=':' --\n\012   charoff    CDATA      #IMPLIED  -- offset for alignment char --
+Icellvalign TEXT valign (top|middle|bottom|baseline) #IMPLIED
+IColor TEXT CDATA
+Iattrs TEXT id          ID         #IMPLIED  -- document-wide unique id --\n\012  class       CDATA      #IMPLIED  -- space separated list of classes --\n\012  style       CDATA      #IMPLIED  -- associated style info --\n\012  title       CDATA      #IMPLIED  -- advisory title/amplification -- lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text -- onclick     CDATA    #IMPLIED  -- the pointing device button was clicked --\n\012  ondblclick  CDATA    #IMPLIED  -- the pointing device button was double clicked --\n\012  onmousedown CDATA    #IMPLIED  -- the pointing device button was pressed down --\n\012  onmouseup   CDATA    #IMPLIED  -- the pointing device button was released --\n\012  onmouseover CDATA    #IMPLIED  -- the pointing device was moved over --\n\012  onmousemove CDATA    #IMPLIED  -- the pointing device was moved --\n\012  onmouseout  CDATA    #IMPLIED  -- the pointing device was moved away --\n\012  onkeypress  CDATA    #IMPLIED  -- a key was pressed and released --\n\012  onkeydown   CDATA    #IMPLIED  -- a key was pressed down --\n\012  onkeyup     CDATA    #IMPLIED  -- a key was released --
+IColor TEXT CDATA
+Icellhalign TEXT align (left|center|right|justify|char) #IMPLIED\n\012   char       CDATA      #IMPLIED  -- alignment char, e.g. char=':' --\n\012   charoff    CDATA      #IMPLIED  -- offset for alignment char --
+Icellvalign TEXT valign (top|middle|bottom|baseline) #IMPLIED
+IScript TEXT CDATA
+IScript TEXT CDATA
+IURL TEXT CDATA
+IPixels TEXT CDATA
+IPixels TEXT CDATA
+Iblock TEXT (P | H1|H2|H3|H4|H5|H6 | UL | OL |  DIR | MENU | PRE | DL | DIV | CENTER |\n\012      NOSCRIPT | NOFRAMES | BLOCKQUOTE | FORM | ISINDEX | HR |\n\012      TABLE | FIELDSET | ADDRESS | #PCDATA | TT | I | B | U | S | STRIKE | BIG | SMALL | EM | STRONG | DFN | CODE |\n\012                   SAMP | KBD | VAR | CITE | ACRONYM | A | IMG | APPLET | OBJECT | FONT | BASEFONT | BR | SCRIPT |\n\012    MAP | Q | SUB | SUP | SPAN | BDO | IFRAME | INPUT | SELECT | TEXTAREA | LABEL | BUTTON)*
+IURL TEXT CDATA
+IPixels TEXT CDATA
+IPixels TEXT CDATA
+IIAlign TEXT (top|middle|bottom|left|right)
+ILength TEXT CDATA
+ILength TEXT CDATA
+Iblocklevel TEXT P | H1|H2|H3|H4|H5|H6 | UL | OL |  DIR | MENU | PRE | DL | DIV | CENTER |\n\012      NOSCRIPT | NOFRAMES | BLOCKQUOTE | FORM | ISINDEX | HR |\n\012      TABLE | FIELDSET | ADDRESS
+Ifont TEXT TT | I | B | U | S | STRIKE | BIG | SMALL
+Iphrase TEXT EM | STRONG | DFN | CODE |\n\012                   SAMP | KBD | VAR | CITE | ACRONYM
+Ispecial TEXT A | IMG | APPLET | OBJECT | FONT | BASEFONT | BR | SCRIPT |\n\012    MAP | Q | SUB | SUP | SPAN | BDO | IFRAME
+Iformctrl TEXT INPUT | SELECT | TEXTAREA | LABEL | BUTTON
+Iblock TEXT (P | H1|H2|H3|H4|H5|H6 | UL | OL |  DIR | MENU | PRE | DL | DIV | CENTER |\n\012      NOSCRIPT | NOFRAMES | BLOCKQUOTE | FORM | ISINDEX | HR |\n\012      TABLE | FIELDSET | ADDRESS | #PCDATA | TT | I | B | U | S | STRIKE | BIG | SMALL | EM | STRONG | DFN | CODE |\n\012                   SAMP | KBD | VAR | CITE | ACRONYM | A | IMG | APPLET | OBJECT | FONT | BASEFONT | BR | SCRIPT |\n\012    MAP | Q | SUB | SUP | SPAN | BDO | IFRAME | INPUT | SELECT | TEXTAREA | LABEL | BUTTON)*
+Ihead.content TEXT TITLE & ISINDEX? & BASE?
+Ihead.misc TEXT SCRIPT|STYLE|META|LINK
+Ii18n TEXT lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text --
+IURL TEXT CDATA
+Ihead.misc TEXT SCRIPT|STYLE|META|LINK
+Ii18n TEXT lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text --
+Icoreattrs TEXT id          ID         #IMPLIED  -- document-wide unique id --\n\012  class       CDATA      #IMPLIED  -- space separated list of classes --\n\012  style       CDATA      #IMPLIED  -- associated style info --\n\012  title       CDATA      #IMPLIED  -- advisory title/amplification --
+Ii18n TEXT lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text --
+IURL TEXT CDATA
+Ii18n TEXT lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text --
+Ii18n TEXT lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text --
+IURL TEXT CDATA
+Iblock TEXT (P | H1|H2|H3|H4|H5|H6 | UL | OL |  DIR | MENU | PRE | DL | DIV | CENTER |\n\012      NOSCRIPT | NOFRAMES | BLOCKQUOTE | FORM | ISINDEX | HR |\n\012      TABLE | FIELDSET | ADDRESS | #PCDATA | TT | I | B | U | S | STRIKE | BIG | SMALL | EM | STRONG | DFN | CODE |\n\012                   SAMP | KBD | VAR | CITE | ACRONYM | A | IMG | APPLET | OBJECT | FONT | BASEFONT | BR | SCRIPT |\n\012    MAP | Q | SUB | SUP | SPAN | BDO | IFRAME | INPUT | SELECT | TEXTAREA | LABEL | BUTTON)*
+IHTML.Version TEXT http://www.w3.org/TR/WD-html40-970708/HTML4.dtd
+Ihtml.content TEXT HEAD, (FRAMESET|BODY)
+Iversion TEXT version CDATA #FIXED 'http://www.w3.org/TR/WD-html40-970708/HTML4.dtd'
+Ii18n TEXT lang        NAME       #IMPLIED  -- [RFC1766] language value --\n\012  dir         (ltr|rtl)  #IMPLIED  -- direction for weak/neutral text --
+INtilde CDATA Ñ
+Ifrac14 CDATA ¼
+IAcirc CDATA Â
+IEcirc CDATA Ê
+Ialpha CDATA \#945;
+Iyuml CDATA ÿ
+IIcirc CDATA Î
+Iempty CDATA \#8709;
+Icap CDATA \#8745;
+Iprod CDATA \#8719;
+IUcirc CDATA Û
+Ioline CDATA \#8254;
+Ilang CDATA \#9001;
+Iuarr CDATA \#8593;
+Isupe CDATA \#8839;
+Ibeta CDATA \#946;
+IOuml CDATA Ö
+Iprop CDATA \#8733;
+Intilde CDATA ñ
+ILambda CDATA \#923;
+IPhi CDATA \#934;
+Iacirc CDATA â
+Ipara CDATA ¶
+Iecirc CDATA ê
+Ipermil CDATA \#8240;
+Iicirc CDATA î
+Iminus CDATA \#8722;
+Iyen CDATA ¥
+Iuml CDATA ¨
+ISigma CDATA \#931;
+Ilsquo CDATA \#8216;
+Iloz CDATA \#9674;
+Ipart CDATA \#8706;
+IAgrave CDATA À
+Iucirc CDATA û
+IOmicron CDATA \#927;
+Iiquest CDATA ¿
+Iouml CDATA ö
+Iforall CDATA \#8704;
+Iphi CDATA \#966;
+Ilambda CDATA \#955;
+IAElig CDATA Æ
+Ifrac34 CDATA ¾
+Icong CDATA \#8773;
+IDagger CDATA \#8225;
+Isube CDATA \#8838;
+ITau CDATA \#932;
+Iordf CDATA ª
+Iweierp CDATA \#8472;
+Iexist CDATA \#8707;
+Ile CDATA \#8804;
+Ithetasym CDATA \#977;
+Isigma CDATA \#963;
+IEuml CDATA Ë
+Iordm CDATA º
+IAacute CDATA Á
+Ithinsp CDATA \#8201;
+Iagrave CDATA à
+Iomicron CDATA \#959;
+Insub CDATA \#8836;
+IEpsilon CDATA \#917;
+Ireg CDATA ®
+Ilt CDATA <
+Ispades CDATA \#9824;
+IMu CDATA \#924;
+IUuml CDATA Ü
+Idagger CDATA \#8224;
+Irang CDATA \#9002;
+Itau CDATA \#964;
+IOslash CDATA Ø
+Iraquo CDATA »
+IOmega CDATA \#937;
+IUpsilon CDATA \#933;
+Ipiv CDATA \#982;
+Isect CDATA §
+Iaacute CDATA á
+Ieuml CDATA ë
+Iinfin CDATA \#8734;
+Idivide CDATA ÷
+Ifrasl CDATA \#8260;
+Iepsilon CDATA \#949;
+Iimage CDATA \#8465;
+Imu CDATA \#956;
+Iuuml CDATA ü
+Iaelig CDATA æ
+INu CDATA \#925;
+Ildquo CDATA \#8220;
+Ilrm CDATA \#8206;
+IScaron CDATA \#352;
+Iupsih CDATA \#978;
+Iomega CDATA \#969;
+Iupsilon CDATA \#965;
+Ioslash CDATA ø
+ITHORN CDATA Þ
+Irceil CDATA \#8969;
+IlArr CDATA \#8656;
+Ine CDATA \#8800;
+Ini CDATA \#8715;
+Irsaquo CDATA \#8250;
+Icopy CDATA ©
+IPrime CDATA \#8243;
+Ihellip CDATA \#8230;
+IOtilde CDATA Õ
+IETH CDATA Ð
+Inu CDATA \#957;
+IGamma CDATA \#915;
+Iscaron CDATA \#353;
+Icup CDATA \#8746;
+IRho CDATA \#929;
+Isub CDATA \#8834;
+Imdash CDATA \#8212;
+Ilarr CDATA \#8592;
+Inot CDATA ¬
+Isum CDATA \#8721;
+ITheta CDATA \#920;
+Isup CDATA \#8835;
+IPi CDATA \#928;
+IEgrave CDATA È
+Izwj CDATA \#8205;
+Iprime CDATA \#8242;
+Ior CDATA \#8870;
+Iotilde CDATA õ
+Igamma CDATA \#947;
+Ipound CDATA £
+Irho CDATA \#961;
+IUgrave CDATA Ù
+Ilsaquo CDATA \#8249;
+Ilowast CDATA \#8727;
+IAuml CDATA Ä
+Icurren CDATA ¤
+Ideg CDATA °
+IrArr CDATA \#8658;
+Icrarr CDATA \#8629;
+Isigmaf CDATA \#962;
+IChi CDATA \#935;
+Iiexcl CDATA ¡
+Itheta CDATA \#952;
+IEacute CDATA É
+Ipi CDATA \#960;
+Iegrave CDATA è
+IEta CDATA \#919;
+Iplusmn CDATA ±
+IUacute CDATA Ú
+Inotin CDATA \#8713;
+Iugrave CDATA ù
+Iauml CDATA ä
+Itilde CDATA \#732;
+Irfloor CDATA \#8971;
+Iisin CDATA \#8712;
+Ichi CDATA \#967;
+Irarr CDATA \#8594;
+Ieacute CDATA é
+Imicro CDATA µ
+Ieta CDATA \#951;
+Ieth CDATA ð
+IOgrave CDATA Ò
+Iuacute CDATA ú
+Izwnj CDATA \#8204;
+IhArr CDATA \#8660;
+IOcirc CDATA Ô
+Ishy CDATA ­
+IZeta CDATA \#918;
+Iamp CDATA &
+IOacute CDATA Ó
+Imacr CDATA ¯
+Iograve CDATA ò
+Indash CDATA \#8211;
+Isim CDATA \#8764;
+Ilfloor CDATA \#8970;
+Ithorn CDATA þ
+Iharr CDATA \#8596;
+IIota CDATA \#921;
+Iotimes CDATA \#8855;
+Ibull CDATA \#8226;
+Iocirc CDATA ô
+IAring CDATA Å
+Iand CDATA \#8869;
+Izeta CDATA \#950;
+Iemsp CDATA \#8195;
+Iang CDATA \#8736;
+Iperp CDATA \#8869;
+Irsquo CDATA \#8217;
+IIgrave CDATA Ì
+Icirc CDATA \#710;
+Ioacute CDATA ó
+Isbquo CDATA \#8218;
+Irlm CDATA \#8207;
+Iquot CDATA "
+Ifnof CDATA \#402;
+IDelta CDATA \#916;
+Iint CDATA \#8747;
+Iiota CDATA \#953;
+Idiams CDATA \#9830;
+IOElig CDATA \#338;
+Iaring CDATA å
+Ioplus CDATA \#8853;
+IIacute CDATA Í
+Inabla CDATA \#8711;
+Iigrave CDATA ì
+Itimes CDATA ×
+Ilaquo CDATA «
+Ihearts CDATA \#9829;
+Iequiv CDATA \#8801;
+Idelta CDATA \#948;
+IYacute CDATA Ý
+Iacute CDATA ´
+Iensp CDATA \#8194;
+Ibdquo CDATA \#8222;
+Iiacute CDATA í
+Imiddot CDATA ·
+Icedil CDATA ¸
+Iradic CDATA \#8730;
+Ilceil CDATA \#8968;
+IdArr CDATA \#8659;
+Iszlig CDATA ß
+Irdquo CDATA \#8221;
+Iyacute CDATA ý
+IPsi CDATA \#936;
+Ioelig CDATA \#339;
+Itrade CDATA \#8482;
+Iclubs CDATA \#9827;
+Ibrvbar CDATA ¦
+ICcedil CDATA Ç
+Idarr CDATA \#8595;
+Iasymp CDATA \#8776;
+Ige CDATA \#8805;
+Ipsi CDATA \#968;
+Isdot CDATA \#8901;
+Igt CDATA >
+IXi CDATA \#926;
+Ireal CDATA \#8476;
+Iccedil CDATA ç
+Icent CDATA ¢
+Ithere4 CDATA \#8756;
+IKappa CDATA \#922;
+Ialefsym CDATA \#8501;
+IAtilde CDATA Ã
+Inbsp CDATA  
+IIuml CDATA Ï
+Ixi CDATA \#958;
+IAlpha CDATA \#913;
+IYuml CDATA \#376;
+Isup1 CDATA ¹
+Isup2 CDATA ²
+Isup3 CDATA ³
+Ikappa CDATA \#954;
+Iatilde CDATA ã
+Iiuml CDATA ï
+IuArr CDATA \#8657;
+IBeta CDATA \#914;
+Ifrac12 CDATA ½
+o
+AVERSION CDATA http://www.w3.org/TR/WD-html40-970708/HTML4.dtd
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+o
+(HTML
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+o
+APROFILE IMPLIED
+(HEAD
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+(TITLE
+-HTML 4.0 Specification
+)TITLE
+)HEAD
+o
+AID IMPLIED
+o
+ACLASS IMPLIED
+o
+ASTYLE IMPLIED
+o
+ATITLE IMPLIED
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+o
+AONCLICK IMPLIED
+o
+AONDBLCLICK IMPLIED
+o
+AONMOUSEDOWN IMPLIED
+o
+AONMOUSEUP IMPLIED
+o
+AONMOUSEOVER IMPLIED
+o
+AONMOUSEMOVE IMPLIED
+o
+AONMOUSEOUT IMPLIED
+o
+AONKEYPRESS IMPLIED
+o
+AONKEYDOWN IMPLIED
+o
+AONKEYUP IMPLIED
+o
+ABACKGROUND IMPLIED
+o
+ABGCOLOR IMPLIED
+o
+ATEXT IMPLIED
+o
+ALINK IMPLIED
+o
+AVLINK IMPLIED
+o
+AALINK IMPLIED
+o
+AONLOAD IMPLIED
+o
+AONUNLOAD IMPLIED
+(BODY
+o
+AID IMPLIED
+ACLASS CDATA navbar
+o
+ASTYLE IMPLIED
+o
+ATITLE IMPLIED
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+o
+AONCLICK IMPLIED
+o
+AONDBLCLICK IMPLIED
+o
+AONMOUSEDOWN IMPLIED
+o
+AONMOUSEUP IMPLIED
+o
+AONMOUSEOVER IMPLIED
+o
+AONMOUSEMOVE IMPLIED
+o
+AONMOUSEOUT IMPLIED
+o
+AONKEYPRESS IMPLIED
+o
+AONKEYDOWN IMPLIED
+o
+AONKEYUP IMPLIED
+o
+AALIGN IMPLIED
+(DIV
+o
+AID IMPLIED
+o
+ACLASS IMPLIED
+o
+ASTYLE IMPLIED
+o
+ATITLE IMPLIED
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+o
+AONCLICK IMPLIED
+o
+AONDBLCLICK IMPLIED
+o
+AONMOUSEDOWN IMPLIED
+o
+AONMOUSEUP IMPLIED
+o
+AONMOUSEOVER IMPLIED
+o
+AONMOUSEMOVE IMPLIED
+o
+AONMOUSEOUT IMPLIED
+o
+AONKEYPRESS IMPLIED
+o
+AONKEYDOWN IMPLIED
+o
+AONKEYUP IMPLIED
+o
+ACHARSET IMPLIED
+o
+ANAME IMPLIED
+AHREF CDATA contents.html
+o
+ATARGET IMPLIED
+o
+AREL IMPLIED
+o
+AREV IMPLIED
+o
+AACCESSKEY IMPLIED
+o
+ASHAPE TOKEN RECT
+o
+ACOORDS IMPLIED
+o
+ATABINDEX IMPLIED
+(A
+-Go to the table of contents
+)A
+)DIV
+-\n\n
+o
+AID IMPLIED
+o
+ACLASS IMPLIED
+o
+ASTYLE IMPLIED
+o
+ATITLE IMPLIED
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+o
+AONCLICK IMPLIED
+o
+AONDBLCLICK IMPLIED
+o
+AONMOUSEDOWN IMPLIED
+o
+AONMOUSEUP IMPLIED
+o
+AONMOUSEOVER IMPLIED
+o
+AONMOUSEMOVE IMPLIED
+o
+AONMOUSEOUT IMPLIED
+o
+AONKEYPRESS IMPLIED
+o
+AONKEYDOWN IMPLIED
+o
+AONKEYUP IMPLIED
+o
+AALIGN IMPLIED
+(P
+o
+AID IMPLIED
+o
+ACLASS IMPLIED
+o
+ASTYLE IMPLIED
+o
+ATITLE IMPLIED
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+o
+AONCLICK IMPLIED
+o
+AONDBLCLICK IMPLIED
+o
+AONMOUSEDOWN IMPLIED
+o
+AONMOUSEUP IMPLIED
+o
+AONMOUSEOVER IMPLIED
+o
+AONMOUSEMOVE IMPLIED
+o
+AONMOUSEOUT IMPLIED
+o
+AONKEYPRESS IMPLIED
+o
+AONKEYDOWN IMPLIED
+o
+AONKEYUP IMPLIED
+o
+ACHARSET IMPLIED
+o
+ANAME IMPLIED
+AHREF CDATA http://www.w3.org/Consortium/
+o
+ATARGET IMPLIED
+o
+AREL IMPLIED
+o
+AREV IMPLIED
+o
+AACCESSKEY IMPLIED
+o
+ASHAPE TOKEN RECT
+o
+ACOORDS IMPLIED
+o
+ATABINDEX IMPLIED
+(A
+o
+AID IMPLIED
+o
+ACLASS IMPLIED
+o
+ASTYLE IMPLIED
+o
+ATITLE IMPLIED
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+o
+AONCLICK IMPLIED
+o
+AONDBLCLICK IMPLIED
+o
+AONMOUSEDOWN IMPLIED
+o
+AONMOUSEUP IMPLIED
+o
+AONMOUSEOVER IMPLIED
+o
+AONMOUSEMOVE IMPLIED
+o
+AONMOUSEOUT IMPLIED
+o
+AONKEYPRESS IMPLIED
+o
+AONKEYDOWN IMPLIED
+o
+AONKEYUP IMPLIED
+ASRC CDATA images/w3c_home.gif
+AALT CDATA W3C
+o
+AALIGN IMPLIED
+o
+AHEIGHT IMPLIED
+o
+AWIDTH IMPLIED
+o
+ABORDER IMPLIED
+o
+AHSPACE IMPLIED
+o
+AVSPACE IMPLIED
+o
+AUSEMAP IMPLIED
+o
+AISMAP IMPLIED
+(IMG
+o
+)IMG
+)A
+-HTML40-970708
+)P
+-\n\n
+o
+AID IMPLIED
+o
+ACLASS IMPLIED
+o
+ASTYLE IMPLIED
+o
+ATITLE IMPLIED
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+o
+AONCLICK IMPLIED
+o
+AONDBLCLICK IMPLIED
+o
+AONMOUSEDOWN IMPLIED
+o
+AONMOUSEUP IMPLIED
+o
+AONMOUSEOVER IMPLIED
+o
+AONMOUSEMOVE IMPLIED
+o
+AONMOUSEOUT IMPLIED
+o
+AONKEYPRESS IMPLIED
+o
+AONKEYDOWN IMPLIED
+o
+AONKEYUP IMPLIED
+o
+AALIGN IMPLIED
+(H1
+-HTML 4.0 Specification
+)H1
+-\n
+o
+AID IMPLIED
+o
+ACLASS IMPLIED
+o
+ASTYLE IMPLIED
+o
+ATITLE IMPLIED
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+o
+AONCLICK IMPLIED
+o
+AONDBLCLICK IMPLIED
+o
+AONMOUSEDOWN IMPLIED
+o
+AONMOUSEUP IMPLIED
+o
+AONMOUSEOVER IMPLIED
+o
+AONMOUSEMOVE IMPLIED
+o
+AONMOUSEOUT IMPLIED
+o
+AONKEYPRESS IMPLIED
+o
+AONKEYDOWN IMPLIED
+o
+AONKEYUP IMPLIED
+o
+AALIGN IMPLIED
+(P
+o
+AID IMPLIED
+o
+ACLASS IMPLIED
+o
+ASTYLE IMPLIED
+o
+ATITLE IMPLIED
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+o
+AONCLICK IMPLIED
+o
+AONDBLCLICK IMPLIED
+o
+AONMOUSEDOWN IMPLIED
+o
+AONMOUSEUP IMPLIED
+o
+AONMOUSEOVER IMPLIED
+o
+AONMOUSEMOVE IMPLIED
+o
+AONMOUSEOUT IMPLIED
+o
+AONKEYPRESS IMPLIED
+o
+AONKEYDOWN IMPLIED
+o
+AONKEYUP IMPLIED
+(STRONG
+-W3C Working Draft 
+o
+AID IMPLIED
+o
+ACLASS IMPLIED
+o
+ASTYLE IMPLIED
+o
+ATITLE IMPLIED
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+o
+AONCLICK IMPLIED
+o
+AONDBLCLICK IMPLIED
+o
+AONMOUSEDOWN IMPLIED
+o
+AONMOUSEUP IMPLIED
+o
+AONMOUSEOVER IMPLIED
+o
+AONMOUSEMOVE IMPLIED
+o
+AONMOUSEOUT IMPLIED
+o
+AONKEYPRESS IMPLIED
+o
+AONKEYDOWN IMPLIED
+o
+AONKEYUP IMPLIED
+(I
+-8-July-1997
+)I
+)STRONG
+o
+)P
+o
+AID IMPLIED
+o
+ACLASS IMPLIED
+o
+ASTYLE IMPLIED
+o
+ATITLE IMPLIED
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+o
+AONCLICK IMPLIED
+o
+AONDBLCLICK IMPLIED
+o
+AONMOUSEDOWN IMPLIED
+o
+AONMOUSEUP IMPLIED
+o
+AONMOUSEOVER IMPLIED
+o
+AONMOUSEMOVE IMPLIED
+o
+AONMOUSEOUT IMPLIED
+o
+AONKEYPRESS IMPLIED
+o
+AONKEYDOWN IMPLIED
+o
+AONKEYUP IMPLIED
+o
+AALIGN IMPLIED
+(P
+o
+)P
+o
+AID IMPLIED
+o
+ACLASS IMPLIED
+o
+ASTYLE IMPLIED
+o
+ATITLE IMPLIED
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+o
+AONCLICK IMPLIED
+o
+AONDBLCLICK IMPLIED
+o
+AONMOUSEDOWN IMPLIED
+o
+AONMOUSEUP IMPLIED
+o
+AONMOUSEOVER IMPLIED
+o
+AONMOUSEMOVE IMPLIED
+o
+AONMOUSEOUT IMPLIED
+o
+AONKEYPRESS IMPLIED
+o
+AONKEYDOWN IMPLIED
+o
+AONKEYUP IMPLIED
+o
+AALIGN IMPLIED
+(P
+-This is: 
+o
+AID IMPLIED
+o
+ACLASS IMPLIED
+o
+ASTYLE IMPLIED
+o
+ATITLE IMPLIED
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+o
+AONCLICK IMPLIED
+o
+AONDBLCLICK IMPLIED
+o
+AONMOUSEDOWN IMPLIED
+o
+AONMOUSEUP IMPLIED
+o
+AONMOUSEOVER IMPLIED
+o
+AONMOUSEMOVE IMPLIED
+o
+AONMOUSEOUT IMPLIED
+o
+AONKEYPRESS IMPLIED
+o
+AONKEYDOWN IMPLIED
+o
+AONKEYUP IMPLIED
+o
+ACHARSET IMPLIED
+o
+ANAME IMPLIED
+AHREF CDATA http://www.w3.org/TR/WD-html40-970708/
+o
+ATARGET IMPLIED
+o
+AREL IMPLIED
+o
+AREV IMPLIED
+o
+AACCESSKEY IMPLIED
+o
+ASHAPE TOKEN RECT
+o
+ACOORDS IMPLIED
+o
+ATABINDEX IMPLIED
+(A
+-http://www.w3.org/TR/WD-html40-970708/
+)A
+-\n
+o
+)P
+o
+AID IMPLIED
+o
+ACLASS IMPLIED
+o
+ASTYLE IMPLIED
+o
+ATITLE IMPLIED
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+o
+AONCLICK IMPLIED
+o
+AONDBLCLICK IMPLIED
+o
+AONMOUSEDOWN IMPLIED
+o
+AONMOUSEUP IMPLIED
+o
+AONMOUSEOVER IMPLIED
+o
+AONMOUSEMOVE IMPLIED
+o
+AONMOUSEOUT IMPLIED
+o
+AONKEYPRESS IMPLIED
+o
+AONKEYDOWN IMPLIED
+o
+AONKEYUP IMPLIED
+o
+AALIGN IMPLIED
+(H2
+-Abstract
+)H2
+-\n\n
+o
+AID IMPLIED
+o
+ACLASS IMPLIED
+o
+ASTYLE IMPLIED
+o
+ATITLE IMPLIED
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+o
+AONCLICK IMPLIED
+o
+AONDBLCLICK IMPLIED
+o
+AONMOUSEDOWN IMPLIED
+o
+AONMOUSEUP IMPLIED
+o
+AONMOUSEOVER IMPLIED
+o
+AONMOUSEMOVE IMPLIED
+o
+AONMOUSEOUT IMPLIED
+o
+AONKEYPRESS IMPLIED
+o
+AONKEYDOWN IMPLIED
+o
+AONKEYUP IMPLIED
+o
+AALIGN IMPLIED
+(P
+-This specification defines the HyperText Markup Language (HTML),\nversion 4.0, the publishing language of the World Wide Web. In\naddition to the text, multimedia, and hyperlink features of the previous\nversions of HTML, HTML 4.0 supports more multimedia options, scripting\nlanguages, style sheets, better printing facilities, and documents\nthat are more accessible to users with disabilities. HTML 4.0 also\ntakes great strides towards the internationalization of documents,\nwith the goal of making the Web truly World Wide.\n
+o
+)P
+o
+AID IMPLIED
+o
+ACLASS IMPLIED
+o
+ASTYLE IMPLIED
+o
+ATITLE IMPLIED
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+o
+AONCLICK IMPLIED
+o
+AONDBLCLICK IMPLIED
+o
+AONMOUSEDOWN IMPLIED
+o
+AONMOUSEUP IMPLIED
+o
+AONMOUSEOVER IMPLIED
+o
+AONMOUSEMOVE IMPLIED
+o
+AONMOUSEOUT IMPLIED
+o
+AONKEYPRESS IMPLIED
+o
+AONKEYDOWN IMPLIED
+o
+AONKEYUP IMPLIED
+o
+AALIGN IMPLIED
+(H2
+-Status of this document
+)H2
+-\n
+o
+AID IMPLIED
+o
+ACLASS IMPLIED
+o
+ASTYLE IMPLIED
+o
+ATITLE IMPLIED
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+o
+AONCLICK IMPLIED
+o
+AONDBLCLICK IMPLIED
+o
+AONMOUSEDOWN IMPLIED
+o
+AONMOUSEUP IMPLIED
+o
+AONMOUSEOVER IMPLIED
+o
+AONMOUSEMOVE IMPLIED
+o
+AONMOUSEOUT IMPLIED
+o
+AONKEYPRESS IMPLIED
+o
+AONKEYDOWN IMPLIED
+o
+AONKEYUP IMPLIED
+o
+AALIGN IMPLIED
+(P
+-This is a W3C Working Draft for review by W3C\nmembers and other interested parties. It is a draft document and may\nbe updated, replaced or obsoleted by other documents at any time. It\nis inappropriate to use W3C Working Drafts as reference material or to\ncite them as other than "work in progress".  This is work in progress\nand does not imply endorsement by, or the consensus of, either W3C or\nmembers of the HTML working group.\n
+o
+)P
+o
+AID IMPLIED
+o
+ACLASS IMPLIED
+o
+ASTYLE IMPLIED
+o
+ATITLE IMPLIED
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+o
+AONCLICK IMPLIED
+o
+AONDBLCLICK IMPLIED
+o
+AONMOUSEDOWN IMPLIED
+o
+AONMOUSEUP IMPLIED
+o
+AONMOUSEOVER IMPLIED
+o
+AONMOUSEMOVE IMPLIED
+o
+AONMOUSEOUT IMPLIED
+o
+AONKEYPRESS IMPLIED
+o
+AONKEYDOWN IMPLIED
+o
+AONKEYUP IMPLIED
+o
+AALIGN IMPLIED
+(P
+-This document has been produced as part of the 
+o
+AID IMPLIED
+o
+ACLASS IMPLIED
+o
+ASTYLE IMPLIED
+o
+ATITLE IMPLIED
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+o
+AONCLICK IMPLIED
+o
+AONDBLCLICK IMPLIED
+o
+AONMOUSEDOWN IMPLIED
+o
+AONMOUSEUP IMPLIED
+o
+AONMOUSEOVER IMPLIED
+o
+AONMOUSEMOVE IMPLIED
+o
+AONMOUSEOUT IMPLIED
+o
+AONKEYPRESS IMPLIED
+o
+AONKEYDOWN IMPLIED
+o
+AONKEYUP IMPLIED
+o
+ACHARSET IMPLIED
+o
+ANAME IMPLIED
+AHREF CDATA http://www.w3.org/MarkUp/Activity.html
+o
+ATARGET IMPLIED
+o
+AREL IMPLIED
+o
+AREV IMPLIED
+o
+AACCESSKEY IMPLIED
+o
+ASHAPE TOKEN RECT
+o
+ACOORDS IMPLIED
+o
+ATABINDEX IMPLIED
+(A
+-W3C HTML\nActivity
+)A
+-, and is intended as a draft of a proposed recommendation\nfor HTML.\n
+o
+)P
+o
+AID IMPLIED
+o
+ACLASS IMPLIED
+o
+ASTYLE IMPLIED
+o
+ATITLE IMPLIED
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+o
+AONCLICK IMPLIED
+o
+AONDBLCLICK IMPLIED
+o
+AONMOUSEDOWN IMPLIED
+o
+AONMOUSEUP IMPLIED
+o
+AONMOUSEOVER IMPLIED
+o
+AONMOUSEMOVE IMPLIED
+o
+AONMOUSEOUT IMPLIED
+o
+AONKEYPRESS IMPLIED
+o
+AONKEYDOWN IMPLIED
+o
+AONKEYUP IMPLIED
+o
+AALIGN IMPLIED
+(P
+-The latest version of this document can be retrieved from the list of\nW3C technical reports at 
+Ilt CDATA <
+-<
+o
+AID IMPLIED
+o
+ACLASS IMPLIED
+o
+ASTYLE IMPLIED
+o
+ATITLE IMPLIED
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+o
+AONCLICK IMPLIED
+o
+AONDBLCLICK IMPLIED
+o
+AONMOUSEDOWN IMPLIED
+o
+AONMOUSEUP IMPLIED
+o
+AONMOUSEOVER IMPLIED
+o
+AONMOUSEMOVE IMPLIED
+o
+AONMOUSEOUT IMPLIED
+o
+AONKEYPRESS IMPLIED
+o
+AONKEYDOWN IMPLIED
+o
+AONKEYUP IMPLIED
+o
+ACHARSET IMPLIED
+o
+ANAME IMPLIED
+AHREF CDATA http://www.w3.org/TR/
+o
+ATARGET IMPLIED
+o
+AREL IMPLIED
+o
+AREV IMPLIED
+o
+AACCESSKEY IMPLIED
+o
+ASHAPE TOKEN RECT
+o
+ACOORDS IMPLIED
+o
+ATABINDEX IMPLIED
+(A
+-http://www.w3.org/TR/
+)A
+Igt CDATA >
+-> and is available\nas a 
+o
+AID IMPLIED
+o
+ACLASS IMPLIED
+o
+ASTYLE IMPLIED
+o
+ATITLE IMPLIED
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+o
+AONCLICK IMPLIED
+o
+AONDBLCLICK IMPLIED
+o
+AONMOUSEDOWN IMPLIED
+o
+AONMOUSEUP IMPLIED
+o
+AONMOUSEOVER IMPLIED
+o
+AONMOUSEMOVE IMPLIED
+o
+AONMOUSEOUT IMPLIED
+o
+AONKEYPRESS IMPLIED
+o
+AONKEYDOWN IMPLIED
+o
+AONKEYUP IMPLIED
+o
+ACHARSET IMPLIED
+o
+ANAME IMPLIED
+AHREF CDATA html40.tgz
+o
+ATARGET IMPLIED
+o
+AREL IMPLIED
+o
+AREV IMPLIED
+o
+AACCESSKEY IMPLIED
+o
+ASHAPE TOKEN RECT
+o
+ACOORDS IMPLIED
+o
+ATABINDEX IMPLIED
+(A
+-gzip'ed tar file
+)A
+-, a 
+o
+AID IMPLIED
+o
+ACLASS IMPLIED
+o
+ASTYLE IMPLIED
+o
+ATITLE IMPLIED
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+o
+AONCLICK IMPLIED
+o
+AONDBLCLICK IMPLIED
+o
+AONMOUSEDOWN IMPLIED
+o
+AONMOUSEUP IMPLIED
+o
+AONMOUSEOVER IMPLIED
+o
+AONMOUSEMOVE IMPLIED
+o
+AONMOUSEOUT IMPLIED
+o
+AONKEYPRESS IMPLIED
+o
+AONKEYDOWN IMPLIED
+o
+AONKEYUP IMPLIED
+o
+ACHARSET IMPLIED
+o
+ANAME IMPLIED
+AHREF CDATA html40.zip
+o
+ATARGET IMPLIED
+o
+AREL IMPLIED
+o
+AREV IMPLIED
+o
+AACCESSKEY IMPLIED
+o
+ASHAPE TOKEN RECT
+o
+ACOORDS IMPLIED
+o
+ATABINDEX IMPLIED
+(A
+-zip\nfile
+)A
+-, as well as a 
+o
+AID IMPLIED
+o
+ACLASS IMPLIED
+o
+ASTYLE IMPLIED
+o
+ATITLE IMPLIED
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+o
+AONCLICK IMPLIED
+o
+AONDBLCLICK IMPLIED
+o
+AONMOUSEDOWN IMPLIED
+o
+AONMOUSEUP IMPLIED
+o
+AONMOUSEOVER IMPLIED
+o
+AONMOUSEMOVE IMPLIED
+o
+AONMOUSEOUT IMPLIED
+o
+AONKEYPRESS IMPLIED
+o
+AONKEYDOWN IMPLIED
+o
+AONKEYUP IMPLIED
+o
+ACHARSET IMPLIED
+o
+ANAME IMPLIED
+AHREF CDATA html40.ps
+o
+ATARGET IMPLIED
+o
+AREL IMPLIED
+o
+AREV IMPLIED
+o
+AACCESSKEY IMPLIED
+o
+ASHAPE TOKEN RECT
+o
+ACOORDS IMPLIED
+o
+ATABINDEX IMPLIED
+(A
+-postscript
+)A
+- (about 200\npages).\n
+o
+)P
+o
+AID IMPLIED
+o
+ACLASS IMPLIED
+o
+ASTYLE IMPLIED
+o
+ATITLE IMPLIED
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+o
+AONCLICK IMPLIED
+o
+AONDBLCLICK IMPLIED
+o
+AONMOUSEDOWN IMPLIED
+o
+AONMOUSEUP IMPLIED
+o
+AONMOUSEOVER IMPLIED
+o
+AONMOUSEMOVE IMPLIED
+o
+AONMOUSEOUT IMPLIED
+o
+AONKEYPRESS IMPLIED
+o
+AONKEYDOWN IMPLIED
+o
+AONKEYUP IMPLIED
+o
+AALIGN IMPLIED
+(P
+-We also plan to provide translations in 
+o
+AID IMPLIED
+o
+ACLASS IMPLIED
+o
+ASTYLE IMPLIED
+o
+ATITLE IMPLIED
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+o
+AONCLICK IMPLIED
+o
+AONDBLCLICK IMPLIED
+o
+AONMOUSEDOWN IMPLIED
+o
+AONMOUSEUP IMPLIED
+o
+AONMOUSEOVER IMPLIED
+o
+AONMOUSEMOVE IMPLIED
+o
+AONMOUSEOUT IMPLIED
+o
+AONKEYPRESS IMPLIED
+o
+AONKEYDOWN IMPLIED
+o
+AONKEYUP IMPLIED
+o
+ACHARSET IMPLIED
+o
+ANAME IMPLIED
+AHREF CDATA translations.html
+o
+ATARGET IMPLIED
+o
+AREL IMPLIED
+o
+AREV IMPLIED
+o
+AACCESSKEY IMPLIED
+o
+ASHAPE TOKEN RECT
+o
+ACOORDS IMPLIED
+o
+ATABINDEX IMPLIED
+(A
+-other languages
+)A
+-, although the English version\nprovides the normative specification.\n
+o
+)P
+o
+AID IMPLIED
+o
+ACLASS IMPLIED
+o
+ASTYLE IMPLIED
+o
+ATITLE IMPLIED
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+o
+AONCLICK IMPLIED
+o
+AONDBLCLICK IMPLIED
+o
+AONMOUSEDOWN IMPLIED
+o
+AONMOUSEUP IMPLIED
+o
+AONMOUSEOVER IMPLIED
+o
+AONMOUSEMOVE IMPLIED
+o
+AONMOUSEOUT IMPLIED
+o
+AONKEYPRESS IMPLIED
+o
+AONKEYDOWN IMPLIED
+o
+AONKEYUP IMPLIED
+o
+AALIGN IMPLIED
+(P
+-HTML 4.0 replaces HTML 3.2, specified in 
+o
+AID IMPLIED
+o
+ACLASS IMPLIED
+o
+ASTYLE IMPLIED
+o
+ATITLE IMPLIED
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+o
+AONCLICK IMPLIED
+o
+AONDBLCLICK IMPLIED
+o
+AONMOUSEDOWN IMPLIED
+o
+AONMOUSEUP IMPLIED
+o
+AONMOUSEOVER IMPLIED
+o
+AONMOUSEMOVE IMPLIED
+o
+AONMOUSEOUT IMPLIED
+o
+AONKEYPRESS IMPLIED
+o
+AONKEYDOWN IMPLIED
+o
+AONKEYUP IMPLIED
+o
+ACHARSET IMPLIED
+o
+ANAME IMPLIED
+AHREF CDATA http://www.w3.org/TR/REC-html32
+o
+ATARGET IMPLIED
+o
+AREL IMPLIED
+o
+AREV IMPLIED
+o
+AACCESSKEY IMPLIED
+o
+ASHAPE TOKEN RECT
+o
+ACOORDS IMPLIED
+o
+ATABINDEX IMPLIED
+(A
+-http://www.w3.org/TR/REC-html32
+)A
+-.\n
+o
+)P
+o
+AID IMPLIED
+o
+ACLASS IMPLIED
+o
+ASTYLE IMPLIED
+o
+ATITLE IMPLIED
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+o
+AONCLICK IMPLIED
+o
+AONDBLCLICK IMPLIED
+o
+AONMOUSEDOWN IMPLIED
+o
+AONMOUSEUP IMPLIED
+o
+AONMOUSEOVER IMPLIED
+o
+AONMOUSEMOVE IMPLIED
+o
+AONMOUSEOUT IMPLIED
+o
+AONKEYPRESS IMPLIED
+o
+AONKEYDOWN IMPLIED
+o
+AONKEYUP IMPLIED
+o
+AALIGN IMPLIED
+(H2
+-Editors
+)H2
+-\n
+o
+AID IMPLIED
+o
+ACLASS IMPLIED
+o
+ASTYLE IMPLIED
+o
+ATITLE IMPLIED
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+o
+AONCLICK IMPLIED
+o
+AONDBLCLICK IMPLIED
+o
+AONMOUSEDOWN IMPLIED
+o
+AONMOUSEUP IMPLIED
+o
+AONMOUSEOVER IMPLIED
+o
+AONMOUSEMOVE IMPLIED
+o
+AONMOUSEOUT IMPLIED
+o
+AONKEYPRESS IMPLIED
+o
+AONKEYDOWN IMPLIED
+o
+AONKEYUP IMPLIED
+o
+ATYPE IMPLIED
+o
+ACOMPACT IMPLIED
+(UL
+o
+AID IMPLIED
+o
+ACLASS IMPLIED
+o
+ASTYLE IMPLIED
+o
+ATITLE IMPLIED
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+o
+AONCLICK IMPLIED
+o
+AONDBLCLICK IMPLIED
+o
+AONMOUSEDOWN IMPLIED
+o
+AONMOUSEUP IMPLIED
+o
+AONMOUSEOVER IMPLIED
+o
+AONMOUSEMOVE IMPLIED
+o
+AONMOUSEOUT IMPLIED
+o
+AONKEYPRESS IMPLIED
+o
+AONKEYDOWN IMPLIED
+o
+AONKEYUP IMPLIED
+o
+ATYPE IMPLIED
+o
+AVALUE IMPLIED
+(LI
+o
+AID IMPLIED
+o
+ACLASS IMPLIED
+o
+ASTYLE IMPLIED
+o
+ATITLE IMPLIED
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+o
+AONCLICK IMPLIED
+o
+AONDBLCLICK IMPLIED
+o
+AONMOUSEDOWN IMPLIED
+o
+AONMOUSEUP IMPLIED
+o
+AONMOUSEOVER IMPLIED
+o
+AONMOUSEMOVE IMPLIED
+o
+AONMOUSEOUT IMPLIED
+o
+AONKEYPRESS IMPLIED
+o
+AONKEYDOWN IMPLIED
+o
+AONKEYUP IMPLIED
+o
+ACHARSET IMPLIED
+o
+ANAME IMPLIED
+AHREF CDATA http://www.w3.org/People/Raggett
+o
+ATARGET IMPLIED
+o
+AREL IMPLIED
+o
+AREV IMPLIED
+o
+AACCESSKEY IMPLIED
+o
+ASHAPE TOKEN RECT
+o
+ACOORDS IMPLIED
+o
+ATABINDEX IMPLIED
+(A
+-Dave Raggett
+)A
+- 
+Ilt CDATA <
+-<
+o
+AID IMPLIED
+o
+ACLASS IMPLIED
+o
+ASTYLE IMPLIED
+o
+ATITLE IMPLIED
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+o
+AONCLICK IMPLIED
+o
+AONDBLCLICK IMPLIED
+o
+AONMOUSEDOWN IMPLIED
+o
+AONMOUSEUP IMPLIED
+o
+AONMOUSEOVER IMPLIED
+o
+AONMOUSEMOVE IMPLIED
+o
+AONMOUSEOUT IMPLIED
+o
+AONKEYPRESS IMPLIED
+o
+AONKEYDOWN IMPLIED
+o
+AONKEYUP IMPLIED
+o
+ACHARSET IMPLIED
+o
+ANAME IMPLIED
+AHREF CDATA mailto:dsr@w3.org
+o
+ATARGET IMPLIED
+o
+AREL IMPLIED
+o
+AREV IMPLIED
+o
+AACCESSKEY IMPLIED
+o
+ASHAPE TOKEN RECT
+o
+ACOORDS IMPLIED
+o
+ATABINDEX IMPLIED
+(A
+-dsr@w3.org
+)A
+Igt CDATA >
+->
+o
+)LI
+o
+AID IMPLIED
+o
+ACLASS IMPLIED
+o
+ASTYLE IMPLIED
+o
+ATITLE IMPLIED
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+o
+AONCLICK IMPLIED
+o
+AONDBLCLICK IMPLIED
+o
+AONMOUSEDOWN IMPLIED
+o
+AONMOUSEUP IMPLIED
+o
+AONMOUSEOVER IMPLIED
+o
+AONMOUSEMOVE IMPLIED
+o
+AONMOUSEOUT IMPLIED
+o
+AONKEYPRESS IMPLIED
+o
+AONKEYDOWN IMPLIED
+o
+AONKEYUP IMPLIED
+o
+ATYPE IMPLIED
+o
+AVALUE IMPLIED
+(LI
+o
+AID IMPLIED
+o
+ACLASS IMPLIED
+o
+ASTYLE IMPLIED
+o
+ATITLE IMPLIED
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+o
+AONCLICK IMPLIED
+o
+AONDBLCLICK IMPLIED
+o
+AONMOUSEDOWN IMPLIED
+o
+AONMOUSEUP IMPLIED
+o
+AONMOUSEOVER IMPLIED
+o
+AONMOUSEMOVE IMPLIED
+o
+AONMOUSEOUT IMPLIED
+o
+AONKEYPRESS IMPLIED
+o
+AONKEYDOWN IMPLIED
+o
+AONKEYUP IMPLIED
+o
+ACHARSET IMPLIED
+o
+ANAME IMPLIED
+AHREF CDATA http://www.w3.org/People/Arnaud
+o
+ATARGET IMPLIED
+o
+AREL IMPLIED
+o
+AREV IMPLIED
+o
+AACCESSKEY IMPLIED
+o
+ASHAPE TOKEN RECT
+o
+ACOORDS IMPLIED
+o
+ATABINDEX IMPLIED
+(A
+-Arnaud Le Hors
+)A
+- 
+Ilt CDATA <
+-<
+o
+AID IMPLIED
+o
+ACLASS IMPLIED
+o
+ASTYLE IMPLIED
+o
+ATITLE IMPLIED
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+o
+AONCLICK IMPLIED
+o
+AONDBLCLICK IMPLIED
+o
+AONMOUSEDOWN IMPLIED
+o
+AONMOUSEUP IMPLIED
+o
+AONMOUSEOVER IMPLIED
+o
+AONMOUSEMOVE IMPLIED
+o
+AONMOUSEOUT IMPLIED
+o
+AONKEYPRESS IMPLIED
+o
+AONKEYDOWN IMPLIED
+o
+AONKEYUP IMPLIED
+o
+ACHARSET IMPLIED
+o
+ANAME IMPLIED
+AHREF CDATA mailto:lehors@w3.org
+o
+ATARGET IMPLIED
+o
+AREL IMPLIED
+o
+AREV IMPLIED
+o
+AACCESSKEY IMPLIED
+o
+ASHAPE TOKEN RECT
+o
+ACOORDS IMPLIED
+o
+ATABINDEX IMPLIED
+(A
+-lehors@w3.org
+)A
+Igt CDATA >
+->
+o
+)LI
+o
+AID IMPLIED
+o
+ACLASS IMPLIED
+o
+ASTYLE IMPLIED
+o
+ATITLE IMPLIED
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+o
+AONCLICK IMPLIED
+o
+AONDBLCLICK IMPLIED
+o
+AONMOUSEDOWN IMPLIED
+o
+AONMOUSEUP IMPLIED
+o
+AONMOUSEOVER IMPLIED
+o
+AONMOUSEMOVE IMPLIED
+o
+AONMOUSEOUT IMPLIED
+o
+AONKEYPRESS IMPLIED
+o
+AONKEYDOWN IMPLIED
+o
+AONKEYUP IMPLIED
+o
+ATYPE IMPLIED
+o
+AVALUE IMPLIED
+(LI
+-Ian Jacobs 
+Ilt CDATA <
+-<
+o
+AID IMPLIED
+o
+ACLASS IMPLIED
+o
+ASTYLE IMPLIED
+o
+ATITLE IMPLIED
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+o
+AONCLICK IMPLIED
+o
+AONDBLCLICK IMPLIED
+o
+AONMOUSEDOWN IMPLIED
+o
+AONMOUSEUP IMPLIED
+o
+AONMOUSEOVER IMPLIED
+o
+AONMOUSEMOVE IMPLIED
+o
+AONMOUSEOUT IMPLIED
+o
+AONKEYPRESS IMPLIED
+o
+AONKEYDOWN IMPLIED
+o
+AONKEYUP IMPLIED
+o
+ACHARSET IMPLIED
+o
+ANAME IMPLIED
+AHREF CDATA mailto:ij@w3.org
+o
+ATARGET IMPLIED
+o
+AREL IMPLIED
+o
+AREV IMPLIED
+o
+AACCESSKEY IMPLIED
+o
+ASHAPE TOKEN RECT
+o
+ACOORDS IMPLIED
+o
+ATABINDEX IMPLIED
+(A
+-ij@w3.org
+)A
+Igt CDATA >
+->
+o
+)LI
+)UL
+-\n\n
+o
+AID IMPLIED
+o
+ACLASS IMPLIED
+o
+ASTYLE IMPLIED
+o
+ATITLE IMPLIED
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+o
+AONCLICK IMPLIED
+o
+AONDBLCLICK IMPLIED
+o
+AONMOUSEDOWN IMPLIED
+o
+AONMOUSEUP IMPLIED
+o
+AONMOUSEOVER IMPLIED
+o
+AONMOUSEMOVE IMPLIED
+o
+AONMOUSEOUT IMPLIED
+o
+AONKEYPRESS IMPLIED
+o
+AONKEYDOWN IMPLIED
+o
+AONKEYUP IMPLIED
+o
+AALIGN IMPLIED
+(H2
+-Comments
+)H2
+-\n\n
+o
+AID IMPLIED
+o
+ACLASS IMPLIED
+o
+ASTYLE IMPLIED
+o
+ATITLE IMPLIED
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+o
+AONCLICK IMPLIED
+o
+AONDBLCLICK IMPLIED
+o
+AONMOUSEDOWN IMPLIED
+o
+AONMOUSEUP IMPLIED
+o
+AONMOUSEOVER IMPLIED
+o
+AONMOUSEMOVE IMPLIED
+o
+AONMOUSEOUT IMPLIED
+o
+AONKEYPRESS IMPLIED
+o
+AONKEYDOWN IMPLIED
+o
+AONKEYUP IMPLIED
+o
+AALIGN IMPLIED
+(P
+-Please send detailed comments on this document to 
+o
+AID IMPLIED
+o
+ACLASS IMPLIED
+o
+ASTYLE IMPLIED
+o
+ATITLE IMPLIED
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+o
+AONCLICK IMPLIED
+o
+AONDBLCLICK IMPLIED
+o
+AONMOUSEDOWN IMPLIED
+o
+AONMOUSEUP IMPLIED
+o
+AONMOUSEOVER IMPLIED
+o
+AONMOUSEMOVE IMPLIED
+o
+AONMOUSEOUT IMPLIED
+o
+AONKEYPRESS IMPLIED
+o
+AONKEYDOWN IMPLIED
+o
+AONKEYUP IMPLIED
+o
+ACHARSET IMPLIED
+o
+ANAME IMPLIED
+AHREF CDATA mailto:www-html-editor@w3.org
+o
+ATARGET IMPLIED
+o
+AREL IMPLIED
+o
+AREV IMPLIED
+o
+AACCESSKEY IMPLIED
+o
+ASHAPE TOKEN RECT
+o
+ACOORDS IMPLIED
+o
+ATABINDEX IMPLIED
+(A
+-www-html-editor@w3.org
+)A
+-. We cannot\ngarantee a personal response but we will try when it is appropriate. Public\ndiscussion on HTML features takes place on 
+o
+AID IMPLIED
+o
+ACLASS IMPLIED
+o
+ASTYLE IMPLIED
+o
+ATITLE IMPLIED
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+o
+AONCLICK IMPLIED
+o
+AONDBLCLICK IMPLIED
+o
+AONMOUSEDOWN IMPLIED
+o
+AONMOUSEUP IMPLIED
+o
+AONMOUSEOVER IMPLIED
+o
+AONMOUSEMOVE IMPLIED
+o
+AONMOUSEOUT IMPLIED
+o
+AONKEYPRESS IMPLIED
+o
+AONKEYDOWN IMPLIED
+o
+AONKEYUP IMPLIED
+o
+ACHARSET IMPLIED
+o
+ANAME IMPLIED
+AHREF CDATA http://www.w3.org/MarkUp/Forums#www-html
+o
+ATARGET IMPLIED
+o
+AREL IMPLIED
+o
+AREV IMPLIED
+o
+AACCESSKEY IMPLIED
+o
+ASHAPE TOKEN RECT
+o
+ACOORDS IMPLIED
+o
+ATABINDEX IMPLIED
+(A
+-www-html@w3.org
+)A
+-.
+)P
+-\n\n
+o
+AID IMPLIED
+ACLASS CDATA navbar
+o
+ASTYLE IMPLIED
+o
+ATITLE IMPLIED
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+o
+AONCLICK IMPLIED
+o
+AONDBLCLICK IMPLIED
+o
+AONMOUSEDOWN IMPLIED
+o
+AONMOUSEUP IMPLIED
+o
+AONMOUSEOVER IMPLIED
+o
+AONMOUSEMOVE IMPLIED
+o
+AONMOUSEOUT IMPLIED
+o
+AONKEYPRESS IMPLIED
+o
+AONKEYDOWN IMPLIED
+o
+AONKEYUP IMPLIED
+o
+AALIGN IMPLIED
+(DIV
+o
+AID IMPLIED
+o
+ACLASS IMPLIED
+o
+ASTYLE IMPLIED
+o
+ATITLE IMPLIED
+o
+ALANG IMPLIED
+o
+ADIR IMPLIED
+o
+AONCLICK IMPLIED
+o
+AONDBLCLICK IMPLIED
+o
+AONMOUSEDOWN IMPLIED
+o
+AONMOUSEUP IMPLIED
+o
+AONMOUSEOVER IMPLIED
+o
+AONMOUSEMOVE IMPLIED
+o
+AONMOUSEOUT IMPLIED
+o
+AONKEYPRESS IMPLIED
+o
+AONKEYDOWN IMPLIED
+o
+AONKEYUP IMPLIED
+o
+ACHARSET IMPLIED
+o
+ANAME IMPLIED
+AHREF CDATA contents.html
+o
+ATARGET IMPLIED
+o
+AREL IMPLIED
+o
+AREV IMPLIED
+o
+AACCESSKEY IMPLIED
+o
+ASHAPE TOKEN RECT
+o
+ACOORDS IMPLIED
+o
+ATABINDEX IMPLIED
+(A
+-Go to the table of contents
+)A
+)DIV
+)BODY
+o
+)HTML
+C

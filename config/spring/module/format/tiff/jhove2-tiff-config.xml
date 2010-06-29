@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-2.5.xsd
+		   http://www.springframework.org/schema/util 
+		   http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+
+	<!-- TIFF/IT profile bean -->
+	<bean id="TiffItProfile" class="org.jhove2.module.format.tiff.tiffit.TiffItProfile"
+		scope="prototype">
+		<constructor-arg ref="TiffItFormat" />
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- TIFF/IT format bean -->
+	<bean id="TiffItFormat" class="org.jhove2.core.format.Format"
+		scope="singleton">
+		<constructor-arg type="java.lang.String" value="TiffIt" />
+		<constructor-arg ref="TiffItIdentifier" />
+		<constructor-arg type="org.jhove2.core.format.Format$Type"
+			value="Format" />
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
+			value="Unambiguous" />
+		<property name="aliasIdentifiers">
+			<set value-type="org.jhove2.core.I8R">
+				<ref bean="TiffItISO646" />
+			</set>
+		</property>
+	</bean>
+
+	<!-- TIFF/IT identifier bean -->
+	<bean id="TiffItIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String"
+			value="http://jhove2.org/terms/format/tiff-it" />
+	</bean>
+
+	<!-- TIFF/IT ISO 646 -->
+	<bean id="TiffItISO646" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="ISO/IEC 646:1991" />
+		<constructor-arg type="org.jhove2.core.I8R$Namespace"
+			value="ISO" />
+	</bean>
+
+
+	<!-- TIFF: module bean -->
+	<bean id="TiffModule" class="org.jhove2.module.format.tiff.TiffModule"
+		scope="prototype">
+		<constructor-arg ref="TiffFormat" />
+		<property name="profile" ref="TiffItProfile" />
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent" />
+			</list>
+		</property>
+	</bean>
+
+
+
+	<!-- Tiff format bean -->
+	<bean id="TiffFormat" class="org.jhove2.core.format.Format" scope="singleton">
+		<constructor-arg type="java.lang.String" value="Tiff" />
+		<constructor-arg ref="TiffIdentifier" />
+		<constructor-arg type="org.jhove2.core.format.Format$Type"
+			value="Family" />
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
+			value="Unambiguous" />
+		<property name="aliasIdentifiers">
+			<set value-type="org.jhove2.core.I8R">
+				<ref bean="PUIDxfmt7" />
+				<ref bean="PUIDxfmt8" />
+				<ref bean="PUIDxfmt9" />
+				<ref bean="PUIDxfmt10" />
+				<ref bean="TiffMIMEType" />
+			</set>
+		</property>
+		<property name="aliasNames">
+			<set>
+				<value>Tagged Image File Format</value>
+			</set>
+		</property>
+		<property name="specifications">
+			<list value-type="org.jhove2.core.Document">
+				<ref bean="Tiff6.0Specification" />
+				<ref bean="Tiff5.0Specification" />
+				<ref bean="Tiff4.0Specification" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- Tiff identifier bean -->
+	<bean id="TiffIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String"
+			value="http://jhove2.org/terms/format/Tiff" />
+	</bean>
+	<!-- Tiff PUID aliasIdentifier bean -->
+	<bean id="PUIDxfmt7" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="fmt/7" />
+		<constructor-arg type="org.jhove2.core.I8R$Namespace"
+			value="PUID" />
+	</bean>
+	<!-- Tiff PUID aliasIdentifier bean -->
+	<bean id="PUIDxfmt8" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="fmt/8" />
+		<constructor-arg type="org.jhove2.core.I8R$Namespace"
+			value="PUID" />
+	</bean>
+	<!-- Tiff PUID aliasIdentifier bean -->
+	<bean id="PUIDxfmt9" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="fmt/9" />
+		<constructor-arg type="org.jhove2.core.I8R$Namespace"
+			value="PUID" />
+	</bean>
+	<!-- Tiff PUID aliasIdentifier bean -->
+	<bean id="PUIDxfmt10" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="fmt/10" />
+		<constructor-arg type="org.jhove2.core.I8R$Namespace"
+			value="PUID" />
+	</bean>
+	<!-- Tiff MIME aliasIdentifier bean -->
+	<bean id="TiffMIMEType" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="image/Tiff" />
+		<constructor-arg type="org.jhove2.core.I8R$Namespace"
+			value="MIME" />
+	</bean>
+
+	<!-- Tiff 4.0 specification bean -->
+	<bean id="Tiff4.0Specification" class="org.jhove2.core.Document"
+		scope="singleton">
+		<constructor-arg type="java.lang.String" value="Tag Image File Format  Rev 4.0" />
+		<constructor-arg type="org.jhove2.core.Document$Type"
+			value="Specification" />
+		<constructor-arg type="org.jhove2.core.Document$Intention"
+			value="Informative" />
+		<property name="author" value="Aldus/Microsoft" />
+		<property name="date" value="April 31, 1987" />
+		<property name="edition" value="Version 4.0" />
+		<property name="identifier" ref="Tiff4.0SpecificationURL" />
+		<property name="publisher" value="???" />
+	</bean>
+
+	<!-- Tiff 5.0 specification bean -->
+	<bean id="Tiff5.0Specification" class="org.jhove2.core.Document"
+		scope="singleton">
+		<constructor-arg type="java.lang.String"
+			value="Tiff 5.0 Aldus/Microsoft Technical Memorandum" />
+		<constructor-arg type="org.jhove2.core.Document$Type"
+			value="Specification" />
+		<constructor-arg type="org.jhove2.core.Document$Intention"
+			value="Informative" />
+		<property name="author" value="Aldus/Microsoft" />
+		<property name="date" value="August 8, 1988" />
+		<property name="edition" value="Version 5.0" />
+		<property name="identifier" ref="Tiff5.0SpecificationURL" />
+		<property name="publisher" value="???" />
+	</bean>
+
+	<!-- Tiff 6.0 specification bean -->
+	<bean id="Tiff6.0Specification" class="org.jhove2.core.Document"
+		scope="singleton">
+		<constructor-arg type="java.lang.String" value="Tiff, Revision 6.0, Final" />
+		<constructor-arg type="org.jhove2.core.Document$Type"
+			value="Specification" />
+		<constructor-arg type="org.jhove2.core.Document$Intention"
+			value="Authoritative" />
+		<property name="author" value="Adobe Systems, Inc" />
+		<property name="date" value="June 3, 1992" />
+		<property name="edition" value="Version 6.0" />
+		<property name="identifier" ref="Tiff6.0SpecificationURL" />
+		<property name="publisher" value="Addison-Wesley" />
+	</bean>
+
+	<!-- Tiff 4.0 specification URL bean -->
+	<bean id="Tiff4.0SpecificationURL" class="org.jhove2.core.I8R"
+		scope="singleton">
+		<constructor-arg type="java.lang.String"
+			value="http://www.martinreddy.net/gfx/2d/TIFF-4.txt" />
+		<constructor-arg type="org.jhove2.core.I8R$Namespace"
+			value="URL" />
+	</bean>
+
+	<!-- Tiff 5.0 specification URL bean -->
+	<bean id="Tiff5.0SpecificationURL" class="org.jhove2.core.I8R"
+		scope="singleton">
+		<constructor-arg type="java.lang.String"
+			value="http://cool.conservation-us.org/bytopic/imaging/std/tiff5.html" />
+		<constructor-arg type="org.jhove2.core.I8R$Namespace"
+			value="URL" />
+	</bean>
+
+	<!-- Tiff 6.0 specification URL bean -->
+	<bean id="Tiff6.0SpecificationURL" class="org.jhove2.core.I8R"
+		scope="singleton">
+		<constructor-arg type="java.lang.String"
+			value="http://partners.adobe.com/public/developer/en/tiff/TIFF6.pdf" />
+		<constructor-arg type="org.jhove2.core.I8R$Namespace"
+			value="URL" />
+	</bean>
+
+
+	<!-- Tiff Tags properties bean -->
+	<util:properties id="TiffTag"
+		location="classpath:properties/tiff/tifftags.properties" />
+
+
+	<!-- Tiff Types properties bean -->
+	<util:properties id="TiffType"
+		location="classpath:properties/tiff/tifftype.properties" />
+
+
+</beans>		   

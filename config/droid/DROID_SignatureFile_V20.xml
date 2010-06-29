@@ -6952,6 +6952,7 @@
         </FileFormat>
         <FileFormat ID="268" Name="Standard Generalized Markup Language" PUID="x-fmt/195">
             <Extension>sgml</Extension>
+             <Extension>sgm</Extension>
         </FileFormat>
         <FileFormat ID="269" Name="NeXt Sound" PUID="x-fmt/196">
             <Extension>snd</Extension>

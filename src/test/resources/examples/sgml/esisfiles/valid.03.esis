@@ -1,0 +1,2762 @@
+pISO 8879-1986//ENTITIES Added Latin 1//EN
+sentities_ISO_1986/isolat1.ent
+f<OSFILE SOIBASE='/cygdrive/c/SOME_PUB_Article_SGML_DTD_6.0/ajarticle_s.dtd'>entities_ISO_1986/isolat1.ent
+Tisolat1
+pISO 8879-1986//ENTITIES Added Latin 2//EN
+sentities_ISO_1986/isolat2.ent
+f<OSFILE SOIBASE='/cygdrive/c/SOME_PUB_Article_SGML_DTD_6.0/ajarticle_s.dtd'>entities_ISO_1986/isolat2.ent
+Tisolat2
+pISO 8879-1986//ENTITIES Box and Line Drawing//EN
+sentities_ISO_1986/isobox.ent
+f<OSFILE SOIBASE='/cygdrive/c/SOME_PUB_Article_SGML_DTD_6.0/ajarticle_s.dtd'>entities_ISO_1986/isobox.ent
+Tisobox
+pISO 8879-1986//ENTITIES Diacritical Marks//EN
+sentities_ISO_1986/isodia.ent
+f<OSFILE SOIBASE='/cygdrive/c/SOME_PUB_Article_SGML_DTD_6.0/ajarticle_s.dtd'>entities_ISO_1986/isodia.ent
+Tisodia
+pISO 8879-1986//ENTITIES Numeric and Special Graphic//EN
+sentities_ISO_1986/isonum.ent
+f<OSFILE SOIBASE='/cygdrive/c/SOME_PUB_Article_SGML_DTD_6.0/ajarticle_s.dtd'>entities_ISO_1986/isonum.ent
+Tisonum
+pISO 8879-1986//ENTITIES Publishing//EN
+sentities_ISO_1986/isopub.ent
+f<OSFILE SOIBASE='/cygdrive/c/SOME_PUB_Article_SGML_DTD_6.0/ajarticle_s.dtd'>entities_ISO_1986/isopub.ent
+Tisopub
+pISO 9573-13:1991//ENTITIES General Technical//EN
+sentities_ISO_1991/isotech.ent
+f<OSFILE SOIBASE='/cygdrive/c/SOME_PUB_Article_SGML_DTD_6.0/ajarticle_s.dtd'>entities_ISO_1991/isotech.ent
+Tisotech
+pISO 8879-1986//ENTITIES Greek Letters//EN
+sentities_ISO_1986/isogrk1.ent
+f<OSFILE SOIBASE='/cygdrive/c/SOME_PUB_Article_SGML_DTD_6.0/ajarticle_s.dtd'>entities_ISO_1986/isogrk1.ent
+Tisogrk1
+pISO 8879-1986//ENTITIES Monotoniko Greek//EN
+sentities_ISO_1986/isogrk2.ent
+f<OSFILE SOIBASE='/cygdrive/c/SOME_PUB_Article_SGML_DTD_6.0/ajarticle_s.dtd'>entities_ISO_1986/isogrk2.ent
+Tisogrk2
+pISO 9573-13:1991//ENTITIES Greek Symbols//EN
+sentities_ISO_1991/isogrk3.ent
+f<OSFILE SOIBASE='/cygdrive/c/SOME_PUB_Article_SGML_DTD_6.0/ajarticle_s.dtd'>entities_ISO_1991/isogrk3.ent
+Tisogrk3
+pISO 9573-13:1991//ENTITIES Alternative Greek Symbols//EN
+sentities_ISO_1991/isogrk4.ent
+f<OSFILE SOIBASE='/cygdrive/c/SOME_PUB_Article_SGML_DTD_6.0/ajarticle_s.dtd'>entities_ISO_1991/isogrk4.ent
+Tisogrk4
+pISO 8879-1986//ENTITIES Russian Cyrillic//EN
+sentities_ISO_1986/isocyr1.ent
+f<OSFILE SOIBASE='/cygdrive/c/SOME_PUB_Article_SGML_DTD_6.0/ajarticle_s.dtd'>entities_ISO_1986/isocyr1.ent
+Tisocyr1
+pISO 8879-1986//ENTITIES Non-Russian Cyrillic//EN
+sentities_ISO_1986/isocyr2.ent
+f<OSFILE SOIBASE='/cygdrive/c/SOME_PUB_Article_SGML_DTD_6.0/ajarticle_s.dtd'>entities_ISO_1986/isocyr2.ent
+Tisocyr2
+pISO 9573-13:1991//ENTITIES Added Math Symbols: Arrow Relations//EN
+sentities_ISO_1991/isoamsa.ent
+f<OSFILE SOIBASE='/cygdrive/c/SOME_PUB_Article_SGML_DTD_6.0/ajarticle_s.dtd'>entities_ISO_1991/isoamsa.ent
+Tisoamsa
+pISO 9573-13:1991//ENTITIES Added Math Symbols: Binary Operators//EN
+sentities_ISO_1991/isoamsb.ent
+f<OSFILE SOIBASE='/cygdrive/c/SOME_PUB_Article_SGML_DTD_6.0/ajarticle_s.dtd'>entities_ISO_1991/isoamsb.ent
+Tisoamsb
+pISO 9573-13:1991//ENTITIES Added Math Symbols: Delimiters//EN
+sentities_ISO_1991/isoamsc.ent
+f<OSFILE SOIBASE='/cygdrive/c/SOME_PUB_Article_SGML_DTD_6.0/ajarticle_s.dtd'>entities_ISO_1991/isoamsc.ent
+Tisoamsc
+pISO 9573-13:1991//ENTITIES Added Math Symbols: Negated Relations//EN
+sentities_ISO_1991/isoamsn.ent
+f<OSFILE SOIBASE='/cygdrive/c/SOME_PUB_Article_SGML_DTD_6.0/ajarticle_s.dtd'>entities_ISO_1991/isoamsn.ent
+Tisoamsn
+pISO 9573-13:1991//ENTITIES Additional Math Symbols Ordinary//EN
+sentities_ISO_1991/isoamso.ent
+f<OSFILE SOIBASE='/cygdrive/c/SOME_PUB_Article_SGML_DTD_6.0/ajarticle_s.dtd'>entities_ISO_1991/isoamso.ent
+Tisoamso
+pISO 9573-13:1991//ENTITIES Added Math Symbols: Relations//EN
+sentities_ISO_1991/isoamsr.ent
+f<OSFILE SOIBASE='/cygdrive/c/SOME_PUB_Article_SGML_DTD_6.0/ajarticle_s.dtd'>entities_ISO_1991/isoamsr.ent
+Tisoamsr
+pISO 9573-13:1991//ENTITIES Math Alphabets: Fraktur//EN
+sentities_ISO_1991/isomfrk.ent
+f<OSFILE SOIBASE='/cygdrive/c/SOME_PUB_Article_SGML_DTD_6.0/ajarticle_s.dtd'>entities_ISO_1991/isomfrk.ent
+Tisomfrk
+pISO 9573-13:1991//ENTITIES Math Alphabets: Open Face//EN
+sentities_ISO_1991/isomopf.ent
+f<OSFILE SOIBASE='/cygdrive/c/SOME_PUB_Article_SGML_DTD_6.0/ajarticle_s.dtd'>entities_ISO_1991/isomopf.ent
+Tisomopf
+pISO 9573-13:1991//ENTITIES Math Alphabets: Script//EN
+sentities_ISO_1991/isomscr.ent
+f<OSFILE SOIBASE='/cygdrive/c/SOME_PUB_Article_SGML_DTD_6.0/ajarticle_s.dtd'>entities_ISO_1991/isomscr.ent
+Tisomscr
+p-//NPG//ENTITIES NPGSJ Added Symbols//EN
+sentities_suupub/sumpubent.ent
+f<OSFILE SOIBASE='/cygdrive/c/SOME_PUB_Article_SGML_DTD_6.0/ajarticle_s.dtd'>entities_suupub/sumpubent.ent
+Tsumpubent
+p-//NPG//ENTITIES NPGSJ Article Types//EN
+sentities_suupub/sumpubartty.ent
+f<OSFILE SOIBASE='/cygdrive/c/SOME_PUB_Article_SGML_DTD_6.0/ajarticle_s.dtd'>entities_suupub/sumpubartty.ent
+Tsumpubartty
+p-//NPG//ENTITIES NPGSJ Languages//EN
+sentities_suupub/sumpublang.ent
+f<OSFILE SOIBASE='/cygdrive/c/SOME_PUB_Article_SGML_DTD_6.0/ajarticle_s.dtd'>entities_suupub/sumpublang.ent
+Tsumpublang
+Iemphasis TEXT b | it
+Ielectronic TEXT url | email
+Ifontfamily TEXT ssf | sc | ty
+Ifontattr TEXT sup | inf | supinf | infsup | scp
+Izwidth TEXT und | dund | sth | ovr | dovr | vect
+Irelsize TEXT mag1 | mag2 | magm
+Iexclusions TEXT wot | pot | hid
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Irefs TEXT (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*
+Ishortitle TEXT shorttl
+Ititles TEXT title | shorttl
+Iyesorno TEXT NUTOKEN
+Iyesorno TEXT NUTOKEN
+Iitemid TEXT sssn CDATA #IMPLIED\n\012                                unit CDATA #IMPLIED\n\012                                module CDATA #IMPLIED\n\012                                lru CDATA #IMPLIED\n\012                                assem CDATA #IMPLIED\n\012                                subassem CDATA #IMPLIED\n\012                                ssubassm CDATA #IMPLIED\n\012                                compon CDATA #IMPLIED\n\012                                partno CDATA #IMPLIED\n\012                                refdes CDATA #IMPLIED
+Icontent TEXT texttype NUTOKEN #IMPLIED\n\012                                applictype IDREFS #IMPLIED\n\012                                applicrefid IDREFS #IMPLIED\n\012                                skilltrk NMTOKENS #IMPLIED\n\012                                contype (desc | proc) #IMPLIED\n\012                                assocfig IDREFS #IMPLIED\n\012                                assoctab IDREFS #IMPLIED
+Iyesorno TEXT NUTOKEN
+Iyesorno TEXT NUTOKEN
+Iyesorno TEXT NUTOKEN
+Ialign TEXT left | center | right | justify | char | hang
+Ilanguage TEXT (aa | ab | af | am | ar | as | ay | az | ba | be | bg | bh \n\012| bi | bn | bo | br | ca | co | cs | cy | da | de | dz | el \n\012| en | eo | es | et | eu | fa | fi | fj | fo | fr | fy | ga | gd \n\012| gl | gn | gu | ha | he | hi | hr | hu | hy | ia | id | ie \n\012| ik | is | it | iu | ja | jw | ka | kk | kl | km | kn | ko \n\012| ks | ku | ky | la | ln | lo | lt | lv | mg | mi | mk | ml \n\012| mn | mo | mr | ms | mt | my | na | ne | nl | no | oc \n\012| om | or | pa | pl | ps | pt | qu | rm | rn | ro | ru | rw \n\012| sa | sd | sg | sh | si | sk | sl | sm | sn | so | sq | sr | ss \n\012| st | su | sv | sw | ta | te | tg | th | ti | tk | tl | tn | to \n\012| tr | ts | tt | tw | ug | uk | ur | uz | vi | vo | wo | xh \n\012| yi | yo | za | zh | zu | hans)
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Imathtypes TEXT formula | altmath | frac | stk | lim | prod | sum \n\012\011\011\011| integ | fen | rad
+Ilanguage TEXT (aa | ab | af | am | ar | as | ay | az | ba | be | bg | bh \n\012| bi | bn | bo | br | ca | co | cs | cy | da | de | dz | el \n\012| en | eo | es | et | eu | fa | fi | fj | fo | fr | fy | ga | gd \n\012| gl | gn | gu | ha | he | hi | hr | hu | hy | ia | id | ie \n\012| ik | is | it | iu | ja | jw | ka | kk | kl | km | kn | ko \n\012| ks | ku | ky | la | ln | lo | lt | lv | mg | mi | mk | ml \n\012| mn | mo | mr | ms | mt | my | na | ne | nl | no | oc \n\012| om | or | pa | pl | ps | pt | qu | rm | rn | ro | ru | rw \n\012| sa | sd | sg | sh | si | sk | sl | sm | sn | so | sq | sr | ss \n\012| st | su | sv | sw | ta | te | tg | th | ti | tk | tl | tn | to \n\012| tr | ts | tt | tw | ug | uk | ur | uz | vi | vo | wo | xh \n\012| yi | yo | za | zh | zu | hans)
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Imathtypes TEXT formula | altmath | frac | stk | lim | prod | sum \n\012\011\011\011| integ | fen | rad
+Ilanguage TEXT (aa | ab | af | am | ar | as | ay | az | ba | be | bg | bh \n\012| bi | bn | bo | br | ca | co | cs | cy | da | de | dz | el \n\012| en | eo | es | et | eu | fa | fi | fj | fo | fr | fy | ga | gd \n\012| gl | gn | gu | ha | he | hi | hr | hu | hy | ia | id | ie \n\012| ik | is | it | iu | ja | jw | ka | kk | kl | km | kn | ko \n\012| ks | ku | ky | la | ln | lo | lt | lv | mg | mi | mk | ml \n\012| mn | mo | mr | ms | mt | my | na | ne | nl | no | oc \n\012| om | or | pa | pl | ps | pt | qu | rm | rn | ro | ru | rw \n\012| sa | sd | sg | sh | si | sk | sl | sm | sn | so | sq | sr | ss \n\012| st | su | sv | sw | ta | te | tg | th | ti | tk | tl | tn | to \n\012| tr | ts | tt | tw | ug | uk | ur | uz | vi | vo | wo | xh \n\012| yi | yo | za | zh | zu | hans)
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Imathtypes TEXT formula | altmath | frac | stk | lim | prod | sum \n\012\011\011\011| integ | fen | rad
+Ipsn TEXT normal | floatleft | floatrt | display | inline | \011external | thumbnail
+Itocshow TEXT tocshow | toconly | notoc
+Itocshow TEXT tocshow | toconly | notoc
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Imathtypes TEXT formula | altmath | frac | stk | lim | prod | sum \n\012\011\011\011| integ | fen | rad
+Itocshow TEXT tocshow | toconly | notoc
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Imathtypes TEXT formula | altmath | frac | stk | lim | prod | sum \n\012\011\011\011| integ | fen | rad
+Itocshow TEXT tocshow | toconly | notoc
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Imathtypes TEXT formula | altmath | frac | stk | lim | prod | sum \n\012\011\011\011| integ | fen | rad
+Iarttype TEXT (aa | ab | ac | ad | adb | ae | ai | ak | al | an | ap | apg | ar | at | ax | bbr | bc | bd | be | bg | bi | bk | bm | bp | br | bs | bt | ca | car | cc | cd | ce | cer | cex | cf | cg | chc | chi | ci | cj | ck | cl | cm | cn | co | coe | com | cp | cr | cs | csb | ct | cu | cv | cw | cx | cy | cz | da | db | dc | dg | dia | dii | dp | dr | ds | dt | du | dv | eam | ec | ed | edr | ee | ei | ek | em | endo | ep | er | esa | eso | et | ev | ex | ey | fa | fe | fgid | fn | fp | fpa | fr | fs | ftp | fw | ga | gc | gd | ge | gg | gl | gn | gp | gr | gs | gt | hd | hi | hl | hn | hr | ht | hy | ib | ibd | ic | if | ig | ii | imp | in | ip | iph | iq | is | it | iv | ivp | ix | ja | jc | ka | ki | kt | la | lc | le | lf | lg | lh | li | liv | lj | lm | lr | ls | lt | lta | lu | ma | mc | md | me | met | meta | mk | mo | mon | mp | mr | ms | mt | mu | mv | my | nb | nc | ne | nf | nh | ni | no | nrv | nut | nv | nx | oa | ob | oc | og | oi | om | on | oo | op | opp | or | os | ot | pa | pan | pat | pb | pc | pcp | pd | pe | ped | pf | pg | ph | pi | pj | pk | pl | pld | plm | pm | pn | po | poc | poe | pp | pq | pr | ps | pt | pu | pv | px | py | qa | ra | rc | rd | re | reds | res | rf | rft | rg | rh | rl | rn | ro | rp | rq | rr | rrn | rs | rt | ru | rv | rvc | rw | rwc | rx | rz | sa | sb | sc | sd | se | sf | sg | sh | si | sia | sj | sl | sm | sn | so | sp | spd | sr | ss | st | sto | sv | sws | sx | sy | syi | ta | tb | tc | tla | tm | tn | tp | tr | ts | tt | tu | tv | ty | uf | vp | wb | wh | wr | ws | xn | xx)
+Ilanguage TEXT (aa | ab | af | am | ar | as | ay | az | ba | be | bg | bh \n\012| bi | bn | bo | br | ca | co | cs | cy | da | de | dz | el \n\012| en | eo | es | et | eu | fa | fi | fj | fo | fr | fy | ga | gd \n\012| gl | gn | gu | ha | he | hi | hr | hu | hy | ia | id | ie \n\012| ik | is | it | iu | ja | jw | ka | kk | kl | km | kn | ko \n\012| ks | ku | ky | la | ln | lo | lt | lv | mg | mi | mk | ml \n\012| mn | mo | mr | ms | mt | my | na | ne | nl | no | oc \n\012| om | or | pa | pl | ps | pt | qu | rm | rn | ro | ru | rw \n\012| sa | sd | sg | sh | si | sk | sl | sm | sn | so | sq | sr | ss \n\012| st | su | sv | sw | ta | te | tg | th | ti | tk | tl | tn | to \n\012| tr | ts | tt | tw | ug | uk | ur | uz | vi | vo | wo | xh \n\012| yi | yo | za | zh | zu | hans)
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Ihiding TEXT shown | hidden | webonly | prntonly
+Ihiding TEXT shown | hidden | webonly | prntonly
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Imathtypes TEXT formula | altmath | frac | stk | lim | prod | sum \n\012\011\011\011| integ | fen | rad
+Ilanguage TEXT (aa | ab | af | am | ar | as | ay | az | ba | be | bg | bh \n\012| bi | bn | bo | br | ca | co | cs | cy | da | de | dz | el \n\012| en | eo | es | et | eu | fa | fi | fj | fo | fr | fy | ga | gd \n\012| gl | gn | gu | ha | he | hi | hr | hu | hy | ia | id | ie \n\012| ik | is | it | iu | ja | jw | ka | kk | kl | km | kn | ko \n\012| ks | ku | ky | la | ln | lo | lt | lv | mg | mi | mk | ml \n\012| mn | mo | mr | ms | mt | my | na | ne | nl | no | oc \n\012| om | or | pa | pl | ps | pt | qu | rm | rn | ro | ru | rw \n\012| sa | sd | sg | sh | si | sk | sl | sm | sn | so | sq | sr | ss \n\012| st | su | sv | sw | ta | te | tg | th | ti | tk | tl | tn | to \n\012| tr | ts | tt | tw | ug | uk | ur | uz | vi | vo | wo | xh \n\012| yi | yo | za | zh | zu | hans)
+Itocshow TEXT tocshow | toconly | notoc
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Imathtypes TEXT formula | altmath | frac | stk | lim | prod | sum \n\012\011\011\011| integ | fen | rad
+Ilanguage TEXT (aa | ab | af | am | ar | as | ay | az | ba | be | bg | bh \n\012| bi | bn | bo | br | ca | co | cs | cy | da | de | dz | el \n\012| en | eo | es | et | eu | fa | fi | fj | fo | fr | fy | ga | gd \n\012| gl | gn | gu | ha | he | hi | hr | hu | hy | ia | id | ie \n\012| ik | is | it | iu | ja | jw | ka | kk | kl | km | kn | ko \n\012| ks | ku | ky | la | ln | lo | lt | lv | mg | mi | mk | ml \n\012| mn | mo | mr | ms | mt | my | na | ne | nl | no | oc \n\012| om | or | pa | pl | ps | pt | qu | rm | rn | ro | ru | rw \n\012| sa | sd | sg | sh | si | sk | sl | sm | sn | so | sq | sr | ss \n\012| st | su | sv | sw | ta | te | tg | th | ti | tk | tl | tn | to \n\012| tr | ts | tt | tw | ug | uk | ur | uz | vi | vo | wo | xh \n\012| yi | yo | za | zh | zu | hans)
+Itocshow TEXT tocshow | toconly | notoc
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Imathtypes TEXT formula | altmath | frac | stk | lim | prod | sum \n\012\011\011\011| integ | fen | rad
+Ilanguage TEXT (aa | ab | af | am | ar | as | ay | az | ba | be | bg | bh \n\012| bi | bn | bo | br | ca | co | cs | cy | da | de | dz | el \n\012| en | eo | es | et | eu | fa | fi | fj | fo | fr | fy | ga | gd \n\012| gl | gn | gu | ha | he | hi | hr | hu | hy | ia | id | ie \n\012| ik | is | it | iu | ja | jw | ka | kk | kl | km | kn | ko \n\012| ks | ku | ky | la | ln | lo | lt | lv | mg | mi | mk | ml \n\012| mn | mo | mr | ms | mt | my | na | ne | nl | no | oc \n\012| om | or | pa | pl | ps | pt | qu | rm | rn | ro | ru | rw \n\012| sa | sd | sg | sh | si | sk | sl | sm | sn | so | sq | sr | ss \n\012| st | su | sv | sw | ta | te | tg | th | ti | tk | tl | tn | to \n\012| tr | ts | tt | tw | ug | uk | ur | uz | vi | vo | wo | xh \n\012| yi | yo | za | zh | zu | hans)
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itocshow TEXT tocshow | toconly | notoc
+Itocshow TEXT tocshow | toconly | notoc
+Iauthors TEXT (misctxt | prefix | fnames | sname | suffix | degs)*
+Iauthors TEXT (misctxt | prefix | fnames | sname | suffix | degs)*
+Itocshow TEXT tocshow | toconly | notoc
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Ilanguage TEXT (aa | ab | af | am | ar | as | ay | az | ba | be | bg | bh \n\012| bi | bn | bo | br | ca | co | cs | cy | da | de | dz | el \n\012| en | eo | es | et | eu | fa | fi | fj | fo | fr | fy | ga | gd \n\012| gl | gn | gu | ha | he | hi | hr | hu | hy | ia | id | ie \n\012| ik | is | it | iu | ja | jw | ka | kk | kl | km | kn | ko \n\012| ks | ku | ky | la | ln | lo | lt | lv | mg | mi | mk | ml \n\012| mn | mo | mr | ms | mt | my | na | ne | nl | no | oc \n\012| om | or | pa | pl | ps | pt | qu | rm | rn | ro | ru | rw \n\012| sa | sd | sg | sh | si | sk | sl | sm | sn | so | sq | sr | ss \n\012| st | su | sv | sw | ta | te | tg | th | ti | tk | tl | tn | to \n\012| tr | ts | tt | tw | ug | uk | ur | uz | vi | vo | wo | xh \n\012| yi | yo | za | zh | zu | hans)
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Imathtypes TEXT formula | altmath | frac | stk | lim | prod | sum \n\012\011\011\011| integ | fen | rad
+Ilanguage TEXT (aa | ab | af | am | ar | as | ay | az | ba | be | bg | bh \n\012| bi | bn | bo | br | ca | co | cs | cy | da | de | dz | el \n\012| en | eo | es | et | eu | fa | fi | fj | fo | fr | fy | ga | gd \n\012| gl | gn | gu | ha | he | hi | hr | hu | hy | ia | id | ie \n\012| ik | is | it | iu | ja | jw | ka | kk | kl | km | kn | ko \n\012| ks | ku | ky | la | ln | lo | lt | lv | mg | mi | mk | ml \n\012| mn | mo | mr | ms | mt | my | na | ne | nl | no | oc \n\012| om | or | pa | pl | ps | pt | qu | rm | rn | ro | ru | rw \n\012| sa | sd | sg | sh | si | sk | sl | sm | sn | so | sq | sr | ss \n\012| st | su | sv | sw | ta | te | tg | th | ti | tk | tl | tn | to \n\012| tr | ts | tt | tw | ug | uk | ur | uz | vi | vo | wo | xh \n\012| yi | yo | za | zh | zu | hans)
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Imathtypes TEXT formula | altmath | frac | stk | lim | prod | sum \n\012\011\011\011| integ | fen | rad
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Iobjects TEXT (fig | ill | tbl | xobj | pullquote | sidenote)*
+Ihiding TEXT shown | hidden | webonly | prntonly
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Ilist TEXT list | defl
+Imathtypes TEXT formula | altmath | frac | stk | lim | prod | sum \n\012\011\011\011| integ | fen | rad
+Iobjects TEXT (fig | ill | tbl | xobj | pullquote | sidenote)*
+Ihiding TEXT shown | hidden | webonly | prntonly
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Iobjects TEXT (fig | ill | tbl | xobj | pullquote | sidenote)*
+Ihiding TEXT shown | hidden | webonly | prntonly
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Imathtypes TEXT formula | altmath | frac | stk | lim | prod | sum \n\012\011\011\011| integ | fen | rad
+Iobjects TEXT (fig | ill | tbl | xobj | pullquote | sidenote)*
+Iobjects TEXT (fig | ill | tbl | xobj | pullquote | sidenote)*
+Ihiding TEXT shown | hidden | webonly | prntonly
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Imathtypes TEXT formula | altmath | frac | stk | lim | prod | sum \n\012\011\011\011| integ | fen | rad
+Iobjects TEXT (fig | ill | tbl | xobj | pullquote | sidenote)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Iobjects TEXT (fig | ill | tbl | xobj | pullquote | sidenote)*
+Ihiding TEXT shown | hidden | webonly | prntonly
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Imathtypes TEXT formula | altmath | frac | stk | lim | prod | sum \n\012\011\011\011| integ | fen | rad
+Iobjects TEXT (fig | ill | tbl | xobj | pullquote | sidenote)*
+Iobjects TEXT (fig | ill | tbl | xobj | pullquote | sidenote)*
+Ihiding TEXT shown | hidden | webonly | prntonly
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Imathtypes TEXT formula | altmath | frac | stk | lim | prod | sum \n\012\011\011\011| integ | fen | rad
+Iobjects TEXT (fig | ill | tbl | xobj | pullquote | sidenote)*
+Iobjects TEXT (fig | ill | tbl | xobj | pullquote | sidenote)*
+Ihiding TEXT shown | hidden | webonly | prntonly
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Imathtypes TEXT formula | altmath | frac | stk | lim | prod | sum \n\012\011\011\011| integ | fen | rad
+Iobjects TEXT (fig | ill | tbl | xobj | pullquote | sidenote)*
+Iobjects TEXT (fig | ill | tbl | xobj | pullquote | sidenote)*
+Ihiding TEXT shown | hidden | webonly | prntonly
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Imathtypes TEXT formula | altmath | frac | stk | lim | prod | sum \n\012\011\011\011| integ | fen | rad
+Iobjects TEXT (fig | ill | tbl | xobj | pullquote | sidenote)*
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Imathtypes TEXT formula | altmath | frac | stk | lim | prod | sum \n\012\011\011\011| integ | fen | rad
+Iobjects TEXT (fig | ill | tbl | xobj | pullquote | sidenote)*
+Iobjects TEXT (fig | ill | tbl | xobj | pullquote | sidenote)*
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Imathtypes TEXT formula | altmath | frac | stk | lim | prod | sum \n\012\011\011\011| integ | fen | rad
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Imathtypes TEXT formula | altmath | frac | stk | lim | prod | sum \n\012\011\011\011| integ | fen | rad
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Iobjects TEXT (fig | ill | tbl | xobj | pullquote | sidenote)*
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Imathtypes TEXT formula | altmath | frac | stk | lim | prod | sum \n\012\011\011\011| integ | fen | rad
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Ihiding TEXT shown | hidden | webonly | prntonly
+Iobjects TEXT (fig | ill | tbl | xobj | pullquote | sidenote)*
+Ihiding TEXT shown | hidden | webonly | prntonly
+Ilanguage TEXT (aa | ab | af | am | ar | as | ay | az | ba | be | bg | bh \n\012| bi | bn | bo | br | ca | co | cs | cy | da | de | dz | el \n\012| en | eo | es | et | eu | fa | fi | fj | fo | fr | fy | ga | gd \n\012| gl | gn | gu | ha | he | hi | hr | hu | hy | ia | id | ie \n\012| ik | is | it | iu | ja | jw | ka | kk | kl | km | kn | ko \n\012| ks | ku | ky | la | ln | lo | lt | lv | mg | mi | mk | ml \n\012| mn | mo | mr | ms | mt | my | na | ne | nl | no | oc \n\012| om | or | pa | pl | ps | pt | qu | rm | rn | ro | ru | rw \n\012| sa | sd | sg | sh | si | sk | sl | sm | sn | so | sq | sr | ss \n\012| st | su | sv | sw | ta | te | tg | th | ti | tk | tl | tn | to \n\012| tr | ts | tt | tw | ug | uk | ur | uz | vi | vo | wo | xh \n\012| yi | yo | za | zh | zu | hans)
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Imathtypes TEXT formula | altmath | frac | stk | lim | prod | sum \n\012\011\011\011| integ | fen | rad
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Imathtypes TEXT formula | altmath | frac | stk | lim | prod | sum \n\012\011\011\011| integ | fen | rad
+Iarttype TEXT (aa | ab | ac | ad | adb | ae | ai | ak | al | an | ap | apg | ar | at | ax | bbr | bc | bd | be | bg | bi | bk | bm | bp | br | bs | bt | ca | car | cc | cd | ce | cer | cex | cf | cg | chc | chi | ci | cj | ck | cl | cm | cn | co | coe | com | cp | cr | cs | csb | ct | cu | cv | cw | cx | cy | cz | da | db | dc | dg | dia | dii | dp | dr | ds | dt | du | dv | eam | ec | ed | edr | ee | ei | ek | em | endo | ep | er | esa | eso | et | ev | ex | ey | fa | fe | fgid | fn | fp | fpa | fr | fs | ftp | fw | ga | gc | gd | ge | gg | gl | gn | gp | gr | gs | gt | hd | hi | hl | hn | hr | ht | hy | ib | ibd | ic | if | ig | ii | imp | in | ip | iph | iq | is | it | iv | ivp | ix | ja | jc | ka | ki | kt | la | lc | le | lf | lg | lh | li | liv | lj | lm | lr | ls | lt | lta | lu | ma | mc | md | me | met | meta | mk | mo | mon | mp | mr | ms | mt | mu | mv | my | nb | nc | ne | nf | nh | ni | no | nrv | nut | nv | nx | oa | ob | oc | og | oi | om | on | oo | op | opp | or | os | ot | pa | pan | pat | pb | pc | pcp | pd | pe | ped | pf | pg | ph | pi | pj | pk | pl | pld | plm | pm | pn | po | poc | poe | pp | pq | pr | ps | pt | pu | pv | px | py | qa | ra | rc | rd | re | reds | res | rf | rft | rg | rh | rl | rn | ro | rp | rq | rr | rrn | rs | rt | ru | rv | rvc | rw | rwc | rx | rz | sa | sb | sc | sd | se | sf | sg | sh | si | sia | sj | sl | sm | sn | so | sp | spd | sr | ss | st | sto | sv | sws | sx | sy | syi | ta | tb | tc | tla | tm | tn | tp | tr | ts | tt | tu | tv | ty | uf | vp | wb | wh | wr | ws | xn | xx)
+Iobjects TEXT (fig | ill | tbl | xobj | pullquote | sidenote)*
+Ilanguage TEXT (aa | ab | af | am | ar | as | ay | az | ba | be | bg | bh \n\012| bi | bn | bo | br | ca | co | cs | cy | da | de | dz | el \n\012| en | eo | es | et | eu | fa | fi | fj | fo | fr | fy | ga | gd \n\012| gl | gn | gu | ha | he | hi | hr | hu | hy | ia | id | ie \n\012| ik | is | it | iu | ja | jw | ka | kk | kl | km | kn | ko \n\012| ks | ku | ky | la | ln | lo | lt | lv | mg | mi | mk | ml \n\012| mn | mo | mr | ms | mt | my | na | ne | nl | no | oc \n\012| om | or | pa | pl | ps | pt | qu | rm | rn | ro | ru | rw \n\012| sa | sd | sg | sh | si | sk | sl | sm | sn | so | sq | sr | ss \n\012| st | su | sv | sw | ta | te | tg | th | ti | tk | tl | tn | to \n\012| tr | ts | tt | tw | ug | uk | ur | uz | vi | vo | wo | xh \n\012| yi | yo | za | zh | zu | hans)
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Ihiding TEXT shown | hidden | webonly | prntonly
+Ipsn TEXT normal | floatleft | floatrt | display | inline | \011external | thumbnail
+Ihiding TEXT shown | hidden | webonly | prntonly
+Ipsn TEXT normal | floatleft | floatrt | display | inline | \011external | thumbnail
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Iobjects TEXT (fig | ill | tbl | xobj | pullquote | sidenote)*
+Ihiding TEXT shown | hidden | webonly | prntonly
+Ipsn TEXT normal | floatleft | floatrt | display | inline | \011external | thumbnail
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Imathtypes TEXT formula | altmath | frac | stk | lim | prod | sum \n\012\011\011\011| integ | fen | rad
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Itabl TEXT ((title | shorttl)?, tgroup+, tblimg*)
+Iyesorno TEXT NUTOKEN
+Iyesorno TEXT NUTOKEN
+Iyesorno TEXT NUTOKEN
+Iyesorno TEXT NUTOKEN
+Iyesorno TEXT NUTOKEN
+Iyesorno TEXT NUTOKEN
+Ibodyatt TEXT id ID #IMPLIED\n\012                                inschlvl NUTOKEN #IMPLIED\n\012                                delchlvl NUTOKEN #IMPLIED\n\012                                label NMTOKEN #IMPLIED\n\012                                hcp NUTOKEN '0'\n\012                                esds NUTOKEN '0'\n\012                                sssn CDATA #IMPLIED\n\012                                unit CDATA #IMPLIED\n\012                                module CDATA #IMPLIED\n\012                                lru CDATA #IMPLIED\n\012                                assem CDATA #IMPLIED\n\012                                subassem CDATA #IMPLIED\n\012                                ssubassm CDATA #IMPLIED\n\012                                compon CDATA #IMPLIED\n\012                                partno CDATA #IMPLIED\n\012                                refdes CDATA #IMPLIED\n\012                                texttype NUTOKEN #IMPLIED\n\012                                applictype IDREFS #IMPLIED\n\012                                applicrefid IDREFS #IMPLIED\n\012                                skilltrk NMTOKENS #IMPLIED\n\012                                contype (desc | proc) #IMPLIED\n\012                                assocfig IDREFS #IMPLIED\n\012                                assoctab IDREFS #IMPLIED 
+Isecur TEXT security (u | c | s) 'u'
+Isecur TEXT security (u | c | s) 'u'
+Isecur TEXT security (u | c | s) 'u'
+Iyesorno TEXT NUTOKEN
+Iyesorno TEXT NUTOKEN
+Ialign TEXT left | center | right | justify | char | hang
+Isecur TEXT security (u | c | s) 'u'
+Isecur TEXT security (u | c | s) 'u'
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Imathtypes TEXT formula | altmath | frac | stk | lim | prod | sum \n\012\011\011\011| integ | fen | rad
+Isecur TEXT security (u | c | s) 'u'
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Imathtypes TEXT formula | altmath | frac | stk | lim | prod | sum \n\012\011\011\011| integ | fen | rad
+Isecur TEXT security (u | c | s) 'u'
+Ialign TEXT left | center | right | justify | char | hang
+Iyesorno TEXT NUTOKEN
+Iyesorno TEXT NUTOKEN
+Ialign TEXT left | center | right | justify | char | hang
+Iyesorno TEXT NUTOKEN
+Iyesorno TEXT NUTOKEN
+Iyesorno TEXT NUTOKEN
+Isecur TEXT security (u | c | s) 'u'
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Imathtypes TEXT formula | altmath | frac | stk | lim | prod | sum \n\012\011\011\011| integ | fen | rad
+Ientryatt TEXT colname NMTOKEN #IMPLIED\n\012                                spanname NMTOKEN #IMPLIED\n\012                                morerows NUTOKEN  #IMPLIED\n\012                                -- morerows NUTOKEN      '0' --\n\012                                colsep NUTOKEN #IMPLIED\n\012                                rowsep NUTOKEN #IMPLIED\n\012                                rotate NUTOKEN '0'\n\012                                valign ( top | middle | bottom ) 'top'\n\012                                align (left | center | right | justify | char | hang) #IMPLIED\n\012                                charoff NUTOKEN #IMPLIED\n\012                                char CDATA #IMPLIED 
+Isecur TEXT security (u | c | s) 'u'
+Iyesorno TEXT NUTOKEN
+Iyesorno TEXT NUTOKEN
+Ialign TEXT left | center | right | justify | char | hang
+Isecur TEXT security (u | c | s) 'u'
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Ihiding TEXT shown | hidden | webonly | prntonly
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Ihiding TEXT shown | hidden | webonly | prntonly
+Ihiding TEXT shown | hidden | webonly | prntonly
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Ilist TEXT list | defl
+Imathtypes TEXT formula | altmath | frac | stk | lim | prod | sum \n\012\011\011\011| integ | fen | rad
+Ihiding TEXT shown | hidden | webonly | prntonly
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Imathtypes TEXT formula | altmath | frac | stk | lim | prod | sum \n\012\011\011\011| integ | fen | rad
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Imathtypes TEXT formula | altmath | frac | stk | lim | prod | sum \n\012\011\011\011| integ | fen | rad
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Imathtypes TEXT formula | altmath | frac | stk | lim | prod | sum \n\012\011\011\011| integ | fen | rad
+Ihiding TEXT shown | hidden | webonly | prntonly
+Ipsn TEXT normal | floatleft | floatrt | display | inline | \011external | thumbnail
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Imathtypes TEXT formula | altmath | frac | stk | lim | prod | sum \n\012\011\011\011| integ | fen | rad
+Ialign TEXT left | center | right | justify | char | hang
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Ialign TEXT left | center | right | justify | char | hang
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Iposts TEXT paren | angle | verbar | sol | sqbrk | cub
+Iposts TEXT paren | angle | verbar | sol | sqbrk | cub
+Iposts TEXT paren | angle | verbar | sol | sqbrk | cub
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Itext TEXT (#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)*
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Ireftext TEXT ((#PCDATA | b | it | url | email | \n\012 \011\011ssf | sc | ty | sup | inf | supinf | infsup | scp | und | dund | sth | ovr | dovr | vect | mag1 | mag2 | magm | \n\012 \011\011wot | pot | hid | newline | quote | auq)* | (extlink | dateref | tlnref | figref | equref | \n\012tblref | textref | footref | footnote | appref | xheadref | xobref)*)*
+Imathtypes TEXT formula | altmath | frac | stk | lim | prod | sum \n\012\011\011\011| integ | fen | rad
+Igtdot SDATA [gtdot   ]
+IAcirc SDATA [Acirc ]
+IDot SDATA [Dot     ]
+Iepsivmcr SDATA [epsivmcr ]
+Inotindot SDATA [notindot]
+Isqudd3 SDATA [squdd3   ]
+Isqudd2 SDATA [squdd2   ]
+Isccue SDATA [sccue   ]
+Iqmacr SDATA [qmacr    ]
+Ilsim SDATA [lsim    ]
+Isqudd6 SDATA [squdd6   ]
+s
+f<OSFILE SOIBASE='/cygdrive/c/SOME_PUB_Article_SGML_DTD_6.0/ajarticle_s.dtd'>
+NGIF
+simagee1.gif
+f<OSFILE SOIBASE='/cygdrive/c/sumpubsmgl/input/someFileA.sgm'>imagee1.gif
+Eequa1 NDATA GIF
+Isupe SDATA [supe    ]
+Ib.iota SDATA [b.iota  ]
+Idollar SDATA [dollar]
+Iacirc SDATA [acirc ]
+Iolcross SDATA [olcross ]
+Ijcy SDATA [jcy   ]
+Isetmn SDATA [setmn   ]
+IDscr SDATA [Dscr    ]
+Iyen SDATA [yen   ]
+Izacute SDATA [zacute]
+Iuml SDATA [uml   ]
+Icomp SDATA [comp    ]
+Isqudcr SDATA [squdcr   ]
+IMopf SDATA [Mopf    ]
+Iudhar SDATA [udhar   ]
+IBrarr SDATA [Brarr    ]
+Izcedil SDATA [zcedil   ]
+Iiquest SDATA [iquest]
+Icrostar SDATA [crostar  ]
+Iyscr SDATA [yscr    ]
+Iprcue SDATA [prcue   ]
+Imale SDATA [male  ]
+Iloarr SDATA [loarr   ]
+Ilambda SDATA [lambda  ]
+IVdashl SDATA [Vdashl  ]
+Ibemptyv SDATA [bemptyv ]
+Icong SDATA [cong    ]
+Ieplus SDATA [eplus   ]
+IWstrok SDATA [Wstrok   ]
+Iordf SDATA [ordf  ]
+Imalt SDATA [malt  ]
+Iyfr SDATA [yfr     ]
+Iordm SDATA [ordm  ]
+Iagrave SDATA [agrave]
+Ispades SDATA [spades]
+Inspar SDATA [nspar   ]
+IBmacr SDATA [Bmacr    ]
+IIacgr SDATA [Iacgr ]
+IOmega SDATA [Omega   ]
+IOslash SDATA [Oslash]
+IKHgr SDATA [KHgr  ]
+Ilparlt SDATA [lparlt  ]
+Iring SDATA [ring  ]
+IBtilde SDATA [Btilde   ]
+Isigmatld SDATA [sigmatld ]
+ICcaron SDATA [Ccaron]
+Idstrok SDATA [dstrok]
+Issetmn SDATA [ssetmn  ]
+Ivarr SDATA [varr    ]
+Iudot SDATA [udot     ]
+Ilrhard SDATA [lrhard  ]
+IZscr SDATA [Zscr    ]
+Irdldhar SDATA [rdldhar ]
+Ijfr SDATA [jfr     ]
+Ingrave SDATA [ngrave   ]
+Ibmacr SDATA [bmacr    ]
+Iiacgr SDATA [iacgr ]
+ISub SDATA [Sub     ]
+ILcy SDATA [Lcy   ]
+Iomega SDATA [omega   ]
+Ifilig SDATA [filig ]
+ITHORN SDATA [THORN ]
+Iltquest SDATA [ltquest ]
+IRcirc SDATA [Rcirc    ]
+ISup SDATA [Sup     ]
+Icopy SDATA [copy  ]
+IETH SDATA [ETH   ]
+IOtilde SDATA [Otilde]
+Imdash SDATA [mdash ]
+Iffilig SDATA [ffilig]
+Ib.xi SDATA [b.xi    ]
+Ircirc SDATA [rcirc    ]
+IVdot SDATA [Vdot     ]
+ITcallig SDATA [Tcallig  ]
+Idzigrarr SDATA [dzigrarr]
+IDopf SDATA [Dopf    ]
+Ixoplus SDATA [xoplus  ]
+Igtquest SDATA [gtquest ]
+Ib.kappav SDATA [b.kappav]
+Ipscr SDATA [pscr    ]
+Ixvee SDATA [xvee    ]
+Ilowast SDATA [lowast  ]
+Inap SDATA [nap     ]
+ILfr SDATA [Lfr     ]
+Iropar SDATA [ropar   ]
+IUacute SDATA [Uacute]
+Inotin SDATA [notin   ]
+Israrr SDATA [srarr   ]
+Irsquor SDATA [rsquor]
+Iauml SDATA [auml  ]
+Ivltri SDATA [vltri   ]
+ISmacr SDATA [Smacr    ]
+IVDash SDATA [VDash   ]
+Ilrhar SDATA [lrhar   ]
+IOmegatilde SDATA [Omegatilde]
+Iitilde SDATA [itilde]
+ICcirc SDATA [Ccirc ]
+ILgr SDATA [Lgr   ]
+IConint SDATA [Conint  ]
+Ithksim SDATA [thksim  ]
+Ilsqb SDATA [lsqb  ]
+Imart SDATA [mart     ]
+Ibacute SDATA [bacute   ]
+Ismacr SDATA [smacr    ]
+IvDash SDATA [vDash   ]
+Ithetacirc SDATA [thetacirc]
+ISOFTcy SDATA [SOFTcy]
+IQscr SDATA [Qscr    ]
+IZopf SDATA [Zopf    ]
+Iccirc SDATA [ccirc ]
+Ichcy SDATA [chcy  ]
+Ivtilde SDATA [vtilde   ]
+Ixlarr SDATA [xlarr   ]
+Incy SDATA [ncy   ]
+Iocir SDATA [ocir    ]
+Ib.rhov SDATA [b.rhov  ]
+Iemsp SDATA [emsp  ]
+Idtrif SDATA [dtrif ]
+Ietacirc SDATA [etacirc   ]
+Ilozf SDATA [lozf  ]
+IIgrave SDATA [Igrave]
+Ioacute SDATA [oacute]
+Iorslope SDATA [orslope ]
+Ifnof SDATA [fnof    ]
+Idiams SDATA [diams ]
+Irharul SDATA [rharul  ]
+Iapacir SDATA [apacir  ]
+Ibarwed SDATA [barwed  ]
+Ixutri SDATA [xutri   ]
+Ipsgr SDATA [psgr  ]
+Irdquor SDATA [rdquor]
+ILstrok SDATA [Lstrok]
+Isqsupe SDATA [sqsupe  ]
+IDmacr SDATA [Dmacr    ]
+Ihearts SDATA [hearts]
+Iequiv SDATA [equiv   ]
+Isqsub SDATA [sqsub   ]
+Igscr SDATA [gscr    ]
+Itriplus SDATA [triplus ]
+Iwedbar SDATA [wedbar  ]
+IngE SDATA [ngE     ]
+Istrns SDATA [strns   ]
+Idiam SDATA [diam    ]
+Isqsup SDATA [sqsup   ]
+IYIcy SDATA [YIcy  ]
+Iradic SDATA [radic   ]
+IOdblac SDATA [Odblac]
+Infr SDATA [nfr     ]
+Idmacr SDATA [dmacr    ]
+Inotni SDATA [notni   ]
+Iszlig SDATA [szlig ]
+IPcy SDATA [Pcy   ]
+Ildsh SDATA [ldsh    ]
+Ilarrbfs SDATA [larrbfs ]
+Ibbrktbrk SDATA [bbrktbrk]
+IOHacgr SDATA [OHacgr]
+ITcirc SDATA [Tcirc    ]
+Iclubs SDATA [clubs ]
+Inge SDATA [nge     ]
+Iscap SDATA [scap    ]
+Ibcong SDATA [bcong   ]
+Ingr SDATA [ngr   ]
+Ingt SDATA [ngt     ]
+Idarr SDATA [darr  ]
+Icdot SDATA [cdot  ]
+Itshcy SDATA [tshcy ]
+Iodash SDATA [odash   ]
+IHscr SDATA [Hscr    ]
+Itprime SDATA [tprime  ]
+Itcirc SDATA [tcirc    ]
+Iofcir SDATA [ofcir   ]
+IDtilde SDATA [Dtilde   ]
+IQopf SDATA [Qopf    ]
+IColone SDATA [Colone  ]
+Iangmsdag SDATA [angmsdag]
+IEcaron SDATA [Ecaron]
+Iangmsdae SDATA [angmsdae]
+Iangmsdab SDATA [angmsdab]
+Icapdot SDATA [capdot  ]
+Iangmsdaa SDATA [angmsdaa]
+IAcy SDATA [Acy   ]
+Iangmsdac SDATA [angmsdac]
+Iangmsdad SDATA [angmsdad]
+Idash SDATA [dash  ]
+Iangmsdaf SDATA [angmsdaf]
+Ioror SDATA [oror    ]
+Iangmsdah SDATA [angmsdah]
+IEEacgr SDATA [EEacgr]
+Iutrif SDATA [utrif ]
+IDJcy SDATA [DJcy  ]
+Ithere4 SDATA [there4  ]
+IXmacrcrc SDATA [Xmacrcrc ]
+Ibreve SDATA [breve ]
+Inbsp SDATA [nbsp  ]
+Injcy SDATA [njcy  ]
+Isqufdd3 SDATA [squfdd3  ]
+Inedot SDATA [nedot   ]
+Inuml SDATA [numl     ]
+IQtilde SDATA [Qtilde   ]
+Iphimacr SDATA [phimacr  ]
+IPhicirc SDATA [Phicirc  ]
+Iperiod SDATA [period]
+Ilmoust SDATA [lmoust  ]
+IRcaron SDATA [Rcaron]
+IPfr SDATA [Pfr     ]
+Inis SDATA [nis     ]
+Iniv SDATA [niv     ]
+IOHgr SDATA [OHgr  ]
+Ihomtht SDATA [homtht  ]
+Iseswar SDATA [seswar  ]
+Iandd SDATA [andd    ]
+Iprofsurf SDATA [profsurf]
+IUmacr SDATA [Umacr ]
+IColon SDATA [Colon   ]
+IPsitilde SDATA [Psitilde ]
+Iydot SDATA [ydot     ]
+IVerbar SDATA [Verbar  ]
+Ilesges SDATA [lesges  ]
+IEcirc SDATA [Ecirc ]
+IJukcy SDATA [Jukcy ]
+Iandv SDATA [andv    ]
+IPgr SDATA [Pgr   ]
+Iplussim SDATA [plussim ]
+Icap SDATA [cap     ]
+Iduhar SDATA [duhar   ]
+IAfr SDATA [Afr     ]
+Iumacr SDATA [umacr ]
+Ilates SDATA [lates   ]
+Icolon SDATA [colon ]
+Iudiagr SDATA [udiagr]
+IOuml SDATA [Ouml  ]
+Isbreve SDATA [sbreve   ]
+InlE SDATA [nlE     ]
+Ixcup SDATA [xcup    ]
+IPhi SDATA [Phi     ]
+ssomeimageT4.gif
+f<OSFILE SOIBASE='/cygdrive/c/sumpubsmgl/input/someFileA.sgm'>someimageT4.gif
+Etblt4 NDATA GIF
+ssomeimageT3.gif
+f<OSFILE SOIBASE='/cygdrive/c/sumpubsmgl/input/someFileA.sgm'>someimageT3.gif
+Etblt3 NDATA GIF
+Iecirc SDATA [ecirc ]
+IUbrcy SDATA [Ubrcy ]
+Ijukcy SDATA [jukcy ]
+ssomeimageT1.gif
+f<OSFILE SOIBASE='/cygdrive/c/sumpubsmgl/input/someFileA.sgm'>someimageT1.gif
+Etblt1 NDATA GIF
+ssomeimageT2.gif
+f<OSFILE SOIBASE='/cygdrive/c/sumpubsmgl/input/someFileA.sgm'>someimageT2.gif
+Etblt2 NDATA GIF
+Ipermil SDATA [permil  ]
+Ilfisht SDATA [lfisht  ]
+Iimof SDATA [imof    ]
+Ismtes SDATA [smtes   ]
+Icsub SDATA [csub    ]
+Ircy SDATA [rcy   ]
+Igsim SDATA [gsim    ]
+Igtrarr SDATA [gtrarr  ]
+Iisindot SDATA [isindot ]
+IAgr SDATA [Agr   ]
+Icsup SDATA [csup    ]
+Inle SDATA [nle     ]
+Ilcaron SDATA [lcaron]
+IZdot SDATA [Zdot  ]
+Isqudu6 SDATA [squdu6   ]
+Isqudu3 SDATA [squdu3   ]
+InVdash SDATA [nVdash  ]
+Iubrcy SDATA [ubrcy ]
+Iplusb SDATA [plusb   ]
+Ihairsp SDATA [hairsp]
+IRang SDATA [Rang    ]
+Ipluse SDATA [pluse   ]
+IDagger SDATA [Dagger]
+IBauriol SDATA [Bauriol  ]
+IeDot SDATA [eDot    ]
+IHopf SDATA [Hopf    ]
+Inlt SDATA [nlt     ]
+Ilpar SDATA [lpar  ]
+Ioct3 SDATA [oct3   ]
+Idacute SDATA [dacute   ]
+Ioct1 SDATA [oct1   ]
+Ioct2 SDATA [oct2   ]
+Irbarr SDATA [rbarr   ]
+Iange SDATA [ange    ]
+Ihalf SDATA [half  ]
+Itscr SDATA [tscr    ]
+Ireg SDATA [reg   ]
+Ihorbar SDATA [horbar]
+Itscy SDATA [tscy  ]
+Invdash SDATA [nvdash  ]
+IFmacr SDATA [Fmacr    ]
+Ixtilde SDATA [xtilde   ]
+IrHar SDATA [rHar    ]
+Ilaemptyv SDATA [laemptyv]
+Idtri SDATA [dtri  ]
+Ieuml SDATA [euml  ]
+Imidcir SDATA [midcir  ]
+Iovbar SDATA [ovbar   ]
+InhArr SDATA [nhArr   ]
+Idlcrop SDATA [dlcrop]
+Ifmacr SDATA [fmacr    ]
+Irfr SDATA [rfr     ]
+Ilarrfs SDATA [larrfs  ]
+Inapid SDATA [napid   ]
+Ibetatilde SDATA [betatilde ]
+Inparsl SDATA [nparsl  ]
+ITcy SDATA [Tcy   ]
+Iphgr SDATA [phgr  ]
+IVcirc SDATA [Vcirc    ]
+Iscissors SDATA [scissors ]
+Imcomma SDATA [mcomma  ]
+IUscr SDATA [Uscr    ]
+Iscsim SDATA [scsim   ]
+Iesdot SDATA [esdot   ]
+Icopysr SDATA [copysr]
+Isimrarr SDATA [simrarr ]
+Irgr SDATA [rgr   ]
+Ixodot SDATA [xodot   ]
+Inot SDATA [not   ]
+Ivcirc SDATA [vcirc    ]
+IAbreve SDATA [Abreve]
+Iurtri SDATA [urtri   ]
+Iroang SDATA [roang   ]
+Icfr SDATA [cfr     ]
+Ib.epsi SDATA [b.epsi  ]
+IEcy SDATA [Ecy   ]
+Ilarrhk SDATA [larrhk  ]
+Ilowbar SDATA [lowbar]
+Irho SDATA [rho     ]
+Iprsim SDATA [prsim   ]
+Inpr SDATA [npr     ]
+Istarcir SDATA [starcir  ]
+IltrPar SDATA [ltrPar  ]
+Iphiv SDATA [phiv    ]
+IRarr SDATA [Rarr    ]
+IQdot SDATA [Qdot     ]
+Iegrave SDATA [egrave]
+Ib.thetav SDATA [b.thetav]
+ITfr SDATA [Tfr     ]
+Isqpatocr SDATA [sqpatocr ]
+Ikscr SDATA [kscr    ]
+Iogon SDATA [ogon  ]
+Ichi SDATA [chi     ]
+IsimgE SDATA [simgE   ]
+IFtilde SDATA [Ftilde   ]
+ISHcy SDATA [SHcy  ]
+Itopbot SDATA [topbot  ]
+IWmacr SDATA [Wmacr    ]
+Ilambdamn SDATA [lambdamn ]
+Ihstrok SDATA [hstrok]
+Iisinsv SDATA [isinsv  ]
+Ikappacrc SDATA [kappacrc ]
+IGcirc SDATA [Gcirc ]
+Isubmult SDATA [submult ]
+Iscnsim SDATA [scnsim  ]
+ITgr SDATA [Tgr   ]
+Isubplus SDATA [subplus ]
+Iltlarr SDATA [ltlarr  ]
+IAnd SDATA [And     ]
+Irtimes SDATA [rtimes  ]
+Igap SDATA [gap     ]
+Iwmacr SDATA [wmacr    ]
+Ilsime SDATA [lsime   ]
+Ieuro SDATA [euro     ]
+Ilsimg SDATA [lsimg   ]
+IEfr SDATA [Efr     ]
+Icir SDATA [cir   ]
+Inotniva SDATA [notniva ]
+Inotnivb SDATA [notnivb ]
+Inotnivc SDATA [notnivc ]
+Insc SDATA [nsc     ]
+IStilde SDATA [Stilde   ]
+ITcaron SDATA [Tcaron]
+Igcirc SDATA [gcirc ]
+IscnE SDATA [scnE    ]
+Iharrcir SDATA [harrcir ]
+Iharr SDATA [harr    ]
+Igdot SDATA [gdot  ]
+ILscr SDATA [Lscr    ]
+Ivcy SDATA [vcy   ]
+IlBarr SDATA [lBarr   ]
+Izeta SDATA [zeta    ]
+IDeltauml SDATA [Deltauml ]
+IlAtail SDATA [lAtail  ]
+Ialphaacute SDATA [alphaacute]
+IUopf SDATA [Uopf    ]
+ILacute SDATA [Lacute]
+IEgr SDATA [Egr   ]
+IAringacute SDATA [Aringacute]
+Isupdsub SDATA [supdsub ]
+IUring SDATA [Uring ]
+Iroarr SDATA [roarr   ]
+IVvdash SDATA [Vvdash  ]
+Invsim SDATA [nvsim   ]
+ILcedil SDATA [Lcedil]
+Ilarrlp SDATA [larrlp  ]
+IxrArr SDATA [xrArr   ]
+Iacaron SDATA [acaron   ]
+Ilatail SDATA [latail  ]
+Ihercon SDATA [hercon  ]
+Inapos SDATA [napos ]
+Ideltacrc SDATA [deltacrc ]
+Igcy SDATA [gcy   ]
+Ihouse SDATA [house    ]
+Iuring SDATA [uring ]
+Inrarrc SDATA [nrarrc  ]
+Iubreve SDATA [ubreve]
+IHmacr SDATA [Hmacr    ]
+IYacute SDATA [Yacute]
+IOacgr SDATA [Oacgr ]
+IDeltamacr SDATA [Deltamacr ]
+Inum SDATA [num   ]
+Iacute SDATA [acute ]
+Inutilde SDATA [nutilde]
+Inrarrw SDATA [nrarrw  ]
+Imtilde SDATA [mtilde   ]
+Incaron SDATA [ncaron]
+Icedil SDATA [cedil ]
+Iltcc SDATA [ltcc    ]
+Igammad SDATA [gammad  ]
+Ihmacr SDATA [hmacr    ]
+Ideltamacr SDATA [deltamacr]
+Ibscr SDATA [bscr    ]
+Ioacgr SDATA [oacgr ]
+IPsi SDATA [Psi     ]
+Ilbbrk SDATA [lbbrk   ]
+Ivfr SDATA [vfr     ]
+Irpargt SDATA [rpargt  ]
+Ihybull SDATA [hybull]
+IXcirc SDATA [Xcirc    ]
+Igammatilde SDATA [gammatilde ]
+Ifacute SDATA [facute   ]
+Igel SDATA [gel     ]
+Invinfin SDATA [nvinfin ]
+Inearhk SDATA [nearhk  ]
+IsimlE SDATA [simlE   ]
+Icrolo SDATA [crolo    ]
+Iges SDATA [ges     ]
+Itopfork SDATA [topfork ]
+Iyacy SDATA [yacy  ]
+Ixcirc SDATA [xcirc   ]
+Igfr SDATA [gfr     ]
+Incap SDATA [ncap    ]
+Isacute SDATA [sacute]
+IIcy SDATA [Icy   ]
+Icircdot SDATA [circdot  ]
+ICscr SDATA [Cscr    ]
+Ilarrpl SDATA [larrpl  ]
+Icrossrnd SDATA [crossrnd ]
+ILopf SDATA [Lopf    ]
+Ixuplus SDATA [xuplus  ]
+IvsubnE SDATA [vsubnE  ]
+Iscedil SDATA [scedil]
+Idiamfln SDATA [diamfln    ]
+Ixscr SDATA [xscr    ]
+Iggr SDATA [ggr   ]
+Imumap SDATA [mumap   ]
+IXfr SDATA [Xfr     ]
+Ivsubne SDATA [vsubne  ]
+ICbreve SDATA [Cbreve   ]
+Iiuml SDATA [iuml  ]
+IRarrtl SDATA [Rarrtl  ]
+Icirmid SDATA [cirmid  ]
+IYmacr SDATA [Ymacr    ]
+Iominus SDATA [ominus  ]
+Isimne SDATA [simne   ]
+Iccups SDATA [ccups   ]
+InlArr SDATA [nlArr   ]
+Iupsi SDATA [upsi    ]
+Ipartacute SDATA [partacute]
+IIcirc SDATA [Icirc ]
+Isqufdu3 SDATA [squfdu3  ]
+Ilesdotor SDATA [lesdotor]
+Iddarr SDATA [ddarr   ]
+Isuphsol SDATA [suphsol ]
+IXgr SDATA [Xgr   ]
+Iymacr SDATA [ymacr    ]
+Ithgr SDATA [thgr  ]
+Iggrave SDATA [ggrave   ]
+Insime SDATA [nsime   ]
+Itriminus SDATA [triminus]
+Itdot SDATA [tdot    ]
+Iuarr SDATA [uarr  ]
+Ihardcy SDATA [hardcy]
+Iqint SDATA [qint    ]
+Isqufhln SDATA [squfhln   ]
+IYscr SDATA [Yscr    ]
+IIfr SDATA [Ifr     ]
+Ilang SDATA [lang    ]
+Ilurdshar SDATA [lurdshar]
+Ismeparsl SDATA [smeparsl]
+Iicirc SDATA [icirc ]
+Irsh SDATA [rsh     ]
+Ikhcy SDATA [khcy  ]
+Izcy SDATA [zcy   ]
+INcallig SDATA [Ncallig  ]
+IHtilde SDATA [Htilde   ]
+Ismile SDATA [smile   ]
+Iastln SDATA [astln]
+IIgr SDATA [Igr   ]
+Icrorecf SDATA [crorecf  ]
+Icoprod SDATA [coprod  ]
+Iomegacirc SDATA [omegacirc]
+Inwarr SDATA [nwarr   ]
+Ibsim SDATA [bsim    ]
+Icupbrcap SDATA [cupbrcap]
+Ilarrtl SDATA [larrtl  ]
+IAacute SDATA [Aacute]
+Ithinsp SDATA [thinsp]
+IglE SDATA [glE     ]
+InLtv SDATA [nLtv    ]
+IUtilde SDATA [Utilde]
+Ikcy SDATA [kcy   ]
+ICopf SDATA [Copf    ]
+IJmacr SDATA [Jmacr    ]
+Igla SDATA [gla     ]
+Ixotime SDATA [xotime  ]
+Ioscr SDATA [oscr    ]
+Ilobrk SDATA [lobrk   ]
+Iglj SDATA [glj     ]
+IMap SDATA [Map     ]
+INacute SDATA [Nacute]
+Iaelig SDATA [aelig ]
+Igescc SDATA [gescc   ]
+Icross SDATA [ballot]
+Ioslash SDATA [oslash]
+IYUcy SDATA [YUcy  ]
+Ijmacr SDATA [jmacr    ]
+Issmile SDATA [ssmile  ]
+INcedil SDATA [Ncedil]
+Izfr SDATA [zfr     ]
+Ibtilde SDATA [btilde   ]
+Invap SDATA [nvap    ]
+Iccaron SDATA [ccaron]
+IZcirc SDATA [Zcirc    ]
+IgnE SDATA [gnE     ]
+Insmid SDATA [nsmid   ]
+Iudarr SDATA [udarr   ]
+Iolarr SDATA [olarr   ]
+Iforkv SDATA [forkv   ]
+Icup SDATA [cup     ]
+Ikhgr SDATA [khgr  ]
+IeDDot SDATA [eDDot   ]
+Ilarr SDATA [larr  ]
+Izgr SDATA [zgr   ]
+IPscr SDATA [Pscr    ]
+IlEg SDATA [lEg     ]
+Igne SDATA [gne     ]
+Izcirc SDATA [zcirc    ]
+IYopf SDATA [Yopf    ]
+Ignsim SDATA [gnsim   ]
+Iotilde SDATA [otilde]
+Ikfr SDATA [kfr     ]
+ISogon SDATA [Sogon    ]
+Icapand SDATA [capand  ]
+IMcy SDATA [Mcy   ]
+Isuphsub SDATA [suphsub ]
+Icirscir SDATA [cirscir ]
+IAuml SDATA [Auml  ]
+ILJcy SDATA [LJcy  ]
+Ipointint SDATA [pointint]
+IQequals SDATA [Qequals  ]
+Isogon SDATA [sogon    ]
+Isupsim SDATA [supsim  ]
+Ilate SDATA [late    ]
+Iutri SDATA [utri  ]
+Ikgr SDATA [kgr   ]
+Ieparsl SDATA [eparsl  ]
+Iquatint SDATA [quatint ]
+Isigmav SDATA [sigmav  ]
+IDDotrahd SDATA [DDotrahd]
+IJsercy SDATA [Jsercy]
+Ib.Lambda SDATA [b.Lambda]
+ILdot SDATA [Ldot     ]
+IIOcy SDATA [IOcy  ]
+Iandslope SDATA [andslope]
+IOgrave SDATA [Ograve]
+Iuacute SDATA [uacute]
+Icaps SDATA [caps    ]
+IKcirc SDATA [Kcirc    ]
+Ifscr SDATA [fscr    ]
+IboxH SDATA [boxH  ]
+Ibsol SDATA [bsol  ]
+Ib.phi SDATA [b.phi   ]
+IOtimes SDATA [Otimes  ]
+IUdigr SDATA [Udigr ]
+Itritime SDATA [tritime ]
+IboxV SDATA [boxV  ]
+Isharp SDATA [sharp ]
+IdHar SDATA [dHar    ]
+IWuml SDATA [Wuml   ]
+IMfr SDATA [Mfr     ]
+Ikcirc SDATA [kcirc    ]
+IsupnE SDATA [supnE   ]
+IInt SDATA [Int     ]
+Inatur SDATA [natur ]
+Iconint SDATA [conint  ]
+Iohbar SDATA [ohbar   ]
+Iboxh SDATA [boxh  ]
+IEbreve SDATA [Ebreve   ]
+Iblock6 SDATA [block6   ]
+Iveebar SDATA [veebar  ]
+Iulcrop SDATA [ulcrop]
+Iblock5 SDATA [block5   ]
+Iblock4 SDATA [block4   ]
+Iblock3 SDATA [block3   ]
+Iblock2 SDATA [block2   ]
+Ib.tau SDATA [b.tau   ]
+Iudigr SDATA [udigr ]
+Iblock1 SDATA [block1   ]
+Iltrie SDATA [ltrie   ]
+Iboxv SDATA [boxv  ]
+Ib.piv SDATA [b.piv   ]
+Insccue SDATA [nsccue  ]
+Iltrif SDATA [ltrif ]
+Iblock7 SDATA [block7   ]
+Iblock8 SDATA [block8   ]
+Iblock9 SDATA [block9   ]
+IMgr SDATA [Mgr   ]
+Isupne SDATA [supne   ]
+IUdblac SDATA [Udblac]
+Inges SDATA [nges    ]
+IGscr SDATA [Gscr    ]
+Invge SDATA [nvge    ]
+Isquare SDATA [square  ]
+Isquarf SDATA [squarf  ]
+Ioplus SDATA [oplus   ]
+IPopf SDATA [Popf    ]
+Iinfintie SDATA [infintie]
+Iangrtvbd SDATA [angrtvbd]
+Iigrave SDATA [igrave]
+Invgt SDATA [nvgt    ]
+Ihybullhl SDATA [hybullhl ]
+Iecir SDATA [ecir    ]
+Ilrarr SDATA [lrarr   ]
+Iplus SDATA [plus  ]
+Iocy SDATA [ocy   ]
+Inwnear SDATA [nwnear  ]
+Inprcue SDATA [nprcue  ]
+ILmacr SDATA [Lmacr    ]
+Iodiv SDATA [odiv    ]
+Iensp SDATA [ensp  ]
+Inearr SDATA [nearr   ]
+Iltri SDATA [ltri  ]
+Ikgreen SDATA [kgreen]
+Iltcir SDATA [ltcir   ]
+Ilstrok SDATA [lstrok]
+Icompfn SDATA [compfn  ]
+Idrcrop SDATA [drcrop]
+Iblank SDATA [blank ]
+IDarr SDATA [Darr    ]
+ICdot SDATA [Cdot  ]
+Idharl SDATA [dharl   ]
+Ismacrcrc SDATA [smacrcrc ]
+Ieqvparsl SDATA [eqvparsl]
+Ilmacr SDATA [lmacr    ]
+Idharr SDATA [dharr   ]
+ICacute SDATA [Cacute]
+Icuvee SDATA [cuvee   ]
+InsubE SDATA [nsubE   ]
+Ixdot SDATA [xdot     ]
+Iratio SDATA [ratio   ]
+Igtcc SDATA [gtcc    ]
+Iruluhar SDATA [ruluhar ]
+ICcedil SDATA [Ccedil]
+Iodblac SDATA [odblac]
+Imstpos SDATA [mstpos  ]
+Irarrap SDATA [rarrap  ]
+IWtilde SDATA [Wtilde   ]
+Irmoust SDATA [rmoust  ]
+Ielsdot SDATA [elsdot  ]
+Ifllig SDATA [fllig ]
+Ibottom SDATA [bottom  ]
+IJring SDATA [Jring    ]
+Icupcap SDATA [cupcap  ]
+Insube SDATA [nsube   ]
+Iyicy SDATA [yicy  ]
+Iofr SDATA [ofr     ]
+IUogon SDATA [Uogon ]
+Icent SDATA [cent  ]
+Ilesg SDATA [lesg    ]
+Ivnsub SDATA [vnsub   ]
+Imtildcrc SDATA [mtildcrc ]
+Iffllig SDATA [ffllig]
+Iohacgr SDATA [ohacgr]
+Idtilde SDATA [dtilde   ]
+Iecaron SDATA [ecaron]
+IDZcy SDATA [DZcy  ]
+Ivnsup SDATA [vnsup   ]
+IYdot SDATA [Ydot     ]
+Isupdot SDATA [supdot  ]
+Icolone SDATA [colone  ]
+Ishchcy SDATA [shchcy]
+Icwconint SDATA [cwconint]
+Iuogon SDATA [uogon ]
+Iogr SDATA [ogr   ]
+Iogt SDATA [ogt     ]
+IGopf SDATA [Gopf    ]
+Irfisht SDATA [rfisht  ]
+Ifork SDATA [fork    ]
+Ifrac116 SDATA [frac116]
+Invle SDATA [nvle    ]
+Iqtilde SDATA [qtilde   ]
+Itimesbar SDATA [timesbar]
+Ithkap SDATA [thkap   ]
+Ifrac17 SDATA [frac17   ]
+Isscr SDATA [sscr    ]
+Invlt SDATA [nvlt    ]
+Ircaron SDATA [rcaron]
+Iosol SDATA [osol    ]
+IBcy SDATA [Bcy   ]
+Ifrac12 SDATA [frac12]
+Ifrac13 SDATA [frac13]
+Ifrac14 SDATA [frac14]
+Ifrac15 SDATA [frac15]
+Ifrac16 SDATA [frac16]
+Iohm SDATA [ohm   ]
+Ifrac18 SDATA [frac18]
+Ieeacgr SDATA [eeacgr]
+Idjcy SDATA [djcy  ]
+Icomma SDATA [comma ]
+IMcirc SDATA [Mcirc    ]
+Isolb SDATA [solb    ]
+Iuwangle SDATA [uwangle ]
+INscrmacr SDATA [Nscrmacr ]
+IRBarr SDATA [RBarr   ]
+Iuharl SDATA [uharl   ]
+InVDash SDATA [nVDash  ]
+Idlcorn SDATA [dlcorn  ]
+Iverbar SDATA [verbar]
+Ifrac23 SDATA [frac23]
+Iuharr SDATA [uharr   ]
+Ifrac25 SDATA [frac25]
+Ipara SDATA [para  ]
+IUarrocir SDATA [Uarrocir]
+IQfr SDATA [Qfr     ]
+Iminus SDATA [minus   ]
+Ilrtri SDATA [lrtri   ]
+Imcirc SDATA [mcirc    ]
+Iohgr SDATA [ohgr  ]
+Iquest SDATA [quest ]
+Ilsquo SDATA [lsquo ]
+Iodot SDATA [odot    ]
+Ipart SDATA [part    ]
+IrBarr SDATA [rBarr   ]
+Ixhln SDATA [xhln     ]
+IscE SDATA [scE     ]
+ITscr SDATA [Tscr    ]
+Ibbcirc SDATA [bbcirc   ]
+InvDash SDATA [nvDash  ]
+Ifrac34 SDATA [frac34]
+Ifrac35 SDATA [frac35]
+Iodsold SDATA [odsold  ]
+Ifrac38 SDATA [frac38]
+Isqcaps SDATA [sqcaps  ]
+Iexist SDATA [exist   ]
+Irarrfs SDATA [rarrfs  ]
+IEuml SDATA [Euml  ]
+Incup SDATA [ncup    ]
+IBfr SDATA [Bfr     ]
+Iangmsd SDATA [angmsd  ]
+Isce SDATA [sce     ]
+Ibprime SDATA [bprime  ]
+Ilncircf SDATA [lncircf     ]
+Ifrac43 SDATA [frac43   ]
+Isupsub SDATA [supsub  ]
+Iotimesas SDATA [otimesas]
+Ifrac45 SDATA [frac45]
+Inrarr SDATA [nrarr   ]
+ITstrok SDATA [Tstrok]
+Idagger SDATA [dagger]
+IVbar SDATA [Vbar    ]
+Itrifln SDATA [trifln   ]
+INmacr SDATA [Nmacr    ]
+Iijlig SDATA [ijlig ]
+Iscy SDATA [scy   ]
+Isupsup SDATA [supsup  ]
+Itopcir SDATA [topcir  ]
+IUacgr SDATA [Uacgr ]
+Iangrtvb SDATA [angrtvb ]
+IPicirc SDATA [Picirc   ]
+IGbreve SDATA [Gbreve]
+IBgr SDATA [Bgr   ]
+Ib.psi SDATA [b.psi   ]
+Iduarr SDATA [duarr   ]
+Idtdot SDATA [dtdot   ]
+Ifrac56 SDATA [frac56]
+Irhocirc SDATA [rhocirc  ]
+Ifrac58 SDATA [frac58]
+Irarrhk SDATA [rarrhk  ]
+Ilesdot SDATA [lesdot  ]
+Iolt SDATA [olt     ]
+Inmacr SDATA [nmacr    ]
+Ijscr SDATA [jscr    ]
+Iuacgr SDATA [uacgr ]
+Irbbrk SDATA [rbbrk   ]
+IDeltaPsi SDATA [DeltaPsi ]
+Inequiv SDATA [nequiv  ]
+Iphone SDATA [phone ]
+IZstrokcn SDATA [Zstrokcn ]
+Idcy SDATA [dcy   ]
+Islarr SDATA [slarr   ]
+Ifrac67 SDATA [frac67   ]
+Itaucirc SDATA [taucirc  ]
+IDotDot SDATA [DotDot  ]
+IswArr SDATA [swArr   ]
+Ilbrke SDATA [lbrke   ]
+Iincare SDATA [incare]
+Imutilde SDATA [mutilde  ]
+Ijmath SDATA [jmath   ]
+Ialphatilde SDATA [alphatilde]
+ILring SDATA [Lring    ]
+ILtilde SDATA [Ltilde   ]
+Irarrsim SDATA [rarrsim ]
+Imucirc SDATA [mucirc   ]
+Ipound SDATA [pound ]
+Isfr SDATA [sfr     ]
+Ifrac78 SDATA [frac78]
+Ideg SDATA [deg   ]
+IUcy SDATA [Ucy   ]
+IlAarr SDATA [lAarr   ]
+IKscr SDATA [Kscr    ]
+Iabreve SDATA [abreve]
+IEacute SDATA [Eacute]
+IrArr SDATA [rArr    ]
+ITopf SDATA [Topf    ]
+IYtilde SDATA [Ytilde   ]
+IZcaron SDATA [Zcaron]
+Isgr SDATA [sgr   ]
+IGJcy SDATA [GJcy  ]
+Itilde SDATA [tilde ]
+IboxDL SDATA [boxDL ]
+Imicro SDATA [micro ]
+Idfr SDATA [dfr     ]
+IrAtail SDATA [rAtail  ]
+IboxDR SDATA [boxDR ]
+Ildrdhar SDATA [ldrdhar ]
+IFcy SDATA [Fcy   ]
+Isolbar SDATA [solbar  ]
+IRacute SDATA [Racute]
+Iflat SDATA [flat  ]
+Ifrac97 SDATA [frac97   ]
+Icongdot SDATA [congdot ]
+Ismashp SDATA [smashp  ]
+IOcirc SDATA [Ocirc ]
+IGdot SDATA [Gdot  ]
+Iuuarr SDATA [uuarr   ]
+Iutdot SDATA [utdot   ]
+IRcedil SDATA [Rcedil]
+Irarrlp SDATA [rarrlp  ]
+Ishy SDATA [shy   ]
+Iftilde SDATA [ftilde   ]
+IboxDl SDATA [boxDl ]
+Igcaron SDATA [gcaron   ]
+Idgr SDATA [dgr   ]
+Iratail SDATA [ratail  ]
+IboxDr SDATA [boxDr ]
+IcirE SDATA [cirE    ]
+Irotimes SDATA [rotimes ]
+Ioperp SDATA [operp   ]
+Iascr SDATA [ascr    ]
+Isim SDATA [sim     ]
+IUfr SDATA [Ufr     ]
+Ilfloor SDATA [lfloor  ]
+Inrtri SDATA [nrtri   ]
+Iocirc SDATA [ocirc ]
+Iperp SDATA [perp    ]
+Ishcy SDATA [shcy  ]
+Iinum SDATA [inum  ]
+Iwedgeq SDATA [wedgeq  ]
+Ibetamacr SDATA [betamacr ]
+Icirc SDATA [circ  ]
+Icire SDATA [cire    ]
+Iawint SDATA [awint   ]
+Istilde SDATA [stilde   ]
+Iord SDATA [ord     ]
+Itcaron SDATA [tcaron]
+Iquot SDATA [quot  ]
+IUgr SDATA [Ugr   ]
+Idie SDATA [die   ]
+Iorv SDATA [orv     ]
+Idivonx SDATA [divonx  ]
+IFfr SDATA [Ffr     ]
+Inabla SDATA [nabla   ]
+Ilacute SDATA [lacute]
+Iepsivcrc SDATA [epsivcrc ]
+Ilaquo SDATA [laquo ]
+IBscr SDATA [Bscr    ]
+InsupE SDATA [nsupE   ]
+Ilcedil SDATA [lcedil]
+Ivellip SDATA [vellip]
+Icudarrl SDATA [cudarrl ]
+IPmacr SDATA [Pmacr    ]
+IKopf SDATA [Kopf    ]
+Ibsolb SDATA [bsolb   ]
+Iopar SDATA [opar    ]
+Icudarrr SDATA [cudarrr ]
+IboxHD SDATA [boxHD ]
+IMcallig SDATA [Mcallig  ]
+InvrArr SDATA [nvrArr  ]
+Iwscr SDATA [wscr    ]
+Irobrk SDATA [robrk   ]
+Imiddot SDATA [middot]
+Inlsim SDATA [nlsim   ]
+Inpolint SDATA [npolint ]
+IxhArr SDATA [xhArr   ]
+IboxHU SDATA [boxHU ]
+Insupe SDATA [nsupe   ]
+Iyacute SDATA [yacute]
+Itrade SDATA [trade ]
+IuHar SDATA [uHar    ]
+Ipmacr SDATA [pmacr    ]
+Isubsim SDATA [subsim  ]
+Irarrpl SDATA [rarrpl  ]
+IboxHd SDATA [boxHd ]
+IboxHu SDATA [boxHu ]
+Ib.phiv SDATA [b.phiv  ]
+Iinodot SDATA [inodot]
+InvHarr SDATA [nvHarr  ]
+IHcallig SDATA [Hcallig  ]
+IbNot SDATA [bNot    ]
+Ismt SDATA [smt     ]
+Incong SDATA [ncong   ]
+Isdot SDATA [sdot    ]
+Iprofline SDATA [profline]
+IXscr SDATA [Xscr    ]
+Ib.eta SDATA [b.eta   ]
+Ircub SDATA [rcub  ]
+Iwfr SDATA [wfr     ]
+Iqprime SDATA [qprime  ]
+Iswarhk SDATA [swarhk  ]
+Icapbrcup SDATA [capbrcup]
+Ilambdatilde SDATA [lambdatilde ]
+IAtilde SDATA [Atilde]
+IBcaron SDATA [Bcaron   ]
+IYcy SDATA [Ycy   ]
+Idblac SDATA [dblac ]
+IIuml SDATA [Iuml  ]
+IseArr SDATA [seArr   ]
+IUpsi SDATA [Upsi    ]
+IAmacr SDATA [Amacr ]
+Igesl SDATA [gesl    ]
+Isol SDATA [sol   ]
+ICcallig SDATA [Ccallig  ]
+ICirclePlus SDATA [CirclePlus  ]
+IUarr SDATA [Uarr    ]
+IOmegacrc SDATA [Omegacrc ]
+Iblk12 SDATA [blk12 ]
+Ihfr SDATA [hfr     ]
+Iblk14 SDATA [blk14 ]
+Itimesb SDATA [timesb  ]
+INtilde SDATA [Ntilde]
+Ib.zeta SDATA [b.zeta  ]
+ILang SDATA [Lang    ]
+Ikappav SDATA [kappav  ]
+Iamacr SDATA [amacr ]
+Itimesd SDATA [timesd  ]
+IJcy SDATA [Jcy   ]
+IBopf SDATA [Bopf    ]
+Insce SDATA [nsce    ]
+Ihexagon SDATA [hexagon  ]
+Izgrave SDATA [zgrave   ]
+Iomegadot SDATA [omegadot ]
+IQcirc SDATA [Qcirc    ]
+IDScy SDATA [DScy  ]
+Icbreve SDATA [cbreve   ]
+Inscr SDATA [nscr    ]
+Isubedot SDATA [subedot ]
+Irarrtl SDATA [rarrtl  ]
+IGacute SDATA [Gacute   ]
+IbumpE SDATA [bumpE   ]
+Iplustwo SDATA [plustwo ]
+Icommat SDATA [commat]
+Ilthree SDATA [lthree  ]
+Idot SDATA [dot   ]
+IlHar SDATA [lHar    ]
+IGcedil SDATA [Gcedil]
+Icurarr SDATA [curarr  ]
+Iqcirc SDATA [qcirc    ]
+IYfr SDATA [Yfr     ]
+Icsube SDATA [csube   ]
+Ibumpe SDATA [bumpe   ]
+Iangzarr SDATA [angzarr ]
+Iiiota SDATA [iiota   ]
+Ib.Gammad SDATA [b.Gammad]
+Inhpar SDATA [nhpar   ]
+Isqu SDATA [squ   ]
+Iurcrop SDATA [urcrop]
+Ilndshd SDATA [lndshd     ]
+Icirfnint SDATA [cirfnint]
+Iblk34 SDATA [blk34 ]
+IvBarv SDATA [vBarv   ]
+IAElig SDATA [AElig ]
+Icwint SDATA [cwint   ]
+Irtrie SDATA [rtrie   ]
+Irtrif SDATA [rtrif ]
+Ipercnt SDATA [percnt]
+Icupcup SDATA [cupcup  ]
+ITcedil SDATA [Tcedil]
+Iicaron SDATA [icaron   ]
+IOscr SDATA [Oscr    ]
+Ihtilde SDATA [htilde   ]
+Iuplus SDATA [uplus   ]
+Ilesdoto SDATA [lesdoto ]
+IvArr SDATA [vArr    ]
+IXopf SDATA [Xopf    ]
+Ilap SDATA [lap     ]
+Ilat SDATA [lat     ]
+IJfr SDATA [Jfr     ]
+Ielinters SDATA [elinters]
+Ifltns SDATA [fltns   ]
+Irrarr SDATA [rrarr   ]
+Iultri SDATA [ultri   ]
+IKJcy SDATA [KJcy  ]
+Iaacute SDATA [aacute]
+IRmacr SDATA [Rmacr    ]
+Ibnequiv SDATA [bnequiv ]
+Iiinfin SDATA [iinfin  ]
+IBcirc SDATA [Bcirc    ]
+Iacedil SDATA [acedil   ]
+Iuuml SDATA [uuml  ]
+Iutilde SDATA [utilde]
+Isubdot SDATA [subdot  ]
+ILarr SDATA [Larr    ]
+Irmacr SDATA [rmacr    ]
+Igsime SDATA [gsime   ]
+Igesdoto SDATA [gesdoto ]
+Igsiml SDATA [gsiml   ]
+IPrime SDATA [Prime   ]
+Inacute SDATA [nacute]
+Igsims SDATA [gsims    ]
+Ibcirc SDATA [bcirc    ]
+Itarget SDATA [target]
+Ilcy SDATA [lcy   ]
+Isub SDATA [sub     ]
+Ihyphen SDATA [hyphen]
+Iescr SDATA [escr    ]
+Incedil SDATA [ncedil]
+Isum SDATA [sum     ]
+ImDDot SDATA [mDDot   ]
+Icylcty SDATA [cylcty  ]
+Isup SDATA [sup     ]
+Iprnsim SDATA [prnsim  ]
+Irnmid SDATA [rnmid   ]
+Iprime SDATA [prime   ]
+Ib.kappa SDATA [b.kappa ]
+Ixwedge SDATA [xwedge  ]
+IVdoti SDATA [Vdoti    ]
+Ilangd SDATA [langd   ]
+IUgrave SDATA [Ugrave]
+Iyucy SDATA [yucy  ]
+Ib.upsi SDATA [b.upsi  ]
+Iulcorn SDATA [ulcorn  ]
+Ibetacrc SDATA [betacrc  ]
+Iveeeq SDATA [veeeq   ]
+Insim SDATA [nsim    ]
+Ileg SDATA [leg     ]
+Ilambdacrc SDATA [lambdacrc]
+Izigrarr SDATA [zigrarr ]
+Iles SDATA [les     ]
+Ixsqcup SDATA [xsqcup  ]
+ICmacr SDATA [Cmacr    ]
+Iadot SDATA [adot     ]
+Isigmacrc SDATA [sigmacrc ]
+Ipsicirc SDATA [psicirc ]
+IFscr SDATA [Fscr    ]
+IOopf SDATA [Oopf    ]
+Ispar SDATA [spar    ]
+Ithetamacr SDATA [thetamacr]
+IlgE SDATA [lgE     ]
+Iemsp13 SDATA [emsp3 ]
+Iemsp14 SDATA [emsp4 ]
+Ib.Sigma SDATA [b.Sigma ]
+Ilfr SDATA [lfr     ]
+Icmacr SDATA [cmacr    ]
+IxlArr SDATA [xlArr   ]
+INcy SDATA [Ncy   ]
+Isimplus SDATA [simplus ]
+Isubsub SDATA [subsub  ]
+Ijsercy SDATA [jsercy]
+Ib.lambda SDATA [b.lambda]
+Iljcy SDATA [ljcy  ]
+Irbrksld SDATA [rbrksld ]
+IScirc SDATA [Scirc ]
+ICtilde SDATA [Ctilde   ]
+IDcaron SDATA [Dcaron]
+Iplusdash SDATA [plusln    ]
+Icir12 SDATA [cir12    ]
+Isubsup SDATA [subsup  ]
+Ib.sigma SDATA [b.sigma ]
+Iamalg SDATA [amalg   ]
+Irbrkslu SDATA [rbrkslu ]
+Iograve SDATA [ograve]
+Ilgr SDATA [lgr   ]
+Idrcorn SDATA [drcorn  ]
+IBdot SDATA [Bdot     ]
+IboxUL SDATA [boxUL ]
+Ithorn SDATA [thorn ]
+Indash SDATA [ndash ]
+IAring SDATA [Aring ]
+IboxUR SDATA [boxUR ]
+Iotimes SDATA [otimes  ]
+Iscirc SDATA [scirc ]
+Iiocy SDATA [iocy  ]
+Irsquo SDATA [rsquo ]
+Itint SDATA [tint    ]
+Iloplus SDATA [loplus  ]
+IPtilde SDATA [Ptilde   ]
+Iharrw SDATA [harrw   ]
+IboxVH SDATA [boxVH ]
+IboxUl SDATA [boxUl ]
+IboxVL SDATA [boxVL ]
+Iaring SDATA [aring ]
+IboxUr SDATA [boxUr ]
+IboxVR SDATA [boxVR ]
+Iebreve SDATA [ebreve   ]
+IIacute SDATA [Iacute]
+Imnplus SDATA [mnplus  ]
+Ipar SDATA [par     ]
+IEEgr SDATA [EEgr  ]
+INfr SDATA [Nfr     ]
+IboxVh SDATA [boxVh ]
+Isuplarr SDATA [suplarr ]
+Iudblac SDATA [udblac]
+IboxVl SDATA [boxVl ]
+Iesim SDATA [esim    ]
+IboxVr SDATA [boxVr ]
+Ib.Gamma SDATA [b.Gamma ]
+ITmacr SDATA [Tmacr    ]
+IXdot SDATA [Xdot     ]
+Ivzigzag SDATA [vzigzag ]
+IDcirc SDATA [Dcirc    ]
+IIukcy SDATA [Iukcy ]
+Irbreve SDATA [rbreve   ]
+INgr SDATA [Ngr   ]
+IdArr SDATA [dArr    ]
+IFopf SDATA [Fopf    ]
+Ilhard SDATA [lhard   ]
+IGg SDATA [Gg      ]
+Itmacr SDATA [tmacr    ]
+Irscr SDATA [rscr    ]
+IefDot SDATA [efDot   ]
+Ib.gamma SDATA [b.gamma ]
+Ivprop SDATA [vprop   ]
+IGt SDATA [Gt      ]
+Iuhblk SDATA [uhblk ]
+IisinE SDATA [isinE   ]
+Isoftcy SDATA [softcy]
+Iecolon SDATA [ecolon  ]
+Itrpezium SDATA [trpezium]
+IsubnE SDATA [subnE   ]
+Ilharu SDATA [lharu   ]
+Ingsim SDATA [ngsim   ]
+IZHcy SDATA [ZHcy  ]
+Ibrvbar SDATA [brvbar]
+Istarf SDATA [starf ]
+Idcirc SDATA [dcirc    ]
+Iiukcy SDATA [iukcy ]
+IacE SDATA [acE     ]
+Iasymp SDATA [asymp   ]
+Iparsim SDATA [parsim  ]
+Ipcy SDATA [pcy   ]
+Ilagran SDATA [lagran  ]
+Icacute SDATA [cacute]
+Irbrke SDATA [rbrke   ]
+Irlhar SDATA [rlhar   ]
+Irdca SDATA [rdca    ]
+Isubne SDATA [subne   ]
+Iccedil SDATA [ccedil]
+Iwtilde SDATA [wtilde   ]
+Iisins SDATA [isins   ]
+Idemptyv SDATA [demptyv ]
+Iacd SDATA [acd     ]
+Iisinv SDATA [isinv   ]
+Ilnap SDATA [lnap    ]
+ISigmamacr SDATA [Sigmamacr ]
+Indot SDATA [ndot     ]
+IrAarr SDATA [rAarr   ]
+Icuwed SDATA [cuwed   ]
+Icircln SDATA [circln  ]
+ISscr SDATA [Sscr    ]
+Ierarr SDATA [erarr   ]
+Iacy SDATA [acy   ]
+IlnE SDATA [lnE     ]
+Irring SDATA [rring    ]
+Ipacute SDATA [pacute   ]
+IEmacr SDATA [Emacr ]
+Ikappa SDATA [kappa   ]
+Ipcedil SDATA [pcedil   ]
+Isigmamacr SDATA [sigmamacr]
+Isstarf SDATA [sstarf  ]
+ICap SDATA [Cap     ]
+Ioast SDATA [oast    ]
+Istar SDATA [star  ]
+Iorder SDATA [order   ]
+Ilne SDATA [lne     ]
+Icsupe SDATA [csupe   ]
+Iphicirc SDATA [phicirc  ]
+Ipfr SDATA [pfr     ]
+Iyuml SDATA [yuml  ]
+Iemacr SDATA [emacr ]
+Ibowtie SDATA [bowtie  ]
+Ithetav SDATA [thetav  ]
+IRcy SDATA [Rcy   ]
+Ivangrt SDATA [vangrt  ]
+IDashv SDATA [Dashv   ]
+IUcirc SDATA [Ucirc ]
+Ixmap SDATA [xmap    ]
+Isupplus SDATA [supplus ]
+Isupmult SDATA [supmult ]
+Idzcy SDATA [dzcy  ]
+Icups SDATA [cups    ]
+Ibeta SDATA [beta    ]
+Itwixt SDATA [twixt   ]
+Ibeth SDATA [beth    ]
+Ipgr SDATA [pgr   ]
+IZstrok SDATA [Zstrok   ]
+IIJlig SDATA [IJlig ]
+Iiscr SDATA [iscr    ]
+ISigma SDATA [Sigma   ]
+Isqudots SDATA [squdots   ]
+Idashv SDATA [dashv   ]
+Iucirc SDATA [ucirc ]
+Iloz SDATA [loz   ]
+Inumero SDATA [numero]
+ILl SDATA [Ll      ]
+Iafr SDATA [afr     ]
+Ilarrsim SDATA [larrsim ]
+Inesear SDATA [nesear  ]
+ILt SDATA [Lt      ]
+Iphi SDATA [phi     ]
+IZuml SDATA [Zuml     ]
+Isigma SDATA [sigma   ]
+IEtilde SDATA [Etilde   ]
+Insub SDATA [nsub    ]
+Iagr SDATA [agr   ]
+Invltrie SDATA [nvltrie ]
+IZbreve SDATA [Zbreve   ]
+Insup SDATA [nsup    ]
+IRfr SDATA [Rfr     ]
+Iraquo SDATA [raquo ]
+Itau SDATA [tau     ]
+IIEcy SDATA [IEcy  ]
+IvBar SDATA [vBar    ]
+Iedot SDATA [edot  ]
+Inltrie SDATA [nltrie  ]
+Isect SDATA [sect  ]
+Ipiv SDATA [piv     ]
+Inldr SDATA [nldr  ]
+IJscr SDATA [Jscr    ]
+ISopf SDATA [Sopf    ]
+IVmacr SDATA [Vmacr    ]
+Ialphacrc SDATA [alphacrc ]
+Insqsube SDATA [nsqsube ]
+Inotinva SDATA [notinva ]
+Inotinvb SDATA [notinvb ]
+Inotinvc SDATA [notinvc ]
+IRtilde SDATA [Rtilde   ]
+IFcirc SDATA [Fcirc    ]
+Iltdot SDATA [ltdot   ]
+IScaron SDATA [Scaron]
+Itstrok SDATA [tstrok]
+Iwreath SDATA [wreath  ]
+IRgr SDATA [Rgr   ]
+Iidiagr SDATA [idiagr]
+INot SDATA [Not     ]
+Inles SDATA [nles    ]
+Idiamln SDATA [diamln    ]
+Ivmacr SDATA [vmacr    ]
+Ipicirc SDATA [picirc   ]
+ICfr SDATA [Cfr     ]
+Iprurel SDATA [prurel  ]
+Igbreve SDATA [gbreve]
+Inharr SDATA [nharr   ]
+IKacute SDATA [Kacute   ]
+Ilotimes SDATA [lotimes ]
+IOr SDATA [Or      ]
+IGamma SDATA [Gamma   ]
+Ifcirc SDATA [fcirc    ]
+Ilsh SDATA [lsh     ]
+Itriln SDATA [triln   ]
+ILmidot SDATA [Lmidot]
+IFdot SDATA [Fdot     ]
+IKcedil SDATA [Kcedil]
+ssomegifF1.gif
+f<OSFILE SOIBASE='/cygdrive/c/sumpubsmgl/input/someFileA.sgm'>somegifF1.gif
+Efigf1 NDATA GIF
+Isimdot SDATA [simdot  ]
+Itcy SDATA [tcy   ]
+Iboxbox SDATA [boxbox  ]
+Iprofalar SDATA [profalar]
+ILcallig SDATA [Lcallig  ]
+IPi SDATA [Pi      ]
+Ivarrul SDATA [varrul   ]
+Iccupssm SDATA [ccupssm ]
+IPr SDATA [Pr      ]
+Igamma SDATA [gamma   ]
+Itbreve SDATA [tbreve   ]
+Iiexcl SDATA [iexcl ]
+Ib.alpha SDATA [b.alpha ]
+Isqcap SDATA [sqcap   ]
+Iltilde SDATA [ltilde   ]
+Iecy SDATA [ecy   ]
+Ieaster SDATA [easter  ]
+IGmacr SDATA [Gmacr    ]
+Iisin SDATA [isin    ]
+Irfloor SDATA [rfloor  ]
+Ieacute SDATA [eacute]
+Igtcir SDATA [gtcir   ]
+Iiprod SDATA [iprod   ]
+Iecedil SDATA [ecedil   ]
+Iytilde SDATA [ytilde   ]
+IAscr SDATA [Ascr    ]
+Igmacr SDATA [gmacr    ]
+Itfr SDATA [tfr     ]
+Izcaron SDATA [zcaron]
+IhArr SDATA [hArr    ]
+IJopf SDATA [Jopf    ]
+Inpar SDATA [npar    ]
+IVcy SDATA [Vcy   ]
+ISc SDATA [Sc      ]
+IWcirc SDATA [Wcirc ]
+IboxdL SDATA [boxdL ]
+Ivscr SDATA [vscr    ]
+Iapid SDATA [apid    ]
+Illarr SDATA [llarr   ]
+Iamp SDATA [amp   ]
+IboxdR SDATA [boxdR ]
+Iracute SDATA [racute]
+Iegsdot SDATA [egsdot  ]
+Itgr SDATA [tgr   ]
+Igjcy SDATA [gjcy  ]
+IBcallig SDATA [Bcallig  ]
+IDeltadot SDATA [Deltadot ]
+Iand SDATA [and     ]
+Ircedil SDATA [rcedil]
+Iguml SDATA [guml     ]
+Iblockrect SDATA [blockrect   ]
+Iang SDATA [ang     ]
+Ivrtri SDATA [vrtri   ]
+Iwcirc SDATA [wcirc ]
+Iboxdl SDATA [boxdl ]
+Iefr SDATA [efr     ]
+Iboxdr SDATA [boxdr ]
+Iplusacir SDATA [plusacir]
+Imidast SDATA [midast  ]
+IGcy SDATA [Gcy   ]
+Ifemale SDATA [female]
+Iiota SDATA [iota    ]
+Ithetacrc SDATA [thetacrc ]
+Ichimcr SDATA [chimcr   ]
+Igrave SDATA [grave ]
+IapE SDATA [apE     ]
+Ib.epsiv SDATA [b.epsiv ]
+Irsqb SDATA [rsqb  ]
+IWscr SDATA [Wscr    ]
+Iegs SDATA [egs     ]
+Iegr SDATA [egr   ]
+Isqcups SDATA [sqcups  ]
+Itimes SDATA [times ]
+Igesdot SDATA [gesdot  ]
+IprE SDATA [prE     ]
+Ifflig SDATA [fflig ]
+IVfr SDATA [Vfr     ]
+Ixrarr SDATA [xrarr   ]
+Iape SDATA [ape     ]
+Icularrp SDATA [cularrp ]
+IXmacr SDATA [Xmacr    ]
+Inexist SDATA [nexist  ]
+Itrisb SDATA [trisb   ]
+Ithetatilde SDATA [thetatilde]
+Ipre SDATA [pre     ]
+Ilceil SDATA [lceil   ]
+IHcirc SDATA [Hcirc ]
+Ib.Pi SDATA [b.Pi    ]
+Ioelig SDATA [oelig ]
+IboxhD SDATA [boxhD ]
+Ixmacr SDATA [xmacr    ]
+IGtilde SDATA [Gtilde   ]
+ISdot SDATA [Sdot     ]
+IHARDcy SDATA [HARDcy]
+IGfr SDATA [Gfr     ]
+Igesdotol SDATA [gesdotol]
+IAopf SDATA [Aopf    ]
+Ihcirc SDATA [hcirc ]
+IboxhU SDATA [boxhU ]
+Iepar SDATA [epar    ]
+Icapcap SDATA [capcap  ]
+Iomid SDATA [omid    ]
+Ipsi SDATA [psi     ]
+ICconint SDATA [Cconint ]
+Isemi SDATA [semi  ]
+Imscr SDATA [mscr    ]
+IAogon SDATA [Aogon ]
+Iboxhd SDATA [boxhd ]
+Iplusdo SDATA [plusdo  ]
+Iplusdu SDATA [plusdu  ]
+IGgr SDATA [Ggr   ]
+IXi SDATA [Xi      ]
+ITtilde SDATA [Ttilde   ]
+Iboxhu SDATA [boxhu ]
+Iequals SDATA [equals]
+Irangd SDATA [rangd   ]
+Irange SDATA [range   ]
+Icupdot SDATA [cupdot  ]
+Irdsh SDATA [rdsh    ]
+Ihbhatch SDATA [hbhatch  ]
+Iaogon SDATA [aogon ]
+Iurcorn SDATA [urcorn  ]
+Iibreve SDATA [ibreve   ]
+Iicy SDATA [icy   ]
+Ildrushar SDATA [ldrushar]
+Ignap SDATA [gnap    ]
+Illtri SDATA [lltri   ]
+Iast SDATA [ast   ]
+Irthree SDATA [rthree  ]
+IImacr SDATA [Imacr ]
+Iidot SDATA [idot     ]
+Itbrk SDATA [tbrk    ]
+Iapos SDATA [apos  ]
+Iatilde SDATA [atilde]
+INscr SDATA [Nscr    ]
+Iolcir SDATA [olcir   ]
+IuArr SDATA [uArr    ]
+IWopf SDATA [Wopf    ]
+Iell SDATA [ell     ]
+Iels SDATA [els     ]
+Ialpha SDATA [alpha   ]
+IOmegamacr SDATA [Omegamacr]
+Ixfr SDATA [xfr     ]
+Iimacr SDATA [imacr ]
+IZacute SDATA [Zacute]
+Iempty SDATA [empty   ]
+Iminusb SDATA [minusb  ]
+Iimped SDATA [imped   ]
+Iminusd SDATA [minusd  ]
+IZcy SDATA [Zcy   ]
+IYcirc SDATA [Ycirc ]
+Igammacrc SDATA [gammacrc ]
+Iocaron SDATA [ocaron   ]
+Igesles SDATA [gesles  ]
+Icheck SDATA [check ]
+Inlarr SDATA [nlarr   ]
+Intilde SDATA [ntilde]
+ILambda SDATA [Lambda  ]
+Iawconint SDATA [awconint]
+Iluruhar SDATA [luruhar ]
+InwArr SDATA [nwArr   ]
+IJdot SDATA [Jdot     ]
+Ixgr SDATA [xgr   ]
+Itop SDATA [top     ]
+Iiff SDATA [iff     ]
+IAgrave SDATA [Agrave]
+Ieng SDATA [eng   ]
+Igacute SDATA [gacute]
+Iycirc SDATA [ycirc ]
+Iifr SDATA [ifr     ]
+IKcy SDATA [Kcy   ]
+Idscr SDATA [dscr    ]
+Iscpolint SDATA [scpolint]
+Insqsupe SDATA [nsqsupe ]
+Iprap SDATA [prap    ]
+Idscy SDATA [dscy  ]
+Iphiundl SDATA [phiundl  ]
+Iscnap SDATA [scnap   ]
+IDstrok SDATA [Dstrok]
+Ib.gammad SDATA [b.gammad]
+Iepsivacute SDATA [epsivacute]
+IAacgr SDATA [Aacgr ]
+Irhov SDATA [rhov    ]
+Iigr SDATA [igr   ]
+IUuml SDATA [Uuml  ]
+Itacute SDATA [tacute   ]
+IZfr SDATA [Zfr     ]
+Idivide SDATA [divide]
+Itcedil SDATA [tcedil]
+IZmacr SDATA [Zmacr    ]
+Iaacgr SDATA [aacgr ]
+Iprnap SDATA [prnap   ]
+Iimage SDATA [image   ]
+Ildquo SDATA [ldquo ]
+Iepsiv SDATA [epsiv   ]
+ICup SDATA [Cup     ]
+IJcirc SDATA [Jcirc ]
+IEscr SDATA [Escr    ]
+Ilbrksld SDATA [lbrksld ]
+IlArr SDATA [lArr    ]
+Ib.Xi SDATA [b.Xi    ]
+Irhard SDATA [rhard   ]
+INopf SDATA [Nopf    ]
+IZgr SDATA [Zgr   ]
+Irpar SDATA [rpar  ]
+Iplank SDATA [plank   ]
+Izmacr SDATA [zmacr    ]
+Ilbrkslu SDATA [lbrkslu ]
+Imap SDATA [map     ]
+Ihamilt SDATA [hamilt  ]
+Izscr SDATA [zscr    ]
+Isubrarr SDATA [subrarr ]
+Irharu SDATA [rharu   ]
+IKfr SDATA [Kfr     ]
+INscrtilde SDATA [Nscrtilde]
+Ijcirc SDATA [jcirc ]
+Inwarhk SDATA [nwarhk  ]
+Isime SDATA [sime    ]
+Isimg SDATA [simg    ]
+Ib.Upsi SDATA [b.Upsi  ]
+Ikjcy SDATA [kjcy  ]
+Isiml SDATA [siml    ]
+ICogon SDATA [Cogon    ]
+Iplusln SDATA [plusdash    ]
+IKrarr SDATA [Krarr    ]
+IKgr SDATA [Kgr   ]
+Iphmmat SDATA [phmmat  ]
+ISigmacrc SDATA [Sigmacrc ]
+IBarv SDATA [Barv    ]
+Igimel SDATA [gimel   ]
+Intgl SDATA [ntgl    ]
+Iadblac SDATA [adblac   ]
+IItilde SDATA [Itilde]
+Ivdot SDATA [vdot     ]
+Iplusmn SDATA [plusmn]
+Ipiundl SDATA [piundl   ]
+IKmacr SDATA [Kmacr    ]
+Iblock16 SDATA [block16   ]
+Inang SDATA [nang    ]
+Iac SDATA [ac      ]
+Iblock15 SDATA [block15   ]
+Iblock14 SDATA [block14   ]
+ICHcy SDATA [CHcy  ]
+Inltri SDATA [nltri   ]
+Imcy SDATA [mcy   ]
+Iugrave SDATA [ugrave]
+Iblock10 SDATA [block10   ]
+Ifjlig SDATA [fjlig ]
+Iblock11 SDATA [block11   ]
+Iblock12 SDATA [block12   ]
+Iblock13 SDATA [block13   ]
+Iap SDATA [ap      ]
+Ib.Phi SDATA [b.Phi   ]
+IequivDD SDATA [equivDD ]
+Iblock17 SDATA [block17   ]
+Iblock18 SDATA [block18   ]
+Iblock19 SDATA [block19   ]
+Ieta SDATA [eta     ]
+Irace SDATA [race    ]
+Ieth SDATA [eth   ]
+IVtilde SDATA [Vtilde   ]
+InapE SDATA [napE    ]
+Iroplus SDATA [roplus  ]
+Ikmacr SDATA [kmacr    ]
+Iblock29 SDATA [block29   ]
+Icemptyv SDATA [cemptyv ]
+Iblock28 SDATA [block28   ]
+Iblock23 SDATA [block23   ]
+Iblock22 SDATA [block22   ]
+Iblock20 SDATA [block20   ]
+Ilhblk SDATA [lhblk ]
+Iblock21 SDATA [block21   ]
+Icaret SDATA [caret ]
+Ibsemi SDATA [bsemi   ]
+Iblock24 SDATA [block24   ]
+Iblock25 SDATA [block25   ]
+Iblock26 SDATA [block26   ]
+Iblock27 SDATA [block27   ]
+Ibarvee SDATA [barvee  ]
+IVdash SDATA [Vdash   ]
+IPSgr SDATA [PSgr  ]
+IWdot SDATA [Wdot     ]
+Ibsolhsub SDATA [bsolhsub]
+Ibbrk SDATA [bbrk    ]
+Idfisht SDATA [dfisht  ]
+IOacute SDATA [Oacute]
+Iswnwar SDATA [swnwar  ]
+Isext SDATA [sext  ]
+Ilsquor SDATA [lsquor]
+Ictilde SDATA [ctilde   ]
+Iblock36 SDATA [block36   ]
+IEopf SDATA [Eopf    ]
+Iblock35 SDATA [block35   ]
+Iblock31 SDATA [block31   ]
+Ismid SDATA [smid    ]
+Iblock30 SDATA [block30   ]
+Ibull SDATA [bull  ]
+Iblock32 SDATA [block32   ]
+Iblock33 SDATA [block33   ]
+Iblock34 SDATA [block34   ]
+Inpre SDATA [npre    ]
+InvlArr SDATA [nvlArr  ]
+IBarwed SDATA [Barwed  ]
+Ivdash SDATA [vdash   ]
+Idcaron SDATA [dcaron]
+Irppolint SDATA [rppolint]
+Iqscr SDATA [qscr    ]
+Idwangle SDATA [dwangle ]
+Imarker SDATA [marker]
+Imfr SDATA [mfr     ]
+Iint SDATA [int     ]
+IboxuL SDATA [boxuL ]
+IOcy SDATA [Ocy   ]
+ITSHcy SDATA [TSHcy ]
+IEsim SDATA [Esim    ]
+IboxuR SDATA [boxuR ]
+Ibump SDATA [bump    ]
+IlvnE SDATA [lvnE    ]
+Idisin SDATA [disin   ]
+IneArr SDATA [neArr   ]
+Iptilde SDATA [ptilde   ]
+Iparsl SDATA [parsl   ]
+ISHCHcy SDATA [SHCHcy]
+Izetacn SDATA [zetacn   ]
+Ieg SDATA [eg      ]
+Invrtrie SDATA [nvrtrie ]
+Imgr SDATA [mgr   ]
+IboxvH SDATA [boxvH ]
+IgtlPar SDATA [gtlPar  ]
+Icupor SDATA [cupor   ]
+Iboxul SDATA [boxul ]
+IboxvL SDATA [boxvL ]
+Isqcup SDATA [sqcup   ]
+Iel SDATA [el      ]
+Iboxur SDATA [boxur ]
+IboxvR SDATA [boxvR ]
+Inrtrie SDATA [nrtrie  ]
+Intlg SDATA [ntlg    ]
+Illhard SDATA [llhard  ]
+IRscr SDATA [Rscr    ]
+Iiacute SDATA [iacute]
+InGg SDATA [nGg     ]
+Imho SDATA [mho     ]
+Iandand SDATA [andand  ]
+Ilcub SDATA [lcub  ]
+Ib.Theta SDATA [b.Theta ]
+Iboxvh SDATA [boxvh ]
+Ilharul SDATA [lharul  ]
+InGt SDATA [nGt     ]
+Iboxvl SDATA [boxvl ]
+IgE SDATA [gE      ]
+ILcirc SDATA [Lcirc    ]
+Iboxvr SDATA [boxvr ]
+Iepsimacr SDATA [epsimacr ]
+INJcy SDATA [NJcy  ]
+Ildquor SDATA [ldquor]
+Ipertenk SDATA [pertenk ]
+Ib.rho SDATA [b.rho   ]
+Imid SDATA [mid     ]
+Ieegr SDATA [eegr  ]
+Inpart SDATA [npart   ]
+Ib.theta SDATA [b.theta ]
+IOfr SDATA [Ofr     ]
+Ivacute SDATA [vacute   ]
+Ige SDATA [ge      ]
+Ilcirc SDATA [lcirc    ]
+Idaleth SDATA [daleth  ]
+Igl SDATA [gl      ]
+Iequest SDATA [equest  ]
+Ib.sigmav SDATA [b.sigmav]
+IEogon SDATA [Eogon ]
+IPcallig SDATA [Pcallig  ]
+Igt SDATA [gt    ]
+Irtriltri SDATA [rtriltri]
+Ireal SDATA [real    ]
+Ib.chi SDATA [b.chi   ]
+Ifpartint SDATA [fpartint]
+IOgr SDATA [Ogr   ]
+Ihscr SDATA [hscr    ]
+Idsol SDATA [dsol    ]
+IprnE SDATA [prnE    ]
+Ieogon SDATA [eogon ]
+Icogwl SDATA [cogwl    ]
+Ilopar SDATA [lopar   ]
+Izhcy SDATA [zhcy  ]
+IYuml SDATA [Yuml  ]
+Icularr SDATA [cularr  ]
+Imlcp SDATA [mlcp    ]
+Iexcl SDATA [excl  ]
+Itrapln SDATA [trapln   ]
+IMmacr SDATA [Mmacr    ]
+Iepsi SDATA [epsi    ]
+IKcallig SDATA [Kcallig  ]
+Ictdot SDATA [ctdot   ]
+Ipluscir SDATA [pluscir ]
+ISbreve SDATA [Sbreve   ]
+Immacr SDATA [mmacr    ]
+Irect SDATA [rect  ]
+Imldr SDATA [mldr  ]
+Ibsime SDATA [bsime   ]
+IIscr SDATA [Iscr    ]
+Irarrbfs SDATA [rarrbfs ]
+Iprod SDATA [prod    ]
+IRopf SDATA [Ropf    ]
+Ib.Delta SDATA [b.Delta ]
+IKtilde SDATA [Ktilde   ]
+IerDot SDATA [erDot   ]
+Iintlarhk SDATA [intlarhk]
+Ibcy SDATA [bcy   ]
+ILcaron SDATA [Lcaron]
+Iprop SDATA [prop    ]
+ITScy SDATA [TScy  ]
+Irlarr SDATA [rlarr   ]
+InLl SDATA [nLl     ]
+Ialphamacr SDATA [alphamacr]
+InotinE SDATA [notinE  ]
+InLt SDATA [nLt     ]
+IsubE SDATA [subE    ]
+IlE SDATA [lE      ]
+Iimath SDATA [imath   ]
+Ibecaus SDATA [becaus  ]
+IDacute SDATA [Dacute   ]
+Ib.delta SDATA [b.delta ]
+Irarrc SDATA [rarrc   ]
+Ihoarr SDATA [hoarr   ]
+Icapcup SDATA [capcup  ]
+Iouml SDATA [ouml  ]
+Iforall SDATA [forall  ]
+Izstrok SDATA [zstrok   ]
+InrArr SDATA [nrArr   ]
+IXtilde SDATA [Xtilde   ]
+Istarhf SDATA [starhf   ]
+Icrorecoc SDATA [crorecoc ]
+Iqfr SDATA [qfr     ]
+Ialeph SDATA [aleph   ]
+Iweierp SDATA [weierp  ]
+IEdot SDATA [Edot  ]
+Isube SDATA [sube    ]
+Irarrw SDATA [rarrw   ]
+IScy SDATA [Scy   ]
+Ile SDATA [le      ]
+IPHgr SDATA [PHgr  ]
+Ilg SDATA [lg      ]
+Icaron SDATA [caron ]
+Itridot SDATA [tridot  ]
+Ib.Psi SDATA [b.Psi   ]
+Ilt SDATA [lt    ]
+Izdot SDATA [zdot  ]
+IEacgr SDATA [Eacgr ]
+Imodels SDATA [models  ]
+Iemptyv SDATA [emptyv  ]
+Irang SDATA [rang    ]
+Ibernou SDATA [bernou  ]
+Irhomacr SDATA [rhomacr  ]
+IAcallig SDATA [Acallig  ]
+IQcedil SDATA [Qcedil   ]
+Iinfin SDATA [infin   ]
+Ietilde SDATA [etilde   ]
+Ifcaron SDATA [fcaron   ]
+Ibfr SDATA [bfr     ]
+Icurarrm SDATA [curarrm ]
+Isqdot7 SDATA [sqdot7   ]
+IPuml SDATA [Puml     ]
+Isqdot5 SDATA [sqdot5   ]
+IDcy SDATA [Dcy   ]
+Ieacgr SDATA [eacgr ]
+Imu SDATA [mu      ]
+Isqdot8 SDATA [sqdot8   ]
+Iminusdu SDATA [minusdu ]
+Isqzigdu SDATA [sqzigdu  ]
+Ifrown SDATA [frown   ]
+Izbreve SDATA [zbreve   ]
+INcirc SDATA [Ncirc    ]
+Irceil SDATA [rceil   ]
+IGbox SDATA [Gbox     ]
+Ine SDATA [ne      ]
+Ini SDATA [ni      ]
+Ismte SDATA [smte    ]
+Ibgr SDATA [bgr   ]
+Isqln SDATA [sqln   ]
+Ihellip SDATA [hellip]
+IoS SDATA [oS      ]
+Inu SDATA [nu      ]
+Irtilde SDATA [rtilde   ]
+Imumacr SDATA [mumacr   ]
+Iscaron SDATA [scaron]
+Iiecy SDATA [iecy  ]
+ISfr SDATA [Sfr     ]
+IIopf SDATA [Iopf    ]
+Inumsp SDATA [numsp ]
+ITheta SDATA [Theta   ]
+Isturk SDATA [sturk    ]
+IEgrave SDATA [Egrave]
+Ikacute SDATA [kacute   ]
+Iuscr SDATA [uscr    ]
+Isearhk SDATA [searhk  ]
+Icuepr SDATA [cuepr   ]
+Ior SDATA [or      ]
+Ilmidot SDATA [lmidot]
+Ikcedil SDATA [kcedil]
+ISgr SDATA [Sgr   ]
+Icurren SDATA [curren]
+Iswarr SDATA [swarr   ]
+Itrie SDATA [trie    ]
+Itheta SDATA [theta   ]
+Ipi SDATA [pi      ]
+IHstrok SDATA [Hstrok]
+IDfr SDATA [Dfr     ]
+Isfrown SDATA [sfrown  ]
+Ipr SDATA [pr      ]
+Ilnthck SDATA [lnthck     ]
+Iorarr SDATA [orarr   ]
+Ixacute SDATA [xacute   ]
+Iccaps SDATA [ccaps   ]
+Ixdtri SDATA [xdtri   ]
+Ib.beta SDATA [b.beta  ]
+Iucy SDATA [ucy   ]
+IOmacr SDATA [Omacr ]
+Irarr SDATA [rarr  ]
+Iqdot SDATA [qdot     ]
+IDgr SDATA [Dgr   ]
+IVscr SDATA [Vscr    ]
+Ilescc SDATA [lescc   ]
+IIdigr SDATA [Idigr ]
+Iomacr SDATA [omacr ]
+Icuesc SDATA [cuesc   ]
+InGtv SDATA [nGtv    ]
+Itelrec SDATA [telrec]
+Ifcy SDATA [fcy   ]
+Imacr SDATA [macr  ]
+Isupedot SDATA [supedot ]
+Irx SDATA [rx    ]
+Iidigr SDATA [idigr ]
+Isfgr SDATA [sfgr  ]
+IAcaron SDATA [Acaron   ]
+Isc SDATA [sc      ]
+IRdot SDATA [Rdot     ]
+Ib.Omega SDATA [b.Omega ]
+Ilnsim SDATA [lnsim   ]
+Inmid SDATA [nmid    ]
+IUbreve SDATA [Ubreve]
+IDelta SDATA [Delta   ]
+Iufr SDATA [ufr     ]
+Iltimes SDATA [ltimes  ]
+IOElig SDATA [OElig ]
+Ibepsi SDATA [bepsi   ]
+Ib.mu SDATA [b.mu    ]
+Ilbarr SDATA [lbarr   ]
+Ilscr SDATA [lscr    ]
+Ib.omega SDATA [b.omega ]
+Iedblac SDATA [edblac   ]
+Isdotb SDATA [sdotb   ]
+IMtilde SDATA [Mtilde   ]
+Isdote SDATA [sdote   ]
+IvsupnE SDATA [vsupnE  ]
+INcaron SDATA [Ncaron]
+Ixnis SDATA [xnis    ]
+IGammad SDATA [Gammad  ]
+Idelta SDATA [delta   ]
+Iygrave SDATA [ygrave   ]
+Iugr SDATA [ugr   ]
+IgvnE SDATA [gvnE    ]
+Ib.nu SDATA [b.nu    ]
+Ildca SDATA [ldca    ]
+Ibne SDATA [bne     ]
+IYAcy SDATA [YAcy  ]
+IgEl SDATA [gEl     ]
+Ipuncsp SDATA [puncsp]
+Iintcal SDATA [intcal  ]
+Iffr SDATA [ffr     ]
+Ivsupne SDATA [vsupne  ]
+Iangsph SDATA [angsph  ]
+Irdquo SDATA [rdquo ]
+Ixcap SDATA [xcap    ]
+Inisd SDATA [nisd    ]
+IPcirc SDATA [Pcirc    ]
+Isqsube SDATA [sqsube  ]
+IMscr SDATA [Mscr    ]
+IVopf SDATA [Vopf    ]
+Iobreve SDATA [obreve   ]
+ISacute SDATA [Sacute]
+Ixharr SDATA [xharr   ]
+Ipinum SDATA [pinum ]
+Ib.pi SDATA [b.pi    ]
+Iblock SDATA [block ]
+IWfr SDATA [Wfr     ]
+Ipcirc SDATA [pcirc    ]
+Iloang SDATA [loang   ]
+IScedil SDATA [Scedil]
+Iraemptyv SDATA [raemptyv]
+Igtilde SDATA [gtilde   ]
+Incongdot SDATA [ncongdot]
+IIogon SDATA [Iogon ]
+Isquf SDATA [squf  ]
+Isuml SDATA [suml     ]
+Irtri SDATA [rtri  ]
+Iplankv SDATA [plankv  ]
+IIdot SDATA [Idot  ]
+Ibnot SDATA [bnot    ]
+Iufisht SDATA [ufisht  ]
+ITHgr SDATA [THgr  ]
+Iepsivtilde SDATA [epsivtilde]
+IENG SDATA [ENG   ]
+Iangrt SDATA [angrt   ]
+Iiogon SDATA [iogon ]
+Isung SDATA [sung  ]
+IHfr SDATA [Hfr     ]
+Ixi SDATA [xi      ]
+Ihmacrcrc SDATA [hmacrcrc ]
+Ittilde SDATA [ttilde   ]
+Iorigof SDATA [origof  ]
+Icscr SDATA [cscr    ]
+Isup1 SDATA [sup1  ]
+Isup2 SDATA [sup2  ]
+Isup3 SDATA [sup3  ]
+IKHcy SDATA [KHcy  ]
+IQmacr SDATA [Qmacr    ]
+Iycy SDATA [ycy   ]
+IsupE SDATA [supE    ]
+Iangst SDATA [angst   ]
+Isearr SDATA [searr   ]
+Imacute SDATA [macute   ]
+AID CDATA 0801227
+o
+ATYPE TOKEN PRINT
+o
+ALANGUAGE TOKEN EN
+L8 /cygdrive/c/sumpubsmgl/input/someFileA.sgm
+(ARTICLE
+L9
+(FM
+L10
+(PUBFM
+AVERSION CDATA 5.0
+L11
+(DTDVER
+o
+)DTDVER
+APUBID CDATA Some Publisher
+L12
+(PUBID
+o
+)PUBID
+ANAME CDATA Some Publisher
+L13
+(PUBNM
+o
+)PUBNM
+L14
+(CRG
+ACRT CDATA Some Publisher
+L15
+(CRT
+o
+)CRT
+AYR TOKEN 2000
+L16
+(CRY
+o
+)CRY
+L17
+)CRG
+L18
+)PUBFM
+L19
+(ARTFM
+o
+ALANGUAGE IMPLIED
+L20
+(JTI
+-International Journal of Something
+)JTI
+o
+ATYPE TOKEN PRINT
+L21
+(ISSN
+-0000-0000
+)ISSN
+o
+ASTATUS TOKEN UNREG
+L22
+(DOI
+-00.0000/aa.bbb.0000000
+)DOI
+L23
+(VOL
+-0
+)VOL
+L24
+(ISS
+-0
+)ISS
+(SEQ
+-0
+)SEQ
+L25
+(PP
+o
+ATOCSHOW TOKEN TOCSHOW
+(SPN
+-000
+)SPN
+o
+ATOCSHOW TOKEN NOTOC
+(EPN
+-000
+)EPN
+)PP
+L26
+(PUBDATES
+o
+AID IMPLIED
+AYEAR TOKEN 2000
+AMONTH TOKEN 01
+ADAY TOKEN 01
+L27
+(PBD
+o
+)PBD
+o
+AID IMPLIED
+AYEAR TOKEN 2000
+AMONTH TOKEN 01
+ADAY TOKEN 1
+L28
+(ELD
+o
+)ELD
+o
+AID IMPLIED
+o
+AYEAR IMPLIED
+o
+AMONTH IMPLIED
+o
+ADAY IMPLIED
+L29
+(CVD
+-jan 2000
+)CVD
+L30
+)PUBDATES
+L31
+(PRDATES
+AYEAR TOKEN 2000
+AMONTH TOKEN 01
+ADAY TOKEN 01
+(RCD
+o
+)RCD
+AYEAR TOKEN 2000
+AMONTH TOKEN 01
+ADAY TOKEN 01
+(RVD
+o
+)RVD
+AYEAR TOKEN 2000
+AMONTH TOKEN 01
+ADAY TOKEN 01
+(ACD
+o
+)ACD
+L32
+)PRDATES
+L33
+)ARTFM
+L34
+(PLACEHOLDER
+o
+ATOCSHOW TOKEN TOCSHOW
+L35
+(ARTHEAD
+-Paper
+)ARTHEAD
+AARTTYPE TOKEN OA
+L36
+(ARTTYPE
+o
+)ARTTYPE
+L37
+(ATLGRP
+o
+ALANGUAGE IMPLIED
+o
+ATOCSHOW TOKEN TOCSHOW
+L38
+(ATL
+-Hyperleadi hypipuisdf opabonasia
+)ATL
+L39
+)ATLGRP
+o
+ATOCSHOW TOKEN TOCSHOW
+L40
+(AUG
+o
+ATOCSHOW TOKEN TOCSHOW
+L41
+(AU
+(FNAMES
+-C
+)FNAMES
+(SNAME
+-Public
+)SNAME
+ARID TOKEN AFF1
+(ORF
+o
+)ORF
+(AUI
+-John, Q.
+)AUI
+)AU
+o
+ATOCSHOW TOKEN TOCSHOW
+L42
+(AU
+(FNAMES
+-P
+)FNAMES
+(SNAME
+-Public
+Iegrave SDATA [egrave]
+-\|[egrave]\|ge
+)SNAME
+ARID TOKEN AFF1
+(ORF
+o
+)ORF
+ARID TOKEN AFF2
+(ORF
+o
+)ORF
+(AUI
+-John, P
+)AUI
+)AU
+o
+ATOCSHOW TOKEN TOCSHOW
+L43
+(AU
+(FNAMES
+-P
+)FNAMES
+(SNAME
+-Public
+)SNAME
+ARID TOKEN AFF2
+(ORF
+o
+)ORF
+(AUI
+-John, P
+)AUI
+)AU
+o
+ATOCSHOW TOKEN TOCSHOW
+L44
+(AU
+(FNAMES
+-D
+)FNAMES
+(SNAME
+-Public
+Irsquo SDATA [rsquo ]
+-\|[rsquo ]\|homme
+)SNAME
+ARID TOKEN AFF1
+(ORF
+o
+)ORF
+ARID TOKEN AFF2
+(ORF
+o
+)ORF
+(AUI
+-Joyhn, D
+)AUI
+)AU
+o
+ATOCSHOW TOKEN TOCSHOW
+L45
+(AU
+(FNAMES
+-A
+)FNAMES
+(SNAME
+-Public
+)SNAME
+ARID TOKEN AFF3
+(ORF
+o
+)ORF
+(AUI
+-John a.
+)AUI
+)AU
+L57
+(HEADER
+o
+ALANGUAGE IMPLIED
+L58
+(ABS
+o
+AHIDING TOKEN SHOWN
+(P
+-OBJECTIVES: sdfj;alskja n. 
+)P
+o
+AHIDING TOKEN SHOWN
+L59
+(P
+-DESIGN: Casdfa fudy. 
+)P
+o
+AHIDING TOKEN SHOWN
+L60
+(P
+-SUBJECTS: asdf
+Iplusmn SDATA [plusmn]
+-\|[plusmn]\|s.d.: 36
+Iplusmn SDATA [plusmn]
+-\|[plusmn]\|4
+Iemsp14 SDATA [emsp4 ]
+-\|[emsp4 ]\|y) and 42 pafwomen (35
+Iplusmn SDATA [plusmn]
+-\|[plusmn]\|5
+Iemsp14 SDATA [emsp4 ]
+-\|[emsp4 ]\|y). 
+)P
+o
+AHIDING TOKEN SHOWN
+L61
+(P
+-MEASUREMENTS: Aafsopsies were obasdfe FCW as well as estimatedasfd concentrations as well as various fatness and bodyasdf
+o
+AHIDING TOKEN SHOWN
+L62
+(P
+-RESULTS: In both geasfdasdf were significantlyasdfd with body asfdess aasdfs (0.41
+Ile SDATA [le      ]
+-\|[le      ]\|
+(IT
+-r
+)IT
+Ile SDATA [le      ]
+-\|[le      ]\|0.84). a
+-P
+)IT
+Ilt SDATA [lt    ]
+-\|[lt    ]\|0.005) and femoral (
+(IT
+-P
+)IT
+Ilt SDATA [lt    ]
+-\|[lt    ]\|0.0001) FCWasdfasf
+(IT
+-r
+)IT
+Iequals SDATA [equals]
+-\|[equals]\|0.38, 
+(IT
+-P
+)IT
+Ilt SDATA [lt    ]
+-\|[lt    ]\|0.005 and women: 
+(IT
+-r
+)IT
+Iequals SDATA [equals]
+-\|[equals]\|0.55, 
+(IT
+-P
+)IT
+Ilt SDATA [lt    ]
+-\|[lt    ]\|0.0001). However, the associatasffsignificant in women (
+(IT
+-r
+)IT
+Iequals SDATA [equals]
+-\|[equals]\|0.45, 
+(IT
+-P
+)IT
+Ilt SDATA [lt    ]
+-\|[lt    ]\|0.005). Contrary tasff, plasma leptiasdfer in men (
+(IT
+(B
+-r
+)B
+)IT
+Iequals SDATA [equals]
+-\|[equals]\|0.59, 
+(IT
+(B
+-P
+)B
+)IT
+Ilt SDATA [lt    ]
+-\|[lt    ]\|0.0001). Masffthat gender (43.3
+Ipercnt SDATA [percnt]
+-\|[percnt]\|), mean FCW (16.2
+Ipercnt SDATA [percnt]
+-\|[percnt]\|) and the esafcell number (10.1
+Ipercnt SDATA [percnt]
+-\|[percnt]\|) waffffinemia. 
+)P
+o
+AHIDING TOKEN SHOWN
+L63
+(P
+-CONCLUSIONS: Results oasfdsent studyasfnt, by adiasfd Thus, the present study suggests that the higher plasma afffiasfly explained by thasdfnce in adafdsasfdumber.  
+)P
+o
+AHIDING TOKEN SHOWN
+L64
+(P
+o
+ALINK IMPLIED
+o
+ATYPE IMPLIED
+(EXTLINK
+(IT
+-International Journal of Obesity
+)IT
+- (2000) 
+(B
+-24
+)B
+-, 782
+Indash SDATA [ndash ]
+-\|[ndash ]\|788
+)EXTLINK
+)P
+)ABS
+o
+ACLASS IMPLIED
+o
+ALANGUAGE IMPLIED
+L65
+(KWG
+(KW
+-leptin
+)KW
+(KW
+-gender differences
+)KW
+(KW
+-adipocyte size
+)KW
+)KWG
+L66
+)HEADER
+L67
+)FM
+L68
+L193
+)ARTICLE
+C
