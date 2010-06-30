@@ -254,7 +254,7 @@ implements Validator
             IFD ifd = parseIFDList(nextIfdOffset, list, jhove2, input);
             nextIfdOffset  = ifd.getNextIFD(); 
         }
-        return ifdList;
+        return list;
 
     }
 
