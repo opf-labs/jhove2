@@ -47,13 +47,10 @@ import org.jhove2.core.JHOVE2Exception;
  */
 public interface ExternalProcessHandler {
 	
-	/* Append "sync" command to flush the stdout,stderr - START */	
-	/** Static member which holds the flag to include "sync" command as part of the unix command  */
-	public static boolean SYNC_AFTER_EXECUTION = true;
-	
-	/** Command to sync the stdout, stderr streams of the child process  */
+
+	/** Command to synchronize the stdout, stderr streams of the child process  as part of a unix command*/
 	public static String SYNC_COMMAND_WITH_DELIMITER = ";sync";
-	/* Append "sync" command to flush the stdout,stderr - END */	
+
 	
 	public void executeCommand(String command) throws JHOVE2Exception ;
 }

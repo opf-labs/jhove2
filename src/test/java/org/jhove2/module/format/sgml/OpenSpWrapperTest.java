@@ -100,6 +100,11 @@ public class OpenSpWrapperTest {
 			sgmlDirPath = sp.filepathFilter.filter(sgmlDirPath);
 		}
 		catalogPath = sgmlDirPath.concat(catalogFile);
+		File cFile = new File (catalogPath);
+		catalogPath = cFile.getAbsolutePath();
+		if (sp.filepathFilter != null){
+			catalogPath = sp.filepathFilter.filter(catalogPath);
+		}
 		sp.getOnsgmlsOptions().setCatalogPath(catalogPath);
 		sp.getSgmlnormOptions().setCatalogPath(catalogPath);
 		testSgmlModule.source = null;

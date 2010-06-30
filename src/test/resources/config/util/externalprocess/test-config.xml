@@ -14,9 +14,17 @@
 		<property name="shellEnv" value="c:\cygwin\bin\bash"/>
 		<property name="shellParms" value="-c"/>
 		<property name="shouldQuoteCommand" value="true"/>
+		<property name="shouldSyncAfterExcecution" value="true"/>
 	</bean>  
 	
     <bean id="filter" class="org.jhove2.util.externalprocess.FileSeparatorFilter">
     </bean>
+    
+    <bean id="windowsShellHandler" class="org.jhove2.util.externalprocess.ForkShellHandler" >
+    	<property name="shellEnv" value="C:\WINDOWS\system32\cmd.exe"/>
+		<property name="shellParms" value="/C"/>
+		<property name="shouldQuoteCommand" value="false"/>
+		<property name="shouldSyncAfterExcecution" value="false"/>
+	</bean>  
      
 </beans>
