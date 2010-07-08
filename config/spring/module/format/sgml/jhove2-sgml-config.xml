@@ -74,7 +74,7 @@
         	</list>
         </property>
         <!--  option -E: OpenSp exits after maxErrors; if 0: no limit; default value is 200 -->
-        <property name="maxErrors" value="0"/> 
+        <property name="maxErrors" value="200"/> 
         <!-- option -e  Show open entities in error messages -->
         <property name="showOpenEntities" value="true"/>
         <!-- option -g  Show the generic identifiers of open elements in error messages -->
@@ -133,7 +133,7 @@
         	</list>
         </property>
         <!--  option -E: OpenSp exits after maxErrors; if 0: no limit; default value is 200 -->
-        <property name="maxErrors" value="0"/> 
+        <property name="maxErrors" value="200"/> 
         <!-- option -e  Show open entities in error messages -->
         <property name="showOpenEntities" value="true"/>
         <!-- option -g  Show the generic identifiers of open elements in error messages -->

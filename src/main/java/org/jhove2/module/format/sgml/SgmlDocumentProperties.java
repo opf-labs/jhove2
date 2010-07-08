@@ -630,11 +630,11 @@ public class SgmlDocumentProperties extends AbstractReportable {
 	}
 	
 	/**
-	 * Returns ist of configuration options for SGML parser(s
+	 * Returns List of configuration options for SGML parser(s
 	 * @return the list of configuration options for SGML parser(s)
 	 */
 	@ReportableProperty(order = 79, 
-			value = "Count of all SGML parser configuratin settings")
+			value = "List of all SGML parser configuration settings")
 	public List<String> getSgmlParserConfigSettings() {
 		return sgmlParserConfigSettings;
 	}
