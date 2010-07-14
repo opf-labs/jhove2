@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	<bean id="MockModule" class="org.jhove2.module.assess.MockModule">
+		<property name="mpBoolean" value="false"></property>
+		<property name="mpString" value="Module mock string"></property>
+		<property name="mpLong" value="9876543"></property>
+		<property name="mpReportable" ref="MockReportable0"></property>
+		<property name="mpListString">
+			<list value-type="java.lang.String">
+				<value>mock list string 0</value>
+				<value>mock list string 1</value>
+				<value>mock list string 2</value>
+				<value>mock list string 3</value>
+			</list>
+		</property>
+		<property name="mpSetString">
+			<set>
+				<value>mock set string 0</value>
+				<value>mock set string 1</value>
+				<value>mock set string 2</value>
+				<value>mock set string 3</value>
+				<value></value>
+			</set>
+		</property>
+		<property name="mpListReportable">
+			<list value-type="org.jhove2.module.assess.MockReportable">
+				<ref bean="MockReportable0" />
+				<ref bean="MockReportable1" />
+				<ref bean="MockReportable2" />
+				<ref bean="MockReportable3" />
+				<ref bean="MockReportable4" />
+			</list>
+		</property>
+	</bean>
+	<bean id="MockBaseReportable"
+		class="org.jhove2.module.assess.MockReportable">
+		<property name="cpString" value="mock string value"></property>
+		<property name="cpBoolean" value="true"></property>
+		<property name="cpLong" value="1234567"></property>
+		<property name="cpListString">
+			<list value-type="java.lang.String">
+				<value>mock list string 0</value>
+				<value>mock list string 1</value>
+				<value>mock list string 2</value>
+				<value>mock list string 3</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="MockReportable0"
+		class="org.jhove2.module.assess.MockReportable"
+		parent="MockBaseReportable">
+		<property name="cpEV" value="EV0"></property>
+	</bean>
+	<bean id="MockReportable1"
+		class="org.jhove2.module.assess.MockReportable"
+		parent="MockBaseReportable">
+		<property name="cpEV" value="EV1"></property>
+	</bean>
+	<bean id="MockReportable2"
+		class="org.jhove2.module.assess.MockReportable"
+		parent="MockBaseReportable">
+		<property name="cpEV" value="EV2"></property>
+	</bean>
+	<bean id="MockReportable3"
+		class="org.jhove2.module.assess.MockReportable"
+		parent="MockBaseReportable">
+		<property name="cpEV" value="EV3"></property>
+	</bean>
+	<bean id="MockReportable4"
+		class="org.jhove2.module.assess.MockReportable"
+		parent="MockBaseReportable">
+		<property name="cpEV" value="EV4"></property>
+	</bean>
+
+</beans>
