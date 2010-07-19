@@ -37,13 +37,13 @@ extends BaseFormatModule
 implements Validator 
 {
 
-    /** UTF-8 module version identifier. */
-    public static final String VERSION = "1.9.5";
+    /** TIFF module version identifier. */
+    public static final String VERSION = "2.0.0";
 
-    /** UTF-8 module release date. */
-    public static final String RELEASE = "2010-02-16";
+    /** TIFF module release date. */
+    public static final String RELEASE = "2010-07-31";
 
-    /** UTF-8 module rights statement. */
+    /** TIFF module rights statement. */
     public static final String RIGHTS =
         "Copyright 2010 by The Regents of the University of California. " +
         "Available under the terms of the BSD license.";
@@ -192,6 +192,8 @@ implements Validator
             ifh.setMagicNumber(magic);
 
             ifdList = parseIFDs(jhove2, input);  
+            
+            /* loop through IfdList and validate each one */
 
         } catch (EOFException e) {
             this.isValid = Validity.False;
@@ -259,13 +261,15 @@ implements Validator
     }
 
 
-    /** following the offsets, process the list of IFDs 
+    /** 
+     * following the offsets, process the list of IFDs in the TIFF file
+     * 
      * @param offset 
      * @throws JHOVE2Exception 
      * */
     private IFD parseIFDList(long ifdOffset, List<IFD> list, JHOVE2 jhove2, Input input) throws JHOVE2Exception {
 
-        IFD ifd = new IFD();  
+        IFD ifd = new TiffIFD(input);  
 
         TiffTag.getTiffTags(IFD.getTiffTags(jhove2.getConfigInfo()));
         TiffType.getTiffTypes(IFD.getTiffType(jhove2.getConfigInfo()));
@@ -273,7 +277,7 @@ implements Validator
         ifd.setOffset(ifdOffset);
 
         try {
-            // TODO: parse for the appropriate IFD type
+            /* parse for the appropriate IFD type */
             ifd.parse(jhove2, input, ifdOffset);
 
             if (ifdList.size () == 0) {
