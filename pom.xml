@@ -7,6 +7,9 @@
 	<name>JHOVE2</name>
 	<description>JHOVE2: a next-generation architecture for
 		format-aware digital object preservation processing</description>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>commons-logging</groupId>
@@ -72,10 +75,10 @@
 		</dependency>
 		<!--  antlr -->
 		<dependency>
-            <groupId>org.antlr</groupId>
-            <artifactId>antlr-runtime</artifactId>
-            <version>3.2</version>
-        </dependency>
+			<groupId>org.antlr</groupId>
+			<artifactId>antlr-runtime</artifactId>
+			<version>3.2</version>
+		</dependency>
 		<!--  mvel -->
 		<dependency>
 			<groupId>org.mvel</groupId>
@@ -220,17 +223,17 @@
 			</plugin>
 			<!-- antlr plugin to generate java code from grammars -->
 			<plugin>
-                <groupId>org.antlr</groupId>
-                <artifactId>antlr3-maven-plugin</artifactId>
-                <version>3.2</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>antlr</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+				<groupId>org.antlr</groupId>
+				<artifactId>antlr3-maven-plugin</artifactId>
+				<version>3.2</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>antlr</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 </project>
