@@ -35,6 +35,10 @@
  */
 package org.jhove2.app.util.traverser;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -57,7 +61,17 @@ import org.jhove2.core.reportable.info.ReportablePropertyInfo;
  *
  */
 public class ReportableInstanceTraverser {
-   /** class name for instance */
+	public static final String USAGE = 
+		"USAGE:  java -cp CLASSPATH " + ReportableInstanceTraverser.class.getName() 
+		+ " fully-qualified-class-name output-dir-path {optional boolean should-recurse(default true)}";
+	/** Error return code for erroneous command line invocation */
+	public static final int EUSAGE = 1;
+	/** Error return code if any exception is thrown while executing program */
+	public static final int EEXCEPTION = 2;
+	/** Return code for successful execution */
+	public static final int SUCCESS = 0;
+
+	/** class name for instance */
 	protected String className;
 	/** feature information for this object (non-recursive)*/
 	protected SortedSet<PropertyDoc> reportablePropertiesInfo;
@@ -67,10 +81,57 @@ public class ReportableInstanceTraverser {
 	protected boolean shouldRecurse;
 	/** base name for creating dotted names for reportable members */
 	protected String dottedBaseName;
-    /**
-     * Constructor
-     * @param reportableClassName name of instance class
-     */
+
+
+	public static void main(String[]args){
+		if (args.length<2){
+			System.out.println(USAGE);
+			System.exit(EUSAGE);
+		}
+		String clsName = args[0];
+		String outFileName = args[1];
+		boolean shdRecurs = true;
+		if (args.length>2){
+			String strShdRecurse =args[2];
+			if (strShdRecurse.toLowerCase().equals("true")){
+				shdRecurs = true;
+			}
+			else if (strShdRecurse.toLowerCase().equals("false")){
+				shdRecurs = false;
+			}
+			else {
+				System.out.println(USAGE);
+				System.exit(EUSAGE);
+			}
+		}
+		PrintWriter writer = null;
+		try {
+			writer = new PrintWriter(
+					new BufferedWriter(
+							new FileWriter(outFileName)));
+		} catch (IOException e) {
+			System.out.println("IOException creating file " + outFileName);
+			System.exit(EEXCEPTION);
+		}
+		ReportableInstanceTraverser rit = new ReportableInstanceTraverser(clsName,shdRecurs);
+		try {
+			rit.extractDocInfo();
+			for(PropertyDoc prop:rit.getAllReportablePropertiesInfo()){
+				writer.println(prop.dottedName + "\t " + prop.typeString);
+			}
+			writer.flush();
+			writer.close();
+		} catch (JHOVE2Exception e) {
+			System.out.println("Exception thrown processing class " + clsName);
+			e.printStackTrace();
+			System.exit(EEXCEPTION);
+		}
+	}
+
+	/**
+	 * Constructor
+	 * @param reportableClassName name of instance class
+	 */
 	public ReportableInstanceTraverser(String reportableClassName){
 		this(reportableClassName, false);	
 	}
@@ -106,6 +167,7 @@ public class ReportableInstanceTraverser {
 		this.shouldRecurse = shouldRecurse;	
 		this.allReportablePropertiesInfo = allReportablePropertiesInfo;
 	}
+
 	/**
 	 * Extract feature information about reportable object; recursively if so configured
 	 * Entry point for getting all reportable instance information
@@ -187,7 +249,7 @@ public class ReportableInstanceTraverser {
 							}							
 						}// end if (i>-1)
 						if (FeatureConfigurationUtil.isReportableClass(typeClassName)){
-							
+
 							dottedName2Classname.put(dName, typeClassName);
 						}
 					}

@@ -76,9 +76,9 @@ public class ReportableInstanceTraverserTest {
 	public void testExtractDocInfo() {
 		try {
 			rit.extractDocInfo();
-//			for(PropertyDoc prop:rit.getAllReportablePropertiesInfo()){
-//				System.out.println("\t" + prop.dottedName + "\t " + prop.typeString);
-//			}
+			for(PropertyDoc prop:rit.getAllReportablePropertiesInfo()){
+				System.out.println("\t" + prop.dottedName + "\t " + prop.typeString);
+			}
 //			for(PropertyDoc prop:rit.getAllReportablePropertiesInfo()){
 //				System.out.println(prop.name + "\t" + prop.id + "\t " + prop.desc + "\t" );
 //			}

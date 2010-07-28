@@ -36,7 +36,7 @@
 package org.jhove2.app.util.documenter;
 
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.module.Module;
+import org.jhove2.core.reportable.Reportable;
 
 
 /**
@@ -45,6 +45,6 @@ import org.jhove2.module.Module;
  *
  */
 public interface ModuleDocumenter {
-	public void documentModule(Module module)
+	public void documentModule(Reportable reportable)
 	throws JHOVE2Exception;
 }

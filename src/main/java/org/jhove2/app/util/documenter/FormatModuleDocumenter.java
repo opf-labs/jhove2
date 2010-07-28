@@ -48,6 +48,7 @@ import org.jhove2.core.Document;
 import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.format.Format;
+import org.jhove2.core.reportable.Reportable;
 import org.jhove2.module.Module;
 import org.jhove2.module.format.FormatModule;
 import org.jhove2.module.format.FormatProfile;
@@ -96,7 +97,7 @@ public class FormatModuleDocumenter implements ModuleDocumenter {
 	protected List<FormatModuleIdDoc> formatProfilesIdDocs;
 	/** traverser that collections reportable properties documentation information */
 	protected ReportableTypeTraverser properties;
-	/** displayer that serializes documententation information*/
+	/** displayer that serializes documentation information*/
 	protected DocumentationDisplayer displayer;
 
 	/**
@@ -175,9 +176,9 @@ public class FormatModuleDocumenter implements ModuleDocumenter {
 	 * Entry point for extraction of documentation information about module
 	 * @param Module to be documented
 	 */
-	public void documentModule(Module module)
+	public void documentModule(Reportable reportable)
 	throws JHOVE2Exception {
-		this.formatModule = (FormatModule)module;
+		this.formatModule = (FormatModule)reportable;
 		this.format = this.formatModule.getFormat();
 		this.formatProfiles = this.formatModule.getProfiles();		
 		this.formatModuleIdDoc = this.documentFormatModuleIdInfo(this.formatModule);
@@ -189,7 +190,7 @@ public class FormatModuleDocumenter implements ModuleDocumenter {
 		for (Format format:this.getFormatProfileFormats()){
 			this.getFormatProfilesDocs().add(this.documentFormatIdInfo(format));
 		}
-		this.properties = new ReportableTypeTraverser(module.getClass().getCanonicalName(),true);
+		this.properties = new ReportableTypeTraverser(reportable.getClass().getCanonicalName(),true);
 		this.properties.extractDocInfo();
 		return;
 	}
