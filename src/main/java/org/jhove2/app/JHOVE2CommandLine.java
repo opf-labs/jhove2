@@ -36,6 +36,7 @@
 
 package org.jhove2.app;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
@@ -79,8 +80,6 @@ extends AbstractApplication
 	/** Caught exception return code. */
 	public static final int EEXCEPTION = -1;
 
-	/** indicates if source file list from command line is considered a URL */
-	protected boolean isUrl = false;
 
 	/**
 	 * Instantiate a new <code>JHOVE2CommandLine</code>.
@@ -123,8 +122,6 @@ extends AbstractApplication
 			 */		
 			JHOVE2 jhove2 = SpringConfigInfo.getReportable(JHOVE2.class,
 			"JHOVE2");
-			TimerInfo timer = jhove2.getTimerInfo();
-			timer.setStartTime();
 
 			jhove2.setInvocation(app.getInvocation());
 			jhove2.setInstallation(app.getInstallation());
@@ -132,36 +129,45 @@ extends AbstractApplication
 			app.setFramework(jhove2);
 
 			/* Create a FileSet source unit out of files and directories
-			 * specified on the command line.  Add the JHOVE2 application and
-			 * framework as modules processing the source unit.
-			 * If -u option is set, create (single) URL source object
+			 * specified on the command line
+			 * Create URL source objects out of URLs specified on commandline
+			 * (Any entry that cannot be made into a URL is assumed to be a 
+			 * file or directory)
 			 */
-			Source source = null;
-			if (app.isUrl){
-				if (pathNames.size()>1){
-					throw new JHOVE2Exception("only one URL can be passed as an argument");
+			ArrayList<URL> urls = new ArrayList<URL>();
+			ArrayList<String> paths = new ArrayList<String>();
+			for (String path:pathNames){				
+				try{
+					URL url = new URL(path);
+					urls.add(url);
 				}
-				int bufferSize = app.getInvocation().getBufferSize();
-				String pre = app.getInvocation().getTempPrefix();
-				String post = app.getInvocation().getTempSuffix();
-				String strUrl = pathNames.get(0);
-				URL url = new URL(strUrl);
-				source = SourceFactory.getSource(pre, post, bufferSize, url);
+				catch (MalformedURLException m){
+					paths.add(path);
+				}
 			}
-			else {
-				source = SourceFactory.getSource(pathNames);
+			for (URL url:urls){
+				Source source = SourceFactory.getSource(
+						jhove2.getInvocation().getTempPrefix(), 
+						jhove2.getInvocation().getTempSuffix(), 
+						jhove2.getInvocation().getBufferSize(), 
+						url);
+				app.getSources().add(source);
 			}
-			app.setSource(source);
+			if (paths.size()>0){
+				Source source = SourceFactory.getSource(paths);
+				app.getSources().add(source);
+			}
+			
 
 			/* Characterize the FileSet source unit (and all subsidiary
 			 * source units that it encapsulates.
 			 */
-			TimerInfo time2 = jhove2.getTimerInfo();
-			time2.setStartTime();
+			TimerInfo timer = jhove2.getTimerInfo();
+			timer.setStartTime();;
 
-			jhove2.characterize(source);
-
-			time2.setEndTime();
+			for (Source source:app.getSources()){
+				jhove2.characterize(source);
+			}
 			timer.setEndTime();
 
 			/* Display characterization information for the FileSet.
@@ -235,9 +241,6 @@ extends AbstractApplication
 
 		/* set the command line options
 		 */
-		Parser.Option urlSourceO =
-			parser.addHelp((parser.addBooleanOption('u',"url-source")),
-			"Source is URL");
 		Parser.Option showIdentifiersO =
 			parser.addHelp((parser.addBooleanOption('i',"show-identifiers")),
 			"Show identifiers");
@@ -335,9 +338,6 @@ extends AbstractApplication
 		}
 		if ((failFastLimit = (Integer)parser.getOptionValue(failFastLimitO)) != null) {
 			config.setFailFastLimit(failFastLimit.intValue());
-		}
-		if ((Boolean)parser.getOptionValue(urlSourceO) != null) {
-			this.isUrl = true;
 		}
 		/* Make sure that the displayer has already been set. */
 		if ((Boolean)parser.getOptionValue(showIdentifiersO) != null) {
