@@ -118,13 +118,18 @@ public abstract class IFD
      *             If an I/O exception is raised reading the source unit
      * @throws JHOVE2Exception
      */
-    public void parse(JHOVE2 jhove2, Input input, long offset) throws EOFException,
+    public void parse(JHOVE2 jhove2, Input input) throws EOFException,
     IOException, JHOVE2Exception {
+        
         this.isValid = Validity.Undetermined;
-
+        long offsetInIFD = offset;
+        nextIFD = 0L;
+        
         /* Read the first byte. */
-        input.setPosition(offset);
+        input.setPosition(offsetInIFD);
         numEntries = input.readUnsignedShort();
+        offsetInIFD += 2;
+        
         if (numEntries < 1){
             this.isValid = Validity.False;
             Object[]messageArgs = new Object[]{0, input.getPosition(), numEntries};
@@ -134,6 +139,14 @@ public abstract class IFD
                     messageArgs, jhove2.getConfigInfo());  
         }
 
+        long length = numEntries * 12;
+        /* TODO: read the buffer from the file input stream containing the IFD Entries as
+         * opposed to manipulating the Input object */
+        
+        /* go to the field that contains the offset to the next IFD - 0 if none */
+        offsetInIFD += length;
+        nextIFD = 0L;
+        
         /* parse through the list of IFDs */
         for (int i=0; i<numEntries; i++) {
             int tag = input.readUnsignedShort();
@@ -190,7 +203,9 @@ public abstract class IFD
                 }
                 else {
                     /* the value is the actual value */
-                    value = valueOffset;
+                    value = offset + 10 + 12*i;
+
+                   /* value = valueOffset; */
                 }            
                 IFDEntry ifdEntry = new IFDEntry(tag, type, count, value);
 
@@ -198,6 +213,12 @@ public abstract class IFD
                 getValues(jhove2, ifdEntry);
                 version = ifdEntry.getVersion();
                 entries.add(ifdEntry);
+                
+                /* reset the input position so that the offset is set up correctly since when you read values the
+                 * input position gets changed from where you want to be in the IFD 
+                 * the offset of the Value field + 4 bytes will get you to the next Tag field
+                 */
+                 input.setPosition(valueOffset + 4);
             }
         }
 
