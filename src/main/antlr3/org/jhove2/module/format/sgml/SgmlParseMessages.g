@@ -80,20 +80,22 @@ List<String> openSpMessages = new ArrayList<String>();
 
 errMessages : errMessage* EOF;
 
-errMessage :  (codedMessage|uncodedMessage) NEWLINE?
+errMessage :  (codedMessage|uncodedMessage) NEWLINE
   {
     totMessageCount++;
   };
 
 codedMessage : 
-  cmdPath COLON sgmlFilepath COLON lineNumber COLON posNumber COLON somenumber DOT messageCode COLON messageLevel COLON messagetext 
+  cmdPath COLON (sgmlFilepath COLON lineNumber COLON posNumber COLON)? somenumber DOT messageCode COLON messageLevel COLON messagetext 
   {
     String messageStr = 
         OpenSpMessageParser.createCodedMessageString($sgmlFilepath.text,
                 $lineNumber.text, $posNumber.text, 
                  $messagetext.text, $messageLevel.text, $messageCode.text);
     openSpMessages.add(messageStr);
+ 
     String level = $messageLevel.text;
+
     if (level.equals("E")){
          eLevelMessageCount++;
     }
@@ -112,13 +114,15 @@ codedMessage :
   };
 
 uncodedMessage : cmdPath COLON sgmlFilepath COLON lineNumber COLON posNumber COLON messagetext 
-  {
+{
+ 
        String messageStr = 
         OpenSpMessageParser.createMessageString($sgmlFilepath.text,
                 $lineNumber.text, $posNumber.text, 
                  $messagetext.text);
        openSpMessages.add(messageStr);
-  };
+
+  } ;
 
 cmdPath :  unixPath | winpath ;
 

@@ -39,6 +39,7 @@ package org.jhove2.module.format.sgml;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.util.Properties;
 
 import javax.annotation.Resource;
 
@@ -69,25 +70,31 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations={"classpath*:**/test-config.xml", 
 "classpath*:**/filepaths-config.xml"})
 
-public class OpenSpWrapperTest {
+public class OpenSpWrapperWindowsExeTest {
 	protected JHOVE2 JHOVE2;
-	protected SgmlModule testSgmlModule;
+	protected SgmlModule wtestSgmlModule;
 	protected String catalogFile;
 	protected String validSgmlFile;
 	protected String sgmlDirBasePath;
 	protected String invalidSgmlFile;
-	
+
 	protected String sgmlDirPath;
 	protected String catalogPath;
 	protected Source inputSource;
 	protected OpenSpWrapper sp;
+	protected boolean isWindows = false;
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
-		testSgmlModule.jhove2 = JHOVE2;
-		sp = (OpenSpWrapper) testSgmlModule.sgmlParser;
+		Properties prop   = System.getProperties();
+		String os = prop.getProperty("os.name");
+		if (os.toLowerCase().startsWith("win")){
+			isWindows = true;
+		}
+		wtestSgmlModule.jhove2 = JHOVE2;
+		sp = (OpenSpWrapper) wtestSgmlModule.sgmlParser;
 		try {
 			sgmlDirPath = 
 				FeatureConfigurationUtil.getFilePathFromClasspath(sgmlDirBasePath, "temp dir");
@@ -107,7 +114,7 @@ public class OpenSpWrapperTest {
 		}
 		sp.getOnsgmlsOptions().setCatalogPath(catalogPath);
 		sp.getSgmlnormOptions().setCatalogPath(catalogPath);
-		testSgmlModule.source = null;
+		wtestSgmlModule.source = null;
 	}
 
 	/**
@@ -115,97 +122,99 @@ public class OpenSpWrapperTest {
 	 */
 	@Test
 	public void testParseFile() {
-		String goodFilePath = sgmlDirBasePath.concat(validSgmlFile);
-		try {
-			goodFilePath = 
-				FeatureConfigurationUtil.getFilePathFromClasspath(goodFilePath, 
-						"valid sgm file");
-		} catch (JHOVE2Exception e1) {
-			fail("Could not create base directory");
+		if (isWindows){
+			String goodFilePath = sgmlDirBasePath.concat(validSgmlFile);
+			try {
+				goodFilePath = 
+					FeatureConfigurationUtil.getFilePathFromClasspath(goodFilePath, 
+					"valid sgm file");
+			} catch (JHOVE2Exception e1) {
+				fail("Could not create base directory");
+			}
+			File fGoodFile = new File(goodFilePath);
+			goodFilePath = fGoodFile.getPath();
+			try {
+				inputSource = SourceFactory.getSource(goodFilePath);
+			}catch (Exception e){
+				e.printStackTrace();
+				fail("Failed to create source for input file");
+			}
+			wtestSgmlModule.source = inputSource;
+			try {
+				wtestSgmlModule.setDocumentProperties(sp.parseFile(wtestSgmlModule));
+			} catch (JHOVE2Exception e) {
+				e.printStackTrace();
+				fail("unable to get esis parser");
+			}
+			assertTrue(wtestSgmlModule.getDocumentProperties().isSgmlValid());
+
+			wtestSgmlModule.source = null;
+			wtestSgmlModule.setDocumentProperties(null);
+			String badFilePath = sgmlDirBasePath.concat(invalidSgmlFile);
+			try {
+				badFilePath = 
+					FeatureConfigurationUtil.getFilePathFromClasspath(badFilePath, 
+					"invalid sgm file");
+			} catch (JHOVE2Exception e1) {
+				fail("Could not create base directory");
+			}
+			File fBadFile = new File(badFilePath);
+			badFilePath = fBadFile.getPath();
+			try {
+				inputSource = SourceFactory.getSource(badFilePath);
+			}catch (Exception e){
+				e.printStackTrace();
+				fail("Failed to create source for input file");
+			}
+			wtestSgmlModule.source = inputSource;
+			try {
+				wtestSgmlModule.setDocumentProperties(sp.parseFile(wtestSgmlModule));
+			} catch (JHOVE2Exception e) {
+				e.printStackTrace();
+				fail("unable to get esis parser");
+			}
+			assertFalse(wtestSgmlModule.getDocumentProperties().isSgmlValid());
+
+			goodFilePath = sgmlDirBasePath.concat(validSgmlFile);
+			try {
+				goodFilePath = 
+					FeatureConfigurationUtil.getFilePathFromClasspath(goodFilePath, 
+					"valid sgm file");
+			} catch (JHOVE2Exception e1) {
+				fail("Could not create base directory");
+			}
+			// now alter path to opensp; should cause error message and null sgml properties,
+			// even with good sgml file
+			wtestSgmlModule.source = null;
+			wtestSgmlModule.setDocumentProperties(null);
+			fGoodFile = new File(goodFilePath);
+			goodFilePath = fGoodFile.getPath();
+			try {
+				inputSource = SourceFactory.getSource(goodFilePath);
+			}catch (Exception e){
+				e.printStackTrace();
+				fail("Failed to create source for input file");
+			}
+			wtestSgmlModule.source = inputSource;
+			String oldPath = sp.getOnsgmlsPath();
+			sp.setOnsgmlsPath("/invalid/path/ongmls");
+			int oldMessageLength = wtestSgmlModule.source.getMessages().size();
+			try {
+				wtestSgmlModule.setDocumentProperties(sp.parseFile(wtestSgmlModule));
+			} catch (JHOVE2Exception e) {
+				e.printStackTrace();
+				fail("unable to get esis parser");
+			}
+			sp.setOnsgmlsPath(oldPath);
+			assertNull(wtestSgmlModule.getDocumentProperties());
+			try {
+				assertEquals(Validity.Undetermined, wtestSgmlModule.validate(JHOVE2, wtestSgmlModule.source));
+			} catch (JHOVE2Exception e) {
+				fail("sgml module Validate method threw exception " + e.getMessage());
+				e.printStackTrace();
+			}
+			assertEquals(oldMessageLength+1, wtestSgmlModule.source.getMessages().size());
 		}
-		File fGoodFile = new File(goodFilePath);
-		goodFilePath = fGoodFile.getPath();
-		try {
-			inputSource = SourceFactory.getSource(goodFilePath);
-		}catch (Exception e){
-			e.printStackTrace();
-			fail("Failed to create source for input file");
-		}
-		testSgmlModule.source = inputSource;
-		try {
-			testSgmlModule.setDocumentProperties(sp.parseFile(testSgmlModule));
-		} catch (JHOVE2Exception e) {
-			e.printStackTrace();
-			fail("unable to get esis parser");
-		}
-		assertTrue(testSgmlModule.getDocumentProperties().isSgmlValid());
-		
-		testSgmlModule.source = null;
-		testSgmlModule.setDocumentProperties(null);
-		String badFilePath = sgmlDirBasePath.concat(invalidSgmlFile);
-		try {
-			badFilePath = 
-				FeatureConfigurationUtil.getFilePathFromClasspath(badFilePath, 
-						"invalid sgm file");
-		} catch (JHOVE2Exception e1) {
-			fail("Could not create base directory");
-		}
-		File fBadFile = new File(badFilePath);
-		badFilePath = fBadFile.getPath();
-		try {
-			inputSource = SourceFactory.getSource(badFilePath);
-		}catch (Exception e){
-			e.printStackTrace();
-			fail("Failed to create source for input file");
-		}
-		testSgmlModule.source = inputSource;
-		try {
-			testSgmlModule.setDocumentProperties(sp.parseFile(testSgmlModule));
-		} catch (JHOVE2Exception e) {
-			e.printStackTrace();
-			fail("unable to get esis parser");
-		}
-		assertFalse(testSgmlModule.getDocumentProperties().isSgmlValid());
-		
-		goodFilePath = sgmlDirBasePath.concat(validSgmlFile);
-		try {
-			goodFilePath = 
-				FeatureConfigurationUtil.getFilePathFromClasspath(goodFilePath, 
-						"valid sgm file");
-		} catch (JHOVE2Exception e1) {
-			fail("Could not create base directory");
-		}
-		// now alter path to opensp; should cause error message and null sgml properties,
-		// even with good sgml file
-		testSgmlModule.source = null;
-		testSgmlModule.setDocumentProperties(null);
-		fGoodFile = new File(goodFilePath);
-		goodFilePath = fGoodFile.getPath();
-		try {
-			inputSource = SourceFactory.getSource(goodFilePath);
-		}catch (Exception e){
-			e.printStackTrace();
-			fail("Failed to create source for input file");
-		}
-		testSgmlModule.source = inputSource;
-		String oldPath = sp.getOnsgmlsPath();
-		sp.setOnsgmlsPath("/invalid/path/ongmls");
-		int oldMessageLength = testSgmlModule.source.getMessages().size();
-		try {
-			testSgmlModule.setDocumentProperties(sp.parseFile(testSgmlModule));
-		} catch (JHOVE2Exception e) {
-			e.printStackTrace();
-			fail("unable to get esis parser");
-		}
-		sp.setOnsgmlsPath(oldPath);
-		assertNull(testSgmlModule.getDocumentProperties());
-		try {
-			assertEquals(Validity.Undetermined, testSgmlModule.validate(JHOVE2, testSgmlModule.source));
-		} catch (JHOVE2Exception e) {
-			fail("sgml module Validate method threw exception " + e.getMessage());
-			e.printStackTrace();
-		}
-		assertEquals(oldMessageLength+1, testSgmlModule.source.getMessages().size());
 	}
 
 	/**
@@ -213,39 +222,41 @@ public class OpenSpWrapperTest {
 	 */
 	@Test
 	public void testParseSgmlFile() {
-		String goodFilePath = sgmlDirBasePath.concat(validSgmlFile);
-		try {
-			goodFilePath = 
-				FeatureConfigurationUtil.getFilePathFromClasspath(goodFilePath, "valid sgm file");
-		} catch (JHOVE2Exception e1) {
-			fail("Could not create base directory");
+		if (isWindows){
+			String goodFilePath = sgmlDirBasePath.concat(validSgmlFile);
+			try {
+				goodFilePath = 
+					FeatureConfigurationUtil.getFilePathFromClasspath(goodFilePath, "valid sgm file");
+			} catch (JHOVE2Exception e1) {
+				fail("Could not create base directory");
+			}
+			File fGoodFile = new File(goodFilePath);
+			goodFilePath = fGoodFile.getPath();
+			try {
+				inputSource = SourceFactory.getSource(goodFilePath);
+			}catch (Exception e){
+				e.printStackTrace();
+				fail("Failed to create source for input file");
+			}
+			wtestSgmlModule.source = inputSource;
+			String[] outputFiles = null;
+			try {
+				outputFiles = sp.parseSgmlFile(
+						wtestSgmlModule,OpenSpWrapper.ESIS_SUFFIX,sp.onsgmlsPath,sp.getOnsgmlsOptions().getOptionString());
+			} catch (JHOVE2Exception e) {
+				e.printStackTrace();
+				fail("Failed to parse sgml file");
+			}
+			assertEquals(2, outputFiles.length);
+			File goodEsisFile = new File(outputFiles[0]);
+			assertTrue(goodEsisFile.exists());
+			long size = goodEsisFile.length();
+			assertTrue(size>0);
+			File errEsisFile = new File(outputFiles[1]);
+			assertTrue(errEsisFile.exists());
+			size = errEsisFile.length();
+			assertEquals(0,size);
 		}
-		File fGoodFile = new File(goodFilePath);
-		goodFilePath = fGoodFile.getPath();
-		try {
-			inputSource = SourceFactory.getSource(goodFilePath);
-		}catch (Exception e){
-			e.printStackTrace();
-			fail("Failed to create source for input file");
-		}
-		testSgmlModule.source = inputSource;
-		String[] outputFiles = null;
-		try {
-			outputFiles = sp.parseSgmlFile(
-					testSgmlModule,OpenSpWrapper.ESIS_SUFFIX,sp.onsgmlsPath,sp.getOnsgmlsOptions().getOptionString());
-		} catch (JHOVE2Exception e) {
-			e.printStackTrace();
-			fail("Failed to parse sgml file");
-		}
-		assertEquals(2, outputFiles.length);
-		File goodEsisFile = new File(outputFiles[0]);
-		assertTrue(goodEsisFile.exists());
-		long size = goodEsisFile.length();
-		assertTrue(size>0);
-		File errEsisFile = new File(outputFiles[1]);
-		assertTrue(errEsisFile.exists());
-		size = errEsisFile.length();
-		assertEquals(0,size);
 	}
 
 	/**
@@ -253,31 +264,33 @@ public class OpenSpWrapperTest {
 	 */
 	@Test
 	public void testCreateDoctype() {
-		String goodFilePath = sgmlDirBasePath.concat(validSgmlFile);
-		try {
-			goodFilePath = 
-				FeatureConfigurationUtil.getFilePathFromClasspath(goodFilePath, 
-						"valid sgm file");
-		} catch (JHOVE2Exception e1) {
-			fail("Could not create base directory");
+		if (isWindows){
+			String goodFilePath = sgmlDirBasePath.concat(validSgmlFile);
+			try {
+				goodFilePath = 
+					FeatureConfigurationUtil.getFilePathFromClasspath(goodFilePath, 
+					"valid sgm file");
+			} catch (JHOVE2Exception e1) {
+				fail("Could not create base directory");
+			}
+			File fGoodFile = new File(goodFilePath);
+			goodFilePath = fGoodFile.getPath();
+			try {
+				inputSource = SourceFactory.getSource(goodFilePath);
+			}catch (Exception e){
+				e.printStackTrace();
+				fail("Failed to create source for input file");
+			}
+			wtestSgmlModule.source = inputSource;
+			wtestSgmlModule.setDocumentProperties(new SgmlDocumentProperties());
+			try {
+				sp.determineDoctype(wtestSgmlModule);
+			} catch (JHOVE2Exception e) {
+				e.printStackTrace();
+				fail("Failed to run createDoctype method");
+			}
+			assertTrue(wtestSgmlModule.getDocumentProperties().getDocTypeFound());
 		}
-		File fGoodFile = new File(goodFilePath);
-		goodFilePath = fGoodFile.getPath();
-		try {
-			inputSource = SourceFactory.getSource(goodFilePath);
-		}catch (Exception e){
-			e.printStackTrace();
-			fail("Failed to create source for input file");
-		}
-		testSgmlModule.source = inputSource;
-		testSgmlModule.setDocumentProperties(new SgmlDocumentProperties());
-		try {
-			sp.determineDoctype(testSgmlModule);
-		} catch (JHOVE2Exception e) {
-			e.printStackTrace();
-			fail("Failed to run createDoctype method");
-		}
-		assertTrue(testSgmlModule.getDocumentProperties().getDocTypeFound());
 	}
 
 	/**
@@ -296,18 +309,18 @@ public class OpenSpWrapperTest {
 	}
 
 	/**
-	 * @return the testSgmlModule
+	 * @return the wtestSgmlModule
 	 */
 	public SgmlModule getTestSgmlModule() {
-		return testSgmlModule;
+		return wtestSgmlModule;
 	}
 
 	/**
-	 * @param testSgmlModule the testSgmlModule to set
+	 * @param wtestSgmlModule the wtestSgmlModule to set
 	 */
 	@Resource
 	public void setTestSgmlModule(SgmlModule testSgmlModule) {
-		this.testSgmlModule = testSgmlModule;
+		this.wtestSgmlModule = testSgmlModule;
 	}
 
 	/**

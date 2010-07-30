@@ -33,24 +33,51 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.jhove2.util.externalprocess;
-
-import org.jhove2.core.JHOVE2Exception;
+package org.jhove2.app.util.documenter;
 
 /**
- * This interface defines the functions required for external process creation/execution
- * 
- * This class is base on one developed for similar purposes at Portico by Suresh Kadirvel.
- * 
+ * Container for information about Format Modules and profils
+ * Information is required to fill in Format Module specification
  * @author smorrissey
- *
  */
-public interface ExternalProcessHandler {
-	
-
-	/** Command to synchronize the stdout, stderr streams of the child process  as part of a unix command*/
-	public static String SYNC_COMMAND_WITH_DELIMITER = ";sync";
-
-	
-	public void executeCommand(String command) throws JHOVE2Exception ;
+public class FormatModuleIdDoc {
+	String moduleName;
+	String moduleId;
+	String moduleClassName;
+	/**
+	 * @return the moduleName
+	 */
+	public String getModuleName() {
+		return moduleName;
+	}
+	/**
+	 * @return the moduleId
+	 */
+	public String getModuleId() {
+		return moduleId;
+	}
+	/**
+	 * @return the moduleClassName
+	 */
+	public String getModuleClassName() {
+		return moduleClassName;
+	}
+	/**
+	 * @param moduleName the moduleName to set
+	 */
+	public void setModuleName(String moduleName) {
+		this.moduleName = moduleName;
+	}
+	/**
+	 * @param moduleId the moduleId to set
+	 */
+	public void setModuleId(String moduleId) {
+		this.moduleId = moduleId;
+	}
+	/**
+	 * @param moduleClassName the moduleClassName to set
+	 */
+	public void setModuleClassName(String moduleClassName) {
+		this.moduleClassName = moduleClassName;
+	}
 }

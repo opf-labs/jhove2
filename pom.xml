@@ -1,12 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.jhove2</groupId>
 	<artifactId>jhove2</artifactId>
 	<version>0.6.0</version>
 	<name>JHOVE2</name>
-	<description>JHOVE2: a next-generation architecture for
-		format-aware digital object preservation processing</description>
+	<description>JHOVE2: a next-generation architecture for format-aware digital object preservation processing</description>
 	<dependencies>
 		<dependency>
 			<groupId>commons-logging</groupId>
@@ -72,10 +70,10 @@
 		</dependency>
 		<!--  antlr -->
 		<dependency>
-            <groupId>org.antlr</groupId>
-            <artifactId>antlr-runtime</artifactId>
-            <version>3.2</version>
-        </dependency>
+			<groupId>org.antlr</groupId>
+			<artifactId>antlr-runtime</artifactId>
+			<version>3.2</version>
+		</dependency>
 		<!--  mvel -->
 		<dependency>
 			<groupId>org.mvel</groupId>
@@ -98,15 +96,13 @@
 		<repository>
 			<id>JBOSS</id>
 			<name>JBoss Repository</name>
-			<url>http://repository.jboss.org/maven2/
-			</url>
+			<url>http://repository.jboss.org/maven2/</url>
 		</repository>
 		<!-- for app assembler -->
 		<repository>
 			<id>Codehaus Snapshots</id>
 			<name>codehaus.org</name>
-			<url>http://snapshots.repository.codehaus.org/
-			</url>
+			<url>http://snapshots.repository.codehaus.org/</url>
 		</repository>
 	</repositories>
 	<build>
@@ -128,8 +124,7 @@
 			<plugins>
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>appassembler-maven-plugin
-					</artifactId>
+					<artifactId>appassembler-maven-plugin</artifactId>
 					<version>1.1-SNAPSHOT</version>
 				</plugin>
 			</plugins>
@@ -150,10 +145,8 @@
 				<version>2.5</version>
 				<configuration>
 					<additionalClasspathElements>
-						<additionalClasspathElement>config/
-						</additionalClasspathElement>
-						<additionalClasspathElement>config/droid
-						</additionalClasspathElement>
+						<additionalClasspathElement>config/</additionalClasspathElement>
+						<additionalClasspathElement>config/droid</additionalClasspathElement>
 					</additionalClasspathElements>
 				</configuration>
 			</plugin>
@@ -162,8 +155,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<executions>
-					<execution>
-					</execution>
+					<execution></execution>
 					<execution>
 						<id>build-classpath</id>
 						<phase>package</phase>
@@ -202,8 +194,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>2.6.1</version>
-				<configuration>
-				</configuration>
+				<configuration></configuration>
 			</plugin>
 			<!--
 				package the jar, artifacts,and bin scripts into zip and tar files
@@ -220,17 +211,17 @@
 			</plugin>
 			<!-- antlr plugin to generate java code from grammars -->
 			<plugin>
-                <groupId>org.antlr</groupId>
-                <artifactId>antlr3-maven-plugin</artifactId>
-                <version>3.2</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>antlr</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+				<groupId>org.antlr</groupId>
+				<artifactId>antlr3-maven-plugin</artifactId>
+				<version>3.2</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>antlr</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 </project>

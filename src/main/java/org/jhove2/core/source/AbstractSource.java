@@ -50,6 +50,7 @@ import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -102,6 +103,11 @@ public abstract class AbstractSource
      * Timer info  used to track elapsed time for running of this module
      */
     protected TimerInfo timerInfo;
+    
+    /**
+     * Mechanism for providing per-source information
+     */
+    protected Map<String, String>sourceParams;
     
 	/**
 	 * Instantiate a new <code>AbstractSource</code>.
@@ -278,6 +284,16 @@ public abstract class AbstractSource
 		return this.children;
 	}
 
+	
+	/**
+	 * Get Map of per-source parameters
+	 * @return Map of per-source parameter name/parameter value pairs
+	 */
+	@Override
+	public Map<String, String> getSourceParams() {
+		return sourceParams;
+	}
+
 	/**
 	 * Get {@link java.io.File} backing the source unit.
 	 * 
@@ -422,6 +438,7 @@ public abstract class AbstractSource
 		return this.isTemp;
 	}
 
+	
 	/**
 	 * Set delete temporary files flag; if true, delete files.
 	 * 
@@ -441,6 +458,15 @@ public abstract class AbstractSource
 	@Override
 	public void setPresumptiveFormats(Set<FormatIdentification> formatIdentifications) {
 		this.presumptiveFormatIdentifications = formatIdentifications;
+	}
+
+	/**
+	 * Set Map of per-source parameters
+	 * @param sourceParams Map of per-source parameter name/parameter value pairs
+	 */
+	@Override
+	public void setSourceParams(Map<String, String> sourceParams) {
+		this.sourceParams = sourceParams;
 	}
 
 	/**
@@ -594,4 +620,6 @@ public abstract class AbstractSource
 
 		return (thisChildSize == containsCount);
 	}
+
+
 }

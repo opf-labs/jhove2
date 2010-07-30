@@ -33,24 +33,76 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.jhove2.util.externalprocess;
-
-import org.jhove2.core.JHOVE2Exception;
+package org.jhove2.app.util.traverser;
 
 /**
- * This interface defines the functions required for external process creation/execution
- * 
- * This class is base on one developed for similar purposes at Portico by Suresh Kadirvel.
- * 
+ * Wrapper for information about a reportable object
  * @author smorrissey
  *
  */
-public interface ExternalProcessHandler {
-	
+public class ReportableDoc implements Comparable<Object> {
 
-	/** Command to synchronize the stdout, stderr streams of the child process  as part of a unix command*/
-	public static String SYNC_COMMAND_WITH_DELIMITER = ";sync";
+	String name;
+	String id;
+	String className;
 
+	@Override
+	public int compareTo(Object o) {
+		int retcode = -1;
+		if (o instanceof ReportableDoc){
+			ReportableDoc p = (ReportableDoc)o;
+			retcode = id.compareTo(p.id);
+		}
+		return retcode;
+	}
+	@Override
+	public boolean equals(Object o){
+		boolean isEqual = false;
+		if (o instanceof ReportableDoc){
+			ReportableDoc p = (ReportableDoc)o;
+			isEqual = id.equals(p.id);
+		}
+		return isEqual;
+	}
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+	/**
+	 * @return the id
+	 */
+	public String getId() {
+		return id;
+	}
+	/**
+	 * @return the className
+	 */
+	public String getClassName() {
+		return className;
+	}
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
+	}
+	/**
+	 * @param className the className to set
+	 */
+	public void setClassName(String className) {
+		this.className = className;
+	}
 	
-	public void executeCommand(String command) throws JHOVE2Exception ;
+	
 }
+
+
+

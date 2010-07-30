@@ -33,24 +33,18 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.jhove2.util.externalprocess;
+package org.jhove2.app.util.documenter;
 
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.reportable.Reportable;
+
 
 /**
- * This interface defines the functions required for external process creation/execution
- * 
- * This class is base on one developed for similar purposes at Portico by Suresh Kadirvel.
- * 
+ * Interface for classes that generate data for module specifications
  * @author smorrissey
  *
  */
-public interface ExternalProcessHandler {
-	
-
-	/** Command to synchronize the stdout, stderr streams of the child process  as part of a unix command*/
-	public static String SYNC_COMMAND_WITH_DELIMITER = ";sync";
-
-	
-	public void executeCommand(String command) throws JHOVE2Exception ;
+public interface ModuleDocumenter {
+	public void documentModule(Reportable reportable)
+	throws JHOVE2Exception;
 }

@@ -173,7 +173,10 @@ public class FeatureConfigurationUtil {
 		try {
 			cl = (Class<? extends Reportable>) Class.forName(className);
 		} catch (ClassNotFoundException e) {
-			throw new JHOVE2Exception("Cannot create Reportable class for className " + className, e);
+			cl= getReportableFromInnerClassName(className);
+			if (cl==null){
+				throw new JHOVE2Exception("Cannot create Reportable class for className " + className, e);
+			}
 		}
 		Set<ReportablePropertyInfo> set = new TreeSet<ReportablePropertyInfo>(
 				comparator);	
@@ -343,8 +346,58 @@ public class FeatureConfigurationUtil {
 			if (rClass.isAssignableFrom(tClass)){
 				isReportable = true;
 			}
-		} catch (ClassNotFoundException e) {;}
+		} catch (ClassNotFoundException e) {}
 		return isReportable;
+	}
+	/**
+	 * Determine if class is an inner, but still reportable, class
+	 * @param className name of class to be tested
+	 * @return if class implements {@link org.jhove2.core.reportable.Reportable}, 
+	 *            else false
+	 */
+	public static boolean isReportableInnerClass(String className){
+		boolean isReportable = false;
+		// check to see if this in inner class (we only go up one level)
+		Class<? extends Reportable> reportable = 	getReportableFromInnerClassName(className);
+		if (reportable != null){
+			isReportable = true;
+		}
+		return isReportable;
+	}
+	/**
+	 * Create Class object for className if className is name of public Reportable inner class
+	 * @param className
+	 * @return Class object for className, or null if className is not name of public Reportable inner class
+	 */
+	public static Class<? extends Reportable> getReportableFromInnerClassName(String className){
+		Class<? extends Reportable> reportable = null;
+		int i = className.lastIndexOf(".");
+		if (i>0 && i<className.length()-1){
+			String parentClassName = className.substring(0,i);
+			try {
+				Class<?> tClass = Class.forName(parentClassName);
+				Class<?>[] innerClasses = tClass.getClasses();
+				 if (innerClasses.length>0){
+					Class<?> matchingClass = null;
+					for (Class<?> innerClass:innerClasses){
+						if (innerClass.getCanonicalName().equals(className)){
+							matchingClass = innerClass;
+							break;
+						}
+					}
+					if (matchingClass != null){
+						Class<?> rClass = Class.forName("org.jhove2.core.reportable.Reportable");
+						if (rClass.isAssignableFrom(matchingClass)){
+							reportable = (Class<? extends Reportable>)matchingClass;
+						}
+					}
+				 }
+				
+			} 
+			catch (ClassNotFoundException e1) {}
+			catch (SecurityException e2) {};
+		}
+		return reportable;
 	}
 	/**
 	 * Utility method to construct full path to a file on class path.  Used for example 
