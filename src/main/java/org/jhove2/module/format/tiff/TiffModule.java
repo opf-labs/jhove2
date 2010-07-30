@@ -278,7 +278,7 @@ implements Validator
 
         try {
             /* parse for the appropriate IFD type */
-            ifd.parse(jhove2, input, ifdOffset);
+            ifd.parse(jhove2, input);
 
             if (ifdList.size () == 0) {
                 ifd.setFirst (true);
