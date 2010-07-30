@@ -3,11 +3,9 @@
  */
 package org.jhove2.module.format.tiff;
 
-import java.io.IOException;
-import java.util.Properties;
+import java.util.Arrays;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.config.ConfigInfo;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
@@ -21,30 +19,14 @@ import org.jhove2.core.reportable.AbstractReportable;
  *
  */
 public class IFDEntry 
-extends IFD
+extends AbstractReportable
 implements Comparable {
-
-    /*   public enum Type {
-        BYTE(1), ASCII(2), SHORT(3), LONG(4), RATIONAL(5), SBYTE(6),
-        UNDEFINED(7), SSHORT(8), SLONG(9), SRATIONAL(10), FLOAT(11),
-        DOUBLE(12), IFD(13);
-
-        private int fieldType;
-
-        Type (int type){
-            this.fieldType = type;
-        }
-    }
-     */
 
     /** The number of values, Count of the indicated Type */
     protected long count;
 
     /** Name of the TIFF tag */
     protected String name;
-
-    /** value of the previous tag */
-    private static int prevTag = 0;
 
     /** the tag that identifies the field */
     protected int tag;
@@ -55,40 +37,21 @@ implements Comparable {
     /** Contains the value iff the value is 4 or less bytes.  Otherwise is offset to value */
     protected long valueOffset;
 
-    private Object ByteOffsetNotWordAlignedMessage;
+    /** TIFF Version - some field types define the TIFF version */
+    protected int version = 4;
 
+    /** the value if the value is more than 4 btyes */
+    protected TiffValue value;
+
+    /** type mismatch message */
     private Message TypeMismatchMessage;
 
-    private Message TagSortOrderErrorMessage;
-
-    private Message ValueOffsetReferenceLocationFileMessage;
-
-    private Message UnknownTypeMessage;
-
+    /* unknown tag message */
     private Message UnknownTagMessage;
 
-    /** TIFF Version - some field types define the TIFF version */
-    protected static int version = 4;
+    private Message InvalidCountMessage;
 
-    @ReportableProperty (order = 4, value="Entry number of values.")
-    public long getCount(){
-        return count;
-    }
-
-    @ReportableProperty (order = 2, value = "Entry tag name.")
-    public String getName(){
-        return name;
-    }
-
-    @ReportableProperty(order = 1, value="Entry tag.")
-    public int getTag(){
-        return tag;
-    }
-
-    @ReportableProperty(order = 3, value="Tag type.")
-    public TiffType getType(){
-        return this.tiffType;
-    }
+    private Message InvalidCountValueMessage;
 
     @ReportableProperty(order=5, value = "Entry value/offset.")
     public long getValueOffset() {
@@ -100,119 +63,162 @@ implements Comparable {
     }
 
 
-    public IFDEntry() {
+
+    public IFDEntry(int tag, int type, int count, long valueOffset) {
+        this.tag = tag;
+        this.tiffType = TiffType.getType(type);
+        this.count = count;
+        this.valueOffset = valueOffset;
     }
 
-    public void parse(JHOVE2 jhove2, Input input) {
-        try {
-            tag = input.readUnsignedShort();
-            if (tag > prevTag)
-                prevTag = tag;
-            else {
-                Object[]messageArgs = new Object[]{tag, input.getPosition()};
-                this.TagSortOrderErrorMessage = (new Message(Severity.ERROR,
+
+    /**
+     * 
+     * validates the IFD Entry by checking: 
+     * 
+     *  1) if tag is known and defined
+     *  2) that the type matches expected type values for that tag definition
+     *  3) that count expected matches the count read in
+     *  4) performing any other validations for a particular tag
+     *  
+     * @param jhove2
+     * @throws JHOVE2Exception
+     */
+    protected void validateEntry(JHOVE2 jhove2) throws JHOVE2Exception {
+
+        /* retrieve the definition for the tag read in */
+        TiffTag tag = TiffTag.getTag(this.tag);
+
+        /* validate that the type and count read in matches what is expected for this tag */
+        if (tag != null) {
+            this.name = tag.getName();
+            checkType(jhove2, this.tiffType, tag.getType());
+            checkCount(jhove2, this.count, tag.getCardinality());
+        }
+        else {
+            Object[]messageArgs = new Object[]{this.tag, valueOffset};
+            this.UnknownTagMessage = (new Message(Severity.WARNING,
+                    Context.OBJECT,
+                    "org.jhove2.module.format.tiff.IFDEntry.UnknownTagMessage",
+                    messageArgs, jhove2.getConfigInfo()));               
+        }
+    }
+
+
+    /**
+     * checks that the count value read in matches the expected count value
+     * 
+     * @param jhove2
+     * @param count
+     * @param expectedCount
+     * @throws JHOVE2Exception
+     */
+    private void checkCount(JHOVE2 jhove2, long count, String expectedCount ) throws JHOVE2Exception {
+        if (expectedCount != null) {
+            int expected = Integer.parseInt(expectedCount);
+            if (count < expected) {
+                Object[]messageArgs = new Object[]{this.tag, count, expectedCount};
+                this.InvalidCountValueMessage = (new Message(Severity.WARNING,
                         Context.OBJECT,
-                        "org.jhove2.module.format.tiff.IFDEntry.TagSortOrderErrorMessage",
-                        messageArgs, jhove2.getConfigInfo()));
-            }               
-            int type = input.readUnsignedShort();
-
-            TiffType.getTiffTypes(getTiffType(jhove2.getConfigInfo()));
-            this.tiffType = TiffType.getType(type);
-
-            TiffTag tifftag = TiffTag.getTag(tag);
-            //, getTiffTags(jhove2.getConfigInfo()));
-
-            /* Skip over tags with unknown type. */
-            if (type < TiffType.getType("BYTE").num|| type > TiffType.getType("IFD").num) {
-                Object[]messageArgs = new Object[]{type, this.valueOffset };
-                this.UnknownTypeMessage = (new Message(Severity.ERROR,
-                        Context.OBJECT,
-                        "org.jhove2.module.format.tiff.IFDEntry.UnknownTypeMessage",
+                        "org.jhove2.module.format.tiff.IFDEntry.InvalidCountValueMessage",
                         messageArgs, jhove2.getConfigInfo()));               
             }
-            else {
-                /* type values of 6-12 were defined in TIFF 6.0 */
-                if (type > TiffType.getType("SBYTE").num){
-                    version = 6;
-                }
-
-                this.count = input.readUnsignedInt();
-
-                /* keep track of where we are in the file */
-                long valueOffset = input.getPosition(); 
-                long value = input.readUnsignedInt();
-
-                /* the value is the offset to the value */
-                if (calcValueSize(type, count) > 4) {
-                    long size = input.getSize();
-
-                    /* test that the value offset is within the file */
-                    if (value > size) {
-                        Object[]messageArgs = new Object[]{0, input.getPosition(), this.valueOffset};
-                        this.ValueOffsetReferenceLocationFileMessage = (new Message(Severity.ERROR,
-                                Context.OBJECT,
-                                "org.jhove2.module.format.tiff.IFDEntry.ValueOffsetReferenceLocationFileMessage",
-                                messageArgs, jhove2.getConfigInfo()));               
-
-                    }
-
-                    /* test off set is word aligned */
-                    if ((value & 1) != 0){
-                        Object[]messageArgs = new Object[]{0, input.getPosition(), this.valueOffset};
-                        this.ByteOffsetNotWordAlignedMessage = (new Message(Severity.ERROR,
-                                Context.OBJECT,
-                                "org.jhove2.module.format.tiff.IFDEntry.ValueByteOffsetNotWordAlignedMessage",
-                                messageArgs, jhove2.getConfigInfo()));               
-                    }
-
-                }
-                else {
-                    /* the value is the actual value */
-                    this.valueOffset = value;
-                }
-                validateTag(jhove2, tag, type, count, valueOffset);
-            }
-
+               
         }
-        catch (IOException e) {
-            e.printStackTrace();
-        }        
-        catch (JHOVE2Exception e) {
-            e.printStackTrace();
-        }        
+        // TODO Auto-generated method stub
+        
     }
 
-    protected void validateTag(JHOVE2 jhove2, int tagNum, int type, long count, long valueOffset) throws JHOVE2Exception {
-        TiffTag tag = TiffTag.getTag(tagNum);
+    /**
+     * compares the type that is read in with the type that is defined for the tag
+     * For unsigned integers, readers accept BYTE, SHORT, LONG or IFD types
+     * 
+     * @param jhove2 - JHOVE2 framework
+     * @param expected - the list of expected types defined for this tag
+     * @param string - the type read in 
+     * @throws JHOVE2Exception
+     */
+    private void checkType(JHOVE2 jhove2, TiffType type, String[] expected) throws JHOVE2Exception {
+               
+        int typeNum = type.getNum();
+        String typeReadIn = type.getTypeName();
+        /* type values of 6-12 were defined in TIFF 6.0 */
+        if (typeNum > TiffType.getType("SBYTE").getNum()) {
+            version = 6;
+        }
 
-        /* validate that the type read in matches possible types for that tag */
-        if (tag != null) {
-            String[] tagType = tag.getType();
-            boolean match = false;
-            for (String typeEntry:tagType){
-                if (tiffType.getType(typeEntry).num == type) 
-                    match = true;
+        if (typeReadIn.equalsIgnoreCase("BYTE") || typeReadIn.equalsIgnoreCase("SHORT") ||
+            typeReadIn.equalsIgnoreCase("LONG") || typeReadIn.equalsIgnoreCase("IFD")) {
+            for (String expectedEntry:expected){
+                if (expectedEntry.equalsIgnoreCase("BYTE") || expectedEntry.equalsIgnoreCase("SHORT") || 
+                    expectedEntry.equalsIgnoreCase("LONG") || expectedEntry.equalsIgnoreCase("IFD"))             
+                    return;  // type is valid
             }
-            if (!match) {
-                Object[]messageArgs = new Object[]{tagNum, type, this.valueOffset};
+        }
+        for (String expectedEntry:expected){
+            if (!expectedEntry.equalsIgnoreCase(typeReadIn)) {
+                Object[]messageArgs = new Object[]{typeReadIn, this.tag, Arrays.toString(expected)};
                 this.TypeMismatchMessage = (new Message(Severity.ERROR,
                         Context.OBJECT,
                         "org.jhove2.module.format.tiff.IFDEntry.TypeMismatchMessage",
                         messageArgs, jhove2.getConfigInfo()));               
-            }
+            }        
         }
-        else {
-            Object[]messageArgs = new Object[]{tagNum, type, this.valueOffset};
-            this.UnknownTagMessage = (new Message(Severity.ERROR,
-                    Context.OBJECT,
-                    "org.jhove2.module.format.tiff.IFDEntry.UnknownTagMessage",
-                    messageArgs, jhove2.getConfigInfo()));               
-            
-        }
-        /* TODO for each tag do some validation */
     }
 
+    /**
+     * The cardinality (number of values) for this TIFF tag  
+     * @return long
+     */
+    @ReportableProperty (order = 4, value="Entry number of values.")
+    public long getCount(){
+        return count;
+    }
+
+    /**
+     * The name of the tag entry
+     * @return String 
+     */
+    @ReportableProperty (order = 1, value = "Entry tag name.")
+    public String getName(){
+        return name;
+    }
+
+    /**
+     * The TIFF tag number
+     * @return int
+     */
+    @ReportableProperty(order = 2, value="Entry tag.")
+    public int getTag(){
+        return tag;
+    }
+
+    /**
+     * The field type of the value for this tag
+     * @return TiffType
+     */
+    @ReportableProperty(order = 3, value="Tag type.")
+    public TiffType getType(){
+        return this.tiffType;
+    }
+
+    /**
+     * Get type mismatch message
+     * @return the typeMismatchMessage
+     */
+    @ReportableProperty(order=6, value = "type mismatch message.")
+    public Message getTypeMismatchMessage() {
+        return TypeMismatchMessage;
+    }
+
+    /**
+     * Get the unknown tag message
+     * @return the unknownTagMessage
+     */
+    @ReportableProperty(order=7, value = "unknown tag message.")
+    public Message getUnknownTagMessage() {
+        return UnknownTagMessage;
+    }
 
     @Override
     public int compareTo(Object o) {
@@ -229,6 +235,22 @@ implements Comparable {
         boolean valid = true;
         return valid;
     }
+
+    /**
+     * @return the value
+     */
+    @ReportableProperty(order=8, value = "Tiff Tag Value.")
+    public TiffValue getValue() {
+        return value;
+    }
+
+    /**
+     * @param object the value to set
+     */
+    public void setValue(Object object) {
+        this.value = (TiffValue) object;
+    }
+
 
 
 
