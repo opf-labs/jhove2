@@ -4,7 +4,6 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.Set;
-import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.jhove2.core.JHOVE2Exception;
@@ -27,7 +26,7 @@ import org.jhove2.core.JHOVE2Exception;
 public class TiffTag implements Comparable<TiffTag> {
 
     /** Singleton TIFF Tag. */
-    protected static SortedSet<TiffTag> tags;
+    protected static TreeSet<TiffTag> tags;
 
     /** the tag that identifies this field */
     protected int tag;
@@ -137,7 +136,7 @@ public class TiffTag implements Comparable<TiffTag> {
      * @return SortedSet<TiffTag> - the sorted set of TIFF tag definitions
      * @throws JHOVE2Exception
      */
-    protected static SortedSet<TiffTag> getTiffTags(Properties props) throws JHOVE2Exception {
+    protected static TreeSet<TiffTag> getTiffTags(Properties props) throws JHOVE2Exception {
         {
             if (tags == null) {
                 TiffTag tiffTag = null;
@@ -161,9 +160,12 @@ public class TiffTag implements Comparable<TiffTag> {
                         name = values[0];
                         type = values[1].split(",");
 
-                        /* retrieve cardinality/count/length */
+                        /* retrieve cardinality/count/length 
+                         * count field is null if the string value it contains is not parseable to int. 
+                         */
                         if (values.length >= 3) {
-                            cardinality = values[2];
+                            if (isParsableToInt(values[2]))
+                                cardinality = values[2];               
                         }
                         /* retrieve default value */
                         if (values.length >= 4) {
@@ -181,6 +183,23 @@ public class TiffTag implements Comparable<TiffTag> {
             }
         }
         return tags;
+    }
+    
+    /**
+     * performs test to check if string is an integer
+     * 
+     * @param i
+     * @return
+     */
+    private static boolean isParsableToInt(String i)
+    {
+        try {
+            Integer.parseInt(i);
+            return true;
+        }
+        catch(NumberFormatException e) {
+            return false;
+        }
     }
 
     /**
