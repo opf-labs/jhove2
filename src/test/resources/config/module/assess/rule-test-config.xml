@@ -16,8 +16,8 @@
 	    <property name="objectFilter" value="org.jhove2.module.format.xml.XmlModule"/>  
 		<property name="rules">
 			<list value-type="org.jhove2.module.assess.Rule">
-				<ref bean="MockStandaloneRule"/>
-				<ref bean="MockValidityRule"/>
+				<ref local="MockStandaloneRule"/>
+				<ref local="MockValidityRule"/>
 			</list>
 		</property>
 	</bean>

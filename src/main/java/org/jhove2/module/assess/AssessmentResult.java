@@ -230,6 +230,13 @@ public class AssessmentResult extends AbstractReportable {
                         ruleTruth = (ruleTruth || predicateTruth.booleanValue());
                     }
                     break;
+                case NONE_OF:
+                    ruleTruth = true;
+                    for (Boolean predicateTruth : getPredicateEvaluations()
+                            .values()) {
+                        ruleTruth = (ruleTruth || ! predicateTruth.booleanValue());
+                    }
+                    break;
             }
             setBooleanResult(ruleTruth ? Validity.True : Validity.False );
         } else {

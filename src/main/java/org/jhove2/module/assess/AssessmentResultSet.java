@@ -117,9 +117,11 @@ public class AssessmentResultSet extends AbstractReportable {
         this.ruleSet = ruleSet;
         assessmentResults = new ArrayList<AssessmentResult>();
         for (Rule rule : ruleSet.getRules()) {
-            AssessmentResult assessmentResult = new AssessmentResult();
-            assessmentResult.setRule(rule);
-            assessmentResults.add(assessmentResult);
+            if (rule.isEnabled()) {
+                AssessmentResult assessmentResult = new AssessmentResult();
+                assessmentResult.setRule(rule);
+                assessmentResults.add(assessmentResult);
+            }
         }
     }
 

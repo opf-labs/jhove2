@@ -20,6 +20,7 @@
 				<ref bean="XmlValidityRule"/>
 			</list>
 		</property>
+		<property name="enabled" value="true"/>
 	</bean>
 	
 	<!-- Rule bean for evaluating xmlDeclaration.standalone value -->
@@ -28,24 +29,29 @@
 	    <property name="description" value="Does XML Declaration specify standalone status?"/>
 		<property name="consequent" value="Is Standalone"/>  
 		<property name="alternative" value="Is Not Standalone"/> 
+	    <property name="quantifier" value="ALL_OF"/>
 		<property name="predicates">
 			<list value-type="java.lang.String">
 				<value>xmlDeclaration.standalone == 'yes'</value>
 			</list>
 		</property>
+		<property name="enabled" value="false"/>
 	</bean>        
 
 	<!-- Rule bean for evaluating validity value -->
 	<bean id="XmlValidityRule" class="org.jhove2.module.assess.Rule" scope="singleton">
 	    <property name="name" value="XmlValidityRule"/>  
-	    <property name="description" value="Is the XML valid?"/>
-		<property name="consequent" value="Is Valid"/>  
-		<property name="alternative" value="Is Not Valid"/> 
+	    <property name="description" value="Is the XML validity status acceptable?"/>
+		<property name="consequent" value="Acceptable"/>  
+		<property name="alternative" value="Not Acceptable"/> 
+	    <property name="quantifier" value="ANY_OF"/>
 		<property name="predicates">
 			<list value-type="java.lang.String">
 				<value>valid.toString() == 'true'</value>
+				<value>(valid.toString() == 'undetermined') &amp;&amp; (wellFormed.toString() == 'true')</value>
 			</list>
 		</property>
+		<property name="enabled" value="true"/>
 	</bean>        
 	            
 </beans>		   

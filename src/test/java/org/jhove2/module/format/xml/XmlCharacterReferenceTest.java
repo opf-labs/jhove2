@@ -112,7 +112,7 @@ public class XmlCharacterReferenceTest  extends XmlModuleTestBase {
      */
     @Test
     public void testCharacterEntityReferences() {
-        TreeMap<String, EntityReferences.EntityReference> erMap = testXmlModule.entityReferences.entityReferenceMap;
+        TreeMap<String, EntityReference> erMap = testXmlModule.entityReferences.entityReferenceMap;
         assertEquals(5,erMap.size());
         assertEquals(5, erMap.get("amp").getCount().intValue());
         assertEquals(4, erMap.get("apos").getCount().intValue());
@@ -126,7 +126,7 @@ public class XmlCharacterReferenceTest  extends XmlModuleTestBase {
      */   
     @Test
     public void testNumericCharacterReferences() {
-        TreeMap<Integer, NumericCharacterReferences.NumericCharacterReference> ncrMap = testXmlModule.numericCharacterReferences.numericCharacterReferenceMap;
+        TreeMap<Integer, NumericCharacterReference> ncrMap = testXmlModule.numericCharacterReferences.numericCharacterReferenceMap;
         assertEquals(6, ncrMap.size());
         assertEquals(3, ncrMap.get(0x0009).getCount().intValue());
         assertEquals(1, ncrMap.get(0x000A).getCount().intValue());
@@ -154,11 +154,11 @@ public class XmlCharacterReferenceTest  extends XmlModuleTestBase {
     @Test
     public void testValidationInfo() {
         ValidationResults vr = testXmlModule.getValidationResults();
-        ValidationResults.ValidationMessageList warnings = vr.getParserWarnings();
+        ValidationMessageList warnings = vr.getParserWarnings();
         assertEquals(0, warnings.getValidationMessageCount());
-        ValidationResults.ValidationMessageList errors = vr.getParserErrors();
+        ValidationMessageList errors = vr.getParserErrors();
         assertEquals(0, errors.getValidationMessageCount());
-        ValidationResults.ValidationMessageList fatals = vr.getFatalParserErrors();
+        ValidationMessageList fatals = vr.getFatalParserErrors();
         assertEquals(0, fatals.getValidationMessageCount());
     }
 

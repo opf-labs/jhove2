@@ -178,7 +178,7 @@ public class AssessmentModule extends AbstractModule implements Assessor {
     private void assessObject(Object assessedObject) throws JHOVE2Exception {
         String className = assessedObject.getClass().getName();
         RuleSet ruleSet = getRuleSetFactory().getRuleSet(className);
-        if (ruleSet != null) {
+        if ((ruleSet != null) && (ruleSet.isEnabled())) {
             AssessmentResultSet resultSet = new AssessmentResultSet();
             assessmentResultSets.add(resultSet);
             resultSet.setAssessedObject(assessedObject);

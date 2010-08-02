@@ -61,6 +61,9 @@ public class RuleSet {
     /** The list of {@link Rule}(s) comprising the RuleSet */
     protected List<Rule> rules;
 
+    /** Whether or not to evaluate the rules in this ruleSet */
+    protected boolean enabled = true;
+    
     /**
      * Instantiates a new RuleSet
      */
@@ -141,6 +144,20 @@ public class RuleSet {
      */
     public void setRules(List<Rule> rules) {
         this.rules = rules;
+    }
+
+    /**
+     * @return the enabled status for the RuleSet
+     */
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    /**
+     * @param enabled Set the enabled status for the RuleSet
+     */
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
 }

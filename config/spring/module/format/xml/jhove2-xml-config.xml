@@ -64,7 +64,10 @@
 		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity" value="Unambiguous"/>
 		<property name="aliasIdentifiers">
 			<set value-type="org.jhove2.core.I8R">
+				<!-- XML DROID ID -->
 				<ref bean="PUIDfmt101"/>
+				<!-- XHTML DROID ID -->
+				<ref bean="PUIDfmt102"/>
 				<ref bean="XmlMIMEType"/>
 				<ref bean="XmlRFC3023"/>
 				<ref bean="XmlUTI"/>
@@ -92,6 +95,12 @@
 	    <constructor-arg type="java.lang.String" value="fmt/101"/>
 	    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
 	</bean>
+	<!--  XHTML PUID aliasIdentifier bean -->
+	 <bean id="PUIDfmt102" class="org.jhove2.core.I8R" scope="singleton">  
+	    <constructor-arg type="java.lang.String" value="fmt/102"/>
+        <constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
+     </bean>
+
 	<!-- XML MIME aliasIdentifier bean -->
 	<bean id="XmlMIMEType" class="org.jhove2.core.I8R" scope="singleton">
 	    <constructor-arg type="java.lang.String" value="application/xml"/>

@@ -10,21 +10,22 @@
 		   http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 		   	
 	<!-- RuleSet bean for the XmlModule -->
-	<bean id="MockModuleRuleSet" class="org.jhove2.module.assess.RuleSet"  scope="singleton">
-	    <property name="name" value="MockRuleSet"/>  
-	    <property name="description" value="RuleSet for testing Mock Module"/>  
+	<bean id="MockModuleRuleSet0" class="org.jhove2.module.assess.RuleSet"  scope="singleton">
+	    <property name="name" value="MockRuleSet0"/>  
+	    <property name="description" value="RuleSet0 for testing Mock Module"/>  
 	    <property name="objectFilter" value="org.jhove2.module.assess.MockModule"/>  
 		<property name="rules">
 			<list value-type="org.jhove2.module.assess.Rule">
-				<ref bean="MockModuleRule0"/>
-				<ref bean="MockModuleRule1"/>
-				<ref bean="MockModuleRule2"/>
-				<ref bean="MockModuleRule3"/>
-				<ref bean="MockModuleRule4"/>
-				<ref bean="MockModuleRule5"/>
-				<ref bean="MockModuleRule6"/>
-				<ref bean="MockModuleRule7"/>
-				<ref bean="MockModuleRule8"/>
+				<ref local="MockModuleRule0"/>
+				<ref local="MockModuleRule1"/>
+				<ref local="MockModuleRule2"/>
+				<ref local="MockModuleRule3"/>
+				<ref local="MockModuleRule4"/>
+				<ref local="MockModuleRule5"/>
+				<ref local="MockModuleRule6"/>
+				<ref local="MockModuleRule7"/>
+				<ref local="MockModuleRule8"/>
+				<ref local="MockModuleRule9"/>
 			</list>
 		</property>
 	</bean>
@@ -109,7 +110,7 @@
 	</bean>        
 
 	<bean id="MockModuleRule5" class="org.jhove2.module.assess.Rule" scope="singleton">
-	    <property name="name" value="MockModuleRule0"/>  
+	    <property name="name" value="MockModuleRule5"/>  
 	    <property name="description" value="all contains comparisons expected true for module field"/>
 	    <property name="quantifier" value="ALL_OF"/>
 		<property name="consequent" value="true expected"/>  
@@ -165,5 +166,21 @@
 			</list>
 		</property>
 	</bean>        
+
+	<bean id="MockModuleRule9" class="org.jhove2.module.assess.Rule" scope="singleton">
+	    <property name="name" value="MockModuleRule9"/>  
+	    <property name="description" value="test NONE_OF quantifier"/>
+	    <property name="quantifier" value="NONE_OF"/>
+		<property name="consequent" value="true expected"/>  
+		<property name="alternative" value="false not expected"/> 
+		<property name="predicates">
+			<list value-type="java.lang.String">
+				<value>mpBoolean == true</value>
+				<value>mpString == 'bad string'</value>
+				<value>mpLong == 1876543</value>
+			</list>
+		</property>
+	</bean>        
+
 	
 </beans>		   
