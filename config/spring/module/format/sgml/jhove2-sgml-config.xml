@@ -38,6 +38,7 @@
         <property name="filepathFilter" ref="OpenSpFilepathFilter"/>
         <property name="onsgmlsOptions" ref="OnsgmlsOptions"/>
         <property name="sgmlnormOptions" ref="SgmlNormOptions"/>
+        <property name="spaceEscapeChar" value="'"/>
 	</bean>
 	
 		<!-- OpenSpWrapper bean wraps invocations to OpenSP executables (Windows dll and exe -->
@@ -50,6 +51,7 @@
         <property name="sgmlnormPath" value="C:\PROGRA~1\OpenSp\osgmlnorm.exe"/>
         <property name="onsgmlsOptions" ref="WindowsOnsgmlsOptions"/>
         <property name="sgmlnormOptions" ref="WindowsSgmlNormOptions"/>
+        <property name="spaceEscapeChar" value='"'/>
 	</bean>
 	
 	<!--  SGML catalog file path bean: unix  or Cygwin on Windows; edit as appropriate for your installation-->
@@ -283,6 +285,7 @@
 	<bean id="OpenSpFilepathFilter" 
 			class="org.jhove2.util.externalprocess.FileSeparatorFilter" scope="prototype">
     </bean>
+    
 	
    <!-- OpenSGML wrapped product bean -->
    <bean id="OpenSgml" class="org.jhove2.core.WrappedProduct" scope="singleton" >
@@ -313,6 +316,11 @@
 				<ref bean="SgmlMIMEType"/>
 				<ref bean="SgmlRFC1874"/>
 				<ref bean="SgmlISO8879"/>
+				<ref bean="PUIDHtmlfmt96"/>
+				<ref bean="PUIDHtmlfmt97"/>
+				<ref bean="PUIDHtmlfmt98"/>
+				<ref bean="PUIDHtmlfmt99"/>
+				<ref bean="PUIDHtmlfmt100"/>
 			</set>
 		</property>
 		<property name="aliasNames">
@@ -412,6 +420,33 @@
 	    <constructor-arg type="java.lang.String" value="x-fmt/195"/>
 	    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
 	</bean>
+	
+	<!-- HTML PUID aliasIdentifier bean -->
+	<bean id="PUIDHtmlfmt96" class="org.jhove2.core.I8R" scope="singleton">
+	    <constructor-arg type="java.lang.String" value="fmt/96"/>
+	    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
+	</bean>	
+	<!-- HTML 2.0 PUID aliasIdentifier bean -->
+	<bean id="PUIDHtmlfmt97" class="org.jhove2.core.I8R" scope="singleton">
+	    <constructor-arg type="java.lang.String" value="fmt/97"/>
+	    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
+	</bean>	
+	<!-- HTML 3.2 PUID aliasIdentifier bean -->
+	<bean id="PUIDHtmlfmt98" class="org.jhove2.core.I8R" scope="singleton">
+	    <constructor-arg type="java.lang.String" value="fmt/98"/>
+	    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
+	</bean>
+	<!-- HTML 4.0 PUID aliasIdentifier bean -->
+	<bean id="PUIDHtmlfmt99" class="org.jhove2.core.I8R" scope="singleton">
+	    <constructor-arg type="java.lang.String" value="fmt/99"/>
+	    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
+	</bean>	
+	<!-- HTML 4.01 PUID aliasIdentifier bean -->
+	<bean id="PUIDHtmlfmt100" class="org.jhove2.core.I8R" scope="singleton">
+	    <constructor-arg type="java.lang.String" value="fmt/100"/>
+	    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
+	</bean>		
+	
 	<!-- SGML MIME aliasIdentifier bean -->
 	<bean id="SgmlMIMEType" class="org.jhove2.core.I8R" scope="singleton">
 	    <constructor-arg type="java.lang.String" value="application/sgml"/>
