@@ -1,15 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:util="http://www.springframework.org/schema/util"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-	   xsi:schemaLocation="http://www.springframework.org/schema/beans 
-           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-           http://www.springframework.org/schema/context
-           http://www.springframework.org/schema/context/spring-context-2.5.xsd
-		   http://www.springframework.org/schema/util 
-		   http://www.springframework.org/schema/util/spring-util-2.0.xsd">
-		   
-	
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:util="http://www.springframework.org/schema/util" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 	<!-- JHOVE2 framework bean -->
 	<bean id="JHOVE2" class="org.jhove2.core.JHOVE2" scope="prototype">
 		<property name="developers">
@@ -24,16 +14,15 @@
 				<ref bean="IdentifierCommand"/>
 				<ref bean="DispatcherCommand"/>
 				<ref bean="DigesterCommand"/>
+				<ref bean="AssessorCommand"/>
 				<ref bean="AggrefierCommand"/>
 			</list>
 		</property>
 		<property name="configInfo" ref="ConfigInfo"/>
 	</bean>
-	
 	<!-- Identifier command bean -->
-	<bean id="IdentifierCommand" class="org.jhove2.module.identify.IdentifierCommand"
-	 	scope="prototype">
-	 	 <property name="developers">
+	<bean id="IdentifierCommand" class="org.jhove2.module.identify.IdentifierCommand" scope="prototype">
+		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
 				<ref bean="PorticoAgent"/>
@@ -42,11 +31,9 @@
 		</property>
 		<property name="identifierFactory" ref="IdentifierFactory"/>
 	</bean>
-
 	<!-- Dispatcher command bean -->
-	<bean id="DispatcherCommand" class="org.jhove2.module.format.DispatcherCommand"
-	      scope="prototype">
-	    <property name="developers">
+	<bean id="DispatcherCommand" class="org.jhove2.module.format.DispatcherCommand" scope="prototype">
+		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
 				<ref bean="PorticoAgent"/>
@@ -56,11 +43,9 @@
 		<property name="formatFactory" ref="FormatFactory"/>
 		<property name="formatModuleFactory" ref="FormatModuleFactory"/>
 	</bean>
-	
 	<!-- Aggrefier command Bean -->
-	<bean id="AggrefierCommand" class="org.jhove2.module.aggrefy.AggrefierCommand"
-		scope="prototype" >
-		 <property name="developers">
+	<bean id="AggrefierCommand" class="org.jhove2.module.aggrefy.AggrefierCommand" scope="prototype" >
+		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
 				<ref bean="PorticoAgent"/>
@@ -68,13 +53,10 @@
 			</list>
 		</property>
 		<property name="aggrefierFactory" ref="AggrefierFactory"/>
-	</bean>    
-
-	<!--  Digester command bean -->  
-	<bean id="DigesterCommand"
-		  class="org.jhove2.module.digest.DigesterCommand"
-		  scope="prototype">
-		   <property name="developers">
+	</bean>
+	<!--  Digester command bean -->
+	<bean id="DigesterCommand" class="org.jhove2.module.digest.DigesterCommand" scope="prototype">
+		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
 				<ref bean="PorticoAgent"/>
@@ -82,74 +64,62 @@
 			</list>
 		</property>
 		<property name="digesterFactory" ref="DigesterFactory"/>
-    </bean>
-
+	</bean>
+	<!-- Assessor command bean -->
+	<bean id="AssessorCommand" class="org.jhove2.module.assess.AssessorCommand" scope="prototype">
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+				<ref bean="PorticoAgent"/>
+				<ref bean="StanfordAgent"/>
+			</list>
+		</property>
+		<property name="assessorFactory" ref="AssessorFactory"/>
+	</bean>
 	<!--  ConfigInfo bean -->
-	<bean id="ConfigInfo" class="org.jhove2.config.spring.SpringConfigInfo"
-		scope="singleton"/>
-	
+	<bean id="ConfigInfo" class="org.jhove2.config.spring.SpringConfigInfo" scope="singleton"/>
 	<!-- Format factory bean -->
-	<bean id="FormatFactory" class="org.jhove2.config.spring.SpringFormatFactory" 
-		scope="singleton"/>
-		
+	<bean id="FormatFactory" class="org.jhove2.config.spring.SpringFormatFactory" scope="singleton"/>
 	<!--  Format module factory bean -->
-	<bean id="FormatModuleFactory" 
-	    class="org.jhove2.config.spring.SpringFormatModuleFactory" 
-		scope="singleton"/>
-		
+	<bean id="FormatModuleFactory" class="org.jhove2.config.spring.SpringFormatModuleFactory" scope="singleton"/>
 	<!--  Digester module factory bean -->
-	<bean id="DigesterFactory" 
-	    class="org.jhove2.config.spring.SpringDigesterFactory"
-		scope="singleton"/>
-	
+	<bean id="DigesterFactory" class="org.jhove2.config.spring.SpringDigesterFactory" scope="singleton"/>
 	<!-- Identifier module factory bean -->
-	<bean id="IdentifierFactory"
-	      class="org.jhove2.config.spring.SpringIdentifierFactory"
-	      scope="singleton"/>
-	
+	<bean id="IdentifierFactory" class="org.jhove2.config.spring.SpringIdentifierFactory" scope="singleton"/>
 	<!-- Aggrefier module factory bean -->
-	<bean id="AggrefierFactory"
-	      class="org.jhove2.config.spring.SpringAggrefierFactory"
-	      scope="singleton"/>
-	
+	<bean id="AggrefierFactory" class="org.jhove2.config.spring.SpringAggrefierFactory" scope="singleton"/>
+	<!-- Assessment module factory bean -->
+	<bean id="AssessorFactory" class="org.jhove2.config.spring.SpringAssessorFactory" scope="singleton"/>
 	<!-- CDL agent bean -->
 	<bean id="CDLAgent" class="org.jhove2.core.Agent" scope="singleton">
 		<constructor-arg type="java.lang.String" value="California Digital Library"/>
 		<constructor-arg type="org.jhove2.core.Agent$Type" value="Corporate"/>
 		<property name="URI" value="http://www.cdlib.org/"/>
 	</bean>
-		
 	<!-- Portico agent bean -->
 	<bean id="PorticoAgent" class="org.jhove2.core.Agent" scope="singleton">
 		<constructor-arg type="java.lang.String" value="Portico"/>
 		<constructor-arg type="org.jhove2.core.Agent$Type" value="Corporate"/>
 		<property name="URI" value="http://www.portico.org/"/>
 	</bean>
-		
 	<!-- Stanford agent bean -->
 	<bean id="StanfordAgent" class="org.jhove2.core.Agent" scope="singleton">
 		<constructor-arg type="java.lang.String" value="Stanford University"/>
 		<constructor-arg type="org.jhove2.core.Agent$Type" value="Corporate"/>
 		<property name="URI" value="http://www.stanford.edu/"/>
 	</bean>
-	
-
-   <bean id="DisplayVisibility" class="org.jhove2.config.spring.PropertiesFactoryBean">
-  		<property name="propertyFileBaseName" value="displayer"/>
-   </bean>
-   
-      <bean id="DisplayUnits" class="org.jhove2.config.spring.PropertiesFactoryBean">
-  		<property name="propertyFileBaseName" value="unit"/>
-   </bean>
-	             
-    <!--  BEAN for message properties files (used for I18N ) -->
-    <!--    NOTE  BEAN MUST HAVE id "messageSource" -->
-      <bean id="messageSource" 
-              class="org.jhove2.config.spring.ResourceBundleMessageSource">
-          <property name="basename" >
-             <!--  base name for localized message template properties files -->
-          	<value>messages</value>
-          </property>
-    </bean>
-
+	<bean id="DisplayVisibility" class="org.jhove2.config.spring.PropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="displayer"/>
+	</bean>
+	<bean id="DisplayUnits" class="org.jhove2.config.spring.PropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="unit"/>
+	</bean>
+	<!--  BEAN for message properties files (used for I18N ) -->
+	<!--    NOTE  BEAN MUST HAVE id "messageSource" -->
+	<bean id="messageSource" class="org.jhove2.config.spring.ResourceBundleMessageSource">
+		<property name="basename" >
+			<!--  base name for localized message template properties files -->
+			<value>messages</value>
+		</property>
+	</bean>
 </beans>

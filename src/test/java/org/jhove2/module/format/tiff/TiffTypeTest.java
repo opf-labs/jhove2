@@ -31,7 +31,7 @@ public class TiffTypeTest {
 
     private JHOVE2 JHOVE2;
     private Set<TiffType> TiffTypeSet = null;
-    private boolean print = true;
+    private boolean print = false;
 
     @Test
     public void testGettypeProperties() {

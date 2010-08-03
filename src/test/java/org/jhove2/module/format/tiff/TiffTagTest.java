@@ -31,7 +31,7 @@ public class TiffTagTest {
 
     private JHOVE2 JHOVE2;
     private Set<TiffTag> tiffTagSet = null;
-    private boolean print = true;
+    private boolean print = false;
 
     @Test
     public void testGetTagIntProperties() {
