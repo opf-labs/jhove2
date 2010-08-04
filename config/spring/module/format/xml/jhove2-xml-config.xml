@@ -128,7 +128,12 @@
 		<property name="author" value="W3C"/>
 		<property name="date" value="2008"/>
 		<property name="edition" value="REC-xml-20081126"/>
-		<property name="identifier" ref="XML10SpecificationURI"/>
+<!--		<property name="identifier" ref="XML10SpecificationURI"/>-->
+		<property name="identifiers">
+			<list value-type="org.jhove2.core.I8R">
+				<ref bean="XML10SpecificationURI"/>
+			</list>
+		</property>
 		<property name="publisher" value="W3C"/>
 	</bean>
 	
@@ -146,7 +151,12 @@
 		<property name="author" value="W3C"/>
 		<property name="date" value="2006"/>
 		<property name="edition" value="REC-xml-20081126"/>
-		<property name="identifier" ref="XML11SpecificationURI"/>
+<!--		<property name="identifier" ref="XML11SpecificationURI"/>-->
+		<property name="identifiers">
+			<list value-type="org.jhove2.core.I8R">
+				<ref bean="XML11SpecificationURI"/>
+			</list>
+		</property>
 		<property name="publisher" value="W3C"/>
 	</bean>
 	

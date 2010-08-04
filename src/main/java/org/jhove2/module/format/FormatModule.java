@@ -108,8 +108,8 @@ public interface FormatModule
 	/**
 	 * Add a format module format profile.
 	 * 
-	 * @param profile
+	 * @param profiles
 	 *            Format module format profile
 	 */
-	public void setProfile(FormatProfile profile);
+	public void setProfiles(List<FormatProfile> profiles);
 }

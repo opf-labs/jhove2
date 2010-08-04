@@ -49,7 +49,6 @@ import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.config.ConfigInfo;
 import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2Exception;

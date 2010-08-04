@@ -219,34 +219,17 @@ public class Format extends AbstractReportable implements Comparable<Format> {
 	}
 
 	/**
-	 * Add format alias identifier.
-	 * 
-	 * @param identifier
-	 *            Format alias identifier
-	 */
-	public void setAliasIdentifier(I8R identifier) {
-		this.aliasIdentifiers.add(identifier);
-	}
-
-	/**
 	 * Add a Set of format alias identifiers.
 	 * 
 	 * @param identifiers
 	 *            Format alias identifiers
 	 */
 	public void setAliasIdentifiers(Set<I8R> identifiers) {
-		this.aliasIdentifiers.addAll(identifiers);
+		TreeSet<I8R> naliasIdentifiers = new TreeSet<I8R>();
+		naliasIdentifiers.addAll(identifiers);
+		this.aliasIdentifiers = naliasIdentifiers;
 	}
 
-	/**
-	 * Add format alias name.
-	 * 
-	 * @param name
-	 *            Format alias name
-	 */
-	public void setAliasName(String name) {
-		this.aliasNames.add(name);
-	}
 
 	/**
 	 * Add a Set of format alias names.
@@ -279,23 +262,15 @@ public class Format extends AbstractReportable implements Comparable<Format> {
 	}
 
 	/**
-	 * Add format specification.
-	 * 
-	 * @param specification
-	 *            Format specification
-	 */
-	public void setSpecification(Document specification) {
-		this.specifications.add(specification);
-	}
-
-	/**
 	 * Add a List of format specifications.
 	 * 
 	 * @param specifications
 	 *            Format specifications
 	 */
 	public void setSpecifications(List<Document> specifications) {
-		this.specifications.addAll(specifications);
+		ArrayList<Document> specs = new ArrayList<Document>();
+		specs.addAll(specifications);
+		this.specifications = specs;
 	}
 
 	/**

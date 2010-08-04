@@ -16,7 +16,12 @@
 		<constructor-arg ref="BytestreamIdentifier"/>
 		<constructor-arg type="org.jhove2.core.format.Format$Type" value="Format"/>
 		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity" value="Unambiguous"/>
-		<property name="aliasIdentifiers" ref="BytestreamMIMEType"/>
+<!--		<property name="aliasIdentifiers" ref="BytestreamMIMEType"/>-->
+		<property name="aliasIdentifiers">
+			<set value-type="org.jhove2.core.I8R">
+				<ref bean="BytestreamMIMEType"/>
+			</set>
+		</property>
 		<property name="note" value="A Bytestream is a JHOVE2-defined format representing arbitrary data."/>
 	</bean>		
 	<!-- Bytestream identifier bean -->  

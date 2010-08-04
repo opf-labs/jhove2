@@ -210,14 +210,18 @@ public class BaseFormatModule
 
 	/**
 	 * Set format module format profile. 
-	 * @param profile
-	 *            Format module format profile
-	 * @see org.jhove2.module.format.FormatModule#setProfile(org.jhove2.module.format.FormatProfile)
+	 * @param profiles
+	 *            List of FormatProfiles
+	 * @see org.jhove2.module.format.FormatModule#setProfiles(List)
 	 */
 	@Override
-	public void setProfile(FormatProfile profile) {
-		profile.setFormatModule(this);
-		this.profiles.add(profile);
+	public void setProfiles(List<FormatProfile> profiles) {
+		ArrayList<FormatProfile>nProfiles = new ArrayList<FormatProfile>();
+		for (FormatProfile profile:profiles){
+			profile.setFormatModule(this);
+			nProfiles.add(profile);
+		}
+		this.profiles = nProfiles;
 	}
 
 	/** Parse the format.

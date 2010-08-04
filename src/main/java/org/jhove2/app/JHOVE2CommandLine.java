@@ -135,7 +135,7 @@ extends AbstractApplication
 					jhove2.getInvocation().getTempSuffix(), 
 					jhove2.getInvocation().getBufferSize());
 
-			app.setSource(source);
+			app.getSources().add(source);
 			/* Characterize the FileSet source unit (and all subsidiary
 			 * source units that it encapsulates.
 			 */

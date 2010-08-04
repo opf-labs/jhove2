@@ -345,7 +345,12 @@
 		<constructor-arg type="org.jhove2.core.Document$Intention" value="Authoritative"/>
 		<property name="author" value="ISO"/>
 		<property name="date" value="1986"/>
-		<property name="identifier" ref="ISOSGMLSpecificationURI"/>
+		<property name="identifiers">
+			<list value-type="org.jhove2.core.I8R">
+				<ref bean="ISOSGMLSpecificationURI"/>
+			</list>
+		</property>
+<!--		<property name="identifier" ref="ISOSGMLSpecificationURI"/>-->
 		<property name="publisher" value="ISO"/>
 	</bean>
 	
@@ -356,7 +361,12 @@
 		<constructor-arg type="org.jhove2.core.Document$Intention" value="Authoritative"/>
 		<property name="author" value="ISO"/>
 		<property name="date" value="1996"/>
-		<property name="identifier" ref="ISOSGMLSpecificationCo1URI"/>
+		<property name="identifiers">
+			<list value-type="org.jhove2.core.I8R">
+				<ref bean="ISOSGMLSpecificationCo1URI"/>
+			</list>
+		</property>
+<!--		<property name="identifier" ref="ISOSGMLSpecificationCo1URI"/>-->
 		<property name="publisher" value="ISO"/>
 	</bean>
 	
@@ -367,7 +377,12 @@
 		<constructor-arg type="org.jhove2.core.Document$Intention" value="Authoritative"/>
 		<property name="author" value="ISO"/>
 		<property name="date" value="1999"/>
-		<property name="identifier" ref="ISOSGMLSpecificationCo2URI"/>
+		<property name="identifiers">
+			<list value-type="org.jhove2.core.I8R">
+				<ref bean="ISOSGMLSpecificationCo2URI"/>
+			</list>
+		</property>
+<!--		<property name="identifier" ref="ISOSGMLSpecificationCo2URI"/>-->
 		<property name="publisher" value="ISO"/>
 	</bean>
 
@@ -378,7 +393,12 @@
 		<constructor-arg type="org.jhove2.core.Document$Intention" value="Authoritative"/>
 		<property name="author" value="ISO"/>
 		<property name="date" value="1988"/>
-		<property name="identifier" ref="ISOSGMLSpecificationAmdURI"/>
+		<property name="identifiers">
+			<list value-type="org.jhove2.core.I8R">
+				<ref bean="ISOSGMLSpecificationAmdURI"/>
+			</list>
+		</property>
+<!--		<property name="identifier" ref="ISOSGMLSpecificationAmdURI"/>-->
 		<property name="publisher" value="ISO"/>
 	</bean>
 	
