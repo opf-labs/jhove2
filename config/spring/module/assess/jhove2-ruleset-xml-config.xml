@@ -16,8 +16,8 @@
 	    <property name="objectFilter" value="org.jhove2.module.format.xml.XmlModule"/>  
 		<property name="rules">
 			<list value-type="org.jhove2.module.assess.Rule">
-				<ref bean="XmlStandaloneRule"/>
-				<ref bean="XmlValidityRule"/>
+				<ref local="XmlStandaloneRule"/>
+				<ref local="XmlValidityRule"/>
 			</list>
 		</property>
 		<property name="enabled" value="true"/>
@@ -48,7 +48,7 @@
 		<property name="predicates">
 			<list value-type="java.lang.String">
 				<value>valid.toString() == 'true'</value>
-				<value>(valid.toString() == 'undetermined') &amp;&amp; (wellFormed.toString() == 'true')</value>
+				<value><![CDATA[(valid.toString() == 'undetermined') && (wellFormed.toString() == 'true')]]></value>
 			</list>
 		</property>
 		<property name="enabled" value="true"/>

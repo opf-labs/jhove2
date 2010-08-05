@@ -56,7 +56,7 @@
 		<property name="alternative" value="false not expected"/> 
 		<property name="predicates">
 			<list value-type="java.lang.String">
-				<value>(mpBoolean == false) &amp;&amp; (mpString == 'Module mock string')</value>
+				<value><![CDATA[(mpBoolean == false) && (mpString == 'Module mock string')]]></value>
 			</list>
 		</property>
 		<property name="enabled" value="false"/>

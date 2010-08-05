@@ -99,12 +99,12 @@
 		<property name="alternative" value="false not expected"/> 
 		<property name="predicates">
 			<list value-type="java.lang.String">
-				<value>mpString &lt;  'Next'</value>
-				<value>mpString &lt;= 'Module mock string'</value>
-				<value>mpString &gt;= 'Module'</value>
-				<value>mpLong &lt;  9876544</value>
-				<value>mpLong &lt;= 9876543</value>
-				<value>mpLong &gt;  9876542</value>
+				<value><![CDATA[mpString < 'Next']]></value>
+				<value><![CDATA[mpString <= 'Module mock string']]></value>
+				<value><![CDATA[mpString >= 'Module']]></value>
+				<value><![CDATA[mpLong <  9876544]]></value>
+				<value><![CDATA[mpLong <= 9876543]]></value>
+				<value><![CDATA[mpLong > 9876542]]></value>
 			</list>
 		</property>
 	</bean>        

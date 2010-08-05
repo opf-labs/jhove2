@@ -60,10 +60,10 @@ import org.jhove2.module.Module;
  */
 public class AssessmentModule extends AbstractModule implements Assessor {
     /** Assessment module version identifier. */
-    public static final String VERSION = "0.1.0";
+    public static final String VERSION = "2.0.0";
 
     /** Assessment module release date. */
-    public static final String RELEASE = "2010-06-04";
+    public static final String RELEASE = "2010-08-05";
 
     /** Assessment module rights statement. */
     public static final String RIGHTS = "Copyright 2010 by The Regents of the University of California, "
@@ -176,15 +176,20 @@ public class AssessmentModule extends AbstractModule implements Assessor {
      *             the jHOV e2 exception
      */
     private void assessObject(Object assessedObject) throws JHOVE2Exception {
-        String className = assessedObject.getClass().getName();
-        RuleSet ruleSet = getRuleSetFactory().getRuleSet(className);
-        if ((ruleSet != null) && (ruleSet.isEnabled())) {
-            AssessmentResultSet resultSet = new AssessmentResultSet();
-            assessmentResultSets.add(resultSet);
-            resultSet.setAssessedObject(assessedObject);
-            resultSet.setRuleSet(ruleSet);
-            resultSet.fireAllRules();
+        String objectFilter = assessedObject.getClass().getName();
+        List<RuleSet> ruleSetList = getRuleSetFactory().getRuleSetList(objectFilter);
+        if (ruleSetList != null) {
+            for (RuleSet ruleSet : ruleSetList) {
+                if (ruleSet.isEnabled()) {
+                    AssessmentResultSet resultSet = new AssessmentResultSet();
+                    assessmentResultSets.add(resultSet);
+                    resultSet.setAssessedObject(assessedObject);
+                    resultSet.setRuleSet(ruleSet);
+                    resultSet.fireAllRules();
+                }
+            }
         }
+                
     }
 
     /**
