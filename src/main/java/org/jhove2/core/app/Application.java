@@ -114,8 +114,5 @@ public interface Application
 	 */
 	public void setFramework(JHOVE2 framework);
 	
-	/** Add an application source unit.
-	 * @param source Source unit to be added
-	 */
-	public void setSource(Source source);
+
 }

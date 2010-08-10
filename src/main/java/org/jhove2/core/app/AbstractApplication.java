@@ -224,11 +224,5 @@ public abstract class AbstractApplication
 		this.invocation = invocation;
 	}
 
-	/** Add an application source unit.
-	 * @param source Source unit to be added
-	 */
-	@Override
-	public void setSource(Source source) {
-		this.sources.add(source);
-	}
+
 }

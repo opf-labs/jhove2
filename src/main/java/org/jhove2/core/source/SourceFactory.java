@@ -40,6 +40,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -48,6 +49,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.Invocation;
 
 /**
  * Factory for JHOVE2 file and directory source units.
@@ -175,7 +177,7 @@ public class SourceFactory
 	}
 
 	/**
-	 * Make Source from list of file system objects (files and directories).
+	 * Make Source from list of file system objects (files and directories) and URLS
 	 * 
 	 * @param pathNames
 	 *            File system path names
@@ -184,20 +186,60 @@ public class SourceFactory
 	 * @throws JHOVE2Exception
 	 */
 	public static synchronized Source getSource(List<String> pathNames)
-		throws IOException, JHOVE2Exception
+		throws FileNotFoundException, IOException, JHOVE2Exception
 	{
-		Source source = null;
-		Iterator<String> iter = pathNames.iterator();
-		// TODO: handle FileNotFound exception in getSource()
+		return SourceFactory.getSource(
+				pathNames, 
+				Invocation.DEFAULT_TEMP_PREFIX,
+				Invocation.DEFAULT_TEMP_SUFFIX,
+				Invocation.DEFAULT_BUFFER_SIZE);
+	}
+	
+	/**
+	 * Make Source from list of file system objects (files and directories) and URLS
+	 * 
+	 * @param pathNames
+	 *            File system path names
+	 * @param tmpPrefix
+	 * 			  Prefix for any temp files created
+	 * @param tmpSuffix
+	 * 			  Suffix for any temp files created
+	 * @param bufferSize
+     *            Buffer size for reading URLS
+	 * @return Source
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 * @throws JHOVE2Exception
+	 */
+	public static synchronized Source getSource(List<String> pathNames, String tmpPrefix,
+            String tmpSuffix,
+            int bufferSize)
+		throws FileNotFoundException, IOException, JHOVE2Exception
+	{
+		Source source = null;		
 		if (pathNames.size() == 1) {
-			String pathName = iter.next();
-			source = SourceFactory.getSource(pathName);
+			String pathName = pathNames.get(0);
+			try{
+				URL url = new URL(pathName);
+				source = SourceFactory.getSource(tmpPrefix, tmpSuffix, bufferSize, url);
+			}
+			catch (MalformedURLException m){
+				source = SourceFactory.getSource(pathName);
+			}			
 		}
 		else {
 			source = new FileSetSource();
+			Iterator<String> iter = pathNames.iterator();
 			while (iter.hasNext()) {
 				String pathName = iter.next();
-				Source src = SourceFactory.getSource(pathName);
+				Source src = null;
+				try{
+					URL url = new URL(pathName);
+					src = SourceFactory.getSource(tmpPrefix, tmpSuffix, bufferSize, url);
+				}
+				catch (MalformedURLException m){
+					src = SourceFactory.getSource(pathName);
+				}
 				((FileSetSource) source).addChildSource(src);
 			}
 		}

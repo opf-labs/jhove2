@@ -36,8 +36,6 @@
 
 package org.jhove2.app;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -121,7 +119,7 @@ extends AbstractApplication
 			 * the application.
 			 */		
 			JHOVE2 jhove2 = SpringConfigInfo.getReportable(JHOVE2.class,
-			"JHOVE2");
+							"JHOVE2");
 
 			jhove2.setInvocation(app.getInvocation());
 			jhove2.setInstallation(app.getInstallation());
@@ -129,45 +127,24 @@ extends AbstractApplication
 			app.setFramework(jhove2);
 
 			/* Create a FileSet source unit out of files and directories
-			 * specified on the command line
-			 * Create URL source objects out of URLs specified on commandline
-			 * (Any entry that cannot be made into a URL is assumed to be a 
-			 * file or directory)
+			 * and URLS specified on the command line,
+			 * or single Source (File, Directory, or URL) if only one specified
 			 */
-			ArrayList<URL> urls = new ArrayList<URL>();
-			ArrayList<String> paths = new ArrayList<String>();
-			for (String path:pathNames){				
-				try{
-					URL url = new URL(path);
-					urls.add(url);
-				}
-				catch (MalformedURLException m){
-					paths.add(path);
-				}
-			}
-			for (URL url:urls){
-				Source source = SourceFactory.getSource(
-						jhove2.getInvocation().getTempPrefix(), 
-						jhove2.getInvocation().getTempSuffix(), 
-						jhove2.getInvocation().getBufferSize(), 
-						url);
-				app.getSources().add(source);
-			}
-			if (paths.size()>0){
-				Source source = SourceFactory.getSource(paths);
-				app.getSources().add(source);
-			}
-			
+			Source source = SourceFactory.getSource(pathNames,
+					jhove2.getInvocation().getTempPrefix(), 
+					jhove2.getInvocation().getTempSuffix(), 
+					jhove2.getInvocation().getBufferSize());
 
+			app.getSources().add(source);
 			/* Characterize the FileSet source unit (and all subsidiary
 			 * source units that it encapsulates.
 			 */
 			TimerInfo timer = jhove2.getTimerInfo();
 			timer.setStartTime();;
 
-			for (Source source:app.getSources()){
-				jhove2.characterize(source);
-			}
+			
+			jhove2.characterize(source);
+			
 			timer.setEndTime();
 
 			/* Display characterization information for the FileSet.
@@ -328,18 +305,12 @@ extends AbstractApplication
 		if ((bufferSize = (Integer)parser.getOptionValue(bufferSizeO)) != null) {
 			config.setBufferSize(bufferSize.intValue());
 		}
-		if ((bufferType = (String)parser.getOptionValue(bufferTypeO)) != null) {
-			config.setBufferType(Type.valueOf(bufferType));
-		}
-		displayerType = (String)parser.getOptionValue(displayerTypeO);
-		if (displayerType != null) {
-			this.setDisplayer((Displayer)SpringConfigInfo.getReportable(Displayer.class,
-					displayerType));
-		}
+		// bufferTypeO and displayerTypeO already used above to set config.BufferType and this.Displayer
 		if ((failFastLimit = (Integer)parser.getOptionValue(failFastLimitO)) != null) {
 			config.setFailFastLimit(failFastLimit.intValue());
 		}
-		/* Make sure that the displayer has already been set. */
+		/* Displayer will have been set either to Default displayer by constructor,
+		 * or to some other displayer by the handling of the displayerType0 option above */
 		if ((Boolean)parser.getOptionValue(showIdentifiersO) != null) {
 			showIdentifiers = true;
 			this.getDisplayer().setShowIdentifiers(showIdentifiers);

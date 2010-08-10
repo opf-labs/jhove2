@@ -231,7 +231,7 @@ public class Document extends AbstractReportable {
 	 * @param identifier
 	 *            Document identifier
 	 */
-	public void setIdentifier(I8R identifier) {
+	public void addIdentifier(I8R identifier) {
 		this.identifiers.add(identifier);
 	}
 
@@ -242,7 +242,7 @@ public class Document extends AbstractReportable {
 	 *            List of Document identifiers
 	 */
 	public void setIdentifiers(List<I8R> identifiers) {
-		this.identifiers.addAll(identifiers);
+		this.identifiers = identifiers;
 	}
 
 	/**

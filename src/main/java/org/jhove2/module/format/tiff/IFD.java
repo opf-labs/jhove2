@@ -274,7 +274,6 @@ public abstract class IFD
     }
 
     public int getVersion() {
-        // TODO Auto-generated method stub
         return this.version;
     }
 

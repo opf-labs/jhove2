@@ -46,6 +46,8 @@ import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
 import org.jhove2.core.TimerInfo;
+import org.jhove2.core.Message.Context;
+import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractModule;
@@ -171,16 +173,32 @@ public class BaseFormatModule
 			}
 		}
 		catch (EOFException e) {
-			throw new JHOVE2Exception("EOFException", e);
+//			throw new JHOVE2Exception("EOFException", e);
+			this.addExceptionMessageToSource(jhove2, source, e);
 		}
 		catch (IOException e) {
-			throw new JHOVE2Exception("IOException", e);
+//			throw new JHOVE2Exception("IOException", e);
+			this.addExceptionMessageToSource(jhove2, source, e);
 		}
 		finally {
 		    this.timerInfo.setEndTime();
 		}
 	}
 	
+	protected void addExceptionMessageToSource(JHOVE2 jhove2, Source source, Exception e)
+	throws JHOVE2Exception {
+		String exceptionType = e.getClass().getSimpleName();
+		String eMessage = e.getLocalizedMessage();
+		if (eMessage==null){
+			eMessage = "";
+		}
+		String[] messageText = {exceptionType, eMessage};
+		source.addMessage(new Message(Severity.ERROR,
+                Context.PROCESS,
+                "org.jhove2.module.format.BaseFormatModule.IOExceptionOnParseMessage",
+                messageText, jhove2.getConfigInfo()));
+		
+	}
 	/**
 	 * Get format module format.
 	 * @return Format module format
@@ -210,14 +228,13 @@ public class BaseFormatModule
 
 	/**
 	 * Set format module format profile. 
-	 * @param profile
-	 *            Format module format profile
-	 * @see org.jhove2.module.format.FormatModule#setProfile(org.jhove2.module.format.FormatProfile)
+	 * @param profiles
+	 *            List of FormatProfiles
+	 * @see org.jhove2.module.format.FormatModule#setProfiles(List)
 	 */
 	@Override
-	public void setProfile(FormatProfile profile) {
-		profile.setFormatModule(this);
-		this.profiles.add(profile);
+	public void setProfiles(List<FormatProfile> profiles) {
+		this.profiles = profiles;
 	}
 
 	/** Parse the format.

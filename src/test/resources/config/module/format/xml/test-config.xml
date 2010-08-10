@@ -65,6 +65,8 @@
 		<property name="aliasIdentifiers">
 			<set value-type="org.jhove2.core.I8R">
 				<ref bean="PUIDfmt101"/>
+				<ref bean="PUIDfmt102"/>
+				<ref bean="PUIDfmt103"/>
 				<ref bean="XmlMIMEType"/>
 				<ref bean="XmlRFC3023"/>
 				<ref bean="XmlUTI"/>
@@ -92,6 +94,16 @@
 	    <constructor-arg type="java.lang.String" value="fmt/101"/>
 	    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
 	</bean>
+		<!-- XHTML 1.0 PUID aliasIdentifier bean -->
+	<bean id="PUIDfmt102" class="org.jhove2.core.I8R" scope="singleton">
+	    <constructor-arg type="java.lang.String" value="fmt/102"/>
+	    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
+	</bean>	
+	<!-- XHTML 1.1  PUID aliasIdentifier bean -->
+	<bean id="PUIDfmt103" class="org.jhove2.core.I8R" scope="singleton">
+	    <constructor-arg type="java.lang.String" value="fmt/103"/>
+	    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
+	</bean>
 	<!-- XML MIME aliasIdentifier bean -->
 	<bean id="XmlMIMEType" class="org.jhove2.core.I8R" scope="singleton">
 	    <constructor-arg type="java.lang.String" value="application/xml"/>
@@ -116,7 +128,12 @@
 		<property name="author" value="W3C"/>
 		<property name="date" value="2008"/>
 		<property name="edition" value="REC-xml-20081126"/>
-		<property name="identifier" ref="XML10SpecificationURI"/>
+<!--		<property name="identifier" ref="XML10SpecificationURI"/>-->
+		<property name="identifiers">
+			<list value-type="org.jhove2.core.I8R">
+				<ref bean="XML10SpecificationURI"/>
+			</list>
+		</property>
 		<property name="publisher" value="W3C"/>
 	</bean>
 	
@@ -134,7 +151,12 @@
 		<property name="author" value="W3C"/>
 		<property name="date" value="2006"/>
 		<property name="edition" value="REC-xml-20081126"/>
-		<property name="identifier" ref="XML11SpecificationURI"/>
+<!--		<property name="identifier" ref="XML11SpecificationURI"/>-->
+		<property name="identifiers">
+			<list value-type="org.jhove2.core.I8R">
+				<ref bean="XML11SpecificationURI"/>
+			</list>
+		</property>
 		<property name="publisher" value="W3C"/>
 	</bean>
 	
