@@ -237,7 +237,7 @@
   
   <!-- externalProcessHandler using unix shell -->
    <bean id="testExternalProcessHandler" class="org.jhove2.util.externalprocess.ForkShellHandler" >
-		<property name="shellEnv" value="c:\cygwin\bin\bash"/>
+ 		<property name="shellEnv" value="c:\cygwin\bin\bash"/>
 		<property name="shellParms" value="-c"/>
 		<property name="shouldQuoteCommand" value="true"/>
 		<property name="shouldSyncAfterExcecution" value="true"/>

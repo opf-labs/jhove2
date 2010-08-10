@@ -266,7 +266,7 @@
    <!-- Bean for handler to invoke external process for OpenSp utilities: Unix or Cygwin on Windows-->
    <!--  Edit any paths as appropriate for your installation -->
    <bean id="ExternalProcessHandler" class="org.jhove2.util.externalprocess.ForkShellHandler" scope="prototype">
-		<property name="shellEnv" value="c:\cygwin\bin\bash"/>
+ 		<property name="shellEnv" value="c:\cygwin\bin\bash"/>
 		<property name="shellParms" value="-c"/>
 		<property name="shouldQuoteCommand" value="true"/>
 		<property name="shouldSyncAfterExcecution" value="true"/>
