@@ -242,7 +242,7 @@ public class Document extends AbstractReportable {
 	 *            List of Document identifiers
 	 */
 	public void setIdentifiers(List<I8R> identifiers) {
-		this.identifiers.addAll(identifiers);
+		this.identifiers = identifiers;
 	}
 
 	/**

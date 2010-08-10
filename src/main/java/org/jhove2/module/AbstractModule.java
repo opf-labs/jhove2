@@ -169,15 +169,6 @@ public abstract class AbstractModule
 		return this.version;
 	}
 
-	/**
-	 * Add module developer.
-	 * 
-	 * @param developer
-	 *            Product developer
-	 */
-	public void addDeveloper(Agent developer) {
-		this.developers.add(developer);
-	}
 
 	/**
 	 * Add module developers.
@@ -186,7 +177,7 @@ public abstract class AbstractModule
 	 *            Product developers
 	 */
 	public void setDevelopers(List<Agent> developers) {
-		this.developers.addAll(developers);
+		this.developers = developers;
 	}
 
 	/**

@@ -216,12 +216,7 @@ public class BaseFormatModule
 	 */
 	@Override
 	public void setProfiles(List<FormatProfile> profiles) {
-		ArrayList<FormatProfile>nProfiles = new ArrayList<FormatProfile>();
-		for (FormatProfile profile:profiles){
-			profile.setFormatModule(this);
-			nProfiles.add(profile);
-		}
-		this.profiles = nProfiles;
+		this.profiles = profiles;
 	}
 
 	/** Parse the format.
