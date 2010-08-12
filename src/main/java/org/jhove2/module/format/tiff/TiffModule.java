@@ -23,6 +23,7 @@ import org.jhove2.core.source.Source;
 import org.jhove2.core.source.ZipFileSource;
 import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.module.format.Validator;
+import org.jhove2.module.format.Validator.Validity;
 import org.jhove2.module.format.utf8.unicode.Unicode.EOL;
 
 /**
@@ -32,11 +33,8 @@ import org.jhove2.module.format.utf8.unicode.Unicode.EOL;
  * @author mstrong
  *
  */
-public class TiffModule 
-extends BaseFormatModule 
-implements Validator 
+public class TiffModule extends BaseFormatModule implements Validator 
 {
-
     /** TIFF module version identifier. */
     public static final String VERSION = "2.0.0";
 
@@ -52,7 +50,7 @@ implements Validator
     public static final Coverage COVERAGE = Coverage.Inclusive;
 
     /** TIFF Module validity status. */
-    protected Validity isValid;
+    protected Validity validity;
 
     /** TIFF IFH - Image File Header */
     protected IFH ifh = new IFH();
@@ -78,7 +76,11 @@ implements Validator
     /** List of IFDs */
     List<IFD> ifdList = new LinkedList<IFD>();
 
-    private Message failFastMessage;
+    /** The JHOVE2 object passed in by the parse method */
+    protected JHOVE2 jhove2; 
+
+    /** The Source object passed in by the parse method */
+    protected  Source source;
 
     /**
      * Instantiate a new <code>TIFFModule</code>.
@@ -127,15 +129,19 @@ implements Validator
      */
     @Override
     public long parse(JHOVE2 jhove2, Source source)
-    throws EOFException, IOException, JHOVE2Exception
+        throws EOFException, IOException, JHOVE2Exception
     {
+        this.jhove2 = jhove2;
+        this.source = source;
+        
         long consumed = 0L;
-        this.isValid = Validity.Undetermined;
+        this.validity = Validity.Undetermined;
+        
         int numErrors = 0;
         Input input = null;
         Invocation config = jhove2.getInvocation();
         input = source.getInput(config.getBufferSize(), 
-                config.getBufferType());
+                                config.getBufferType());
         long start = 0L;
         long end = 0L;
         
@@ -157,7 +163,7 @@ implements Validator
             /* validate first 2 bytes */
             if ((b[0] != b[1]) && 
                 (b[0] == 0x49 || b[0] == 0x4D)) {
-                this.isValid = Validity.False;
+                this.validity = Validity.False;
                 numErrors++;
                 Object[]messageArgs = new Object[]{0, input.getPosition(), b[0]};
                 this.invalidFirstTwoBytesMessage.add(new Message(Severity.ERROR,
@@ -190,23 +196,24 @@ implements Validator
                 // we got a Big TIFF here
             }
             ifh.setMagicNumber(magic);
-
             ifdList = parseIFDs(jhove2, input);  
             
             /* loop through IfdList and validate each one */
 
         } catch (EOFException e) {
-            this.isValid = Validity.False;
+            this.validity = Validity.False;
             this.PrematureEOFMessage.add(new Message(Severity.ERROR,
                     Context.OBJECT,
                     "org.jhove2.module.format.tiff.TIFFModule.PrematureEOFMessage",
                     jhove2.getConfigInfo()));       
-            throw new JHOVE2Exception("TiffModuel.parse(): EOFException", e);
+            throw new JHOVE2Exception("TiffModule.parse(): EOFException", e);
         }
         finally {
             if (input != null) {
                 input.close();
-            }
+            }           
+            this.jhove2 = null;
+            this.source = null;
         }
         return 0;
     }
@@ -228,7 +235,7 @@ implements Validator
 
             /* must have at least 1 IFD */
             if (offset == 0L) {
-                this.isValid = Validity.False;
+                this.validity = Validity.False;
                 this.invalidFieldMessage.add(new Message(Severity.ERROR,
                         Context.OBJECT,
                         "org.jhove2.module.format.tiff.TIFFModule.NoIFDInTIFFFileMessage",
@@ -237,7 +244,7 @@ implements Validator
 
             /* offset must be word aligned (even number) */
             if ((offset & 1) != 0) {
-                this.isValid = Validity.False;
+                this.validity = Validity.False;
                 Object[]messageArgs = new Object[]{0, input.getPosition(), offset};
                 this.ByteOffsetNotWordAlignedMessage.add(new Message(Severity.ERROR,
                         Context.OBJECT,
@@ -250,7 +257,7 @@ implements Validator
         }
 
         /* Parse the list of IFDs */                  
-        List list = new LinkedList();
+        List list = new LinkedList<IFD>();
         long nextIfdOffset = offset;
         while (nextIfdOffset != 0L) {
             IFD ifd = parseIFDList(nextIfdOffset, list, jhove2, input);
@@ -337,17 +344,24 @@ implements Validator
      */
     @Override
     public Validity validate(JHOVE2 jhove2, Source source) throws JHOVE2Exception {
-        return this.isValid;
+        return this.validity;
     }
+ 
     /**
-     * Get TIFF validation status.
+     * Get TIFF source unit's validation status.
      * 
-     * @return TIFF validation status
-     * @see org.jhove2.module.format.Validator#isValid()
+     * @return the validity
      */
     @Override
     public Validity isValid() {
-        return this.isValid;
+        if (validity == null) {
+            try {
+                validate(jhove2, source);
+            }
+            catch (JHOVE2Exception e) {
+            }
+        }
+        return validity;
     }
 
 }

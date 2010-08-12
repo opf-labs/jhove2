@@ -33,9 +33,6 @@ public abstract class IFD
     /** True if this is the first IFD. */
     private boolean first;
 
-    /** the input source of the TIFF */
-    protected Input input;
-    
     /** validity of IFD */
     protected Validity isValid;
 
@@ -81,7 +78,6 @@ public abstract class IFD
      */
     public IFD(Input input) {
         super();
-        this.input = input;
     }
 
     @ReportableProperty(order = 3, value="IFD entries.")
@@ -210,7 +206,7 @@ public abstract class IFD
                 IFDEntry ifdEntry = new IFDEntry(tag, type, count, value);
 
                 ifdEntry.validateEntry(jhove2);
-                getValues(jhove2, ifdEntry);
+                getValues(jhove2, input, ifdEntry);
                 version = ifdEntry.getVersion();
                 entries.add(ifdEntry);
                 
@@ -229,8 +225,9 @@ public abstract class IFD
     }
 
     /** get the value(s) for an IFD entry 
+     * @param input 
      * @throws IOException */
-    public abstract void getValues (JHOVE2 jhove2, IFDEntry entry) throws JHOVE2Exception, IOException;
+    public abstract void getValues (JHOVE2 jhove2, Input input, IFDEntry entry) throws JHOVE2Exception, IOException;
 
     /**
      * Get the tag sort order error message

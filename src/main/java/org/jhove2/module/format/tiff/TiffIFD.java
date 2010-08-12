@@ -21,7 +21,7 @@ implements Comparable {
         super(input);
     }
 
-    public void getValues(JHOVE2 jhove2, IFDEntry entry) throws JHOVE2Exception, IOException {
+    public void getValues(JHOVE2 jhove2, Input input, IFDEntry entry) throws JHOVE2Exception, IOException {
         TiffValue value = new TiffValue();
         input.setPosition(entry.getValueOffset());
         value.readValue(input, entry);

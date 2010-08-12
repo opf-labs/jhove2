@@ -11,7 +11,6 @@ import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
-import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
 
 /**
