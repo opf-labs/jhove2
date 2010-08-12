@@ -55,7 +55,12 @@
 	<bean id="TiffModule" class="org.jhove2.module.format.tiff.TiffModule"
 		scope="prototype">
 		<constructor-arg ref="TiffFormat" />
-		<property name="profile" ref="TiffItProfile" />
+<!--		<property name="profile" ref="TiffItProfile" />-->
+		<property name="profiles">
+			<list value-type="org.jhove2.module.format.FormatProfile">
+				<ref bean="TiffItProfile"/>
+			</list>
+		</property>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent" />
@@ -143,7 +148,12 @@
 		<property name="author" value="Aldus/Microsoft" />
 		<property name="date" value="April 31, 1987" />
 		<property name="edition" value="Version 4.0" />
-		<property name="identifier" ref="Tiff4.0SpecificationURL" />
+<!--		<property name="identifier" ref="Tiff4.0SpecificationURL" />-->
+		<property name="identifiers">
+			<list value-type="org.jhove2.core.I8R">
+				<ref bean="Tiff4.0SpecificationURL"/>
+			</list>
+		</property>
 		<property name="publisher" value="???" />
 	</bean>
 
@@ -159,7 +169,12 @@
 		<property name="author" value="Aldus/Microsoft" />
 		<property name="date" value="August 8, 1988" />
 		<property name="edition" value="Version 5.0" />
-		<property name="identifier" ref="Tiff5.0SpecificationURL" />
+<!--		<property name="identifier" ref="Tiff5.0SpecificationURL" />-->
+		<property name="identifiers">
+			<list value-type="org.jhove2.core.I8R">
+				<ref bean="Tiff5.0SpecificationURL"/>
+			</list>
+		</property>
 		<property name="publisher" value="???" />
 	</bean>
 
@@ -174,7 +189,12 @@
 		<property name="author" value="Adobe Systems, Inc" />
 		<property name="date" value="June 3, 1992" />
 		<property name="edition" value="Version 6.0" />
-		<property name="identifier" ref="Tiff6.0SpecificationURL" />
+<!--		<property name="identifier" ref="Tiff6.0SpecificationURL" />-->
+		<property name="identifiers">
+			<list value-type="org.jhove2.core.I8R">
+				<ref bean="Tiff6.0SpecificationURL"/>
+			</list>
+		</property>
 		<property name="publisher" value="Addison-Wesley" />
 	</bean>
 

@@ -33,24 +33,66 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.jhove2.util.externalprocess;
+package org.jhove2.app.util.documenter;
 
-import org.jhove2.core.JHOVE2Exception;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * This interface defines the functions required for external process creation/execution
- * 
- * This class is base on one developed for similar purposes at Portico by Suresh Kadirvel.
- * 
+ * Container for information about Format and profile Formats specification documents
+ * (typically contained in bean for Format and profile Format)
+ * Information is required to fill in Format Module specification 
  * @author smorrissey
- *
  */
-public interface ExternalProcessHandler {
-	
 
-	/** Command to synchronize the stdout, stderr streams of the child process  as part of a unix command*/
-	public static String SYNC_COMMAND_WITH_DELIMITER = ";sync";
+public class ReferenceDoc {
+	String refName;
+	String biblioInfo;
+	List<String> identifiers;
 
-	
-	public void executeCommand(String command) throws JHOVE2Exception ;
+	public ReferenceDoc(){
+		identifiers = new ArrayList<String>();
+	}
+
+	/**
+	 * @return the refName
+	 */
+	public String getRefName() {
+		return refName;
+	}
+
+	/**
+	 * @return the biblioInfo
+	 */
+	public String getBiblioInfo() {
+		return biblioInfo;
+	}
+
+	/**
+	 * @return the identifiers
+	 */
+	public List<String> getIdentifiers() {
+		return identifiers;
+	}
+
+	/**
+	 * @param refName the refName to set
+	 */
+	public void setRefName(String refName) {
+		this.refName = refName;
+	}
+
+	/**
+	 * @param biblioInfo the biblioInfo to set
+	 */
+	public void setBiblioInfo(String biblioInfo) {
+		this.biblioInfo = biblioInfo;
+	}
+
+	/**
+	 * @param identifiers the identifiers to set
+	 */
+	public void setIdentifiers(List<String> identifiers) {
+		this.identifiers = identifiers;
+	}
 }

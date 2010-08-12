@@ -265,16 +265,6 @@ public class JHOVE2
 		return sourceCounter;
 	}
 	
-	/** Add command to be executed in sequence to characterize
-	 * {@link org.jhove2.core.source.Source} units.
-	 * @param command Command to be executed
-	 */
-	public void setCommand(Command command) {
-		if (this.commands == null) {
-			this.commands = new ArrayList<Command>();
-		}
-		this.commands.add(command);
-	}
 	
 	/**
 	 * Set commands to be executed in sequence to characterize

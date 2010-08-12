@@ -43,7 +43,7 @@ import org.jhove2.core.JHOVE2Exception;
 
 /**
  * This class is used to create a child process using Java's Runtime API, which actually
- * invokes fork() underneath. The child process will run a shell.
+ * invokes fork() underneath. The child process will run a shell,or, on Windows, cmd.exe.
  * 
  * This class is base on one developed for similar purposes at Portico by Suresh Kadirvel.
  * 
@@ -55,10 +55,12 @@ public class ForkShellHandler implements ExternalProcessHandler {
 
 	/** the full path to the shell command */	
 	protected String shellEnv = null;  
-	/** params passed to shell before actual process t be executed */
+	/** params passed to shell before actual process to be executed */
 	protected String shellParms = null;
 	/** indicates if command string should be quoted when shell is invoked */
 	protected boolean shouldQuoteCommand = true;
+	/** indicates if should invoke sync command after execution (for UNIX)*/
+	protected boolean shouldSyncAfterExcecution;
 
 	/**
 	 * This function is invoked whenever a child process need to be created using Java Runtime API 
@@ -76,7 +78,7 @@ public class ForkShellHandler implements ExternalProcessHandler {
 			}
 			sbCommand.append(command);
 			/* Append "sync" command to flush the stdout,stderr*/
-			if(SYNC_AFTER_EXECUTION){
+			if(shouldSyncAfterExcecution){
 				sbCommand.append(SYNC_COMMAND_WITH_DELIMITER );
 			}			
 			if (shouldQuoteCommand){
@@ -142,6 +144,20 @@ public class ForkShellHandler implements ExternalProcessHandler {
 	 */
 	public void setShouldQuoteCommand(boolean shouldQuoteCommand) {
 		this.shouldQuoteCommand = shouldQuoteCommand;
+	}
+
+	/**
+	 * @return the shouldSyncAfterExcecution
+	 */
+	public boolean isShouldSyncAfterExcecution() {
+		return shouldSyncAfterExcecution;
+	}
+
+	/**
+	 * @param shouldSyncAfterExcecution the shouldSyncAfterExcecution to set
+	 */
+	public void setShouldSyncAfterExcecution(boolean shouldSyncAfterExcecution) {
+		this.shouldSyncAfterExcecution = shouldSyncAfterExcecution;
 	}
 
 }

@@ -43,6 +43,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Properties;
 
 import javax.annotation.Resource;
 
@@ -64,13 +65,18 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class ForkShellHandlerTest {
 
 	protected ForkShellHandler shellHandler;
+	protected ForkShellHandler windowsShellHandler;
 	protected String tempDirBasePath;
 	protected String tempDirPath;
 	protected File tempFile;
 	protected String tempFilePath;
-    protected FilepathFilter filter;
+	protected FilepathFilter filter;
 	public static final String HELLO = "HELLO";
-	public static final String COMMANDBASE = "echo " + HELLO +  " > ";
+	public static final String COMMANDBASE = "echo " + HELLO +  ">";
+	protected String wtempDirBasePath;
+	protected String wtempDirPath;
+	protected File wtempFile;
+	protected String wtempFilePath;
 
 	/**
 	 * @throws java.lang.Exception
@@ -86,8 +92,20 @@ public class ForkShellHandlerTest {
 		tempFile = File.createTempFile("ForkShellHandlerTest", ".txt", 
 				new File(tempDirPath));
 		tempFile.deleteOnExit();
-		tempFilePath = tempFile.getPath();
-		tempFilePath = filter.filter(tempFilePath);
+		tempFilePath = tempFile.getAbsolutePath();
+		if (filter != null){
+			tempFilePath = filter.filter(tempFilePath);
+		}
+		try {
+			wtempDirPath = 
+				FeatureConfigurationUtil.getFilePathFromClasspath(tempDirBasePath, "wtemp dir");
+		} catch (JHOVE2Exception e1) {
+			fail("Could not create base directory");
+		}
+		wtempFile = File.createTempFile("ForkShellHandlerTest", ".txt", 
+				new File(wtempDirPath));
+		wtempFile.deleteOnExit();
+		wtempFilePath = wtempFile.getAbsolutePath();
 	}
 
 	/**
@@ -95,7 +113,7 @@ public class ForkShellHandlerTest {
 	 */
 	@Test
 	public void testExecuteCommand() {
-		String command = COMMANDBASE + tempFilePath;
+		String command = COMMANDBASE + tempFilePath ;
 		try {
 			shellHandler.executeCommand(command);
 		} catch (JHOVE2Exception e) {
@@ -131,6 +149,47 @@ public class ForkShellHandlerTest {
 		};
 		String strContents = fileContents.toString();
 		assertEquals(HELLO, strContents);
+		// now do it for Windows
+		Properties prop   = System.getProperties();
+		String os = prop.getProperty("os.name");
+		if (os.toLowerCase().startsWith("win")){
+			command = COMMANDBASE + wtempFilePath ;
+			try {
+				windowsShellHandler.executeCommand(command);
+			} catch (JHOVE2Exception e) {
+				e.printStackTrace();
+				fail("Shell Handler threw exception");
+			}
+			assertTrue(wtempFile.exists());
+			lngth = wtempFile.length();
+			assertTrue(lngth>0);
+			reader = null;
+			try {
+				reader = 
+					new BufferedReader(new FileReader(wtempFilePath));
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+				fail("Exception creating Reader on shell output file");
+			}
+			fileContents = new StringBuffer();
+			input = null;
+			try {
+				input = reader.readLine();
+			} catch (IOException e) {
+				e.printStackTrace();
+				fail("Exception reading Reader on shell output file");
+			}
+			while (input != null){							
+				fileContents.append(input);
+				try {
+					input = reader.readLine();
+				} catch (IOException e) {
+					break;
+				}
+			};
+			strContents = fileContents.toString();
+			assertEquals(HELLO, strContents);
+		}
 	}
 	/**
 	 * @return the shellHandler
@@ -175,6 +234,21 @@ public class ForkShellHandlerTest {
 	@Resource
 	public void setFilter(FilepathFilter filter) {
 		this.filter = filter;
+	}
+
+	/**
+	 * @return the windowsShellHandler
+	 */
+	public ForkShellHandler getWindowsShellHandler() {
+		return windowsShellHandler;
+	}
+
+	/**
+	 * @param windowsShellHandler the windowsShellHandler to set
+	 */
+	@Resource
+	public void setWindowsShellHandler(ForkShellHandler windowsShellHandler) {
+		this.windowsShellHandler = windowsShellHandler;
 	}
 
 }

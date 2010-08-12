@@ -33,24 +33,34 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.jhove2.util.externalprocess;
+package org.jhove2.app.util.documenter.displayer;
 
+import java.io.File;
+
+import org.jhove2.app.util.documenter.ModuleDocumenter;
 import org.jhove2.core.JHOVE2Exception;
 
 /**
- * This interface defines the functions required for external process creation/execution
- * 
- * This class is base on one developed for similar purposes at Portico by Suresh Kadirvel.
- * 
+ * Interface for formatting documentation output
  * @author smorrissey
  *
  */
-public interface ExternalProcessHandler {
-	
-
-	/** Command to synchronize the stdout, stderr streams of the child process  as part of a unix command*/
-	public static String SYNC_COMMAND_WITH_DELIMITER = ";sync";
-
-	
-	public void executeCommand(String command) throws JHOVE2Exception ;
+public interface DocumentationDisplayer {
+	/**
+	 * Displays formatted documentation information
+	 * @param documenter ModuleDocumenter with information about Module
+	 * @throws JHOVE2Exception
+	 */
+	public void displayDocumentation(ModuleDocumenter documenter) 
+	throws JHOVE2Exception;
+	/**
+	 * Set directory to which displayer output is to be serialized
+	 * @param dir File object representing output directory 
+	 */
+	public void setOutputDir(File dir);
+	/**
+	 * Accessor for output directory File object 
+	 * @return File object representing output directory 
+	 */
+	public File getOutputDir();
 }

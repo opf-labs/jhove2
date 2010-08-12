@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.jhove2</groupId>
 	<artifactId>jhove2</artifactId>
@@ -101,15 +100,13 @@
 		<repository>
 			<id>JBOSS</id>
 			<name>JBoss Repository</name>
-			<url>http://repository.jboss.org/maven2/
-			</url>
+			<url>http://repository.jboss.org/maven2/</url>
 		</repository>
 		<!-- for app assembler -->
 		<repository>
 			<id>Codehaus Snapshots</id>
 			<name>codehaus.org</name>
-			<url>http://snapshots.repository.codehaus.org/
-			</url>
+			<url>http://snapshots.repository.codehaus.org/</url>
 		</repository>
 	</repositories>
 	<build>
@@ -131,8 +128,7 @@
 			<plugins>
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>appassembler-maven-plugin
-					</artifactId>
+					<artifactId>appassembler-maven-plugin</artifactId>
 					<version>1.1-SNAPSHOT</version>
 				</plugin>
 			</plugins>
@@ -153,10 +149,8 @@
 				<version>2.5</version>
 				<configuration>
 					<additionalClasspathElements>
-						<additionalClasspathElement>config/
-						</additionalClasspathElement>
-						<additionalClasspathElement>config/droid
-						</additionalClasspathElement>
+						<additionalClasspathElement>config/</additionalClasspathElement>
+						<additionalClasspathElement>config/droid</additionalClasspathElement>
 					</additionalClasspathElements>
 				</configuration>
 			</plugin>
@@ -165,8 +159,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<executions>
-					<execution>
-					</execution>
+					<execution></execution>
 					<execution>
 						<id>build-classpath</id>
 						<phase>package</phase>
@@ -205,8 +198,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>2.6.1</version>
-				<configuration>
-				</configuration>
+				<configuration></configuration>
 			</plugin>
 			<!--
 				package the jar, artifacts,and bin scripts into zip and tar files

@@ -33,24 +33,30 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.jhove2.util.externalprocess;
+package org.jhove2.app.util.documenter.displayer;
 
 import org.jhove2.core.JHOVE2Exception;
 
 /**
- * This interface defines the functions required for external process creation/execution
- * 
- * This class is base on one developed for similar purposes at Portico by Suresh Kadirvel.
- * 
+ * Factory class for DocumentationDisplayer instances
  * @author smorrissey
  *
  */
-public interface ExternalProcessHandler {
-	
-
-	/** Command to synchronize the stdout, stderr streams of the child process  as part of a unix command*/
-	public static String SYNC_COMMAND_WITH_DELIMITER = ";sync";
-
-	
-	public void executeCommand(String command) throws JHOVE2Exception ;
+public class DocumentationDisplayerFactory {
+	/**
+	 * Factory method for DocumentationDisplayer instances
+	 * @param classname fully qualified class name of DocumentationDisplayer
+	 * @return DocumentationDisplayer instances
+	 * @throws JHOVE2Exception
+	 */
+	public DocumentationDisplayer getDocumentationDisplayer(String classname)
+	throws JHOVE2Exception{
+		DocumentationDisplayer displayer = null;
+		try {
+			displayer = (DocumentationDisplayer) Class.forName(classname).newInstance();
+		} catch (Exception e) {
+			throw new JHOVE2Exception("Exception thrown creating Documentation Displayer", e);
+		} 
+		return displayer;
+	}
 }
