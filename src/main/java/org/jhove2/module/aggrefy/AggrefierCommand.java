@@ -98,10 +98,10 @@ public class AggrefierCommand
 				timer.setStartTime();
 				try {
 	                /* Register the aggrefying modules. */
-	                jhove2.addModule(aggrefier);
+					source.addModule(aggrefier);
 	                List<Recognizer> recognizers = aggrefier.getRecognizers();
 	                for (Recognizer recognizer : recognizers) {
-	                    jhove2.addModule(recognizer);
+	                	source.addModule(recognizer);
 	                }
 	                
 	                /* Identify the aggregate. */

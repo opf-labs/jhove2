@@ -117,7 +117,7 @@ public class FeatureConfigurationUtilTest {
 			getReportableFromClassName(rClassName);
 			List<String> props = FeatureConfigurationUtil.
 			getPropertiesAsList(r);
-			assertTrue(props.size()==15);
+			assertTrue(props.size()==14);
 		}
 		catch (JHOVE2Exception e){
 			fail("unable to create reportable for " + rClassName);

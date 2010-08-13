@@ -37,13 +37,10 @@
 package org.jhove2.core.app;
 
 import java.util.Date;
-import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.Installation;
 import org.jhove2.core.Invocation;
-import org.jhove2.core.JHOVE2;
-import org.jhove2.core.source.Source;
 import org.jhove2.module.Module;
 import org.jhove2.module.display.Displayer;
 
@@ -77,12 +74,6 @@ public interface Application
 	 */
 	public Displayer getDisplayer();
 	
-	/**
-	 * Get application {@link org.jhove2.core.JHOVE2} framework.
-	 * @return Application JHOVE2 framework
-	 */
-	@ReportableProperty(order = 4, value = "Application framework.")
-	public JHOVE2 getFramework();
 
 	/** Get application {@link org.jhove2.core.Invocation} properties.
 	 * @return Application invocation properties
@@ -93,12 +84,7 @@ public interface Application
 	 * @return Application installation properties
 	 */
 	public Installation getInstallation();
-	
-	/** Get application {@link org.jhove2.core.source.Source} units.
-	 * @return Application source units
-	 */
-	@ReportableProperty(order = 3, value = "Application source units.")
-	public List<Source> getSources();
+
 	
 	/**
 	 * Set application displayer
@@ -106,13 +92,6 @@ public interface Application
 	 */
 	public void setDisplayer(Displayer displayer);
 	
-	/**
-	 * Set application JHOVE2 framework.
-	 * 
-	 * @param framework
-	 *            Application JHOVE2 framework
-	 */
-	public void setFramework(JHOVE2 framework);
 	
 
 }
