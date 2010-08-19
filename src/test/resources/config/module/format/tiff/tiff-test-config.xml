@@ -13,10 +13,10 @@
 	<bean id="TiffModule" class="org.jhove2.module.format.tiff.TiffModule"
 		scope="prototype">
 		<constructor-arg ref="TiffFormat" />
-<!--		<property name="profile" ref="TiffItProfile" />-->
+		<!--		<property name="profile" ref="TiffItProfile" />-->
 		<property name="profiles">
 			<list value-type="org.jhove2.module.format.FormatProfile">
-				<ref bean="TiffItProfile"/>
+				<ref bean="TiffItProfile" />
 			</list>
 		</property>
 		<property name="developers">
@@ -39,6 +39,49 @@
 				<value>Tagged Image File Format</value>
 			</set>
 		</property>
+	</bean>
+
+	<!-- TIFF/IT identifier bean -->
+	<bean id="TiffItIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String"
+			value="http://jhove2.org/terms/format/tiff-it" />
+	</bean>
+
+	<!-- TIFF/IT profile bean -->
+	<bean id="TiffItProfile" class="org.jhove2.module.format.tiff.tiffit.TiffItProfile"
+		scope="prototype">
+		<constructor-arg ref="TiffItFormat" />
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent" />
+			</list>
+		</property>
+	</bean>
+
+
+	<!-- TIFF/IT format bean -->
+	<bean id="TiffItFormat" class="org.jhove2.core.format.Format"
+		scope="singleton">
+		<constructor-arg type="java.lang.String" value="TiffIt" />
+		<constructor-arg ref="TiffItIdentifier" />
+		<constructor-arg type="org.jhove2.core.format.Format$Type"
+			value="Format" />
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
+			value="Unambiguous" />
+		<property name="aliasIdentifiers">
+			<set value-type="org.jhove2.core.I8R">
+				<ref bean="TiffItISO646" />
+			</set>
+		</property>
+	</bean>
+
+
+
+	<!-- TIFF/IT ISO 646 -->
+	<bean id="TiffItISO646" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="ISO/IEC 646:1991" />
+		<constructor-arg type="org.jhove2.core.I8R$Namespace"
+			value="ISO" />
 	</bean>
 
 	<!-- Tiff identifier bean -->
