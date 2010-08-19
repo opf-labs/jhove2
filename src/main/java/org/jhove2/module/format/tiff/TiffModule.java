@@ -23,8 +23,6 @@ import org.jhove2.core.source.Source;
 import org.jhove2.core.source.ZipFileSource;
 import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.module.format.Validator;
-import org.jhove2.module.format.Validator.Validity;
-import org.jhove2.module.format.utf8.unicode.Unicode.EOL;
 
 /**
  * JHOVE2 TIFF module. This module parses a TIFF instance and captures selected
@@ -55,6 +53,9 @@ public class TiffModule extends BaseFormatModule implements Validator
     /** TIFF IFH - Image File Header */
     protected IFH ifh = new IFH();
 
+    /** Fail fast message. */
+    protected Message failFastMessage;
+
     /** TIFF Invalid Field Message */
     protected List<Message> invalidFieldMessage;
 
@@ -62,13 +63,13 @@ public class TiffModule extends BaseFormatModule implements Validator
     protected List<Message> invalidFirstTwoBytesMessage;
 
     /** TIFF Invalid Field Message */
-    protected List<Message> PrematureEOFMessage;
+    protected List<Message> prematureEOFMessage;
 
     /** TIFF Invalid Field Message */
     protected List<Message> invalidMagicNumberMessage;
 
     /** TIFF Invalid Field Message */
-    protected List<Message> ByteOffsetNotWordAlignedMessage;
+    protected List<Message> byteOffsetNotWordAlignedMessage;
 
     /** TIFF version, defaults to 4.  As features are recognized, update the version accordingly */
     protected int version = 4;
@@ -93,25 +94,6 @@ public class TiffModule extends BaseFormatModule implements Validator
     }
 
     /**
-     * returns the list of IFDs for this TIFF object
-     * 
-     * @return List<IFD>
-     */
-    @ReportableProperty(order = 2, value="IFDs.")
-    public List<IFD> getIFDs() {
-        return ifdList;
-    }
-
-    /**
-     * 
-     * @return IFH Image File Header
-     */
-    @ReportableProperty(order = 1, value="IFH")
-    public IFH getIFH() {
-        return ifh;
-    }
-
-    /**
      * Parse a source unit.
      * 
      * @param jhove2
@@ -129,22 +111,22 @@ public class TiffModule extends BaseFormatModule implements Validator
      */
     @Override
     public long parse(JHOVE2 jhove2, Source source)
-        throws EOFException, IOException, JHOVE2Exception
+    throws EOFException, IOException, JHOVE2Exception
     {
         this.jhove2 = jhove2;
         this.source = source;
-        
+
         long consumed = 0L;
         this.validity = Validity.Undetermined;
-        
+
         int numErrors = 0;
         Input input = null;
         Invocation config = jhove2.getInvocation();
         input = source.getInput(config.getBufferSize(), 
-                                config.getBufferType());
+                config.getBufferType());
         long start = 0L;
         long end = 0L;
-        
+
         if (source instanceof FileSource) {
             end = ((FileSource) source).getSize();
         } else if (source instanceof ZipFileSource) {
@@ -179,7 +161,7 @@ public class TiffModule extends BaseFormatModule implements Validator
             }
             ifh.setByteOrdering(new String(b));
             ifh.setByteOrder(byteOrder);
-            
+
             /* set the endianess so subsequent reads are the correct endianess */
             input.setByteOrder(byteOrder);
 
@@ -197,16 +179,16 @@ public class TiffModule extends BaseFormatModule implements Validator
             }
             ifh.setMagicNumber(magic);
             ifdList = parseIFDs(jhove2, input);  
-            
+
             /* loop through IfdList and validate each one */
 
         } catch (EOFException e) {
             this.validity = Validity.False;
-            this.PrematureEOFMessage.add(new Message(Severity.ERROR,
+            this.prematureEOFMessage.add(new Message(Severity.ERROR,
                     Context.OBJECT,
                     "org.jhove2.module.format.tiff.TIFFModule.PrematureEOFMessage",
                     jhove2.getConfigInfo()));       
-            throw new JHOVE2Exception("TiffModule.parse(): EOFException", e);
+            throw new JHOVE2Exception("TiffModule.parse(): Premature EOFException", e);
         }
         finally {
             if (input != null) {
@@ -226,7 +208,8 @@ public class TiffModule extends BaseFormatModule implements Validator
      * @throws JHOVE2Exception 
      * 
      */
-    private List<IFD> parseIFDs(JHOVE2 jhove2, Input input) throws JHOVE2Exception{
+    private List<IFD> parseIFDs(JHOVE2 jhove2, Input input) 
+    throws EOFException, IOException, JHOVE2Exception{
         long offset = 0L;
         try {
             /* read the offset to the 0th IFD */
@@ -246,14 +229,14 @@ public class TiffModule extends BaseFormatModule implements Validator
             if ((offset & 1) != 0) {
                 this.validity = Validity.False;
                 Object[]messageArgs = new Object[]{0, input.getPosition(), offset};
-                this.ByteOffsetNotWordAlignedMessage.add(new Message(Severity.ERROR,
+                this.byteOffsetNotWordAlignedMessage.add(new Message(Severity.ERROR,
                         Context.OBJECT,
                         "org.jhove2.module.format.tiff.TIFFModule.ByteOffsetNotWordAlignedMessage",
-                        messageArgs, jhove2.getConfigInfo()));               
+                        messageArgs, jhove2.getConfigInfo()));   
             }
         }
         catch (IOException e) {
-            throw new JHOVE2Exception ("TiffModule.parseIFDs(): IOException",e);
+            throw new JHOVE2Exception ("TiffModule.parseIFDs(): IOException reading offset to first IFD",e);
         }
 
         /* Parse the list of IFDs */                  
@@ -274,48 +257,35 @@ public class TiffModule extends BaseFormatModule implements Validator
      * @param offset 
      * @throws JHOVE2Exception 
      * */
-    private IFD parseIFDList(long ifdOffset, List<IFD> list, JHOVE2 jhove2, Input input) throws JHOVE2Exception {
+    private IFD parseIFDList(long ifdOffset, List<IFD> list, JHOVE2 jhove2, Input input) 
+    throws EOFException, IOException, JHOVE2Exception {
 
-        IFD ifd = new TiffIFD(input);  
+        IFD ifd = new TiffIFD();  
 
         TiffTag.getTiffTags(IFD.getTiffTags(jhove2.getConfigInfo()));
         TiffType.getTiffTypes(IFD.getTiffType(jhove2.getConfigInfo()));
 
         ifd.setOffset(ifdOffset);
 
-        try {
-            /* parse for the appropriate IFD type */
-            ifd.parse(jhove2, input);
+        /* parse for the appropriate IFD type */
+        ifd.parse(jhove2, input);
 
-            if (ifdList.size () == 0) {
-                ifd.setFirst (true);
-            }
-            else if (ifdList.size() == 1 ) {
-                // For some profiles, the second IFD is assumed to
-                // be the thumbnail.  This may not be valid under
-                // all circumstances.
-                ifd.setThumbnail (true);
-            }
-            list.add(ifd);
-            version = ifd.getVersion();
-
-            // TODO:  parse subIFDs chains here
-
-            // TODO: parse EXIF/GPS/InterOP/GlobalParms IFDChains here
-        }  
-
-        catch (EOFException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        if (ifdList.size () == 0) {
+            ifd.setFirst (true);
         }
-        catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        else if (ifdList.size() == 1 ) {
+            // For some profiles, the second IFD is assumed to
+            // be the thumbnail.  This may not be valid under
+            // all circumstances.
+            ifd.setThumbnail (true);
         }
-        catch (JHOVE2Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } 
+        list.add(ifd);
+        version = ifd.getVersion();
+
+        // TODO:  parse subIFDs chains here
+
+        // TODO: parse EXIF/GPS/InterOP/GlobalParms IFDChains here
+
         return ifd;
     }
 
@@ -346,7 +316,7 @@ public class TiffModule extends BaseFormatModule implements Validator
     public Validity validate(JHOVE2 jhove2, Source source) throws JHOVE2Exception {
         return this.validity;
     }
- 
+
     /**
      * Get TIFF source unit's validation status.
      * 
@@ -362,6 +332,35 @@ public class TiffModule extends BaseFormatModule implements Validator
             }
         }
         return validity;
+    }
+
+    /**
+     * 
+     * @return IFH Image File Header
+     */
+    @ReportableProperty(order = 1, value="IFH")
+    public IFH getIFH() {
+        return ifh;
+    }
+
+    /**
+     * returns the list of IFDs for this TIFF object
+     * 
+     * @return List<IFD>
+     */
+    @ReportableProperty(order = 2, value="IFDs.")
+    public List<IFD> getIFDs() {
+        return ifdList;
+    }
+
+     /**
+     * Get fail fast message.
+     * 
+     * @return Fail fast message
+     */
+    @ReportableProperty(order = 3, value = "Fail fast message.")
+    public Message getFailFast() {
+        return this.failFastMessage;
     }
 
 }

@@ -25,7 +25,7 @@ import org.jhove2.module.format.Validator.Validity;
  *
  */
 public abstract class IFD 
-    extends AbstractReportable {
+extends AbstractReportable {
 
     /** IFD Entries in the IFD */
     protected List<IFDEntry> entries = new ArrayList<IFDEntry>();
@@ -45,9 +45,6 @@ public abstract class IFD
     /** offset of the IFD */ 
     protected long offset;
 
-    /** value of the previous tag */
-    private static int prevTag = 0;
-
     /** True if this is the "thumbnail" IFD. */
     private boolean thumbnail;
 
@@ -63,9 +60,11 @@ public abstract class IFD
     /** Byte offset not word aligned message */
     private Message ByteOffsetNotWordAlignedMessage;
 
+    /** Value Offset reference location invalid message */
     private Message ValueOffsetReferenceLocationFileMessage;
 
-    private Message UnknownTypeMessage;
+    /** Unknown Type Message */
+    private List<Message> unknownTypeMessages;
 
     protected static Properties tiffTagProps;
 
@@ -76,8 +75,9 @@ public abstract class IFD
      * Instantiate an IFD Class with the Input source
      * @param input
      */
-    public IFD(Input input) {
+    public IFD() {
         super();
+        this.unknownTypeMessages = new ArrayList<Message>();
     }
 
     @ReportableProperty(order = 3, value="IFD entries.")
@@ -116,113 +116,135 @@ public abstract class IFD
      */
     public void parse(JHOVE2 jhove2, Input input) throws EOFException,
     IOException, JHOVE2Exception {
-        
+
         this.isValid = Validity.Undetermined;
         long offsetInIFD = offset;
         nextIFD = 0L;
-        
-        /* Read the first byte. */
-        input.setPosition(offsetInIFD);
-        numEntries = input.readUnsignedShort();
-        offsetInIFD += 2;
-        
-        if (numEntries < 1){
-            this.isValid = Validity.False;
-            Object[]messageArgs = new Object[]{0, input.getPosition(), numEntries};
-            this.zeroIFDEntriesMessage = new Message(Severity.ERROR,
-                    Context.OBJECT,
-                    "org.jhove2.module.format.tiff.IFD.zeroIFDEntriesMessage",
-                    messageArgs, jhove2.getConfigInfo());  
+
+        try {
+            /* Read the first byte. */
+            input.setPosition(offsetInIFD);
+            numEntries = input.readUnsignedShort();
+            offsetInIFD += 2;
+
+            if (numEntries < 1){
+                this.isValid = Validity.False;
+                Object[]messageArgs = new Object[]{0, input.getPosition(), numEntries};
+                this.zeroIFDEntriesMessage = new Message(Severity.ERROR,
+                        Context.OBJECT,
+                        "org.jhove2.module.format.tiff.IFD.zeroIFDEntriesMessage",
+                        messageArgs, jhove2.getConfigInfo());  
+            }
+
+            long length = numEntries * 12;
+            /* TODO: read the buffer from the file input stream containing the IFD Entries as
+             * opposed to manipulating the Input object */
+
+            /* go to the field that contains the offset to the next IFD - 0 if none */
+            offsetInIFD += length;
+            nextIFD = 0L;
+        }
+        catch (IOException e) {
+            throw new JHOVE2Exception("Premature EOF" + offsetInIFD, e);
         }
 
-        long length = numEntries * 12;
-        /* TODO: read the buffer from the file input stream containing the IFD Entries as
-         * opposed to manipulating the Input object */
-        
-        /* go to the field that contains the offset to the next IFD - 0 if none */
-        offsetInIFD += length;
-        nextIFD = 0L;
-        
-        /* parse through the list of IFDs */
-        for (int i=0; i<numEntries; i++) {
-            int tag = input.readUnsignedShort();
-            if (tag > prevTag)
-                prevTag = tag;
-            else {
-                Object[]messageArgs = new Object[]{tag, input.getPosition()};
-                this.TagSortOrderErrorMessage = (new Message(Severity.ERROR,
-                        Context.OBJECT,
-                        "org.jhove2.module.format.tiff.IFDEntry.TagSortOrderErrorMessage",
-                        messageArgs, jhove2.getConfigInfo()));
-            }               
-            
-            int type = input.readUnsignedShort();
+        try {
+            /* parse through the list of IFDs */
+            int prevTag = 0;
+            for (int i=0; i<numEntries; i++) {
+                int tag = input.readUnsignedShort();
+                if (tag > prevTag)
+                    prevTag = tag;
+                else {
+                    this.isValid = Validity.False;
+                    Object[]messageArgs = new Object[]{tag, input.getPosition()};
+                    this.TagSortOrderErrorMessage = (new Message(Severity.ERROR,
+                            Context.OBJECT,
+                            "org.jhove2.module.format.tiff.IFD.TagSortOrderErrorMessage",
+                            messageArgs, jhove2.getConfigInfo()));
+                }               
 
-            /* Skip over tags with unknown type; those outside of defined range. */
-            if (type < TiffType.types.first().getNum() || type > TiffType.types.last().getNum()) {
-                Object[]messageArgs = new Object[]{type, offset };
-                this.UnknownTypeMessage = (new Message(Severity.ERROR,
-                        Context.OBJECT,
-                        "org.jhove2.module.format.tiff.IFDEntry.UnknownTypeMessage",
-                        messageArgs, jhove2.getConfigInfo()));               
-            }
-            else {
-                int count = (int) input.readUnsignedInt();
+                int type = input.readUnsignedShort();
 
-                /* keep track of the value offset in the file */
-                long valueOffset = input.getPosition(); 
-                long value = input.readUnsignedInt();
-
-                if (calcValueSize(type, count) > 4) {
-                    /* the value is the offset to the value */
-                    long size = input.getSize();
-
-                    /* test that the value offset is within the file */
-                    if (value > size) {
-                        Object[]messageArgs = new Object[]{tag, value, size};
-                        this.ValueOffsetReferenceLocationFileMessage = (new Message(Severity.ERROR,
-                                Context.OBJECT,
-                                "org.jhove2.module.format.tiff.IFDEntry.ValueOffsetReferenceLocationFileMessage",
-                                messageArgs, jhove2.getConfigInfo()));               
-
-                    }
-
-                    /* test off set is word aligned */
-                    if ((value & 1) != 0){
-                        Object[]messageArgs = new Object[]{0, input.getPosition(), valueOffset};
-                        this.ByteOffsetNotWordAlignedMessage = (new Message(Severity.ERROR,
-                                Context.OBJECT,
-                                "org.jhove2.module.format.tiff.IFDEntry.ValueByteOffsetNotWordAlignedMessage",
-                                messageArgs, jhove2.getConfigInfo()));               
-                    }
-
+                /* Skip over tags with unknown type; those outside of defined range. */
+                if (type < TiffType.types.first().getNum() || type > TiffType.types.last().getNum()) {
+                    Object[]messageArgs = new Object[]{type, offset };
+                    this.unknownTypeMessages.add(new Message(Severity.ERROR,
+                            Context.OBJECT,
+                            "org.jhove2.module.format.tiff.IFD.UnknownTypeMessage",
+                            messageArgs, jhove2.getConfigInfo()));               
                 }
                 else {
-                    /* the value is the actual value */
-                    value = offset + 10 + 12*i;
+                    /* set the version */
+                    if (type <= TiffType.Type.SBYTE.num() && type <= TiffType.Type.IFD.num()) {
+                        this.version = 6;
+                    }
 
-                   /* value = valueOffset; */
-                }            
-                IFDEntry ifdEntry = new IFDEntry(tag, type, count, value);
+                    int count = (int) input.readUnsignedInt();
 
-                ifdEntry.validateEntry(jhove2);
-                getValues(jhove2, input, ifdEntry);
-                version = ifdEntry.getVersion();
-                entries.add(ifdEntry);
-                
-                /* reset the input position so that the offset is set up correctly since when you read values the
-                 * input position gets changed from where you want to be in the IFD 
-                 * the offset of the Value field + 4 bytes will get you to the next Tag field
-                 */
-                 input.setPosition(valueOffset + 4);
+                    /* keep track of the value offset in the file */
+                    long valueOffset = input.getPosition(); 
+                    long value = input.readUnsignedInt();
+
+                    if (calcValueSize(type, count) > 4) {
+                        /* the value is the offset to the value */
+                        long size = input.getSize();
+
+                        /* test that the value offset is within the file */
+                        if (value > size) {
+                            this.isValid = Validity.False;
+                            Object[]messageArgs = new Object[]{tag, value, size};
+                            this.ValueOffsetReferenceLocationFileMessage = (new Message(Severity.ERROR,
+                                    Context.OBJECT,
+                                    "org.jhove2.module.format.tiff.IFD.ValueOffsetReferenceLocationFileMessage",
+                                    messageArgs, jhove2.getConfigInfo()));  
+                            throw new JHOVE2Exception ("Value offset is not within the file");
+                        }
+                        /* TODO:  THrow an exception here */
+
+                        /* test off set is word aligned */
+                        if ((value & 1) != 0){
+                            this.isValid = Validity.False;
+                            Object[]messageArgs = new Object[]{0, input.getPosition(), valueOffset};
+                            this.ByteOffsetNotWordAlignedMessage = (new Message(Severity.ERROR,
+                                    Context.OBJECT,
+                                    "org.jhove2.module.format.tiff.IFD.ValueByteOffsetNotWordAlignedMessage",
+                                    messageArgs, jhove2.getConfigInfo()));               
+                            throw new JHOVE2Exception ("Value byte offset is not word aligned");
+                        }
+
+                    }
+                    else {
+                        /* the value is the actual value */
+                        value = offset + 10 + 12*i;
+
+                        /* value = valueOffset; */
+                    }            
+                    IFDEntry ifdEntry = new IFDEntry(tag, type, count, value);
+
+                    ifdEntry.validateEntry(jhove2);
+                    getValues(jhove2, input, ifdEntry);
+                    version = ifdEntry.getVersion();
+                    entries.add(ifdEntry);
+
+                    /* reset the input position so that the offset is set up correctly since when you read values the
+                     * input position gets changed from where you want to be in the IFD 
+                     * the offset of the Value field + 4 bytes will get you to the next Tag field
+                     */
+                    input.setPosition(valueOffset + 4);
+                }
             }
         }
-
+        catch (IOException e) {
+            throw new JHOVE2Exception ("IOException while reading input " + (offset + 2), e);
+        }
     }
 
+    /*
     public void parse(long offset) {
         this.isValid = Validity.Undetermined;
     }
+    */
 
     /** get the value(s) for an IFD entry 
      * @param input 
@@ -266,8 +288,8 @@ public abstract class IFD
      * @return the unknownTypeMessage
      */
     @ReportableProperty(order=10, value = "unknown type message.")
-    public Message getUnknownTypeMessage() {
-        return UnknownTypeMessage;
+    public List<Message> getUnknownTypeMessage() {
+        return unknownTypeMessages;
     }
 
     public int getVersion() {

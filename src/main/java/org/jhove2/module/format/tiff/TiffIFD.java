@@ -17,8 +17,8 @@ public class TiffIFD
 extends IFD
 implements Comparable {
 
-    public TiffIFD(Input input) {
-        super(input);
+    public TiffIFD() {
+        super();
     }
 
     public void getValues(JHOVE2 jhove2, Input input, IFDEntry entry) throws JHOVE2Exception, IOException {

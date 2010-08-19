@@ -19,7 +19,7 @@ import org.jhove2.core.reportable.AbstractReportable;
  */
 public class IFDEntry 
 extends AbstractReportable
-implements Comparable {
+implements Comparable<Object> {
 
     /** The number of values, Count of the indicated Type */
     protected long count;
@@ -48,8 +48,10 @@ implements Comparable {
     /* unknown tag message */
     private Message UnknownTagMessage;
 
+    /** invalid count message */
     private Message InvalidCountMessage;
 
+    /** invalid count value message */
     private Message InvalidCountValueMessage;
 
     @ReportableProperty(order=5, value = "Entry value/offset.")
@@ -62,6 +64,9 @@ implements Comparable {
     }
 
 
+    /** no arg constructor */
+    public IFDEntry() {
+    }
 
     public IFDEntry(int tag, int type, int count, long valueOffset) {
         this.tag = tag;
@@ -69,7 +74,6 @@ implements Comparable {
         this.count = count;
         this.valueOffset = valueOffset;
     }
-
 
     /**
      * 
@@ -193,35 +197,33 @@ implements Comparable {
     }
 
     /**
+     * Get the unknown tag message
+     * @return the unknownTagMessage
+     */
+    @ReportableProperty(order=3, value = "unknown tag message.")
+    public Message getUnknownTagMessage() {
+        return UnknownTagMessage;
+    }
+
+     /**
      * The field type of the value for this tag
      * @return TiffType
      */
-    @ReportableProperty(order = 3, value="Tag type.")
+    @ReportableProperty(order = 4, value="Tag type.")
     public TiffType getType(){
         return this.tiffType;
     }
 
     /**
-     * Get type mismatch message
-     * @return the typeMismatchMessage
+     * @return the value
      */
-    @ReportableProperty(order=6, value = "type mismatch message.")
-    public Message getTypeMismatchMessage() {
-        return TypeMismatchMessage;
-    }
-
-    /**
-     * Get the unknown tag message
-     * @return the unknownTagMessage
-     */
-    @ReportableProperty(order=7, value = "unknown tag message.")
-    public Message getUnknownTagMessage() {
-        return UnknownTagMessage;
+    @ReportableProperty(order = 5, value = "Tiff Tag Value.")
+    public TiffValue getValue() {
+        return value;
     }
 
     @Override
     public int compareTo(Object o) {
-        // TODO Auto-generated method stub
         return 0;
     }
 
@@ -235,13 +237,6 @@ implements Comparable {
         return valid;
     }
 
-    /**
-     * @return the value
-     */
-    @ReportableProperty(order=8, value = "Tiff Tag Value.")
-    public TiffValue getValue() {
-        return value;
-    }
 
     /**
      * @param object the value to set
@@ -249,6 +244,7 @@ implements Comparable {
     public void setValue(Object object) {
         this.value = (TiffValue) object;
     }
+
 
 
 
