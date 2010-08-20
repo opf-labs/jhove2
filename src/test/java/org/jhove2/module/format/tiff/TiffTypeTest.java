@@ -37,9 +37,9 @@ public class TiffTypeTest {
     public void testGettypeProperties() {
         Properties TiffTypeProps;
         try {
-            TiffTypeProps = JHOVE2.getConfigInfo().getProperties("TiffType");
+            TiffTypeProps = JHOVE2.getConfigInfo().getProperties("TiffTypes");
             if (TiffTypeProps != null){
-                TiffTypeSet = TiffType.getTiffTypes(TiffTypeProps);
+                TiffTypeSet = TiffType.getTiffTypes(JHOVE2);
             }
             if (print){
                 TiffType[] TiffTypeArray = (TiffType[]) TiffTypeSet.toArray(new TiffType[TiffTypeSet.size()]);

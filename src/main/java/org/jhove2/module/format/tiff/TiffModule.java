@@ -118,6 +118,10 @@ public class TiffModule extends BaseFormatModule implements Validator
 
         long consumed = 0L;
         this.validity = Validity.Undetermined;
+        
+        /* initialize the tiff tags */
+        TiffTag.getTiffTags(jhove2);
+        TiffType.getTiffTypes(jhove2);
 
         int numErrors = 0;
         Input input = null;
@@ -261,9 +265,6 @@ public class TiffModule extends BaseFormatModule implements Validator
     throws EOFException, IOException, JHOVE2Exception {
 
         IFD ifd = new TiffIFD();  
-
-        TiffTag.getTiffTags(IFD.getTiffTags(jhove2.getConfigInfo()));
-        TiffType.getTiffTypes(IFD.getTiffType(jhove2.getConfigInfo()));
 
         ifd.setOffset(ifdOffset);
 

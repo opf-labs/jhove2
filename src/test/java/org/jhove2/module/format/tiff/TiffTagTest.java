@@ -37,9 +37,13 @@ public class TiffTagTest {
     public void testGetTagIntProperties() {
         Properties tiffTagProps;
         try {
-            tiffTagProps = JHOVE2.getConfigInfo().getProperties("TiffTag");
+            tiffTagProps = JHOVE2.getConfigInfo().getProperties("TiffTags");
+            
+            /* 
+             * a little redundant as this method call does the same thing as above
+             */
             if (tiffTagProps != null){
-                tiffTagSet = TiffTag.getTiffTags(tiffTagProps);
+                tiffTagSet = TiffTag.getTiffTags(JHOVE2);  
             }
             if (print){
                 TiffTag[] tiffTagArray = (TiffTag[]) tiffTagSet.toArray(new TiffTag[tiffTagSet.size()]);

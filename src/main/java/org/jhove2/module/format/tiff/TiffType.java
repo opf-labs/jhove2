@@ -7,6 +7,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 
 
@@ -124,31 +125,6 @@ public class TiffType implements Comparable<TiffType> {
         return tiffType;
     }
 
-    /**
-     * Given a type number, return the TiffType object associated with it
-     * 
-     * @param typeNum - number which defines the type
-     * @param props - Properties object which stores the tiff type definitions
-     * @return TiffType
-     * @throws JHOVE2Exception 
-     */
-    public static TiffType getType(int typeNum, Properties props) 
-        throws JHOVE2Exception
-    {
-        if (types == null) {
-            types = getTiffTypes(props);
-        } 
-        TiffType ttype = null;
-        Iterator<TiffType> iter = types.iterator();
-        while (iter.hasNext()) {
-            TiffType type = iter.next();
-            if (typeNum == type.getNum()) {
-                ttype = type;
-                break;
-            }
-        }
-        return ttype;
-    }
 
     /**
      * Initialize the set of Tiff Types from the properties
@@ -159,11 +135,12 @@ public class TiffType implements Comparable<TiffType> {
 
      * @param props
      */
-    protected static TreeSet<TiffType> getTiffTypes(Properties props) 
+    protected static TreeSet<TiffType> getTiffTypes(JHOVE2 jhove2) 
         throws JHOVE2Exception 
     {
         if (types == null) {
             types = new TreeSet<TiffType>();
+            Properties props = jhove2.getConfigInfo().getProperties("TiffTypes");
             if (props != null) {
                 Enumeration<?> e = props.propertyNames();
                 while (e.hasMoreElements()){

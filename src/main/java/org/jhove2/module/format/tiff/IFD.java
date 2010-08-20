@@ -334,7 +334,7 @@ extends AbstractReportable {
      */
     public static Properties getTiffTags(ConfigInfo config)  throws JHOVE2Exception {
         if (tiffTagProps==null){
-            tiffTagProps = config.getProperties("TiffTag");
+            tiffTagProps = config.getProperties("TiffTags");
         }
         return tiffTagProps;
     }
@@ -344,7 +344,7 @@ extends AbstractReportable {
      */
     public static Properties getTiffType(ConfigInfo config)  throws JHOVE2Exception {
         if (tiffTypeProps==null){
-            tiffTypeProps = config.getProperties("TiffType");
+            tiffTypeProps = config.getProperties("TiffTypes");
         }
         return tiffTypeProps;
     }

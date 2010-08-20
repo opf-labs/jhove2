@@ -226,14 +226,14 @@
 	</bean>
 
 
-	<!-- Tiff Tags properties bean -->
-	<util:properties id="TiffTag"
-		location="classpath:properties/tiff/tifftags.properties" />
-
-
-	<!-- Tiff Types properties bean -->
-	<util:properties id="TiffType"
-		location="classpath:properties/tiff/tifftype.properties" />
-
+	<!-- Tiff Tags properties bean --> 
+   <bean id="TiffTags" class="org.jhove2.config.spring.PropertiesFactoryBean">
+  		<property name="propertyFileBaseName" value="tags"/>
+   </bean>      
+   
+	<!-- Tiff Types properties bean --> 
+   <bean id="TiffTypes" class="org.jhove2.config.spring.PropertiesFactoryBean">
+  		<property name="propertyFileBaseName" value="types"/>
+   </bean>
 
 </beans>		   

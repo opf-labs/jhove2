@@ -6,6 +6,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 
 /**
@@ -81,34 +82,6 @@ public class TiffTag implements Comparable<TiffTag> {
      * given a number representing a tag, return the TiffTag object associated to it
      * 
      * @param tagValue - number with defines the tag field
-     * @param props - Properties file which stores the tiff tag definitions
-     * @return TiffTag
-     */
-    public static TiffTag getTag(int tagValue, Properties props) throws JHOVE2Exception {
-        TiffTag tifftag = null;
-
-        if (tags == null){
-            tags = getTiffTags(props);
-        }
-        /* find tag which matches tagValue */
-        Iterator<TiffTag> iter = tags.iterator();
-        while (iter.hasNext()){
-            TiffTag tag = iter.next();
-            if (tagValue == tag.getTag()){
-                tifftag = tag;
-                break;
-            }
-        }
-        return tifftag;
-
-
-    }
-
-    /**
-     * 
-     * given a number representing a tag, return the TiffTag object associated to it
-     * 
-     * @param tagValue - number with defines the tag field
      * @return TiffTag
      */
     public static TiffTag getTag(int tagValue) throws JHOVE2Exception {
@@ -124,6 +97,9 @@ public class TiffTag implements Comparable<TiffTag> {
                 }
             }
         }
+        else {
+            throw new JHOVE2Exception ("TiffTags not initialized");
+        }
         return tifftag;
 
 
@@ -136,55 +112,54 @@ public class TiffTag implements Comparable<TiffTag> {
      * @return SortedSet<TiffTag> - the sorted set of TIFF tag definitions
      * @throws JHOVE2Exception
      */
-    protected static TreeSet<TiffTag> getTiffTags(Properties props) throws JHOVE2Exception {
-        {
-            if (tags == null) {
-                TiffTag tiffTag = null;
-                tags = new TreeSet<TiffTag>();
-                if (props != null) {
-                    Enumeration<?> e = props.propertyNames();
-                    while (e.hasMoreElements()){
+    protected static TreeSet<TiffTag> getTiffTags(JHOVE2 jhove2) throws JHOVE2Exception {        
+        if (tags == null) {
+            TiffTag tiffTag = null;
+            tags = new TreeSet<TiffTag>();
+            Properties props = jhove2.getConfigInfo().getProperties("TiffTags");
+            if (props != null) {
+                Enumeration<?> e = props.propertyNames();
+                while (e.hasMoreElements()){
 
-                        tiffTag = null;
-                        String key = (String) e.nextElement();
-                        String name = null;
-                        String[] type;
-                        String cardinality = null;
-                        String defaultValue = null;
-                        int version = 4;
+                    tiffTag = null;
+                    String key = (String) e.nextElement();
+                    String name = null;
+                    String[] type;
+                    String cardinality = null;
+                    String defaultValue = null;
+                    int version = 4;
 
-                        String value = props.getProperty(key);
-                        String[] values = value.split("\\|");
-                        // tag|Name|Type[,Type,...]|Cardinality|Default
-                        int tag = Integer.parseInt(key);
-                        name = values[0];
-                        type = values[1].split(",");
+                    String value = props.getProperty(key);
+                    String[] values = value.split("\\|");
+                    // tag|Name|Type[,Type,...]|Cardinality|Default
+                    int tag = Integer.parseInt(key);
+                    name = values[0];
+                    type = values[1].split(",");
 
-                        /* retrieve cardinality/count/length 
-                         * count field is null if the string value it contains is not parseable to int. 
-                         */
-                        if (values.length >= 3) {
-                            if (isParsableToInt(values[2]))
-                                cardinality = values[2];               
-                        }
-                        /* retrieve default value */
-                        if (values.length >= 4) {
-                            defaultValue = values[3];
-                        }
-
-                        /* retrieve version */
-                        if (values.length >= 5) {
-                            version = Integer.parseInt(values[4]);
-                        }
-                        tiffTag = new TiffTag(tag, name, type, cardinality, defaultValue, version);
-                        tags.add(tiffTag);
+                    /* retrieve cardinality/count/length 
+                     * count field is null if the string value it contains is not parseable to int. 
+                     */
+                    if (values.length >= 3) {
+                        if (isParsableToInt(values[2]))
+                            cardinality = values[2];               
                     }
-                }   
-            }
+                    /* retrieve default value */
+                    if (values.length >= 4) {
+                        defaultValue = values[3];
+                    }
+
+                    /* retrieve version */
+                    if (values.length >= 5) {
+                        version = Integer.parseInt(values[4]);
+                    }
+                    tiffTag = new TiffTag(tag, name, type, cardinality, defaultValue, version);
+                    tags.add(tiffTag);
+                }
+            }   
         }
         return tags;
     }
-    
+
     /**
      * performs test to check if string is an integer
      * 
