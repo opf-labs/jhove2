@@ -40,6 +40,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 
 /**
@@ -101,11 +102,12 @@ public class CodeBlock implements Comparable<CodeBlock> {
 	 *         blocks
 	 * @throws JHOVE2Exception
 	 */
-	public static synchronized CodeBlock getBlock(int codePoint, Properties props)
+	public static synchronized CodeBlock getBlock(int codePoint, JHOVE2 jhove2)
 			throws JHOVE2Exception {
 		if (codeBlocks == null) {
 			/* Initialize the code blocks from Java Properties. */
 			codeBlocks = new TreeSet<CodeBlock>();
+	        Properties props = jhove2.getConfigInfo().getProperties("CodeBlock");
 			if (props != null) {
 				Set<String> set = props.stringPropertyNames();
 				Iterator<String> iter = set.iterator();

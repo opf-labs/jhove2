@@ -218,9 +218,9 @@ public class UTF8Character
 			this.isBOM = true;
 		}
 
-		this.codeBlock = CodeBlock.getBlock(this.codePoint, getCodeBlockProps(jhove2.getConfigInfo()));
-		this.c0control = C0Control.getControl(this.codePoint, getC0ControlProps(jhove2.getConfigInfo()));
-		this.c1control = C1Control.getControl(this.codePoint, getC1ContolProps(jhove2.getConfigInfo()));
+		this.codeBlock = CodeBlock.getBlock(this.codePoint, jhove2);//getCodeBlockProps(jhove2.getConfigInfo()));
+		this.c0control = C0Control.getControl(this.codePoint, jhove2);//getC0ControlProps(jhove2.getConfigInfo()));
+		this.c1control = C1Control.getControl(this.codePoint, jhove2);//getC1ContolProps(jhove2.getConfigInfo()));
 
 		/* Check for code point outside of valid range [Unicode, D76]. */
 		if (this.codePoint < 0x00

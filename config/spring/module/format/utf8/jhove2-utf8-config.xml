@@ -253,19 +253,17 @@
 	</bean>
 	
 	
-	
-	<!-- C0 Control properties bean -->
-	<util:properties id="C0Control"	
-		             location="classpath:properties/unicode/c0control.properties"/>
-	
-	<!-- C1 Control properties bean -->
-	<util:properties id="C1Control"	
-		             location="classpath:properties/unicode/c1control.properties"/>
 
-	<!-- Codeblock properties bean -->
-	<util:properties id="CodeBlock"	
-		             location="classpath:properties/unicode/codeblock.properties"/>
-		
-	
+	<!-- C0 Control properties bean -->		
+	   <bean id="C0Control" class="org.jhove2.config.spring.PropertiesFactoryBean">
+  		<property name="propertyFileBaseName" value="control"/>
+   </bean>      
+	   <bean id="C1Control" class="org.jhove2.config.spring.PropertiesFactoryBean">
+  		<property name="propertyFileBaseName" value="control"/>
+   </bean>      
+	   <bean id="CodeBlock" class="org.jhove2.config.spring.PropertiesFactoryBean">
+  		<property name="propertyFileBaseName" value="block"/>
+   </bean>      
+ 
 	   
 </beans>		   
