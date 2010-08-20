@@ -255,14 +255,14 @@
 	
 
 	<!-- C0 Control properties bean -->		
-	   <bean id="C0Control" class="org.jhove2.config.spring.PropertiesFactoryBean">
-  		<property name="propertyFileBaseName" value="control"/>
+	   <bean id="C0Control" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+  		<property name="propertyFileBaseName" value="C0Control"/>
    </bean>      
-	   <bean id="C1Control" class="org.jhove2.config.spring.PropertiesFactoryBean">
-  		<property name="propertyFileBaseName" value="control"/>
+	   <bean id="C1Control" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+  		<property name="propertyFileBaseName" value="C1Control"/>
    </bean>      
-	   <bean id="CodeBlock" class="org.jhove2.config.spring.PropertiesFactoryBean">
-  		<property name="propertyFileBaseName" value="block"/>
+	   <bean id="CodeBlock" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+  		<property name="propertyFileBaseName" value="CodeBlock"/>
    </bean>      
  
 	   
