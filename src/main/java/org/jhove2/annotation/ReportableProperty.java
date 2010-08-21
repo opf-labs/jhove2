@@ -62,19 +62,31 @@ import java.lang.annotation.Target;
 public @interface ReportableProperty {
 	/** Default description and reference value. */
 	public static final String DEFAULT = "Not available.";
+	
+	/**
+	 * Property type: raw or coded.  A raw property reports itself in the
+	 * exact form that was found in the source unit; a coded value also
+	 * reports itself in the form found in the source unit, which is a
+	 * coded form also available in symbolic form; and a symbolic property
+	 * reports a coded value in human-readable form.
+	 */
+	public enum Type {RAW, CODED, SYMBOLIC}
 
-	/** Property description. */
-	public String value() default DEFAULT;
+    /**
+     * Ordinal position of this property relative to all properties directly
+     * defined in a class.
+     */
+    public int order() default 1;
 
 	/**
 	 * Property reference, a citation to an external source document that
 	 * defines the property.
 	 */
 	public String ref() default DEFAULT;
-
-	/**
-	 * Ordinal position of this property relative to all properties directly
-	 * defined in a class.
-	 */
-	public int order() default 1;
+	
+	/** Property type: raw or coded. */
+	public Type type() default Type.RAW;
+    
+    /** Property description. */
+    public String value() default DEFAULT;
 }
