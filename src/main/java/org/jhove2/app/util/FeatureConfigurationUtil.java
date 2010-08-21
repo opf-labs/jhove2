@@ -194,7 +194,7 @@ public class FeatureConfigurationUtil {
 						idMap.put(featureId.getValue(), featureId.getValue());
 						ReportablePropertyInfo prop = new ReportablePropertyInfo(
 								featureId, methods[j], annot.value(), 
-								annot.ref());
+								annot.ref(), annot.type());
 						set.add(prop);
 					}// end if we don't already have this feature
 				}// end if (annot != null)
@@ -233,7 +233,7 @@ public class FeatureConfigurationUtil {
 						idMap.put(featureId.getValue(), featureId.getValue());
 						ReportablePropertyInfo prop = new ReportablePropertyInfo(
 								featureId, methods[j], annot.value(), 
-								annot.ref());
+								annot.ref(), annot.type());
 						set.add(prop);
 					}
 				}

@@ -44,6 +44,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TimeZone;
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.annotation.ReportableProperty.PropertyType;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
@@ -85,8 +86,11 @@ public class ICCHeader
     /** Header validity status. */
     protected Validity isValid;
     
-    /** Preferred CMM type. */
+    /** Preferred CMM type (coded). */
     protected StringBuffer preferredCMM = new StringBuffer(4);
+    
+    /** Preferred CMM type (symbolic). */
+    protected String preferredCMM_s;
     
     /** Primary platform. */
     protected StringBuffer primaryPlatform = new StringBuffer(4);
@@ -214,7 +218,10 @@ public class ICCHeader
             PreferredCMM cmm =
                 PreferredCMM.getPreferredCMM(this.preferredCMM.toString(),
                                              jhove2);
-            if (cmm == null) {
+            if (cmm != null) {
+                this.preferredCMM_s = cmm.getDescription();
+            }
+            else {
                 numErrors++;
                 this.isValid = Validity.False;
                 Object [] args = new Object[] {input.getPosition()-4L,
@@ -603,15 +610,26 @@ public class ICCHeader
     }
       
     /** Get preferred CMM type.
-     * @return Preferred CMM type
+     * @return Preferred CMM type (coded)
      */
-    @ReportableProperty(order=2, value="Preferred CMM type.", ref="ICC.1:2004-10, \u00a7 7.2.7")
+    @ReportableProperty(order=2, value="Preferred CMM type coded value.",
+            ref="ICC.1:2004-10, \u00a7 7.2.7", type=PropertyType.Coded)
     public String getPreferredCMM() {
         if (this.preferredCMM != null) {
             return this.preferredCMM.toString();
         }
         
         return null;
+    }
+    
+    /** Get prefered CMM type.
+     * @return Preferred CMM type (symbolic)
+     */
+    @ReportableProperty(order=2, value="Preferred CMM type symbolic value.",
+            ref="ICC Private and ICC Tag and CMM Registry",
+            type=PropertyType.Symbolic)
+    public String getPreferredCMM_s() {
+        return this.preferredCMM_s;
     }
     
     /** Get primary platform.

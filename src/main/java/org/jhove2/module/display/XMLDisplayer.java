@@ -49,10 +49,10 @@ public class XMLDisplayer
 	extends AbstractDisplayer
 {
 	/** XML displayer version identifier. */
-	public static final String VERSION = "1.9.5";
+	public static final String VERSION = "2.0.0";
 
 	/** XML displayer release date. */
-	public static final String RELEASE = "2010-02-16";
+	public static final String RELEASE = "2010-09-10";
 
 	/** XML displayer rights statement. */
 	public static final String RIGHTS = "Copyright 2010 by The Regents of the University of California, "
@@ -81,6 +81,8 @@ public class XMLDisplayer
 	public static final String ELEFEATURES = "features";	
 	/** Value element. */
 	public static final String ELEVALUE = "value";
+	/** Symbolic value element. */
+	public static final String ELESYMBOLIC = "symbolicValue";
 
 	/** Schema location attribute. */
 	public static final String SCHEMA_LOCATION = ":schemaLocation";
@@ -226,7 +228,7 @@ public class XMLDisplayer
 	}
 
 	/**
-	 * Display property.
+	 * Display raw or coded property.
 	 * 
 	 * @param out
 	 *            Print stream
@@ -236,18 +238,21 @@ public class XMLDisplayer
 	 *            Property name
 	 * @param identifier
 	 *            Property identifier in the JHOVE2 namespace
-	 * @param value
-	 *            Property value
+	 * @param coded
+	 *            Property raw or coded value
+	 * @param symbolic
+	 *            Property symbolic value (optional, may be null)
 	 * @param order
 	 *            Ordinal position of this reportable with respect to enclosing
 	 *            {@link org.jhove2.core.reportable.Reportable} or collection
-	 * @param unit Unit of measure (may be null)
+	 * @param unit Unit of measure (optional, may be null)
 	 * @see org.jhove2.module.display.Displayer#displayProperty(java.io.PrintStream,
-	 *      int, java.lang.String, org.jhove2.core.I8R, java.lang.Object, int, java.lang.String)
+	 *      int, java.lang.String, org.jhove2.core.I8R, java.lang.Object, java.lang.Object, int, java.lang.String)
 	 */
 	@Override
 	public void displayProperty(PrintStream out, int level, String name,
-			I8R identifier, Object value, int order, String unit) {
+			                    I8R identifier, Object coded, Object symbolic,
+			                    int order, String unit) {
 		if (unit == null) {
 			startTag(out, level, ELEFEATURE,
 				     ATTNAME,        name,
@@ -261,7 +266,10 @@ public class XMLDisplayer
 					ATTIDNAMESPACE,   identifier.getNamespace().toString(),
 					ATTUNITOFMEASURE, unit);
 		}
-		tag(out, level + 1, ELEVALUE, value.toString());
+		tag(out, level + 1, ELEVALUE, coded.toString());
+		if (symbolic != null) {
+		    tag(out, level+1, ELESYMBOLIC, symbolic.toString());
+		}
 		endTag(out, level, ELEFEATURE);
 	}
 

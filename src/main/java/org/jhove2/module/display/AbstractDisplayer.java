@@ -49,6 +49,7 @@ import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import org.jhove2.annotation.ReportableProperty.PropertyType;
 import org.jhove2.config.ConfigInfo;
 import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2Exception;
@@ -246,14 +247,19 @@ public abstract class AbstractDisplayer
 		for (ReportableSourceInfo source : list) {
 			Set<ReportablePropertyInfo> props = source.getProperties();
 			for (ReportablePropertyInfo prop : props) {
+			    PropertyType type = prop.getPropertyType();
+			    if (type.equals(PropertyType.Symbolic)) {
+			        continue;
+			    }
 				I8R id = prop.getIdentifier();
 				String ident = id.getValue();
 				DisplayVisibility visbility = visibilities.get(ident);
 				if (visbility != null && visbility == DisplayVisibility.Never) {
 					continue;
 				}
-				Method method = prop.getMethod();
-				String propertyName = method.getName();
+				Method method       = prop.getMethod();
+				String methodName   = method.getName();
+				String propertyName = methodName;
 				if (propertyName.indexOf("get") == 0) {
 					propertyName = propertyName.substring(3);
 				}
@@ -279,8 +285,19 @@ public abstract class AbstractDisplayer
 								}
 							}
 						}
+						Object symbolic = null;
+						if (type.equals(PropertyType.Coded)) {
+						    Class<?> cl = method.getDeclaringClass();
+						    try {
+						        Method method_s = cl.getMethod(methodName + "_s");
+						        symbolic = method_s.invoke(reportable);
+						    }
+						    catch (NoSuchMethodException e) {
+						    }
+						}
 						String unit = units.get(ident);
-						display(out, level, propertyName, id, value, or++, unit);
+						display(out, level, propertyName, id, value, symbolic,
+						        or++, unit);
 					}
 				} catch (IllegalArgumentException e) {
 					throw new JHOVE2Exception(
@@ -311,15 +328,17 @@ public abstract class AbstractDisplayer
 	 * @param identifier
 	 *            Property identifier
 	 * @param value
-	 *            Property value
+	 *            Property raw or coded value
+	 * @param symbolic
+	 *            Property symbolic value (optional, may be null)
 	 * @param order
 	 *            Ordinal position of this property with respect to its
 	 *            enclosing reportable or collection
-	 * @param unit Unit of measure (may be null)
+	 * @param unit Unit of measure (optional, may be null)
 	 */
 	protected void display(PrintStream out, int level, String name,
-			               I8R identifier, Object value, int order,
-			               String unit)
+			               I8R identifier, Object value, Object symbolic,
+			               int order, String unit)
 		throws JHOVE2Exception
 	{
 		if (value instanceof List<?>) {
@@ -332,7 +351,8 @@ public abstract class AbstractDisplayer
 				I8R id = I8R.singularIdentifier(identifier);
 				int i = 0;
 				for (Object prop : valueList) {
-					this.display(out, level + 1, singularName, id, prop, i++, unit);
+					this.display(out, level + 1, singularName, id, prop,
+					             symbolic, i++, unit);
 				}
 				this.endCollection(out, level + 1, name, identifier, size);
 			}
@@ -347,7 +367,8 @@ public abstract class AbstractDisplayer
 				I8R id = I8R.singularIdentifier(identifier);
 				int i = 0;
 				for (Object prop : set) {
-					display(out, level + 1, singularName, id, prop, i++, unit);
+					display(out, level + 1, singularName, id, prop, symbolic,
+					        i++, unit);
 				}
 				this.endCollection(out, level + 1, name, identifier, size);
 			}
@@ -367,12 +388,63 @@ public abstract class AbstractDisplayer
 				value = dat1 + ":" + dat2;
 			}
 			this.displayProperty(out, level + 1, name, identifier, value,
-					             order, unit);
+					             symbolic, order, unit);
 		}
 	}
 
+    /**
+     * Display raw property with no unit of measure.
+     * 
+     * @param out
+     *            Print stream
+     * @param level
+     *            Nesting level
+     * @param name
+     *            Property name
+     * @param identifier
+     *            Property identifier in the JHOVE2 namespace
+     * @param value
+     *            Property raw value
+     * @param order
+     *            Ordinal position of this property with respect to its
+     *            enclosing {@link org.jhove2.core.reportable.Reportable}
+     *            or collection
+     */
+    public void displayProperty(PrintStream out, int level, String name,
+                                I8R identifier, Object value, int order) {
+        this.displayProperty(out, level, name, identifier, value, null,
+                             order, null);
+    }
+
+    /**
+     * Display raw property.
+     * 
+     * @param out
+     *            Print stream
+     * @param level
+     *            Nesting level
+     * @param name
+     *            Property name
+     * @param identifier
+     *            Property identifier in the JHOVE2 namespace
+     * @param value
+     *            Property raw value
+     * @param order
+     *            Ordinal position of this property with respect to its
+     *            enclosing {@link org.jhove2.core.reportable.Reportable}
+     *            or collection
+     * @param unit
+     *            Unit of measure (optional, may be null)
+     */
+    public void displayProperty(PrintStream out, int level, String name,
+                                I8R identifier, Object value, int order,
+                                String unit) {
+        this.displayProperty(out, level, name, identifier, value, null,
+                             order, unit);
+    }
+    
 	/**
-	 * Display property with no unit of measure.
+	 * Display raw or coded property with no unit of measure.
 	 * 
 	 * @param out
 	 *            Print stream
@@ -382,16 +454,19 @@ public abstract class AbstractDisplayer
 	 *            Property name
 	 * @param identifier
 	 *            Property identifier in the JHOVE2 namespace
-	 * @param value
-	 *            Property value
+	 * @param coded
+	 *            Property raw or coded value
+	 * @param symbolic
+	 *            Property symbolic value (optional, may be null)
 	 * @param order
 	 *            Ordinal position of this property with respect to its
 	 *            enclosing {@link org.jhove2.core.reportable.Reportable} or collection
 	 */
-	@Override
 	public void displayProperty(PrintStream out, int level, String name,
-			                    I8R identifier, Object value, int order) {
-		this.displayProperty(out, level, name, identifier, value, order, null);
+			                    I8R identifier, Object coded, Object symbolic,
+			                    int order) {
+		this.displayProperty(out, level, name, identifier, coded, symbolic,
+		                     order, null);
 	}
     
     /** Get the character encoding.
