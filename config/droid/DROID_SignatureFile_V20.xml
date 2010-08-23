@@ -6324,7 +6324,7 @@
                 </SubSequence>
             </ByteSequence>
         </InternalSignature>
-    </InternalSignatureCollection>
+     </InternalSignatureCollection>
     <FileFormatCollection>
         <FileFormat ID="8" Name="Microsoft Word for  Macintosh Document" Version="3.0" PUID="x-fmt/1">
             <Extension>Unknown</Extension>
@@ -8436,6 +8436,11 @@
             <HasPriorityOverFileFormatID>778</HasPriorityOverFileFormatID>
             <HasPriorityOverFileFormatID>382</HasPriorityOverFileFormatID>
             <HasPriorityOverFileFormatID>777</HasPriorityOverFileFormatID>
+        </FileFormat>
+        
+        <!-- JHOVE2-specific extension added for ICC color profile, 2010-08-18 -->
+        <FileFormat ID="100001" Name="ICC Color Profile" Version="4.2.0.0" PUID="x-fmt/100001">
+        	<Extension>icc</Extension>Extension>
         </FileFormat>
     </FileFormatCollection>
 </FFSignatureFile>

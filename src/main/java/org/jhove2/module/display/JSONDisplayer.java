@@ -49,10 +49,10 @@ public class JSONDisplayer
 	extends AbstractDisplayer
 {
 	/** JSON displayer version identifier. */
-	public static final String VERSION = "1.9.5";
+	public static final String VERSION = "2.0.0";
 
 	/** JSON displayer release date. */
-	public static final String RELEASE = "2010-02-16";
+	public static final String RELEASE = "2010-09-10";
 
 	/** JSON displayer rights statement. */
 	public static final String RIGHTS = "Copyright 2010 by The Regents of the University of California, "
@@ -216,19 +216,21 @@ public class JSONDisplayer
 	 *            Property name
 	 * @param identifier
 	 *            Property identifier in the JHOVE2 namespace
-	 * @param value
-	 *            Property value
+	 * @param coded
+	 *            Property raw or coded value
+	 * @param symbolic
+	 *            Property symbolic value (optional, may be null)
 	 * @param order
 	 *            Ordinal position of this reportable with respect to enclosing
 	 *            {@link org.jhove2.core.reportable.Reportable} or collection
-	 * @param unit Unit of measure (may be null)
+	 * @param unit Unit of measure (optional, may be null)
 	 * @see org.jhove2.module.display.Displayer#displayProperty(java.io.PrintStream,
-	 *      int, java.lang.String, org.jhove2.core.I8R, java.lang.Object, int, java.lang.String)
+	 *      int, java.lang.String, org.jhove2.core.I8R, java.lang.Object, java.lang.Object, int, java.lang.String)
 	 */
 	@Override
 	public void displayProperty(PrintStream out, int level, String name,
-			                    I8R identifier, Object value, int order,
-			                    String unit) {
+			                    I8R identifier, Object coded, Object symbolic,
+			                    int order, String unit) {
 		String indent = getIndent((this.getShowIdentifiers() ? 2 * level : level), 
 				this.getShouldIndent());
 		StringBuffer buffer = new StringBuffer(indent);
@@ -258,13 +260,21 @@ public class JSONDisplayer
 			}
 			buffer.append(indent + "  ,\"value\": ");
 		}
-		if (value instanceof Number) {
-			buffer.append(value);
+		if (coded instanceof Number) {
+			buffer.append(coded);
 		}
 		else {
+            if (symbolic != null) {
+                buffer.append("[");
+            }
 			buffer.append("\"");
-			buffer.append(escapeCntrlChars(escape(value.toString()).toString()));
+			buffer.append(escapeCntrlChars(escape(coded.toString()).toString()));
 			buffer.append("\"");
+            if (symbolic != null) {
+                buffer.append(",\"");
+                buffer.append(escapeCntrlChars(escape(symbolic.toString()).toString()));
+                buffer.append("\"]");
+            }
 		}
 		if (mustBracket) {
 			buffer.append("\n" + indent + " }");

@@ -183,26 +183,6 @@ public interface Displayer
 			                    I8R identifier, int size, int order);
 
 	/**
-	 * Display property with no unit of measure.
-	 * 
-	 * @param out
-	 *            Print stream
-	 * @param level
-	 *            Nesting level
-	 * @param name
-	 *            Property name
-	 * @param identifier
-	 *            Property identifier in the JHOVE2 namespace
-	 * @param value
-	 *            Property value
-	 * @param order
-	 *            Ordinal position of this property with respect to its
-	 *            enclosing {@link org.jhove2.core.reportable.Reportable} or collection
-	 */
-	public void displayProperty(PrintStream out, int level, String name,
-			                    I8R identifier, Object value, int order);
-	
-	/**
 	 * Display property.
 	 * 
 	 * @param out
@@ -213,17 +193,20 @@ public interface Displayer
 	 *            Property name
 	 * @param identifier
 	 *            Property identifier in the JHOVE2 namespace
-	 * @param value
-	 *            Property value
+	 * @param coded
+	 *            Property raw or coded value
+	 * @param symbolic
+	 *            Property symbolic value (optional, may be null
 	 * @param order
 	 *            Ordinal position of this property with respect to its
-	 *            enclosing {@link org.jhove2.core.reportable.Reportable} or collection
+	 *            enclosing {@link org.jhove2.core.reportable.Reportable}
+	 *            or collection
 	 * @param unit
-	 *            Unit of measure in which the value is expressed
+	 *            Unit of measure (optional, may be null)
 	 */
 	public void displayProperty(PrintStream out, int level, String name,
-			                    I8R identifier, Object value, int order,
-			                    String unit);
+			                    I8R identifier, Object coded, Object symbolic,
+			                    int order, String unit);
 
 	/**
 	 * End display of a property collection.

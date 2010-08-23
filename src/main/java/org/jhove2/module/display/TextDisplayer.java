@@ -47,10 +47,10 @@ import org.jhove2.core.I8R;
  */
 public class TextDisplayer extends AbstractDisplayer {
 	/** Text displayer version identifier. */
-	public static final String VERSION = "1.9.5";
+	public static final String VERSION = "2.0.0";
 
 	/** Text displayer release date. */
-	public static final String RELEASE = "2010-02-16";
+	public static final String RELEASE = "2010-09-10";
 
 	/** Text displayer rights statement. */
 	public static final String RIGHTS = "Copyright 2010 by The Regents of the University of California, "
@@ -190,18 +190,21 @@ public class TextDisplayer extends AbstractDisplayer {
 	 *            Property name
 	 * @param identifier
 	 *            Property identifier in the JHOVE2 namespace
-	 * @param value
-	 *            Property value
+	 * @param coded
+	 *            Property raw or coded value
+	 * @param symbolic
+	 *            Property symbolic value (optional, may be null)
 	 * @param order
 	 *            Ordinal position of this reportable with respect to enclosing
 	 *            {@link org.jhove2.core.reportable.Reportable} or collection
-	 * @param unit Unit of measure (may be null)
+	 * @param unit Unit of measure (optional, may be null)
 	 * @see org.jhove2.module.display.Displayer#displayProperty(java.io.PrintStream,
-	 *      int, java.lang.String, org.jhove2.core.I8R, java.lang.Object, int, java.lang.String)
+	 *      int, java.lang.String, org.jhove2.core.I8R, java.lang.Object, java.lang.Object, int, java.lang.String)
 	 */
 	@Override
 	public void displayProperty(PrintStream out, int level, String name,
-			I8R identifier, Object value, int order, String unit) {
+			                    I8R identifier, Object coded, Object symbolic,
+			                    int order, String unit) {
 		StringBuffer buffer = new StringBuffer(getIndent(level,this.getShouldIndent()));
 		buffer.append(name);
 		if (this.getShowIdentifiers()) {
@@ -210,7 +213,10 @@ public class TextDisplayer extends AbstractDisplayer {
 		if (unit != null){
 			buffer.append(" (" + unit + ")");
 		}
-		buffer.append(": " + value);
+		buffer.append(": " + coded);
+		if (symbolic != null) {
+		    buffer.append(" = " + symbolic);
+		}
 		out.println(buffer);
 	}
 
