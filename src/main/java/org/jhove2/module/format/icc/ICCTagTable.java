@@ -86,8 +86,15 @@ public class ICCTagTable
         throws EOFException, IOException, JHOVE2Exception
     {
         long consumed = 0L;
-        int numErrors = 0;
-        this.isValid = Validity.Undetermined;
+        this.isValid = Validity.True;
+        
+        this.count = input.readUnsignedInt();
+        for (int i=0; i<this.count; i++) {
+            ICCTag tag = new ICCTag();
+            consumed += tag.parse(jhove2, input);
+            
+            this.tags.add(tag);
+        }
         
         return consumed;
     }
@@ -95,8 +102,28 @@ public class ICCTagTable
     /** Get tag count.
      * @return Tag count
      */
-    @ReportableProperty(order=1, value="Tag count.", ref="ICC.1:2004-10, \u00a7 7.3.2")
+    @ReportableProperty(order=1, value="Tag count.",
+            ref="ICC.1:2004-10, \u00a7 7.3.2")
     public long getCount() {
         return this.count;
+    }
+    
+    /** Get tags.
+     * @return Tags
+     */
+    @ReportableProperty(order=2, value="Tags.",
+            ref="ICC.1:2004-10, \u00a7 7.3")
+    public List<ICCTag> getTags() {
+        return this.tags;
+    }
+
+    /** Get validity.
+     * @return Validity
+     */
+    @ReportableProperty(order=3, value="Tag table validity",
+            ref="ICC.1:2004-10, \u00a7 7.3")
+    public Validity isValid()
+    {
+         return this.isValid;
     }
 }

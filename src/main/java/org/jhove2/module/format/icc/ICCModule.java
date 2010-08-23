@@ -42,11 +42,15 @@ import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.Message;
+import org.jhove2.core.Message.Context;
+import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.module.format.Validator;
+import org.jhove2.module.format.Validator.Validity;
 
 /** JHOVE2 ICC colour profile module.
  * 
@@ -82,6 +86,12 @@ public class ICCModule
     /** The Source object passed in by the parse method */
     protected  Source source;
     
+    /** Profile tag table. */
+    protected ICCTagTable tagTable;
+    
+    /** Premature EOF message. */
+    protected Message prematureEOFMessage;
+    
     /** Instantiate a new <code>ICCModule</code>
      * 
      * @param format ICC format
@@ -114,7 +124,7 @@ public class ICCModule
     {
         long consumed = 0L;
         int numErrors = 0;
-        this.isValid = Validity.Undetermined;
+        this.isValid = Validity.True;
         Input input = null;
         try {
             Invocation config = jhove2.getInvocation();
@@ -123,8 +133,30 @@ public class ICCModule
             input.setByteOrder(ByteOrder.BIG_ENDIAN);
             input.setPosition(0L);
             
-            this.header = new ICCHeader();
-            consumed = header.parse(jhove2, input);
+            try {
+                this.header = new ICCHeader();
+                consumed = header.parse(jhove2, input);
+                Validity validity = header.isValid();
+                if (validity != Validity.True) {
+                    this.isValid = validity;
+                }
+                
+                this.tagTable = new ICCTagTable();
+                consumed += tagTable.parse(jhove2, input);
+                validity = tagTable.isValid();
+                if (validity != Validity.True) {
+                    this.isValid = validity;
+                }
+            }
+            catch (EOFException e) {
+                numErrors++;
+                this.isValid = Validity.False;
+                Object [] args = new Object [] {input.getPosition()};
+                this.prematureEOFMessage = new Message(Severity.ERROR,
+                        Context.OBJECT,
+                        "org.jhove2.module.format.icc.ICCModule.PrematureEOF",
+                        args, jhove2.getConfigInfo());
+            }
         }
         finally {
             if (input != null) {
@@ -160,10 +192,21 @@ public class ICCModule
     /** Get profile header.
      * @return Profile header
      */
-    @ReportableProperty(order=1, value="Profile header", ref="ICC.1:2004-10, \u00a7 7.2")
+    @ReportableProperty(order=1, value="Profile header",
+            ref="ICC.1:2004-10, \u00a7 7.2")
     public ICCHeader getHeader()
     {
         return this.header;
+    }
+    
+    /** Get profile tag table.
+     * @return Profile tag table
+     */
+    @ReportableProperty(order=2, value="Profile tag table",
+            ref="ICC.1:2004-10, \u00a7 7.3")
+    public ICCTagTable getTagTable()
+    {
+        return this.tagTable;
     }
 
     /** Get validity.

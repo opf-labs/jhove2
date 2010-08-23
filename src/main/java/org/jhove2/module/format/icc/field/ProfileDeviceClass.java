@@ -29,10 +29,10 @@
  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
+ * POSSIBILITY OF SUCH DAMAGE. 
  */
 
-package org.jhove2.module.format.icc;
+package org.jhove2.module.format.icc.field;
 
 import java.util.Iterator;
 import java.util.Properties;
@@ -41,119 +41,118 @@ import java.util.TreeSet;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 
-/** ICC preferred Colour Management Module (CMM).
- * 
+/**
  * @author slabrams
+ *
  */
-public class PreferredCMM
-    implements Comparable<PreferredCMM>
+public class ProfileDeviceClass
+    implements Comparable<ProfileDeviceClass>
 {
-    /** Singleton preferred CMMs. */
-    protected static Set<PreferredCMM> CMMs;
+    /** Singleton profile/device classes. */
+    protected static Set<ProfileDeviceClass> classes;
 
-    /** CMM description. */
-    protected String description;
+    /** Profile class. */
+    protected String profileClass;
 
-    /** CMM signature. */
+    /** Profile signature. */
     protected String signature;
 
     /**
-     * Instantiate a <code>PreferredCMM</code> object.
+     * Instantiate a new <code>ProfileDeviceClass</code> object.
      * 
      * @param signature
-     *            CMM signature
-     * @param description
-     *            CMM description
+     *            Profile signature
+     * @param profileClass
+     *            Profile/device class
      */
-    public PreferredCMM(String signature, String description) {
-        this.signature   = signature;
-        this.description = description;
+    public ProfileDeviceClass(String signature, String profileClass) {
+        this.signature    = signature;
+        this.profileClass = profileClass;
     }
 
     /**
-     * Get the preferred CMM description for a signature.
-     * 
-     * @param signature CMM signature
+     * Get the profile/device class for a signature. 
+     * @param signature profile/device class signature
      * @param jhove2    JHOVE2 framework
-     * @return Preferred CMM, or null if the signature is not a CMM signature
+     * @return profile/device class, or null if the signature is not a CMM signature
      * @throws JHOVE2Exception
      */
-    public static synchronized PreferredCMM getPreferredCMM(String signature, JHOVE2 jhove2)
+    public static synchronized ProfileDeviceClass getProfileDeviceClass(String signature, JHOVE2 jhove2)
             throws JHOVE2Exception {
-        if (CMMs == null) {
-            /* Initialize the CMMs from s Java resource bundle. */
-            CMMs = new TreeSet<PreferredCMM>();
-            Properties props = jhove2.getConfigInfo().getProperties("PreferredCMM");
+        if (classes == null) {
+            /* Initialize the profile/device classes from a Java resource bundle. */
+            classes = new TreeSet<ProfileDeviceClass>();
+            Properties props = jhove2.getConfigInfo().getProperties("ProfileClasses");
             if (props != null) {
                 Set<String> set = props.stringPropertyNames();
                 Iterator<String> iter = set.iterator();
                 while (iter.hasNext()) {
-                    String sig  = iter.next();
-                    String desc = props.getProperty(sig);
-                    PreferredCMM prefCMM = new PreferredCMM(sig, desc);
-                    CMMs.add(prefCMM);
+                    String sig = iter.next();
+                    String cls = props.getProperty(sig);
+                    ProfileDeviceClass pClass = new ProfileDeviceClass(sig, cls);
+                    classes.add(pClass);
                 }
             }
         }
-        PreferredCMM prefCMM = null;
-        Iterator<PreferredCMM> iter = CMMs.iterator();
+        ProfileDeviceClass profileClass = null;
+        Iterator<ProfileDeviceClass> iter = classes.iterator();
         while (iter.hasNext()) {
-            PreferredCMM cmm = iter.next();
-            if (cmm.getSignature().equals(signature)) {
-                prefCMM = cmm;
+            ProfileDeviceClass pClass = iter.next();
+            if (pClass.getSignature().equals(signature)) {
+                profileClass = pClass;
                 break;
             }
         }
-
-        return prefCMM;
+        return profileClass;
     }
 
     /**
-     * Get the preferred CMMs.
+     * Get the profile/device classes.
      * 
-     * @return PreferredCMMs
+     * @return Profile/device classes
      */
-    public static Set<PreferredCMM> getPreferredCMMs() {
-        return CMMs;
+    public static Set<ProfileDeviceClass> getProfileDeviceClasses() {
+        return classes;
     }
 
     /**
-     * Get the preferred CMM description.
+     * Get the profile/device class.
      * 
-     * @return Preferred CMM description
+     * @return Profile/device class
      */
-    public String getDescription() {
-        return this.description;
+    public String getProfileClass() {
+        return this.profileClass;
     }
 
     /**
-     * Get the preferred CMM signature.
+     * Get the profile/device class signature.
      * 
-     * @return Preferred CMM signature
+     * @return Profile/device class signature
      */
     public String getSignature() {
         return this.signature;
     }
 
     /**
-     * Convert the preferred CMM to a Java string in the form: "signature: description".
+     * Convert the profile/device class to a Java string in the form:
+     * "signature: class".
      * 
-     * @return Java string representation of the preferred CMM
+     * @return Java string representation of the profile/device class
      */
     public String toString() {
-        return this.getSignature() + ": " + this.getDescription();
+        return this.getSignature() + ": " + this.getProfileClass();
     }
 
     /**
-     * Compare preferred CMM.
+     * Compare profile/device class.
      * 
      * @param cmm
-     *            Preferred CMM to be compared
-     * @return -1, 0, or 1 if this CMM is less than, equal to, or greater
-     *         than the second
+     *            Profile/device class to be compared
+     * @return -1, 0, or 1 if this profile/device class is less than,
+     *         equal to, or greater than the second
      */
     @Override
-    public int compareTo(PreferredCMM cmm) {
-        return this.signature.compareTo(cmm.getSignature());
+    public int compareTo(ProfileDeviceClass pClass) {
+        return this.signature.compareTo(pClass.getSignature());
     }
 }

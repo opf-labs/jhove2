@@ -106,10 +106,15 @@
 	</bean>      
    
 	<!-- ICC data colour spaces properties bean --> 
-	<bean id="DataColourSpaces" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
-		<property name="propertyFileBaseName" value="data-colour-spaces"/>
+	<bean id="ColourSpaces" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="colour-spaces"/>
 	</bean>    
-	
+		
+	<!-- ICC device attributes properties bean --> 
+	<bean id="DeviceAttributes" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="device-attributes"/>
+	</bean> 
+	    
 	<!-- ICC preferred CMM type properties bean -->
 	<bean id="PreferredCMM" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
 		<property name="propertyFileBaseName" value="cmm-signatures"/>
@@ -124,10 +129,20 @@
 	<bean id="ProfileClasses" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
 		<property name="propertyFileBaseName" value="profile-classes"/>
 	</bean>
-	
+		
+	<!-- ICC profile flags properties bean --> 
+	<bean id="ProfileFlags" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="profile-flags"/>
+	</bean> 
+	    
 	<!-- ICC rendering intents properties bean --> 
 	<bean id="RenderingIntents" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
 		<property name="propertyFileBaseName" value="rendering-intents"/>
+	</bean> 
+		    
+	<!-- ICC tags properties bean --> 
+	<bean id="Tags" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="tags"/>
 	</bean> 
 	    
 </beans>

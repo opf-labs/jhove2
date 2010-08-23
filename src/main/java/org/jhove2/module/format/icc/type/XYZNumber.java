@@ -33,9 +33,9 @@
  * </p>
  */
 
-package org.jhove2.module.format.icc;
+package org.jhove2.module.format.icc.type;
 
-import org.jhove2.module.format.icc.S15Fixed16Number;
+import org.jhove2.module.format.icc.type.S15Fixed16Number;
 
 /** ICC XYZ number, a set of three fixed signed s15Fixed16Numbers.
  * See ICC.1:2004-10, \u00a7 5.1.11.
@@ -86,7 +86,7 @@ public class XYZNumber
      * @return String representation of the numbers
      */
     public String toString() {
-        return this.x.toString() + "," + this.y.toString() + "," +
+        return this.x.toString() + ", " + this.y.toString() + ", " +
                this.z.toString();
     }
 }

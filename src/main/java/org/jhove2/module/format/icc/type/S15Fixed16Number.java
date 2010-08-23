@@ -33,7 +33,7 @@
  * </p>
  */
 
-package org.jhove2.module.format.icc;
+package org.jhove2.module.format.icc.type;
 
 /** ICC s15Fixed16Number, a fixed signed 4 byte/32 bit quantity with 16
  * fractional bits.  The number is organized as:
