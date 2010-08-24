@@ -62,11 +62,11 @@ public class ICCTag
     /** Tag offset. */
     protected long offset;
     
-    /** Tag signature in coded form. */
+    /** Tag signature in raw form. */
     protected StringBuffer signature = new StringBuffer(4);
     
-    /** Tag signature in symbolic form. */
-    protected String signature_s;
+    /** Tag signature in descriptive form. */
+    protected String signature_d;
     
     /** Tag size. */
     protected long size;
@@ -111,12 +111,11 @@ public class ICCTag
         /* Tag signature. */
         for (int i=0; i<4; i++) {
             short b = input.readUnsignedByte();
-            this.signature.append((char)b);
-            consumed++;
+            this.signature.append((char) b);
         }
         Tag tag = Tag.getTag(this.signature.toString(), jhove2);
         if (tag != null) {
-            this.signature_s = tag.getName();
+            this.signature_d = tag.getName();
             this.vendor      = tag.getVendor();
         }
         else {
@@ -128,9 +127,19 @@ public class ICCTag
                 "org.jhove2.module.format.icc.ICCTag.InvalidTag",
                 args, jhove2.getConfigInfo());
         }
+        consumed += 4;
         
         /* Tag offset. */
         this.offset = input.readUnsignedInt();
+        if ((this.offset & 0x00000003) != 0L) {
+            numErrors++;
+            this.isValid = Validity.False;
+            Object [] args = new Object [] {input.getPosition()-4L, this.offset};
+            this.offsetNotWordAlignedMessage = new Message(Severity.ERROR,
+                    Context.OBJECT,
+                    "org.jhove2.module.format.icc.ICCTAG.OffsetNotWordAligned",
+                    args, jhove2.getConfigInfo());
+        }
         consumed += 4;
         
         /* Tag size. */
@@ -152,34 +161,43 @@ public class ICCTag
     /** Get tag offset.
      * @return Tag offset
      */
-    @ReportableProperty(order=3, value="Tag offset.",
+    @ReportableProperty(order=4, value="Tag offset.",
             ref="ICC.1:2004-10, \u00a7 7.3.1")
     public long getOffset() {
         return this.offset;
     }
     
-    /** Get tag signature in code form.
-     * @return Tag signature in code form
+    /** Get tag offset not word aligned message.
+     * @return Tag offset not word aligned message
      */
-    @ReportableProperty(order=2, value="Tag signature in coded form.",
-            ref="ICC.1:2004-10, \u00a7 7.3.1", type=PropertyType.Coded)
-    public String getSignature() {
+    @ReportableProperty(order=22, value="Offset not word aligned.",
+            ref="ICC.1:2004-10, \u00a7 7.3.4")
+    public Message getOffsetNotWordAligned() {
+        return this.offsetNotWordAlignedMessage;
+    }
+    
+    /** Get tag signature in coded form.
+     * @return Tag signature in coded form
+     */
+    @ReportableProperty(order=2, value="Tag signature in raw form.",
+            ref="ICC.1:2004-10, \u00a7 7.3.1", type=PropertyType.Raw)
+    public String getSignature_raw() {
         return this.signature.toString();
     }
     
-    /** Get tag signature in symbolic form.
-     * @return Tag signature in symbolic form
+    /** Get tag signature in descriptive form.
+     * @return Tag signature in descriptive form
      */
-    @ReportableProperty(order=2, value="Tag signature in symbolic form.",
-            ref="ICC.1:2004-10, \u00a7 9", type=PropertyType.Symbolic)
-    public String getSignature_s() {
-        return this.signature_s;
+    @ReportableProperty(order=3, value="Tag signature in descriptive form.",
+            ref="ICC.1:2004-10, \u00a7 9", type=PropertyType.Descriptive)
+    public String getSignature_descriptive() {
+        return this.signature_d;
     }
     
     /** Get tag size.
      * @return Tag size
      */
-    @ReportableProperty(order=4, value="Tag size.", ref="ICC.1:2004-10, \u00a7 7.3.1")
+    @ReportableProperty(order=5, value="Tag size.", ref="ICC.1:2004-10, \u00a7 7.3.1")
     public long getSize() {
         return this.size;
     }
@@ -191,5 +209,13 @@ public class ICCTag
             ref="ICC, \"Private and ICC Tag and CMM Regsitry\" (as of November 3, 2009")
     public String getVendor() {
         return this.vendor;
+    }
+    
+    /** Get tag validity.
+     * @return Tag validity
+     */
+    @ReportableProperty(order=5, value="Tag validity.")
+    public Validity isValid() {
+        return this.isValid;
     }
 }

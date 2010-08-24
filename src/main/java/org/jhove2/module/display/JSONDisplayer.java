@@ -216,10 +216,8 @@ public class JSONDisplayer
 	 *            Property name
 	 * @param identifier
 	 *            Property identifier in the JHOVE2 namespace
-	 * @param coded
-	 *            Property raw or coded value
-	 * @param symbolic
-	 *            Property symbolic value (optional, may be null)
+	 * @param value
+	 *            Property value
 	 * @param order
 	 *            Ordinal position of this reportable with respect to enclosing
 	 *            {@link org.jhove2.core.reportable.Reportable} or collection
@@ -229,8 +227,8 @@ public class JSONDisplayer
 	 */
 	@Override
 	public void displayProperty(PrintStream out, int level, String name,
-			                    I8R identifier, Object coded, Object symbolic,
-			                    int order, String unit) {
+			                    I8R identifier, Object value, int order,
+			                    String unit) {
 		String indent = getIndent((this.getShowIdentifiers() ? 2 * level : level), 
 				this.getShouldIndent());
 		StringBuffer buffer = new StringBuffer(indent);
@@ -260,21 +258,13 @@ public class JSONDisplayer
 			}
 			buffer.append(indent + "  ,\"value\": ");
 		}
-		if (coded instanceof Number) {
-			buffer.append(coded);
+		if (value instanceof Number) {
+			buffer.append(value);
 		}
 		else {
-            if (symbolic != null) {
-                buffer.append("[");
-            }
 			buffer.append("\"");
-			buffer.append(escapeCntrlChars(escape(coded.toString()).toString()));
+			buffer.append(escapeCntrlChars(escape(value.toString()).toString()));
 			buffer.append("\"");
-            if (symbolic != null) {
-                buffer.append(",\"");
-                buffer.append(escapeCntrlChars(escape(symbolic.toString()).toString()));
-                buffer.append("\"]");
-            }
 		}
 		if (mustBracket) {
 			buffer.append("\n" + indent + " }");

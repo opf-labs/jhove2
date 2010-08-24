@@ -75,20 +75,20 @@ public class ICCHeader
      * to 0.9642, 1.0, 0.8249. */
     public static final int [] D50 = {0x0000f6d6, 0x00010000, 0x0000d32d};
     
-    /** Colour space in coded form. */
+    /** Colour space in raw form. */
     protected StringBuffer colourSpace = new StringBuffer(4);
     
-    /** Colour space in symbolic form. */
-    protected String colourSpace_s;
+    /** Colour space in descriptive form. */
+    protected String colourSpace_d;
     
     /** Creation date/time in UTC. */
     protected Date dateAndTime;
     
-    /** Device attributes field in coded form. */
-    protected long deviceAttributesField;
+    /** Device attributes field in raw form. */
+    protected long deviceAttributes;
     
-    /** Device attributes in symbolic form. */
-    protected List<String> deviceAttributes = new ArrayList<String>();
+    /** Device attributes in descriptive form. */
+    protected List<String> deviceAttributes_d = new ArrayList<String>();
     
     /** Device manufacturer. */
     protected StringBuffer deviceManufacturer = new StringBuffer(4);
@@ -98,45 +98,48 @@ public class ICCHeader
     
     /** Profile Connection Space (PCS) illuminant. */
     protected XYZNumber illuminant;
+    
+    /** DeviceLink profile status: true if a DeviceLink profile. */
+    protected boolean isDeviceLinkProfile;
   
     /** Header validity status. */
     protected Validity isValid;
     
-    /** Preferred CMM type in coded form. */
+    /** Preferred CMM type in raw form. */
     protected StringBuffer preferredCMM = new StringBuffer(4);
     
-    /** Preferred CMM type in symbolic form. */
-    protected String preferredCMM_s;
+    /** Preferred CMM type in descriptive form. */
+    protected String preferredCMM_d;
     
-    /** Primary platform in coded form. */
+    /** Primary platform in raw form. */
     protected StringBuffer primaryPlatform = new StringBuffer(4);
     
-    /** Primary platform in symbolic form. */
-    protected String primaryPlatform_s;
+    /** Primary platform in descriptive form. */
+    protected String primaryPlatform_d;
     
-    /** Profile Connection Space (PCS) in coded form. */
+    /** Profile Connection Space (PCS) in raw form. */
     protected StringBuffer profileConnectionSpace = new StringBuffer(4);
     
-    /** Profile Connection Space (PCS) in symbolic form. */
-    protected String profileConnectionSpace_s;
+    /** Profile Connection Space (PCS) in descriptive form. */
+    protected String profileConnectionSpace_d;
     
     /** Profile creator . */
     protected StringBuffer profileCreator = new StringBuffer(4);
     
-    /** Profile/device class in coded form. */
+    /** Profile/device class in raw form. */
     protected StringBuffer profileDeviceClass = new StringBuffer(4);
     
-    /** Profile/device class in symbolic form. */
-    protected String profileDeviceClass_s;
+    /** Profile/device class in descriptive form. */
+    protected String profileDeviceClass_d;
     
     /** Profile file signature. */
     protected StringBuffer profileFileSignature = new StringBuffer(4);
     
-    /** Profile flags field in coded form. */
-    protected long profileFlagsField;
+    /** Profile flags field in raw form. */
+    protected long profileFlags;
     
-    /** Profile flags in symbolic form. */
-    protected List<String> profileFlags = new ArrayList<String>();
+    /** Profile flags in descriptive form. */
+    protected List<String> profileFlags_d = new ArrayList<String>();
     
     /** Profile ID (MD5). */
     protected StringBuffer profileID = new StringBuffer(32);
@@ -147,11 +150,11 @@ public class ICCHeader
     /** Profile version number. */
     protected StringBuffer profileVersionNumber = new StringBuffer(4);
     
-    /** Rendering intent in coded form. */
+    /** Rendering intent in raw form. */
     protected int renderingIntent;
     
-    /** Rendering intent in symbolic form. */
-    protected String renderingIntent_s;
+    /** Rendering intent in descriptive form. */
+    protected String renderingIntent_d;
 
     /** Invalid data colour space message. */
     protected Message invalidColourSpaceMessage;
@@ -246,15 +249,14 @@ public class ICCHeader
             if (unidentified && b != 0) {
                 unidentified = false;
             }
-            this.preferredCMM.append((char)b);
-            consumed++;
+            this.preferredCMM.append((char) b);
         }
         if (!unidentified) {
             PreferredCMM cmm =
                 PreferredCMM.getPreferredCMM(this.preferredCMM.toString(),
                                              jhove2);
             if (cmm != null) {
-                this.preferredCMM_s = cmm.getDescription();
+                this.preferredCMM_d = cmm.getDescription();
             }
             else {
                 numErrors++;
@@ -270,12 +272,12 @@ public class ICCHeader
         else {
             this.preferredCMM = null;
         }
+        consumed += 4;
         
         /* Profile version. */
         short [] ba = new short[4];
         for (int i=0; i<4; i++) {
             ba[i] = input.readUnsignedByte();
-            consumed++;
         }
         this.profileVersionNumber.append(Short.toString(ba[0]));
         this.profileVersionNumber.append('.');
@@ -283,17 +285,21 @@ public class ICCHeader
         this.profileVersionNumber.append('.');
         this.profileVersionNumber.append(Short.toString((short)(ba[2] & 0x0f)));
         this.profileVersionNumber.append(".0");
+        consumed += 4;
         
         /* Profile/device class. */
+        this.isDeviceLinkProfile = false;
         for (int i=0; i<4; i++) {
             this.profileDeviceClass.append((char)input.readUnsignedByte());
-            consumed++;
         }
         ProfileDeviceClass profileClass =
             ProfileDeviceClass.getProfileDeviceClass(this.profileDeviceClass.toString(),
                                                      jhove2);
         if (profileClass != null) {
-            this.profileDeviceClass_s = profileClass.getProfileClass();
+            this.profileDeviceClass_d = profileClass.getProfileClass();
+            if (this.profileDeviceClass.toString().equals("link")) {
+                this.isDeviceLinkProfile = true;
+            }
         }
         else {
             numErrors++;
@@ -305,16 +311,16 @@ public class ICCHeader
                     "org.jhove2.module.format.icc.ICCHeader.invalidProfileDeviceClass",
                     args, jhove2.getConfigInfo());
         }
+        consumed += 4;
         
         /* Colour space. */
         for (int i=0; i<4; i++) {
             this.colourSpace.append((char)input.readUnsignedByte());
-            consumed++;
         }
         ColourSpace colourSpace =
             ColourSpace.getColourSpace(this.colourSpace.toString(), jhove2);
         if (colourSpace != null) {
-            this.colourSpace_s = colourSpace.getColourSpace();
+            this.colourSpace_d = colourSpace.getColourSpace();
         }
         else {
             numErrors++;
@@ -326,21 +332,21 @@ public class ICCHeader
                     "org.jhove2.module.format.icc.ICCHeader.invalidColourSpace",
                     args, jhove2.getConfigInfo());
         }
+        consumed += 4;
         
         /* Profile Connection Space (PCS). */
         for (int i=0; i<4; i++) {
             this.profileConnectionSpace.append((char)input.readUnsignedByte());
-            consumed++;
         }
         colourSpace =
             ColourSpace.getColourSpace(this.profileConnectionSpace.toString(), jhove2);
         if (colourSpace != null) {
-            this.profileConnectionSpace_s = colourSpace.getColourSpace();
+            this.profileConnectionSpace_d = colourSpace.getColourSpace();
         }
         else {
             numErrors++;
             this.isValid = Validity.False;
-            Object [] args = new Object[] {input.getPosition()-4L,
+            Object [] args = new Object[] {input.getPosition(),
                                            this.profileConnectionSpace.toString()};
             this.invalidColourSpaceMessage = new Message(Severity.ERROR,
                     Context.OBJECT,
@@ -359,12 +365,12 @@ public class ICCHeader
                     "org.jhove2.module.format.icc.ICCHeader.invalidProfileConnectionSpaceForNonDeviceLinkProfile",
                     args, jhove2.getConfigInfo());
         }
+        consumed += 4;
         
         /* Data and time. */
         int [] sa = new int[6];
         for (int i=0; i<6; i++) {
             sa[i] = input.readUnsignedShort();
-            consumed += 2;
         }
         /* TODO: There appears to be a bug in the GregorianCalendar class where the
          * second field is overwriting the day of month field.  For the time being
@@ -374,11 +380,11 @@ public class ICCHeader
                                              sa[3], sa[4], sa[2]);
         cal.setTimeZone(TimeZone.getTimeZone("UTC"));
         this.dateAndTime = cal.getTime();
+        consumed += 12;
         
         /* Profile file signature. */
         for (int i=0; i<4; i++) {
             this.profileFileSignature.append((char)input.readUnsignedByte());
-            consumed++;
         }
         if (!this.profileFileSignature.toString().equals("acsp")) {
             numErrors++;
@@ -390,6 +396,7 @@ public class ICCHeader
                     "org.jhove2.module.format.icc.ICCHeader.invalidProfileFileSignature",
                     args, jhove2.getConfigInfo());
         }
+        consumed += 4;
         
         /* Primary platform. */
         unidentified = true;
@@ -398,14 +405,13 @@ public class ICCHeader
             if (unidentified && b != 0) {
                 unidentified = false;
             }
-            this.primaryPlatform.append((char)b);
-            consumed++;
+            this.primaryPlatform.append((char) b);
         }
         if (!unidentified) {
             PrimaryPlatform primaryPlatform =
                 PrimaryPlatform.getPrimaryPlatform(this.primaryPlatform.toString(), jhove2);
             if (primaryPlatform != null) {
-                this.primaryPlatform_s = primaryPlatform.getPrimaryPlatform();
+                this.primaryPlatform_d = primaryPlatform.getPrimaryPlatform();
             }
             else {
                 numErrors++;
@@ -421,23 +427,24 @@ public class ICCHeader
         else {
             this.primaryPlatform = null;
         }
+        consumed += 4;
         
         /* Profile flags. */
-        this.profileFlagsField = input.readUnsignedInt();
-        consumed += 4;
+        this.profileFlags = input.readUnsignedInt();
         Set<ProfileFlag> flags = ProfileFlag.getProfileFlags(jhove2);
         Iterator<ProfileFlag> pfIter = flags.iterator();
         while (pfIter.hasNext()) {
             ProfileFlag flag = pfIter.next();
             int bitPosition = flag.getPosition();
             long mask = 1L << bitPosition;
-            if ((this.profileFlagsField & mask) == 0L) {
-                this.profileFlags.add(flag.getNegativeValue());
+            if ((this.profileFlags & mask) == 0L) {
+                this.profileFlags_d.add(flag.getNegativeValue());
             }
             else {
-                this.profileFlags.add(flag.getPositiveValue());
+                this.profileFlags_d.add(flag.getPositiveValue());
             }
         }
+        consumed += 4;
         
         /* Device manufacturer. */
         unidentified = true;
@@ -468,24 +475,24 @@ public class ICCHeader
         }
         
         /* Device attributes. */
-        this.deviceAttributesField = input.readSignedLong();
-        consumed += 8;
+        this.deviceAttributes = input.readSignedLong();
         Set<DeviceAttribute> attrs = DeviceAttribute.getDeviceAttributes(jhove2);
         Iterator<DeviceAttribute> daIter = attrs.iterator();
         while (daIter.hasNext()) {
             DeviceAttribute attr = daIter.next();
             int bitPosition = attr.getPosition();
             long mask = 1L << bitPosition;
-            if ((this.deviceAttributesField & mask) == 0L) {
-                this.deviceAttributes.add(attr.getNegativeValue());
+            if ((this.deviceAttributes & mask) == 0L) {
+                this.deviceAttributes_d.add(attr.getNegativeValue());
             }
             else {
-                this.deviceAttributes.add(attr.getPositiveValue());
+                this.deviceAttributes_d.add(attr.getPositiveValue());
             }
         }
+        consumed += 8;
+        
         /* Rendering intents. */
         int highOrder = input.readUnsignedShort();
-        consumed += 2;
         if (highOrder != 0) {
             numErrors++;
             this.isValid = Validity.False;
@@ -497,10 +504,11 @@ public class ICCHeader
         }
         this.renderingIntent = input.readUnsignedShort();
         consumed += 2;
+        
         RenderingIntent intent =
             RenderingIntent.getRenderingIntent(this.renderingIntent, jhove2);
         if (intent != null) {
-            this.renderingIntent_s = intent.getRenderingIntent();
+            this.renderingIntent_d = intent.getRenderingIntent();
         }
         else {
             numErrors++;
@@ -512,6 +520,7 @@ public class ICCHeader
                     "org.jhove2.module.format.icc.ICCHeader.invalidRenderingIntent",
                     args, jhove2.getConfigInfo());
         }
+        consumed += 2;
         
         /* PCS XYZ tri-stimulus values. */
         int x = input.readSignedInt();
@@ -521,7 +530,7 @@ public class ICCHeader
         if (x != D50[0] || y != D50[1] || z != D50[2]) {
             numErrors++;
             this.isValid = Validity.False;
-            Object [] args = new Object[] {input.getPosition(), this.illuminant.toString()};
+            Object [] args = new Object[] {input.getPosition()-12L, this.illuminant.toString()};
             this.pcsIlluminantNotD50Message = new Message(Severity.ERROR,
                     Context.OBJECT,
                     "org.jhove2.module.format.icc.ICCHeader.pcsIlluminantNotD50",
@@ -536,19 +545,19 @@ public class ICCHeader
             if (unidentified && b != 0) {
                 unidentified = false;
             }
-            this.profileCreator.append((char)b);
-            consumed++;
+            this.profileCreator.append((char) b);
         }
         if (unidentified) {
             this.profileCreator = null;
         }
+        consumed += 4;
         
         /* Profile ID (MD5). */
         for (int i=0; i<16; i++) {
             byte b = input.readSignedByte();
             this.profileID.append(String.format("%02x", b));
-            consumed++;
         }
+        consumed += 16;
         
         /* Reserved fields. */
         for (int i=0; i<28; i++) {
@@ -562,61 +571,61 @@ public class ICCHeader
                     "org.jhove2.module.format.icc.ICCHeader.nonZeroDataInReservedBlock",
                     args, jhove2.getConfigInfo()));
             }
-            consumed++;
         }
+        consumed += 12;
 
         return consumed;
     }
     
-    /** Get colour space of data , i.e. "the canonical input space", in coded form.
-     * @return Colour space in coded form
+    /** Get colour space of data , i.e. "the canonical input space", in raw form.
+     * @return Colour space in raw form
      */
-    @ReportableProperty(order=5, value="Colour space of data, i.e. \"the canonical input space\", in coded form",
-            ref="ICC.1:2004-10, \u00a7 7.2.6", type=PropertyType.Coded)
-    public String getColourSpace() {
+    @ReportableProperty(order=7, value="Colour space of data, i.e. \"the canonical input space\", in raw form",
+            ref="ICC.1:2004-10, \u00a7 7.2.6", type=PropertyType.Raw)
+    public String getColourSpace_raw() {
         return this.colourSpace.toString();
     }
     
-    /** Get colour space of data , i.e. "the canonical input space", in symbolic form.
-     * @return Colour space in symbolic form
+    /** Get colour space of data , i.e. "the canonical input space", in descriptive form.
+     * @return Colour space in descriptive form
      */
-    @ReportableProperty(order=5, value="Colour space of data, i.e. \"the canonical input space\", in symbolic form",
-            ref="ICC.1:2004-10, \u00a7 7.2.6", type=PropertyType.Symbolic)
-    public String getColourSpace_s() {
-        return this.colourSpace_s;
+    @ReportableProperty(order=8, value="Colour space of data, i.e. \"the canonical input space\", in descriptive form",
+            ref="ICC.1:2004-10, \u00a7 7.2.6", type=PropertyType.Descriptive)
+    public String getColourSpace_descriptive() {
+        return this.colourSpace_d;
     }
     
     /** Get profile creation date/time in UTC.
      * @return Profile creation date/time
      */
-    @ReportableProperty(order=7, value="Profile creation date/time in UTC.",
+    @ReportableProperty(order=12, value="Profile creation date/time in UTC.",
             ref="ICC.1:2004-10, Table 13")
     public Date getDateAndTime() {
         return this.dateAndTime;
     }
     
-    /** Get device attributes field in coded form.
-     * @return device attributes field in coded form
+    /** Get device attributes field in raw form.
+     * @return device attributes field in raw form
      */
-    @ReportableProperty(order=14, value="Device attributes in coded form.",
+    @ReportableProperty(order=21, value="Device attributes in raw form.",
             ref="ICC.1:2004-10 \u00a7 7.2.14")
-    public long getDeviceAttributesField() {
-        return this.deviceAttributesField;
+    public long getDeviceAttributes_raw() {
+        return this.deviceAttributes;
     }
     
-    /** Get device attributes in symbolic form.
-     * @return device attributes in symbolic form
+    /** Get device attributes in descriptive form.
+     * @return device attributes in descriptive form
      */
-    @ReportableProperty(order=15, value="Device attributes in symbolic form.",
+    @ReportableProperty(order=22, value="Device attributes in descriptive form.",
             ref="ICC.1:2004-10 \u00a7 7.2.14")
     public List<String> getDeviceAttributes() {
-        return this.deviceAttributes;
+        return this.deviceAttributes_d;
     }
     
     /** Get device manufacturer.
      * @return Device manufacturer
      */
-    @ReportableProperty(order=12, value="Device manufacturer.",
+    @ReportableProperty(order=19, value="Device manufacturer.",
             ref="ICC.1:2004-10 \u00a7 7.2.12")
     public String getDeviceManufacturer() {
         if (this.deviceManufacturer != null) {
@@ -629,7 +638,7 @@ public class ICCHeader
     /** Get device model.
      * @return Device model
      */
-    @ReportableProperty(order=13, value="Device model.",
+    @ReportableProperty(order=20, value="Device model.",
             ref="ICC.1:2004-10 \u00a7 7.2.13")
     public String getDeviceModel() {
         if (this.deviceModel != null) {
@@ -642,7 +651,7 @@ public class ICCHeader
     /** Get invalid data colour space message.
      * @return Invalid data colour space message
      */
-    @ReportableProperty(order=23, value="Invalid data colour space.",
+    @ReportableProperty(order=53, value="Invalid data colour space.",
             ref="ICC.1:2004-10, Table 15")
     public Message getInvalidColourSpaceMessage() {
         return this.invalidColourSpaceMessage;
@@ -651,7 +660,7 @@ public class ICCHeader
     /** Get invalid device attributes message.
      * @return Invalid device attributes message
      */
-    @ReportableProperty(order=31, value="Invalid device attributes.",
+    @ReportableProperty(order=61, value="Invalid device attributes.",
             ref="ICC.1:2004-10, Table 18")
     public Message getInvalidDeviceAttributesMessage() {
         return this.invalidDeviceAttributesMessage;
@@ -660,7 +669,7 @@ public class ICCHeader
     /** Get invalid device manufacturer message.
      * @return Invalid device manufacturer message
      */
-    @ReportableProperty(order=29, value="Invalid device manufacturer.",
+    @ReportableProperty(order=59, value="Invalid device manufacturer.",
             ref="ICC.1:2004-10, \u00a7 7.2.12")
     public Message getInvalidDeviceManufacturerMessage() {
         return this.invalidDeviceManufacturerMessage;
@@ -669,7 +678,7 @@ public class ICCHeader
     /** Get invalid device model message.
      * @return Invalid device model message
      */
-    @ReportableProperty(order=30, value="Invalid device model.",
+    @ReportableProperty(order=60, value="Invalid device model.",
             ref="ICC.1:2004-10, \u00a7 7.2.13")
     public Message getInvalidDeviceModelMessage() {
         return this.invalidDeviceModelMessage;
@@ -678,7 +687,7 @@ public class ICCHeader
     /** Get invalid preferred CMM type message.
      * @return Invalid preferred CMM type message
      */
-    @ReportableProperty(order=21, value="Invalid preferred CMM type.",
+    @ReportableProperty(order=51, value="Invalid preferred CMM type.",
             ref="ICC.1:2004-10, \u00a7 7.2.3")
     public Message getInvalidPreferredCMMMessage() {
         return this.invalidPreferredCMMMessage;
@@ -687,7 +696,7 @@ public class ICCHeader
     /** Get invalid primary platform message.
      * @return Invalid primary platform message
      */
-    @ReportableProperty(order=27, value="Invalid primary platform.",
+    @ReportableProperty(order=57, value="Invalid primary platform.",
             ref="ICC.1:2004-10, Table 16")
     public Message getInvalidPrimaryPlatformMessage() {
         return this.invalidPrimaryPlatformMessage;
@@ -696,7 +705,7 @@ public class ICCHeader
     /** Get invalid Profile Connection Space message.
      * @return Invalid Profile Connection Space message
      */
-    @ReportableProperty(order=24, value="Invalid Profile Connection Space (PCS).",
+    @ReportableProperty(order=54, value="Invalid Profile Connection Space (PCS).",
             ref="ICC.1:2004-10, \u00a7 7.2.7")
     public Message getInvalidProfileConnectionSpaceMessage() {
         return this.invalidProfileConnectionSpaceMessage;
@@ -705,7 +714,7 @@ public class ICCHeader
     /** Get invalid Profile Connection Space for non-DeviceLink profile message.
      * @return Invalid Profile Connection Space for non-DeviceLink profile message
      */
-    @ReportableProperty(order=25, value="Invalid Profile Connection Space (PCS) for non-DeviceLink profile.",
+    @ReportableProperty(order=55, value="Invalid Profile Connection Space (PCS) for non-DeviceLink profile.",
             ref="ICC.1:2004-10, \u00a7 7.2.7")
     public Message getInvalidProfileConnectionSpaceForNonDeviceLinkProfileMessage() {
         return this.invalidProfileConnectionSpaceForNonDeviceLinkProfileMessage;
@@ -714,7 +723,7 @@ public class ICCHeader
     /** Get invalid profile creator message.
      * @return Invalid profile creator message
      */
-    @ReportableProperty(order=35, value="Invalid profile creator.",
+    @ReportableProperty(order=65, value="Invalid profile creator.",
             ref="ICC.1:2004-10, \u00a7 7.2.17")
     public Message getInvalidProfileCreatorMessage() {
         return this.invalidProfileCreatorMessage;
@@ -723,7 +732,7 @@ public class ICCHeader
     /** Get invalid profile/device class message.
      * @return Invalid profile/device class message
      */
-    @ReportableProperty(order=22, value="Invalid profile/device class.",
+    @ReportableProperty(order=52, value="Invalid profile/device class.",
             ref="ICC.1:2004-10, Table 14")
     public Message getInvalidProfileDeviceClassMessage() {
         return this.invalidProfileDeviceClassMessage;
@@ -732,7 +741,7 @@ public class ICCHeader
     /** Get invalid profile file signature message.
      * @return Invalid profile file signature message
      */
-    @ReportableProperty(order=26, value="Invalid profile file signature.",
+    @ReportableProperty(order=56, value="Invalid profile file signature.",
             ref="ICC.1:2004-10, \u00a7 7.2.9")
     public Message getInvalidProfileFileSignatureMessage() {
         return this.invalidProfileFileSignatureMessage;
@@ -741,7 +750,7 @@ public class ICCHeader
     /** Get invalid profile flags message.
      * @return Invalid profile flags message
      */
-    @ReportableProperty(order=28, value="Invalid profile flags.",
+    @ReportableProperty(order=58, value="Invalid profile flags.",
             ref="ICC.1:2004-10, Table 17")
     public Message getInvalidProfileFlagsMessage() {
         return this.invalidProfileFlagsMessage;
@@ -750,7 +759,7 @@ public class ICCHeader
     /** Get invalid profile ID message.
      * @return Invalid profile ID message
      */
-    @ReportableProperty(order=36, value="Invalid profile ID.",
+    @ReportableProperty(order=66, value="Invalid profile ID.",
             ref="ICC.1:2004-10, \u00a7 7.2.18")
     public Message getInvalidProfileIDMessage() {
         return this.invalidProfileIDMessage;
@@ -759,7 +768,7 @@ public class ICCHeader
     /** Get invalid rendering intent message.
      * @return Invalid rendering intent message
      */
-    @ReportableProperty(order=33, value="Invalid rendering intent.",
+    @ReportableProperty(order=63, value="Invalid rendering intent.",
             ref="ICC.1:2004-10, Table 19")
     public Message getInvalidRenderingIntentMessage() {
         return this.invalidRenderingIntentMessage;
@@ -768,7 +777,7 @@ public class ICCHeader
     /** Get non-zero data in reserved block error message.
      * @return Non-zero data in reserved block error message
      */
-    @ReportableProperty(order=37, value="Invalid non-zero data in reserved block.",
+    @ReportableProperty(order=67, value="Invalid non-zero data in reserved block.",
             ref="ICC.1:2004-10, \u00a7 7.2.19")
     public List<Message> getNonZeroDataInReservedBlockMessages() {
         return this.nonZeroDataInReservedBlockMessages;
@@ -777,7 +786,7 @@ public class ICCHeader
     /** Get non-zero high-order rendering intent message.
      * @return Non-zero high-order rendering intent message
      */
-    @ReportableProperty(order=32, value="Invalid non-zero high-order rendering intent.",
+    @ReportableProperty(order=62, value="Invalid non-zero high-order rendering intent.",
             ref="ICC.1:2004-10, \u00a7 7.2.15")
     public Message getNonZeroHighOrderRenderingIntentMessage() {
         return this.nonZeroHighOrderRenderingIntentMessage;
@@ -786,7 +795,7 @@ public class ICCHeader
     /** Get Profile Connection Space (PCS) illuminant.
      * @return Profile Connection Space illuminant
      */
-    @ReportableProperty(order=16, value="Profile Connection Space (PCS) illuminant",
+    @ReportableProperty(order=25, value="Profile Connection Space (PCS) illuminant",
             ref="ICC.1:2004-10, \u00a7 7.2.16")
     public XYZNumber getPCSIlluminant() {
         return this.illuminant;
@@ -795,18 +804,18 @@ public class ICCHeader
     /** Get Profile Connection Space (PCS) illuminant not D50 message.
      * @return Profile Connection Space illuminant no D50 message
      */
-    @ReportableProperty(order=34, value="Profile Connection Space (PCS) illuminant not D50.",
+    @ReportableProperty(order=64, value="Profile Connection Space (PCS) illuminant not D50.",
             ref="ICC.1:2004-10, \u00a7 7.2.16")
     public Message getPCSIlluminantNotD50Message() {
         return this.pcsIlluminantNotD50Message;
     }
       
-    /** Get preferred CMM type in coded form.
-     * @return Preferred CMM type in coded form
+    /** Get preferred CMM type in raw form.
+     * @return Preferred CMM type in raw form
      */
-    @ReportableProperty(order=2, value="Preferred CMM type in coded form.",
-            ref="ICC.1:2004-10, \u00a7 7.2.7", type=PropertyType.Coded)
-    public String getPreferredCMM() {
+    @ReportableProperty(order=2, value="Preferred CMM type in raw form.",
+            ref="ICC.1:2004-10, \u00a7 7.2.7", type=PropertyType.Raw)
+    public String getPreferredCMM_raw() {
         if (this.preferredCMM != null) {
             return this.preferredCMM.toString();
         }
@@ -814,22 +823,22 @@ public class ICCHeader
         return null;
     }
     
-    /** Get preferred CMM type in symbolic form.
-     * @return Preferred CMM type in symbolic form
+    /** Get preferred CMM type in descriptive form.
+     * @return Preferred CMM type in descriptive form
      */
-    @ReportableProperty(order=2, value="Preferred CMM type in symbolic form.",
+    @ReportableProperty(order=3, value="Preferred CMM type in descriptive form.",
             ref="ICC Private and ICC Tag and CMM Registry",
-            type=PropertyType.Symbolic)
-    public String getPreferredCMM_s() {
-        return this.preferredCMM_s;
+            type=PropertyType.Descriptive)
+    public String getPreferredCMM_descriptive() {
+        return this.preferredCMM_d;
     }
     
-    /** Get primary platform in coded form.
-     * @return Primary platform in coded form
+    /** Get primary platform in raw form.
+     * @return Primary platform in raw form
      */
-    @ReportableProperty(order=9, value="Primary platform in coded form.",
-            ref="ICC.1:2004-10, \u00a7 7.2.10", type=PropertyType.Coded)
-    public String getPrimaryPlatform() {
+    @ReportableProperty(order=14, value="Primary platform in raw form.",
+            ref="ICC.1:2004-10, \u00a7 7.2.10", type=PropertyType.Raw)
+    public String getPrimaryPlatform_raw() {
         if (this.primaryPlatform != null) {
             return this.primaryPlatform.toString();
         }
@@ -837,37 +846,37 @@ public class ICCHeader
         return null;
     }
     
-    /** Get primary platform in symbolic form.
-     * @return Primary platform in symbolic form
+    /** Get primary platform in descriptive form.
+     * @return Primary platform in descriptive form
      */
-    @ReportableProperty(order=9, value="Primary platform in symbolic form.",
-            ref="ICC.1:2004-10, \u00a7 7.2.10", type=PropertyType.Symbolic)
-    public String getPrimaryPlatform_s() {
-        return this.primaryPlatform_s;
+    @ReportableProperty(order=15, value="Primary platform in descriptive form.",
+            ref="ICC.1:2004-10, \u00a7 7.2.10", type=PropertyType.Descriptive)
+    public String getPrimaryPlatform_descriptive() {
+        return this.primaryPlatform_d;
     }
     
-    /** Get Profile Connection Space (PCS), i.e. "the canonical output space", in coded form.
-     * @return Profile Connection Space in coded form
+    /** Get Profile Connection Space (PCS), i.e. "the canonical output space", in raw form.
+     * @return Profile Connection Space in raw form
      */
-    @ReportableProperty(order=6, value="Profile Connection Space (PCS), i.e. \"the canonical output space\", in coded form",
-            ref="ICC.1:2004-10, \u00a7 7.2.7", type=PropertyType.Coded)
-    public String getProfileConnectionSpace() {
+    @ReportableProperty(order=9, value="Profile Connection Space (PCS), i.e. \"the canonical output space\", in raw form",
+            ref="ICC.1:2004-10, \u00a7 7.2.7", type=PropertyType.Raw)
+    public String getProfileConnectionSpace_raw() {
         return this.profileConnectionSpace.toString();
     }
     
-    /** Get Profile Connection Space (PCS), i.e. "the canonical output space", in symbolic form.
-     * @return Profile Connection Space in symbolic form
+    /** Get Profile Connection Space (PCS), i.e. "the canonical output space", in descriptive form.
+     * @return Profile Connection Space in descriptive form
      */
-    @ReportableProperty(order=6, value="Profile Connection Space (PCS), i.e. \"the canonical output space\", in symbolic form",
-            ref="ICC.1:2004-10, \u00a7 7.2.7", type=PropertyType.Symbolic)
-    public String getProfileConnectionSpace_s() {
-        return this.profileConnectionSpace_s;
+    @ReportableProperty(order=10, value="Profile Connection Space (PCS), i.e. \"the canonical output space\", in descriptive form",
+            ref="ICC.1:2004-10, \u00a7 7.2.7", type=PropertyType.Descriptive)
+    public String getProfileConnectionSpace_descriptive() {
+        return this.profileConnectionSpace_d;
     }
    
     /** Get profile creator.
      * @return Profile creator
      */
-    @ReportableProperty(order=18, value="Profile creator.",
+    @ReportableProperty(order=26, value="Profile creator.",
             ref="ICC.1:2004-10, \u00a7 7.2.17")
     public String getProfileCreator() {
         if (this.profileCreator != null) {
@@ -877,55 +886,55 @@ public class ICCHeader
         return null;
     }
     
-    /** Get profile/device class in coded form.
+    /** Get profile/device class in raw form.
      * @return Profile/device class
      */
-    @ReportableProperty(order=4, value="Profile/device class in coded form.",
-            ref="ICC.1:2004-10, \u00a7 7.2.5", type=PropertyType.Coded)
-    public String getProfileDeviceClass() {
+    @ReportableProperty(order=5, value="Profile/device class in raw form.",
+            ref="ICC.1:2004-10, \u00a7 7.2.5", type=PropertyType.Raw)
+    public String getProfileDeviceClass_raw() {
         return this.profileDeviceClass.toString();
     }
     
-    /** Get profile/device class in symbolic form.
+    /** Get profile/device class in descriptive form.
      * @return Profile/device class
      */
-    @ReportableProperty(order=4, value="Profile/device class in symbolic form.",
-            ref="ICC.1:2004-10, \u00a7 7.2.5", type=PropertyType.Symbolic)
-    public String getProfileDeviceClass_s() {
-        return this.profileDeviceClass_s;
+    @ReportableProperty(order=6, value="Profile/device class in descriptive form.",
+            ref="ICC.1:2004-10, \u00a7 7.2.5", type=PropertyType.Descriptive)
+    public String getProfileDeviceClass_descriptive() {
+        return this.profileDeviceClass_d;
     }
     
     /** Get profile file signature.
      * @return Profile file signature
      */
-    @ReportableProperty(order=8, value="Profile file signature.",
+    @ReportableProperty(order=13, value="Profile file signature.",
             ref="ICC.1.2004-10, \u00a7 7.2.9")
     public String getProfileFileSignature() {
         return this.profileFileSignature.toString();
     }
     
-    /** Get profile flags field in coded form.
-     * @return Profile flags field in coded form
+    /** Get profile flags field in raw form.
+     * @return Profile flags field in raw form
      */
-    @ReportableProperty(order=10, value="Profile flags in coded form.",
+    @ReportableProperty(order=16, value="Profile flags in raw form.",
             ref="ICC.1:2004-10, \u00a7 7.2.11")
-    public long getProfileFlagsField() {
-        return this.profileFlagsField;
+    public long getProfileFlags_raw() {
+        return this.profileFlags;
     }
     
-    /** Get profile flags in symbolic form.
-     * @return Profile flags in symbolic form
+    /** Get profile flags in descriptive form.
+     * @return Profile flags in descriptive form
      */
-    @ReportableProperty(order=11, value="Profile flags in symbolic form.",
+    @ReportableProperty(order=17, value="Profile flags in descriptive form.",
             ref="ICC.1:2004-10, \u00a7 7.2.11")
     public List<String> getProfileFlags() {
-        return this.profileFlags;
+        return this.profileFlags_d;
     }
     
     /** Get profile ID (MD5).
      * @return Profile ID
      */
-    @ReportableProperty(order=19, value="Profile ID (MD5).",
+    @ReportableProperty(order=27, value="Profile ID (MD5).",
             ref="ICC.1:2004-10, \u00a7 7.2.18")
     public String getProfileID() {
         return this.profileID.toString();
@@ -943,30 +952,38 @@ public class ICCHeader
     /** Get profile version number.
      * @return Profile version number
      */
-    @ReportableProperty(order=3, value="Profile version number.",
+    @ReportableProperty(order=4, value="Profile version number.",
             ref="ICC.1:2004-10, \u00a7 7.2.4")
     public String getProfileVersionNumber() {
         return this.profileVersionNumber.toString();
     }
  
-    /** Get rendering intent in coded form.
-     * @return Rendering intent in coded form
+    /** Get rendering intent in raw form.
+     * @return Rendering intent in raw form
      */
-    @ReportableProperty(order=16, value="Rendering intent in coded form.",
-            ref="ICC.1:2004-10, \u00a7 7.2.15", type=PropertyType.Coded)
-    public int getRenderingIntent() {
+    @ReportableProperty(order=23, value="Rendering intent in raw form.",
+            ref="ICC.1:2004-10, \u00a7 7.2.15", type=PropertyType.Raw)
+    public int getRenderingIntent_raw() {
         return this.renderingIntent;
     }
 
-    /** Get rendering intent in symbolic form.
-     * @return Rendering intent in symbolic form
+    /** Get rendering intent in descriptive form.
+     * @return Rendering intent in descriptive form
      */
-    @ReportableProperty(order=16, value="Rendering intent in symbolic form.",
-            ref="ICC.1:2004-10, \u00a7 7.2.15", type=PropertyType.Symbolic)
-    public String getRenderingIntent_s() {
-        return this.renderingIntent_s;
+    @ReportableProperty(order=24, value="Rendering intent in descriptive form.",
+            ref="ICC.1:2004-10, \u00a7 7.2.15", type=PropertyType.Descriptive)
+    public String getRenderingIntent_descriptive() {
+        return this.renderingIntent_d;
     }
-
+    
+    /** Get DeviceLink profile status: true if a DeviceLink profile.
+     * @return DeviceLink profile status
+     */
+    @ReportableProperty(order=11, value="DeviceLink profile status: true if a DeviceLink profile.")
+    public boolean isDeviceLinkProfile() {
+        return this.isDeviceLinkProfile;
+    }
+    
     /** Get validity.
      * @return Validity
      */

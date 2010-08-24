@@ -50,7 +50,6 @@ import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.module.format.Validator;
-import org.jhove2.module.format.Validator.Validity;
 
 /** JHOVE2 ICC colour profile module.
  * 
@@ -142,7 +141,8 @@ public class ICCModule
                 }
                 
                 this.tagTable = new ICCTagTable();
-                consumed += tagTable.parse(jhove2, input);
+                consumed += tagTable.parse(jhove2, input,
+                                           header.isDeviceLinkProfile());
                 validity = tagTable.isValid();
                 if (validity != Validity.True) {
                     this.isValid = validity;
