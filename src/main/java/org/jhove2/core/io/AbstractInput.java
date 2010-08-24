@@ -381,7 +381,7 @@ public abstract class AbstractInput implements Input {
 				}
 			}
 		} else {
-			in = this.buffer.getShort();
+			in = this.buffer.getLong();
 		}
 		this.inputablePosition += 8L;
 

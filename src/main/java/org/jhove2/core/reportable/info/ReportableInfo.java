@@ -104,21 +104,23 @@ public class ReportableInfo {
 				ReportableProperty annot = methods[j]
 						.getAnnotation(ReportableProperty.class);
 				if (annot != null) {
-					// construct an I8R for each reportable field using
-					// the field's accessor method
+					/* Construct an I8R for each reportable field using the
+					 * field's accessor method.
+					 */
 					I8R featureId = I8R.makeFeatureI8RFromMethod(methods[j], cl);
 					if (idMap.get(featureId.getValue()) == null) {
 						idMap.put(featureId.getValue(), featureId.getValue());
 						ReportablePropertyInfo prop = new ReportablePropertyInfo(
 								featureId, methods[j], annot.value(), 
-								annot.ref());
+								annot.ref(), annot.type());
 						set.add(prop);
 					}
 				}
 			}
 			if (set.size() > 0) {
-				ReportableSourceInfo source = new ReportableSourceInfo(cl
-						.getSimpleName(), Source.Class, set);
+				ReportableSourceInfo source =
+				    new ReportableSourceInfo(cl.getSimpleName(), Source.Class,
+				                             set);
 				this.properties.add(source);
 			}
 
@@ -151,22 +153,24 @@ public class ReportableInfo {
 				ReportableProperty annot = methods[j]
 						.getAnnotation(ReportableProperty.class);
 				if (annot != null) {
-					// construct an I8R for each reportable field using
-					// the field's accessor method
+					/* Construct an I8R for each reportable field using the
+					 * field's accessor method.
+					 */
 					Class<? extends Reportable> repClass = (Class<? extends Reportable>)ifs[i];
  					I8R featureId = I8R.makeFeatureI8RFromMethod(methods[j], repClass);
  					if (idMap.get(featureId.getValue()) == null) {
 						idMap.put(featureId.getValue(), featureId.getValue());
 						ReportablePropertyInfo prop = new ReportablePropertyInfo(
 								featureId, methods[j], annot.value(), 
-								annot.ref());
+								annot.ref(), annot.type());
 						set.add(prop);
 					}
 				}
 			}
 			if (set.size() > 0) {
-				ReportableSourceInfo source = new ReportableSourceInfo(ifs[i]
-						.getSimpleName(), Source.Interface, set);
+				ReportableSourceInfo source =
+				    new ReportableSourceInfo(ifs[i].getSimpleName(),
+				                             Source.Interface, set);
 				this.properties.add(source);
 			}
 			checkInterfaces(ifs[i].getInterfaces(), idMap, comparator);
