@@ -89,9 +89,7 @@ public class AssessorCommand extends AbstractCommand {
             timer.setStartTime();
             try {
                 /* Register all assessment modules. */
-                jhove2.addModule(assessor);
                 source.addModule(assessor);
-
                 /* Assess the reportable properties. */
                 assessor.assess(jhove2, source);
             }

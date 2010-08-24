@@ -36,15 +36,11 @@
 
 package org.jhove2.core.app;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import org.jhove2.core.Installation;
 import org.jhove2.core.Invocation;
-import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractModule;
 import org.jhove2.module.display.Displayer;
 
@@ -62,9 +58,6 @@ public abstract class AbstractApplication
 
 	/** Application invocation date/timestamp. */
 	protected Date dateTime;
-
-	/** Application framework. */
-	protected JHOVE2 framework;
 	
 	/** Application displayer */
 	protected Displayer displayer;
@@ -75,9 +68,6 @@ public abstract class AbstractApplication
 	/** Application invocation properties.  */
 	protected Invocation invocation;
 	
-	/** Application source units. */
-	protected List<Source> sources;
-
 	/**
 	 * Instantiate a new <code>AbstractApplication</code>.
 	 * 
@@ -109,7 +99,6 @@ public abstract class AbstractApplication
 		catch (Exception ex){
 			throw new JHOVE2Exception("Unable to instantiate default displayer", ex);
 		}		
-		this.sources = new ArrayList<Source>();
 	}
 
 	/** Get application {@link org.jhove2.core.Invocation} properties.
@@ -157,24 +146,6 @@ public abstract class AbstractApplication
 	public Displayer getDisplayer() {
 		return this.displayer;
 	}
-	
-	/**
-	 * Get application framework.
-	 * 
-	 * @return Application framework
-	 * @see org.jhove2.core.app.Application#getFramework()
-	 */
-	@Override
-	public JHOVE2 getFramework() {
-		return this.framework;
-	}
-	
-	/** Get application {@link org.jhove2.core.source.Source} units.
-	 * @return Application source units
-	 */
-	public List<Source> getSources() {
-		return this.sources;
-	}
 
 	/** Set application command line.
 	 * @param commandLine Application command line
@@ -198,17 +169,6 @@ public abstract class AbstractApplication
 		this.displayer = displayer;
 	}
 
-	/**
-	 * Set application framework.
-	 * 
-	 * @param framework
-	 *            Application framework
-	 * @see org.jhove2.core.app.Application#setFramework(org.jhove2.core.JHOVE2)
-	 */
-	@Override
-	public void setFramework(JHOVE2 framework) {
-		this.framework = framework;
-	}
 
 	/** Set application {@link org.jhove2.core.Installation} properties.
 	 * @param installation Application installation properties

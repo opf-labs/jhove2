@@ -37,10 +37,7 @@
 package org.jhove2.core;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.config.ConfigInfo;
@@ -51,7 +48,6 @@ import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceCounter;
 import org.jhove2.module.AbstractModule;
 import org.jhove2.module.Command;
-import org.jhove2.module.Module;
 
 /**
  * The JHOVE2 core processing framework.
@@ -85,12 +81,7 @@ public class JHOVE2
 	/** Installation settings for framework. */
 	protected Installation installation;
 	
-	/** Identifiers of generic modules registered with the framework. */
-	protected Set<String> moduleIDs;
-	
-	/** Generic modules registered with the framework. */
-	protected List<Module> modules;
-	
+	/** Configuration settings for framework.  If not configured, default values will be used  */
 	protected ConfigInfo configInfo;
 
 	/**
@@ -115,10 +106,7 @@ public class JHOVE2
 		super(VERSION, RELEASE, RIGHTS, Scope.Generic);
 		
 		this.invocation = invocation;
-		this.sourceCounter = new SourceCounter();
-		
-		this.modules   = new ArrayList<Module>();
-		this.moduleIDs = new HashSet<String>();
+		this.sourceCounter = new SourceCounter();		
 	}
 
 	/**
@@ -179,17 +167,6 @@ public class JHOVE2
 		}
 	}
     
-    /** Add generic module.
-     * @param module Generic module
-     */
-    public void addModule(Module module) {
-        String id = module.getReportableIdentifier().toString();
-        if (!this.moduleIDs.contains(id)) {
-            this.moduleIDs.add(id);
-            this.modules.add(module);
-        }
-    }
-    
 	/**
 	 * Determine if the fail fast limit has been exceeded.
 	 * 
@@ -247,14 +224,6 @@ public class JHOVE2
 		return use;
 	}
 	
-	/** Get framework  modules.
-	 * @return Framework modules
-	 */
-	@ReportableProperty(order = 4, value = "Framework modules.")
-	public List<Module> getModules() {
-		return this.modules;
-	}
-
 	/**
 	 * Get counter to track number and scope of source units processed
 	 * by the JHOVE2 framework.

@@ -51,6 +51,7 @@ import org.jhove2.core.Message.Severity;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractModule;
 import org.jhove2.module.Module;
+import org.jhove2.module.Module.Scope;
 
 /**
  * JHOVE2 module performing policy-based assessment of the reportable properties
@@ -94,7 +95,7 @@ public class AssessmentModule extends AbstractModule implements Assessor {
      * Instantiate a new <code>AssessmentModule</code>.
      */
     public AssessmentModule() {
-        super(VERSION, RELEASE, RIGHTS, Scope.Generic);
+        super(VERSION, RELEASE, RIGHTS, Scope.Specific);
         assessmentResultSets = new ArrayList<AssessmentResultSet>();
     }
 

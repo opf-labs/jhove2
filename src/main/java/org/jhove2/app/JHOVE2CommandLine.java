@@ -123,8 +123,6 @@ extends AbstractApplication
 
 			jhove2.setInvocation(app.getInvocation());
 			jhove2.setInstallation(app.getInstallation());
-			jhove2.addModule(app.getDisplayer());
-			app.setFramework(jhove2);
 
 			/* Create a FileSet source unit out of files and directories
 			 * and URLS specified on the command line,
@@ -134,14 +132,14 @@ extends AbstractApplication
 					jhove2.getInvocation().getTempPrefix(), 
 					jhove2.getInvocation().getTempSuffix(), 
 					jhove2.getInvocation().getBufferSize());
-
-			app.getSources().add(source);
+			source.addModule(app);
+			source.addModule(jhove2);
+			source.addModule(app.getDisplayer());
 			/* Characterize the FileSet source unit (and all subsidiary
 			 * source units that it encapsulates.
 			 */
 			TimerInfo timer = jhove2.getTimerInfo();
 			timer.setStartTime();;
-
 			
 			jhove2.characterize(source);
 			
@@ -149,7 +147,7 @@ extends AbstractApplication
 
 			/* Display characterization information for the FileSet.
 			 */
-			app.getDisplayer().display(app);
+			app.getDisplayer().display(source);
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -168,7 +166,6 @@ extends AbstractApplication
 	 * 
 	 *  -i  Show the unique formal identifiers for all reportable properties in results.
 	 *  -k  Calculate message digests.
-	 *  -u  Source to be characterized is a (single) URL
 	 *  -b size     I/O buffer size (default=131072)
 	 *  -B scope     I/O buffer type (default=Direct)
 	 *  -d format   Results format (default=Text)

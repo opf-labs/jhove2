@@ -47,7 +47,7 @@ import org.jhove2.core.Digest;
  */
 public class CRC32Digester extends AbstractArrayDigester {
 	/** Algorithm name. */
-	public static final String ALGORITHM = "CRC-32";
+	public static final String ALGORITHM = "CRC32";
 
 	/** CRC-32 digester. */
 	protected CRC32 digester;

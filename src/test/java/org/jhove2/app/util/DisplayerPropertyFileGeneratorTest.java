@@ -70,7 +70,7 @@ public class DisplayerPropertyFileGeneratorTest {
 				getReportableFromClassName(rClassName);
 			List<ReportablePropertyInfo> props = FeatureConfigurationUtil.
 			getPropertiesAsReportablePropertyInfoList(r);
-			assertTrue(props.size()==15);
+			assertTrue(props.size()==14);
 			for (ReportablePropertyInfo info : props){
 				String choices = DisplayerPropertyFileGenerator.getDisplayChoices(info);
 				String propName = info.getIdentifier().getValue();
@@ -89,7 +89,7 @@ public class DisplayerPropertyFileGeneratorTest {
 		try{
 			Set<ReportablePropertyInfo> props = FeatureConfigurationUtil.
 			getProperitiesAsReportablePropertyInfoSet(rClassName);
-			assertTrue(props.size()==15);
+			assertTrue(props.size()==14);
 			for (ReportablePropertyInfo info : props){
 				String choices = DisplayerPropertyFileGenerator.getDisplayChoices(info);
 				String propName = info.getIdentifier().getValue();

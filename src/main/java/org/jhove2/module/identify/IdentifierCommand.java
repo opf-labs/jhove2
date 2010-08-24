@@ -94,8 +94,8 @@ public class IdentifierCommand
 			timer.setStartTime();
 			try {
 	            /* Register all identifying modules. */
-	            jhove2.addModule(identifier);
-	            jhove2.addModule(identifier.getFileSourceIdentifier());
+				source.addModule(identifier);
+				source.addModule(identifier.getFileSourceIdentifier());
 	            
 	            /* Identify the format. */
 				Set<FormatIdentification> formats = identifier.identify(jhove2,
