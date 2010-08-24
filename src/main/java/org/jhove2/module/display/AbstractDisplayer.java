@@ -569,29 +569,31 @@ public abstract class AbstractDisplayer
      * @param flag If true, show descriptive properties
      * @see org.jhove2.module.display.Displayer#setShowIdentifiers(boolean)
      */
+	@Override
     public void setShowDescriptiveProperties(boolean flag) {
         this.showDescriptiveProperties = flag;
     }
-       
+
+    /**
+     * Set show identifiers flag.
+     * 
+     * @param flag
+     *            If true, show identifiers in JSON and Text display mode
+     * @see org.jhove2.module.display.Displayer#setShowIdentifiers(boolean)
+     */
+    @Override
+    public void setShowIdentifiers(boolean flag) {
+        this.showIdentifiers = flag;
+    }
+
     /** Set show raw properties flag.
      * @param flag If true, show raw properties
      * @see org.jhove2.module.display.Displayer#setShowIdentifiers(boolean)
      */
+    @Override
     public void setShowRawProperties(boolean flag) {
         this.showRawProperties = flag;
     }
-
-	/**
-	 * Set show identifiers flag.
-	 * 
-	 * @param flag
-	 *            If true, show identifiers in JSON and Text display mode
-	 * @see org.jhove2.module.display.Displayer#setShowIdentifiers(boolean)
-	 */
-	@Override
-	public void setShowIdentifiers(boolean flag) {
-		this.showIdentifiers = flag;
-	}
 
 	/**
 	 * Set indentation flag.  If true, displayed output is indented to indicate

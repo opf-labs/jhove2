@@ -608,7 +608,7 @@ public class ICCHeader
      * @return device attributes field in raw form
      */
     @ReportableProperty(order=21, value="Device attributes in raw form.",
-            ref="ICC.1:2004-10 \u00a7 7.2.14")
+            ref="ICC.1:2004-10 \u00a7 7.2.14", type=PropertyType.Raw)
     public long getDeviceAttributes_raw() {
         return this.deviceAttributes;
     }
@@ -617,7 +617,7 @@ public class ICCHeader
      * @return device attributes in descriptive form
      */
     @ReportableProperty(order=22, value="Device attributes in descriptive form.",
-            ref="ICC.1:2004-10 \u00a7 7.2.14")
+            ref="ICC.1:2004-10 \u00a7 7.2.14", type=PropertyType.Descriptive)
     public List<String> getDeviceAttributes() {
         return this.deviceAttributes_d;
     }
@@ -917,7 +917,7 @@ public class ICCHeader
      * @return Profile flags field in raw form
      */
     @ReportableProperty(order=16, value="Profile flags in raw form.",
-            ref="ICC.1:2004-10, \u00a7 7.2.11")
+            ref="ICC.1:2004-10, \u00a7 7.2.11", type=PropertyType.Raw)
     public long getProfileFlags_raw() {
         return this.profileFlags;
     }
@@ -926,7 +926,7 @@ public class ICCHeader
      * @return Profile flags in descriptive form
      */
     @ReportableProperty(order=17, value="Profile flags in descriptive form.",
-            ref="ICC.1:2004-10, \u00a7 7.2.11")
+            ref="ICC.1:2004-10, \u00a7 7.2.11", type=PropertyType.Descriptive)
     public List<String> getProfileFlags() {
         return this.profileFlags_d;
     }
