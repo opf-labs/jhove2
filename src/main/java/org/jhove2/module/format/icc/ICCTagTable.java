@@ -238,7 +238,7 @@ public class ICCTagTable
                 this.hasCommonRequirements = false;
             }
         }
-        
+
         return consumed;
     }
 

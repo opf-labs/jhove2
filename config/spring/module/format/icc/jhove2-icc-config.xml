@@ -424,5 +424,10 @@
 	<bean id="Tags" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
 		<property name="propertyFileBaseName" value="tags"/>
 	</bean> 
+			    
+	<!-- ICC technology signatures properties bean --> 
+	<bean id="TechnologySignatures" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="technology-signatures"/>
+	</bean> 
 	    
 </beans>

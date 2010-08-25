@@ -198,8 +198,8 @@ public class ICCHeader
     /** Invalid rendering intent message. */
     protected Message invalidRenderingIntentMessage;
    
-    /** Non-zero data in reserved block error message. */
-    protected List<Message> nonZeroDataInReservedBlockMessages;
+    /** Non-zero data in reserved field error message. */
+    protected List<Message> nonZeroDataInReservedFieldMessages;
     
     /** Non-zero high-order rendering intent message. */
     protected Message nonZeroHighOrderRenderingIntentMessage;
@@ -214,7 +214,7 @@ public class ICCHeader
         super();
         
         this.isValid = Validity.Undetermined;
-        this.nonZeroDataInReservedBlockMessages = new ArrayList<Message>();
+        this.nonZeroDataInReservedFieldMessages = new ArrayList<Message>();
     }
     
     /** 
@@ -559,20 +559,20 @@ public class ICCHeader
         }
         consumed += 16;
         
-        /* Reserved fields. */
-        for (int i=0; i<28; i++) {
-            byte b = input.readSignedByte();
-            if (b != 0) {
+        /* Reserved field; must be all 0x0000. */
+        for (int i=0; i<7; i++) {
+            long in = input.readSignedInt();
+            if (in != 0L) {
                 numErrors++;
                 this.isValid = Validity.False;
-                Object [] args = new Object[] {input.getPosition()-1L, b};
-                this.nonZeroDataInReservedBlockMessages.add(new Message(Severity.ERROR,
+                Object [] args = new Object[] {input.getPosition()-1L, in};
+                this.nonZeroDataInReservedFieldMessages.add(new Message(Severity.ERROR,
                     Context.OBJECT,
-                    "org.jhove2.module.format.icc.ICCHeader.nonZeroDataInReservedBlock",
+                    "org.jhove2.module.format.icc.ICCHeader.nonZeroDataInReservedField",
                     args, jhove2.getConfigInfo()));
             }
         }
-        consumed += 12;
+        consumed += 28;
 
         return consumed;
     }
@@ -609,8 +609,8 @@ public class ICCHeader
      */
     @ReportableProperty(order=21, value="Device attributes in raw form.",
             ref="ICC.1:2004-10 \u00a7 7.2.14", type=PropertyType.Raw)
-    public long getDeviceAttributes_raw() {
-        return this.deviceAttributes;
+    public String getDeviceAttributes_raw() {
+        return String.format("0x%08x", this.deviceAttributes);
     }
     
     /** Get device attributes in descriptive form.
@@ -774,13 +774,13 @@ public class ICCHeader
         return this.invalidRenderingIntentMessage;
     }
     
-    /** Get non-zero data in reserved block error message.
-     * @return Non-zero data in reserved block error message
+    /** Get non-zero data in reserved field error message.
+     * @return Non-zero data in reserved field error message
      */
-    @ReportableProperty(order=67, value="Invalid non-zero data in reserved block.",
+    @ReportableProperty(order=67, value="Invalid non-zero data in reserved field.",
             ref="ICC.1:2004-10, \u00a7 7.2.19")
-    public List<Message> getNonZeroDataInReservedBlockMessages() {
-        return this.nonZeroDataInReservedBlockMessages;
+    public List<Message> getNonZeroDataInReservedFieldMessages() {
+        return this.nonZeroDataInReservedFieldMessages;
     }
     
     /** Get non-zero high-order rendering intent message.
@@ -918,8 +918,8 @@ public class ICCHeader
      */
     @ReportableProperty(order=16, value="Profile flags in raw form.",
             ref="ICC.1:2004-10, \u00a7 7.2.11", type=PropertyType.Raw)
-    public long getProfileFlags_raw() {
-        return this.profileFlags;
+    public String getProfileFlags_raw() {
+        return String.format("0x%08x", this.profileFlags);
     }
     
     /** Get profile flags in descriptive form.
