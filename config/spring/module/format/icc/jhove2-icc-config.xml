@@ -394,7 +394,12 @@
 	<bean id="DeviceAttributes" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
 		<property name="propertyFileBaseName" value="device-attributes"/>
 	</bean> 
-	    
+	    			    
+	<!-- ICC parametric curve type function types properties bean --> 
+	<bean id="FunctionTypes" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="function-types"/>
+	</bean> 
+	   
 	<!-- ICC preferred CMM type properties bean -->
 	<bean id="PreferredCMM" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
 		<property name="propertyFileBaseName" value="cmm-signatures"/>

@@ -1,24 +1,24 @@
 /**
  * JHOVE2 - Next-generation architecture for format-aware characterization
- * <p>
- * Copyright (c) 2010 by The Regents of the University of California. All rights reserved.
- * </p>
- * <p>
+ *
+ * Copyright (c) 2009 by The Regents of the University of California.
+ * All rights reserved.
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * </p>
- * <ul>
- * <li>Redistributions of source code must retain the above copyright notice,
- * this list of conditions and the following disclaimer.</li>
- * <li>Redistributions in binary form must reproduce the above copyright notice,
- * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution.</li>
- * <li>Neither the name of the University of California/California Digital
- * Library, Ithaka Harbors/Portico, or Stanford University, nor the names of its
- * contributors may be used to endorse or promote products derived from this
- * software without specific prior written permission.</li>
- * </ul>
- * <p>
+ *
+ * o Redistributions of source code must retain the above copyright notice,
+ *   this list of conditions and the following disclaimer.
+ *
+ * o Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * o Neither the name of the University of California/California Digital
+ *   Library, Ithaka Harbors/Portico, or Stanford University, nor the names of
+ *   its contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -30,7 +30,6 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- * </p>
  */
 
 package org.jhove2.module.format.icc.type;
@@ -47,12 +46,12 @@ import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
 import org.jhove2.module.format.Validator.Validity;
 
-/** ICC ASCII text type, as defined in ICC.1:2004-10, \u00a7 10.20.
- * This class also supports the older "desc" description type.
+/** ICC text description type element, as defined in ICC1.2001-04,
+ * \u00a7 6.5.17.
  * 
  * @author slabrams
  */
-public class TextType
+public class DescriptionType
         extends AbstractReportable
 {
     /** Validation status. */
@@ -61,7 +60,7 @@ public class TextType
     /** Text size in bytes. */
     protected long size;
     
-    /** Text. */
+    /** Text description. */
     protected StringBuffer text;
 
     /** Signature. */
@@ -76,8 +75,8 @@ public class TextType
     /** Non-zero data in reserved field message. */
     protected Message nonZeroDataInReservedFieldMessage;
     
-    /** Instantiate a new <code>TextType</code>. */
-    public TextType() {
+    /** Instantiate a new <code>DescriptionType</code>. */
+    public DescriptionType() {
         super();
         
         this.isValid = Validity.Undetermined;
@@ -86,7 +85,6 @@ public class TextType
     /** Parse an ICC tag type.
      * @param jhove2 JHOVE2 framework
      * @param input  ICC input
-     * @param elementSize Element size
      * @return Number of bytes consumed
      * @throws EOFException
      *             If End-of-File is reached reading the source unit
@@ -94,7 +92,7 @@ public class TextType
      *             If an I/O exception is raised reading the source unit
      * @throws JHOVE2Exception
      */
-    public long parse(JHOVE2 jhove2, Input input, long elementSize)
+    public long parse(JHOVE2 jhove2, Input input)
         throws EOFException, IOException, JHOVE2Exception
     {
         long consumed  = 0L;
@@ -106,11 +104,13 @@ public class TextType
             short b = input.readUnsignedByte();
             this.signature.append((char) b);
         }
-        if (!this.signature.toString().equals("text")) {
+        String signature = this.signature.toString();
+        if (!signature.equals("desc") &&
+            !signature.equals("text")) {
             numErrors++;
             this.isValid = Validity.False;
             Object [] args =
-                new Object [] {input.getPosition()-4L, "text",
+                new Object [] {input.getPosition()-4L, "desc",
                                signature.toString()};
             this.invalidTagTypeMessage = new Message(Severity.ERROR,
                 Context.OBJECT,
@@ -132,7 +132,11 @@ public class TextType
         }
         consumed += 4;
         
-        this.size = elementSize - 8;
+        /* Description size. */
+        this.size = input.readUnsignedInt();
+        
+        /* Description. */
+        /* TODO: parse the Unicode and Macintosh forms of the description. */
         this.text = new StringBuffer((int) this.size);
         for (int i=1; i<this.size; i++) {
             short b = input.readUnsignedByte();
@@ -189,10 +193,10 @@ public class TextType
         return this.missingFinalNULByteMessage;
     }
     
-    /** Get text.
-     * @return Tex.
+    /** Get text description.
+     * @return Text description.
      */
-    @ReportableProperty(order=2, value="Tex.",
+    @ReportableProperty(order=2, value="Text description.",
             ref="ICC.1:2004-10, \u00a7 10.20")
     public String getText() {
         if (this.text != null) {

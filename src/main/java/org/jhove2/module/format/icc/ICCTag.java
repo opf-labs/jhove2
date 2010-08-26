@@ -49,9 +49,14 @@ import org.jhove2.core.reportable.AbstractReportable;
 import org.jhove2.module.format.Validator.Validity;
 import org.jhove2.module.format.icc.field.Tag;
 import org.jhove2.module.format.icc.field.TechnologySignature;
+import org.jhove2.module.format.icc.type.CurveType;
+import org.jhove2.module.format.icc.type.DateTimeType;
+import org.jhove2.module.format.icc.type.DescriptionType;
 import org.jhove2.module.format.icc.type.MultiLocalizedUnicodeType;
+import org.jhove2.module.format.icc.type.ParametricCurveType;
 import org.jhove2.module.format.icc.type.SignatureType;
 import org.jhove2.module.format.icc.type.TextType;
+import org.jhove2.module.format.icc.type.XYZType;
 
 /** ICC tag.  See ICC.1:2004-10, \u00a7 7.3.1.
  * 
@@ -60,6 +65,15 @@ import org.jhove2.module.format.icc.type.TextType;
 public class ICCTag
     extends AbstractReportable
 {
+    /** Curve type element. */
+    protected CurveType curveType;
+    
+    /** Date/time type element. */
+    protected DateTimeType dateTimeType;
+    
+    /** Text description type element. */
+    protected DescriptionType descriptionType;
+    
     /** Tag validity. */
     protected Validity isValid;
     
@@ -84,11 +98,17 @@ public class ICCTag
     /** Non-ICC tag message. */
     protected Message nonICCTagMessage;
     
+    /** Parametric curve element. */
+    protected ParametricCurveType parametricType;
+    
     /** Text type element. */
     protected TextType textType;
     
     /** Multi-localized Unicode type element. */
     protected MultiLocalizedUnicodeType unicodeType;
+    
+    /** XYZ tristimulus value array type element. */
+    protected XYZType xyzType;
     
     /** Invalid technology signature message. */
     protected Message invalidTechnologySignatureMessage;
@@ -166,27 +186,92 @@ public class ICCTag
         /* Parse the tag type, remembering to save and restore the current
          * position in the ICC input.
          */
-        if (signature.equals("cprt") ||
-            signature.equals("desc") ||
-            signature.equals("dmdd") ||
-            signature.equals("dmnd") ||
-            signature.equals("vued")) {
-            long position = input.getPosition();
-            input.setPosition(this.offset);
+        long position = input.getPosition();
+        input.setPosition(this.offset);
+        if (signature.equals("bkpt") ||
+            signature.equals("bXYZ") ||
+            signature.equals("gXYZ") ||
+            signature.equals("rXYZ") ||
+            signature.equals("wtpt")) {
+            this.xyzType = new XYZType();
+            this.xyzType.parse(jhove2, input, this.size);
             
-            this.unicodeType = new MultiLocalizedUnicodeType();
-            this.unicodeType.parse(jhove2, input);
-            
-            Validity isValid = this.unicodeType.isValid();
+            Validity isValid = this.xyzType.isValid();
             if (isValid != Validity.True) {
                 this.isValid = isValid;
             }
-            input.setPosition(position);
         }
-        if (signature.equals("targ")) {
-            long position = input.getPosition();
+        else if (signature.equals("bTRC") ||
+                 signature.equals("gTRC") ||
+                 signature.equals("kTRC") ||
+                 signature.equals("rTRC")) {
+            /* Pre-parse the type element to see if it is a curve ("curv")
+             * or a parametric curve ("para") type, resetting the position to
+             * the original.
+             */
+            short b = input.readUnsignedByte();
             input.setPosition(this.offset);
+            Validity isValid = Validity.Undetermined;
+            if (((char) b) == 'c') {
+                this.curveType = new CurveType();
+                this.curveType.parse(jhove2, input);
+                
+                isValid = this.curveType.isValid();
+            }
+            else {
+                this.parametricType = new ParametricCurveType();
+                this.parametricType.parse(jhove2, input);
+                
+                isValid = this.parametricType.isValid();
+            }
+            if (isValid != Validity.True) {
+                this.isValid = isValid;
+            }
+        }
+        else if (signature.equals("calt")) {
+            this.dateTimeType = new DateTimeType();
+            this.dateTimeType.parse(jhove2, input);
             
+            Validity isValid = this.dateTimeType.isValid();
+            if (isValid != Validity.True) {
+                this.isValid = isValid;
+            }
+        }
+        else if (signature.equals("cprt") ||
+                 signature.equals("desc") ||
+                 signature.equals("dmdd") ||
+                 signature.equals("dmnd") ||
+                 signature.equals("vued")) {
+            /* Pre-parse the type element to see if it is a text type ("desc")
+             * or a multi-localized Unicode type ("mlut"), resetting the
+             * position to the original.
+             */
+            short b = input.readUnsignedByte();
+            input.setPosition(this.offset);
+            Validity isValid = Validity.Undetermined;
+            if (((char) b) == 'd') {
+                this.descriptionType = new DescriptionType();
+                this.descriptionType.parse(jhove2, input);
+                
+                isValid = this.descriptionType.isValid();
+            }
+            else if (((char) b) == 't') {
+                this.textType = new TextType();
+                this.textType.parse(jhove2, input, this.size);
+                
+                isValid = this.textType.isValid();
+            }
+            else {
+                this.unicodeType = new MultiLocalizedUnicodeType();
+                this.unicodeType.parse(jhove2, input);
+            
+                isValid = this.unicodeType.isValid();
+            }
+            if (isValid != Validity.True) {
+                this.isValid = isValid;
+            }
+        }
+        else if (signature.equals("targ")) {
             this.textType = new TextType();
             this.textType.parse(jhove2, input, this.size);
             
@@ -194,12 +279,8 @@ public class ICCTag
             if (isValid != Validity.True) {
                 this.isValid = isValid;
             }
-            input.setPosition(position);
         }
-        if (signature.equals("tech")) {
-            long position = input.getPosition();
-            input.setPosition(this.offset);
-            
+        else if (signature.equals("tech")) {
             this.signatureType = new SignatureType();
             this.signatureType.parse(jhove2, input);
             
@@ -224,16 +305,43 @@ public class ICCTag
                         "org.jhove2.module.format.icc.ICCTag.invalidTechnologySignature",
                         args, jhove2.getConfigInfo());
             }
-            input.setPosition(position);
         }
-        
+        input.setPosition(position);
+
         return consumed;
+    }
+    
+    /** Get curve type element.
+     * @return Curve type element
+     */
+    @ReportableProperty(order=7, value="Curve type element.",
+            ref="ICC.1:2001-04, \u00a7 10.5")
+    public CurveType getCurveType() {
+        return this.curveType;
+    }
+    
+    /** Get date/time type element.
+     * @return Date/time type element
+     */
+    @ReportableProperty(order=7, value="Date/time type element.",
+            ref="ICC.1:2001-04, \u00a7 10.7")
+    public DateTimeType getDateTimeType() {
+        return this.dateTimeType;
+    }
+    
+    /** Get text description type element.
+     * @return Text description type element
+     */
+    @ReportableProperty(order=7, value="Text description type element.",
+            ref="ICC.1:2001-04, \u00a7 6.5.17")
+    public DescriptionType getDescriptionType() {
+        return this.descriptionType;
     }
     
     /** Get invalid technology signature message.
      * @return Invalid technology signature message
      */
-    @ReportableProperty(order=23, value="Invalid technology signature message.",
+    @ReportableProperty(order=13, value="Invalid technology signature message.",
             ref="ICC.1:2004-10, Table 22")
     public Message getInvalidTechnologySignature() {
         return this.invalidTechnologySignatureMessage;
@@ -242,7 +350,7 @@ public class ICCTag
     /** Get multi-localized Unicode type element.
      * @return Multi-localized Unicode type element
      */
-    @ReportableProperty(order=6, value="Multi-localized Unicode string type.",
+    @ReportableProperty(order=7, value="Multi-localized Unicode string type.",
             ref="ICC.1:2004-10, \u00a7 10.13")
     public MultiLocalizedUnicodeType getMultiLocalizedUnicodeType() {
         return this.unicodeType;
@@ -260,16 +368,25 @@ public class ICCTag
     /** Get tag offset not word aligned message.
      * @return Tag offset not word aligned message
      */
-    @ReportableProperty(order=22, value="Offset not word aligned.",
+    @ReportableProperty(order=12, value="Offset not word aligned.",
             ref="ICC.1:2004-10, \u00a7 7.3.4")
     public Message getOffsetNotWordAligned() {
         return this.offsetNotWordAlignedMessage;
     }
     
+    /** Get parametric curve type element.
+     * @return Parametric curve type element
+     */
+    @ReportableProperty(order=7, value="Parametric curve type element.",
+            ref="ICC.1:2001-04, \u00a7 10.51")
+    public ParametricCurveType getParametricCurveType() {
+        return this.parametricType;
+    }
+    
     /** Get tag signature in coded form.
      * @return Tag signature in coded form
      */
-    @ReportableProperty(order=2, value="Tag signature in raw form.",
+    @ReportableProperty(order=1, value="Tag signature in raw form.",
             ref="ICC.1:2004-10, \u00a7 7.3.1", type=PropertyType.Raw)
     public String getSignature_raw() {
         return this.signature.toString();
@@ -278,7 +395,7 @@ public class ICCTag
     /** Get tag signature in descriptive form.
      * @return Tag signature in descriptive form
      */
-    @ReportableProperty(order=3, value="Tag signature in descriptive form.",
+    @ReportableProperty(order=2, value="Tag signature in descriptive form.",
             ref="ICC.1:2004-10, \u00a7 9", type=PropertyType.Descriptive)
     public String getSignature_descriptive() {
         return this.signature_d;
@@ -295,7 +412,7 @@ public class ICCTag
     /** Get text type element.
      * @return Text type element
      */
-    @ReportableProperty(order=6, value="Text type element.",
+    @ReportableProperty(order=7, value="Text type element.",
             ref="ICC.1:2004-10, \u00a7 10.20")
     public TextType getTextType() {
         return this.textType;
@@ -304,7 +421,7 @@ public class ICCTag
     /** Get unknown tag message.
      * @return Unknown tag message
      */
-    @ReportableProperty(order=21, value="Unknown tag.",
+    @ReportableProperty(order=11, value="Unknown tag.",
             ref="ICC, \"Private and ICC Tag and CMM Registry\" (as of November 3, 2009")
     public Message getUnknownTagMessage() {
         return this.unknownTagMessage;
@@ -313,16 +430,25 @@ public class ICCTag
     /** Get tag vendor.
      * @return Tag vendor
      */
-    @ReportableProperty(order=1, value="Tag vendor.",
+    @ReportableProperty(order=6, value="Tag vendor.",
             ref="ICC, \"Private and ICC Tag and CMM Regsitry\" (as of November 3, 2009")
     public String getVendor() {
         return this.vendor;
     }
     
+    /** Get XYZ type element.
+     * @return XYZ type element
+     */
+    @ReportableProperty(order=7, value="XYZ type element.",
+            ref="ICC.1:2004-10, \u00a7 10.27")
+    public XYZType getXYZType() {
+        return this.xyzType;
+    }
+    
     /** Get tag validity.
      * @return Tag validity
      */
-    @ReportableProperty(order=7, value="Tag validity.")
+    @ReportableProperty(order=8, value="Tag validity.")
     public Validity isValid() {
         return this.isValid;
     }

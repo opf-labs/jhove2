@@ -372,12 +372,8 @@ public class ICCHeader
         for (int i=0; i<6; i++) {
             sa[i] = input.readUnsignedShort();
         }
-        /* TODO: There appears to be a bug in the GregorianCalendar class where the
-         * second field is overwriting the day of month field.  For the time being
-         * we choose to have the date be correct and accept an error in the seconds.
-         */
         Calendar cal = new GregorianCalendar(sa[0], sa[1]-1, sa[2],
-                                             sa[3], sa[4], sa[2]);
+                                             sa[3], sa[4], sa[5]);
         cal.setTimeZone(TimeZone.getTimeZone("UTC"));
         this.dateAndTime = cal.getTime();
         consumed += 12;

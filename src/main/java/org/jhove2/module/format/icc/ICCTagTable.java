@@ -104,7 +104,7 @@ public class ICCTagTable
     {
         long    consumed = 0L;
         boolean hasAToB0Tag = false;
-        boolean hasChromaticAdaptionTag = false;
+        /* boolean hasChromaticAdaptionTag = false; */
         boolean hasColorantTableTag = false;
         boolean hasColorantTableOutTag = false;
         boolean hasCopyrightTag = false;
@@ -130,9 +130,11 @@ public class ICCTagTable
             if (signature.equals("A2B0")) {
                 hasAToB0Tag = true;
             }
+            /*
             else if (signature.equals("chad")) {
                 hasChromaticAdaptionTag = true;
             }
+            */
             else if (signature.equals("clrt")) {
                 hasColorantTableTag = true;
             }
@@ -227,6 +229,8 @@ public class ICCTagTable
                 this.missingRequiredTagMessages.add(msg);
                 this.hasCommonRequirements = false;
             }
+            /* TODO: the "chad" tag is required only if the illuminant is not D50. */
+            /*
             if (!hasChromaticAdaptionTag) {
                 numErrors++;
                 this.isValid = Validity.False;
@@ -237,6 +241,7 @@ public class ICCTagTable
                 this.missingRequiredTagMessages.add(msg);
                 this.hasCommonRequirements = false;
             }
+            */
         }
 
         return consumed;

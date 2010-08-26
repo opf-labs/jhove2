@@ -106,7 +106,7 @@ implements Comparable<ProfileFlag>
 
     /**
      * Get the profile flag negative value.
-     * @return profile flag negative value
+     * @return Profile flag negative value
      */
     public String getNegativeValue() {
         return this.negativeValue;
@@ -115,7 +115,7 @@ implements Comparable<ProfileFlag>
     /**
      * Get the profile flags.
      * @param jhove2 JHOVE2 framework
-     * @return profile flags
+     * @return Profile flags
      * @throws JHOVE2Exception 
      */
     public static Set<ProfileFlag> getProfileFlags(JHOVE2 jhove2) throws JHOVE2Exception {
@@ -127,15 +127,15 @@ implements Comparable<ProfileFlag>
 
     /**
      * Get the profile flag bit position.
-     * @return profile flag bit position
+     * @return Profile flag bit position
      */
     public int getPosition() {
         return this.position;
     }
 
     /**
-     * Get the profile flag posative value.
-     * @return profile flag posative value
+     * Get the profile flag positive value.
+     * @return Profile flag positive value
      */
     public String getPositiveValue() {
         return this.positiveValue;

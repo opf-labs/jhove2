@@ -37,6 +37,10 @@ package org.jhove2.module.format.icc.type;
 
 import java.io.EOFException;
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
@@ -47,37 +51,30 @@ import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
 import org.jhove2.module.format.Validator.Validity;
 
-/** ICC ASCII text type, as defined in ICC.1:2004-10, \u00a7 10.20.
- * This class also supports the older "desc" description type.
+/** ICC date/time type element, as defined in ICC.1:2004-10, \u00a7 10.7.
  * 
  * @author slabrams
  */
-public class TextType
+public class DateTimeType
         extends AbstractReportable
 {
     /** Validation status. */
     protected Validity isValid;
  
-    /** Text size in bytes. */
-    protected long size;
-    
-    /** Text. */
-    protected StringBuffer text;
-
+    /** Date/time. */
+    protected Date dateTime;
+ 
     /** Signature. */
     protected StringBuffer signature = new StringBuffer(4);   
     
     /** Invalid tag type message. */
     protected Message invalidTagTypeMessage;
-    
-    /** Missing final NUL (0x00) byte. */
-    protected Message missingFinalNULByteMessage;
-    
+
     /** Non-zero data in reserved field message. */
     protected Message nonZeroDataInReservedFieldMessage;
     
-    /** Instantiate a new <code>TextType</code>. */
-    public TextType() {
+    /** Instantiate a new <code>DateTimeType</code> element. */
+    public DateTimeType() {
         super();
         
         this.isValid = Validity.Undetermined;
@@ -86,7 +83,6 @@ public class TextType
     /** Parse an ICC tag type.
      * @param jhove2 JHOVE2 framework
      * @param input  ICC input
-     * @param elementSize Element size
      * @return Number of bytes consumed
      * @throws EOFException
      *             If End-of-File is reached reading the source unit
@@ -94,7 +90,7 @@ public class TextType
      *             If an I/O exception is raised reading the source unit
      * @throws JHOVE2Exception
      */
-    public long parse(JHOVE2 jhove2, Input input, long elementSize)
+    public long parse(JHOVE2 jhove2, Input input)
         throws EOFException, IOException, JHOVE2Exception
     {
         long consumed  = 0L;
@@ -106,11 +102,12 @@ public class TextType
             short b = input.readUnsignedByte();
             this.signature.append((char) b);
         }
-        if (!this.signature.toString().equals("text")) {
+        String signature = this.signature.toString();
+        if (!signature.equals("dtim")) {
             numErrors++;
             this.isValid = Validity.False;
             Object [] args =
-                new Object [] {input.getPosition()-4L, "text",
+                new Object [] {input.getPosition()-4L, "dtim",
                                signature.toString()};
             this.invalidTagTypeMessage = new Message(Severity.ERROR,
                 Context.OBJECT,
@@ -132,24 +129,16 @@ public class TextType
         }
         consumed += 4;
         
-        this.size = elementSize - 8;
-        this.text = new StringBuffer((int) this.size);
-        for (int i=1; i<this.size; i++) {
-            short b = input.readUnsignedByte();
-            text.append((char) b);
+        /* Date and time. */
+        int [] sa = new int[6];
+        for (int i=0; i<6; i++) {
+            sa[i] = input.readUnsignedShort();
         }
-        consumed += this.size - 1;
-        short b = input.readUnsignedByte();
-        if (b != 0) {
-            numErrors++;
-            this.isValid = Validity.False;
-            Object [] args = new Object [] {input.getPosition()-1L, b};
-            this.missingFinalNULByteMessage = new Message(Severity.ERROR,
-                    Context.OBJECT,
-                    "org.jhove2.module.format.icc.ICCTag.MissingFinalNULByte",
-                    args, jhove2.getConfigInfo());
-        }
-        consumed++;
+        Calendar cal = new GregorianCalendar(sa[0], sa[1]-1, sa[2],
+                                             sa[3], sa[4], sa[5]);
+        cal.setTimeZone(TimeZone.getTimeZone("UTC"));
+        this.dateTime = cal.getTime();
+        consumed += 12;
           
         return consumed;
     }
@@ -162,13 +151,13 @@ public class TextType
         return this.invalidTagTypeMessage;
     }
 
-    /** Get text size.
-     * @return Text size
+    /** Get date/time.
+     * @return Date/time
      */
-    @ReportableProperty(order=1, value="Text size.",
-            ref="ICC.1:2004-10, \ua077 10.20")
-    public long getSize() {
-        return this.size;
+    @ReportableProperty(order=1, value="Date/time.",
+            ref="ICC.1:2004-10, \ua077 10.7")
+    public Date getDateTime() {
+        return this.dateTime;
     }
     
     /** Get non-zero data in reserved field message.
@@ -179,28 +168,7 @@ public class TextType
     public Message getNonZeroDataInReservedFieldMessage() {
         return this.nonZeroDataInReservedFieldMessage;
     }
-    
-    /** Get missing final NUL (0x00) byte message.
-     * @return Missing final NUL message
-     */
-    @ReportableProperty(order=13, value="Missing final NUL (0x00) byte.",
-            ref="ICC.1:2004-10, \ua077 10.20")
-    public Message getMissingFinalNULByteMessage() {
-        return this.missingFinalNULByteMessage;
-    }
-    
-    /** Get text.
-     * @return Tex.
-     */
-    @ReportableProperty(order=2, value="Tex.",
-            ref="ICC.1:2004-10, \u00a7 10.20")
-    public String getText() {
-        if (this.text != null) {
-            return this.text.toString();
-        }
-        return null;
-    }
-    
+ 
     /** Get validation status.
      * @return Validation status
      */

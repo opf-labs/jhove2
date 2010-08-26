@@ -1,24 +1,24 @@
 /**
  * JHOVE2 - Next-generation architecture for format-aware characterization
- * <p>
- * Copyright (c) 2010 by The Regents of the University of California. All rights reserved.
- * </p>
- * <p>
+ *
+ * Copyright (c) 2009 by The Regents of the University of California
+ * All rights reserved.
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * </p>
- * <ul>
- * <li>Redistributions of source code must retain the above copyright notice,
- * this list of conditions and the following disclaimer.</li>
- * <li>Redistributions in binary form must reproduce the above copyright notice,
- * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution.</li>
- * <li>Neither the name of the University of California/California Digital
- * Library, Ithaka Harbors/Portico, or Stanford University, nor the names of its
- * contributors may be used to endorse or promote products derived from this
- * software without specific prior written permission.</li>
- * </ul>
- * <p>
+ *
+ * o Redistributions of source code must retain the above copyright notice,
+ *   this list of conditions and the following disclaimer.
+ *
+ * o Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * o Neither the name of the University of California/California Digital
+ *   Library, Ithaka Harbors/Portico, or Stanford University, nor the names of
+ *   its contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -29,14 +29,15 @@
  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- * </p>
+ * POSSIBILITY OF SUCH DAMAGE. 
  */
 
 package org.jhove2.module.format.icc.type;
 
 import java.io.EOFException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
@@ -47,46 +48,44 @@ import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
 import org.jhove2.module.format.Validator.Validity;
 
-/** ICC ASCII text type, as defined in ICC.1:2004-10, \u00a7 10.20.
- * This class also supports the older "desc" description type.
+/** ICC XYZ tristimulus value array element type, as defined in ICC.1:2004-10,
+ * \u00a7 10.27.
  * 
  * @author slabrams
  */
-public class TextType
+public class XYZType
         extends AbstractReportable
 {
     /** Validation status. */
     protected Validity isValid;
- 
-    /** Text size in bytes. */
-    protected long size;
     
-    /** Text. */
-    protected StringBuffer text;
+    /** Number of XYZ values. */
+    protected long numberOfValues;
 
-    /** Signature. */
+    /** Signature (of tag type). */
     protected StringBuffer signature = new StringBuffer(4);   
+    
+    /** XYZ values. */
+    protected List<XYZNumber> values;
     
     /** Invalid tag type message. */
     protected Message invalidTagTypeMessage;
     
-    /** Missing final NUL (0x00) byte. */
-    protected Message missingFinalNULByteMessage;
-    
     /** Non-zero data in reserved field message. */
     protected Message nonZeroDataInReservedFieldMessage;
     
-    /** Instantiate a new <code>TextType</code>. */
-    public TextType() {
+    /** Instantiate a new <code>XYZType</code>. */
+    public XYZType() {
         super();
         
         this.isValid = Validity.Undetermined;
+        this.values  = new ArrayList<XYZNumber>();
     }
     
-    /** Parse an ICC tag type.
+    /** Parse an ICC signature tag type element.
      * @param jhove2 JHOVE2 framework
      * @param input  ICC input
-     * @param elementSize Element size
+     * @param elementSize Size in bytes of the XYZ type element
      * @return Number of bytes consumed
      * @throws EOFException
      *             If End-of-File is reached reading the source unit
@@ -99,18 +98,18 @@ public class TextType
     {
         long consumed  = 0L;
         int  numErrors = 0;
-        this.isValid = Validity.True;
+        this.isValid   = Validity.True;
   
         /* Tag signature. */
         for (int i=0; i<4; i++) {
             short b = input.readUnsignedByte();
             this.signature.append((char) b);
         }
-        if (!this.signature.toString().equals("text")) {
+        if (!this.signature.toString().equals("XYZ ")) {
             numErrors++;
             this.isValid = Validity.False;
             Object [] args =
-                new Object [] {input.getPosition()-4L, "text",
+                new Object [] {input.getPosition()-4L, "XYZ ",
                                signature.toString()};
             this.invalidTagTypeMessage = new Message(Severity.ERROR,
                 Context.OBJECT,
@@ -132,25 +131,15 @@ public class TextType
         }
         consumed += 4;
         
-        this.size = elementSize - 8;
-        this.text = new StringBuffer((int) this.size);
-        for (int i=1; i<this.size; i++) {
-            short b = input.readUnsignedByte();
-            text.append((char) b);
+        this.numberOfValues = (elementSize-8)/12;
+        for (int i=0; i<this.numberOfValues; i++) {
+            int x = input.readSignedInt();
+            int y = input.readSignedInt();
+            int z = input.readSignedInt();
+            XYZNumber xyz = new XYZNumber(x, y, z);
+            this.values.add(xyz);
         }
-        consumed += this.size - 1;
-        short b = input.readUnsignedByte();
-        if (b != 0) {
-            numErrors++;
-            this.isValid = Validity.False;
-            Object [] args = new Object [] {input.getPosition()-1L, b};
-            this.missingFinalNULByteMessage = new Message(Severity.ERROR,
-                    Context.OBJECT,
-                    "org.jhove2.module.format.icc.ICCTag.MissingFinalNULByte",
-                    args, jhove2.getConfigInfo());
-        }
-        consumed++;
-          
+            
         return consumed;
     }
     
@@ -162,51 +151,46 @@ public class TextType
         return this.invalidTagTypeMessage;
     }
 
-    /** Get text size.
-     * @return Text size
-     */
-    @ReportableProperty(order=1, value="Text size.",
-            ref="ICC.1:2004-10, \ua077 10.20")
-    public long getSize() {
-        return this.size;
-    }
-    
     /** Get non-zero data in reserved field message.
      * @return Non-zero data in reserved field message
      */
-    @ReportableProperty(order=12, value="Non-zero data in reserved field.",
-            ref="ICC.1:2004-10, \ua077 10.20")
+    @ReportableProperty(order=12, value="Non-zero data in reserved field.")
     public Message getNonZeroDataInReservedFieldMessage() {
         return this.nonZeroDataInReservedFieldMessage;
     }
     
-    /** Get missing final NUL (0x00) byte message.
-     * @return Missing final NUL message
+    /** Get number of XYZ values.
+     * @return Number of XYZ values
      */
-    @ReportableProperty(order=13, value="Missing final NUL (0x00) byte.",
-            ref="ICC.1:2004-10, \ua077 10.20")
-    public Message getMissingFinalNULByteMessage() {
-        return this.missingFinalNULByteMessage;
+    @ReportableProperty(order=2, value="XYZ values.",
+            ref="ICC.1:2004-10, \u00a7 10.27")
+    public long getNumberOfValues() {
+        return this.numberOfValues;
+    }
+    /** Get XYZ type signature.
+     * @return XYZ type signature
+     */
+    @ReportableProperty(order=1, value="XYZ type signature.",
+            ref="ICC.1:2004-10, \u00a7 10.27")
+    public String getSignature() {
+        return this.signature.toString();
     }
     
-    /** Get text.
-     * @return Tex.
+    /** Get XYZ values.
+     * @return XYZ values
      */
-    @ReportableProperty(order=2, value="Tex.",
-            ref="ICC.1:2004-10, \u00a7 10.20")
-    public String getText() {
-        if (this.text != null) {
-            return this.text.toString();
-        }
-        return null;
+    @ReportableProperty(order=3, value="XYZ values.",
+            ref="ICC.1:2004-10, \u00a7 10.27")
+    public List<XYZNumber> getValues() {
+        return this.values;
     }
     
     /** Get validation status.
      * @return Validation status
      */
-    @ReportableProperty(order=3, value="Validation status.",
-            ref="ICC.1:2004-10, \u00a7 10.20")
+    @ReportableProperty(order=4, value="Validation status.",
+            ref="ICC.1:2004-10, \u00a7 10.19")
     public Validity isValid() {
         return this.isValid;
     }
-}
+ }

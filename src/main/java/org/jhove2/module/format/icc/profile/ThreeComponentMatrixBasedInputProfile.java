@@ -49,6 +49,7 @@ import org.jhove2.core.format.Format;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.Validator;
 import org.jhove2.module.format.AbstractFormatProfile;
+import org.jhove2.module.format.icc.ICCHeader;
 import org.jhove2.module.format.icc.ICCModule;
 import org.jhove2.module.format.icc.ICCTag;
 import org.jhove2.module.format.icc.ICCTagTable;
@@ -82,6 +83,9 @@ public class ThreeComponentMatrixBasedInputProfile
     /** Missing required tag messages. */
     protected List<Message> missingRequiredTagMessages;
     
+    /** Profile Connection Space (PCS) not CIE XYZ message. */
+    protected Message pcsNotXYZMessage;
+    
     /** Instantiate a new <code>ThreeComponentMatrixBasedInputProfile</code>
      * @param format Profile format
      */
@@ -102,10 +106,21 @@ public class ThreeComponentMatrixBasedInputProfile
             throws JHOVE2Exception
     {
         if (this.module != null) {
-            ICCTagTable table = ((ICCModule) this.module).getTagTable();
+            ICCHeader   header = ((ICCModule) this.module).getHeader();
+            String pcs = header.getProfileConnectionSpace_raw();
+            if (pcs == null || !pcs.equals("XYZ ")) {
+                this.isValid = Validity.False;
+                Object [] args = new Object [] {pcs};
+                this.pcsNotXYZMessage = new Message(Severity.ERROR,
+                        Context.OBJECT,
+                        "org.jhove2.module.format.icc.profile.ThreeComponentMatrixBasedInputProfile.PCSNotXYZ",
+                        args, jhove2.getConfigInfo());
+            }
+            
+            ICCTagTable table  = ((ICCModule) this.module).getTagTable();
             if (table != null) {
                 if (table.hasCommonRequirements()) {
-                    this.isValid = Validity.False;
+                    this.isValid = Validity.True;
                 
                     boolean hasBlueMatrixColumnTag  = false;
                     boolean hasBlueTRCTag           = false;
@@ -213,6 +228,15 @@ public class ThreeComponentMatrixBasedInputProfile
         return this.missingRequiredTagMessages;
     }
     
+    /** Get Profile Connection Space (PCS) not CIE XYZ message.
+     * @return PCS not CIE XYZ messages
+     */
+    @ReportableProperty(order=2, value="Profile Connection Space (PCS) not CIE XYZ.",
+            ref="ICC.1:2004-10, \u00a7 8.3.3")
+    public Message getPCSNotXYZMessage() {
+        return this.pcsNotXYZMessage;
+    }
+   
     /** Get validation status.
      * @return Validation status
      * @see org.jhove2.module.format.Validator#isValid()
