@@ -221,6 +221,7 @@ public abstract class AbstractSource
 	 * Close the source unit. If the source unit is backed by a temporary file,
 	 * delete the file.
 	 */
+	@Override
 	public void close() {
 		if (this.file != null && this.isTemp && this.deleteTempFiles) {
 			this.file.delete();
@@ -315,6 +316,7 @@ public abstract class AbstractSource
 	 * @return File backing the source unit
 	 * @see org.jhove2.core.source.Source#getFile()
 	 */
+	@Override
 	public File getFile() {
 		return this.file;
 	}
@@ -364,6 +366,7 @@ public abstract class AbstractSource
 	 * @throws IOException
 	 *             I/O exception getting input
 	 */
+	@Override
 	public Input getInput(int bufferSize, Type bufferType, ByteOrder order)
 		throws FileNotFoundException, IOException
 	{
@@ -377,6 +380,7 @@ public abstract class AbstractSource
 	 * @throws FileNotFoundException
 	 * @see org.jhove2.core.source.Source#getInputStream()
 	 */
+	@Override
 	public InputStream getInputStream()
 		throws FileNotFoundException
 	{

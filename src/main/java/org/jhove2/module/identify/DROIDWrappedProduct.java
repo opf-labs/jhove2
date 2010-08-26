@@ -68,10 +68,10 @@ public class DROIDWrappedProduct
 	public static final String NAME = "Jhove2Droid";
 	
 	/** Framework version identifier. */
-	public static final String VERSION = "1.9.5";
+	public static final String VERSION = "2.0.0";
 
 	/** Framework release date. */
-	public static final String RELEASE = "2010-02-16";
+	public static final String RELEASE = "2010-09-10";
 
 	/** Framework rights statement. */
 	public static final String RIGHTS = "Copyright 2010 by The Regents of the University of California, "

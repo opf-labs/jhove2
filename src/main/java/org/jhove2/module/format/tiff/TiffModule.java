@@ -41,7 +41,7 @@ implements Validator
     public static final String VERSION = "2.0.0";
 
     /** TIFF module release date. */
-    public static final String RELEASE = "2010-07-31";
+    public static final String RELEASE = "2010-09-10";
 
     /** TIFF module rights statement. */
     public static final String RIGHTS =
@@ -88,6 +88,10 @@ implements Validator
      */
     public TiffModule(Format format) {
         super(VERSION, RELEASE, RIGHTS, format);
+    }
+    
+    public TiffModule() {
+        this(null);
     }
 
     /**

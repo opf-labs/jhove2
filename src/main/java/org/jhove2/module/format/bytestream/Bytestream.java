@@ -55,10 +55,10 @@ public class Bytestream
 
 {
 	/** Bytestream module version identifier. */
-	public static final String VERSION = "1.9.5";
+	public static final String VERSION = "2.0.0";
 
 	/** Bytestream module release date. */
-	public static final String RELEASE = "2010-02-16";
+	public static final String RELEASE = "2010-09-10";
 
 	/** Bytestream module rights statement. */
 	public static final String RIGHTS =
@@ -77,6 +77,9 @@ public class Bytestream
 		super(VERSION, RELEASE, RIGHTS, format);
 	}
 
+	public Bytestream(){
+		super();
+	}
 	/**
 	 * Parse a bytestream
 	 * 

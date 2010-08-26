@@ -58,10 +58,10 @@ public class JHOVE2
 	extends AbstractModule
 {
 	/** Framework version identifier. */
-	public static final String VERSION = "1.9.5";
+	public static final String VERSION = "2.0.0";
 
 	/** Framework release date. */
-	public static final String RELEASE = "2010-02-16";
+	public static final String RELEASE = "2010-09-10";
 
 	/** Framework rights statement. */
 	public static final String RIGHTS = "Copyright 2010 by The Regents of the University of California, "
@@ -139,12 +139,14 @@ public class JHOVE2
                         Context.PROCESS,
                         "org.jhove2.core.source.FileSystemSource.FileNotFoundMessage",
                         new Object[]{name}, this.getConfigInfo()));
+                    tryIt = false;
                 }
                 else if (!fs.isReadable()) {
                     source.addMessage(new Message(Severity.ERROR,
                         Context.PROCESS,
                         "org.jhove2.core.source.FileSystemSource.FileNotReadableMessage",
                         new Object[]{name}, this.getConfigInfo()));
+                    tryIt = false;
                 }
             }
 		    if (tryIt) {

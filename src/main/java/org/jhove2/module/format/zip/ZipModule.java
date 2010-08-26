@@ -64,10 +64,10 @@ public class ZipModule
 
 {
 	/** Zip module version identifier. */
-	public static final String VERSION = "1.9.5";
+	public static final String VERSION = "2.0.0";
 
 	/** Zip module release date. */
-	public static final String RELEASE = "2010-02-16";
+	public static final String RELEASE = "2010-09-10";
 
 	/** Zip module rights statement. */
 	public static final String RIGHTS =
@@ -84,6 +84,10 @@ public class ZipModule
 	 */
 	public ZipModule(Format format) {
 		super(VERSION, RELEASE, RIGHTS, format);
+	}
+	
+	public ZipModule(){
+		this(null);
 	}
 
 	/**

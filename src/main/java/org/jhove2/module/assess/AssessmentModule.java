@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.config.ConfigInfo;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
@@ -61,10 +62,10 @@ import org.jhove2.module.Module.Scope;
  */
 public class AssessmentModule extends AbstractModule implements Assessor {
     /** Assessment module version identifier. */
-    public static final String VERSION = "0.1.0";
+    public static final String VERSION = "2.0.0";
 
     /** Assessment module release date. */
-    public static final String RELEASE = "2010-06-04";
+    public static final String RELEASE = "2010-09-10";
 
     /** Assessment module rights statement. */
     public static final String RIGHTS = "Copyright 2010 by The Regents of the University of California, "
@@ -88,7 +89,9 @@ public class AssessmentModule extends AbstractModule implements Assessor {
      */
     protected List<AssessmentResultSet> assessmentResultSets;
     
-    protected JHOVE2 jhove2;
+//    protected JHOVE2 jhove2;
+    
+    protected ConfigInfo configInfo;
     
 
     /**
@@ -125,7 +128,7 @@ public class AssessmentModule extends AbstractModule implements Assessor {
                     messages.add(new Message(Severity.ERROR,
                             Context.OBJECT,
                             "org.jhove2.module.assess.assessmentErrorsFound",
-                            messageArgs, jhove2.getConfigInfo()));
+                            messageArgs, this.getConfigInfo()));
                 }
                 
             }
@@ -154,7 +157,8 @@ public class AssessmentModule extends AbstractModule implements Assessor {
         // TODO is Timer syntax OK?
         TimerInfo timer = this.getTimerInfo();
         timer.setStartTime();
-        this.jhove2 = jhove2;
+//        this.jhove2 = jhove2;
+        this.configInfo = jhove2.getConfigInfo();
         try {
             List<Module> modules = source.getModules();
             for (Module module : modules) {
@@ -182,9 +186,9 @@ public class AssessmentModule extends AbstractModule implements Assessor {
         if (ruleSet != null) {
             AssessmentResultSet resultSet = new AssessmentResultSet();
             assessmentResultSets.add(resultSet);
-            resultSet.setAssessedObject(assessedObject);
+//            resultSet.setAssessedObject(assessedObject);
             resultSet.setRuleSet(ruleSet);
-            resultSet.fireAllRules();
+            resultSet.fireAllRules(assessedObject);
         }
     }
 
@@ -206,5 +210,19 @@ public class AssessmentModule extends AbstractModule implements Assessor {
     public void setRuleSetFactory(RuleSetFactory ruleSetFactory) {
         this.ruleSetFactory = ruleSetFactory;
     }
+
+	/**
+	 * @return the configInfo
+	 */
+	public ConfigInfo getConfigInfo() {
+		return configInfo;
+	}
+
+	/**
+	 * @param configInfo the configInfo to set
+	 */
+	public void setConfigInfo(ConfigInfo configInfo) {
+		this.configInfo = configInfo;
+	}
 
 }

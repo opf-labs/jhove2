@@ -109,7 +109,8 @@ public class Message {
 	 *            Key to message text in localized property file
 	 * @param messageArgs
 	 * 	          Arguments to message format template
-	 * @param configInfo TODO
+	 * @param configInfo 
+	 *            ConfigInfo containing method to localize method text
 	 * @throws JHOVE2Exception
 	 */
 	public Message(Severity severity, Context context, String messageCode,

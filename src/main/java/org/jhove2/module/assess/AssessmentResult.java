@@ -43,11 +43,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.JHOVE2;
-import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.Message;
-import org.jhove2.core.Message.Context;
-import org.jhove2.core.Message.Severity;
+//import org.jhove2.core.JHOVE2;
+//import org.jhove2.core.JHOVE2Exception;
+//import org.jhove2.core.Message;
+//import org.jhove2.core.Message.Context;
+//import org.jhove2.core.Message.Severity;
 import org.jhove2.core.reportable.AbstractReportable;
 import org.jhove2.module.format.Validator.Validity;
 import org.mvel2.MVEL;
@@ -76,6 +76,10 @@ public class AssessmentResult extends AbstractReportable {
     /** Assessment Messages. */
     protected List<String> assessmentMessages = new ArrayList<String>();
 
+    
+    public AssessmentResult(){
+    	super();
+    }
     /**
      * Gets the {@link #rule}
      * 

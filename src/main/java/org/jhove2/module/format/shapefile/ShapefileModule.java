@@ -60,10 +60,10 @@ public class ShapefileModule
 	implements  Validator
 {
 	/** Shapefile module version identifier. */
-	public static final String VERSION = "1.9.5";
+	public static final String VERSION = "2.0.0";
 
 	/** Shapefile module release date. */
-	public static final String RELEASE = "2010-02-16";
+	public static final String RELEASE = "2010-09-10";
 
 	/** Shapefile module rights statement. */
 	public static final String RIGHTS = "Copyright 2010 by The Board of " +
@@ -90,7 +90,9 @@ public class ShapefileModule
 		super(VERSION, RELEASE, RIGHTS, format);
 		this.isValid = Validity.Undetermined;
 	}
-
+	public ShapefileModule(){
+		this(null);
+	}
 	/**
 	 * Parse an Shapefile source unit.
 	 * 

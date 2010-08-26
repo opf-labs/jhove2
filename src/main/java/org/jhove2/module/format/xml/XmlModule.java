@@ -63,10 +63,10 @@ import org.jhove2.module.format.Validator;
 public class XmlModule extends BaseFormatModule implements Validator {
 
     /** Module version identifier. */
-    public static final String VERSION = "1.9.5";
+    public static final String VERSION = "2.0.0";
 
     /** Module release date. */
-    public static final String RELEASE = "2010-02-16";
+    public static final String RELEASE = "2010-09-10";
 
     /** Module rights statement. */
     public static final String RIGHTS = "Copyright 2010 by The Board of Trustees of the Leland Stanford Junior University. "
@@ -188,6 +188,10 @@ public class XmlModule extends BaseFormatModule implements Validator {
      */
     public XmlModule(Format format) {
         super(VERSION, RELEASE, RIGHTS, format);
+    }
+    
+    public XmlModule(){
+    	this(null);
     }
 
     /** The instance of a SAX2 XMLReader class used to parse XML instances. */

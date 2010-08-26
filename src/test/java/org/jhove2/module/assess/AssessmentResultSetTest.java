@@ -23,6 +23,7 @@ public class AssessmentResultSetTest {
    
     /* The AssessmentResultSet whose  being examined */
     private AssessmentResultSet resultSet = new AssessmentResultSet();
+    private MockModule assessedObject;
 
     /* Construct a RuleSet object using Spring */
     @Resource(name = "MockModuleRuleSet")
@@ -33,7 +34,7 @@ public class AssessmentResultSetTest {
     /* Construct a Module object using Spring */
     @Resource(name = "MockModule")
     public void setAssessedObject(MockModule assessedObject)  {
-        resultSet.setAssessedObject(assessedObject);
+        this.assessedObject = assessedObject;
     }
 
     @Test
@@ -59,14 +60,14 @@ public class AssessmentResultSetTest {
 
     @Test
     public void testGetAssessedObject() {
-        Object assessedObject = resultSet.getAssessedObject();
+        Object assessedObject = this.assessedObject;
         assertTrue(assessedObject instanceof MockModule);
     }
     
     @Test
     public void testFireAllRules() {
         try {
-            resultSet.fireAllRules();
+            resultSet.fireAllRules(this.assessedObject);
             assertEquals(Validity.True,resultSet.assessmentResults.get(0).getBooleanResult());
             assertEquals(Validity.True,resultSet.assessmentResults.get(1).getBooleanResult());
             assertEquals(Validity.False,resultSet.assessmentResults.get(2).getBooleanResult());

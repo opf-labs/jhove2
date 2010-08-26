@@ -57,13 +57,13 @@ import org.mvel2.MVEL;
  */
 public class AssessmentResultSet extends AbstractReportable {
 
-    /**
-     * A reference to the object instance being assessed. This object could be a
-     * characterization module, such as a
-     * {@link org.jhove2.module.format.FormatModule FormatModule} or a
-     * {@link org.jhove2.core.source.Source Source} item.
-     */
-    protected Object assessedObject;
+//    /**
+//     * A reference to the object instance being assessed. This object could be a
+//     * characterization module, such as a
+//     * {@link org.jhove2.module.format.FormatModule FormatModule} or a
+//     * {@link org.jhove2.core.source.Source Source} item.
+//     */
+//    protected Object assessedObject;
 
     /** The Set of {@link org.jhove2.module.assess.Rule Rule}(s) to be applied against the {@link #assessedObject}. */
     protected RuleSet ruleSet;
@@ -79,24 +79,27 @@ public class AssessmentResultSet extends AbstractReportable {
     protected List<AssessmentResult> assessmentResults;
     
 
-    /**
-     * Gets the {@link #assessedObject}.
-     * 
-     * @return  assessedObject
-     */
-    public Object getAssessedObject() {
-        return assessedObject;
-    }
 
-    /**
-     * Stores a {@link #assessedObject} reference to the object being evaluated
-     * 
-     * @param assessedObject
-     *            the object to set
-     */
-    public void setAssessedObject(Object assessedObject) {
-        this.assessedObject = assessedObject;
-    }
+//    /**
+//     * Gets the {@link #assessedObject}.
+//     *
+//     * @return  assessedObject
+//     */
+//    public Object getAssessedObject() {
+//        return assessedObject;
+//    }
+
+//    /**
+//     * Stores a {@link #assessedObject} reference to the object being evaluated
+//     *
+//     * @param assessedObject
+//     *            the object to set
+//     */
+//    public void setAssessedObject(Object assessedObject) {
+//        this.assessedObject = assessedObject;
+//    }
+
+    public AssessmentResultSet(){};
 
     /**
      * Gets the {@link #ruleSet}
@@ -194,9 +197,10 @@ public class AssessmentResultSet extends AbstractReportable {
      * outcome includes a boolean evaluation of the Rule's conditional
      * expression, and a textual statement based on the true or false value of
      * the evaluation.
-     * @throws JHOVE2Exception 
+     * @param assessedObject Object (Source or Module) to be assessed
+     * @throws JHOVE2Exception
      */
-    public void fireAllRules() throws JHOVE2Exception {
+    public void fireAllRules(Object assessedObject) throws JHOVE2Exception {
         /* Evaluate each Rule */
         for (AssessmentResult result : getAssessmentResults()) {
             result.fireRule(assessedObject);
@@ -206,36 +210,36 @@ public class AssessmentResultSet extends AbstractReportable {
         for (AssessmentResult result : getAssessmentResults()) {
             Validity ruleTruth = result.getBooleanResult();
             switch (ruleTruth) {
-                case True: 
-                    if (ruleSetTruth == null) 
-                        ruleSetTruth = Validity.True; 
+                case True:
+                    if (ruleSetTruth == null)
+                        ruleSetTruth = Validity.True;
                     break;
-                case False: 
-                    if (! Validity.Undetermined.equals(ruleSetTruth)) 
-                        ruleSetTruth = Validity.False; 
+                case False:
+                    if (! Validity.Undetermined.equals(ruleSetTruth))
+                        ruleSetTruth = Validity.False;
                     break;
                 case Undetermined:
-                    ruleSetTruth = Validity.Undetermined; 
+                    ruleSetTruth = Validity.Undetermined;
                     break;
             }
         }
-        if (ruleSetTruth != null) 
+        if (ruleSetTruth != null)
             this.booleanResult = ruleSetTruth;
         else
-            this.booleanResult = Validity.Undetermined; 
+            this.booleanResult = Validity.Undetermined;
         /* Set Narrative Result for RuleSet */
         switch (ruleSetTruth) {
-            case True:  
-                this.narrativeResult = ruleSet.consequent; 
+            case True:
+                this.narrativeResult = ruleSet.consequent;
                 break;
             case False:
-                this.narrativeResult = ruleSet.alternative; 
+                this.narrativeResult = ruleSet.alternative;
                 break;
             case Undetermined:
-                this.narrativeResult = Validity.Undetermined.toString(); 
+                this.narrativeResult = Validity.Undetermined.toString();
                 break;
         }
-        
+
     }
 
 }

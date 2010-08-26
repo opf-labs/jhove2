@@ -51,10 +51,10 @@ import org.jhove2.module.AbstractCommand;
  */
 public class AssessorCommand extends AbstractCommand {
     /** AssessorCommand module version identifier. */
-    public static final String VERSION = "0.1.0";
+    public static final String VERSION = "2.0.0";
 
     /** AssessorCommand module release date. */
-    public static final String RELEASE = "2010-05-19";
+    public static final String RELEASE = "2010-09-10";
 
     /** AssessorCommand module rights statement. */
     public static final String RIGHTS = "Copyright 2010 by The Regents of the University of California, "

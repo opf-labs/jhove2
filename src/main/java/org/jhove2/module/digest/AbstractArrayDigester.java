@@ -47,6 +47,10 @@ import org.jhove2.core.reportable.AbstractReportable;
 public abstract class AbstractArrayDigester extends AbstractReportable implements ArrayDigester {
 	/** Message digest algorithm. */
 	protected String algorithm;
+	
+	public AbstractArrayDigester(){
+		super();
+	}
 
 	/**
 	 * Instantiate a new <code>AbstractArrayDigester</code>.

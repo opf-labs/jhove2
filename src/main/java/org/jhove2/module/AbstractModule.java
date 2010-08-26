@@ -111,6 +111,9 @@ public abstract class AbstractModule
 		this.name        = this.getClass().getSimpleName();
 	}
 
+	public AbstractModule(){
+		super();
+	}
 	/**
 	 * Get module developers.
 	 * 
