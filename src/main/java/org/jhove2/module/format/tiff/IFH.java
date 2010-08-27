@@ -36,9 +36,8 @@ public class IFH
 	
 	@ReportableProperty(order = 1, value = "IFH byte order.")
 	public String getByteOrdering() {
-	    String ordering;
 		return byteOrdering + " (" +
-		       (ordering = (byteOrdering.equals("II")? "little-endian" : "big-endian")) + ")";
+		      ((byteOrdering.equals("II")? "little-endian" : "big-endian")) + ")";
 	}
 	
 	@ReportableProperty(order = 3, value = "Offset of first IFD.") 

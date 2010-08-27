@@ -12,30 +12,26 @@ import org.jhove2.core.reportable.AbstractReportable;
 /**
  * @author mstrong
  *
- * LongArray class - holds an Array of LONG Tiff type values
- * @see org.jhove2.module.format.tiff.Long
- *
  */
-public class LongArray
+public class SLongArray
     extends AbstractReportable {
-    
     private long[] valueArray;
 
-    /**  no-arg constructor for LongArray object */
-    public LongArray() {
+    /**  no-arg constructor for SLongArray object */
+    public SLongArray() {
     }
 
     public void setValue(Input input, long count) throws IOException {
         valueArray = new long [(int) count];
         for (int i=0; i<count; i++) {
-            valueArray[i] = input.readUnsignedInt();
+            valueArray[i] = input.readSignedLong();
         }
     }
     
     /**
      * @return the value
      */
-    @ReportableProperty(order = 1, value = "Tag LONG Array value")
+    @ReportableProperty(order = 1, value = "Tag SLONG Array value")
     public String getValue() {
         return this.toString();
     }
@@ -53,4 +49,3 @@ public class LongArray
         return result.toString();        
     }
 }
-

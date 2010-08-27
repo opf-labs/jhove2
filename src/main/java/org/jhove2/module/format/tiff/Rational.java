@@ -4,7 +4,7 @@
 package org.jhove2.module.format.tiff;
 
 import java.io.IOException;
-
+import java.lang.Long;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;

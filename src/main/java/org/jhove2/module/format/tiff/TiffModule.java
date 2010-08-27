@@ -171,6 +171,7 @@ public class TiffModule extends BaseFormatModule implements Validator
 
             int magic = input.readUnsignedShort();
             if (magic != 43 && magic != 42) {
+                this.validity = Validity.False;
                 Object[]messageArgs = new Object[]{magic};
                 this.invalidMagicNumberMessage.add(new Message(Severity.ERROR,
                         Context.OBJECT,
@@ -229,15 +230,6 @@ public class TiffModule extends BaseFormatModule implements Validator
                         jhove2.getConfigInfo()));               
             }
 
-            /* offset must be word aligned (even number) */
-            if ((offset & 1) != 0) {
-                this.validity = Validity.False;
-                Object[]messageArgs = new Object[]{0, input.getPosition(), offset};
-                this.byteOffsetNotWordAlignedMessage.add(new Message(Severity.ERROR,
-                        Context.OBJECT,
-                        "org.jhove2.module.format.tiff.TIFFModule.ByteOffsetNotWordAlignedMessage",
-                        messageArgs, jhove2.getConfigInfo()));   
-            }
         }
         catch (IOException e) {
             throw new JHOVE2Exception ("TiffModule.parseIFDs(): IOException reading offset to first IFD",e);
@@ -247,6 +239,15 @@ public class TiffModule extends BaseFormatModule implements Validator
         List list = new LinkedList<IFD>();
         long nextIfdOffset = offset;
         while (nextIfdOffset != 0L) {
+            /* offset must be word aligned (even number) */
+            if ((offset & 1) != 0) {
+                this.validity = Validity.False;
+                Object[]messageArgs = new Object[]{0, input.getPosition(), offset};
+                this.byteOffsetNotWordAlignedMessage.add(new Message(Severity.ERROR,
+                        Context.OBJECT,
+                        "org.jhove2.module.format.tiff.TIFFModule.ByteOffsetNotWordAlignedMessage",
+                        messageArgs, jhove2.getConfigInfo()));   
+            }
             IFD ifd = parseIFDList(nextIfdOffset, list, jhove2, input);
             nextIfdOffset  = ifd.getNextIFD(); 
         }

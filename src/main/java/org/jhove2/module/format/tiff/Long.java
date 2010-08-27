@@ -7,18 +7,20 @@ import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.reportable.AbstractReportable;
 
 /**
+ * Store the Tiff LONG type,
+ * 32-bit (4-byte) unsigned integer
  * @author mstrong
  *
  */
-public class LongObject 
+public class Long 
 extends AbstractReportable {
     private long value;
 
     /**  no-arg constructor for Long object */
-    public LongObject() {
+    public Long() {
     }
     
-    LongObject (long value) {
+    Long (long value) {
         this.value = value;
     }
     @ReportableProperty(order = 1, value="Tag Long value")

@@ -6,13 +6,11 @@ package org.jhove2.module.format.tiff;
 
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
 import java.nio.ByteOrder;
 import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.jhove2.core.Message;
 import org.junit.Before;
 import org.junit.Test;
 
