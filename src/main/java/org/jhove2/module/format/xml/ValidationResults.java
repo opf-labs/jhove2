@@ -41,7 +41,6 @@ import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.reportable.AbstractReportable;
-import org.jhove2.module.format.Validator.Validity;
 import org.xml.sax.SAXParseException;
 
 /**

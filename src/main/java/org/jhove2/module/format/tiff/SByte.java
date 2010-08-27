@@ -6,28 +6,31 @@ package org.jhove2.module.format.tiff;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.reportable.AbstractReportable;
 
-
+/**
+ * @author mstrong
+ *
+ */
 /** 
- * stores the Tiff BYTE type.  
- * 8-bit unsigned integer
+ * stores the Tiff SBYTE type.  
+ * 8-bit signed(twos-complement) integer
  * 
  * @author mstrong
  *
  */
-public class Byte 
+public class SByte 
     extends AbstractReportable {
-    private short value;
+    private byte value;
 
-    public Byte(short value) {
+    public SByte(byte value) {
         this.value = value;
     }
     
     /**  no-arg constructor for Byte object */
-    public Byte() {
+    public SByte() {
     }
 
-    @ReportableProperty(order = 1, value="Tag BYTE value")
-    public short getValue(){
+    @ReportableProperty(order = 1, value="Tag SBYTE value")
+    public byte getValue(){
         return value;
     }
 }

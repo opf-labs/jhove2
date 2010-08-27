@@ -6,8 +6,11 @@ package org.jhove2.module.format.tiff;
 import java.io.EOFException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
+import java.util.TreeMap;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.config.ConfigInfo;
@@ -28,7 +31,10 @@ public abstract class IFD
 extends AbstractReportable {
 
     /** IFD Entries in the IFD */
-    protected List<IFDEntry> entries = new ArrayList<IFDEntry>();
+   // protected List<IFDEntry> entries = new ArrayList<IFDEntry>();
+    
+    /** IFD Entries in the IFD */
+    protected HashMap<Integer, IFDEntry> entries = new HashMap<Integer, IFDEntry>();
 
     /** True if this is the first IFD. */
     private boolean first;
@@ -80,25 +86,6 @@ extends AbstractReportable {
         this.unknownTypeMessages = new ArrayList<Message>();
     }
 
-    @ReportableProperty(order = 3, value="IFD entries.")
-    public List<IFDEntry> getIFDEntries() {
-        return entries;
-    }
-
-    @ReportableProperty(order = 4, value = "Offset of next IFD.")
-    public long getNextIFD() {
-        return nextIFD;
-    }
-
-    @ReportableProperty (order = 2, value = "Number of IFD entries.")
-    public int getNumEntries() {
-        return numEntries;
-    }
-
-    @ReportableProperty(order = 1, value = "Byte offset of IFD.")
-    public long getOffset() {
-        return offset;
-    }
 
     /**
      * Parse a source unit input. Implicitly set the start and end elapsed time.
@@ -107,7 +94,6 @@ extends AbstractReportable {
      *            JHOVE2 framework
      * @param input
      *            Input
-     * @return Number of bytes consumed
      * @throws EOFException
      *             If End-of-File is reached reading the source unit
      * @throws IOException
@@ -200,8 +186,7 @@ extends AbstractReportable {
                                     messageArgs, jhove2.getConfigInfo()));  
                             throw new JHOVE2Exception ("Value offset is not within the file");
                         }
-                        /* TODO:  THrow an exception here */
-
+ 
                         /* test off set is word aligned */
                         if ((value & 1) != 0){
                             this.isValid = Validity.False;
@@ -212,7 +197,6 @@ extends AbstractReportable {
                                     messageArgs, jhove2.getConfigInfo()));               
                             throw new JHOVE2Exception ("Value byte offset is not word aligned");
                         }
-
                     }
                     else {
                         /* the value is the actual value */
@@ -223,9 +207,9 @@ extends AbstractReportable {
                     IFDEntry ifdEntry = new IFDEntry(tag, type, count, value);
 
                     ifdEntry.validateEntry(jhove2);
-                    getValues(jhove2, input, ifdEntry);
+                    ifdEntry = readValues(jhove2, input, ifdEntry);
                     version = ifdEntry.getVersion();
-                    entries.add(ifdEntry);
+                    entries.put(tag, ifdEntry);
 
                     /* reset the input position so that the offset is set up correctly since when you read values the
                      * input position gets changed from where you want to be in the IFD 
@@ -236,7 +220,7 @@ extends AbstractReportable {
             }
         }
         catch (IOException e) {
-            throw new JHOVE2Exception ("IOException while reading input " + (offset + 2), e);
+            throw new JHOVE2Exception ("IOException while reading IFD " + (offset + 2), e);
         }
     }
 
@@ -249,19 +233,55 @@ extends AbstractReportable {
     /** get the value(s) for an IFD entry 
      * @param input 
      * @throws IOException */
-    public abstract void getValues (JHOVE2 jhove2, Input input, IFDEntry entry) throws JHOVE2Exception, IOException;
+    public abstract IFDEntry readValues (JHOVE2 jhove2, Input input, IFDEntry entry) throws JHOVE2Exception, IOException;
+
 
     /**
-     * Get the tag sort order error message
-     * 
-     * @return the tagSortOrderErrorMessage
+     * get the byte offset of the IFD 
+     * @return long
      */
-    @ReportableProperty(order=8, value = "tag sort order error message.")
-    public Message getTagSortOrderErrorMessage() {
-        return TagSortOrderErrorMessage;
+    @ReportableProperty(order = 1, value = "Byte offset of IFD.")
+    public long getOffset() {
+        return offset;
     }
 
+    /**
+     * get the number of IFD entries
+     * @return int
+     */
+    @ReportableProperty (order = 2, value = "Number of IFD entries.")
+    public int getNumEntries() {
+        return numEntries;
+    }
 
+    /**
+     * Sort the entries in the HashMap and then return only the IFDEntries
+     * @return
+     */
+    @ReportableProperty(order = 3, value="IFD entries.")
+    public List<IFDEntry> getIFDEntries() {
+        Map<Integer, IFDEntry> sortedEntries = new TreeMap<Integer, IFDEntry>(entries);
+        List<IFDEntry> sortedList = new ArrayList<IFDEntry>(sortedEntries.values());
+        return sortedList;
+    }
+
+    /**
+     * get the offsetof the next IFD 
+     * @return long
+     */
+    @ReportableProperty(order = 4, value = "Offset of next IFD.")
+    public long getNextIFD() {
+        return nextIFD;
+    }
+
+    /**
+     * Get the Zero IFD entries message
+     */
+    @ReportableProperty(order=5, value = "Zero IFD Entries message.")
+    public Message getZeroIFDEntriesMessage(){
+        return zeroIFDEntriesMessage;
+    }
+    
     /**
      * Get byte offset not word aligned message
      * 
@@ -273,11 +293,21 @@ extends AbstractReportable {
     }
 
     /**
+     * Get the tag sort order error message
+     * 
+     * @return the tagSortOrderErrorMessage
+     */
+    @ReportableProperty(order=7, value = "tag sort order error message.")
+    public Message getTagSortOrderErrorMessage() {
+        return TagSortOrderErrorMessage;
+    }
+
+    /**
      * Get the value offset reference location file message
      * 
      * @return the valueOffsetReferenceLocationFileMessage
      */
-    @ReportableProperty(order=9, value = "value offset reference location file message.")
+    @ReportableProperty(order=8, value = "value offset reference location file message.")
     public Message getValueOffsetReferenceLocationFileMessage() {
         return ValueOffsetReferenceLocationFileMessage;
     }
@@ -287,10 +317,11 @@ extends AbstractReportable {
      * 
      * @return the unknownTypeMessage
      */
-    @ReportableProperty(order=10, value = "unknown type message.")
+    @ReportableProperty(order=9, value = "unknown type message.")
     public List<Message> getUnknownTypeMessage() {
         return unknownTypeMessages;
     }
+    
 
     public int getVersion() {
         return this.version;

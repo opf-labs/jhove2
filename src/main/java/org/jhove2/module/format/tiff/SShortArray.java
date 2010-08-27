@@ -10,34 +10,33 @@ import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
 
 /**
+ * Stores an array of TIFF SSHORT types
+ * @see org.jhove2.module.format.tiff.SShort
+ * 
  * @author mstrong
  *
- * LongArray class - holds an Array of LONG Tiff type values
- * @see org.jhove2.module.format.tiff.Long
- *
  */
-public class LongArray
-    extends AbstractReportable {
+public class SShortArray
+    extends AbstractReportable {  
     
-    private long[] valueArray;
+    private short[] valueArray;
 
-    /**  no-arg constructor for LongArray object */
-    public LongArray() {
-    }
-
-    public void setValue(Input input, long count) throws IOException {
-        valueArray = new long [(int) count];
-        for (int i=0; i<count; i++) {
-            valueArray[i] = input.readUnsignedInt();
-        }
-    }
+    /**  no-arg constructor for SShortArray object */
+    public SShortArray() {}
     
     /**
      * @return the value
      */
-    @ReportableProperty(order = 1, value = "Tag LONG Array value")
-    public String getValue() {
+    @ReportableProperty(order = 1, value = "Tag SSHORT Array value")
+    public String getValueArray() {
         return this.toString();
+    }
+    
+    public void setValue(Input input, long count) throws IOException {
+        valueArray = new short [(int) count];
+        for (int i=0; i<count; i++) {
+            valueArray[i] = input.readSignedShort();
+        }   
     }
     
     @Override
@@ -53,4 +52,3 @@ public class LongArray
         return result.toString();        
     }
 }
-
