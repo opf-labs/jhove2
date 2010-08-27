@@ -54,6 +54,9 @@ import org.jhove2.module.format.Validator.Validity;
 public class DescriptionType
         extends AbstractReportable
 {
+    /** Description type signature. */
+    public static final String SIGNATURE = "desc";
+    
     /** Validation status. */
     protected Validity isValid;
  
@@ -105,12 +108,12 @@ public class DescriptionType
             this.signature.append((char) b);
         }
         String signature = this.signature.toString();
-        if (!signature.equals("desc") &&
+        if (!signature.equals(SIGNATURE) &&
             !signature.equals("text")) {
             numErrors++;
             this.isValid = Validity.False;
             Object [] args =
-                new Object [] {input.getPosition()-4L, "desc",
+                new Object [] {input.getPosition()-4L, SIGNATURE,
                                signature.toString()};
             this.invalidTagTypeMessage = new Message(Severity.ERROR,
                 Context.OBJECT,

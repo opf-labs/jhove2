@@ -41,107 +41,106 @@ import java.util.TreeSet;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 
-/** ICC parametric curve type function type, as defined in
- * ICC.1:2004-10, Table 47.
+/** ICC standard illuminant, as defined in ICC.1:2004-10, Table 43.
  * 
  * @author slabrams
  */
-public class FunctionType
-    implements Comparable<FunctionType>
+public class StandardIlluminant
+    implements Comparable<StandardIlluminant>
 {
-    /** Singleton function parameters. */
-    protected static Set<FunctionType> types;
+    /** Singleton standard illuminant illuminant. */
+    protected static Set<StandardIlluminant> illuminants;
 
-    /** Function value. */
-    protected int value;
+    /** Standard illuminant value. */
+    protected long value;
 
-    /** Function parameters. */
-    protected String parameters;
+    /** Standard illuminant. */
+    protected String illuminant;
 
     /**
-     * Instantiate a new <code>FunctionType</code> object.
-     * @param value Function value
-     * @param parameters
-     *            Function parameters
+     * Instantiate a new <code>StandardIlluminant</code> object.
+     * @param value Standard illuminant value
+     * @param illuminant
+     *            Standard illuminant
      */
-    public FunctionType(int value, String parameters) {
-        this.value      = value;
-        this.parameters = parameters;
+    public StandardIlluminant(long value, String illuminant) {
+        this.value    = value;
+        this.illuminant = illuminant;
     }
 
     /**
-     * Get the parameters for a function  value.
+     * Get the illuminant for a standard illuminant value.
      * 
-     * @param value  Function value
+     * @param value  Standard illuminant value
      * @param jhove2 JHOVE2 framework
-     * @return Function parameters, or null if the value is not defined
+     * @return Standard illuminant, or null if the value is not defined
      * @throws JHOVE2Exception
      */
-    public static synchronized FunctionType getFunctionType(int value, JHOVE2 jhove2)
+    public static synchronized StandardIlluminant getStandardIlluminant(long value, JHOVE2 jhove2)
             throws JHOVE2Exception {
-        if (types == null) {
-            /* Initialize the CMMs from a Java resource bundle. */
-            types = new TreeSet<FunctionType>();
-            Properties props = jhove2.getConfigInfo().getProperties("FunctionTypes");
+        if (illuminants == null) {
+            /* Initialize the standard illuminants from a Java resource bundle. */
+            illuminants = new TreeSet<StandardIlluminant>();
+            Properties props = jhove2.getConfigInfo().getProperties("StandardIlluminants");
             if (props != null) {
                 Set<String> set = props.stringPropertyNames();
                 Iterator<String> iter = set.iterator();
                 while (iter.hasNext()) {
                     String val  = iter.next();
-                    String par = props.getProperty(val);
-                    FunctionType type = new FunctionType(Integer.valueOf(val), par);
-                    types.add(type);
+                    String ill = props.getProperty(val);
+                    StandardIlluminant illuminant = new StandardIlluminant(Long.valueOf(val), ill);
+                    illuminants.add(illuminant);
                 }
             }
         }
-        FunctionType type = null;
-        Iterator<FunctionType> iter = types.iterator();
+        StandardIlluminant illuminant = null;
+        Iterator<StandardIlluminant> iter = illuminants.iterator();
         while (iter.hasNext()) {
-            FunctionType typ = iter.next();
-            if (typ.getValue() == value) {
-                type = typ;
+            StandardIlluminant ill = iter.next();
+            if (ill.getValue() == value) {
+                illuminant = ill;
                 break;
             }
         }
 
-        return type;
+        return illuminant;
     }
 
     /**
-     * Get the function parameters.
-     * @return Function parameters
+     * Get the standard illuminant.
+     * @return Standard illuminant
      */
-    public String getParameters() {
-        return this.parameters;
+    public String getIlluminant() {
+        return this.illuminant;
     }
  
     /**
-     * Get the function value.
-     * @return Function value
+     * Get the standard illuminant value.
+     * @return Standard illuminant value
      */
-    public int getValue() {
+    public long getValue() {
         return this.value;
     }
 
     /**
-     * Convert the function type to a Java string in the form:
-     * "value: parameters".
-     * @return Java string representation of the function type
+     * Convert the standard illuminant to a Java string in the form:
+     * "value: illuminant".
+     * @return Java string representation of the standard illuminant
      */
     public String toString() {
-        return this.value + ": " + this.parameters;
+        return this.value + ": " + this.illuminant;
     }
 
     /**
-     * Compare function type.
+     * Compare standard illuminant.
      * @param type
-     *            Function type
+     *            Standard illuminant
      * @return -1, 0, or 1 if this value is less than,
      *         equal to, or greater than the second
      */
     @Override
-    public int compareTo(FunctionType type) {
-        int value = type.getValue();
+    public int compareTo(StandardIlluminant type) {
+        long value = type.getValue();
         if (this.value < value) {
             return -1;
         }

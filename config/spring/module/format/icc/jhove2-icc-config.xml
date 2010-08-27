@@ -399,7 +399,17 @@
 	<bean id="FunctionTypes" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
 		<property name="propertyFileBaseName" value="function-types"/>
 	</bean> 
-	   
+	   		    			    
+	<!-- ICC measurement flares signatures properties bean --> 
+	<bean id="MeasurementFlares" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="measurement-flares"/>
+	</bean> 
+	    	    			    
+	<!-- ICC measurement geometries signatures properties bean --> 
+	<bean id="MeasurementGeometries" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="measurement-geometries"/>
+	</bean> 
+	    
 	<!-- ICC preferred CMM type properties bean -->
 	<bean id="PreferredCMM" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
 		<property name="propertyFileBaseName" value="cmm-signatures"/>
@@ -424,7 +434,17 @@
 	<bean id="RenderingIntents" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
 		<property name="propertyFileBaseName" value="rendering-intents"/>
 	</bean> 
-		    
+		    			    
+	<!-- ICC standard illuminant signatures properties bean --> 
+	<bean id="StandardIlluminants" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="standard-illuminants"/>
+	</bean> 
+	    	    			    
+	<!-- ICC standard observes signatures properties bean --> 
+	<bean id="StandardObservers" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="standard-observers"/>
+	</bean> 
+	  
 	<!-- ICC tags properties bean --> 
 	<bean id="Tags" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
 		<property name="propertyFileBaseName" value="tags"/>

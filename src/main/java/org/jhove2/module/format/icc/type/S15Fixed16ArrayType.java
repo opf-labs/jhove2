@@ -1,24 +1,24 @@
 /**
  * JHOVE2 - Next-generation architecture for format-aware characterization
- * <p>
- * Copyright (c) 2010 by The Regents of the University of California. All rights reserved.
- * </p>
- * <p>
+ *
+ * Copyright (c) 2009 by The Regents of the University of California
+ * All rights reserved.
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * </p>
- * <ul>
- * <li>Redistributions of source code must retain the above copyright notice,
- * this list of conditions and the following disclaimer.</li>
- * <li>Redistributions in binary form must reproduce the above copyright notice,
- * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution.</li>
- * <li>Neither the name of the University of California/California Digital
- * Library, Ithaka Harbors/Portico, or Stanford University, nor the names of its
- * contributors may be used to endorse or promote products derived from this
- * software without specific prior written permission.</li>
- * </ul>
- * <p>
+ *
+ * o Redistributions of source code must retain the above copyright notice,
+ *   this list of conditions and the following disclaimer.
+ *
+ * o Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * o Neither the name of the University of California/California Digital
+ *   Library, Ithaka Harbors/Portico, or Stanford University, nor the names of
+ *   its contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -29,8 +29,7 @@
  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- * </p>
+ * POSSIBILITY OF SUCH DAMAGE. 
  */
 
 package org.jhove2.module.format.icc.type;
@@ -39,7 +38,6 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
@@ -50,54 +48,44 @@ import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
 import org.jhove2.module.format.Validator.Validity;
 
-/** ICC multi-localized Unicode type, as defined in ICC.1:2004-10, \u00a7 10.13.
+/** ICC signed 32-bit fixed point number array type element,
+ * as defined in ICC.1:2004-10, \u00a7 10.18.
  * 
  * @author slabrams
  */
-public class MultiLocalizedUnicodeType
+public class S15Fixed16ArrayType
         extends AbstractReportable
 {
-    /** Recommended name record size, per ICC.1:2004-10, \u00a7 10.13. */
-    public static final int RECOMMENDED_NAME_RECORD_SIZE = 12;
-
-    /** Multi-localized Unicode type signature. */
-    public static final String SIGNATURE = "mluc";
-    
     /** Validation status. */
     protected Validity isValid;
     
-    /** Name record size. */
-    protected long nameRecordSize;
-    
-    /** Number of names. */
-    protected long numberOfNames;
+    /** Number of values. */
+    protected long numberOfValues;
 
-    /** Signature. */
+    /** Signature (of tag type). */
     protected StringBuffer signature = new StringBuffer(4);   
+    
+    /** Values. */
+    protected List<S15Fixed16Number> values;
     
     /** Invalid tag type message. */
     protected Message invalidTagTypeMessage;
-
-    /** Name records. */
-    protected List<NameRecord> nameRecords;
-    
-    /** Name record size not 12 message. */
-    protected Message nameRecordSizeNot12Message;
     
     /** Non-zero data in reserved field message. */
     protected Message nonZeroDataInReservedFieldMessage;
     
-    /** Instantiate a new <code>MultiLocalizedUnicodeType</code>. */
-    public MultiLocalizedUnicodeType() {
+    /** Instantiate a new <code>S15Fixed16ArrayType</code>. */
+    public S15Fixed16ArrayType() {
         super();
         
-        this.isValid     = Validity.Undetermined;
-        this.nameRecords = new ArrayList<NameRecord>();
+        this.isValid = Validity.Undetermined;
+        this.values  = new ArrayList<S15Fixed16Number>();
     }
     
-    /** Parse an ICC tag type.
+    /** Parse an ICC signature tag type element.
      * @param jhove2 JHOVE2 framework
      * @param input  ICC input
+     * @param elementSize Size in bytes of the element
      * @return Number of bytes consumed
      * @throws EOFException
      *             If End-of-File is reached reading the source unit
@@ -105,24 +93,23 @@ public class MultiLocalizedUnicodeType
      *             If an I/O exception is raised reading the source unit
      * @throws JHOVE2Exception
      */
-    public long parse(JHOVE2 jhove2, Input input)
+    public long parse(JHOVE2 jhove2, Input input, long elementSize)
         throws EOFException, IOException, JHOVE2Exception
     {
         long consumed  = 0L;
         int  numErrors = 0;
-        long position  = input.getPosition();
-        this.isValid = Validity.True;
+        this.isValid   = Validity.True;
   
         /* Tag signature. */
         for (int i=0; i<4; i++) {
             short b = input.readUnsignedByte();
             this.signature.append((char) b);
         }
-        if (!this.signature.toString().equals(SIGNATURE)) {
+        if (!this.signature.toString().equals("sf32")) {
             numErrors++;
             this.isValid = Validity.False;
             Object [] args =
-                new Object [] {input.getPosition()-4L, SIGNATURE,
+                new Object [] {input.getPosition()-4L, "sf32",
                                signature.toString()};
             this.invalidTagTypeMessage = new Message(Severity.ERROR,
                 Context.OBJECT,
@@ -144,37 +131,14 @@ public class MultiLocalizedUnicodeType
         }
         consumed += 4;
         
-        /* Number of names. */
-        this.numberOfNames = input.readUnsignedInt();
-        consumed += 4;
-        
-        /* Name record size. */
-        this.nameRecordSize = input.readUnsignedInt();
-        if (this.nameRecordSize != RECOMMENDED_NAME_RECORD_SIZE) {
-            Object [] args = new Object [] {input.getPosition()-4L, this.nameRecordSize};
-            this.nameRecordSizeNot12Message = new Message(Severity.WARNING,
-                    Context.OBJECT,
-                    "org.jhove2.module.format.icc.type.MultiLocalizedUnicodeType.NameRecordSizeNot12",
-                    args, jhove2.getConfigInfo());
+        this.numberOfValues = (elementSize-8)/4;
+        for (int i=0; i<this.numberOfValues; i++) {
+            int in = input.readSignedInt();
+            S15Fixed16Number s15f16 = new S15Fixed16Number(in);
+            this.values.add(s15f16);
+            consumed += 4;
         }
-        consumed += 4;
-        
-        for (int i=0; i<this.numberOfNames; i++) {
-            NameRecord record = new NameRecord();
-            consumed += record.parse(jhove2, input);
             
-            long length = record.getLength()/2L; /* Length in bytes, not 16-bit characters. */
-            long offset = record.getOffset();
-            StringBuffer name = new StringBuffer();
-            input.setPosition(position + offset);
-            for (int j=0; j<length; j++) {
-                name.append(input.readChar());
-            }
-            record.setName(name.toString());
-            
-            this.nameRecords.add(record);
-        }
-         
         return consumed;
     }
     
@@ -186,24 +150,6 @@ public class MultiLocalizedUnicodeType
         return this.invalidTagTypeMessage;
     }
 
-    /** Get name records.
-     * @return Name records
-     */
-    @ReportableProperty(order=4, value="Name records.",
-            ref="ICC.1:2004-10, Table 44")
-    public List<NameRecord> getNameRecords() {
-        return this.nameRecords;
-    }
-    
-    /** Get name record size.
-     * @return Name record size
-     */
-    @ReportableProperty(order=3, value="Name record size.",
-            ref="ICC.1:2004-10, Table 44")
-    public long getNameRecordSize() {
-        return this.nameRecordSize;
-    }
-    
     /** Get non-zero data in reserved field message.
      * @return Non-zero data in reserved field message
      */
@@ -211,29 +157,38 @@ public class MultiLocalizedUnicodeType
     public Message getNonZeroDataInReservedFieldMessage() {
         return this.nonZeroDataInReservedFieldMessage;
     }
-    /** Get number of names.
-     * @return Number of names
-     */
-    @ReportableProperty(order=2, value="Number of names.",
-            ref="ICC.1:2004-10, Table 44")
-    public long getNumberOfNames() {
-        return this.numberOfNames;
-    }
     
-    /** Get signature.
-     * @return Signature.
+    /** Get number of values.
+     * @return Number of values
      */
-    @ReportableProperty(order=1, value="Signature.",
-            ref="ICC.1:2004-10, Table 44")
+    @ReportableProperty(order=2, value="Values.",
+            ref="ICC.1:2004-10, \u00a7 10.18")
+    public long getNumberOfValues() {
+        return this.numberOfValues;
+    }
+    /** Get type signature.
+     * @return Type signature
+     */
+    @ReportableProperty(order=1, value="Type signature.",
+            ref="ICC.1:2004-10, \u00a7 10.18")
     public String getSignature() {
         return this.signature.toString();
+    }
+    
+    /** Get values.
+     * @return Values
+     */
+    @ReportableProperty(order=3, value="Values.",
+            ref="ICC.1:2004-10, \u00a7 10.18")
+    public List<S15Fixed16Number> getValues() {
+        return this.values;
     }
     
     /** Get validation status.
      * @return Validation status
      */
-    @ReportableProperty(order=5, value="Validation status.",
-            ref="ICC.1:2004-10, \u00a7 10")
+    @ReportableProperty(order=4, value="Validation status.",
+            ref="ICC.1:2004-10, \u00a7 10.18")
     public Validity isValid() {
         return this.isValid;
     }

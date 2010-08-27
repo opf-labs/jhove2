@@ -1,5 +1,5 @@
 /**
- * JHOVE2 - Next-generation architecture for format-aware characterization
+ * HOVE2 - Next-generation architecture for format-aware characterization
  * <p>
  * Copyright (c) 2010 by The Regents of the University of California. All rights reserved.
  * </p>
@@ -47,40 +47,57 @@ import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
 import org.jhove2.module.format.Validator.Validity;
 
-/** ICC ASCII text type, as defined in ICC.1:2004-10, \u00a7 10.20.
- * This class also supports the older "desc" description type.
+/** ICC measurement type element, as defined in ICC.1:2004-10, \u00a7 10.12.
  * 
  * @author slabrams
  */
-public class TextType
+public class MeasurementType
         extends AbstractReportable
 {
-    /** Text type signature. */
-    public static final String SIGNATURE = "text";
+    /** Measurement type signature. */
+    public static final String SIGNATURE = "meas";
+    
+    /** Measurement flare in raw form. */
+    protected long measurementFlare;
+    
+    /** Measurement flare in descriptive form. */
+    protected String measurementFlare_d;
+    
+    /** Measurement geometry in raw form. */
+    protected long measurementGeometry;
+    
+    /** Measurement geomtry in descriptive form. */
+    protected String measurementGeometry_d;
     
     /** Validation status. */
     protected Validity isValid;
  
-    /** Text size in bytes. */
-    protected long size;
-    
-    /** Text. */
-    protected StringBuffer text;
-
     /** Signature. */
     protected StringBuffer signature = new StringBuffer(4);   
+
+    /** Standard illuminant in raw form. */
+    protected long standardIlluminant;
     
+    /** Standard illuminant in descriptive form. */
+    protected String standardIlluminant_d;
+
+    /** Standard observer in raw form. */
+    protected long standardObserver;
+    
+    /** Standard observer in descriptive form. */
+    protected String standardObserver_d;
+    
+    /** XYZ tristimilus values for measurement backing. */
+    protected XYZNumber xyzForMeasurement;
+ 
     /** Invalid tag type message. */
     protected Message invalidTagTypeMessage;
-    
-    /** Missing final NUL (0x00) byte. */
-    protected Message missingFinalNULByteMessage;
-    
+
     /** Non-zero data in reserved field message. */
     protected Message nonZeroDataInReservedFieldMessage;
     
-    /** Instantiate a new <code>TextType</code>. */
-    public TextType() {
+    /** Instantiate a new <code>MeasurementsType</code> element. */
+    public MeasurementType() {
         super();
         
         this.isValid = Validity.Undetermined;
@@ -89,7 +106,6 @@ public class TextType
     /** Parse an ICC tag type.
      * @param jhove2 JHOVE2 framework
      * @param input  ICC input
-     * @param elementSize Element size
      * @return Number of bytes consumed
      * @throws EOFException
      *             If End-of-File is reached reading the source unit
@@ -97,7 +113,7 @@ public class TextType
      *             If an I/O exception is raised reading the source unit
      * @throws JHOVE2Exception
      */
-    public long parse(JHOVE2 jhove2, Input input, long elementSize)
+    public long parse(JHOVE2 jhove2, Input input)
         throws EOFException, IOException, JHOVE2Exception
     {
         long consumed  = 0L;
@@ -109,7 +125,8 @@ public class TextType
             short b = input.readUnsignedByte();
             this.signature.append((char) b);
         }
-        if (!this.signature.toString().equals(SIGNATURE)) {
+        String signature = this.signature.toString();
+        if (!signature.equals(SIGNATURE)) {
             numErrors++;
             this.isValid = Validity.False;
             Object [] args =
@@ -135,28 +152,32 @@ public class TextType
         }
         consumed += 4;
         
-        this.size = elementSize - 8;
-        this.text = new StringBuffer((int) this.size);
-        for (int i=1; i<this.size; i++) {
-            short b = input.readUnsignedByte();
-            text.append((char) b);
-        }
-        consumed += this.size - 1;
-        short b = input.readUnsignedByte();
-        if (b != 0) {
-            numErrors++;
-            this.isValid = Validity.False;
-            Object [] args = new Object [] {input.getPosition()-1L, b};
-            this.missingFinalNULByteMessage = new Message(Severity.ERROR,
-                    Context.OBJECT,
-                    "org.jhove2.module.format.icc.ICCTag.MissingFinalNULByte",
-                    args, jhove2.getConfigInfo());
-        }
-        consumed++;
-          
+        /** Standard observer. */
+        this.standardObserver = input.readUnsignedInt();
+        consumed += 4;
+        
+        /* XYZ tristimulus values for measurement backing. */
+        int x = input.readSignedInt();
+        int y = input.readSignedInt();
+        int z = input.readSignedInt();
+        this.xyzForMeasurement = new XYZNumber(x, y, z);
+        consumed += 12;
+         
+        /** Measurement geometry. */
+        this.measurementGeometry = input.readUnsignedInt();
+        consumed += 4;
+        
+        /** Measurement flare. */
+        this.measurementFlare = input.readUnsignedInt();
+        consumed += 4;
+        
+        /** Standard illuminant. */
+        this.standardIlluminant = input.readUnsignedInt();
+        consumed += 4;
+        
         return consumed;
     }
-    
+
     /** Get invalid tag type message.
      * @return Invalid tag type message
      */
@@ -165,50 +186,100 @@ public class TextType
         return this.invalidTagTypeMessage;
     }
 
-    /** Get text size.
-     * @return Text size
+    /** Get measurement flare in descriptive form.
+     * @return Measurement flare
      */
-    @ReportableProperty(order=1, value="Text size.",
-            ref="ICC.1:2004-10, \ua077 10.20")
-    public long getSize() {
-        return this.size;
+    @ReportableProperty(order=5, value="Measurement flare in descriptive form.",
+            ref="ICC.1:2004-10, \ua077 10.12")
+    public String getMeasurementFlare_descriptive() {
+        return this.measurementFlare_d;
     }
     
+    /** Get measurement flare in raw form.
+     * @return Measurement flare
+     */
+    @ReportableProperty(order=4, value="Measurement flare in raw form.",
+            ref="ICC.1:2004-10, \ua077 10.12")
+    public long getMeasurementFlare_raw() {
+        return this.measurementFlare;
+    }
+
+    /** Get measurement geometry in descriptive form.
+     * @return Measurement geometry
+     */
+    @ReportableProperty(order=7, value="Measurement geomtry in descriptive form.",
+            ref="ICC.1:2004-10, \ua077 10.12")
+    public String getMeasurementGeometry_descriptive() {
+        return this.measurementGeometry_d;
+    }
+    
+    /** Get measurement geometry in raw form.
+     * @return Measurement geometry
+     */
+    @ReportableProperty(order=6, value="Measurement geometry in raw form.",
+            ref="ICC.1:2004-10, \ua077 10.12")
+    public long getMeasurementGeomtry_raw() {
+        return this.measurementGeometry;
+    }
     /** Get non-zero data in reserved field message.
      * @return Non-zero data in reserved field message
      */
     @ReportableProperty(order=12, value="Non-zero data in reserved field.",
-            ref="ICC.1:2004-10, \ua077 10.20")
+            ref="ICC.1:2004-10, \ua077 10.12")
     public Message getNonZeroDataInReservedFieldMessage() {
         return this.nonZeroDataInReservedFieldMessage;
     }
-    
-    /** Get missing final NUL (0x00) byte message.
-     * @return Missing final NUL message
+
+    /** Get standard illuminant in descriptive form.
+     * @return Standard illuminant
      */
-    @ReportableProperty(order=13, value="Missing final NUL (0x00) byte.",
-            ref="ICC.1:2004-10, \ua077 10.20")
-    public Message getMissingFinalNULByteMessage() {
-        return this.missingFinalNULByteMessage;
+    @ReportableProperty(order=9, value="Standard illuminant in descriptive form.",
+            ref="ICC.1:2004-10, \ua077 10.12")
+    public String getStandardIlluminant_descriptive() {
+        return this.standardIlluminant_d;
     }
     
-    /** Get text.
-     * @return Tex.
+    /** Get standard illuminant type in raw form.
+     * @return Illuminant type
      */
-    @ReportableProperty(order=2, value="Tex.",
-            ref="ICC.1:2004-10, \u00a7 10.20")
-    public String getText() {
-        if (this.text != null) {
-            return this.text.toString();
-        }
-        return null;
+    @ReportableProperty(order=8, value="Standard illuminant in raw form.",
+            ref="ICC.1:2004-10, \ua077 10.12")
+    public long getStandardIlluminant_raw() {
+        return this.standardIlluminant;
+    }
+
+    /** Get standard observer in descriptive form.
+     * @return Standard observer
+     */
+    @ReportableProperty(order=2, value="Standard observer in descriptive form.",
+            ref="ICC.1:2004-10, \ua077 10.12")
+    public String getStandardObserver_descriptive() {
+        return this.standardObserver_d;
     }
     
+    /** Get standard observer in raw form.
+     * @return Standard observer
+     */
+    @ReportableProperty(order=1, value="Standard observer in raw form.",
+            ref="ICC.1:2004-10, \ua077 10.12")
+    public long getStandardObserver_raw() {
+        return this.standardObserver;
+    }
+    
+    /** XYZ tristimulus values for measurement backing.
+     * @return XYZ values for measurement backing
+     */
+    @ReportableProperty(order=3, value="XYZ tristimulus values for measurement backing.",
+            ref="ICC.1:2004-10, \ua077 10.12")
+    public XYZNumber getXYZForMeasurementBacking() {
+        return this.xyzForMeasurement;
+    }
+
     /** Get validation status.
      * @return Validation status
      */
-    @ReportableProperty(order=3, value="Validation status.",
-            ref="ICC.1:2004-10, \u00a7 10.20")
+    @ReportableProperty(order=10, value="Validation status.",
+            ref="ICC.1:2004-10, \u00a7 10.12")
     public Validity isValid() {
         return this.isValid;
     }

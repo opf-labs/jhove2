@@ -30,16 +30,12 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- * </p>
  */
 
 package org.jhove2.module.format.icc.type;
 
 import java.io.EOFException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
@@ -49,50 +45,51 @@ import org.jhove2.core.Message.Severity;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
 import org.jhove2.module.format.Validator.Validity;
+import org.jhove2.module.format.icc.field.StandardIlluminant;
 
-/** ICC multi-localized Unicode type, as defined in ICC.1:2004-10, \u00a7 10.13.
+/** ICC viewing conditions type, as defined in ICC.1:2004-10,
+ * \u00a7 10.26.
  * 
- * @author slabrams
+ * @author slabram
  */
-public class MultiLocalizedUnicodeType
+public class ViewingConditionsType
         extends AbstractReportable
 {
-    /** Recommended name record size, per ICC.1:2004-10, \u00a7 10.13. */
-    public static final int RECOMMENDED_NAME_RECORD_SIZE = 12;
-
-    /** Multi-localized Unicode type signature. */
-    public static final String SIGNATURE = "mluc";
+    /** Viewing conditions type signature. */
+    public static final String SIGNATURE = "view";
+    
+    /** Illuminant type in raw form. */
+    protected long illuminantType;
+    
+    /** Illuminant type in descriptive form. */
+    protected String illuminantType_d;
     
     /** Validation status. */
     protected Validity isValid;
-    
-    /** Name record size. */
-    protected long nameRecordSize;
-    
-    /** Number of names. */
-    protected long numberOfNames;
-
+ 
     /** Signature. */
     protected StringBuffer signature = new StringBuffer(4);   
+
+    /** CIE "absolute" XYZ values for illuminant. */
+    protected XYZNumber xyzForIlluminant;
+
+    /** CIE "absolute" XYZ values for surround. */
+    protected XYZNumber xyzForSurround;
+ 
+    /** Invalid standard illuminant message.*/
+    protected Message invalidStandardIlluminantMessage;
     
     /** Invalid tag type message. */
     protected Message invalidTagTypeMessage;
 
-    /** Name records. */
-    protected List<NameRecord> nameRecords;
-    
-    /** Name record size not 12 message. */
-    protected Message nameRecordSizeNot12Message;
-    
     /** Non-zero data in reserved field message. */
     protected Message nonZeroDataInReservedFieldMessage;
     
-    /** Instantiate a new <code>MultiLocalizedUnicodeType</code>. */
-    public MultiLocalizedUnicodeType() {
+    /** Instantiate a new <code>ViewingConditionsType</code> element. */
+    public ViewingConditionsType() {
         super();
         
-        this.isValid     = Validity.Undetermined;
-        this.nameRecords = new ArrayList<NameRecord>();
+        this.isValid = Validity.Undetermined;
     }
     
     /** Parse an ICC tag type.
@@ -110,7 +107,6 @@ public class MultiLocalizedUnicodeType
     {
         long consumed  = 0L;
         int  numErrors = 0;
-        long position  = input.getPosition();
         this.isValid = Validity.True;
   
         /* Tag signature. */
@@ -118,7 +114,8 @@ public class MultiLocalizedUnicodeType
             short b = input.readUnsignedByte();
             this.signature.append((char) b);
         }
-        if (!this.signature.toString().equals(SIGNATURE)) {
+        String signature = this.signature.toString();
+        if (!signature.equals(SIGNATURE)) {
             numErrors++;
             this.isValid = Validity.False;
             Object [] args =
@@ -144,40 +141,67 @@ public class MultiLocalizedUnicodeType
         }
         consumed += 4;
         
-        /* Number of names. */
-        this.numberOfNames = input.readUnsignedInt();
-        consumed += 4;
+        /* CIE "absolute" XYZ for illuminant. */
+        int x = input.readSignedInt();
+        int y = input.readSignedInt();
+        int z = input.readSignedInt();
+        this.xyzForIlluminant = new XYZNumber(x, y, z);
+        consumed += 12;
         
-        /* Name record size. */
-        this.nameRecordSize = input.readUnsignedInt();
-        if (this.nameRecordSize != RECOMMENDED_NAME_RECORD_SIZE) {
-            Object [] args = new Object [] {input.getPosition()-4L, this.nameRecordSize};
-            this.nameRecordSizeNot12Message = new Message(Severity.WARNING,
+        /* CIE "absolute" XYZ for surround. */
+        x = input.readSignedInt();
+        y = input.readSignedInt();
+        z = input.readSignedInt();
+        this.xyzForSurround = new XYZNumber(x, y, z);
+        consumed += 12;
+        
+        /** Illuminant type. */
+        this.illuminantType = input.readUnsignedInt();
+        StandardIlluminant type =
+            StandardIlluminant.getStandardIlluminant(this.illuminantType,
+                                                     jhove2);
+        if (type != null) {
+            this.illuminantType_d = type.getIlluminant();
+        }
+        else {
+            this.isValid = Validity.False;
+            Object [] args = new Object [] {input.getPosition()-4L, this.illuminantType};
+            this.invalidStandardIlluminantMessage = new Message(Severity.ERROR,
                     Context.OBJECT,
-                    "org.jhove2.module.format.icc.type.MultiLocalizedUnicodeType.NameRecordSizeNot12",
+                    "org.jhove2.module.format.icc.ICCTag.InvalidStandardIlluminant",
                     args, jhove2.getConfigInfo());
         }
         consumed += 4;
         
-        for (int i=0; i<this.numberOfNames; i++) {
-            NameRecord record = new NameRecord();
-            consumed += record.parse(jhove2, input);
-            
-            long length = record.getLength()/2L; /* Length in bytes, not 16-bit characters. */
-            long offset = record.getOffset();
-            StringBuffer name = new StringBuffer();
-            input.setPosition(position + offset);
-            for (int j=0; j<length; j++) {
-                name.append(input.readChar());
-            }
-            record.setName(name.toString());
-            
-            this.nameRecords.add(record);
-        }
-         
         return consumed;
     }
+
+    /** Get illuminant type in descriptive form.
+     * @return Illuminant type
+     */
+    @ReportableProperty(order=4, value="Illuminant type in descriptive form.",
+            ref="ICC.1:2004-10, \ua077 10.26")
+    public String getIlluminantType_descriptive() {
+        return this.illuminantType_d;
+    }
     
+    /** Get illuminant type in raw form.
+     * @return Illuminant type
+     */
+    @ReportableProperty(order=3, value="Illuminant type in raw form.",
+            ref="ICC.1:2004-10, \ua077 10.26")
+    public long getIlluminantType_raw() {
+        return this.illuminantType;
+    }
+
+    /** Get invalid standard illuminant message.
+     * @return Invalid standard illuminant message
+     */
+    @ReportableProperty(order=13, value="Invalid standard illuminant.")
+    public Message getInvalidStandardIlluminantMessage() {
+        return this.invalidStandardIlluminantMessage;
+    }
+ 
     /** Get invalid tag type message.
      * @return Invalid tag type message
      */
@@ -185,55 +209,39 @@ public class MultiLocalizedUnicodeType
     public Message getInvalidTagTypeMessage() {
         return this.invalidTagTypeMessage;
     }
-
-    /** Get name records.
-     * @return Name records
-     */
-    @ReportableProperty(order=4, value="Name records.",
-            ref="ICC.1:2004-10, Table 44")
-    public List<NameRecord> getNameRecords() {
-        return this.nameRecords;
-    }
-    
-    /** Get name record size.
-     * @return Name record size
-     */
-    @ReportableProperty(order=3, value="Name record size.",
-            ref="ICC.1:2004-10, Table 44")
-    public long getNameRecordSize() {
-        return this.nameRecordSize;
-    }
-    
+ 
     /** Get non-zero data in reserved field message.
      * @return Non-zero data in reserved field message
      */
-    @ReportableProperty(order=12, value="Non-zero data in reserved field.")
+    @ReportableProperty(order=12, value="Non-zero data in reserved field.",
+            ref="ICC.1:2004-10, \ua077 10.26")
     public Message getNonZeroDataInReservedFieldMessage() {
         return this.nonZeroDataInReservedFieldMessage;
     }
-    /** Get number of names.
-     * @return Number of names
+
+    /** Get CIE "absolute" XYZ values for illuminant.
+     * @return CIE XYZ values for illuminant
      */
-    @ReportableProperty(order=2, value="Number of names.",
-            ref="ICC.1:2004-10, Table 44")
-    public long getNumberOfNames() {
-        return this.numberOfNames;
+    @ReportableProperty(order=1, value="CIE 'absolute' XYZ values for lluminant.",
+            ref="ICC.1:2004-10, \ua077 10.26")
+    public XYZNumber getXYZForIlluminant() {
+        return this.xyzForIlluminant;
     }
-    
-    /** Get signature.
-     * @return Signature.
+
+    /** Get CIE "absolute" XYZ values for surround.
+     * @return CIE XYZ values for surround
      */
-    @ReportableProperty(order=1, value="Signature.",
-            ref="ICC.1:2004-10, Table 44")
-    public String getSignature() {
-        return this.signature.toString();
+    @ReportableProperty(order=2, value="CIE 'absolute' XYZ values for lluminant.",
+            ref="ICC.1:2004-10, \ua077 10.26")
+    public XYZNumber getXYZForSurround() {
+        return this.xyzForSurround;
     }
     
     /** Get validation status.
      * @return Validation status
      */
     @ReportableProperty(order=5, value="Validation status.",
-            ref="ICC.1:2004-10, \u00a7 10")
+            ref="ICC.1:2004-10, \u00a7 10.26")
     public Validity isValid() {
         return this.isValid;
     }

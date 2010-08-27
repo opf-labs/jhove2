@@ -55,6 +55,9 @@ import org.jhove2.module.format.icc.field.FunctionType;
 public class ParametricCurveType
         extends AbstractReportable
 {
+    /** Parametric curve type signature. */
+    public static final String SIGNATURE = "para";
+    
     /** A parameter. */
     protected S15Fixed16Number a;
 
@@ -126,11 +129,11 @@ public class ParametricCurveType
             short b = input.readUnsignedByte();
             this.signature.append((char) b);
         }
-        if (!this.signature.toString().equals("XYZ ")) {
+        if (!this.signature.toString().equals(SIGNATURE)) {
             numErrors++;
             this.isValid = Validity.False;
             Object [] args =
-                new Object [] {input.getPosition()-4L, "XYZ ",
+                new Object [] {input.getPosition()-4L, SIGNATURE,
                                signature.toString()};
             this.invalidTagTypeMessage = new Message(Severity.ERROR,
                 Context.OBJECT,

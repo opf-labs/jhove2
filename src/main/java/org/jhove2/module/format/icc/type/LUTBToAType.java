@@ -36,8 +36,6 @@ package org.jhove2.module.format.icc.type;
 
 import java.io.EOFException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
@@ -48,27 +46,43 @@ import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
 import org.jhove2.module.format.Validator.Validity;
 
-/** ICC curve type element, as defined in ICC.12004-10, \u00a7 10.5.
+/** ICC lookup table (LUT) A-to-B type element,
+ * as defined in ICC.1:2004-10, \u00a7 10.11.
  * 
  * @author slabrams
  */
-public class CurveType
+public class LUTBToAType
         extends AbstractReportable
 {
-    /** Curve type signature. */
-    public static final String SIGNATURE = "curv";
-    
-    /** Count of curve values. */
-    protected long count;
-    
+    /** Lookup table (LUT) B-to-A type signature. */
+    public static final String SIGNATURE = "mBA ";
+ 
     /** Validation status. */
     protected Validity isValid;
+    
+    /** Number of input channels. */
+    protected short numInputChannels;
+    
+    /** Number of output channels. */
+    protected short numOutputChannels;
+   
+    /** Offset to first "A" curve. */
+    protected long offsetACurve;
+    
+    /** Offset to first "B" curve. */
+    protected long offsetBCurve;
+   
+    /** Offset to colour lookup table (CLUT). */
+    protected long offsetCLUT;
+    
+    /** Offset to matrix. */
+    protected long offsetMatrix;
+    
+    /** Offset to first "M" curve. */
+    protected long offsetMCurve;
  
     /** Signature. */
     protected StringBuffer signature = new StringBuffer(4);   
-
-    /** Curve values. */
-    protected List<Integer> values;
 
     /** Invalid tag type message. */
     protected Message invalidTagTypeMessage;
@@ -76,12 +90,11 @@ public class CurveType
     /** Non-zero data in reserved field message. */
     protected Message nonZeroDataInReservedFieldMessage;
     
-    /** Instantiate a new <code>CurveType</code>. */
-    public CurveType() {
+    /** Instantiate a new <code>LUTBToAType</code>. */
+    public LUTBToAType() {
         super();
         
         this.isValid = Validity.Undetermined;
-        this.values  = new ArrayList<Integer>();
     }
     
     /** Parse an ICC tag type.
@@ -132,16 +145,47 @@ public class CurveType
         }
         consumed += 4;
         
-        /* Count of curve values. */
-        this.count = input.readUnsignedInt();
-  
-        /* Curve values. */
-        for (int i=0; i<this.count; i++) {
-            int sh = input.readUnsignedShort();
-            values.add(sh);
-            consumed += 2;
+        /* Number of input channels. */
+        this.numInputChannels = input.readUnsignedByte();
+        consumed++;
+
+        /* Number of output channels. */
+        this.numOutputChannels = input.readUnsignedByte();
+        consumed++;
+ 
+        /* Reserved. */
+        short res = input.readSignedShort();
+        if (res != 0) {
+            numErrors++;
+            this.isValid = Validity.False;
+            Object [] args = new Object [] {input.getPosition()-4L};
+            this.nonZeroDataInReservedFieldMessage = new Message(Severity.ERROR,
+                    Context.OBJECT,
+                    "org.jhove2.module.format.icc.ICCTag.NonZeroDataInReservedField",
+                    args, jhove2.getConfigInfo());
         }
-          
+        consumed += 4;
+
+        /* Offset to first 'B' curve. */
+        this.offsetBCurve = input.readUnsignedInt();
+        consumed += 4;
+
+        /* Offset to matrix. */
+        this.offsetMatrix = input.readUnsignedInt();
+        consumed += 4;
+
+        /* Offset to first 'M' curve. */
+        this.offsetMCurve = input.readUnsignedInt();
+        consumed += 4;
+
+        /* Offset to colour lookup table (CLUT). */
+        this.offsetCLUT = input.readUnsignedInt();
+        consumed += 4;
+
+        /* Offset to first 'A' curve. */
+        this.offsetACurve = input.readUnsignedInt();
+        consumed += 4;
+       
         return consumed;
     }
     
@@ -152,16 +196,7 @@ public class CurveType
     public Message getInvalidTagTypeMessage() {
         return this.invalidTagTypeMessage;
     }
-
-    /** Get count of curve values.
-     * @return Count of curve values
-     */
-    @ReportableProperty(order=1, value="Count of values.",
-            ref="ICC.1:2004-10, \ua077 10.5")
-    public long getCount() {
-        return this.count;
-    }
-    
+ 
     /** Get non-zero data in reserved field message.
      * @return Non-zero data in reserved field message
      */
@@ -170,21 +205,75 @@ public class CurveType
     public Message getNonZeroDataInReservedFieldMessage() {
         return this.nonZeroDataInReservedFieldMessage;
     }
-     
-    /** Get curve values.
-     * @return Curve values.
+
+    /** Get number of input channels.
+     * @return Number of input channels
      */
-    @ReportableProperty(order=2, value="Curve values.",
-            ref="ICC.1:2004-10, \u00a7 10.5")
-    public List<Integer> getValues() {
-        return this.values;
+    @ReportableProperty(order=1, value="Number of input channels.",
+            ref="ICC.1:2004-10, Table 35.")
+    public short getNumberOfInputChannels() {
+        return this.numInputChannels;
+    }
+   
+    /** Get number of output channels.
+     * @return Number of output channels
+     */
+    @ReportableProperty(order=2, value="Number of output channels.",
+            ref="ICC.1:2004-10, Table 35")
+    public short getNumberOfOutputChannels() {
+        return this.numOutputChannels;
+    }
+    
+    /** Get offset to first "A" curve.
+     * @return Offset to first "A" curve
+     */
+    @ReportableProperty(order=7, value="Offset to first 'A' curve.",
+            ref="ICC.1:2004-10, Table 35")
+    public long getOffsetToFirstACurve() {
+        return this.offsetACurve;
+    }
+    
+    /** Get offset to first "B" curve.
+     * @return Offset to first "B" curve
+     */
+    @ReportableProperty(order=3, value="Offset to first 'B' curve.",
+            ref="ICC.1:2004-10, Table 35")
+    public long getOffsetToFirstBCurve() {
+        return this.offsetBCurve;
+    }
+    
+    /** Get offset to colour lookup table (CLUT).
+     * @return Offset to CLUT
+     */
+    @ReportableProperty(order=6, value="Offset to colour lookup table (CLUT).",
+            ref="ICC.1:2004-10, Table 35")
+    public long getOffsetToCLUT() {
+        return this.offsetCLUT;
+    }
+    
+    /** Get offset to matrix.
+     * @return Offset to matrix
+     */
+    @ReportableProperty(order=4, value="Offset to matrix.",
+            ref="ICC.1:2004-10, Table 35")
+    public long getOffsetToMatrix() {
+        return this.offsetMatrix;
+    }
+    
+    /** Get offset to first "M" curve.
+     * @return Offset to first "M" curve
+     */
+    @ReportableProperty(order=5, value="Offset to first 'M' curve.",
+            ref="ICC.1:2004-10, Table 35")
+    public long getOffsetToFirstMCurve() {
+        return this.offsetMCurve;
     }
     
     /** Get validation status.
      * @return Validation status
      */
-    @ReportableProperty(order=3, value="Validation status.",
-            ref="ICC.1:2004-10, \u00a7 10.5")
+    @ReportableProperty(order=8, value="Validation status.",
+            ref="ICC.1:2004-10, \u00a7 10.10")
     public Validity isValid() {
         return this.isValid;
     }

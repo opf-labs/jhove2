@@ -41,107 +41,106 @@ import java.util.TreeSet;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 
-/** ICC parametric curve type function type, as defined in
- * ICC.1:2004-10, Table 47.
+/** ICC measurement flare, as defined in ICC.1:2004-10, Table 42.
  * 
  * @author slabrams
  */
-public class FunctionType
-    implements Comparable<FunctionType>
+public class MeasurementFlare
+    implements Comparable<MeasurementFlare>
 {
-    /** Singleton function parameters. */
-    protected static Set<FunctionType> types;
+    /** Singleton measurement flare. */
+    protected static Set<MeasurementFlare> flares;
 
-    /** Function value. */
-    protected int value;
+    /** Measurement flare value. */
+    protected long value;
 
-    /** Function parameters. */
-    protected String parameters;
+    /** Measurement flare. */
+    protected String flare;
 
     /**
-     * Instantiate a new <code>FunctionType</code> object.
-     * @param value Function value
-     * @param parameters
-     *            Function parameters
+     * Instantiate a new <code>MeasurementFlare</code> object.
+     * @param value Measurement flare value
+     * @param flare
+     *            Measurement flare
      */
-    public FunctionType(int value, String parameters) {
-        this.value      = value;
-        this.parameters = parameters;
+    public MeasurementFlare(long value, String flare) {
+        this.value    = value;
+        this.flare = flare;
     }
 
     /**
-     * Get the parameters for a function  value.
+     * Get the flare for a measurement flare value.
      * 
-     * @param value  Function value
+     * @param value  Measurement flare value
      * @param jhove2 JHOVE2 framework
-     * @return Function parameters, or null if the value is not defined
+     * @return Measurement flare, or null if the value is not defined
      * @throws JHOVE2Exception
      */
-    public static synchronized FunctionType getFunctionType(int value, JHOVE2 jhove2)
+    public static synchronized MeasurementFlare getMeasurementFlare(long value, JHOVE2 jhove2)
             throws JHOVE2Exception {
-        if (types == null) {
-            /* Initialize the CMMs from a Java resource bundle. */
-            types = new TreeSet<FunctionType>();
-            Properties props = jhove2.getConfigInfo().getProperties("FunctionTypes");
+        if (flares == null) {
+            /* Initialize the measurement flares from a Java resource bundle. */
+            flares = new TreeSet<MeasurementFlare>();
+            Properties props = jhove2.getConfigInfo().getProperties("MeasurementFlares");
             if (props != null) {
                 Set<String> set = props.stringPropertyNames();
                 Iterator<String> iter = set.iterator();
                 while (iter.hasNext()) {
                     String val  = iter.next();
-                    String par = props.getProperty(val);
-                    FunctionType type = new FunctionType(Integer.valueOf(val), par);
-                    types.add(type);
+                    String fla = props.getProperty(val);
+                    MeasurementFlare flare = new MeasurementFlare(Integer.valueOf(val), fla);
+                    flares.add(flare);
                 }
             }
         }
-        FunctionType type = null;
-        Iterator<FunctionType> iter = types.iterator();
+        MeasurementFlare flare = null;
+        Iterator<MeasurementFlare> iter = flares.iterator();
         while (iter.hasNext()) {
-            FunctionType typ = iter.next();
-            if (typ.getValue() == value) {
-                type = typ;
+            MeasurementFlare fla = iter.next();
+            if (fla.getValue() == value) {
+                flare = fla;
                 break;
             }
         }
 
-        return type;
+        return flare;
     }
 
     /**
-     * Get the function parameters.
-     * @return Function parameters
+     * Get the measurement flare.
+     * @return Measurement flare
      */
-    public String getParameters() {
-        return this.parameters;
+    public String getFlare() {
+        return this.flare;
     }
  
     /**
-     * Get the function value.
-     * @return Function value
+     * Get the measurement flare value.
+     * @return Measurement flare value
      */
-    public int getValue() {
+    public long getValue() {
         return this.value;
     }
 
     /**
-     * Convert the function type to a Java string in the form:
-     * "value: parameters".
-     * @return Java string representation of the function type
+     * Convert the measurement flare to a Java string in the form:
+     * "value: flare".
+     * @return Java string representation of the measurement flare
      */
     public String toString() {
-        return this.value + ": " + this.parameters;
+        return this.value + ": " + this.flare;
     }
 
     /**
-     * Compare function type.
+     * Compare measurement flare.
      * @param type
-     *            Function type
+     *            Measurement flare
      * @return -1, 0, or 1 if this value is less than,
      *         equal to, or greater than the second
      */
     @Override
-    public int compareTo(FunctionType type) {
-        int value = type.getValue();
+    public int compareTo(MeasurementFlare type) {
+        long value = type.getValue();
         if (this.value < value) {
             return -1;
         }

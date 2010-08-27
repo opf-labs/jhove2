@@ -41,107 +41,106 @@ import java.util.TreeSet;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 
-/** ICC parametric curve type function type, as defined in
- * ICC.1:2004-10, Table 47.
+/** ICC measurement geometry, as defined in ICC.1:2004-10, Table 41.
  * 
  * @author slabrams
  */
-public class FunctionType
-    implements Comparable<FunctionType>
+public class MeasurementGeometry
+    implements Comparable<MeasurementGeometry>
 {
-    /** Singleton function parameters. */
-    protected static Set<FunctionType> types;
+    /** Singleton measurement geometry. */
+    protected static Set<MeasurementGeometry> geometries;
 
-    /** Function value. */
-    protected int value;
+    /** Measurement geometry value. */
+    protected long value;
 
-    /** Function parameters. */
-    protected String parameters;
+    /** Measurement geometry. */
+    protected String geometry;
 
     /**
-     * Instantiate a new <code>FunctionType</code> object.
-     * @param value Function value
-     * @param parameters
-     *            Function parameters
+     * Instantiate a new <code>MeasurementGeometry</code> object.
+     * @param value Measurement geometry value
+     * @param geometry
+     *            Measurement geometry
      */
-    public FunctionType(int value, String parameters) {
-        this.value      = value;
-        this.parameters = parameters;
+    public MeasurementGeometry(long value, String geometry) {
+        this.value    = value;
+        this.geometry = geometry;
     }
 
     /**
-     * Get the parameters for a function  value.
+     * Get the geometry for a measurement geometry value.
      * 
-     * @param value  Function value
+     * @param value  Measurement geometry value
      * @param jhove2 JHOVE2 framework
-     * @return Function parameters, or null if the value is not defined
+     * @return Measurement geometry, or null if the value is not defined
      * @throws JHOVE2Exception
      */
-    public static synchronized FunctionType getFunctionType(int value, JHOVE2 jhove2)
+    public static synchronized MeasurementGeometry getMeasurementGeometry(long value, JHOVE2 jhove2)
             throws JHOVE2Exception {
-        if (types == null) {
-            /* Initialize the CMMs from a Java resource bundle. */
-            types = new TreeSet<FunctionType>();
-            Properties props = jhove2.getConfigInfo().getProperties("FunctionTypes");
+        if (geometries == null) {
+            /* Initialize the measurement geometrys from a Java resource bundle. */
+            geometries = new TreeSet<MeasurementGeometry>();
+            Properties props = jhove2.getConfigInfo().getProperties("MeasurementGeometries");
             if (props != null) {
                 Set<String> set = props.stringPropertyNames();
                 Iterator<String> iter = set.iterator();
                 while (iter.hasNext()) {
                     String val  = iter.next();
-                    String par = props.getProperty(val);
-                    FunctionType type = new FunctionType(Integer.valueOf(val), par);
-                    types.add(type);
+                    String geo = props.getProperty(val);
+                    MeasurementGeometry geometry = new MeasurementGeometry(Integer.valueOf(val), geo);
+                    geometries.add(geometry);
                 }
             }
         }
-        FunctionType type = null;
-        Iterator<FunctionType> iter = types.iterator();
+        MeasurementGeometry geometry = null;
+        Iterator<MeasurementGeometry> iter = geometries.iterator();
         while (iter.hasNext()) {
-            FunctionType typ = iter.next();
-            if (typ.getValue() == value) {
-                type = typ;
+            MeasurementGeometry geo = iter.next();
+            if (geo.getValue() == value) {
+                geometry = geo;
                 break;
             }
         }
 
-        return type;
+        return geometry;
     }
 
     /**
-     * Get the function parameters.
-     * @return Function parameters
+     * Get the measurement geometry.
+     * @return Measurement geometry
      */
-    public String getParameters() {
-        return this.parameters;
+    public String getGeometry() {
+        return this.geometry;
     }
  
     /**
-     * Get the function value.
-     * @return Function value
+     * Get the measurement geometry value.
+     * @return Measurement geometry value
      */
-    public int getValue() {
+    public long getValue() {
         return this.value;
     }
 
     /**
-     * Convert the function type to a Java string in the form:
-     * "value: parameters".
-     * @return Java string representation of the function type
+     * Convert the measurement geometry to a Java string in the form:
+     * "value: geometry".
+     * @return Java string representation of the measurement geometry
      */
     public String toString() {
-        return this.value + ": " + this.parameters;
+        return this.value + ": " + this.geometry;
     }
 
     /**
-     * Compare function type.
+     * Compare measurement geometry.
      * @param type
-     *            Function type
+     *            Measurement geometry
      * @return -1, 0, or 1 if this value is less than,
      *         equal to, or greater than the second
      */
     @Override
-    public int compareTo(FunctionType type) {
-        int value = type.getValue();
+    public int compareTo(MeasurementGeometry type) {
+        long value = type.getValue();
         if (this.value < value) {
             return -1;
         }

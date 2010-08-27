@@ -91,7 +91,7 @@ public class ICCTagTable
     /** Parse an ICC tag table.
      * @param jhove2 JHOVE2 framework
      * @param input  ICC input
-     * @param isDeviceLinkProfile DeviceLink profile status: true if a DeviceLink profile
+     * @param header ICC header
      * @return Number of bytes consumed
      * @throws EOFException
      *             If End-of-File is reached reading the source unit
@@ -99,12 +99,12 @@ public class ICCTagTable
      *             If an I/O exception is raised reading the source unit
      * @throws JHOVE2Exception
      */
-    public long parse(JHOVE2 jhove2, Input input, boolean isDeviceLinkProfile)
+    public long parse(JHOVE2 jhove2, Input input, ICCHeader header)
         throws EOFException, IOException, JHOVE2Exception
     {
         long    consumed = 0L;
         boolean hasAToB0Tag = false;
-        /* boolean hasChromaticAdaptionTag = false; */
+        boolean hasChromaticAdaptionTag = false;
         boolean hasColorantTableTag = false;
         boolean hasColorantTableOutTag = false;
         boolean hasCopyrightTag = false;
@@ -130,11 +130,9 @@ public class ICCTagTable
             if (signature.equals("A2B0")) {
                 hasAToB0Tag = true;
             }
-            /*
             else if (signature.equals("chad")) {
                 hasChromaticAdaptionTag = true;
             }
-            */
             else if (signature.equals("clrt")) {
                 hasColorantTableTag = true;
             }
@@ -176,7 +174,7 @@ public class ICCTagTable
             this.missingRequiredTagMessages.add(msg);
             this.hasCommonRequirements = false;
         }
-        if (isDeviceLinkProfile) {
+        if (header.isDeviceLinkProfile()) {
             if (!hasAToB0Tag) {
                 numErrors++;
                 this.isValid = Validity.False;
@@ -229,19 +227,18 @@ public class ICCTagTable
                 this.missingRequiredTagMessages.add(msg);
                 this.hasCommonRequirements = false;
             }
-            /* TODO: the "chad" tag is required only if the illuminant is not D50. */
-            /*
-            if (!hasChromaticAdaptionTag) {
-                numErrors++;
-                this.isValid = Validity.False;
-                Object [] args = new Object [] {"Chromatic adaption (\"chad\")"};
-                Message msg = new Message(Severity.ERROR, Context.OBJECT,
-                    "org.jhove2.module.format.icc.ICCTagTable.MissingRequiredTag",
-                    args, jhove2.getConfigInfo());
-                this.missingRequiredTagMessages.add(msg);
-                this.hasCommonRequirements = false;
+            if (!header.isD50Illuminant()) {
+                if (!hasChromaticAdaptionTag) {
+                    numErrors++;
+                    this.isValid = Validity.False;
+                    Object [] args = new Object [] {"Chromatic adaption (\"chad\")"};
+                    Message msg = new Message(Severity.ERROR, Context.OBJECT,
+                            "org.jhove2.module.format.icc.ICCTagTable.MissingRequiredTag",
+                            args, jhove2.getConfigInfo());
+                    this.missingRequiredTagMessages.add(msg);
+                    this.hasCommonRequirements = false;
+                }
             }
-            */
         }
 
         return consumed;

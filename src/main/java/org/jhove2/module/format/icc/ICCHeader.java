@@ -99,6 +99,11 @@ public class ICCHeader
     /** Profile Connection Space (PCS) illuminant. */
     protected XYZNumber illuminant;
     
+    /** Profile Connection Space (PCS) D50 illuminant status:
+     * true if illuminant is D50.
+     */
+    protected boolean isD50Illuminant;
+    
     /** DeviceLink profile status: true if a DeviceLink profile. */
     protected boolean isDeviceLinkProfile;
   
@@ -518,12 +523,17 @@ public class ICCHeader
         }
         consumed += 2;
         
-        /* PCS XYZ tri-stimulus values. */
+        /* PCS illuminat. */
         int x = input.readSignedInt();
         int y = input.readSignedInt();
         int z = input.readSignedInt();
         this.illuminant = new XYZNumber(x, y, z);
-        if (x != D50[0] || y != D50[1] || z != D50[2]) {
+        if (x == D50[0] && y == D50[1] && z == D50[2]) {
+            this.isD50Illuminant = true;
+        }
+        else {
+            this.isD50Illuminant = false;
+            
             numErrors++;
             this.isValid = Validity.False;
             Object [] args = new Object[] {input.getPosition()-12L, this.illuminant.toString()};
@@ -872,7 +882,7 @@ public class ICCHeader
     /** Get profile creator.
      * @return Profile creator
      */
-    @ReportableProperty(order=26, value="Profile creator.",
+    @ReportableProperty(order=27, value="Profile creator.",
             ref="ICC.1:2004-10, \u00a7 7.2.17")
     public String getProfileCreator() {
         if (this.profileCreator != null) {
@@ -930,7 +940,7 @@ public class ICCHeader
     /** Get profile ID (MD5).
      * @return Profile ID
      */
-    @ReportableProperty(order=27, value="Profile ID (MD5).",
+    @ReportableProperty(order=28, value="Profile ID (MD5).",
             ref="ICC.1:2004-10, \u00a7 7.2.18")
     public String getProfileID() {
         return this.profileID.toString();
@@ -970,6 +980,16 @@ public class ICCHeader
             ref="ICC.1:2004-10, \u00a7 7.2.15", type=PropertyType.Descriptive)
     public String getRenderingIntent_descriptive() {
         return this.renderingIntent_d;
+    }
+    
+    /** Get Profile Connection Space (PCS) illuminant status:
+     * true if illuminant is D50 .
+     * @return PCS illuminant status
+     */
+    @ReportableProperty(order=26,
+            value="Profile Connection Space (PCS) status: true if illuminant is D50.")
+    public boolean isD50Illuminant() {
+        return this.isD50Illuminant;
     }
     
     /** Get DeviceLink profile status: true if a DeviceLink profile.

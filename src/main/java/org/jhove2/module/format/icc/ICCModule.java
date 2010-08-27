@@ -137,8 +137,7 @@ public class ICCModule
             }
                 
             this.tagTable = new ICCTagTable();
-            consumed += tagTable.parse(jhove2, input,
-                                       header.isDeviceLinkProfile());
+            consumed += tagTable.parse(jhove2, input,header);
             validity = tagTable.isValid();
             if (validity != Validity.True) {
                 this.isValid = validity;

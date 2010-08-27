@@ -52,10 +52,20 @@ import org.jhove2.module.format.icc.field.TechnologySignature;
 import org.jhove2.module.format.icc.type.CurveType;
 import org.jhove2.module.format.icc.type.DateTimeType;
 import org.jhove2.module.format.icc.type.DescriptionType;
+import org.jhove2.module.format.icc.type.LUT16Type;
+import org.jhove2.module.format.icc.type.LUT8Type;
+import org.jhove2.module.format.icc.type.LUTAToBType;
+import org.jhove2.module.format.icc.type.LUTBToAType;
+import org.jhove2.module.format.icc.type.MeasurementType;
 import org.jhove2.module.format.icc.type.MultiLocalizedUnicodeType;
+import org.jhove2.module.format.icc.type.NamedColor2Type;
 import org.jhove2.module.format.icc.type.ParametricCurveType;
+import org.jhove2.module.format.icc.type.ProfileSequenceDescriptionType;
+import org.jhove2.module.format.icc.type.ResponseCurveSet16Type;
+import org.jhove2.module.format.icc.type.S15Fixed16ArrayType;
 import org.jhove2.module.format.icc.type.SignatureType;
 import org.jhove2.module.format.icc.type.TextType;
+import org.jhove2.module.format.icc.type.ViewingConditionsType;
 import org.jhove2.module.format.icc.type.XYZType;
 
 /** ICC tag.  See ICC.1:2004-10, \u00a7 7.3.1.
@@ -77,8 +87,32 @@ public class ICCTag
     /** Tag validity. */
     protected Validity isValid;
     
+    /** 16-bit LUT type element. */
+    protected LUT16Type lut16Type;
+    
+    /** 8-bit LUT type element. */
+    protected LUT8Type lut8Type;
+    
+    /** LUT A-to-B type element. */
+    protected LUTAToBType lutA2BType;
+    
+    /** LUT B-to-A type element. */
+    protected LUTBToAType lutB2AType;
+    
+    /** Measurement type element. */
+    protected MeasurementType measurementType;
+    
+    /** Named color 2 type element. */
+    protected NamedColor2Type color2Type;
+    
     /** Tag offset. */
     protected long offset;
+    
+    /** Profile sequence description type. */
+    protected ProfileSequenceDescriptionType sequenceType;
+    
+    /** Response curve set 16 type. */
+    protected ResponseCurveSet16Type rcs16Type;
     
     /** Tag signature in raw form. */
     protected StringBuffer signature = new StringBuffer(4);
@@ -88,6 +122,9 @@ public class ICCTag
     
     /** Signature type element. */
     protected SignatureType signatureType;
+    
+    /** Signed 32-bit fixed number array type element. */
+    protected S15Fixed16ArrayType s15f16Type;
     
     /** Tag size. */
     protected long size;
@@ -106,6 +143,9 @@ public class ICCTag
     
     /** Multi-localized Unicode type element. */
     protected MultiLocalizedUnicodeType unicodeType;
+    
+    /** Viewing conditions type element. */
+    protected ViewingConditionsType conditionsType;
     
     /** XYZ tristimulus value array type element. */
     protected XYZType xyzType;
@@ -183,12 +223,77 @@ public class ICCTag
         this.size = input.readUnsignedInt();
         consumed += 4;
         
-        /* Parse the tag type, remembering to save and restore the current
-         * position in the ICC input.
+        /* Parse the tag type, first looking up the tag element type and
+         * remembering to save and restore the current position in the ICC
+         * input.
          */
         long position = input.getPosition();
         input.setPosition(this.offset);
-        if (signature.equals("bkpt") ||
+        
+        StringBuffer sb = new StringBuffer(4);
+        for (int i=0; i<4; i++) {
+            short b = input.readUnsignedByte();
+            sb.append((char) b);
+        }
+        input.setPosition(this.offset);
+        String sig = sb.toString();
+        
+        if (signature.equals("A2B0") ||
+            signature.equals("A2B1") ||
+            signature.equals("A2B2")) {
+            Validity isValid = Validity.Undetermined;
+ 
+            if (sig.equals("mAB ")) {
+                this.lutA2BType = new LUTAToBType();
+                this.lutA2BType.parse(jhove2, input);
+                
+                isValid = this.lutA2BType.isValid();
+            }
+            else if (sig.equals("mft1")) {
+                this.lut8Type = new LUT8Type();
+                this.lut8Type.parse(jhove2, input);
+                
+                isValid = this.lut8Type.isValid();
+            }
+            else if (sig.equals("mft2")) {
+                this.lut16Type = new LUT16Type();
+                this.lut16Type.parse(jhove2, input);
+                
+                isValid = this.lut16Type.isValid();
+            }
+            if (isValid != Validity.True) {
+                this.isValid = isValid;
+            }            
+        }
+        else if (signature.equals("B2A0") ||
+                 signature.equals("B2A1") ||
+                 signature.equals("B2A2") ||
+                 signature.equals("gamt") ||
+                 signature.equals("pre0") ||
+                 signature.equals("pre1") ||
+                 signature.equals("pre2")) {
+            Validity isValid = Validity.Undetermined;
+     
+            if (sig.equals("mBA ")) {
+                this.lutB2AType = new LUTBToAType();
+                this.lutB2AType.parse(jhove2, input);
+                    
+                isValid = this.lutB2AType.isValid();
+            }
+            else if (sig.equals("mft1")) {
+                this.lut8Type = new LUT8Type();
+                this.lut8Type.parse(jhove2, input);
+                    
+                isValid = this.lut8Type.isValid();
+            }
+            else if (sig.equals("mft2")) {
+                
+            }
+            if (isValid != Validity.True) {
+                this.isValid = isValid;
+            }            
+        }
+        else if (signature.equals("bkpt") ||
             signature.equals("bXYZ") ||
             signature.equals("gXYZ") ||
             signature.equals("rXYZ") ||
@@ -205,20 +310,14 @@ public class ICCTag
                  signature.equals("gTRC") ||
                  signature.equals("kTRC") ||
                  signature.equals("rTRC")) {
-            /* Pre-parse the type element to see if it is a curve ("curv")
-             * or a parametric curve ("para") type, resetting the position to
-             * the original.
-             */
-            short b = input.readUnsignedByte();
-            input.setPosition(this.offset);
             Validity isValid = Validity.Undetermined;
-            if (((char) b) == 'c') {
+            if (sig.equals("curv")) {
                 this.curveType = new CurveType();
                 this.curveType.parse(jhove2, input);
                 
                 isValid = this.curveType.isValid();
             }
-            else {
+            else if (sig.equals("para")){
                 this.parametricType = new ParametricCurveType();
                 this.parametricType.parse(jhove2, input);
                 
@@ -237,36 +336,75 @@ public class ICCTag
                 this.isValid = isValid;
             }
         }
+        else if (signature.equals("chad")) {
+            this.s15f16Type = new S15Fixed16ArrayType();
+            this.s15f16Type.parse(jhove2, input, this.size);
+            
+            Validity isValid = this.s15f16Type.isValid();
+            if (isValid != Validity.True) {
+                this.isValid = isValid;
+            }
+        }
         else if (signature.equals("cprt") ||
                  signature.equals("desc") ||
                  signature.equals("dmdd") ||
                  signature.equals("dmnd") ||
                  signature.equals("vued")) {
-            /* Pre-parse the type element to see if it is a text type ("desc")
-             * or a multi-localized Unicode type ("mlut"), resetting the
-             * position to the original.
-             */
-            short b = input.readUnsignedByte();
-            input.setPosition(this.offset);
             Validity isValid = Validity.Undetermined;
-            if (((char) b) == 'd') {
+            if (sig.equals("desc")) {
                 this.descriptionType = new DescriptionType();
                 this.descriptionType.parse(jhove2, input);
                 
                 isValid = this.descriptionType.isValid();
             }
-            else if (((char) b) == 't') {
+            else if (sig.equals("text")) {
                 this.textType = new TextType();
                 this.textType.parse(jhove2, input, this.size);
                 
                 isValid = this.textType.isValid();
             }
-            else {
+            else if (sig.equals("mluc")){
                 this.unicodeType = new MultiLocalizedUnicodeType();
                 this.unicodeType.parse(jhove2, input);
             
                 isValid = this.unicodeType.isValid();
             }
+            if (isValid != Validity.True) {
+                this.isValid = isValid;
+            }
+        }
+        else if (signature.equals("meas")) {
+            this.measurementType = new MeasurementType();
+            this.measurementType.parse(jhove2, input);
+            
+            Validity isValid = this.measurementType.isValid();
+            if (isValid != Validity.True) {
+                this.isValid = isValid;
+            }
+        }
+        else if (signature.equals("ncl2")) {
+            this.color2Type = new NamedColor2Type();
+            this.color2Type.parse(jhove2, input);
+            
+            Validity isValid = this.color2Type.isValid();
+            if (isValid != Validity.True) {
+                this.isValid = isValid;
+            }
+        }
+        else if (signature.equals("pseq")) {
+            this.sequenceType = new ProfileSequenceDescriptionType();
+            this.sequenceType.parse(jhove2, input);
+            
+            Validity isValid = this.sequenceType.isValid();
+            if (isValid != Validity.True) {
+                this.isValid = isValid;
+            }
+        }
+        else if (signature.equals("resp")) {
+            this.rcs16Type = new ResponseCurveSet16Type();
+            this.rcs16Type.parse(jhove2, input);
+            
+            Validity isValid = this.rcs16Type.isValid();
             if (isValid != Validity.True) {
                 this.isValid = isValid;
             }
@@ -304,6 +442,15 @@ public class ICCTag
                         Context.OBJECT,
                         "org.jhove2.module.format.icc.ICCTag.invalidTechnologySignature",
                         args, jhove2.getConfigInfo());
+            }
+        }
+        else if (signature.equals("view")) {
+            this.conditionsType = new ViewingConditionsType();
+            this.conditionsType.parse(jhove2, input);
+            
+            Validity isValid = this.conditionsType.isValid();
+            if (isValid != Validity.True) {
+                this.isValid = isValid;
             }
         }
         input.setPosition(position);
@@ -347,6 +494,15 @@ public class ICCTag
         return this.invalidTechnologySignatureMessage;
     }
     
+    /** Get measurement type element.
+     * @return Measurement type element
+     */
+    @ReportableProperty(order=7, value="Measurement type element.",
+            ref="ICC.1:2004-10, \u00a7 10.12")
+    public MeasurementType getMesaurementType() {
+        return this.measurementType;
+    }
+    
     /** Get multi-localized Unicode type element.
      * @return Multi-localized Unicode type element
      */
@@ -355,7 +511,25 @@ public class ICCTag
     public MultiLocalizedUnicodeType getMultiLocalizedUnicodeType() {
         return this.unicodeType;
     }
- 
+    
+    /** Get LUT A-to-B type element.
+     * @return LUT A-to-B type element
+     */
+    @ReportableProperty(order=7, value="LUT A-to-B type element.",
+            ref="ICC.1:2004-10, \u00a7 10.10")
+    public LUTAToBType getLUTAToBType() {
+        return this.lutA2BType;
+    }
+    
+    /** Get LUT B-to-A type element.
+     * @return LUT B-to-A type element
+     */
+    @ReportableProperty(order=7, value="LUT B-to-A type element.",
+            ref="ICC.1:2004-10, \u00a7 10.11")
+    public LUTBToAType getLUTBToAType() {
+        return this.lutB2AType;
+    }
+    
     /** Get tag offset.
      * @return Tag offset
      */
@@ -383,6 +557,24 @@ public class ICCTag
         return this.parametricType;
     }
     
+    /** Get profile sequence description type element.
+     * @return Profile sequence description type element
+     */
+    @ReportableProperty(order=7, value="Profile sequence description type element.",
+            ref="ICC.1:2004-10, \u00a7 10.16")
+    public ProfileSequenceDescriptionType getProfileSequenceDescriptionType() {
+        return this.sequenceType;
+    }
+    
+    /** Get response curve set 16 type element.
+     * @return Response curve set 16 type element
+     */
+    @ReportableProperty(order=7, value="Response curve set 16 type element.",
+            ref="ICC.1:2004-10, \u00a7 10.16")
+    public ResponseCurveSet16Type getResponseCurveSet16Type() {
+        return this.rcs16Type;
+    }
+    
     /** Get tag signature in coded form.
      * @return Tag signature in coded form
      */
@@ -401,10 +593,29 @@ public class ICCTag
         return this.signature_d;
     }
     
+    /** Get signed 32-bit fixed array type element.
+     * @return Curve type element
+     */
+    @ReportableProperty(order=7, value="Signed 32-bit fixed array type element.",
+            ref="ICC.1:2001-04, \u00a7 10.18")
+    public S15Fixed16ArrayType getSigned32BitFixedArrayType() {
+        return this.s15f16Type;
+    }
+    
+    /** Get signature type element.
+     * @return Signature type element
+     */
+    @ReportableProperty(order=7, value="Signature type element.",
+            ref="ICC.1:2004-10, \u00a7 10.19")
+    public SignatureType getSignatureType() {
+        return this.signatureType;
+    }
+    
     /** Get tag size.
      * @return Tag size
      */
-    @ReportableProperty(order=5, value="Tag size.", ref="ICC.1:2004-10, \u00a7 7.3.1")
+    @ReportableProperty(order=5, value="Tag size.",
+            ref="ICC.1:2004-10, \u00a7 7.3.1")
     public long getSize() {
         return this.size;
     }
@@ -434,6 +645,15 @@ public class ICCTag
             ref="ICC, \"Private and ICC Tag and CMM Regsitry\" (as of November 3, 2009")
     public String getVendor() {
         return this.vendor;
+    }
+    
+    /** Get viewing conditions type element.
+     * @return Viewing conditions type element
+     */
+    @ReportableProperty(order=7, value="Viewing conditions type element.",
+            ref="ICC.1:2004-10, \u00a7 10.26")
+    public ViewingConditionsType getViewingConditionsType() {
+        return this.conditionsType;
     }
     
     /** Get XYZ type element.

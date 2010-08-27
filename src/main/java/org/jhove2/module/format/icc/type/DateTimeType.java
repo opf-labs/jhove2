@@ -58,6 +58,9 @@ import org.jhove2.module.format.Validator.Validity;
 public class DateTimeType
         extends AbstractReportable
 {
+    /** Date/time type signature. */
+    public static final String SIGNATURE = "dtim";
+    
     /** Validation status. */
     protected Validity isValid;
  
@@ -103,11 +106,11 @@ public class DateTimeType
             this.signature.append((char) b);
         }
         String signature = this.signature.toString();
-        if (!signature.equals("dtim")) {
+        if (!signature.equals(SIGNATURE)) {
             numErrors++;
             this.isValid = Validity.False;
             Object [] args =
-                new Object [] {input.getPosition()-4L, "dtim",
+                new Object [] {input.getPosition()-4L, SIGNATURE,
                                signature.toString()};
             this.invalidTagTypeMessage = new Message(Severity.ERROR,
                 Context.OBJECT,

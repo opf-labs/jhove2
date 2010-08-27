@@ -56,6 +56,9 @@ import org.jhove2.module.format.Validator.Validity;
 public class XYZType
         extends AbstractReportable
 {
+    /** XYZ type signature. */
+    public static final String SIGNATURE = "XYZ ";
+    
     /** Validation status. */
     protected Validity isValid;
     
@@ -105,11 +108,11 @@ public class XYZType
             short b = input.readUnsignedByte();
             this.signature.append((char) b);
         }
-        if (!this.signature.toString().equals("XYZ ")) {
+        if (!this.signature.toString().equals(SIGNATURE)) {
             numErrors++;
             this.isValid = Validity.False;
             Object [] args =
-                new Object [] {input.getPosition()-4L, "XYZ ",
+                new Object [] {input.getPosition()-4L, SIGNATURE,
                                signature.toString()};
             this.invalidTagTypeMessage = new Message(Severity.ERROR,
                 Context.OBJECT,
@@ -138,6 +141,7 @@ public class XYZType
             int z = input.readSignedInt();
             XYZNumber xyz = new XYZNumber(x, y, z);
             this.values.add(xyz);
+            consumed += 12;
         }
             
         return consumed;

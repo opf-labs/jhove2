@@ -56,7 +56,7 @@ public class S15Fixed16Number
     /** Floating point value. */
     protected double value;
     
-    /** Instantiate a new <code>S15Fixed16Number.
+    /** Instantiate a new <code>S15Fixed16Number</code>.
      */
     public S15Fixed16Number(int in) {
         this.integral   = (in & 0xffff0000) >> 16;

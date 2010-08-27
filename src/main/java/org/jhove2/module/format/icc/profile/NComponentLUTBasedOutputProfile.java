@@ -48,6 +48,7 @@ import org.jhove2.core.format.Format;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.AbstractFormatProfile;
 import org.jhove2.module.format.Validator;
+import org.jhove2.module.format.icc.ICCHeader;
 import org.jhove2.module.format.icc.ICCModule;
 import org.jhove2.module.format.icc.ICCTag;
 import org.jhove2.module.format.icc.ICCTagTable;
@@ -101,7 +102,8 @@ public class NComponentLUTBasedOutputProfile
             throws JHOVE2Exception
     {
         if (this.module != null) {
-            ICCTagTable table = ((ICCModule) this.module).getTagTable();
+            ICCHeader   header = ((ICCModule) this.module).getHeader();
+            ICCTagTable table  = ((ICCModule) this.module).getTagTable();
             if (table != null) {
                 if (table.hasCommonRequirements()) {
                     this.isValid = Validity.True;
@@ -112,6 +114,7 @@ public class NComponentLUTBasedOutputProfile
                     boolean hasBToA0Tag = false;
                     boolean hasBToA1Tag = false;
                     boolean hasBToA2Tag = false;
+                    boolean hasColorantTableTag = false;
                     boolean hasGamutTag = false;
                     List<ICCTag> tags = table.getTags();
                     Iterator<ICCTag> iter = tags.iterator();
@@ -136,6 +139,9 @@ public class NComponentLUTBasedOutputProfile
                         }
                         else if (signature.equals("B2A2")) {
                             hasBToA2Tag = true;
+                        }
+                        else if (signature.equals("clrt")) {
+                            hasColorantTableTag = true;
                         }
                         else if (signature.equals("gamt")) {
                             hasGamutTag = true;
@@ -196,6 +202,21 @@ public class NComponentLUTBasedOutputProfile
                                 "org.jhove2.module.format.icc.ICCTagTable.MissingRequiredTag",
                                 args, jhove2.getConfigInfo());
                         this.missingRequiredTagMessages.add(msg);
+                    }
+                    /* The colorant table tag is required only for "xCLR" colour
+                     * spaces, e.g. "2CLR", "3CLR", ..., "FCLR".
+                     */
+                    String colourSpace = header.getColourSpace_raw();
+                    int  in = colourSpace.indexOf("CLR");
+                    if (in == 1) {
+                        if (!hasColorantTableTag) {
+                            this.isValid = Validity.False;
+                            Object [] args = new Object [] {"Colorant table(\"clrt\")"};
+                            Message msg = new Message(Severity.ERROR, Context.OBJECT,
+                                "org.jhove2.module.format.icc.ICCTagTable.MissingRequiredTag",
+                                args, jhove2.getConfigInfo());
+                            this.missingRequiredTagMessages.add(msg);
+                        }
                     }
                 }
             }

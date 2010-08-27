@@ -41,107 +41,106 @@ import java.util.TreeSet;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 
-/** ICC parametric curve type function type, as defined in
- * ICC.1:2004-10, Table 47.
+/** ICC standard observer, as defined in ICC.1:2004-10, Table 40.
  * 
  * @author slabrams
  */
-public class FunctionType
-    implements Comparable<FunctionType>
+public class StandardObserver
+    implements Comparable<StandardObserver>
 {
-    /** Singleton function parameters. */
-    protected static Set<FunctionType> types;
+    /** Singleton standard observer observer. */
+    protected static Set<StandardObserver> observers;
 
-    /** Function value. */
-    protected int value;
+    /** Standard observer value. */
+    protected long value;
 
-    /** Function parameters. */
-    protected String parameters;
+    /** Standard observer. */
+    protected String observer;
 
     /**
-     * Instantiate a new <code>FunctionType</code> object.
-     * @param value Function value
-     * @param parameters
-     *            Function parameters
+     * Instantiate a new <code>StandardObserver</code> object.
+     * @param value Standard observer value
+     * @param observer
+     *            Standard observer
      */
-    public FunctionType(int value, String parameters) {
-        this.value      = value;
-        this.parameters = parameters;
+    public StandardObserver(long value, String observer) {
+        this.value    = value;
+        this.observer = observer;
     }
 
     /**
-     * Get the parameters for a function  value.
+     * Get the observer for a standard observer value.
      * 
-     * @param value  Function value
+     * @param value  Standard observer value
      * @param jhove2 JHOVE2 framework
-     * @return Function parameters, or null if the value is not defined
+     * @return Standard observer, or null if the value is not defined
      * @throws JHOVE2Exception
      */
-    public static synchronized FunctionType getFunctionType(int value, JHOVE2 jhove2)
+    public static synchronized StandardObserver getStandardObserver(long value, JHOVE2 jhove2)
             throws JHOVE2Exception {
-        if (types == null) {
-            /* Initialize the CMMs from a Java resource bundle. */
-            types = new TreeSet<FunctionType>();
-            Properties props = jhove2.getConfigInfo().getProperties("FunctionTypes");
+        if (observers == null) {
+            /* Initialize the standard observers from a Java resource bundle. */
+            observers = new TreeSet<StandardObserver>();
+            Properties props = jhove2.getConfigInfo().getProperties("StandardObservers");
             if (props != null) {
                 Set<String> set = props.stringPropertyNames();
                 Iterator<String> iter = set.iterator();
                 while (iter.hasNext()) {
                     String val  = iter.next();
-                    String par = props.getProperty(val);
-                    FunctionType type = new FunctionType(Integer.valueOf(val), par);
-                    types.add(type);
+                    String obs = props.getProperty(val);
+                    StandardObserver observer = new StandardObserver(Integer.valueOf(val), obs);
+                    observers.add(observer);
                 }
             }
         }
-        FunctionType type = null;
-        Iterator<FunctionType> iter = types.iterator();
+        StandardObserver observer = null;
+        Iterator<StandardObserver> iter = observers.iterator();
         while (iter.hasNext()) {
-            FunctionType typ = iter.next();
-            if (typ.getValue() == value) {
-                type = typ;
+            StandardObserver obs = iter.next();
+            if (obs.getValue() == value) {
+                observer = obs;
                 break;
             }
         }
 
-        return type;
+        return observer;
     }
 
     /**
-     * Get the function parameters.
-     * @return Function parameters
+     * Get the standard observer.
+     * @return Standard observer
      */
-    public String getParameters() {
-        return this.parameters;
+    public String getObserver() {
+        return this.observer;
     }
  
     /**
-     * Get the function value.
-     * @return Function value
+     * Get the standard observer value.
+     * @return Standard observer value
      */
-    public int getValue() {
+    public long getValue() {
         return this.value;
     }
 
     /**
-     * Convert the function type to a Java string in the form:
-     * "value: parameters".
-     * @return Java string representation of the function type
+     * Convert the standard observer to a Java string in the form:
+     * "value: observer".
+     * @return Java string representation of the standard observer
      */
     public String toString() {
-        return this.value + ": " + this.parameters;
+        return this.value + ": " + this.observer;
     }
 
     /**
-     * Compare function type.
+     * Compare standard observer.
      * @param type
-     *            Function type
+     *            Standard observer
      * @return -1, 0, or 1 if this value is less than,
      *         equal to, or greater than the second
      */
     @Override
-    public int compareTo(FunctionType type) {
-        int value = type.getValue();
+    public int compareTo(StandardObserver type) {
+        long value = type.getValue();
         if (this.value < value) {
             return -1;
         }
