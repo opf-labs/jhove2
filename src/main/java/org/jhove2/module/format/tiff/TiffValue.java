@@ -30,6 +30,8 @@ extends AbstractReportable {
 
     protected ByteArray byteArrayValue;
 
+    protected SByteArray sbyteArrayValue;
+
     /** 32-bit (4-byte) unsigned integer 
      * @see org.jhove2.module.format.tiff.Long */
     protected Long longValue;
@@ -132,8 +134,10 @@ extends AbstractReportable {
                 long denom = input.readUnsignedInt();
                 rationalValue = new Rational(num, denom);
             }
-            else if (type == TiffType.Type.SBYTE.num()) 
-                byteValue = new Byte(input.readSignedByte());
+            else if (type == TiffType.Type.SBYTE.num()) { 
+                sbyteArrayValue = new SByteArray();
+                sbyteArrayValue.setValue(input, count);
+            }
             else if (type == TiffType.Type.SSHORT.num()) {
                 sShortArrayValue = new SShortArray();
                 sShortArrayValue.setValue(input, count);
@@ -168,9 +172,9 @@ extends AbstractReportable {
             else if (type == TiffType.Type.SSHORT.num())
                 return sShortArrayValue;
             else if (type == TiffType.Type.SLONG.num())
-                return longArrayValue;
+                return sLongArrayValue;
             else if (type == TiffType.Type.SRATIONAL.num())
-                return longArrayValue;
+                return sRationalArrayValue;
         }
         else  {
             if (type == TiffType.Type.BYTE.num())
@@ -182,13 +186,13 @@ extends AbstractReportable {
             else if (type == TiffType.Type.LONG.num())
                 return longValue;
             else if (type == TiffType.Type.RATIONAL.num())
-                return longArrayValue;
+                return rationalValue;
             else if (type == TiffType.Type.SBYTE.num())
-                return longArrayValue;
+                return sByteValue;
             else if (type == TiffType.Type.SLONG.num())
-                return longArrayValue;
+                return sLongValue;
             else if (type == TiffType.Type.SRATIONAL.num())
-                return longArrayValue;
+                return sRationalValue;
         }
 
         return null;

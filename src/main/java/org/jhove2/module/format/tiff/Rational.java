@@ -16,7 +16,7 @@ import org.jhove2.core.reportable.AbstractReportable;
  *
  */
 public class Rational 
-    extends AbstractReportable {
+extends AbstractReportable {
 
     /** numerator of the Rational value */
     private long numerator;
@@ -37,7 +37,7 @@ public class Rational
         this.numerator = input.readSignedInt();
         this.denominator = input.readSignedInt();
     }
-    
+
     public Rational (long numerator, long demoninator){
         this.numerator = numerator;
         this.denominator = demoninator;
@@ -48,7 +48,7 @@ public class Rational
         this.denominator = (long) denominator & 0XFFFFFFFF;
     }
 
-    
+
     /**
      * @return the numerator
      */
@@ -68,10 +68,18 @@ public class Rational
      *  @return String
      */ 
     @ReportableProperty(order = 1, value = "TIFF Rational Value.")
+    public String getValue ()
+    {
+        return this.toString();
+    }
+    /**
+     *  toString in the form of numerator/denominator.
+     *  @return String
+     */ 
     public String toString ()
     {
-    return Long.toString (this.numerator) + "/" +
-           Long.toString (this.denominator);
+        return Long.toString (this.numerator) + "/" +
+        Long.toString (this.denominator);
     }
 
 }
