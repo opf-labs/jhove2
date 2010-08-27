@@ -21,9 +21,6 @@ implements Comparable {
     public static final int
         DATETIME = 306;
     
-    /** Date/Time tag */
-    public StringIFDEntry dateTime;
-
     public TiffIFD() {
         super();
     }
