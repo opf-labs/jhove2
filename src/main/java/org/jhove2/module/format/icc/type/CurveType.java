@@ -67,7 +67,10 @@ public class CurveType
     /** Signature. */
     protected StringBuffer signature = new StringBuffer(4);   
 
-    /** Curve values. */
+    /** Curve value (if count = 1). */
+    protected U8Fixed8Number value;
+    
+    /** Curve values (if count > 1). */
     protected List<Integer> values;
 
     /** Invalid tag type message. */
@@ -84,7 +87,7 @@ public class CurveType
         this.values  = new ArrayList<Integer>();
     }
     
-    /** Parse an ICC tag type.
+    /** Parse an ICC curve tag type.
      * @param jhove2 JHOVE2 framework
      * @param input  ICC input
      * @return Number of bytes consumed
@@ -136,10 +139,17 @@ public class CurveType
         this.count = input.readUnsignedInt();
   
         /* Curve values. */
-        for (int i=0; i<this.count; i++) {
-            int sh = input.readUnsignedShort();
-            values.add(sh);
+        if (this.count == 1) {
+            int in = input.readUnsignedShort();
+            this.value = new U8Fixed8Number(in);
             consumed += 2;
+        }
+        else {
+            for (int i=0; i<this.count; i++) {
+                int sh = input.readUnsignedShort();
+                this.values.add(sh);
+                consumed += 2;
+            }
         }
           
         return consumed;
@@ -170,8 +180,17 @@ public class CurveType
     public Message getNonZeroDataInReservedFieldMessage() {
         return this.nonZeroDataInReservedFieldMessage;
     }
-     
-    /** Get curve values.
+    
+    /** Get curve value (if count = 1).
+     * @return Curve value.
+     */
+    @ReportableProperty(order=2, value="Curve values.",
+            ref="ICC.1:2004-10, \u00a7 10.5")
+    public U8Fixed8Number getValue() {
+        return this.value;
+    }
+    
+    /** Get curve values (if count > 1).
      * @return Curve values.
      */
     @ReportableProperty(order=2, value="Curve values.",

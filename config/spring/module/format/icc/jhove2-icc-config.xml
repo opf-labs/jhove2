@@ -384,7 +384,12 @@
 	<bean id="CMMSignatures" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
 		<property name="propertyFileBaseName" value="cmm-signatures"/>
 	</bean>      
-   
+   			    
+	<!-- ICC technology signatures properties bean --> 
+	<bean id="ColorantEncodins" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="colorant-encodings"/>
+	</bean> 
+	 
 	<!-- ICC data colour spaces properties bean --> 
 	<bean id="ColourSpaces" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
 		<property name="propertyFileBaseName" value="colour-spaces"/>
@@ -409,7 +414,12 @@
 	<bean id="MeasurementGeometries" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
 		<property name="propertyFileBaseName" value="measurement-geometries"/>
 	</bean> 
-	    
+	    	    	    			    
+	<!-- ICC perceptual rendering intent gamuts properties bean --> 
+	<bean id="PerceptualRenderingIntents" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="perceptual-rendering-intents"/>
+	</bean> 
+	
 	<!-- ICC preferred CMM type properties bean -->
 	<bean id="PreferredCMM" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
 		<property name="propertyFileBaseName" value="cmm-signatures"/>
@@ -434,7 +444,12 @@
 	<bean id="RenderingIntents" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
 		<property name="propertyFileBaseName" value="rendering-intents"/>
 	</bean> 
-		    			    
+		    	    	    	    			    
+	<!-- ICC saturation rendering intent gamuts properties bean --> 
+	<bean id="SaturationRenderingIntents" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="saturation-rendering-intents"/>
+	</bean> 
+			    
 	<!-- ICC standard illuminant signatures properties bean --> 
 	<bean id="StandardIlluminants" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
 		<property name="propertyFileBaseName" value="standard-illuminants"/>

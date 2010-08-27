@@ -95,7 +95,7 @@ public class MultiLocalizedUnicodeType
         this.nameRecords = new ArrayList<NameRecord>();
     }
     
-    /** Parse an ICC tag type.
+    /** Parse an ICC multi-localized Unicode tag type.
      * @param jhove2 JHOVE2 framework
      * @param input  ICC input
      * @return Number of bytes consumed

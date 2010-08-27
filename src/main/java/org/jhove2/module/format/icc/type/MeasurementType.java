@@ -103,7 +103,7 @@ public class MeasurementType
         this.isValid = Validity.Undetermined;
     }
     
-    /** Parse an ICC tag type.
+    /** Parse an ICC measurement tag type.
      * @param jhove2 JHOVE2 framework
      * @param input  ICC input
      * @return Number of bytes consumed

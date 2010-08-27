@@ -34,52 +34,43 @@
 
 package org.jhove2.module.format.icc.type;
 
-import java.util.List;
-
-/** ICC named colour, as defined in ICC.1:2004-10, Table 45.
+/** ICC XY number, a set of two fixed unsigned u16Fixed16Numbers.
  * 
  * @author slabrams
  */
-public class NamedColour
+public class XYNumber
 {
-    /** Device coordinates. */
-    protected List<Integer> deviceCoordinates;
-    
-    /** Profile Connection Space (PCS) coordinates. */
-    protected PCSNumber pcsCoordinates;
-    
-    /** Root name. */
-    protected String rootName;
-    
-    /** Instantiate a new <code>NamedColour</code>.
-     * @param root   Root name
-     * @param pcs    Profile Connection Space (PCS) coordinates
-     * @param device Device coordinate
+    /** X number. */
+    protected U16Fixed16Number x;
+
+    /** Y number. */
+    protected U16Fixed16Number y;
+ 
+    /** Instantiate a new <code>XYNumber</code>
      */
-    public NamedColour(String root, PCSNumber pcs, List<Integer> device) {
-        this.rootName          = root;
-        this.pcsCoordinates    = pcs;
-        this.deviceCoordinates = device;
+    public XYNumber(long x, long y) {
+        this.x = new U16Fixed16Number(x);
+        this.y = new U16Fixed16Number(y);
     }
     
-    /** Get device coordinates.
-     * @return Device coordinates
+    /** Get X value.
+     * @return X value
      */
-    public List<Integer> getDeviceCoordinates() {
-        return this.deviceCoordinates;
+    public U16Fixed16Number getX() {
+        return this.x;
     }
     
-    /** Get Profile Connection Space (PCS) coordinates.
-     * @return PCS coordinates
+    /** Get Y value.
+     * @return Z value
      */
-    public PCSNumber getPCSCoordinates() {
-        return this.pcsCoordinates;
+    public U16Fixed16Number getY() {
+        return this.y;
     }
     
-    /** Get root name.
-     * @return root name
+    /** String representation of the numbers.
+     * @return String representation of the numbers
      */
-    public String getRootName() {
-        return this.rootName;
+    public String toString() {
+        return this.x.toString() + ", " + this.y.toString() + ", ";
     }
 }

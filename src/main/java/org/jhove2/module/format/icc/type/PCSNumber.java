@@ -34,52 +34,57 @@
 
 package org.jhove2.module.format.icc.type;
 
-import java.util.List;
-
-/** ICC named colour, as defined in ICC.1:2004-10, Table 45.
+/** Profile Connection Space (PCS) values.
  * 
  * @author slabrams
  */
-public class NamedColour
+public class PCSNumber
 {
-    /** Device coordinates. */
-    protected List<Integer> deviceCoordinates;
+    /** PCS X value. */
+    protected int x;
     
-    /** Profile Connection Space (PCS) coordinates. */
-    protected PCSNumber pcsCoordinates;
+    /** PCS Y value. */
+    protected int y;
     
-    /** Root name. */
-    protected String rootName;
+    /** PCS Z value. */
+    protected int z;
     
-    /** Instantiate a new <code>NamedColour</code>.
-     * @param root   Root name
-     * @param pcs    Profile Connection Space (PCS) coordinates
-     * @param device Device coordinate
+    /** Instantiate a new <code>PCSNumber</code>.
+     * @param x PCS X value
+     * @param y PCS Y value
+     * @param z PCS Z value
      */
-    public NamedColour(String root, PCSNumber pcs, List<Integer> device) {
-        this.rootName          = root;
-        this.pcsCoordinates    = pcs;
-        this.deviceCoordinates = device;
+    public PCSNumber(int x, int y, int z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
     }
     
-    /** Get device coordinates.
-     * @return Device coordinates
+    /** Get X value.
+     * @return X value
      */
-    public List<Integer> getDeviceCoordinates() {
-        return this.deviceCoordinates;
+    public int getX() {
+        return this.x;
     }
     
-    /** Get Profile Connection Space (PCS) coordinates.
-     * @return PCS coordinates
+    /** Get Y value.
+     * @return Z value
      */
-    public PCSNumber getPCSCoordinates() {
-        return this.pcsCoordinates;
+    public int getY() {
+        return this.y;
     }
     
-    /** Get root name.
-     * @return root name
+    /** Get Z value.
+     * @return Z value
      */
-    public String getRootName() {
-        return this.rootName;
+    public int getZ() {
+        return this.z;
+    }
+    
+    /** String representation of the numbers.
+     * @return String representation of the numbers
+     */
+    public String toString() {
+        return x + ", " + y + ", " +z;
     }
 }

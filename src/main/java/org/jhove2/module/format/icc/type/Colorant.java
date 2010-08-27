@@ -34,52 +34,45 @@
 
 package org.jhove2.module.format.icc.type;
 
-import java.util.List;
-
-/** ICC named colour, as defined in ICC.1:2004-10, Table 45.
+/** ICC colorant, as defined in ICC.1:2004-10, \u00a7 10.4.
  * 
  * @author slabrams
  */
-public class NamedColour
+public class Colorant
 {
-    /** Device coordinates. */
-    protected List<Integer> deviceCoordinates;
+    /** Colorant name. */
+    protected String name;
     
-    /** Profile Connection Space (PCS) coordinates. */
-    protected PCSNumber pcsCoordinates;
+    /** Colorant Profile Connection Space (PCS) value. */
+    protected PCSNumber pcs;
     
-    /** Root name. */
-    protected String rootName;
-    
-    /** Instantiate a new <code>NamedColour</code>.
-     * @param root   Root name
-     * @param pcs    Profile Connection Space (PCS) coordinates
-     * @param device Device coordinate
+    /** Instantiate a new <code>Colorant</code>.
+     * @param name Colorant name
+     * @param pcs  Colorant Profile Connection Space (PCS) value.
      */
-    public NamedColour(String root, PCSNumber pcs, List<Integer> device) {
-        this.rootName          = root;
-        this.pcsCoordinates    = pcs;
-        this.deviceCoordinates = device;
+    public Colorant(String name, PCSNumber pcs) {
+        this.name = name;
+        this.pcs  = pcs;
     }
     
-    /** Get device coordinates.
-     * @return Device coordinates
+    /** Get colorant name.
+     * @return Colorant name
      */
-    public List<Integer> getDeviceCoordinates() {
-        return this.deviceCoordinates;
+    public String getName() {
+        return this.name;
     }
     
-    /** Get Profile Connection Space (PCS) coordinates.
-     * @return PCS coordinates
+    /** Get colorant Profile Connection Space (PCS) value.
+     * @return PCS value
      */
-    public PCSNumber getPCSCoordinates() {
-        return this.pcsCoordinates;
+    public PCSNumber getPCS() {
+        return this.pcs;
     }
     
-    /** Get root name.
-     * @return root name
+    /** String representation of colorant, in the form
+     * "name: x, y, z".
      */
-    public String getRootName() {
-        return this.rootName;
+    public String toString() {
+        return this.name + ": " + this.pcs;
     }
 }

@@ -35,14 +35,14 @@
 
 package org.jhove2.module.format.icc.type;
 
-/** ICC s15Fixed16Number, a fixed signed 4 byte/32 bit quantity with 16
+/** ICC u16Fixed16Number, a fixed unsigned 4 byte/32 bit quantity with 16
  * fractional bits.  The number is organized as:
- * siiiiiiiiiiiiiiiffffffffffffffff, with the value:
- * siiiiiiiiiiiiiii + ffffffffffffffff/65536. See ICC.1:2004-10, \u00a7 5.1.3.
+ * iiiiiiiiiiiiiiiiffffffffffffffff, with the value:
+ * iiiiiiiiiiiiiiii + ffffffffffffffff/65536. See ICC.1:2004-10, \u00a7 5.1.4.
  * 
  * @author slabrams
  */
-public class S15Fixed16Number
+public class U16Fixed16Number
 {
     /** Fractional denominator. */
     public static final int DENOMINATOR = 65536;
@@ -50,17 +50,17 @@ public class S15Fixed16Number
     /** Fractional part: 0x0000ffff. */
     protected int fractional;
     
-    /** Signed integral part: 0xffff0000. */
+    /** Unsigned integral part: 0xffff0000. */
     protected int integral;
     
     /** Floating point value. */
     protected double value;
     
-    /** Instantiate a new <code>S15Fixed16Number</code>.
+    /** Instantiate a new <code>U16Fixed16Number</code>.
      */
-    public S15Fixed16Number(int in) {
-        this.integral   = (in & 0xffff0000) >> 16;
-        this.fractional =  in & 0x0000ffff;
+    public U16Fixed16Number(long in) {
+        this.integral   = (int)((in & 0x00000000ffff0000) >> 16);
+        this.fractional = (int)  in & 0x0000ffff;
         this.value      = this.integral +
                  ((double)this.fractional/(double)DENOMINATOR);
         /* Only keep 5 significant fractional digits. */
@@ -76,8 +76,8 @@ public class S15Fixed16Number
         return this.fractional;
     }
     
-    /** Get signed integral part.
-     * @return Signed integral part 
+    /** Get integral part.
+     * @return Integral part 
      */
     public int getIntegral() {
         return this.integral;

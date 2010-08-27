@@ -1,24 +1,24 @@
 /**
  * JHOVE2 - Next-generation architecture for format-aware characterization
- * <p>
- * Copyright (c) 2010 by The Regents of the University of California. All rights reserved.
- * </p>
- * <p>
+ *
+ * Copyright (c) 2009 by The Regents of the University of California.
+ * All rights reserved.
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * </p>
- * <ul>
- * <li>Redistributions of source code must retain the above copyright notice,
- * this list of conditions and the following disclaimer.</li>
- * <li>Redistributions in binary form must reproduce the above copyright notice,
- * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution.</li>
- * <li>Neither the name of the University of California/California Digital
- * Library, Ithaka Harbors/Portico, or Stanford University, nor the names of its
- * contributors may be used to endorse or promote products derived from this
- * software without specific prior written permission.</li>
- * </ul>
- * <p>
+ *
+ * o Redistributions of source code must retain the above copyright notice,
+ *   this list of conditions and the following disclaimer.
+ *
+ * o Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * o Neither the name of the University of California/California Digital
+ *   Library, Ithaka Harbors/Portico, or Stanford University, nor the names of
+ *   its contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -30,17 +30,14 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- * </p>
  */
 
 package org.jhove2.module.format.icc.type;
 
 import java.io.EOFException;
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.TimeZone;
+import java.util.ArrayList;
+import java.util.List;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
@@ -51,39 +48,43 @@ import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
 import org.jhove2.module.format.Validator.Validity;
 
-/** ICC date/time type element, as defined in ICC.1:2004-10, \u00a7 10.7.
+/** ICC colorant table type element, as defined in ICC.1:2004, \u00a7 10.4.
  * 
  * @author slabrams
  */
-public class DateTimeType
+public class ColorantTableType
         extends AbstractReportable
 {
-    /** Date/time type signature. */
-    public static final String SIGNATURE = "dtim";
+    /** Type signature. */
+    public static final String SIGNATURE = "clrt";
     
+    /** Colorants. */
+    protected List<Colorant> colorants;
+
+    /** Count of colorants. */
+    protected long count;
+
     /** Validation status. */
     protected Validity isValid;
  
-    /** Date/time. */
-    protected Date dateTime;
- 
-    /** Signature. */
+    /** Signature (of tag type). */
     protected StringBuffer signature = new StringBuffer(4);   
-    
+ 
     /** Invalid tag type message. */
     protected Message invalidTagTypeMessage;
-
+    
     /** Non-zero data in reserved field message. */
     protected Message nonZeroDataInReservedFieldMessage;
     
-    /** Instantiate a new <code>DateTimeType</code> element. */
-    public DateTimeType() {
+    /** Instantiate a new <code>ColorantTableType</code>. */
+    public ColorantTableType() {
         super();
         
-        this.isValid = Validity.Undetermined;
+        this.isValid   = Validity.Undetermined;
+        this.colorants = new ArrayList<Colorant>();
     }
     
-    /** Parse an ICC date/time tag type.
+    /** Parse an ICC colorant table tag type element.
      * @param jhove2 JHOVE2 framework
      * @param input  ICC input
      * @return Number of bytes consumed
@@ -98,15 +99,14 @@ public class DateTimeType
     {
         long consumed  = 0L;
         int  numErrors = 0;
-        this.isValid = Validity.True;
+        this.isValid   = Validity.True;
   
         /* Tag signature. */
         for (int i=0; i<4; i++) {
             short b = input.readUnsignedByte();
             this.signature.append((char) b);
         }
-        String signature = this.signature.toString();
-        if (!signature.equals(SIGNATURE)) {
+        if (!this.signature.toString().equals(SIGNATURE)) {
             numErrors++;
             this.isValid = Validity.False;
             Object [] args =
@@ -131,19 +131,43 @@ public class DateTimeType
                     args, jhove2.getConfigInfo());
         }
         consumed += 4;
-        
-        /* Date and time. */
-        int [] sa = new int[6];
-        for (int i=0; i<6; i++) {
-            sa[i] = input.readUnsignedShort();
+      
+        /* Count of colorants. */
+        this.count = input.readUnsignedInt();
+        consumed += 4;
+ 
+        /* Colorants. */
+        for (int i=0; i<this.count; i++) {
+            /* Name. */
+            StringBuffer name = new StringBuffer(32);
+            for (int j=0; j<32; j++) {
+                short b = input.readUnsignedByte();
+                if (b != 0) {
+                    name.append((char) b);
+                }
+            }
+            
+            /* PCS value. */
+            int x = input.readUnsignedShort();
+            int y = input.readUnsignedShort();
+            int z = input.readUnsignedShort();
+            PCSNumber pcs = new PCSNumber(x, y, z);
+            
+            Colorant colorant = new Colorant(name.toString(), pcs);
+            this.colorants.add(colorant);
+            consumed += 38;
         }
-        Calendar cal = new GregorianCalendar(sa[0], sa[1]-1, sa[2],
-                                             sa[3], sa[4], sa[5]);
-        cal.setTimeZone(TimeZone.getTimeZone("UTC"));
-        this.dateTime = cal.getTime();
-        consumed += 12;
-          
+             
         return consumed;
+    }
+ 
+    /** Get count of colorants.
+     * @return Count of colorants
+     */
+    @ReportableProperty(order=3, value="Count of colorants.",
+            ref="ICC.1:2004-10, Table 26")
+    public long getCount() {
+        return this.count;
     }
     
     /** Get invalid tag type message.
@@ -154,29 +178,37 @@ public class DateTimeType
         return this.invalidTagTypeMessage;
     }
 
-    /** Get date/time.
-     * @return Date/time
-     */
-    @ReportableProperty(order=1, value="Date/time.",
-            ref="ICC.1:2004-10, \ua077 10.7")
-    public Date getDateTime() {
-        return this.dateTime;
-    }
-    
     /** Get non-zero data in reserved field message.
      * @return Non-zero data in reserved field message
      */
-    @ReportableProperty(order=12, value="Non-zero data in reserved field.",
-            ref="ICC.1:2004-10, \ua077 10.20")
+    @ReportableProperty(order=12, value="Non-zero data in reserved field.")
     public Message getNonZeroDataInReservedFieldMessage() {
         return this.nonZeroDataInReservedFieldMessage;
     }
- 
+  
+    /** Get colorants.
+     * @return Colorants
+     */
+    @ReportableProperty(order=7, value="Colorants.",
+            ref="ICC.1:2004-10, Table 26")
+    public List<Colorant> getColorants() {
+        return this.colorants;
+    }
+    
+    /** Get type signature.
+     * @return Type signature
+     */
+    @ReportableProperty(order=1, value="Type signature.",
+            ref="ICC.1:2004-10, \u00a6 10.4")
+    public String getSignature() {
+        return this.signature.toString();
+    }
+     
     /** Get validation status.
      * @return Validation status
      */
-    @ReportableProperty(order=3, value="Validation status.",
-            ref="ICC.1:2004-10, \u00a7 10.20")
+    @ReportableProperty(order=5, value="Validation status.",
+            ref="ICC.1:2004-10, \u00a7 10.4")
     public Validity isValid() {
         return this.isValid;
     }

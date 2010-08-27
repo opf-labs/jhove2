@@ -85,7 +85,7 @@ public class DescriptionType
         this.isValid = Validity.Undetermined;
     }
     
-    /** Parse an ICC tag type.
+    /** Parse an ICC description tag type.
      * @param jhove2 JHOVE2 framework
      * @param input  ICC input
      * @return Number of bytes consumed

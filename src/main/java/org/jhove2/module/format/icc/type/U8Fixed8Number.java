@@ -35,32 +35,32 @@
 
 package org.jhove2.module.format.icc.type;
 
-/** ICC s15Fixed16Number, a fixed signed 4 byte/32 bit quantity with 16
- * fractional bits.  The number is organized as:
- * siiiiiiiiiiiiiiiffffffffffffffff, with the value:
- * siiiiiiiiiiiiiii + ffffffffffffffff/65536. See ICC.1:2004-10, \u00a7 5.1.3.
+/** ICC fixed unsigned 2 byte/16 bit number with 8 fractional bits. The number
+ * is organized as:
+ * iiiiiiiiffffffff, with the value:
+ * iiiiiiii + ffffffff/256. See ICC.1:2004-10, \u00a7 5.1.6.
  * 
  * @author slabrams
  */
-public class S15Fixed16Number
+public class U8Fixed8Number
 {
     /** Fractional denominator. */
-    public static final int DENOMINATOR = 65536;
+    public static final int DENOMINATOR = 256;
     
-    /** Fractional part: 0x0000ffff. */
+    /** Fractional part: 0x00ff. */
     protected int fractional;
     
-    /** Signed integral part: 0xffff0000. */
+    /** Unsigned integral part: 0xff00. */
     protected int integral;
     
     /** Floating point value. */
     protected double value;
     
-    /** Instantiate a new <code>S15Fixed16Number</code>.
+    /** Instantiate a new <code>U15Fixed16Number</code>.
      */
-    public S15Fixed16Number(int in) {
-        this.integral   = (in & 0xffff0000) >> 16;
-        this.fractional =  in & 0x0000ffff;
+    public U8Fixed8Number(int in) {
+        this.integral   = (in & 0xff00) >> 8;
+        this.fractional =  in & 0x00ff;
         this.value      = this.integral +
                  ((double)this.fractional/(double)DENOMINATOR);
         /* Only keep 5 significant fractional digits. */
@@ -76,8 +76,8 @@ public class S15Fixed16Number
         return this.fractional;
     }
     
-    /** Get signed integral part.
-     * @return Signed integral part 
+    /** Get integral part.
+     * @return Integral part 
      */
     public int getIntegral() {
         return this.integral;
@@ -91,7 +91,7 @@ public class S15Fixed16Number
     }
     
     /** String representation of the arithmetic representation of the
-     * number: integral + fractional/65536.
+     * number: integral + fractional/256.
      * @return String representation of the arithmetic representation
      */
     public String toArithmeticString() {

@@ -56,6 +56,9 @@ import org.jhove2.module.format.Validator.Validity;
 public class S15Fixed16ArrayType
         extends AbstractReportable
 {
+    /** Type signature. */
+    public static final String SIGNATURE = "sf32";
+    
     /** Validation status. */
     protected Validity isValid;
     
@@ -82,7 +85,7 @@ public class S15Fixed16ArrayType
         this.values  = new ArrayList<S15Fixed16Number>();
     }
     
-    /** Parse an ICC signature tag type element.
+    /** Parse an ICC fixed signed array tag type element.
      * @param jhove2 JHOVE2 framework
      * @param input  ICC input
      * @param elementSize Size in bytes of the element
@@ -105,11 +108,11 @@ public class S15Fixed16ArrayType
             short b = input.readUnsignedByte();
             this.signature.append((char) b);
         }
-        if (!this.signature.toString().equals("sf32")) {
+        if (!this.signature.toString().equals(SIGNATURE)) {
             numErrors++;
             this.isValid = Validity.False;
             Object [] args =
-                new Object [] {input.getPosition()-4L, "sf32",
+                new Object [] {input.getPosition()-4L, SIGNATURE,
                                signature.toString()};
             this.invalidTagTypeMessage = new Message(Severity.ERROR,
                 Context.OBJECT,

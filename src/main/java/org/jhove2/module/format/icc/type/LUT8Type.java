@@ -112,7 +112,7 @@ public class LUT8Type
         this.isValid = Validity.Undetermined;
     }
     
-    /** Parse an ICC tag type.
+    /** Parse an ICC LUT 8 tag type.
      * @param jhove2 JHOVE2 framework
      * @param input  ICC input
      * @return Number of bytes consumed

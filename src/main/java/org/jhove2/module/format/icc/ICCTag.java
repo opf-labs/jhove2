@@ -47,8 +47,13 @@ import org.jhove2.core.Message.Severity;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
 import org.jhove2.module.format.Validator.Validity;
+import org.jhove2.module.format.icc.field.PerceptualRenderingIntent;
+import org.jhove2.module.format.icc.field.SaturationRenderingIntent;
 import org.jhove2.module.format.icc.field.Tag;
 import org.jhove2.module.format.icc.field.TechnologySignature;
+import org.jhove2.module.format.icc.type.ChromaticityType;
+import org.jhove2.module.format.icc.type.ColorantOrderType;
+import org.jhove2.module.format.icc.type.ColorantTableType;
 import org.jhove2.module.format.icc.type.CurveType;
 import org.jhove2.module.format.icc.type.DateTimeType;
 import org.jhove2.module.format.icc.type.DescriptionType;
@@ -75,6 +80,15 @@ import org.jhove2.module.format.icc.type.XYZType;
 public class ICCTag
     extends AbstractReportable
 {
+    /** Chromoticity type element. */
+    protected ChromaticityType chromaticityType;
+    
+    /** Colorant order type element. */
+    protected ColorantOrderType colorantOrderType;
+    
+    /** Color table type element. */
+    protected ColorantTableType colorantTableType;
+    
     /** Curve type element. */
     protected CurveType curveType;
     
@@ -149,6 +163,9 @@ public class ICCTag
     
     /** XYZ tristimulus value array type element. */
     protected XYZType xyzType;
+    
+    /** Incorrect tag type message. */
+    protected Message incorrectTagTypeMessage;
     
     /** Invalid technology signature message. */
     protected Message invalidTechnologySignatureMessage;
@@ -242,7 +259,6 @@ public class ICCTag
             signature.equals("A2B1") ||
             signature.equals("A2B2")) {
             Validity isValid = Validity.Undetermined;
- 
             if (sig.equals("mAB ")) {
                 this.lutA2BType = new LUTAToBType();
                 this.lutA2BType.parse(jhove2, input);
@@ -261,6 +277,15 @@ public class ICCTag
                 
                 isValid = this.lut16Type.isValid();
             }
+            else {
+                numErrors++;
+                isValid = Validity.False;
+                Object [] args = new Object [] {this.offset, sig};
+                this.incorrectTagTypeMessage = new Message(Severity.ERROR,
+                        Context.OBJECT,
+                        "org.jhove2.module.format.icc.ICCTag.incorrectTagType",
+                        args, jhove2.getConfigInfo());
+            }
             if (isValid != Validity.True) {
                 this.isValid = isValid;
             }            
@@ -273,7 +298,6 @@ public class ICCTag
                  signature.equals("pre1") ||
                  signature.equals("pre2")) {
             Validity isValid = Validity.Undetermined;
-     
             if (sig.equals("mBA ")) {
                 this.lutB2AType = new LUTBToAType();
                 this.lutB2AType.parse(jhove2, input);
@@ -289,19 +313,40 @@ public class ICCTag
             else if (sig.equals("mft2")) {
                 
             }
+            else {
+                numErrors++;
+                isValid = Validity.False;
+                Object [] args = new Object [] {this.offset, sig};
+                this.incorrectTagTypeMessage = new Message(Severity.ERROR,
+                        Context.OBJECT,
+                        "org.jhove2.module.format.icc.ICCTag.incorrectTagType",
+                        args, jhove2.getConfigInfo());
+            }
             if (isValid != Validity.True) {
                 this.isValid = isValid;
             }            
         }
         else if (signature.equals("bkpt") ||
-            signature.equals("bXYZ") ||
-            signature.equals("gXYZ") ||
-            signature.equals("rXYZ") ||
-            signature.equals("wtpt")) {
-            this.xyzType = new XYZType();
-            this.xyzType.parse(jhove2, input, this.size);
+                 signature.equals("bXYZ") ||
+                 signature.equals("gXYZ") ||
+                 signature.equals("rXYZ") ||
+                 signature.equals("wtpt")) {
+            Validity isValid = Validity.Undetermined;
+            if (sig.equals("XYZ ")) {
+                this.xyzType = new XYZType();
+                this.xyzType.parse(jhove2, input, this.size);
             
-            Validity isValid = this.xyzType.isValid();
+                isValid = this.xyzType.isValid();
+            }
+            else {
+                numErrors++;
+                isValid = Validity.False;
+                Object [] args = new Object [] {this.offset, sig};
+                this.incorrectTagTypeMessage = new Message(Severity.ERROR,
+                        Context.OBJECT,
+                        "org.jhove2.module.format.icc.ICCTag.incorrectTagType",
+                        args, jhove2.getConfigInfo());
+            }
             if (isValid != Validity.True) {
                 this.isValid = isValid;
             }
@@ -323,24 +368,120 @@ public class ICCTag
                 
                 isValid = this.parametricType.isValid();
             }
+            else {
+                numErrors++;
+                isValid = Validity.False;
+                Object [] args = new Object [] {this.offset, sig};
+                this.incorrectTagTypeMessage = new Message(Severity.ERROR,
+                        Context.OBJECT,
+                        "org.jhove2.module.format.icc.ICCTag.incorrectTagType",
+                        args, jhove2.getConfigInfo());
+            }
             if (isValid != Validity.True) {
                 this.isValid = isValid;
             }
         }
         else if (signature.equals("calt")) {
-            this.dateTimeType = new DateTimeType();
-            this.dateTimeType.parse(jhove2, input);
+            Validity isValid = Validity.Undetermined;
+            if (sig.equals("dtim")) {
+                this.dateTimeType = new DateTimeType();
+                this.dateTimeType.parse(jhove2, input);
             
-            Validity isValid = this.dateTimeType.isValid();
+                isValid = this.dateTimeType.isValid();
+            }
+            else {
+                numErrors++;
+                isValid = Validity.False;
+                Object [] args = new Object [] {this.offset, sig};
+                this.incorrectTagTypeMessage = new Message(Severity.ERROR,
+                        Context.OBJECT,
+                        "org.jhove2.module.format.icc.ICCTag.incorrectTagType",
+                        args, jhove2.getConfigInfo());
+            }
             if (isValid != Validity.True) {
                 this.isValid = isValid;
             }
         }
         else if (signature.equals("chad")) {
-            this.s15f16Type = new S15Fixed16ArrayType();
-            this.s15f16Type.parse(jhove2, input, this.size);
+            Validity isValid = Validity.Undetermined;
+            if (sig.equals("sf32")) {
+                this.s15f16Type = new S15Fixed16ArrayType();
+                this.s15f16Type.parse(jhove2, input, this.size);
             
-            Validity isValid = this.s15f16Type.isValid();
+                isValid = this.s15f16Type.isValid();
+            }
+            else {
+                numErrors++;
+                isValid = Validity.False;
+                Object [] args = new Object [] {this.offset, sig};
+                this.incorrectTagTypeMessage = new Message(Severity.ERROR,
+                        Context.OBJECT,
+                        "org.jhove2.module.format.icc.ICCTag.incorrectTagType",
+                        args, jhove2.getConfigInfo());
+            }
+            if (isValid != Validity.True) {
+                this.isValid = isValid;
+            }
+        }
+        else if (signature.equals("chrm")) {
+            Validity isValid = Validity.Undetermined;
+            if (sig.equals("chrm")) {
+                this.chromaticityType = new ChromaticityType();
+                this.chromaticityType.parse(jhove2, input);
+            
+                isValid = this.chromaticityType.isValid();
+            }
+            else {
+                numErrors++;
+                isValid = Validity.False;
+                Object [] args = new Object [] {this.offset, sig};
+                this.incorrectTagTypeMessage = new Message(Severity.ERROR,
+                        Context.OBJECT,
+                        "org.jhove2.module.format.icc.ICCTag.incorrectTagType",
+                        args, jhove2.getConfigInfo());
+            }
+            if (isValid != Validity.True) {
+                this.isValid = isValid;
+            }
+        }
+        else if (signature.equals("clro")) {
+            Validity isValid = Validity.Undetermined;
+            if (sig.equals("clro")) {
+                this.colorantOrderType = new ColorantOrderType();
+                this.colorantOrderType.parse(jhove2, input);
+            
+                isValid = this.colorantOrderType.isValid();
+            }
+            else {
+                numErrors++;
+                isValid = Validity.False;
+                Object [] args = new Object [] {this.offset, sig};
+                this.incorrectTagTypeMessage = new Message(Severity.ERROR,
+                        Context.OBJECT,
+                        "org.jhove2.module.format.icc.ICCTag.incorrectTagType",
+                        args, jhove2.getConfigInfo());
+            }
+            if (isValid != Validity.True) {
+                this.isValid = isValid;
+            }
+        }
+        else if (signature.equals("clrt")) {
+            Validity isValid = Validity.Undetermined;
+            if (sig.equals("clrt")) {
+                this.colorantTableType = new ColorantTableType();
+                this.colorantTableType.parse(jhove2, input);
+            
+                isValid = this.colorantTableType.isValid();
+            }
+            else {
+                numErrors++;
+                isValid = Validity.False;
+                Object [] args = new Object [] {this.offset, sig};
+                this.incorrectTagTypeMessage = new Message(Severity.ERROR,
+                        Context.OBJECT,
+                        "org.jhove2.module.format.icc.ICCTag.incorrectTagType",
+                        args, jhove2.getConfigInfo());
+            }
             if (isValid != Validity.True) {
                 this.isValid = isValid;
             }
@@ -349,6 +490,7 @@ public class ICCTag
                  signature.equals("desc") ||
                  signature.equals("dmdd") ||
                  signature.equals("dmnd") ||
+                 signature.equals("targ") ||
                  signature.equals("vued")) {
             Validity isValid = Validity.Undetermined;
             if (sig.equals("desc")) {
@@ -369,71 +511,149 @@ public class ICCTag
             
                 isValid = this.unicodeType.isValid();
             }
+            else {
+                numErrors++;
+                isValid = Validity.False;
+                Object [] args = new Object [] {this.offset, sig};
+                this.incorrectTagTypeMessage = new Message(Severity.ERROR,
+                        Context.OBJECT,
+                        "org.jhove2.module.format.icc.ICCTag.incorrectTagType",
+                        args, jhove2.getConfigInfo());
+            }
             if (isValid != Validity.True) {
                 this.isValid = isValid;
             }
         }
         else if (signature.equals("meas")) {
-            this.measurementType = new MeasurementType();
-            this.measurementType.parse(jhove2, input);
+            Validity isValid = Validity.Undetermined;
+            if (sig.equals("meas")) {
+                this.measurementType = new MeasurementType();
+                this.measurementType.parse(jhove2, input);
             
-            Validity isValid = this.measurementType.isValid();
+                isValid = this.measurementType.isValid();
+            }
+            else {
+                numErrors++;
+                isValid = Validity.False;
+                Object [] args = new Object [] {this.offset, sig};
+                this.incorrectTagTypeMessage = new Message(Severity.ERROR,
+                        Context.OBJECT,
+                        "org.jhove2.module.format.icc.ICCTag.incorrectTagType",
+                        args, jhove2.getConfigInfo());
+            }
             if (isValid != Validity.True) {
                 this.isValid = isValid;
             }
         }
         else if (signature.equals("ncl2")) {
-            this.color2Type = new NamedColor2Type();
-            this.color2Type.parse(jhove2, input);
+            Validity isValid = Validity.Undetermined;
+            if (sig.equals("ncl2")) {
+                this.color2Type = new NamedColor2Type();
+                this.color2Type.parse(jhove2, input);
             
-            Validity isValid = this.color2Type.isValid();
+                isValid = this.color2Type.isValid();
+            }
+            else {
+                numErrors++;
+                isValid = Validity.False;
+                Object [] args = new Object [] {this.offset, sig};
+                this.incorrectTagTypeMessage = new Message(Severity.ERROR,
+                        Context.OBJECT,
+                        "org.jhove2.module.format.icc.ICCTag.incorrectTagType",
+                        args, jhove2.getConfigInfo());
+            }
             if (isValid != Validity.True) {
                 this.isValid = isValid;
             }
         }
         else if (signature.equals("pseq")) {
-            this.sequenceType = new ProfileSequenceDescriptionType();
-            this.sequenceType.parse(jhove2, input);
+            Validity isValid = Validity.Undetermined;
+            if (sig.equals("pseq")) {
+                this.sequenceType = new ProfileSequenceDescriptionType();
+                this.sequenceType.parse(jhove2, input);
             
-            Validity isValid = this.sequenceType.isValid();
+                isValid = this.sequenceType.isValid();
+            }
+            else {
+                numErrors++;
+                isValid = Validity.False;
+                Object [] args = new Object [] {this.offset, sig};
+                this.incorrectTagTypeMessage = new Message(Severity.ERROR,
+                        Context.OBJECT,
+                        "org.jhove2.module.format.icc.ICCTag.incorrectTagType",
+                        args, jhove2.getConfigInfo());
+            }
             if (isValid != Validity.True) {
                 this.isValid = isValid;
             }
         }
         else if (signature.equals("resp")) {
-            this.rcs16Type = new ResponseCurveSet16Type();
-            this.rcs16Type.parse(jhove2, input);
+            Validity isValid = Validity.Undetermined;
+            if (sig.equals("rcs2")) {
+                this.rcs16Type = new ResponseCurveSet16Type();
+                this.rcs16Type.parse(jhove2, input);
             
-            Validity isValid = this.rcs16Type.isValid();
+                isValid = this.rcs16Type.isValid();
+            }
+            else {
+                numErrors++;
+                isValid = Validity.False;
+                Object [] args = new Object [] {this.offset, sig};
+                this.incorrectTagTypeMessage = new Message(Severity.ERROR,
+                        Context.OBJECT,
+                        "org.jhove2.module.format.icc.ICCTag.incorrectTagType",
+                        args, jhove2.getConfigInfo());
+            }
             if (isValid != Validity.True) {
                 this.isValid = isValid;
             }
         }
-        else if (signature.equals("targ")) {
-            this.textType = new TextType();
-            this.textType.parse(jhove2, input, this.size);
+        else if (signature.equals("rig0") ||
+                 signature.equals("rig2") ||
+                 signature.equals("tech")) {
+            Validity isValid = Validity.Undetermined;
+            if (sig.equals("sig ")) {
+                this.signatureType = new SignatureType();
+                this.signatureType.parse(jhove2, input);
             
-            Validity isValid = this.textType.isValid();
-            if (isValid != Validity.True) {
-                this.isValid = isValid;
+                isValid = this.signatureType.isValid();
             }
-        }
-        else if (signature.equals("tech")) {
-            this.signatureType = new SignatureType();
-            this.signatureType.parse(jhove2, input);
-            
-            Validity isValid = this.signatureType.isValid();
+            else {
+                numErrors++;
+                isValid = Validity.False;
+                Object [] args = new Object [] {this.offset, sig};
+                this.incorrectTagTypeMessage = new Message(Severity.ERROR,
+                        Context.OBJECT,
+                        "org.jhove2.module.format.icc.ICCTag.incorrectTagType",
+                        args, jhove2.getConfigInfo());
+            }
             if (isValid != Validity.True) {
                 this.isValid = isValid;
             }
             
             String content = this.signatureType.getContentSignature_raw();
-            TechnologySignature technology =
-                TechnologySignature.getTechnology(content, jhove2); 
-            if (technology != null) {
-                this.signatureType.setContentSignature_description(technology.getTechnology());
+            if (signature.equals("rig0")) {
+                PerceptualRenderingIntent gamut =
+                    PerceptualRenderingIntent.getPerceptualRenderingIntent(content, jhove2); 
+                if (gamut != null) {
+                    this.signatureType.setContentSignature_description(gamut.getGamut());
+                }
             }
-            else {
+            else if (signature.equals("rig1")) {
+                SaturationRenderingIntent gamut =
+                    SaturationRenderingIntent.getSaturationRenderingIntent(content, jhove2); 
+                if (gamut != null) {
+                    this.signatureType.setContentSignature_description(gamut.getGamut());
+                }
+            }
+            else if (signature.equals("tech")) {
+                TechnologySignature technology =
+                    TechnologySignature.getTechnology(content, jhove2); 
+                if (technology != null) {
+                    this.signatureType.setContentSignature_description(technology.getTechnology());
+                }
+            }
+            if (this.signatureType.getContentSignature_description() == null) {
                 numErrors++;
                 this.isValid = Validity.False;
                 Object [] args = new Object[] {input.getPosition()-4L,
@@ -445,10 +665,22 @@ public class ICCTag
             }
         }
         else if (signature.equals("view")) {
-            this.conditionsType = new ViewingConditionsType();
-            this.conditionsType.parse(jhove2, input);
+            Validity isValid = Validity.Undetermined;
+            if (sig.equals("view")) {
+                this.conditionsType = new ViewingConditionsType();
+                this.conditionsType.parse(jhove2, input);
             
-            Validity isValid = this.conditionsType.isValid();
+                isValid = this.conditionsType.isValid();
+            }
+            else {
+                numErrors++;
+                isValid = Validity.False;
+                Object [] args = new Object [] {this.offset, sig};
+                this.incorrectTagTypeMessage = new Message(Severity.ERROR,
+                        Context.OBJECT,
+                        "org.jhove2.module.format.icc.ICCTag.incorrectTagType",
+                        args, jhove2.getConfigInfo());
+            }
             if (isValid != Validity.True) {
                 this.isValid = isValid;
             }
@@ -456,6 +688,33 @@ public class ICCTag
         input.setPosition(position);
 
         return consumed;
+    }
+    
+    /** Get chromoticity type element.
+     * @return Chromoticity  type element
+     */
+    @ReportableProperty(order=7, value="Chromoticity type element.",
+            ref="ICC.1:2001-04, \u00a7 10.2")
+    public ChromaticityType getChromoticityType() {
+        return this.chromaticityType;
+    }
+    
+    /** Get colorant order type element.
+     * @return Colorant order type element
+     */
+    @ReportableProperty(order=7, value="Colorant order type element.",
+            ref="ICC.1:2001-04, \u00a7 10.3")
+    public ColorantOrderType getColorantOrderType() {
+        return this.colorantOrderType;
+    }
+    
+    /** Get colorant table type element.
+     * @return Colorant table type element
+     */
+    @ReportableProperty(order=7, value="Colorant table type element.",
+            ref="ICC.1:2001-04, \u00a7 10.4")
+    public ColorantTableType getColorantTableType() {
+        return this.colorantTableType;
     }
     
     /** Get curve type element.
@@ -485,10 +744,19 @@ public class ICCTag
         return this.descriptionType;
     }
     
+    /** Get unknown tag message.
+     * @return Unknown tag message
+     */
+    @ReportableProperty(order=23, value="Incorrect tag type.",
+            ref="ICC.1:200-10, \u00a7 9.2")
+    public Message getIncorrectTagTypeMessage() {
+        return this.incorrectTagTypeMessage;
+    }
+       
     /** Get invalid technology signature message.
      * @return Invalid technology signature message
      */
-    @ReportableProperty(order=13, value="Invalid technology signature message.",
+    @ReportableProperty(order=24, value="Invalid technology signature message.",
             ref="ICC.1:2004-10, Table 22")
     public Message getInvalidTechnologySignature() {
         return this.invalidTechnologySignatureMessage;
@@ -542,7 +810,7 @@ public class ICCTag
     /** Get tag offset not word aligned message.
      * @return Tag offset not word aligned message
      */
-    @ReportableProperty(order=12, value="Offset not word aligned.",
+    @ReportableProperty(order=22, value="Offset not word aligned.",
             ref="ICC.1:2004-10, \u00a7 7.3.4")
     public Message getOffsetNotWordAligned() {
         return this.offsetNotWordAlignedMessage;
@@ -632,7 +900,7 @@ public class ICCTag
     /** Get unknown tag message.
      * @return Unknown tag message
      */
-    @ReportableProperty(order=11, value="Unknown tag.",
+    @ReportableProperty(order=21, value="Unknown tag.",
             ref="ICC, \"Private and ICC Tag and CMM Registry\" (as of November 3, 2009")
     public Message getUnknownTagMessage() {
         return this.unknownTagMessage;

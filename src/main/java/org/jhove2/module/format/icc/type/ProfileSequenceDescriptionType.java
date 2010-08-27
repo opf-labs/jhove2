@@ -85,7 +85,7 @@ public class ProfileSequenceDescriptionType
         this.descriptions = new ArrayList<ProfileDescription>();
     }
     
-    /** Parse an ICC signature tag type element.
+    /** Parse an ICC profile sequence description tag type element.
      * @param jhove2 JHOVE2 framework
      * @param input  ICC input
      * @return Number of bytes consumed

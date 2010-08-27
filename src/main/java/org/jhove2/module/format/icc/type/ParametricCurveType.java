@@ -107,7 +107,7 @@ public class ParametricCurveType
         this.isValid = Validity.Undetermined;
     }
     
-    /** Parse an ICC signature tag type element.
+    /** Parse an ICC parametric curve tag type element.
      * @param jhove2 JHOVE2 framework
      * @param input  ICC input
      * @return Number of bytes consumed

@@ -1,5 +1,5 @@
 /**
- * HOVE2 - Next-generation architecture for format-aware characterization
+ * JHOVE2 - Next-generation architecture for format-aware characterization
  *
  * Copyright (c) 2009 by The Regents of the University of California.
  * All rights reserved.
@@ -89,7 +89,7 @@ public class NamedColor2Type
     /** Non-zero data in reserved field message. */
     protected Message nonZeroDataInReservedFieldMessage;
     
-    /** Instantiate a new <code>ResponseCurveSet16Type</code>. */
+    /** Instantiate a new <code>NamedColor2Type</code>. */
     public NamedColor2Type() {
         super();
         
@@ -189,10 +189,10 @@ public class NamedColor2Type
             consumed += 32;
             
             /* PCS coordinations. */
-            List<Integer> pcsCoords = new ArrayList<Integer>();
-            for (int j=0; j<3; j++) {
-                pcsCoords.add(input.readUnsignedShort());
-            }
+            int x = input.readUnsignedShort();
+            int y = input.readUnsignedShort();
+            int z = input.readUnsignedShort();
+            PCSNumber pcsCoords = new PCSNumber(x, y, z);
             consumed += 6;
             
             /* Device coordinates. */

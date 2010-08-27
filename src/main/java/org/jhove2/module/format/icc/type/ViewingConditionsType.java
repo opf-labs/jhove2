@@ -92,7 +92,7 @@ public class ViewingConditionsType
         this.isValid = Validity.Undetermined;
     }
     
-    /** Parse an ICC tag type.
+    /** Parse an ICC viewing conditions tag type.
      * @param jhove2 JHOVE2 framework
      * @param input  ICC input
      * @return Number of bytes consumed

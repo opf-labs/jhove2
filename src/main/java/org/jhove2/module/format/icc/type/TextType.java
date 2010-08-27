@@ -86,7 +86,7 @@ public class TextType
         this.isValid = Validity.Undetermined;
     }
     
-    /** Parse an ICC tag type.
+    /** Parse an ICC text tag type.
      * @param jhove2 JHOVE2 framework
      * @param input  ICC input
      * @param elementSize Element size

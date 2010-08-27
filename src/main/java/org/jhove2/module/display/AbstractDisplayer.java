@@ -532,8 +532,8 @@ public abstract class AbstractDisplayer
 			if (props != null) {
 				Set<String> keys = props.stringPropertyNames();
 				for (String key : keys) {
-					DisplayVisibility value = DisplayVisibility.valueOf(props
-							.getProperty(key));
+					DisplayVisibility value =
+					    DisplayVisibility.valueOf(props.getProperty(key));
 					if (value != null) {
 						visibilities.put(key, value);
 					}

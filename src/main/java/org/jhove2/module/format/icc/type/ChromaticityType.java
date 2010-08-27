@@ -1,7 +1,7 @@
 /**
  * JHOVE2 - Next-generation architecture for format-aware characterization
  *
- * Copyright (c) 2009 by The Regents of the University of California
+ * Copyright (c) 2009 by The Regents of the University of California.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE. 
+ * POSSIBILITY OF SUCH DAMAGE.
  */
 
 package org.jhove2.module.format.icc.type;
@@ -47,48 +47,56 @@ import org.jhove2.core.Message.Severity;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
 import org.jhove2.module.format.Validator.Validity;
+import org.jhove2.module.format.icc.field.ColorantEncoding;
 
-/** ICC XYZ tristimulus value array element type, as defined in ICC.1:2004-10,
- * \u00a7 10.27.
+/** ICC chromoticity type element, as defined in ICC.1:2004, \u00a7 10.2.
  * 
  * @author slabrams
  */
-public class XYZType
+public class ChromaticityType
         extends AbstractReportable
 {
-    /** XYZ type signature. */
-    public static final String SIGNATURE = "XYZ ";
+    /** Type signature. */
+    public static final String SIGNATURE = "chrm";
     
-    /** Validation status. */
+    /** Validity status. */
     protected Validity isValid;
     
-    /** Number of XYZ values. */
-    protected long numberOfValues;
-
-    /** Signature (of tag type). */
-    protected StringBuffer signature = new StringBuffer(4);   
+    /** Number of device channels. */
+    protected int numChannels;
     
-    /** XYZ values. */
-    protected List<XYZNumber> values;
+    /** Type signature. */
+    protected StringBuffer signature = new StringBuffer(4);
+    
+    /** Phosphor or colorant type in raw form. */
+    protected int type;
+    
+    /** Phosphor or colorant type in descriptive form. */
+    protected String type_d;
+    
+    /** CIE XY coordinates. */
+    protected List<XYNumber> xyCoords;
+
+    /** Invalid colorant and phosphor encoding message. */
+    protected Message invalidColorantEncodingMessage;
     
     /** Invalid tag type message. */
     protected Message invalidTagTypeMessage;
-    
+     
     /** Non-zero data in reserved field message. */
     protected Message nonZeroDataInReservedFieldMessage;
     
-    /** Instantiate a new <code>XYZType</code>. */
-    public XYZType() {
+    /** Instantiate a new <code>ChromoticityType</code>. */
+    public ChromaticityType() {
         super();
         
-        this.isValid = Validity.Undetermined;
-        this.values  = new ArrayList<XYZNumber>();
+        this.isValid  = Validity.Undetermined;
+        this.xyCoords = new ArrayList<XYNumber>();
     }
     
-    /** Parse an ICC XYZ tag type element.
+    /** Parse an ICC chromoticity tag type element.
      * @param jhove2 JHOVE2 framework
      * @param input  ICC input
-     * @param elementSize Size in bytes of the XYZ type element
      * @return Number of bytes consumed
      * @throws EOFException
      *             If End-of-File is reached reading the source unit
@@ -96,7 +104,7 @@ public class XYZType
      *             If an I/O exception is raised reading the source unit
      * @throws JHOVE2Exception
      */
-    public long parse(JHOVE2 jhove2, Input input, long elementSize)
+    public long parse(JHOVE2 jhove2, Input input)
         throws EOFException, IOException, JHOVE2Exception
     {
         long consumed  = 0L;
@@ -133,20 +141,59 @@ public class XYZType
                     args, jhove2.getConfigInfo());
         }
         consumed += 4;
+      
+        /* Number of channels. */
+        this.numChannels = input.readUnsignedShort();
+        consumed += 2;
         
-        this.numberOfValues = (elementSize-8)/12;
-        for (int i=0; i<this.numberOfValues; i++) {
-            int x = input.readSignedInt();
-            int y = input.readSignedInt();
-            int z = input.readSignedInt();
-            XYZNumber xyz = new XYZNumber(x, y, z);
-            this.values.add(xyz);
-            consumed += 12;
+        /* Phosphor or colorant type. */
+        this.type = input.readUnsignedShort();
+        ColorantEncoding encoding =
+            ColorantEncoding.getColorantEncoding(this.type, jhove2);
+        if (encoding != null) {
+            this.type_d = encoding.getType();
         }
-            
+        else {
+            numErrors++;
+            this.isValid = Validity.False;
+            Object [] args = new Object [] {input.getPosition()-2L, this.type};
+            this.invalidColorantEncodingMessage = new Message(Severity.ERROR,
+                    Context.OBJECT,
+                    "org.jhove2.module.format.icc.ICCTag.invalidColorantEncoding",
+                    args, jhove2.getConfigInfo());
+        }
+        consumed += 2;
+ 
+        /* CIE XYZ coordinates. */
+        for (int i=0; i<this.numChannels; i++) {
+            int x = input.readUnsignedShort();
+            int y = input.readUnsignedShort();
+            XYNumber xy = new XYNumber(x, y);
+            this.xyCoords.add(xy);
+            consumed += 8;
+        }
+             
         return consumed;
     }
-    
+ 
+    /** Get CIE XY coordinates.
+     * @return CIE XY coordinates
+     */
+    @ReportableProperty(order=4, value="CIE XY coordinates.",
+            ref="ICC.1;2004-10, Table 23")
+    public List<XYNumber> getCIEXYCoordinates() {
+        return this.xyCoords;
+    }
+
+    /** Invalid colorant encoding message.
+     * @return Invalid colorant encoding message
+     */
+    @ReportableProperty(order=13, value="Invalid colorant encoding.",
+            ref="ICC.1:2004-10, Table 24")
+    public Message getInvalidColorantEncodingMessage() {
+        return this.invalidColorantEncodingMessage;
+    }
+   
     /** Get invalid tag type message.
      * @return Invalid tag type message
      */
@@ -158,43 +205,45 @@ public class XYZType
     /** Get non-zero data in reserved field message.
      * @return Non-zero data in reserved field message
      */
-    @ReportableProperty(order=12, value="Non-zero data in reserved field.")
+    @ReportableProperty(order=12, value="Non-zero data in reserved field.",
+            ref="ICC.1:2004-10, \ua077 10.2")
     public Message getNonZeroDataInReservedFieldMessage() {
         return this.nonZeroDataInReservedFieldMessage;
     }
-    
-    /** Get number of XYZ values.
-     * @return Number of XYZ values
+     
+    /** Get number of device channels.
+     * @return Number of device channels
      */
-    @ReportableProperty(order=2, value="XYZ values.",
-            ref="ICC.1:2004-10, \u00a7 10.27")
-    public long getNumberOfValues() {
-        return this.numberOfValues;
-    }
-    /** Get XYZ type signature.
-     * @return XYZ type signature
-     */
-    @ReportableProperty(order=1, value="XYZ type signature.",
-            ref="ICC.1:2004-10, \u00a7 10.27")
-    public String getSignature() {
-        return this.signature.toString();
+    @ReportableProperty(order=1, value="Number of device channels.",
+            ref="ICC.1:2004-10, Table 23")
+    public int getNumberOfDeviceChannels() {
+        return this.numChannels;
     }
     
-    /** Get XYZ values.
-     * @return XYZ values
+    /** Get phosphor or colorant type in raw form.
+     * @return Phosphor or colorant type
      */
-    @ReportableProperty(order=3, value="XYZ values.",
-            ref="ICC.1:2004-10, \u00a7 10.27")
-    public List<XYZNumber> getValues() {
-        return this.values;
+    @ReportableProperty(order=2, value="Phosphor or colorant type in raw form.",
+            ref="ICC.1:2004-10, Table 24")
+    public int getPhosphorOrColorantType_raw() {
+        return this.type;
+    }
+
+    /** Get phosphor or colorant type in descriptive form.
+     * @return Phosphor or colorant type
+     */
+    @ReportableProperty(order=3, value="Phosphor or colorant type in descriptive form.",
+            ref="ICC.1:2004-10, Table 24")
+    public String getPhosphorOrColorantType_descriptive() {
+        return this.type_d;
     }
     
     /** Get validation status.
      * @return Validation status
      */
-    @ReportableProperty(order=4, value="Validation status.",
-            ref="ICC.1:2004-10, \u00a7 10.19")
+    @ReportableProperty(order=5, value="Validation status.",
+            ref="ICC.1:2004-10, \u00a7 10.2")
     public Validity isValid() {
         return this.isValid;
     }
- }
+}
