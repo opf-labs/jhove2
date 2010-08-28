@@ -42,6 +42,7 @@ import org.jhove2.core.Installation;
 import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.module.AbstractModule;
+import org.jhove2.module.Module.Scope;
 import org.jhove2.module.display.Displayer;
 
 /**
@@ -99,6 +100,18 @@ public abstract class AbstractApplication
 		catch (Exception ex){
 			throw new JHOVE2Exception("Unable to instantiate default displayer", ex);
 		}		
+		this.scope = Scope.Generic;
+	}
+	
+	/**
+     * Instantiate a new <code>AbstractApplication</code>.
+	 */
+	public AbstractApplication () {
+		super();
+		/* Default application installation and invocation properties. */
+		this.setInstallation(Installation.getInstance());
+		this.setInvocation  (new Invocation());
+		this.scope = Scope.Generic;
 	}
 
 	/** Get application {@link org.jhove2.core.Invocation} properties.
