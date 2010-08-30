@@ -41,11 +41,10 @@ public class IntelTiffFileTest extends TiffModuleTestBase{
     }
 
     @Test
-    public void testIFDParseMessages() {
+    public void testIFDZeroEntriesMessages() {
         List<IFD> ifdList = testTiffModule.getIFDs();
         for (IFD ifd : ifdList) {
-            assertTrue (ifd.getTagSortOrderErrorMessage() == null);
-            assertTrue (ifd.getUnknownTypeMessage().isEmpty());           
+            assertTrue (ifd.getZeroIFDEntriesMessage() == null);        
          }
     }
 

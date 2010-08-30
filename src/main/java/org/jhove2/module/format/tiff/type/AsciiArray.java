@@ -1,4 +1,4 @@
-package org.jhove2.module.format.tiff;
+package org.jhove2.module.format.tiff.type;
 
 import java.io.IOException;
 import java.util.LinkedList;

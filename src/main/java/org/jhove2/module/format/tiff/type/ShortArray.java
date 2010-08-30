@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.jhove2.module.format.tiff;
+package org.jhove2.module.format.tiff.type;
 
 import java.io.IOException;
 
@@ -11,7 +11,7 @@ import org.jhove2.core.reportable.AbstractReportable;
 
 /**
  * Stores an array of TIFF SHORT types
- * @see org.jhove2.module.format.tiff.Short
+ * @see org.jhove2.module.format.tiff.type.Short
  * 
  * @author mstrong
  *
