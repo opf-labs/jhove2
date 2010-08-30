@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.jhove2.module.format.tiff;
+package org.jhove2.module.format.tiff.type;
 
 import java.io.IOException;
 
@@ -13,7 +13,7 @@ import org.jhove2.core.reportable.AbstractReportable;
  * @author mstrong
  *
  * LongArray class - holds an Array of LONG Tiff type values
- * @see org.jhove2.module.format.tiff.Long
+ * @see org.jhove2.module.format.tiff.type.Long
  *
  */
 public class LongArray
