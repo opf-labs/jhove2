@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.jhove2.module.format.tiff;
+package org.jhove2.module.format.tiff.type;
 
 import java.io.IOException;
 
@@ -10,33 +10,30 @@ import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
 
 /**
- * Stores an array of TIFF SSHORT types
- * @see org.jhove2.module.format.tiff.SShort
+ * Stores an array of Tiff BYTE types
  * 
+ * @see org.jhove2.module.format.tiff.type.Byte
  * @author mstrong
  *
  */
-public class SShortArray
-    extends AbstractReportable {  
-    
+public class ByteArray
+extends AbstractReportable {
     private short[] valueArray;
 
-    /**  no-arg constructor for SShortArray object */
-    public SShortArray() {}
-    
-    /**
-     * @return the value
-     */
-    @ReportableProperty(order = 1, value = "Tag SSHORT Array value")
-    public String getValueArray() {
+    /** no-arg constructor */
+    public ByteArray() {
+    }
+
+    @ReportableProperty(order = 1, value="Tag BYTE Array value")
+    public String getValueArray(){
         return this.toString();
     }
     
     public void setValue(Input input, long count) throws IOException {
         valueArray = new short [(int) count];
         for (int i=0; i<count; i++) {
-            valueArray[i] = input.readSignedShort();
-        }   
+            valueArray[i] = (short) input.readUnsignedByte();
+        }
     }
     
     @Override
@@ -52,3 +49,4 @@ public class SShortArray
         return result.toString();        
     }
 }
+

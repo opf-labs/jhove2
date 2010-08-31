@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.jhove2.module.format.tiff;
+package org.jhove2.module.format.tiff.type;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.reportable.AbstractReportable;
@@ -20,7 +20,7 @@ extends AbstractReportable {
     public Long() {
     }
     
-    Long (long value) {
+    public Long (long value) {
         this.value = value;
     }
     @ReportableProperty(order = 1, value="Tag Long value")

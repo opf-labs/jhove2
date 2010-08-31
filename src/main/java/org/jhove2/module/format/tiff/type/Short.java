@@ -1,36 +1,36 @@
 /**
  * 
  */
-package org.jhove2.module.format.tiff;
+package org.jhove2.module.format.tiff.type;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.reportable.AbstractReportable;
 
 
 /**
- * stores the Tiff SSHORT type value
- * a 16-byte (2-byte) signed (two-complement) integer
+ * stores the Tiff SHORT type value
+ * 16-bit (2-byte) unsigned integer
  * 
  * @author mstrong
  *
  */
-public class SShort
+public class Short
     extends AbstractReportable {
-    private short value;
+    private int value;
 
-    public SShort (short value) {
+    public Short (int value) {
         this.value = value;
     }
     
     /**  no-arg constructor for Short object */
-    public SShort () {
+    public Short () {
     }
     
     /**
      * @return the value
      */
-    @ReportableProperty(order = 1, value = "Tag SSHORT  value")
-    public short getValue() {
+    @ReportableProperty(order = 1, value = "Tag SHORT  value")
+    public int getValue() {
         return this.value;
     }
 
