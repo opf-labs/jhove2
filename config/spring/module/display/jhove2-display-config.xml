@@ -20,12 +20,14 @@
 			</list>
 		</property>
 		<property name="configInfo" ref="ConfigInfo"/>
+		<property name="showDescriptiveProperties" value="true"/>
+		<property name="showIdentifiers" value="false"/>
+		<property name="showRawProperties" value="true"/>
 	</bean>
 	      	
  	<!-- Text displayer bean -->
 	<bean id="Text" class="org.jhove2.module.display.TextDisplayer"
 	      scope="prototype">
-	    <property name="showIdentifiers" value="false"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
@@ -34,6 +36,9 @@
 			</list>
 		</property>
 		<property name="configInfo" ref="ConfigInfo"/>
+		<property name="showDescriptiveProperties" value="true"/>
+		<property name="showIdentifiers" value="false"/>
+		<property name="showRawProperties" value="true"/>
 	</bean>
 	      	
  	<!-- XML displayer bean -->
@@ -48,6 +53,8 @@
 		</property>
 		<property name="configInfo" ref="ConfigInfo"/>
 		<property name="shouldIndent" value="true"/>
+		<property name="showDescriptiveProperties" value="true"/>
+		<property name="showRawProperties" value="true"/>
 	</bean>
 	
 	<!-- Displayer ConfigInfo bean -->

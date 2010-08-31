@@ -61,22 +61,22 @@ public class XYZNumber
         this.z = new S15Fixed16Number(z);
     }
     
-    /** Get X number.
-     * @return X number
+    /** Get X value.
+     * @return X value
      */
     public S15Fixed16Number getX() {
         return this.x;
     }
     
-    /** Get Y number.
-     * @return Z number
+    /** Get Y value.
+     * @return Z value
      */
     public S15Fixed16Number getY() {
         return this.y;
     }
     
-    /** Get Z number.
-     * @return Z number
+    /** Get Z value.
+     * @return Z value
      */
     public S15Fixed16Number getZ() {
         return this.z;

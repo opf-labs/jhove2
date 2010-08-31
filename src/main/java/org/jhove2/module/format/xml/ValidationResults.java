@@ -39,7 +39,6 @@ package org.jhove2.module.format.xml;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.reportable.AbstractReportable;
-import org.jhove2.module.format.Validator.Validity;
 import org.xml.sax.SAXParseException;
 
 /**

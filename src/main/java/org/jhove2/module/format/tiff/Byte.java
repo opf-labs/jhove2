@@ -6,10 +6,7 @@ package org.jhove2.module.format.tiff;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.reportable.AbstractReportable;
 
-/**
- * @author mstrong
- *
- */
+
 /** 
  * stores the Tiff BYTE type.  
  * 8-bit unsigned integer

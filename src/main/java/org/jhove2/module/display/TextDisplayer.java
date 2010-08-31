@@ -190,10 +190,8 @@ public class TextDisplayer extends AbstractDisplayer {
 	 *            Property name
 	 * @param identifier
 	 *            Property identifier in the JHOVE2 namespace
-	 * @param coded
-	 *            Property raw or coded value
-	 * @param symbolic
-	 *            Property symbolic value (optional, may be null)
+	 * @param value
+	 *            Property value
 	 * @param order
 	 *            Ordinal position of this reportable with respect to enclosing
 	 *            {@link org.jhove2.core.reportable.Reportable} or collection
@@ -203,9 +201,10 @@ public class TextDisplayer extends AbstractDisplayer {
 	 */
 	@Override
 	public void displayProperty(PrintStream out, int level, String name,
-			                    I8R identifier, Object coded, Object symbolic,
-			                    int order, String unit) {
-		StringBuffer buffer = new StringBuffer(getIndent(level,this.getShouldIndent()));
+			                    I8R identifier, Object value, int order,
+			                    String unit) {
+		StringBuffer buffer =
+		    new StringBuffer(getIndent(level,this.getShouldIndent()));
 		buffer.append(name);
 		if (this.getShowIdentifiers()) {
 			buffer.append(" <" + identifier + ">");
@@ -213,10 +212,7 @@ public class TextDisplayer extends AbstractDisplayer {
 		if (unit != null){
 			buffer.append(" (" + unit + ")");
 		}
-		buffer.append(": " + coded);
-		if (symbolic != null) {
-		    buffer.append(" = " + symbolic);
-		}
+		buffer.append(": " + value);
 		out.println(buffer);
 	}
 

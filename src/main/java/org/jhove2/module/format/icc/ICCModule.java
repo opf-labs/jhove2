@@ -43,14 +43,11 @@ import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
-import org.jhove2.core.Message.Context;
-import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.module.format.Validator;
-import org.jhove2.module.format.Validator.Validity;
 
 /** JHOVE2 ICC colour profile module.
  * 
@@ -123,7 +120,6 @@ public class ICCModule
         throws EOFException, IOException, JHOVE2Exception
     {
         long consumed = 0L;
-        int numErrors = 0;
         this.isValid = Validity.True;
         Input input = null;
         try {
@@ -133,29 +129,18 @@ public class ICCModule
             input.setByteOrder(ByteOrder.BIG_ENDIAN);
             input.setPosition(0L);
             
-            try {
-                this.header = new ICCHeader();
-                consumed = header.parse(jhove2, input);
-                Validity validity = header.isValid();
-                if (validity != Validity.True) {
-                    this.isValid = validity;
-                }
-                
-                this.tagTable = new ICCTagTable();
-                consumed += tagTable.parse(jhove2, input);
-                validity = tagTable.isValid();
-                if (validity != Validity.True) {
-                    this.isValid = validity;
-                }
+            this.header = new ICCHeader();
+            consumed = header.parse(jhove2, input);
+            Validity validity = header.isValid();
+            if (validity != Validity.True) {
+                this.isValid = validity;
             }
-            catch (EOFException e) {
-                numErrors++;
-                this.isValid = Validity.False;
-                Object [] args = new Object [] {input.getPosition()};
-                this.prematureEOFMessage = new Message(Severity.ERROR,
-                        Context.OBJECT,
-                        "org.jhove2.module.format.icc.ICCModule.PrematureEOF",
-                        args, jhove2.getConfigInfo());
+                
+            this.tagTable = new ICCTagTable();
+            consumed += tagTable.parse(jhove2, input,header);
+            validity = tagTable.isValid();
+            if (validity != Validity.True) {
+                this.isValid = validity;
             }
         }
         finally {

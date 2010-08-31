@@ -9,6 +9,7 @@ import org.jhove2.core.reportable.AbstractReportable;
 
 /**
  * stores the Tiff SHORT type value
+ * 16-bit (2-byte) unsigned integer
  * 
  * @author mstrong
  *
@@ -16,7 +17,6 @@ import org.jhove2.core.reportable.AbstractReportable;
 public class Short
     extends AbstractReportable {
     private int value;
-
 
     public Short (int value) {
         this.value = value;

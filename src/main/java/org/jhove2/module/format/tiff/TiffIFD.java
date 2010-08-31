@@ -16,16 +16,28 @@ import org.jhove2.core.io.Input;
 public class TiffIFD 
 extends IFD
 implements Comparable {
-
+    
+    
+    public static final int
+        DATETIME = 306;
+    
     public TiffIFD() {
         super();
     }
 
-    public void getValues(JHOVE2 jhove2, Input input, IFDEntry entry) throws JHOVE2Exception, IOException {
+    public IFDEntry readValues(JHOVE2 jhove2, Input input, IFDEntry entry) throws JHOVE2Exception, IOException {
+        
+//        if (entry.getTag() == DATETIME) {
+//            StringIFDEntry strIFDEntry = new StringIFDEntry(entry);            
+//            strIFDEntry.setValue(readASCII(input, entry));
+//            return strIFDEntry;
+//        }
+        
         TiffValue value = new TiffValue();
         input.setPosition(entry.getValueOffset());
         value.readValue(input, entry);
-        entry.setValue(value);   
+        entry.setValue(value);
+        return entry;   
        
         /* TODO: fix this 
         if (entry.getType().equals("RATIONAL")) {

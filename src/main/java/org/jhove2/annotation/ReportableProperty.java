@@ -64,13 +64,11 @@ public @interface ReportableProperty {
 	public static final String DEFAULT = "Not available.";
 	
 	/**
-	 * Property type: raw, coded, or symbolic.  A raw property reports itself
-	 * in the exact form that was found in the source unit; a coded value also
-	 * reports itself in the form found in the source unit, which is a
-	 * coded form also available in symbolic form; and a symbolic property
-	 * reports a coded value in human-readable form.
+	 * Property type: raw or descriptive.  A raw property reports itself
+	 * in the exact form that was found in the source unit; a descriptive
+	 * property reports itself in a more human-readable form.
 	 */
-	public enum PropertyType {Raw, Coded, Symbolic}
+	public enum PropertyType {Default, Raw, Descriptive}
 
     /**
      * Ordinal position of this property relative to all properties directly
@@ -84,8 +82,8 @@ public @interface ReportableProperty {
 	 */
 	public String ref() default DEFAULT;
 	
-	/** Property type: raw, coded, or symbolic. */
-	public PropertyType type() default PropertyType.Raw;
+	/** Property type: raw or descriptive. */
+	public PropertyType type() default PropertyType.Default;
     
     /** Property description. */
     public String value() default DEFAULT;

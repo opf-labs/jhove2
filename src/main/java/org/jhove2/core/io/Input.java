@@ -33,6 +33,7 @@
 
 package org.jhove2.core.io;
 
+import java.io.EOFException;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -131,6 +132,12 @@ public interface Input  {
 	 * @return Current position, as a byte offset
 	 */
 	public long getPosition();
+	
+	/** Get UTF-16BE Unicode character at the current position.  This
+	 * implicitly advances the current position by two bytes.
+	 * @return Characer at the current position
+	 */
+	public char readChar() throws EOFException, IOException;
 
 	/**
 	 * Get signed byte at the current position. This implicitly advances the
@@ -143,7 +150,7 @@ public interface Input  {
 	public byte readSignedByte() throws IOException;
 
 	/**
-	 * read signed (four byte) integer at the the current position. This
+	 * read signed (four byte) integer at the current position. This
 	 * implicitly advances the current position by four bytes.
 	 * 
 	 * @return Unsigned integer at the current position, or -1 if EOF

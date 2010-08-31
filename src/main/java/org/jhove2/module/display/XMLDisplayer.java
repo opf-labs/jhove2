@@ -81,9 +81,6 @@ public class XMLDisplayer
 	public static final String ELEFEATURES = "features";	
 	/** Value element. */
 	public static final String ELEVALUE = "value";
-	/** Symbolic value element. */
-	public static final String ELESYMBOLIC = "symbolicValue";
-
 	/** Schema location attribute. */
 	public static final String SCHEMA_LOCATION = ":schemaLocation";
 	/** xmlns attribute. */
@@ -238,10 +235,8 @@ public class XMLDisplayer
 	 *            Property name
 	 * @param identifier
 	 *            Property identifier in the JHOVE2 namespace
-	 * @param coded
-	 *            Property raw or coded value
-	 * @param symbolic
-	 *            Property symbolic value (optional, may be null)
+	 * @param value
+	 *            Property value
 	 * @param order
 	 *            Ordinal position of this reportable with respect to enclosing
 	 *            {@link org.jhove2.core.reportable.Reportable} or collection
@@ -251,8 +246,8 @@ public class XMLDisplayer
 	 */
 	@Override
 	public void displayProperty(PrintStream out, int level, String name,
-			                    I8R identifier, Object coded, Object symbolic,
-			                    int order, String unit) {
+			                    I8R identifier, Object value, int order,
+			                    String unit) {
 		if (unit == null) {
 			startTag(out, level, ELEFEATURE,
 				     ATTNAME,        name,
@@ -266,10 +261,7 @@ public class XMLDisplayer
 					ATTIDNAMESPACE,   identifier.getNamespace().toString(),
 					ATTUNITOFMEASURE, unit);
 		}
-		tag(out, level + 1, ELEVALUE, coded.toString());
-		if (symbolic != null) {
-		    tag(out, level+1, ELESYMBOLIC, symbolic.toString());
-		}
+		tag(out, level + 1, ELEVALUE, value.toString());
 		endTag(out, level, ELEFEATURE);
 	}
 

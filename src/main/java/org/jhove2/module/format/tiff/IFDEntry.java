@@ -68,7 +68,7 @@ implements Comparable<Object> {
     public IFDEntry() {
     }
 
-    public IFDEntry(int tag, int type, int count, long valueOffset) {
+    public IFDEntry(int tag, int type, long count, long valueOffset) {
         this.tag = tag;
         this.tiffType = TiffType.getType(type);
         this.count = count;
@@ -205,7 +205,7 @@ implements Comparable<Object> {
         return UnknownTagMessage;
     }
 
-     /**
+    /**
      * The field type of the value for this tag
      * @return TiffType
      */
@@ -220,6 +220,30 @@ implements Comparable<Object> {
     @ReportableProperty(order = 5, value = "Tiff Tag Value.")
     public TiffValue getValue() {
         return value;
+    }
+
+    /**
+     * @return the typeMismatchMessage
+     */
+    @ReportableProperty(order=6, value="type mismatch message.")
+    public Message getTypeMismatchMessage() {
+        return TypeMismatchMessage;
+    }
+
+    /**
+     * @return the invalidCountMessage
+     */
+    @ReportableProperty(order=7, value="Invalid Count Message.")
+    public Message getInvalidCountMessage() {
+        return InvalidCountMessage;
+    }
+
+    /**
+     * @return the invalidCountValueMessage
+     */
+    @ReportableProperty(order=8, value="Invalid Count Value Message.")
+    public Message getInvalidCountValueMessage() {
+        return InvalidCountValueMessage;
     }
 
     @Override

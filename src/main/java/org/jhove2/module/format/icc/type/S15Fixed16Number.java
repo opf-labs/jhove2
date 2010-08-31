@@ -38,7 +38,7 @@ package org.jhove2.module.format.icc.type;
 /** ICC s15Fixed16Number, a fixed signed 4 byte/32 bit quantity with 16
  * fractional bits.  The number is organized as:
  * siiiiiiiiiiiiiiiffffffffffffffff, with the value:
- * siiiiiiiiiiiiiii + ffffffffffffffff/65536. See ICC.1:2004-10, \u00a7 5.13.
+ * siiiiiiiiiiiiiii + ffffffffffffffff/65536. See ICC.1:2004-10, \u00a7 5.1.3.
  * 
  * @author slabrams
  */
@@ -56,13 +56,13 @@ public class S15Fixed16Number
     /** Floating point value. */
     protected double value;
     
-    /** Instantiate a new <code>S15Fixed16Number.
+    /** Instantiate a new <code>S15Fixed16Number</code>.
      */
     public S15Fixed16Number(int in) {
         this.integral   = (in & 0xffff0000) >> 16;
         this.fractional =  in & 0x0000ffff;
         this.value      = this.integral +
-                 ((double)this.fractional/(float)DENOMINATOR);
+                 ((double)this.fractional/(double)DENOMINATOR);
         /* Only keep 5 significant fractional digits. */
         long ln     = (long)(this.value*100000);
         this.value  = ln;

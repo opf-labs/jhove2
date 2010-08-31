@@ -36,6 +36,7 @@
 
 package org.jhove2.core.io;
 
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -269,7 +270,60 @@ public abstract class AbstractInput implements Input {
 	public long getSize() {
 		return this.fileSize;
 	}
+    
+    /** Get UTF-16BE Unicode character at the current position.  This
+     * implicitly advances the current position by two bytes.
+     * @return Character at the current position
+     * @see org.jhove2.core.io.Input#readChar()
+     */
+	@Override
+    public char readChar()
+	    throws EOFException, IOException
+	{
+	    char ch;
+        int charValue = 0;
+        int remaining = this.buffer.limit() - this.buffer.position();
+        if (remaining < 2) {
+            for (int i = 0; i < remaining; i++) {
+                /*
+                 * LITTLE_ENDIAN - shift byte value then add to accumlative
+                 * value
+                 */
+                if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
+                    int in = (((int) this.buffer.get() & 0xff));
+                    in <<= (8 * i);
+                    charValue += in;
+                }
+                else {
+                    /* BIG_ENDIAN - shift accumulative value then add byte value */
+                    charValue <<= 8;
+                    charValue += (((int) this.buffer.get() & 0xff));
+                }
+            }
+            if (getNextBuffer() == EOF) {
+                throw new EOFException();
+            }
+            for (int i = remaining; i < 2; i++) {
+                if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
+                    int in = (((int) this.buffer.get() & 0xff));
+                    in <<= (8 * i);
+                    charValue += in;
+                }
+                else {
+                    charValue <<= 8;
+                    charValue += (((int) this.buffer.get() & 0xff));
+                }
+            }
+            ch = (char) charValue;
+        }
+        else {
+            ch = this.buffer.getChar();
+        }
+        this.inputablePosition += 2L;
 
+        return ch;
+    }
+    
 	/**
 	 * Get signed byte at the current position. This implicitly advances the
 	 * current position by one byte.
