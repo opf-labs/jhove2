@@ -35,14 +35,15 @@
  */
 package org.jhove2.core;
 
-import static org.junit.Assert.*;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
-
-import org.jhove2.core.source.*;
+import org.jhove2.core.source.FileSetSource;
+import org.jhove2.core.source.Source;
 import org.jhove2.module.Module;
 import org.jhove2.module.aggrefy.GlobPathRecognizer;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * @author smorrissey

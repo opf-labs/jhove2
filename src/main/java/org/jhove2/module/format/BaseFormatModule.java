@@ -156,6 +156,8 @@ public class BaseFormatModule
 			if (profiles.size() > 0) {
 				for (FormatProfile profile : profiles) {
 					if (profile instanceof Validator) {
+					    profile.setFormatModule(this);
+					    
 						TimerInfo timer = profile.getTimerInfo();
 						timer.setStartTime();
 						

@@ -38,10 +38,10 @@
 
 package uk.gov.nationalarchives.droid.binFileReader;
 
-import uk.gov.nationalarchives.droid.IdentificationFile;
-
 import java.io.IOException;
 import java.io.InputStream;
+
+import uk.gov.nationalarchives.droid.IdentificationFile;
 
 /**
  * The <code>InputStreamByteReader</code> class is a <code>ByteReader</code> that

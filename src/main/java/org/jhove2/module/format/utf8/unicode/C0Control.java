@@ -40,6 +40,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 
 /**
@@ -84,11 +85,12 @@ public class C0Control implements Comparable<C0Control> {
 	 * @return Control, or null if the code point is not a C0 control
 	 * @throws JHOVE2Exception
 	 */
-	public static synchronized C0Control getControl(int codePoint, Properties props)
+	public static synchronized C0Control getControl(int codePoint, JHOVE2 jhove2)
 			throws JHOVE2Exception {
 		if (controls == null) {
 			/* Initialize the controls from s Java resource bundle. */
 			controls = new TreeSet<C0Control>();
+            Properties props = jhove2.getConfigInfo().getProperties("C0Control");
 			if (props != null) {
 				Set<String> set = props.stringPropertyNames();
 				Iterator<String> iter = set.iterator();

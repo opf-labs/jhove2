@@ -3,7 +3,6 @@ package org.jhove2.module.format.tiff;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Properties;
 import java.util.Set;
@@ -31,15 +30,19 @@ public class TiffTagTest {
 
     private JHOVE2 JHOVE2;
     private Set<TiffTag> tiffTagSet = null;
-    private boolean print = false;
+    private boolean print = true;
 
     @Test
     public void testGetTagIntProperties() {
         Properties tiffTagProps;
         try {
-            tiffTagProps = JHOVE2.getConfigInfo().getProperties("TiffTag");
+            tiffTagProps = JHOVE2.getConfigInfo().getProperties("TiffTags");
+            
+            /* 
+             * a little redundant as this method call does the same thing as above
+             */
             if (tiffTagProps != null){
-                tiffTagSet = TiffTag.getTiffTags(tiffTagProps);
+                tiffTagSet = TiffTag.getTiffTags(JHOVE2);  
             }
             if (print){
                 TiffTag[] tiffTagArray = (TiffTag[]) tiffTagSet.toArray(new TiffTag[tiffTagSet.size()]);

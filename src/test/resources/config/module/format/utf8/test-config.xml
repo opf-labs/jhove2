@@ -40,18 +40,16 @@
 	<bean id="UTF8Identifier" class="org.jhove2.core.I8R" scope="singleton">
 		<constructor-arg type="java.lang.String" value="http://jhove2.org/terms/format/utf-8"/>
 	</bean>
-	
-	
-	<!-- C0 Control properties bean -->
-	<util:properties id="C0Control"	
-		             location="classpath:properties/unicode/c0control.properties"/>
-	
-	<!-- C1 Control properties bean -->
-	<util:properties id="C1Control"	
-		             location="classpath:properties/unicode/c1control.properties"/>
-
-	<!-- Codeblock properties bean -->
-	<util:properties id="CodeBlock"	
-		             location="classpath:properties/unicode/codeblock.properties"/>
-
+		
+	<!-- C0 Control properties bean -->		
+	   <bean id="C0Control" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+  		<property name="propertyFileBaseName" value="C0Control"/>
+   </bean>      
+	   <bean id="C1Control" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+  		<property name="propertyFileBaseName" value="C1Control"/>
+   </bean>      
+	   <bean id="CodeBlock" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+  		<property name="propertyFileBaseName" value="CodeBlock"/>
+   </bean>      
+ 
 </beans>

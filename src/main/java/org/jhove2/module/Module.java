@@ -40,8 +40,8 @@ import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.Agent;
-import org.jhove2.core.WrappedProduct;
 import org.jhove2.core.TimerInfo;
+import org.jhove2.core.WrappedProduct;
 import org.jhove2.core.reportable.Reportable;
 
 /**

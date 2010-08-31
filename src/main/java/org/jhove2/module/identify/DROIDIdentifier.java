@@ -55,13 +55,12 @@ import org.jhove2.core.format.FormatIdentification.Confidence;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractModule;
 
-
-import uk.gov.nationalarchives.droid.JHOVE2IAnalysisController;
-import uk.gov.nationalarchives.droid.IdentificationFile;
-import uk.gov.nationalarchives.droid.FileFormatHit;
-import uk.gov.nationalarchives.droid.signatureFile.FileFormat;
 import uk.gov.nationalarchives.droid.ConfigFile;
+import uk.gov.nationalarchives.droid.FileFormatHit;
+import uk.gov.nationalarchives.droid.IdentificationFile;
+import uk.gov.nationalarchives.droid.JHOVE2IAnalysisController;
 import uk.gov.nationalarchives.droid.signatureFile.FFSignatureFile;
+import uk.gov.nationalarchives.droid.signatureFile.FileFormat;
 
 /**
  * Identifier that wraps the DROID identifier tool

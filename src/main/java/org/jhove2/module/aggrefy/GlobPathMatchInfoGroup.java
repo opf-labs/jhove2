@@ -35,8 +35,8 @@
  */
 package org.jhove2.module.aggrefy;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Convenience class for managing information about a group of possibly 

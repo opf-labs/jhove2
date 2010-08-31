@@ -47,9 +47,9 @@ import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.URLSource;
 
-import uk.gov.nationalarchives.droid.JHOVE2AnalysisControllerUtil;
 import uk.gov.nationalarchives.droid.ConfigFile;
 import uk.gov.nationalarchives.droid.IdentificationFile;
+import uk.gov.nationalarchives.droid.JHOVE2AnalysisControllerUtil;
 import uk.gov.nationalarchives.droid.JHOVE2IAnalysisController;
 import uk.gov.nationalarchives.droid.binFileReader.ByteReader;
 import uk.gov.nationalarchives.droid.signatureFile.FFSignatureFile;

@@ -44,13 +44,14 @@
  */
 package uk.gov.nationalarchives.droid.xmlReader;
 
+import java.lang.reflect.Method;
+import java.util.Stack;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
-import uk.gov.nationalarchives.droid.MessageDisplay;
 
-import java.lang.reflect.Method;
-import java.util.Stack;
+import uk.gov.nationalarchives.droid.MessageDisplay;
 
 /**
  * reads and parses data from an XML file

@@ -4,7 +4,11 @@
 	<artifactId>jhove2</artifactId>
 	<version>0.6.0</version>
 	<name>JHOVE2</name>
-	<description>JHOVE2: a next-generation architecture for format-aware digital object preservation processing</description>
+	<description>JHOVE2: a next-generation architecture for
+		format-aware digital object preservation processing</description>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>commons-logging</groupId>

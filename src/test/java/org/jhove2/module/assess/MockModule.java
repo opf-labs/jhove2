@@ -43,7 +43,6 @@ import java.util.Set;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.reportable.Reportable;
 import org.jhove2.module.AbstractModule;
-import org.jhove2.module.Module.Scope;
 import org.jhove2.module.assess.MockReportable.MockEnum;
 
 /**

@@ -39,7 +39,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import org.jhove2.app.util.documenter.displayer.DocumentationDisplayer;
 import org.jhove2.app.util.documenter.displayer.DocumentationDisplayerFactory;
 import org.jhove2.app.util.traverser.ReportableTypeTraverser;

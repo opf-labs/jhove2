@@ -6,8 +6,11 @@ package org.jhove2.module.format.tiff;
 import java.io.EOFException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
+import java.util.TreeMap;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.config.ConfigInfo;
@@ -25,17 +28,14 @@ import org.jhove2.module.format.Validator.Validity;
  *
  */
 public abstract class IFD 
-    extends AbstractReportable {
+extends AbstractReportable {
 
     /** IFD Entries in the IFD */
-    protected List<IFDEntry> entries = new ArrayList<IFDEntry>();
+    protected HashMap<Integer, IFDEntry> entries = new HashMap<Integer, IFDEntry>();
 
     /** True if this is the first IFD. */
     private boolean first;
 
-    /** the input source of the TIFF */
-    protected Input input;
-    
     /** validity of IFD */
     protected Validity isValid;
 
@@ -48,27 +48,14 @@ public abstract class IFD
     /** offset of the IFD */ 
     protected long offset;
 
-    /** value of the previous tag */
-    private static int prevTag = 0;
-
     /** True if this is the "thumbnail" IFD. */
     private boolean thumbnail;
 
     /** TIFF version determined by data in IFDEntry */
     private int version;
 
-    /** Tag sort order error message */
-    private Message TagSortOrderErrorMessage;
-
     /** Message for Zero IFD Entries */
     private Message zeroIFDEntriesMessage;
-
-    /** Byte offset not word aligned message */
-    private Message ByteOffsetNotWordAlignedMessage;
-
-    private Message ValueOffsetReferenceLocationFileMessage;
-
-    private Message UnknownTypeMessage;
 
     protected static Properties tiffTagProps;
 
@@ -79,30 +66,10 @@ public abstract class IFD
      * Instantiate an IFD Class with the Input source
      * @param input
      */
-    public IFD(Input input) {
+    public IFD() {
         super();
-        this.input = input;
     }
 
-    @ReportableProperty(order = 3, value="IFD entries.")
-    public List<IFDEntry> getIFDEntries() {
-        return entries;
-    }
-
-    @ReportableProperty(order = 4, value = "Offset of next IFD.")
-    public long getNextIFD() {
-        return nextIFD;
-    }
-
-    @ReportableProperty (order = 2, value = "Number of IFD entries.")
-    public int getNumEntries() {
-        return numEntries;
-    }
-
-    @ReportableProperty(order = 1, value = "Byte offset of IFD.")
-    public long getOffset() {
-        return offset;
-    }
 
     /**
      * Parse a source unit input. Implicitly set the start and end elapsed time.
@@ -111,7 +78,6 @@ public abstract class IFD
      *            JHOVE2 framework
      * @param input
      *            Input
-     * @return Number of bytes consumed
      * @throws EOFException
      *             If End-of-File is reached reading the source unit
      * @throws IOException
@@ -120,175 +86,142 @@ public abstract class IFD
      */
     public void parse(JHOVE2 jhove2, Input input) throws EOFException,
     IOException, JHOVE2Exception {
-        
-        this.isValid = Validity.Undetermined;
+
+       this.isValid = Validity.Undetermined;
         long offsetInIFD = offset;
         nextIFD = 0L;
-        
-        /* Read the first byte. */
-        input.setPosition(offsetInIFD);
-        numEntries = input.readUnsignedShort();
-        offsetInIFD += 2;
-        
-        if (numEntries < 1){
-            this.isValid = Validity.False;
-            Object[]messageArgs = new Object[]{0, input.getPosition(), numEntries};
-            this.zeroIFDEntriesMessage = new Message(Severity.ERROR,
-                    Context.OBJECT,
-                    "org.jhove2.module.format.tiff.IFD.zeroIFDEntriesMessage",
-                    messageArgs, jhove2.getConfigInfo());  
+
+        try {
+            /* Read the first byte. */
+            input.setPosition(offsetInIFD);
+            numEntries = input.readUnsignedShort();
+            offsetInIFD += 2;
+
+            if (numEntries < 1){
+                this.isValid = Validity.False;
+                Object[]messageArgs = new Object[]{0, input.getPosition(), numEntries};
+                this.zeroIFDEntriesMessage = new Message(Severity.ERROR,
+                        Context.OBJECT,
+                        "org.jhove2.module.format.tiff.IFD.zeroIFDEntriesMessage",
+                        messageArgs, jhove2.getConfigInfo());  
+            }
+
+            long length = numEntries * 12;
+            /* go to the field that contains the offset to the next IFD - 0 if none */
+            offsetInIFD += length;
+            nextIFD = 0L;
+        }
+        catch (IOException e) {
+            throw new JHOVE2Exception("Premature EOF" + offsetInIFD, e);
         }
 
-        long length = numEntries * 12;
-        /* TODO: read the buffer from the file input stream containing the IFD Entries as
-         * opposed to manipulating the Input object */
-        
-        /* go to the field that contains the offset to the next IFD - 0 if none */
-        offsetInIFD += length;
-        nextIFD = 0L;
-        
-        /* parse through the list of IFDs */
-        for (int i=0; i<numEntries; i++) {
-            int tag = input.readUnsignedShort();
-            if (tag > prevTag)
-                prevTag = tag;
-            else {
-                Object[]messageArgs = new Object[]{tag, input.getPosition()};
-                this.TagSortOrderErrorMessage = (new Message(Severity.ERROR,
-                        Context.OBJECT,
-                        "org.jhove2.module.format.tiff.IFDEntry.TagSortOrderErrorMessage",
-                        messageArgs, jhove2.getConfigInfo()));
-            }               
+        try {
+            /* parse through the list of Directory Entries (IFDEntry) */
+            IFDEntry.resetPrevTag(0);
             
-            int type = input.readUnsignedShort();
-
-            /* Skip over tags with unknown type; those outside of defined range. */
-            if (type < TiffType.types.first().getNum() || type > TiffType.types.last().getNum()) {
-                Object[]messageArgs = new Object[]{type, offset };
-                this.UnknownTypeMessage = (new Message(Severity.ERROR,
-                        Context.OBJECT,
-                        "org.jhove2.module.format.tiff.IFDEntry.UnknownTypeMessage",
-                        messageArgs, jhove2.getConfigInfo()));               
-            }
-            else {
-                int count = (int) input.readUnsignedInt();
-
-                /* keep track of the value offset in the file */
-                long valueOffset = input.getPosition(); 
-                long value = input.readUnsignedInt();
-
-                if (calcValueSize(type, count) > 4) {
-                    /* the value is the offset to the value */
-                    long size = input.getSize();
-
-                    /* test that the value offset is within the file */
-                    if (value > size) {
-                        Object[]messageArgs = new Object[]{tag, value, size};
-                        this.ValueOffsetReferenceLocationFileMessage = (new Message(Severity.ERROR,
-                                Context.OBJECT,
-                                "org.jhove2.module.format.tiff.IFDEntry.ValueOffsetReferenceLocationFileMessage",
-                                messageArgs, jhove2.getConfigInfo()));               
-
-                    }
-
-                    /* test off set is word aligned */
-                    if ((value & 1) != 0){
-                        Object[]messageArgs = new Object[]{0, input.getPosition(), valueOffset};
-                        this.ByteOffsetNotWordAlignedMessage = (new Message(Severity.ERROR,
-                                Context.OBJECT,
-                                "org.jhove2.module.format.tiff.IFDEntry.ValueByteOffsetNotWordAlignedMessage",
-                                messageArgs, jhove2.getConfigInfo()));               
-                    }
-
+            for (int i=0; i<numEntries; i++) {
+                IFDEntry ifdEntry = new IFDEntry();
+                ifdEntry.parse(jhove2, input);
+                Validity validity = ifdEntry.isValid();
+                if (validity != Validity.True) {
+                    this.isValid = validity;
                 }
-                else {
-                    /* the value is the actual value */
-                    value = offset + 10 + 12*i;
-
-                   /* value = valueOffset; */
-                }            
-                IFDEntry ifdEntry = new IFDEntry(tag, type, count, value);
-
-                ifdEntry.validateEntry(jhove2);
-                getValues(jhove2, ifdEntry);
                 version = ifdEntry.getVersion();
-                entries.add(ifdEntry);
-                
+                entries.put(ifdEntry.getTag(), ifdEntry);
+
                 /* reset the input position so that the offset is set up correctly since when you read values the
                  * input position gets changed from where you want to be in the IFD 
-                 * the offset of the Value field + 4 bytes will get you to the next Tag field
                  */
-                 input.setPosition(valueOffset + 4);
+                input.setPosition(offset + 14 + 12*i);
             }
         }
-
-    }
-
-    public void parse(long offset) {
-        this.isValid = Validity.Undetermined;
-    }
-
-    /** get the value(s) for an IFD entry 
-     * @throws IOException */
-    public abstract void getValues (JHOVE2 jhove2, IFDEntry entry) throws JHOVE2Exception, IOException;
-
-    /**
-     * Get the tag sort order error message
-     * 
-     * @return the tagSortOrderErrorMessage
-     */
-    @ReportableProperty(order=8, value = "tag sort order error message.")
-    public Message getTagSortOrderErrorMessage() {
-        return TagSortOrderErrorMessage;
-    }
-
-
-    /**
-     * Get byte offset not word aligned message
-     * 
-     * @return the byteOffsetNotWordAlignedMessage
-     */
-    @ReportableProperty(order=6, value = "Byte offset not word aligned message.")
-    public Message getByteOffsetNotWordAlignedMessage() {
-        return ByteOffsetNotWordAlignedMessage;
+        catch (IOException e) {
+            throw new JHOVE2Exception ("IOException while reading IFD " + (offset + 2), e);
+        }
     }
 
     /**
-     * Get the value offset reference location file message
-     * 
-     * @return the valueOffsetReferenceLocationFileMessage
+     * get the byte offset of the IFD 
+     * @return long
      */
-    @ReportableProperty(order=9, value = "value offset reference location file message.")
-    public Message getValueOffsetReferenceLocationFileMessage() {
-        return ValueOffsetReferenceLocationFileMessage;
+    @ReportableProperty(order = 1, value = "Byte offset of IFD.")
+    public long getOffset() {
+        return offset;
     }
 
     /**
-     * Get the unknown type message
-     * 
-     * @return the unknownTypeMessage
+     * get the number of IFD entries
+     * @return int
      */
-    @ReportableProperty(order=10, value = "unknown type message.")
-    public Message getUnknownTypeMessage() {
-        return UnknownTypeMessage;
+    @ReportableProperty (order = 2, value = "Number of IFD entries.")
+    public int getNumEntries() {
+        return numEntries;
     }
 
+    /**
+     * Sort the entries in the HashMap and then return only the IFDEntries
+     * @return
+     */
+    @ReportableProperty(order = 3, value="IFD entries.")
+    public List<IFDEntry> getIFDEntries() {
+        Map<Integer, IFDEntry> sortedEntries = new TreeMap<Integer, IFDEntry>(entries);
+        List<IFDEntry> sortedList = new ArrayList<IFDEntry>(sortedEntries.values());
+        return sortedList;
+    }
+
+    /**
+     * get the offsetof the next IFD 
+     * @return long
+     */
+    @ReportableProperty(order = 4, value = "Offset of next IFD.")
+    public long getNextIFD() {
+        return nextIFD;
+    }
+
+    /**
+     * Get the Zero IFD entries message
+     */
+    @ReportableProperty(order=5, value = "Zero IFD Entries message.")
+    public Message getZeroIFDEntriesMessage(){
+        return zeroIFDEntriesMessage;
+    }
+   
+    /**
+     * @return the version for this IFD
+     */
     public int getVersion() {
         return this.version;
     }
 
-    public void setFirst(boolean first) {
-        this.first = first;
+    /**
+     * @return the isValid
+     */
+    public Validity isValid() {
+        return isValid;
     }
 
-    public boolean isFirst() {
-        return first;
+    /**
+     * @parm boolean -
+     * the flag indicating this if the first IFD
+     */
+    public void setFirst(boolean first) {
+        this.first = first;
     }
 
     public void setThumbnail(boolean thumbnail) {
         this.thumbnail = thumbnail;
     }
 
+    /**
+     * @return the flag indicating this if the first IFD
+     */
+    public boolean isFirst() {
+        return first;
+    }
+
+    /**
+     * @return the flag indicating this IFD is a thumbnail
+     */
     public boolean isThumbnail() {
         return thumbnail;
     }
@@ -298,24 +231,11 @@ public abstract class IFD
     }
 
     /**
-     * Calculate how many bytes a given number of fields of a given
-     * type will require.
-     * @param type Field type
-     * @param count Field count
-     */
-    public static long calcValueSize (int type, long count)
-    {
-        int fieldSize = 0;
-        fieldSize = TiffType.getType(type).getSize();
-        return  count*fieldSize;
-    }
-
-    /**
      * @return Properties the Tiff Tag Properties stored in the Java Properties file
      */
     public static Properties getTiffTags(ConfigInfo config)  throws JHOVE2Exception {
         if (tiffTagProps==null){
-            tiffTagProps = config.getProperties("TiffTag");
+            tiffTagProps = config.getProperties("TiffTags");
         }
         return tiffTagProps;
     }
@@ -325,7 +245,7 @@ public abstract class IFD
      */
     public static Properties getTiffType(ConfigInfo config)  throws JHOVE2Exception {
         if (tiffTypeProps==null){
-            tiffTypeProps = config.getProperties("TiffType");
+            tiffTypeProps = config.getProperties("TiffTypes");
         }
         return tiffTypeProps;
     }

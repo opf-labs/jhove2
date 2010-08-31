@@ -41,12 +41,8 @@ import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.Message;
-import org.jhove2.core.Message.Context;
-import org.jhove2.core.Message.Severity;
 import org.jhove2.core.reportable.AbstractReportable;
 import org.jhove2.module.format.Validator.Validity;
-import org.mvel2.MVEL;
 
 /**
  * An AssessmentResultSet
@@ -120,9 +116,11 @@ public class AssessmentResultSet extends AbstractReportable {
         this.ruleSet = ruleSet;
         assessmentResults = new ArrayList<AssessmentResult>();
         for (Rule rule : ruleSet.getRules()) {
-            AssessmentResult assessmentResult = new AssessmentResult();
-            assessmentResult.setRule(rule);
-            assessmentResults.add(assessmentResult);
+            if (rule.isEnabled()) {
+                AssessmentResult assessmentResult = new AssessmentResult();
+                assessmentResult.setRule(rule);
+                assessmentResults.add(assessmentResult);
+            }
         }
     }
 

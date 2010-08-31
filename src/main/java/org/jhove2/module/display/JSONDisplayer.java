@@ -221,9 +221,9 @@ public class JSONDisplayer
 	 * @param order
 	 *            Ordinal position of this reportable with respect to enclosing
 	 *            {@link org.jhove2.core.reportable.Reportable} or collection
-	 * @param unit Unit of measure (may be null)
+	 * @param unit Unit of measure (optional, may be null)
 	 * @see org.jhove2.module.display.Displayer#displayProperty(java.io.PrintStream,
-	 *      int, java.lang.String, org.jhove2.core.I8R, java.lang.Object, int, java.lang.String)
+	 *      int, java.lang.String, org.jhove2.core.I8R, java.lang.Object, java.lang.Object, int, java.lang.String)
 	 */
 	@Override
 	public void displayProperty(PrintStream out, int level, String name,

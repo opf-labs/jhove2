@@ -2,10 +2,6 @@ package org.jhove2.core.io;
 
 import static org.junit.Assert.assertTrue;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -17,6 +13,9 @@ import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.io.Input.Type;
 import org.jhove2.core.source.URLSource;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 public class InputFactoryTest {
 

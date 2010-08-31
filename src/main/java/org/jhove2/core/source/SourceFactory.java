@@ -48,8 +48,8 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Invocation;
+import org.jhove2.core.JHOVE2Exception;
 
 /**
  * Factory for JHOVE2 file and directory source units.

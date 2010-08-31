@@ -1,13 +1,12 @@
 package org.jhove2.module.assess;
 
-import static org.junit.Assert.*;
-
-import org.jhove2.module.assess.Rule.Quantor;
+import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.jhove2.module.assess.Rule.Quantor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;

@@ -64,6 +64,7 @@ public class ASCIIProfile
 {
 	/** Basic Latin code block. */
 	public static final String BASIC_LATIN = "Basic Latin";
+	
 	/** ASCII profile version identifier. */
 	public static final String VERSION = "2.0.0";
 

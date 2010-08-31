@@ -3,8 +3,6 @@ package org.jhove2.module.format.tiff;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Properties;
 import java.util.Set;
 
@@ -37,9 +35,9 @@ public class TiffTypeTest {
     public void testGettypeProperties() {
         Properties TiffTypeProps;
         try {
-            TiffTypeProps = JHOVE2.getConfigInfo().getProperties("TiffType");
+            TiffTypeProps = JHOVE2.getConfigInfo().getProperties("TiffTypes");
             if (TiffTypeProps != null){
-                TiffTypeSet = TiffType.getTiffTypes(TiffTypeProps);
+                TiffTypeSet = TiffType.getTiffTypes(JHOVE2);
             }
             if (print){
                 TiffType[] TiffTypeArray = (TiffType[]) TiffTypeSet.toArray(new TiffType[TiffTypeSet.size()]);
