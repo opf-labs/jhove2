@@ -55,14 +55,14 @@ import java.util.List;
 </pre>
  * The condition portion of the rule consists of a quantifier and a list of predicate expressions looking like this:
 <pre>
-    {ALL_OFF | ANY_OF} 
+    {ALL_OFF | ANY_OF | NONE_OF} 
        (predicate)
        (predicate)
         ...
 </pre>
  * Each predicate is a string containing a boolean expression written using 
  * a domain specific language.  Currently only MVEL is supported. 
- * The expression should be of the form:
+ * The expression is usually of the form:
 <pre>
     {reportableProperty} {logical operator} {value}
 </pre>
@@ -71,6 +71,8 @@ import java.util.List;
  * for the rule as a whole to be true.
  * If the ANY_OF quantifier is specified, 
  * then the rule will evaluate to true if any of the predicates are true.
+ * If the NONE_OF quantifier is specified, 
+ * then the rule will evaluate to true if all of the predicates are false.
  * In addition to the boolean value of the rule evaluation, 
  * A text value will be included in the assessment result's outcome.
  * This text value will be the consequent string value if the rule is true, 
@@ -96,7 +98,9 @@ public class Rule {
         /** The rule evaluates true if all of the predicates are true */
         ALL_OF,
         /** The rule evaluates true if any of the predicates are true */
-        ANY_OF
+        ANY_OF,
+        /** The rule evaluates true if all of the predicates are false */
+        NONE_OF
     }
 
     /** The quantifier value to use for the rule.  See {@link Quantor} */
@@ -110,6 +114,9 @@ public class Rule {
 
     /** The text value to be assigned to the {@link AssessmentResult#narrativeResult} if the rule evaluates to false. */
     protected String alternative;
+    
+    /** Whether or not to evaluate this Rule */
+    protected boolean enabled = true;
 
     /**
      * Instantiates a new Rule object.
@@ -229,6 +236,20 @@ public class Rule {
      */
     public void setAlternative(String alternative) {
         this.alternative = alternative;
+    }
+
+    /**
+     * @return the enabled status for the Rule
+     */
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    /**
+     * @param enabled Set the enabled status for the Rule
+     */
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
 }

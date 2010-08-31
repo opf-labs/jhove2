@@ -12,17 +12,17 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath*:**/mock-module-ruleset-config.xml"})
+@ContextConfiguration(locations = {"classpath*:**/mock-module-ruleset-0-config.xml"})
 public class RuleSetTest {
-    private static String name = "MockRuleSet";
-    private static String description  = "RuleSet for testing Mock Module";
+    private static String name = "MockRuleSet0";
+    private static String description  = "RuleSet0 for testing Mock Module";
     private static String objectFilter  = "org.jhove2.module.assess.MockModule";
 
     /* The Rule whose fields are being examined */
     private RuleSet ruleSet;
 
     /* Construct a RuleSet object using Spring */
-    @Resource(name = "MockModuleRuleSet")
+    @Resource(name = "MockModuleRuleSet0")
     public void setRuleSet(RuleSet ruleSet)  {
         this.ruleSet = ruleSet;
     }

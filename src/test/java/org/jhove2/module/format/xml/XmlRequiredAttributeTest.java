@@ -37,11 +37,11 @@ public class XmlRequiredAttributeTest extends XmlModuleTestBase {
     @Test
     public void testValidationInfo() {
         ValidationResults vr = testXmlModule.getValidationResults();
-        ValidationResults.ValidationMessageList warnings = vr.getParserWarnings();
+        ValidationMessageList warnings = vr.getParserWarnings();
         assertEquals(0, warnings.getValidationMessageCount());
-        ValidationResults.ValidationMessageList errors = vr.getParserErrors();
+        ValidationMessageList errors = vr.getParserErrors();
         assertEquals(0, errors.getValidationMessageCount());
-        ValidationResults.ValidationMessageList fatals = vr.getFatalParserErrors();
+        ValidationMessageList fatals = vr.getFatalParserErrors();
         assertEquals(0, fatals.getValidationMessageCount());
     }
 

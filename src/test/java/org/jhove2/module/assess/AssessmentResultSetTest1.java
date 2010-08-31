@@ -14,18 +14,18 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath*:**/mock-module-ruleset-config.xml",
+@ContextConfiguration(locations = {"classpath*:**/mock-module-ruleset-1-config.xml",
         "classpath*:**/mock-module-object-config.xml"})
-public class AssessmentResultSetTest {
-    private static String name = "MockRuleSet";
-    private static String description  = "RuleSet for testing Mock Module";
+public class AssessmentResultSetTest1 {
+    private static String name = "MockRuleSet1";
+    private static String description  = "RuleSet1 for testing Mock Module";
     private static String objectFilter  = "org.jhove2.module.assess.MockModule";
    
     /* The AssessmentResultSet whose  being examined */
     private AssessmentResultSet resultSet = new AssessmentResultSet();
 
     /* Construct a RuleSet object using Spring */
-    @Resource(name = "MockModuleRuleSet")
+    @Resource(name = "MockModuleRuleSet1")
     public void setRuleSet(RuleSet ruleSet)  {
         resultSet.setRuleSet(ruleSet);
     }
@@ -69,15 +69,17 @@ public class AssessmentResultSetTest {
             resultSet.fireAllRules();
             assertEquals(Validity.True,resultSet.assessmentResults.get(0).getBooleanResult());
             assertEquals(Validity.True,resultSet.assessmentResults.get(1).getBooleanResult());
-            assertEquals(Validity.False,resultSet.assessmentResults.get(2).getBooleanResult());
+            assertEquals(Validity.True,resultSet.assessmentResults.get(2).getBooleanResult());
             assertEquals(Validity.True,resultSet.assessmentResults.get(3).getBooleanResult());
             assertEquals(Validity.True,resultSet.assessmentResults.get(4).getBooleanResult());
+            /*
             assertEquals(Validity.True,resultSet.assessmentResults.get(5).getBooleanResult());
             assertEquals(Validity.True,resultSet.assessmentResults.get(6).getBooleanResult());        
             assertEquals(Validity.True,resultSet.assessmentResults.get(7).getBooleanResult());        
             assertEquals(Validity.Undetermined,resultSet.assessmentResults.get(8).getBooleanResult());        
             assertEquals(Validity.Undetermined,resultSet.getBooleanResult());
             assertTrue(Validity.Undetermined.toString().equals(resultSet.getNarrativeResult()));
+            */
         }
         catch (JHOVE2Exception e) {
             fail(e.getMessage());
