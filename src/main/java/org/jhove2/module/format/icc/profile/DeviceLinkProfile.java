@@ -148,24 +148,30 @@ public class DeviceLinkProfile
                             args, jhove2.getConfigInfo());
                         this.missingRequiredTagMessages.add(msg);
                     }
-                    /* The colorant table tag and colorant table out tag are
-                     * required only for "xCLR" colour spaces, e.g. "2CLR",
-                     * "3CLR", ..., "FCLR".
+                    /* The colorant table tag is required only for "xCLR"
+                     * colour spaces, e.g. "2CLR", "3CLR", ..., "FCLR".
                      */
                     String colourSpace = header.getColourSpace_raw();
                     int in = colourSpace.indexOf("CLR");
                     if (in == 1) {
-                        if (!hasColorantTableOutTag) {
+                        if (!hasColorantTableTag) {
                             this.isValid = Validity.False;
-                            Object [] args = new Object [] {"Colorant table out (\"clot\")"};
+                            Object [] args = new Object [] {"Colorant table (\"clrt\")"};
                             Message msg = new Message(Severity.ERROR, Context.OBJECT,
                                 "org.jhove2.module.format.icc.ICCTagTable.MissingRequiredTag",
                                 args, jhove2.getConfigInfo());
                             this.missingRequiredTagMessages.add(msg);
                         }
-                        if (!hasColorantTableTag) {
+                    }
+                    /* The colorant table out tag is required only for "xCLR"
+                     * colour spaces.
+                     */
+                    String pcs = header.getProfileConnectionSpace_raw();
+                    in = pcs.indexOf("CLR");
+                    if (in == 1) {
+                        if (!hasColorantTableOutTag) {
                             this.isValid = Validity.False;
-                            Object [] args = new Object [] {"Colorant table out (\"clrt\")"};
+                            Object [] args = new Object [] {"Colorant table out (\"clot\")"};
                             Message msg = new Message(Severity.ERROR, Context.OBJECT,
                                 "org.jhove2.module.format.icc.ICCTagTable.MissingRequiredTag",
                                 args, jhove2.getConfigInfo());

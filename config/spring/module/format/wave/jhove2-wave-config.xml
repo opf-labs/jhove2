@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:util="http://www.springframework.org/schema/util"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans 
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-2.5.xsd
+		   http://www.springframework.org/schema/util 
+		   http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+	
+	<!-- WAVE format bean -->
+	<bean id="WAVEFormat" class="org.jhove2.core.format.Format" scope="singleton">
+		<constructor-arg type="java.lang.String" value="WAVE"/>
+		<constructor-arg ref="WAVEIdentifier"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Type" value="Format"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity" value="Unambiguous"/>
+		<property name="aliasIdentifiers">
+			<set value-type="org.jhove2.core.I8R">
+				<ref bean="PUIDfmt6"/>
+			</set>
+		</property>
+		<property name="aliasNames">
+			<set>
+				<value>Waveform Audio File Format</value>
+			</set>
+		</property>
+		<property name="specifications">
+			<list value-type="org.jhove2.core.Document">
+				<ref bean="WAVESpecification"/>
+			</list>
+		</property>
+	</bean>		
+	
+	<!-- WAVE identifier bean -->  
+	<bean id="WAVEIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="http://jhove2.org/terms/format/wave"/>
+	</bean>
+	
+	<!-- DROID PUID bean -->
+	<bean id="PUIDfmt6" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="fmt/6"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
+	</bean>
+
+	<!-- WAVE specification bean -->
+	<bean id="WAVESpecification" class="org.jhove2.core.Document" scope="singleton">
+		<constructor-arg type="java.lang.String" value="Multimedia Programming Interface and Data Specifications"/>
+		<constructor-arg type="org.jhove2.core.Document$Type" value="Specification"/>
+		<constructor-arg type="org.jhove2.core.Document$Intention" value="Authoritative"/>
+		<property name="date" value="August 1991"/>
+		<property name="edition" value="Version 1.0"/>
+		<property name="publisher" value="IBM Corporation/Microsoft Corporation"/>
+	</bean>	
+	
+	<!-- WAVE module bean -->
+	<bean id="WAVEModule" class="org.jhove2.module.format.wave.WAVEModule"
+	      scope="prototype">
+	    <constructor-arg ref="WAVEFormat"/>
+	    <property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+			</list>
+		</property>
+			<property name="profiles">
+			<list value-type="org.jhove2.module.format.FormatProfile">
+				<ref bean="BroadcastWaveFormatProfile"/>
+			</list>
+		</property>
+    </bean>
+	  
+  	<!-- Broadcast Wave Format profile bean -->
+	<bean id="BroadcastWaveFormatProfile" class="org.jhove2.module.format.wave.BroadcastWaveFormatProfile"
+	      scope="prototype">
+	    <constructor-arg ref="BroadcastWaveFormatProfileFormat"/>
+	    <property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+			</list>
+		</property>
+		
+	</bean>
+	<!-- Broadcast Wave Format profile format bean -->
+	<bean id="BroadcastWaveFormatProfileFormat" class="org.jhove2.core.format.Format" scope="singleton">
+		<constructor-arg type="java.lang.String" value="Broadcast Wave Format profile"/>
+		<constructor-arg ref="BroadcastWaveFormatProfileIdentifier"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Type" value="Format"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity" value="Unambiguous"/>
+		<property name="aliasIdentifiers">
+			<set value-type="org.jhove2.core.I8R">
+				<ref bean="EBU3285Identifier"/>
+			</set>
+		</property>
+		<property name="aliasNames">
+			<set>
+				<value>BWF</value>
+			</set>
+		</property>
+	</bean>		
+	<!-- Broadcast Wave Format profile identifier bean -->  
+	<bean id="BroadcastWaveFormatProfileIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="http://jhove2.org/terms/format/wave/bwf"/>
+	</bean>
+	<!-- EBU 3285 identifier bean -->  
+	<bean id="EBU3285Identifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="EBU Tech 3285"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="EBU"/>
+	</bean>
+	     
+</beans>

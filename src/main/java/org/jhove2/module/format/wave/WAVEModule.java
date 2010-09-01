@@ -1,24 +1,24 @@
 /**
  * JHOVE2 - Next-generation architecture for format-aware characterization
- * <p>
- * Copyright (c) 2010 by The Regents of the University of California. All rights reserved.
- * </p>
- * <p>
+ *
+ * Copyright (c) 2009 by The Regents of the University of California.
+ * All rights reserved.
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * </p>
- * <ul>
- * <li>Redistributions of source code must retain the above copyright notice,
- * this list of conditions and the following disclaimer.</li>
- * <li>Redistributions in binary form must reproduce the above copyright notice,
- * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution.</li>
- * <li>Neither the name of the University of California/California Digital
- * Library, Ithaka Harbors/Portico, or Stanford University, nor the names of its
- * contributors may be used to endorse or promote products derived from this
- * software without specific prior written permission.</li>
- * </ul>
- * <p>
+ *
+ * o Redistributions of source code must retain the above copyright notice,
+ *   this list of conditions and the following disclaimer.
+ *
+ * o Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * o Neither the name of the University of California/California Digital
+ *   Library, Ithaka Harbors/Portico, or Stanford University, nor the names of
+ *   its contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -30,14 +30,15 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- * </p>
  */
 
-package org.jhove2.module.format.icc;
+package org.jhove2.module.format.wave;
 
 import java.io.EOFException;
 import java.io.IOException;
 import java.nio.ByteOrder;
+import java.util.ArrayList;
+import java.util.List;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
@@ -48,49 +49,47 @@ import org.jhove2.core.source.Source;
 import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.module.format.Validator;
 
-/** JHOVE2 ICC colour profile module.
+/** WAVE (waveform audio file format) module.
  * 
  * @author slabrams
  */
-public class ICCModule
+public class WAVEModule
         extends BaseFormatModule
         implements Validator
 {
-    /** ICC module version identifier. */
+    /** WAVE module version identifier. */
     public static final String VERSION = "2.0.0";
 
-    /** ICC module release date. */
+    /** WAVE module release date. */
     public static final String RELEASE = "2010-09-10";
 
-    /** ICC module rights statement. */
+    /** WAVE module rights statement. */
     public static final String RIGHTS =
         "Copyright 2010 by The Regents of the University of California" +
         "Available under the terms of the BSD license.";
     
     /** Module validation coverage. */
     public static final Coverage COVERAGE = Coverage.Inclusive;
-
-    /** Profile header. */
-    protected ICCHeader header;
+  
+    /** WAVE chunks. */
+    protected List<WAVEChunk> chunks;
     
-    /** ICC validation status. */
+    /** WAVE validation status. */
     protected Validity isValid;
 
-    /** Profile tag table. */
-    protected ICCTagTable tagTable;
- 
-    /** Instantiate a new <code>ICCModule</code>
-     * 
-     * @param format ICC format
+    /** Instantiate a new <code>WAVEModule</code>.
+     * @param format WAVE format
      */
-    public ICCModule(Format format) {
+    public WAVEModule(Format format)
+    {
         super(VERSION, RELEASE, RIGHTS, format);
         
+        this.chunks  = new ArrayList<WAVEChunk>();
         this.isValid = Validity.Undetermined;
     }
     
     /** 
-     * Parse an ICC source unit.
+     * Parse a WAVE source unit.
      * 
      * @param jhove2
      *            JHOVE2 framework
@@ -116,23 +115,13 @@ public class ICCModule
             Invocation config = jhove2.getInvocation();
             input = source.getInput(config.getBufferSize(), 
                                     config.getBufferType());
-            input.setByteOrder(ByteOrder.BIG_ENDIAN);
+            input.setByteOrder(ByteOrder.LITTLE_ENDIAN);
             input.setPosition(0L);
             
-            this.header = new ICCHeader();
-            consumed = header.parse(jhove2, input);
-            Validity validity = header.isValid();
-            if (validity != Validity.True) {
-                this.isValid = validity;
-            }
-                
-            this.tagTable = new ICCTagTable();
-            consumed += tagTable.parse(jhove2, input,header);
-            validity = tagTable.isValid();
-            if (validity != Validity.True) {
-                this.isValid = validity;
-            }
-        }
+            WAVEChunk chunk = new WAVEChunk();
+            consumed += chunk.parse(jhove2, input);
+            this.chunks.add(chunk);
+          }
         finally {
             if (input != null) {
                 input.close();
@@ -142,9 +131,9 @@ public class ICCModule
         return consumed;
     }
 
-    /** Validate the ICC color profile.
-     * @param jhove2 JHOVE2 framework object
-     * @param source ICC color profile source unit
+    /** Validate the WAVE source unit.
+     * @param jhove2 JHOVE2 framework
+     * @param source WAVE source unit
      * @see org.jhove2.module.format.Validator#validate(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
      */
     @Override
@@ -153,39 +142,27 @@ public class ICCModule
     {
         return this.isValid();
     }
-    
 
-    /** Get validation coverage.
-     * @return Validation coverage
+    /** Get chunks.
+     * @return Chunks
+     */
+    @ReportableProperty(order=1, value="Chunks.")
+    public List<WAVEChunk> getChunks() {
+        return this.chunks;
+    }
+    
+    /** Get module coverage.
+     * @return Module coverage
      * @see org.jhove2.module.format.Validator#getCoverage()
      */
     @Override
-    public Coverage getCoverage() {
+    public Coverage getCoverage()
+    {
         return COVERAGE;
     }
-    
-    /** Get profile header.
-     * @return Profile header
-     */
-    @ReportableProperty(order=1, value="Profile header",
-            ref="ICC.1:2004-10, \u00a7 7.2")
-    public ICCHeader getHeader()
-    {
-        return this.header;
-    }
-    
-    /** Get profile tag table.
-     * @return Profile tag table
-     */
-    @ReportableProperty(order=2, value="Profile tag table",
-            ref="ICC.1:2004-10, \u00a7 7.3")
-    public ICCTagTable getTagTable()
-    {
-        return this.tagTable;
-    }
 
-    /** Get validity.
-     * @return Validity
+    /** Get validation status.
+     * @return Validation status
      * @see org.jhove2.module.format.Validator#isValid()
      */
     @Override
