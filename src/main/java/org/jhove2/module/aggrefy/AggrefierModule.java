@@ -49,6 +49,7 @@ import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractModule;
 
+// TODO: Auto-generated Javadoc
 /**
  * JHOVE2 aggregate identifier module.
  * Identifies presumptive instances of Clump formats (e.g. ShapeFiles) in
@@ -86,17 +87,15 @@ public class AggrefierModule
 	/**
 	 * Detect presumptive instances of a clump format in a source unit, and identify
 	 * Note that the child sources of the Source being inspected for the presence of
-	 * aggregates may be presumptively assigned to more than one clump format
-	 * @param jhove2
-	 *            JHOVE2 framework
-	 * @param source
-	 *            Aggregate source unit
+	 * aggregates may be presumptively assigned to more than one clump format.
+	 *
+	 * @param jhove2 JHOVE2 framework
+	 * @param source Aggregate source unit
 	 * @return Presumptively identified Clump sources
-	 * @throws IOException
-	 *             I/O exception encountered identifying the source unit
-	 * @throws JHOVE2Exception
+	 * @throws IOException I/O exception encountered identifying the source unit
+	 * @throws JHOVE2Exception the jHOV e2 exception
 	 * @see org.jhove2.module.aggrefy.Aggrefier#identify(org.jhove2.core.JHOVE2,
-	 *      org.jhove2.core.source.Source)
+	 * org.jhove2.core.source.Source)
 	 */
 	@Override
 	public Set<ClumpSource> identify(JHOVE2 jhove2, Source source)
@@ -114,7 +113,8 @@ public class AggrefierModule
 	}
 
 	/**
-	 * Accessor for clump format instance identifiers
+	 * Accessor for clump format instance identifiers.
+	 *
 	 * @return Aggregate recognizers
 	 */
 	@Override
@@ -123,8 +123,9 @@ public class AggrefierModule
 	}
 
 	/**
-	 * Mutator for clump format instance identifiers
-	 * @param recognizers
+	 * Mutator for clump format instance identifiers.
+	 *
+	 * @param recognizers the new recognizers
 	 */
 	public void setRecognizers(List<Recognizer> recognizers) {
 		this.recognizers = recognizers;

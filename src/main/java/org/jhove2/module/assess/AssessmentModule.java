@@ -184,8 +184,8 @@ public class AssessmentModule extends AbstractModule implements Assessor {
 				if (ruleSet.isEnabled()) {
 					AssessmentResultSet resultSet = new AssessmentResultSet();
 					assessmentResultSets.add(resultSet);
-					resultSet.setRuleSet(ruleSet);
-					resultSet.fireAllRules(assessedObject);
+                    resultSet.setRuleSet(ruleSet);
+                    resultSet.fireAllRules(assessedObject);
 				}
 			}
 		}

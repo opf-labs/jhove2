@@ -65,21 +65,29 @@ public class MockModule extends AbstractModule {
         super(VERSION, RELEASE, RIGHTS, Scope.Specific);
     }
 
+    /** a value from an enumeration */
     protected MockEnum mpEV;
     
+    /** some text */
     protected String mpString;
     
+    /** a long integer */
     protected long mpLong;
     
+    /** a true/false value */
     protected boolean mpBoolean;
     
+    /** a child object that contains data fields */
     protected MockReportable mpReportable;
     
+    /** a list of text strings */
     protected List<String> mpListString;
     
+    /** a set of text strings */
     protected Set<String> mpSetString;
     
-    protected List<Reportable> mpListReportable;
+    /** a list of child objects, each of which contains data fields */
+    protected List<MockReportable> mpListReportable;
 
     /**
      * @return the mpEV
@@ -190,14 +198,14 @@ public class MockModule extends AbstractModule {
      * @return the mpListReportable
      */
     @ReportableProperty(order = 8, value = "mpListReportable")
-    public List<Reportable> getMpListReportable() {
+    public List<MockReportable> getMpListReportable() {
         return mpListReportable;
     }
 
     /**
      * @param mpListReportable the mpListReportable to set
      */
-    public void setMpListReportable(List<Reportable> mpListReportable) {
+    public void setMpListReportable(List<MockReportable> mpListReportable) {
         this.mpListReportable = mpListReportable;
     }
     
