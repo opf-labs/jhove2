@@ -16,17 +16,6 @@
 			<outputDirectory>/</outputDirectory>
 			<fileMode>0755</fileMode>
 		</fileSet>
-<!-- 
-		<fileSet>
-			<directory>${project.build.directory}</directory>
-			<includes>
-				<include>env.cmd</include>
-				<include>env.sh</include>
-			</includes>
-			<outputDirectory>/</outputDirectory>
-			<fileMode>0755</fileMode>
-		</fileSet>
-		 -->
 		<fileSet>
 			<directory>${project.basedir}/src/main/resources</directory>
 			<includes>
@@ -57,21 +46,7 @@
 			<outputDirectory>/docs</outputDirectory>
 		</fileSet>
 	</fileSets>
-	
-	<!-- <files>
-	filter the env scripts to include the proper versioned jar 
-		<file>
-			<source>${project.basedir}/src/main/scripts/env.sh</source>
-			<filtered>true</filtered>
-			<outputDirectory>/</outputDirectory>
-		</file>
-		<file>
-			<source>${project.basedir}/src/main/scripts/env.cmd</source>
-			<filtered>true</filtered>
-			<outputDirectory>/</outputDirectory>
-		</file>
-	</files>
-	-->
+
 	<!-- copy all project dependencies to lib/ -->
 	<dependencySets>
 		<dependencySet>
