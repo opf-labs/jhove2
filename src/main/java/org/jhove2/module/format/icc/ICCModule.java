@@ -112,29 +112,29 @@ public class ICCModule
         long consumed = 0L;
         this.isValid = Validity.True;
         Input input = null;
-        try {
-            Invocation config = jhove2.getInvocation();
-            input = source.getInput(config.getBufferSize(), 
-                                    config.getBufferType());
-            input.setByteOrder(ByteOrder.BIG_ENDIAN);
-            input.setPosition(0L);
+        Invocation config = jhove2.getInvocation();
+        input = source.getInput(config.getBufferSize(), 
+                                config.getBufferType());
+        if (input != null) {
+            try {
+                input.setByteOrder(ByteOrder.BIG_ENDIAN);
+                input.setPosition(0L);
             
-            this.header = new ICCHeader();
-            consumed = header.parse(jhove2, input);
-            Validity validity = header.isValid();
-            if (validity != Validity.True) {
-                this.isValid = validity;
-            }
+                this.header = new ICCHeader();
+                consumed = header.parse(jhove2, input);
+                Validity validity = header.isValid();
+                if (validity != Validity.True) {
+                    this.isValid = validity;
+                }
                 
-            this.tagTable = new ICCTagTable();
-            consumed += tagTable.parse(jhove2, input,header);
-            validity = tagTable.isValid();
-            if (validity != Validity.True) {
-                this.isValid = validity;
+                this.tagTable = new ICCTagTable();
+                consumed += tagTable.parse(jhove2, input,header);
+                validity = tagTable.isValid();
+                if (validity != Validity.True) {
+                    this.isValid = validity;
+                }
             }
-        }
-        finally {
-            if (input != null) {
+            finally {
                 input.close();
             }
         }
@@ -154,7 +154,6 @@ public class ICCModule
         return this.isValid();
     }
     
-
     /** Get validation coverage.
      * @return Validation coverage
      * @see org.jhove2.module.format.Validator#getCoverage()

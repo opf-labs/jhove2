@@ -39,12 +39,16 @@ package org.jhove2.module.format.zip;
 import java.io.EOFException;
 import java.io.File;
 import java.io.IOException;
+import java.nio.ByteOrder;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
@@ -53,6 +57,9 @@ import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
 import org.jhove2.module.format.BaseFormatModule;
+import org.jhove2.module.format.Validator;
+import org.jhove2.module.format.Validator.Coverage;
+import org.jhove2.module.format.Validator.Validity;
 
 /**
  * JHOVE2 Zip module.
@@ -61,13 +68,13 @@ import org.jhove2.module.format.BaseFormatModule;
  */
 public class ZipModule
 	extends BaseFormatModule
-
+    implements Validator
 {
 	/** Zip module version identifier. */
-	public static final String VERSION = "1.9.5";
+	public static final String VERSION = "2.0.0";
 
 	/** Zip module release date. */
-	public static final String RELEASE = "2010-02-16";
+	public static final String RELEASE = "2010-09-10";
 
 	/** Zip module rights statement. */
 	public static final String RIGHTS =
@@ -75,7 +82,16 @@ public class ZipModule
 		"Ithaka Harbors, Inc., and The Board of Trustees of the Leland " +
 		"Stanford Junior University. " +
 		"Available under the terms of the BSD license.";
-
+	   
+    /** Module validation coverage. */
+    public static final Coverage COVERAGE = Coverage.Selective;
+    
+	/** Zip file entries. */
+	protected List<ZipFileEntry> entries;
+	
+	/** Validation status. */
+	protected Validity isValid;
+	
 	/**
 	 * Instantiate a new <code>ZipModule</code>.
 	 * 
@@ -84,6 +100,9 @@ public class ZipModule
 	 */
 	public ZipModule(Format format) {
 		super(VERSION, RELEASE, RIGHTS, format);
+		
+		this.entries = new ArrayList<ZipFileEntry> ();
+		this.isValid = Validity.Undetermined;
 	}
 
 	/**
@@ -105,109 +124,160 @@ public class ZipModule
 		throws EOFException, IOException, JHOVE2Exception
 	{
 		Input input = null;
-		try {
-			Invocation config = jhove2.getInvocation();
-			input = source.getInput(config.getBufferSize(),
-					                config.getBufferType());
-			if (input != null) {
+		Invocation config = jhove2.getInvocation();
+		input = source.getInput(config.getBufferSize(),
+		                       config.getBufferType());
+		if (input != null) {
+		    try {
+		        input.setByteOrder(ByteOrder.LITTLE_ENDIAN);
+		        
+		        /* Use the native Java Zip classes to retrieve the (possibly)
+		         * compressed entries as individual source units.
+		         */
 				File file = input.getFile();
 				ZipFile zip = new ZipFile(file, ZipFile.OPEN_READ);
+				if (zip != null) {
+				    try {
+				        /*
+				         * Zip entries are not necessarily in hierarchical order.
+				         * Build a map of directory names and source units so we 
+				         * can associate file entries to their correct parent.
+				         */
+				        Map<String, Source> map = new TreeMap<String, Source>();
+				        Enumeration<? extends ZipEntry> en = zip.entries();
+				        while (en.hasMoreElements()) {
+				            ZipEntry entry = en.nextElement();
+				            if (entry.isDirectory()) {
+				                Source src =
+				                    SourceFactory.getSource(config.getTempPrefix(),
+				                                            config.getTempSuffix(),
+				                                            config.getBufferSize(),
+				                                            zip, entry);
+				                if (src != null) {
+				                    String key = entry.getName();
+				                    /* Remove trailing slash. */
+				                    int len = key.length() - 1;
+				                    if (key.charAt(len) == '/') {
+				                        key = key.substring(0, len);
+				                    }
+				                    map.put(key, src);
+				                }
+				            }
+				        }
 
-				/*
-				 * Zip entries are not necessarily in hierarchical order. Build
-				 * a map of directory names and source units so we can associate
-				 * file entries to their correct parent.
-				 */
-				Map<String, Source> map = new TreeMap<String, Source>();
-				Enumeration<? extends ZipEntry> en = zip.entries();
-				while (en.hasMoreElements()) {
-					ZipEntry entry = en.nextElement();
-					if (entry.isDirectory()) {
-						Source src =
-							SourceFactory.getSource(config.getTempPrefix(),
-										            config.getTempSuffix(),
-										            config.getBufferSize(),
-										            zip, entry);
-						if (src != null) {
-							String key = entry.getName();
-							/* Remove trailing slash. */
-							int len = key.length() - 1;
-							if (key.charAt(len) == '/') {
-								key = key.substring(0, len);
-							}
-							map.put(key, src);
-						}
-					}
-				}
+				        /*
+				         * Characterize each entry and associate it with its parent
+				         * source unit.
+				         */
+				        en = zip.entries();
+				        while (en.hasMoreElements()) {
+				            ZipEntry entry = en.nextElement();
+				            String name = entry.getName();
+				            if (entry.isDirectory()) {
+				                int len = name.length() - 1;
+				                if (name.charAt(len) == '/') {
+				                    name = name.substring(0, len);
+				                }
+				                /* Get the source unit from the map. */
+				                Source src = map.get(name);
+				                if (src != null) {
+				                    jhove2.characterize(src);
 
-				/*
-				 * Characterize each entry and associate it with its parent
-				 * source unit.
-				 */
-				en = zip.entries();
-				while (en.hasMoreElements()) {
-					ZipEntry entry = en.nextElement();
-					String name = entry.getName();
-					if (entry.isDirectory()) {
-						int len = name.length() - 1;
-						if (name.charAt(len) == '/') {
-							name = name.substring(0, len);
-						}
-						/* Get the source unit from the map. */
-						Source src = map.get(name);
-						if (src != null) {
-							jhove2.characterize(src);
+				                    int in = name.lastIndexOf('/');
+				                    if (in > -1 && in < name.length() - 1) {
+				                        /*
+				                         * Directory is a child of a Zip directory
+				                         * entry that can be retrieved from the map.
+				                         */
+				                        String key = name.substring(0, in);
+				                        Source parent = map.get(key);
+				                        if (parent != null) {
+				                            parent.addChildSource(src);
+				                        }
+				                    }
+				                    else {
+				                        /* Directory is a child of the Zip file. */
+				                        source.addChildSource(src);
+				                    }
+				                }
+				            }
+				            else {
+				                Source src =
+				                     SourceFactory.getSource(config.getTempPrefix(),
+				                                             config.getTempSuffix(),
+				                                             config.getBufferSize(),
+				                                             zip, entry);
+				                if (src != null) {
+				                    jhove2.characterize(src);
 
-							int in = name.lastIndexOf('/');
-							if (in > -1 && in < name.length() - 1) {
-								/*
-								 * Directory is a child of a Zip directory entry
-								 * that can be retrieved from the map.
-								 */
-								String key = name.substring(0, in);
-								Source parent = map.get(key);
-								if (parent != null) {
-									parent.addChildSource(src);
-								}
-							} else {
-								/* Directory is a child of the Zip file. */
-								source.addChildSource(src);
-							}
-						}
-					}
-					else {
-						Source src =
-							SourceFactory.getSource(config.getTempPrefix(),
-							                        config.getTempSuffix(),
-										            config.getBufferSize(), zip, entry);
-						if (src != null) {
-							jhove2.characterize(src);
-
-							int in = name.lastIndexOf('/');
-							if (in < 0) {
-								/* File is a child of the Zip file. */
-								source.addChildSource(src);
-							} else {
-								/*
-								 * File is a child of a Zip file entry that can
-								 * be retrieved from the map.
-								 */
-								String key = name.substring(0, in);
-								Source parent = map.get(key);
-								if (parent != null) {
-									parent.addChildSource(src);
-								}
-							}
-						}
-					}
+				                    int in = name.lastIndexOf('/');
+				                    if (in < 0) {
+				                        /* File is a child of the Zip file. */
+				                        source.addChildSource(src);
+				                    } else {
+				                        /*
+				                         * File is a child of a Zip file entry that can
+				                         * be retrieved from the map.
+				                         */
+				                        String key = name.substring(0, in);
+				                        Source parent = map.get(key);
+				                        if (parent != null) {
+				                            parent.addChildSource(src);
+				                        }
+				                    }
+				                }
+				            }
+				        }
+				    }  
+				    finally {
+				        zip.close();
+				    }
 				}
 			}
-		} finally {
-			if (input != null) {
-				input.close();
+		    finally {
+		        input.close();
 			}
 		}
 
 		return 0;
 	}
+
+    /** Validate the Zip file.
+     * @param jhove2 JHOVE2 framework object
+     * @param source Zip file source unit
+     * @see org.jhove2.module.format.Validator#validate(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
+     */
+    @Override
+    public Validity validate(JHOVE2 jhove2, Source source)
+            throws JHOVE2Exception
+    {
+        return this.isValid();
+    }
+    
+    /** Get validation coverage.
+     * @return Validation coverage
+     * @see org.jhove2.module.format.Validator#getCoverage()
+     */
+    @Override
+    public Coverage getCoverage() {
+        return COVERAGE;
+    }
+    
+    /** Get Zip file entries.
+     * @return Zip file entries
+     */
+    @ReportableProperty(order=1, value="Zip file entries")
+    public List<ZipFileEntry> getZipFileEntries() {
+        return this.entries;
+    }
+    
+    /** Get validity.
+     * @return Validity
+     * @see org.jhove2.module.format.Validator#isValid()
+     */
+    @Override
+    public Validity isValid()
+    {
+        return this.isValid;
+    }
 }

@@ -111,19 +111,19 @@ public class WAVEModule
         long consumed = 0L;
         this.isValid = Validity.True;
         Input input = null;
-        try {
-            Invocation config = jhove2.getInvocation();
-            input = source.getInput(config.getBufferSize(), 
-                                    config.getBufferType());
-            input.setByteOrder(ByteOrder.LITTLE_ENDIAN);
-            input.setPosition(0L);
+        Invocation config = jhove2.getInvocation();
+        input = source.getInput(config.getBufferSize(), 
+                                config.getBufferType());
+        if (input != null) {
+            try {
+                input.setByteOrder(ByteOrder.LITTLE_ENDIAN);
+                input.setPosition(0L);
             
-            WAVEChunk chunk = new WAVEChunk();
-            consumed += chunk.parse(jhove2, input);
-            this.chunks.add(chunk);
-          }
-        finally {
-            if (input != null) {
+                WAVEChunk chunk = new WAVEChunk();
+                consumed += chunk.parse(jhove2, input);
+                this.chunks.add(chunk);
+            }
+            finally {
                 input.close();
             }
         }
