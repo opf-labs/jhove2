@@ -52,8 +52,14 @@ import org.jhove2.module.format.Validator.Validity;
 public class ZipFileEntry
         extends AbstractReportable
 {
+    /** Zip data descriptor. */
+    protected ZipDataDescriptor descriptor;
+    
     /** Validation status. */
     protected Validity isValid;
+    
+    /** Zip local file header. */
+    protected ZipLocalFileHeader header;
     
     /** Instantiate a new <code>ZipFileEntry</code>. */
     public ZipFileEntry() {
@@ -64,11 +70,10 @@ public class ZipFileEntry
     
     /** 
      * Parse a Zip file entry.
-     * 
      * @param jhove2
      *            JHOVE2 framework
      * @param input
-     *            ICC input
+     *            Zip input
      * @return Number of bytes consumed
      * @throws EOFException
      *             If End-of-File is reached reading the source unit
@@ -83,9 +88,30 @@ public class ZipFileEntry
         int numErrors = 0;
         this.isValid = Validity.True;
         
-        
+        this.header = new ZipLocalFileHeader();
+        consumed += this.header.parse(jhove2, input);
+        Validity validity = this.header.isValid();
+        if (validity != Validity.True) {
+            this.isValid = validity;
+        }
         
         return consumed;
+    }
+    
+    /** Get Zip data descriptor.
+     * @return Zip data descriptor
+     */
+    @ReportableProperty(order=2, value="Zip data descriptor.")
+    public ZipDataDescriptor getDataDescriptor() {
+        return this.descriptor;
+    }
+    
+    /** Get Zip local file header.
+     * @return Zip local file header
+     */
+    @ReportableProperty(order=1, value="Zip local file header.")
+    public ZipLocalFileHeader getLocalFileHeader() {
+        return this.header;
     }
     
     /** Get validity.

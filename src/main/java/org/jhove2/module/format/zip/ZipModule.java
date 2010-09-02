@@ -58,8 +58,6 @@ import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
 import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.module.format.Validator;
-import org.jhove2.module.format.Validator.Coverage;
-import org.jhove2.module.format.Validator.Validity;
 
 /**
  * JHOVE2 Zip module.
@@ -86,6 +84,27 @@ public class ZipModule
     /** Module validation coverage. */
     public static final Coverage COVERAGE = Coverage.Selective;
     
+    /** Archive extra data record signature. */
+    public static final int ARCHIVE_EXTRA_DATA_RECORD_SIGNATURE = 0x08064b50;
+    
+    /** Central directory structure signature. */
+    public static final int CENTRAL_DIRECTORY_STRUCTURE_SIGNATURE = 0x02014b50;
+  
+    /** Digital signature header signature. */
+    public static final int DIGITAL_SIGNATURE_HEADER_SIGNATURE = 0x05054b50;
+    
+    /** End of central directory signature. */
+    public static final int END_OF_CENTRAL_DIRECTORY_SIGNATURE = 0x06054b50;
+    
+    /** Local file header signature. */
+    public static final int LOCAL_FILE_HEADER_SIGNATURE = 0x04034b50;
+    
+    /** Zip64 end of central directory signature. */
+    public static final int ZIP64_END_OF_CENTRAL_DIRECTORY_SIGNATURE = 0x06064b50;
+    
+    /** Zip64 end of central directory locator signature. */
+    public static final int ZIP64_END_OF_CENTRAL_DIRECTORY_LOCATOR_SIGNATURE = 0x07064b50;
+    
 	/** Zip file entries. */
 	protected List<ZipFileEntry> entries;
 	
@@ -109,7 +128,7 @@ public class ZipModule
 	 * Parse a Zip source unit.
 	 * 
 	 * @param source
-	 *            Zip ource unit
+	 *            Zip source unit
 	 * @return 0
 	 * @throws EOFException
 	 *             If End-of-File is reached reading the source unit
@@ -123,6 +142,9 @@ public class ZipModule
 	public long parse(JHOVE2 jhove2, Source source)
 		throws EOFException, IOException, JHOVE2Exception
 	{
+	    long consumed = 0L;
+        /* this.isValid = Validity.True; */
+	    
 		Input input = null;
 		Invocation config = jhove2.getInvocation();
 		input = source.getInput(config.getBufferSize(),
@@ -239,7 +261,7 @@ public class ZipModule
 			}
 		}
 
-		return 0;
+		return consumed;
 	}
 
     /** Validate the Zip file.

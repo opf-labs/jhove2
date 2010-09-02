@@ -32,7 +32,7 @@
  * POSSIBILITY OF SUCH DAMAGE. 
  */
 
-package org.jhove2.module.format.icc.field;
+package org.jhove2.module.format.zip.field;
 
 import java.util.Iterator;
 import java.util.Properties;
@@ -41,51 +41,51 @@ import java.util.TreeSet;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 
-/** ICC device attribute as defined by ICC.1:2004-10, Table 18.
+/** Zip local file header general purpose bit flag.
  * 
  * @author slabrams
  */
-public class DeviceAttribute
-implements Comparable<DeviceAttribute>
+public class BitFlag
+    implements Comparable<BitFlag>
 {
-    /** Singleton device attributes. */
-    protected static Set<DeviceAttribute> attrs;
+    /** Singleton bit flags. */
+    protected static Set<BitFlag> flags;
 
-    /** Device attribute bit position. */
+    /** Bit flag bit position. */
     protected int position;
 
-    /** Device attribute negative value. */
+    /** Bit flag negative value. */
     protected String negativeValue;
     
-    /** Device attribute positive value. */
+    /** Bit flag positive value. */
     protected String positiveValue;
 
     /**
-     * Instantiate a new <code>DeviceAttribute</code> object.
-     * @param position Device attribute bit position
+     * Instantiate a new <code>BitFlag</code> object.
+     * @param position Bit flag bit position
      * @param negative
-     *            Device attribute negative value
+     *            Bit flag negative value
      * @param positive
-     *            Device attribute positive value
+     *            Bit flag positive value
      */
-    public DeviceAttribute(int position, String negative, String positive) {
+    public BitFlag(int position, String negative, String positive) {
         this.position      = position;
         this.negativeValue = negative;
         this.positiveValue = positive;
     }
 
     /**
-     * Initialize the device attributes from their properties file. 
+     * Initialize the bit flags from their properties file. 
      * @param jhove2 JHOVE2 framework
      * @throws JHOVE2Exception
      */
-    protected static synchronized void initDeviceAttributes(JHOVE2 jhove2)
+    protected static synchronized void initBitFlags(JHOVE2 jhove2)
         throws JHOVE2Exception
     {
-        /* Initialize the device attributes from a Java resource bundle. */
-        attrs = new TreeSet<DeviceAttribute>();
+        /* Initialize the bit flags from a Java resource bundle. */
+        flags = new TreeSet<BitFlag>();
         Properties props =
-            jhove2.getConfigInfo().getProperties("DeviceAttributes");
+            jhove2.getConfigInfo().getProperties("BitFlags");
         if (props != null) {
             Set<String> set = props.stringPropertyNames();
             Iterator<String> iter = set.iterator();
@@ -98,9 +98,9 @@ implements Comparable<DeviceAttribute>
                     pos = neg.substring(in+1);
                     neg = neg.substring(0, in);
                 }
-                DeviceAttribute attr =
-                    new DeviceAttribute(Integer.valueOf(bit), neg, pos);
-                attrs.add(attr);
+                BitFlag attr =
+                    new BitFlag(Integer.valueOf(bit), neg, pos);
+                flags.add(attr);
             }
         }
     }
@@ -112,19 +112,20 @@ implements Comparable<DeviceAttribute>
     public String getNegativeValue() {
         return this.negativeValue;
     }
+    
     /**
-     * Get the device attributes.
+     * Get the bit flags.
      * @param jhove2 JHOVE2 framework
-     * @return device attributes
+     * @return Bit flags
      * @throws JHOVE2Exception 
      */
-    public static Set<DeviceAttribute> getDeviceAttributes(JHOVE2 jhove2)
+    public static Set<BitFlag> getBitFlags(JHOVE2 jhove2)
         throws JHOVE2Exception
     {
-        if (attrs == null) {
-            initDeviceAttributes(jhove2);
+        if (flags == null) {
+            initBitFlags(jhove2);
         }
-        return attrs;
+        return flags;
     }
 
     /**
@@ -156,12 +157,12 @@ implements Comparable<DeviceAttribute>
     /**
      * Compare device attribute.
      * @param attr
-     *            Device attribute to be compared
+     *            Bit flag to be compared
      * @return -1, 0, or 1 if this device attribute is less than,
      *         equal to, or greater than the second
      */
     @Override
-    public int compareTo(DeviceAttribute attr) {
+    public int compareTo(BitFlag attr) {
         int pos = attr.getPosition();
         if (this.position < pos) {
             return -1;

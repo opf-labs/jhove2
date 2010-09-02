@@ -36,9 +36,15 @@
 
 package org.jhove2.module.format.zip;
 
+import java.io.EOFException;
+import java.io.IOException;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.Digest;
+import org.jhove2.core.JHOVE2;
+import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
+import org.jhove2.module.format.Validator.Validity;
 
 /** Zip data descriptor.
  * 
@@ -46,13 +52,19 @@ import org.jhove2.core.reportable.AbstractReportable;
  */
 public class ZipDataDescriptor
         extends AbstractReportable
-{
+{    
+    /** Data descriptor signature (optional). */
+    public static final int DATA_DESCRIPTOR_SIGNATURE = 0x08074b50;
+  
     /** Compressed size of the file, in bytes. */
     protected long compressed;
     
     /** CRC-32 digest of the file. */
     protected Digest crc32;
     
+    /** Validation status. */
+    protected Validity isValid;
+   
     /** Optional descriptor signature, in hexadecimal. */
     protected String signature;
     
@@ -60,17 +72,52 @@ public class ZipDataDescriptor
     protected long uncompressed;
     
     /** Instantiate a new <code>ZipDataDescriptor</code>.
-     * @param signature    Descriptor signature, in hexadecimal
-     * @param crc32        CRC-32 digest of the file
-     * @param compressed   Compressed size of the file
-     * @param uncompressed Uncompressed size of the file
      */
-    public ZipDataDescriptor(String signature, Digest crc32, long compressed,
-                             long uncompressed) {
-        this.signature    = signature;
-        this.crc32        = crc32;
-        this.compressed   = compressed;
-        this.uncompressed = uncompressed;
+    public ZipDataDescriptor() {
+        super();
+        
+        this.isValid = Validity.Undetermined;
+    }
+    
+    /** 
+     * Parse a Zip data descriptor.
+     * @param jhove2
+     *            JHOVE2 framework
+     * @param input
+     *            Zip input
+     * @return Number of bytes consumed
+     * @throws EOFException
+     *             If End-of-File is reached reading the source unit
+     * @throws IOException
+     *             If an I/O exception is raised reading the source unit
+     * @throws JHOVE2Exception
+     */
+    public long parse(JHOVE2 jhove2, Input input)
+        throws EOFException, IOException, JHOVE2Exception
+    {
+        long consumed = 0L;
+        this.isValid = Validity.True;
+        
+        /* Optional signature or CRC-32 digest. */
+        long in = input.readUnsignedInt();
+        if (in == DATA_DESCRIPTOR_SIGNATURE) {
+            this.signature = String.format("0x%08x", in);
+            
+            in = input.readUnsignedInt();
+            consumed += 4;
+        }
+        this.crc32 = new Digest(String.format("0x%08x", in), "CRC-32");
+        consumed += 4;
+        
+        /* Compressed file size. */
+        this.compressed = input.readUnsignedInt();
+        consumed += 4;
+        
+        /* Uncompressed file size. */
+        this.uncompressed = input.readUnsignedInt();
+        consumed += 4;
+        
+        return consumed;
     }
     
     /** Get compressed file size, in bytes.
@@ -103,5 +150,14 @@ public class ZipDataDescriptor
     @ReportableProperty(order=4, value="Uncompressed file size, in bytes.")
     public long getUncompressedSize() {
         return this.uncompressed;
+    }
+    
+    /** Get validity.
+     * @return Validity
+     */
+    @ReportableProperty(order=14, value="Header validity")
+    public Validity isValid()
+    {
+         return this.isValid;
     }
 }
