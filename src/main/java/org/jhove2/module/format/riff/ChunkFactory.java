@@ -32,50 +32,45 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.module.format.wave;
+package org.jhove2.module.format.riff;
 
-import java.io.EOFException;
-import java.io.IOException;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.io.Input;
-import org.jhove2.module.format.riff.RIFFChunk;
+import org.jhove2.module.format.riff.field.ChunkClass;
 
-/** WAVE chunk. Note that this class represents a generic WAVE chunk, not the
- * specific "WAVE" chunk.
+/** RIFF chunk factory.
  * 
  * @author slabrams
  */
-public class WAVEChunk
-    extends RIFFChunk
+public class ChunkFactory
 {
-    /** Instantiate a new <code>WAVEChunk</code>. */
-    public WAVEChunk() {
-        super();
-    }
-    
-    
-    /** 
-     * Parse a WAVE chunk.
-     * 
-     * @param jhove2
-     *            JHOVE2 framework
-     * @param input
-     *            WAVE input
-     * @return Number of bytes consumed
-     * @throws EOFException
-     *             If End-of-File is reached reading the source unit
-     * @throws IOException
-     *             If an I/O exception is raised reading the source unit
-     * @throws JHOVE2Exception
-     * @see org.jhove2.module.format.FormatModule#parse(org.jhove2.core.JHOVE2,
-     *      org.jhove2.core.source.Source)
+    /** Get a new chunk based on its identifier.
+     * @param identifier Chunk identifier
+     * @param jhove2     JHOVE2 framework
+     * @return New chunk
+     * @throws JHOVE2Exception 
      */
-    public long parse(JHOVE2 jhove2, Input input)
-        throws EOFException, IOException, JHOVE2Exception
+    public static GenericChunk getChunk(String identifier, JHOVE2 jhove2)
+        throws JHOVE2Exception
     {
-        long consumed = super.parse(jhove2, input);
+        GenericChunk genericChunk = null;
         
-        return consumed;
+        ChunkClass cls = ChunkClass.getChunkClass(identifier, jhove2);
+        if (cls != null) {
+            String name = cls.getName();
+            try {
+                Class<?> c = Class.forName(name);
+                genericChunk = (GenericChunk) c.newInstance();
+            }
+            catch (Exception e) {
+                cls = null;
+            }
+        }
+        if (cls == null) {
+            genericChunk = new GenericChunk();
+        }
+        genericChunk.setIdentifier(identifier);
+        
+        return genericChunk;
     }
 }

@@ -70,7 +70,7 @@
     </bean>
 	  
   	<!-- Broadcast Wave Format profile bean -->
-	<bean id="BroadcastWaveFormatProfile" class="org.jhove2.module.format.wave.BroadcastWaveFormatProfile"
+	<bean id="BroadcastWaveFormatProfile" class="org.jhove2.module.format.wave.bwf.BroadcastWaveFormatProfile"
 	      scope="prototype">
 	    <constructor-arg ref="BroadcastWaveFormatProfileFormat"/>
 	    <property name="developers">
@@ -106,5 +106,10 @@
 		<constructor-arg type="java.lang.String" value="EBU Tech 3285"/>
 		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="EBU"/>
 	</bean>
+		 			    
+	<!-- WAVE format chunk format categories properties bean --> 
+	<bean id="FormatCategories" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="format-categories"/>
+	</bean> 
 	     
 </beans>

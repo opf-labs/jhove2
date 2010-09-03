@@ -32,7 +32,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.module.format.wave;
+package org.jhove2.module.format.wave.bwf;
 
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;

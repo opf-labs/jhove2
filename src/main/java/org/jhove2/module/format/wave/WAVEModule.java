@@ -48,6 +48,8 @@ import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.module.format.Validator;
+import org.jhove2.module.format.riff.GenericChunk;
+import org.jhove2.module.format.riff.ChunkFactory;
 
 /** WAVE (waveform audio file format) module.
  * 
@@ -72,7 +74,7 @@ public class WAVEModule
     public static final Coverage COVERAGE = Coverage.Inclusive;
   
     /** WAVE chunks. */
-    protected List<WAVEChunk> chunks;
+    protected List<GenericChunk> genericChunks;
     
     /** WAVE validation status. */
     protected Validity isValid;
@@ -84,7 +86,7 @@ public class WAVEModule
     {
         super(VERSION, RELEASE, RIGHTS, format);
         
-        this.chunks  = new ArrayList<WAVEChunk>();
+        this.genericChunks  = new ArrayList<GenericChunk>();
         this.isValid = Validity.Undetermined;
     }
     
@@ -118,10 +120,15 @@ public class WAVEModule
             try {
                 input.setByteOrder(ByteOrder.LITTLE_ENDIAN);
                 input.setPosition(0L);
-            
-                WAVEChunk chunk = new WAVEChunk();
-                consumed += chunk.parse(jhove2, input);
-                this.chunks.add(chunk);
+                
+                StringBuffer sb = new StringBuffer(4);
+                for (int i=0; i<4; i++) {
+                    short b = input.readUnsignedByte();
+                    sb.append((char) b);
+                }
+                GenericChunk genericChunk = ChunkFactory.getChunk(sb.toString(), jhove2);
+                consumed += genericChunk.parse(jhove2, input);
+                this.genericChunks.add(genericChunk);
             }
             finally {
                 input.close();
@@ -147,8 +154,8 @@ public class WAVEModule
      * @return Chunks
      */
     @ReportableProperty(order=1, value="Chunks.")
-    public List<WAVEChunk> getChunks() {
-        return this.chunks;
+    public List<GenericChunk> getChunks() {
+        return this.genericChunks;
     }
     
     /** Get module coverage.
