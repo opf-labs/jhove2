@@ -7,6 +7,9 @@
 # JHOVE2_HOME, and CP. Edit this file if you need to modify the settings for
 # these variables or define additional variables, such as JAVA_HOME. For more
 # information, refer to the JHOVE2 User's Guide at http://jhove2.org.
+#
+# NOTE: The jhove2-<version>.jar filename @jarName@ and the classpath @classpath@
+# are injected via filtering as part of the maven build process.    
 
 # If JAVA_HOME is not set, use the java in the execution path
 if [ ${JAVA_HOME} ] ; then

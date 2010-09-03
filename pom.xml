@@ -199,44 +199,49 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- Replace the classpath with the content of the properties file generated above
-			     mavens file filtering doesnt seem to work as it removes the file separators when it replaces the string -->
-<plugin>
-<groupId>org.apache.maven.plugins</groupId>
-<artifactId>maven-antrun-plugin</artifactId>
-<executions>
-    <execution>
-        <id>Inject classpath</id>
-        <phase>prepare-package</phase>
-        <goals>
-            <goal>run</goal>
-        </goals>
-        <configuration>
-            <tasks> <!-- We copy the .sh files with injection -->
-                <copy todir="${project.basedir}/src/main/scripts">
-                    <fileset dir="src/main/assembly">
-                       <filename name="env.sh"/>
-                    </fileset>
-                    <filterset>
-                       <filtersfile file="${project.basedir}/src/main/assembly/classpath_sh.properties"/>
-                       <filter token="jarName" value="${project.build.finalName}"/>
-                     </filterset>
-                </copy>
-                <copy todir="${project.basedir}/src/main/scripts">
-                    <fileset dir="src/main/assembly">
-                       <filename name="env.cmd"/>
-                    </fileset>
-                    <filterset>
-                    <!--  classpath filtering not working properly for windows platform -->
-                    <!--    <filtersfile file="${project.basedir}/src/main/assembly/classpath_cmd.properties"/>  -->
-                       <filter token="jarName" value="${project.build.finalName}"/>
-                    </filterset>
-                </copy>
-            </tasks>
-        </configuration>
-    </execution>
-</executions>
-</plugin>			     
+			<!-- Replace the classpath with the content of the properties file generated above -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>Inject classpath</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<tasks> <!-- We copy the .sh file with injection -->
+								<delete file="${project.basedir}/src/main/scripts/env.sh" />
+								<copy todir="${project.basedir}/src/main/scripts">
+									<fileset dir="src/main/assembly">
+										<filename name="env.sh" />
+									</fileset>
+									<filterset>
+										<filtersfile
+											file="${project.basedir}/src/main/assembly/classpath_sh.properties" />
+										<filter token="jarName" value="${project.build.finalName}" />
+									</filterset>
+								</copy>
+								<!-- We copy the .cmd file with injection -->
+								<copy todir="${project.basedir}/src/main/scripts">
+									<fileset dir="src/main/assembly">
+										<filename name="env.cmd" />
+									</fileset>
+									<filterset>
+										<!--  filtering currently not filtering file separator string '\' properly for windows platform -->
+										<!--
+											<filtersfile
+											file="${project.basedir}/src/main/assembly/classpath_cmd.properties"/>
+										-->
+										<filter token="jarName" value="${project.build.finalName}" />
+									</filterset>
+								</copy>
+							</tasks>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>			     
 			<!-- generate the JHOVE2 Command Line jar executable -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
