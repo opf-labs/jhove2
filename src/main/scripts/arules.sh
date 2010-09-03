@@ -4,11 +4,8 @@
 # Harbors, Inc., and The Board of Trustees of the Leland Stanford Junior
 # University.  All rights reserved.
 #
-# jhove2_doc.sh -- JHOVE2 Reportable documentation utility for Windows. The
-# properties of the reportable (name, identifier, properties, messages) are
-# determined by reflection of the class.
-#
-# usage: ./jhove2_doc reportableBeanName ...
+# arules.sh -- Converts assessment rule files to bean XML. For more
+# information, refer to the JHOVE2 User's Guide.
 #
 # See env.sh for environment variable settings.
 
