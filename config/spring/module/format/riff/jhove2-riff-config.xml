@@ -19,6 +19,11 @@
 		<property name="propertyFileBaseName" value="form-types"/>
 	</bean> 
 	 			    
+	<!-- LIST chunk INFO chunks properties bean --> 
+	<bean id="LISTINFOChunks" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="list-info-chunks"/>
+	</bean> 
+	 			    
 	<!-- LIST chunk list type properties bean --> 
 	<bean id="ListTypes" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
 		<property name="propertyFileBaseName" value="list-types"/>
