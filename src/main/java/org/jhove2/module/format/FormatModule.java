@@ -48,7 +48,7 @@ import org.jhove2.core.source.Source;
 import org.jhove2.module.Module;
 
 /**
- * Interface for JHOVE2 format {@link org.jhove2.module.Module}s that model a
+ * Interface for format {@link Module} that models a
  * format or format family.
  * 
  * @author mstrong, slabrams, smorrissey

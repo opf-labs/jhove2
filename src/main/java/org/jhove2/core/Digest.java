@@ -37,7 +37,7 @@
 package org.jhove2.core;
 
 /**
- * A JHOVE2 message digest.
+ * Message digest algorithm and value.
  * 
  * @author mstrong, slabrams
  */

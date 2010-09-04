@@ -42,9 +42,8 @@ import java.lang.reflect.Type;
 import org.jhove2.core.reportable.Reportable;
 
 /**
- * A JHOVE2 identifier. Note that this class is named "I8R", not
- * "IdentifierModule" to avoid confusion between "identifier" as a label and
- * "identifier" as a process that determines a format.
+ * Identifying label, including namespace. Called I8R to distinguish it from
+ * identifying as a a process.
  * 
  * @author mstrong, slabrams, smorrissey
  */
@@ -73,52 +72,188 @@ public class I8R implements Comparable<I8R> {
 	protected static String messageClassName = null;
 
 	/** Identifier types, or namespaces. */
-	public enum Namespace {
-		AFNOR, /* AFNOR standard */
-		AIIM, /* AIIM standard */
-		ANSI, /* ANSI standard */
-		ARK, /* ARK identifier */
-		BCP, /* IETF Best Community Practice */
-		BSI, /* BSI standard */
-		CallNumber, /* Call number */
-		CCITT, /* CCITT standard */
-		Charset, /* IANA charset */
-		DDC, /* Dewey Decimal Classification */
-		DOI, /* Digital Object IdentifierModule */
-		ECMA, /* ECMA standard */
-		FDD, /* Library of Congress FDD identifier */
-		FIPS, /* FIPS standard */
-		FourCC, /* 4CC Standard */
-		GUID, /* Globally Unique IdentifierModule */
-		Handle, /* Handle */
-		I3A, /* I3A standard */
-		IEC, /* IEC standard */
-		ISBN, /* International Standard Book Number */
-		ISO, /* ISO standard */
-		ISSN, /* International Standard Serial Nummber */
-		ITU, /* ITU standard */
-		JEITA, /* JEITA standard */
-		JHOVE2, /* JHOVE2 identifier */
-		LCC, /* Library of Congress Classification */
-		LCCN, /* Library of Congress Control Number */
-		MIME, /* MIME media scope */
-		NISO, /* NISO standard */
-		OCLC, /* OCLC number */
-		PII, /* Publisher Item IdentifierModule */
-		PUID, /* PRONOM Unique IdentifierModule */
-		PURL, /* Persistent URL */
-		RFC, /* IETF Request for Comments */
-		Shelfmark, /* Shelfmark */
-		SICI, /* Serial Item and Contribution IdentifierModule */
-		SMPTE, /* SMPTE standard */
-		SN, /* Serial number */
-		STD, /* IETF standard */
-		TOM, /* TOM identifier */
-		UUID, /* Universally Unique IdentifierModule */
-		URI, /* W3C Uniform Resource IdentifierModule */
-		URL, /* W3C Uniform Resource Locator */
-		URN, /* W3C Uniform Resource Name */
-		UTI, /* Apple Uniform Scope IdentifierModule */
+	 public enum Namespace {
+
+                /**
+                 * AFNOR standard
+                 */
+                AFNOR,
+                /**
+                 * AIIM standard
+                 */
+                AIIM,
+                /**
+                 * ANSI standard
+                 */
+                ANSI,
+                /**
+                 * ARK identifier
+                 */
+                ARK,
+                /**
+                 * IETF Best Community Practice
+                 */
+                BCP,
+                /**
+                 * BSI standard
+                 */
+                BSI,
+                /**
+                 * Call number
+                 */
+                CallNumber,
+                /**
+                 * CCITT standard
+                 */
+                CCITT,
+                /**
+                 * IANA charset
+                 */
+                Charset,
+                /**
+                 * Dewey Decimal Classification
+                 */
+                DDC,
+                /**
+                 * Digital Object IdentifierModule
+                 */
+                DOI,
+                /**
+                 * ECMA standard
+                 */
+                ECMA,
+                /**
+                 * Library of Congress FDD identifier
+                 */
+                FDD,
+                /**
+                 * FIPS standard
+                 */
+                FIPS,
+                /**
+                 * 4CC Standard
+                 */
+                FourCC,
+                /**
+                 * Globally Unique IdentifierModule
+                 */
+                GUID,
+                /**
+                 * Handle
+                 */
+                Handle,
+                /**
+                 * I3A standard
+                 */
+                I3A,
+                /**
+                 * IEC standard
+                 */
+                IEC,
+                /**
+                 * International Standard Book Number
+                 */
+                ISBN,
+                /**
+                 * ISO standard
+                 */
+                ISO,
+                /**
+                 * International Standard Serial Nummber
+                 */
+                ISSN,
+                /**
+                 * ITU standard
+                 */
+                ITU,
+                /**
+                 * JEITA standard
+                 */
+                JEITA,
+                /**
+                 * JHOVE2 identifier
+                 */
+                JHOVE2,
+                /**
+                 * Library of Congress Classification
+                 */
+                LCC,
+                /**
+                 * Library of Congress Control Number
+                 */
+                LCCN,
+                /**
+                 * MIME media scope
+                 */
+                MIME,
+                /**
+                 * NISO standard
+                 */
+                NISO,
+                /**
+                 * OCLC number
+                 */
+                OCLC,
+                /**
+                 * Publisher Item IdentifierModule
+                 */
+                PII,
+                /**
+                 * PRONOM Unique IdentifierModule
+                 */
+                PUID,
+                /**
+                 * Persistent URL
+                 */
+                PURL,
+                /**
+                 * IETF Request for Comments
+                 */
+                RFC,
+                /**
+                 * Shelfmark
+                 */
+                Shelfmark,
+                /**
+                 * Serial Item and Contribution IdentifierModule
+                 */
+                SICI,
+                /**
+                 * SMPTE standard
+                 */
+                SMPTE,
+                /**
+                 * Serial number
+                 */
+                SN,
+                /**
+                 * IETF standard
+                 */
+                STD,
+                /**
+                 * TOM identifier
+                 */
+                TOM,
+                /**
+                 * Universally Unique IdentifierModule
+                 */
+                UUID,
+                /**
+                 * W3C Uniform Resource IdentifierModule
+                 */
+                URI,
+                /**
+                 * W3C Uniform Resource Locator
+                 */
+                URL,
+                /**
+                 * W3C Uniform Resource Name
+                 */
+                URN,
+                /**
+                 * Apple Uniform Scope IdentifierModule
+                 */
+                UTI,
 		Other
 	}
 	/** Class object for a JHOVE2 Message */
@@ -331,11 +466,10 @@ public class I8R implements Comparable<I8R> {
 	}
 	
 	/**
-	 * Determine if Scope is a JHOVE2 Message
+	 * Determine if Type is a JHOVE2 Message
 	 * 
-	 * @param scope
-	 *            Property scope
-	 * @return True if the Scope is a message; otherwise, false
+         * @param type Java Type
+	 * @return True if the Type is a message; otherwise, false
 	 * @throws ClassNotFoundException 
 	 */
 	public static synchronized boolean isMessage(Type type) 
@@ -356,7 +490,12 @@ public class I8R implements Comparable<I8R> {
 		return isMessage;
 	}
 
-	protected static String getMessageClassName()
+        /**
+         *
+         * @return
+         * @throws ClassNotFoundException
+         */
+        protected static String getMessageClassName()
 		throws ClassNotFoundException
 	{
 		if (messageClassName==null){

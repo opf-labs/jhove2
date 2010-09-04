@@ -39,7 +39,7 @@ import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.reportable.AbstractReportable;
 
 /**
- * Convenvience class for keeping tally of the number and kind of sources
+ * Convenvience class for tallying the number and kind of sources
  * processed by JHOVE2 engine.
  * 
  * @author mstrong, slabrams, smorrissey

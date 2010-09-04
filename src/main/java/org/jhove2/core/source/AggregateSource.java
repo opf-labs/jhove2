@@ -37,8 +37,8 @@
 package org.jhove2.core.source;
 
 /**
- * Marker interface for JHOVE2 aggregate source units, such as directories and
- * clumps.
+ * Marker interface for source units that contain other source units. Not used for
+ * {@linkplain ClumpSource clumps}.
  * 
  * @author mstrong, slabrams
  */

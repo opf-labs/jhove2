@@ -45,8 +45,7 @@ import org.jhove2.core.WrappedProduct;
 import org.jhove2.core.reportable.AbstractReportable;
 
 /**
- * An abstract JHOVE2 module, an independently distributable product that
- * reports its elapsed processing time.
+ * An abstract {@link Module}.
  * 
  * @author mstrong, slabrams, smorrissey
  */

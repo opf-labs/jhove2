@@ -45,7 +45,7 @@ import org.jhove2.module.Module;
 import org.jhove2.module.display.Displayer;
 
 /**
- * Interface for JHOVE2 applications.
+ * Interface for command line applications based on the JHOVE2 framework.
  * 
  * @author mstrong, slabrams
  */

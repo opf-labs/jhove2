@@ -491,7 +491,7 @@ public abstract class AbstractSource
 	/**
 	 * Lexically compare format identifications.
 	 * 
-	 * @param Source source to be compared
+	 * @param src source to be compared
 	 * @return -1, 0, or 1 if this Source value is less than, equal to, or
 	 *         greater than the second
 	 * @see java.lang.Comparable#compareTo(Object)

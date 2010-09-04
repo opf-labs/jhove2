@@ -40,14 +40,15 @@ import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.reportable.AbstractReportable;
 
 /**
- * A JHOVE2 human or corporate agent.
+ * A JHOVE2 human or corporate agent. Represents person or corporate entity responsible for code.
  * 
  * @author mstrong, slabrams
  */
 public class Agent extends AbstractReportable {
 	/** Agent types. */
 	public enum Type {
-		Corporate, Personal
+          Corporate,
+          Personal
 	}
 
 	/** Agent postal address. */
@@ -81,9 +82,9 @@ public class Agent extends AbstractReportable {
 	 * Instantiate a new <code>Agent</code>.
 	 * 
 	 * @param name
-	 *            Agent name
-	 * @param scope
-	 *            Agent scope
+         *            Agent name
+         * @param type
+         *            Agent type (personal or corporate)
 	 */
 	public Agent(String name, Type type) {
 		super();
