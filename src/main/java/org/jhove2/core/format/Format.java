@@ -47,7 +47,7 @@ import org.jhove2.core.I8R;
 import org.jhove2.core.reportable.AbstractReportable;
 
 /**
- * A JHOVE2 format.
+ * A "file type" for source units, including those that are not physical files.
  * 
  * @author mstrong, slabrams, smmorrissey
  */

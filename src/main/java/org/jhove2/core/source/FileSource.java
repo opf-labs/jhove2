@@ -48,7 +48,7 @@ import org.jhove2.core.io.InputFactory;
 import org.jhove2.core.io.Input.Type;
 
 /**
- * JHOVE2 file system file source unit.
+ * File source unit. Represents physical file on file system.
  * 
  * @author mstrong, slabrams
  */

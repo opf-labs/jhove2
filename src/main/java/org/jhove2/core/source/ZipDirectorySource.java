@@ -43,7 +43,7 @@ import java.util.zip.ZipEntry;
 import org.jhove2.annotation.ReportableProperty;
 
 /**
- * JHOVE2 ZIP directory source unit.
+ * Container source unit that is directory within a ZIP file.
  * 
  * @author mstrong, slabrams
  */
