@@ -42,11 +42,12 @@ import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.io.Input;
 import org.jhove2.module.format.riff.field.LISTINFOChunks;
 
-/** Generic module for handling all RIFF format LIST INFO chunks.
+/** Generic module for handling all RIFF format NUL-terminated text string
+ * (ZSTR) chunks, particularly those defined by the LIST INFO chunk.
  * 
  * @author slabrams
  */
-public class LISTINFOChunk
+public class ZSTRChunk
     extends GenericChunk
 {
     /** Description. */
@@ -56,12 +57,12 @@ public class LISTINFOChunk
     protected String string;
     
     /** Instantiate a new <code>LISTINFOChunk</code>. */
-    public LISTINFOChunk() {
+    public ZSTRChunk() {
         super();
     }
     
     /** 
-     * Parse a RIFF format LIST INFO chunk.
+     * Parse a RIFF format ZSTR chunk.
      * 
      * @param jhove2
      *            JHOVE2 framework
@@ -87,8 +88,8 @@ public class LISTINFOChunk
         }
         
         /* String value. */
-        long len = this.size-1;
-        StringBuffer sb = new StringBuffer(4);
+        long len = this.size - 1L;
+        StringBuffer sb = new StringBuffer((int) len);
         for (long i=0; i<len; i++) {
             short b = input.readUnsignedByte();
             if (b == 0) {

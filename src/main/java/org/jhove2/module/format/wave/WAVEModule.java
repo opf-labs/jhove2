@@ -96,7 +96,7 @@ public class WAVEModule
      * @param jhove2
      *            JHOVE2 framework
      * @param source
-     *            ICC source unit
+     *            WAVE source unit
      * @return Number of bytes consumed
      * @throws EOFException
      *             If End-of-File is reached reading the source unit
