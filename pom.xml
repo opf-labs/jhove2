@@ -212,8 +212,7 @@
 						</goals>
 						<configuration>
 							<tasks> <!-- We copy the .sh file with injection -->
-								<delete file="${project.basedir}/src/main/scripts/env.sh" />
-								<copy todir="${project.basedir}/src/main/scripts">
+								<copy todir="${project.basedir}/src/main/scripts" overwrite="true">
 									<fileset dir="src/main/assembly">
 										<filename name="env.sh" />
 									</fileset>
