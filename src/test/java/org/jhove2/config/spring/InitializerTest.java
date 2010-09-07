@@ -38,7 +38,6 @@ import static org.junit.Assert.fail;
 
 import java.util.Properties;
 
-import org.jhove2.config.spring.SpringConfigInfo;
 import org.jhove2.core.JHOVE2Exception;
 import org.junit.After;
 import org.junit.Before;

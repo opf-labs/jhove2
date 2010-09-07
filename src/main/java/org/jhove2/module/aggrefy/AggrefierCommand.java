@@ -57,10 +57,10 @@ public class AggrefierCommand
 	extends AbstractCommand
 {
 	/** Identification module version identifier. */
-	public static final String VERSION = "1.9.5";
+	public static final String VERSION = "2.0.0";
 	
 	/** Identification module release date. */
-	public static final String RELEASE = "2010-02-16";
+	public static final String RELEASE = "2010-09-10";
 	
 	/** Identification module rights statement. */
 	public static final String RIGHTS = "Copyright 2010 by The Regents of the University of California, "
@@ -98,10 +98,10 @@ public class AggrefierCommand
 				timer.setStartTime();
 				try {
 	                /* Register the aggrefying modules. */
-	                jhove2.addModule(aggrefier);
+					source.addModule(aggrefier);
 	                List<Recognizer> recognizers = aggrefier.getRecognizers();
 	                for (Recognizer recognizer : recognizers) {
-	                    jhove2.addModule(recognizer);
+	                	source.addModule(recognizer);
 	                }
 	                
 	                /* Identify the aggregate. */

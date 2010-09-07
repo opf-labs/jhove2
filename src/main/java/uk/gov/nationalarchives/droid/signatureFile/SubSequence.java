@@ -60,14 +60,16 @@
  */
 package uk.gov.nationalarchives.droid.signatureFile;
 
-import uk.gov.nationalarchives.droid.MessageDisplay;
-import uk.gov.nationalarchives.droid.binFileReader.ByteReader;
-import uk.gov.nationalarchives.droid.xmlReader.SimpleElement;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.apache.commons.logging.*;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import uk.gov.nationalarchives.droid.MessageDisplay;
+import uk.gov.nationalarchives.droid.binFileReader.ByteReader;
+import uk.gov.nationalarchives.droid.xmlReader.SimpleElement;
 
 
 /**

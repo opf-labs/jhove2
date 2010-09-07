@@ -1,25 +1,25 @@
 
 package org.jhove2.module.identify;
 
-import org.jdom.Element;
-import org.jdom.output.XMLOutputter;
-
-import uk.gov.nationalarchives.droid.JHOVE2AnalysisControllerUtil;
-import uk.gov.nationalarchives.droid.ConfigFile;
-import uk.gov.nationalarchives.droid.FileCollection;
-import uk.gov.nationalarchives.droid.JHOVE2IAnalysisController;
-import uk.gov.nationalarchives.droid.IdentificationFile;
-import uk.gov.nationalarchives.droid.MessageDisplay;
-import uk.gov.nationalarchives.droid.signatureFile.FFSignatureFile;
-import uk.gov.nationalarchives.droid.xmlReader.PronomWebService;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+
+import org.jdom.Element;
+import org.jdom.output.XMLOutputter;
+
+import uk.gov.nationalarchives.droid.ConfigFile;
+import uk.gov.nationalarchives.droid.FileCollection;
+import uk.gov.nationalarchives.droid.IdentificationFile;
+import uk.gov.nationalarchives.droid.JHOVE2AnalysisControllerUtil;
+import uk.gov.nationalarchives.droid.JHOVE2IAnalysisController;
+import uk.gov.nationalarchives.droid.MessageDisplay;
+import uk.gov.nationalarchives.droid.signatureFile.FFSignatureFile;
 import uk.gov.nationalarchives.droid.signatureFile.FileFormat;
+import uk.gov.nationalarchives.droid.xmlReader.PronomWebService;
 
 /**
  * This is a condensation and adaptation of {@link uk.gov.nationalarchives.droid.AnalysisController}

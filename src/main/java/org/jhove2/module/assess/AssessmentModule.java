@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.config.ConfigInfo;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
@@ -59,151 +60,168 @@ import org.jhove2.module.Module;
  * @author rnanders
  */
 public class AssessmentModule extends AbstractModule implements Assessor {
-    /** Assessment module version identifier. */
-    public static final String VERSION = "0.1.0";
+	/** Assessment module version identifier. */
+	public static final String VERSION = "2.0.0";
 
-    /** Assessment module release date. */
-    public static final String RELEASE = "2010-06-04";
+	/** Assessment module release date. */
+	public static final String RELEASE = "2010-09-10";
 
-    /** Assessment module rights statement. */
-    public static final String RIGHTS = "Copyright 2010 by The Regents of the University of California, "
-            + "Ithaka Harbors, Inc., and The Board of Trustees of the Leland "
-            + "Stanford Junior University. "
-            + "Available under the terms of the BSD license.";
+	/** Assessment module rights statement. */
+	public static final String RIGHTS = "Copyright 2010 by The Regents of the University of California, "
+		+ "Ithaka Harbors, Inc., and The Board of Trustees of the Leland "
+		+ "Stanford Junior University. "
+		+ "Available under the terms of the BSD license.";
 
-    /** The factory object for creating {@link org.jhove2.module.assess.RuleSet RuleSet} instances */
-    protected RuleSetFactory ruleSetFactory;
+	/** The factory object for creating {@link org.jhove2.module.assess.RuleSet RuleSet} instances */
+	protected RuleSetFactory ruleSetFactory;
 
-    /**
-     * The list of all {@link org.jhove2.module.assess.AssessmentResultSet
-     * AssessmentResultSet} instances that where created during assessment of the
-     * {@link org.jhove2.core.source.Source Source} object.   
-     * An AssessmentResultSet instance is created for each of a
-     * Source item's characterization
-     * {@link rg.jhove2.module.Module Module}(s), if there exists a corresponding
-     * {@link org.jhove2.module.assess.RuleSet RuleSet} for that module type. An
-     * additional AssessmentResultSet will be created for the Source item itself, if
-     * there exists a RuleSet for that Source object type. 
-     */
-    protected List<AssessmentResultSet> assessmentResultSets;
-    
-    protected JHOVE2 jhove2;
-    
+	/**
+	 * The list of all {@link org.jhove2.module.assess.AssessmentResultSet
+	 * AssessmentResultSet} instances that where created during assessment of the
+	 * {@link org.jhove2.core.source.Source Source} object.   
+	 * An AssessmentResultSet instance is created for each of a
+	 * Source item's characterization
+	 * {@link rg.jhove2.module.Module Module}(s), if there exists a corresponding
+	 * {@link org.jhove2.module.assess.RuleSet RuleSet} for that module type. An
+	 * additional AssessmentResultSet will be created for the Source item itself, if
+	 * there exists a RuleSet for that Source object type. 
+	 */
+	protected List<AssessmentResultSet> assessmentResultSets;
 
-    /**
-     * Instantiate a new <code>AssessmentModule</code>.
-     */
-    public AssessmentModule() {
-        super(VERSION, RELEASE, RIGHTS, Scope.Generic);
-        assessmentResultSets = new ArrayList<AssessmentResultSet>();
-    }
-
-    /**
-     * Gets the {@link #assessmentResultSets}
-     * 
-     * @return assessmentResultSets
-     */
-    @ReportableProperty(order = 1, value = "Assessment Results")
-    public List<AssessmentResultSet> getAssessmentResultSets() {
-        return assessmentResultSets;
-    }
-    
-    /**
-     * Get Assessment messages.
-     * 
-     * @return Assessment messages
-     * @throws JHOVE2Exception 
-     */
-    @ReportableProperty(order = 5, value = "Assessment Messages.")
-    public List<Message> getAssessmentMessages() throws JHOVE2Exception {
-        List<Message> messages = new ArrayList<Message>();
-        for ( AssessmentResultSet resultSet : getAssessmentResultSets()) {
-            for (AssessmentResult result : resultSet.getAssessmentResults()) {
-                for (String message: result.getAssessmentMessages()) {
-                    Object[]messageArgs = new Object[] {message};
-                    messages.add(new Message(Severity.ERROR,
-                            Context.OBJECT,
-                            "org.jhove2.module.assess.assessmentErrorsFound",
-                            messageArgs, jhove2.getConfigInfo()));
-                }
-                
-            }
-        }
-        return messages;
-   }
+	protected ConfigInfo configInfo;
 
 
-    /**
-     * Evaluate selected properties of a {@link org.jhove2.core.source.Source Source} unit.
-     * Assessment is attempted for each of a Source item's characterization 
-     * {@link rg.jhove2.module.Module Module}(s) and 
-     * against the Source unit itself.
-     * 
-     * @param jhove2
-     *            The JHOVE2 framework
-     * @param source
-     *            The Source unit to be assessed
-     * @throws IOException
-     * @throws JHOVE2Exception
-     */
-    @Override
-    public void assess(JHOVE2 jhove2, Source source) throws IOException,
-            JHOVE2Exception {
-        /* Assess the source unit. */
-        // TODO is Timer syntax OK?
-        TimerInfo timer = this.getTimerInfo();
-        timer.setStartTime();
-        this.jhove2 = jhove2;
-        try {
-            List<Module> modules = source.getModules();
-            for (Module module : modules) {
-                assessObject(module);
-            }
-            assessObject(source);
-        }
-        finally {
-            timer.setEndTime();
-        }
-    }
+	/**
+	 * Instantiate a new <code>AssessmentModule</code>.
+	 */
+	public AssessmentModule() {
+		super(VERSION, RELEASE, RIGHTS, Scope.Specific);
+		assessmentResultSets = new ArrayList<AssessmentResultSet>();
+	}
 
-    /**
-     * Assessment of a RuleSet is performed against the specified object
-     * if there exists a corresponding RuleSet for that object type
-     * 
-     * @param assessedObject
-     *            the assessed object
-     * @throws JHOVE2Exception
-     *             the jHOV e2 exception
-     */
-    private void assessObject(Object assessedObject) throws JHOVE2Exception {
-        String className = assessedObject.getClass().getName();
-        RuleSet ruleSet = getRuleSetFactory().getRuleSet(className);
-        if (ruleSet != null) {
-            AssessmentResultSet resultSet = new AssessmentResultSet();
-            assessmentResultSets.add(resultSet);
-            resultSet.setAssessedObject(assessedObject);
-            resultSet.setRuleSet(ruleSet);
-            resultSet.fireAllRules();
-        }
-    }
+	/**
+	 * Gets the {@link #assessmentResultSets}
+	 * 
+	 * @return assessmentResultSets
+	 */
+	@ReportableProperty(order = 1, value = "Assessment Results")
+	public List<AssessmentResultSet> getAssessmentResultSets() {
+		return assessmentResultSets;
+	}
 
-    /**
-     * Gets the {@link #ruleSetFactory}
-     * 
-     * @return ruleSetFactory
-     */
-    public RuleSetFactory getRuleSetFactory() {
-        return ruleSetFactory;
-    }
+	/**
+	 * Get Assessment messages.
+	 * 
+	 * @return Assessment messages
+	 * @throws JHOVE2Exception 
+	 */
+	@ReportableProperty(order = 5, value = "Assessment Messages.")
+	public List<Message> getAssessmentMessages() throws JHOVE2Exception {
+		List<Message> messages = new ArrayList<Message>();
+		for ( AssessmentResultSet resultSet : getAssessmentResultSets()) {
+			for (AssessmentResult result : resultSet.getAssessmentResults()) {
+				for (String message: result.getAssessmentMessages()) {
+					Object[]messageArgs = new Object[] {message};
+					messages.add(new Message(Severity.ERROR,
+							Context.OBJECT,
+							"org.jhove2.module.assess.assessmentErrorsFound",
+							messageArgs, this.getConfigInfo()));
+				}
 
-    /**
-     * Sets the {@link #ruleSetFactory}
-     * 
-     * @param ruleSetFactory
-     *            the ruleSetFactory to be used by this Assessor
-     */
-    public void setRuleSetFactory(RuleSetFactory ruleSetFactory) {
-        this.ruleSetFactory = ruleSetFactory;
-    }
+			}
+		}
+		return messages;
+	}
+
+
+	/**
+	 * Evaluate selected properties of a {@link org.jhove2.core.source.Source Source} unit.
+	 * Assessment is attempted for each of a Source item's characterization 
+	 * {@link rg.jhove2.module.Module Module}(s) and 
+	 * against the Source unit itself.
+	 * 
+	 * @param jhove2
+	 *            The JHOVE2 framework
+	 * @param source
+	 *            The Source unit to be assessed
+	 * @throws IOException
+	 * @throws JHOVE2Exception
+	 */
+	@Override
+	public void assess(JHOVE2 jhove2, Source source) throws IOException,
+	JHOVE2Exception {
+		/* Assess the source unit. */
+		// TODO is Timer syntax OK?
+		TimerInfo timer = this.getTimerInfo();
+		timer.setStartTime();
+		this.configInfo = jhove2.getConfigInfo();
+		try {
+			List<Module> modules = source.getModules();
+			for (Module module : modules) {
+				assessObject(module);
+			}
+			assessObject(source);
+		}
+		finally {
+			timer.setEndTime();
+		}
+	}
+
+	/**
+	 * Assessment of a RuleSet is performed against the specified object
+	 * if there exists a corresponding RuleSet for that object type
+	 * 
+	 * @param assessedObject
+	 *            the assessed object
+	 * @throws JHOVE2Exception
+	 *             the JHOVE2 exception
+	 */
+	private void assessObject(Object assessedObject) throws JHOVE2Exception {
+		String objectFilter = assessedObject.getClass().getName();
+		List<RuleSet> ruleSetList = getRuleSetFactory().getRuleSetList(objectFilter);
+		if (ruleSetList != null) {
+			for (RuleSet ruleSet : ruleSetList) {
+				if (ruleSet.isEnabled()) {
+					AssessmentResultSet resultSet = new AssessmentResultSet();
+					assessmentResultSets.add(resultSet);
+                    resultSet.setRuleSet(ruleSet);
+                    resultSet.fireAllRules(assessedObject);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Gets the {@link #ruleSetFactory}
+	 * 
+	 * @return ruleSetFactory
+	 */
+	public RuleSetFactory getRuleSetFactory() {
+		return ruleSetFactory;
+	}
+
+	/**
+	 * Sets the {@link #ruleSetFactory}
+	 * 
+	 * @param ruleSetFactory
+	 *            the ruleSetFactory to be used by this Assessor
+	 */
+	public void setRuleSetFactory(RuleSetFactory ruleSetFactory) {
+		this.ruleSetFactory = ruleSetFactory;
+	}
+
+	/**
+	 * @return the configInfo
+	 */
+	public ConfigInfo getConfigInfo() {
+		return configInfo;
+	}
+
+	/**
+	 * @param configInfo the configInfo to set
+	 */
+	public void setConfigInfo(ConfigInfo configInfo) {
+		this.configInfo = configInfo;
+	}
 
 }

@@ -58,4 +58,8 @@ public abstract class AbstractCommand
 			               Scope scope) {
 		super(version, release, rights, scope);
 	}
+	
+	public AbstractCommand(){
+		super();
+	}
 }

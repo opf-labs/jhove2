@@ -22,10 +22,10 @@
  */
 package uk.gov.nationalarchives.droid.signatureFile;
 
-import uk.gov.nationalarchives.droid.xmlReader.SimpleElement;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import uk.gov.nationalarchives.droid.xmlReader.SimpleElement;
 
 /**
  * holds a collection of file formats

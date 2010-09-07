@@ -45,8 +45,6 @@
 
 package uk.gov.nationalarchives.droid.binFileReader;
 
-import uk.gov.nationalarchives.droid.IdentificationFile;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -55,6 +53,8 @@ import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
+
+import uk.gov.nationalarchives.droid.IdentificationFile;
 
 /**
  * Class providing common functionality for reading streams.

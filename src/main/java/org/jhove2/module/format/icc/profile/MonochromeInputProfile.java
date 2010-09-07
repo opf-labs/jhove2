@@ -39,6 +39,7 @@ package org.jhove2.module.format.icc.profile;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;

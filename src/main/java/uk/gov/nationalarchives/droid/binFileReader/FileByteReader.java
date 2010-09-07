@@ -47,10 +47,15 @@
 package uk.gov.nationalarchives.droid.binFileReader;
 
 
-import uk.gov.nationalarchives.droid.JHOVE2IAnalysisController;
-import uk.gov.nationalarchives.droid.IdentificationFile;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 
-import java.io.*;
+import uk.gov.nationalarchives.droid.IdentificationFile;
+import uk.gov.nationalarchives.droid.JHOVE2IAnalysisController;
 
 /**
  * The <code>FileByteReader</code> class is a <code>ByteReader</code> that

@@ -36,34 +36,32 @@
 package org.jhove2.module.aggrefy;
 
 
-import static org.junit.Assert.*;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import org.springframework.test.context.junit4.*;
-import org.springframework.test.context.ContextConfiguration;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Set;
-import java.util.TreeSet;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.annotation.Resource;
-
 
 import org.jhove2.app.util.FeatureConfigurationUtil;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.format.FormatIdentification;
 import org.jhove2.core.source.ClumpSource;
-import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.FileSetSource;
+import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.Source;
-import org.jhove2.module.aggrefy.GlobPathMatchInfoGroup;
-import org.jhove2.module.aggrefy.GlobPathRecognizer;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 
 /**

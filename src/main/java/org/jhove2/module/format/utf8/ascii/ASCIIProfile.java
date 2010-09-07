@@ -100,6 +100,10 @@ public class ASCIIProfile
 		this.isValid = Validity.Undetermined;
 		this.nonBasicLatinCodeBlocks = new TreeSet<CodeBlock>();
 	}
+	
+	public ASCIIProfile(){
+		this(null);
+	}
 
 	/**
 	 * Validate an ASCII source unit.

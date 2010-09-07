@@ -44,11 +44,11 @@
 
 package uk.gov.nationalarchives.droid.binFileReader;
 
-import uk.gov.nationalarchives.droid.IdentificationFile;
-
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import uk.gov.nationalarchives.droid.IdentificationFile;
 
 /**
  * The <code>UrlByteReader</code> class is a <code>ByteReader</code> that

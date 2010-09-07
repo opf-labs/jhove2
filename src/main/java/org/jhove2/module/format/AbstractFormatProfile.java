@@ -70,8 +70,12 @@ public class AbstractFormatProfile
 	public AbstractFormatProfile(String version, String release, String rights,
 			                     Format format) {
 		super(version, release, rights, Scope.Specific);
-
 		this.format   = format;
+	}
+	
+	public AbstractFormatProfile(){
+		super();
+		this.scope = Scope.Specific;
 	}
 
 	/**

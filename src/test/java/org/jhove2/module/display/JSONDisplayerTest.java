@@ -35,10 +35,9 @@
  */
 package org.jhove2.module.display;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 import javax.annotation.Resource;
-
 
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.source.Source;

@@ -36,13 +36,12 @@
 
 package org.jhove2.app.util;
 
-import java.util.HashMap;
-import java.util.Set;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.PrintStream;
 import java.io.FileOutputStream;
-import java.lang.SecurityException;
+import java.io.PrintStream;
+import java.util.HashMap;
+import java.util.Set;
 
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.reportable.info.ReportablePropertyInfo;

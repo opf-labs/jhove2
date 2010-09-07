@@ -35,13 +35,16 @@
  */
 package org.jhove2.core.source;
 
-import static org.junit.Assert.*;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import javax.annotation.Resource;
 
 import org.jhove2.core.JHOVE2;
 import org.jhove2.module.aggrefy.AggrefierModule;
+import org.jhove2.module.assess.AssessmentModule;
+import org.jhove2.module.digest.DigesterModule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -98,25 +101,18 @@ public class AbstractSourceTest {
 		fsSource1.addModule(JHOVE2);
 		assertFalse(fsSource1.equals(fsSource2));
 		assertFalse(clump1.equals(clump2));
+		//2010.08.13 this changes because JHOVE2 is specific and is not added more than once to any Source in play
 		fsSource2.addModule(JHOVE2);
-		assertEquals(fsSource1, fsSource2);
-		assertEquals(clump1, clump2);
-		fsSource1.getModules().clear();
 		assertFalse(fsSource1.equals(fsSource2));
 		assertFalse(clump1.equals(clump2));
+		fsSource1.getModules().clear();
+		assertTrue(fsSource1.equals(fsSource2));
 		fsSource1.addModule(Aggrefier);
 		assertFalse(fsSource1.equals(fsSource2));
 		assertFalse(clump1.equals(clump2));
-		fsSource1.addModule(JHOVE2);
+		fsSource2.addModule(Aggrefier);
+		//2010.08.13 this changes because JHOVE2 is specific and is not added more than once to any Source in play
 		assertFalse(fsSource1.equals(fsSource2));
-		assertFalse(clump1.equals(clump2));
-		fsSource2.addModule(Aggrefier);
-		assertTrue(fsSource1.equals(fsSource2));
-		fsSource2.getModules().clear();
-		fsSource2.addModule(Aggrefier);
-		fsSource2.addModule(JHOVE2);
-		assertEquals(fsSource1, fsSource2);
-		assertEquals(clump1, clump2);
 	}
 
 	/**
@@ -144,18 +140,20 @@ public class AbstractSourceTest {
 		clump2.addChildSource(fsSource2);
 		assertEquals(0, clump1.compareTo(clump2));
 		
-		fsSource1.addModule(JHOVE2);
+		AssessmentModule assessor = new AssessmentModule();
+		DigesterModule digestor = new DigesterModule();
+		fsSource1.addModule(assessor);
 		assertEquals(1,fsSource1.compareTo(fsSource2));
 		assertEquals(1,clump1.compareTo(clump2));
-		fsSource2.addModule(JHOVE2);
+		fsSource2.addModule(assessor);
 		assertEquals(0,fsSource2.compareTo(fsSource1));
 		assertEquals(0, clump1.compareTo(clump2));
-		fsSource2.addModule(Aggrefier);
+		fsSource2.addModule(digestor);
 		assertEquals(-1, fsSource1.compareTo(fsSource2));
 		assertEquals(1,clump1.compareTo(clump2));
 		fsSource1.getModules().clear();
-		fsSource1.addModule(Aggrefier);
-		fsSource1.addModule(JHOVE2);
+		fsSource1.addModule(digestor);
+		fsSource1.addModule(assessor);
 		assertEquals(0, fsSource1.compareTo(fsSource2));
 	}
 

@@ -36,7 +36,9 @@
  */
 package org.jhove2.module.format.xml;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
@@ -85,7 +87,7 @@ public class XmlSchemaCatalogTest  extends XmlModuleTestBase {
         assertEquals(7,nsInfo.getNamespaceCount());
         String uri = nsInfo.getNamespaces().get(0).getURI();
         assertEquals("http://dlib.nyu.edu/METS/textmd",uri);
-        NamespaceInformation.Namespace premis = nsInfo.namespaces.get("http://www.loc.gov/standards/premis/v1");
+        Namespace premis = nsInfo.namespaces.get("http://www.loc.gov/standards/premis/v1");
         assertEquals(2,premis.declarations.size());
         String expectLocation = "http://www.loc.gov/standards/premis/v1/PREMIS-v1-1.xsd";
         String foundLocation = premis.schemaLocations.get(expectLocation).location;

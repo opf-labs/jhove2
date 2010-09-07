@@ -61,10 +61,10 @@ public class JHOVE2CommandLine
 extends AbstractApplication
 {
 	/** JHOVE2 application version identifier. */
-	public static final String VERSION = "1.9.5";
+	public static final String VERSION = "2.0.0";
 
 	/** JHOVE2 application release date. */
-	public static final String RELEASE = "2010-03-05";
+	public static final String RELEASE = "2010-09-10";
 
 	/** JHOVE2 application rights statement. */
 	public static final String RIGHTS = "Copyright 2010 by The Regents of the University of California, "
@@ -123,8 +123,6 @@ extends AbstractApplication
 
 			jhove2.setInvocation(app.getInvocation());
 			jhove2.setInstallation(app.getInstallation());
-			jhove2.addModule(app.getDisplayer());
-			app.setFramework(jhove2);
 
 			/* Create a FileSet source unit out of files and directories
 			 * and URLS specified on the command line,
@@ -134,14 +132,14 @@ extends AbstractApplication
 					jhove2.getInvocation().getTempPrefix(), 
 					jhove2.getInvocation().getTempSuffix(), 
 					jhove2.getInvocation().getBufferSize());
-
-			app.getSources().add(source);
+			source.addModule(app);
+			source.addModule(jhove2);
+			source.addModule(app.getDisplayer());
 			/* Characterize the FileSet source unit (and all subsidiary
 			 * source units that it encapsulates.
 			 */
 			TimerInfo timer = jhove2.getTimerInfo();
 			timer.setStartTime();;
-
 			
 			jhove2.characterize(source);
 			
@@ -149,7 +147,7 @@ extends AbstractApplication
 
 			/* Display characterization information for the FileSet.
 			 */
-			app.getDisplayer().display(app);
+			app.getDisplayer().display(source);
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -168,7 +166,6 @@ extends AbstractApplication
 	 * 
 	 *  -i  Show the unique formal identifiers for all reportable properties in results.
 	 *  -k  Calculate message digests.
-	 *  -u  Source to be characterized is a (single) URL
 	 *  -b size     I/O buffer size (default=131072)
 	 *  -B scope     I/O buffer type (default=Direct)
 	 *  -d format   Results format (default=Text)

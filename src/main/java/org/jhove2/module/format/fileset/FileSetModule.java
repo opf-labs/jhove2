@@ -60,10 +60,10 @@ public class FileSetModule
 	extends BaseFormatModule
 {
 	/** Pseudo-directory module version identifier. */
-	public static final String VERSION = "1.9.5";
+	public static final String VERSION = "2.0.0";
 
 	/** Pseudo-directory module release date. */
-	public static final String RELEASE = "2010-02-16";
+	public static final String RELEASE = "2010-09-10";
 
 	/** Pseudo-directory module rights statement. */
 	public static final String RIGHTS = "Copyright 2010 by The Regents of the University of California, "
@@ -81,6 +81,9 @@ public class FileSetModule
 		super(VERSION, RELEASE, RIGHTS, Scope.Generic, format);
 	}
 
+	public FileSetModule(){
+		super(VERSION, RELEASE, RIGHTS, Scope.Generic, null);
+	}
 	/**
 	 * Parse pseudo-directory source unit.
 	 * 
@@ -115,12 +118,14 @@ public class FileSetModule
 			                Context.PROCESS,
 			                "org.jhove2.core.source.FileSystemSource.FileNotFoundMessage",
 			                new Object[]{name}, jhove2.getConfigInfo()));
+			            continue;
 			        }
 			        else if (!fs.isReadable()) {
 			            source.addMessage(new Message(Severity.ERROR,
                             Context.PROCESS,
                             "org.jhove2.core.source.FileSysttemSource.FileNotReadableMessage",
                             new Object[]{name}, jhove2.getConfigInfo()));
+			            continue;
 			        }
 			    }
 				jhove2.characterize(src);
