@@ -56,32 +56,128 @@ import org.jhove2.module.format.wave.field.FormatCategory;
 public class FormatChunk
     extends GenericChunk
 {
+    /** WAVE format IBM ADPCM format. */
+    public static final int IBM_FORMAT_ADPCM = 0x0103;
+    
+    /** WAVE format IBM a-law format. */
+    public static final int IBM_FORMAT_ALAW = 0x0102;
+    
+    /** WAVE format IBM mu-law format. */
+    public static final int IBM_FORMAT_MULAW = 0x0101;
+ 
     /** WAVE format A-law format. */
     public static final int WAVE_FORMAT_ALAW = 0x0006;
+  
+    /** Antex APCME format. */
+    public static final int WAVE_FORMAT_ANTEX_ADPCME = 0x0033;
     
+    /** Audio processing Technology X format. */
+    public static final int WAVE_FORMAT_APTX = 0x0025;
+    
+    /** Audiofile, Inc. AF10 format. */
+    public static final int WAVE_FORMAT_AUDIOFILE_AF10 = 0x0026;
+     
+    /** Audiofile, Inc. AF36 format. */
+    public static final int WAVE_FORMAT_AUDIOFILE_AF36 = 0x0024;
+   
+    /** Control Resources Ltd. VQLPC format. */
+    public static final int WAVE_FORMAT_CONTROL_RES_VQLPC = 0x0034;
+    
+    /** Control Resources Ltd. CR10 format. */
+    public static final int WAVE_FORMAT_CONTROL_RES_CR10 = 0x0037;
+    
+    /** Creative Labs ADPCM format. */
+    public static final int WAVE_FORMAT_CREATIVE_ADPCM = 0x0200;
+  
+    /** DSP Solutions DigiADPCM format. */
+    public static final int WAVE_FORMAT_DIGIADPCM = 0x0036;
+  
+    /** DSP Solutions DigiFix format. */
+    public static final int WAVE_FORMAT_DIGIFIX = 0x0016;
+    
+    /** DPS Solutions DigiReal format. */
+    public static final int WAVE_FORMAT_DIGIREAL = 0x0035;
+    
+    /** DSP Solutions DigiStd format. */
+    public static final int WAVE_FORMAT_DIGISTD = 0x0015;
+  
+    /** Dolby Labs AC2 format. */
+    public static final int WAVE_FORMAT_DOLBY_AC2 = 0x0030;
+ 
+    /** DSP Group TrueSpeech format. */
+    public static final int WAVE_FORMAT_DSPGROUP_TRUESPEECH = 0x0022;
+  
+    /** Intel DVI ADPCM format. */
+    public static final int WAVE_FORMAT_DVI_ADPCM = 0x0011;
+   
+    /** Echo Speech C1 format. */
+    public static final int WAVE_FORMAT_ECHOSC1 = 0x0023;
+
     /** WAVE format extensible format. */
     public static final int WAVE_FORMAT_EXTENSIBLE = 0xfffe;
+
+    /** Fujitsu FM Towns SND format. */
+    public static final int WAVE_FORMAT_FM_TOWNS_SND = 0x0300;
     
+    /** Antex G.721 ADPCM format. */
+    public static final int WAVE_FORMAT_G721_ADPCM = 0x0040;
+    
+    /** Antex G.723 ADPCM format. */
+    public static final int WAVE_FORMAT_G723_ADPCM = 0x0014;
+    
+    /** Microsoft GSM 610 format. */
+    public static final int WAVE_FORMAT_GSM610 = 0x0031;
+  
+    /** IBM CVSD format. */
+    public static final int WAVE_FORMAT_IBM_CVSD = 0x0005;
+  
+    /** WAVE format IEEE format. */
+    public static final int WAVE_FORMAT_IEEE_FLOAT = 0x0003;
+    
+    /** Videologic MediaSpace ADPCM format. */
+    public static final int WAVE_FORMAT_MEDIASPACE_ADPCM = 0x0012;
+  
     /** WAVE format MPEG-1 audio format. */
     public static final int WAVE_FORMAT_MPEG = 0x0050;
 
     /** WAVE format mu-law format. */
     public static final int WAVE_FORMAT_MULAW = 0x0007;
     
-    /** WAVE format IEEE format. */
-    public static final int WAVE_FORMAT_IEEE_FLOAT = 0x0003;
+    /** Natural MiroSystems VBX ADPCM format. */
+    public static final int WAVE_FORMAT_NMS_VBXADPCM = 0x0038;
+    
+    /** OKI ADPCM format. */
+    public static final int WAVE_FORMAT_OKI_ADPCM = 0x0010;
+    
+    /** Ing C. Olivetti & C., S.p.A. GSM format. */
+    public static final int WAVE_FORMAT_OLIGSM = 0x1000;
+    
+    /** Ing C. Olivetti & C., S.p.A. ADPCM format. */
+    public static final int WAVE_FORMAT_OLIADPCM = 0x1001;
+    
+    /** Ing C. Olivetti & C., S.p.A. CELP format. */
+    public static final int WAVE_FORMAT_OLICELP = 0x1002;
+    
+    /** Ing C. Olivetti & C., S.p.A. SBC format. */
+    public static final int WAVE_FORMAT_OLISBC = 0x1003;
+    
+    /** Ing C. Olivetti & C., S.p.A. OPR format. */
+    public static final int WAVE_FORMAT_OLIOPR = 0x1004;
     
     /** WAVE format Pulse Code Modulation (PCM) format. */
     public static final int WAVE_FORMAT_PCM = 0x0001;
     
-    /** WAVE format IBM mu-law format. */
-    public static final int IBM_FORMAT_MULAW = 0x0101;
+    /** Sierra Semiconductor ADPCM format. */
+    public static final int WAVE_FORMAT_SIERRA_ADPCM = 0x0013;
     
-    /** WAVE format IBM a-law format. */
-    public static final int IBM_FORMAT_ALAW = 0x0102;
+    /** Speech Compression SONARC format. */
+    public static final int WAVE_FORMAT_SONARC = 0x0021;
     
-    /** WAVE format IBM ADPCM format. */
-    public static final int IBM_FORMAT_ADPCM = 0x0103;
+    /** Unknown format. */
+    public static final int WAVE_FORMAT_UNKNOWN = 0x0000;
+  
+    /** Yamaha ADPCM format. */
+    public static final int WAVE_FORMAT_YAMAHA_ADPCM = 0x0020;
     
     /** WAVE format chunk average bytes per second. */
     protected long avgBytesPerSec;
