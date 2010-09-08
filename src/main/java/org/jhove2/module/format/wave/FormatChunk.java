@@ -204,7 +204,7 @@ public class FormatChunk
     protected long samplingRate;
     
     /** WAVE format chunk size of extra information, in bytes. */
-    protected int size;
+    protected int extraSize;
     
     /** Instantiate a new <code>FormatChunk</code>. */
     public FormatChunk() {
@@ -269,7 +269,7 @@ public class FormatChunk
         consumed += 2;
         
         if (this.formatCategory != WAVE_FORMAT_PCM) {
-            this.size = input.readUnsignedShort();
+            this.extraSize = input.readUnsignedShort();
             consumed += 2;
         }
         
@@ -297,7 +297,7 @@ public class FormatChunk
      */
     @ReportableProperty(order=8, value="Size of extra information, in bytes.")
     public int getSizeOfExtraInformation() {
-        return this.size;
+        return this.extraSize;
     }
     
     /** Get WAVE format chunk data block size.

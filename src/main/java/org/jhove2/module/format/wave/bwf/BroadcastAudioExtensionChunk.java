@@ -36,11 +36,16 @@ package org.jhove2.module.format.wave.bwf;
 
 import java.io.EOFException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
+import org.jhove2.core.Message.Context;
+import org.jhove2.core.Message.Severity;
 import org.jhove2.core.io.Input;
+import org.jhove2.module.format.Validator.Validity;
 import org.jhove2.module.format.riff.GenericChunk;
 
 /** Broadcast Wave Format (BWF) broadcast audio extension chunk.
@@ -80,12 +85,14 @@ public class BroadcastAudioExtensionChunk
     /** BWF version. */
     protected int version;
     
-    /** Non-NUL data in reserved field message. */
-    protected Message nonNULDataInReservedFieldMessage;
+    /** Non-NUL data in reserved field messages. */
+    protected List<Message> nonNULDataInReservedFieldMessages;
     
     /** Instantiate a new <code>BroadcastAudioExtensionChunk</code>. */
     public BroadcastAudioExtensionChunk() {
         super();
+        
+        this.nonNULDataInReservedFieldMessages = new ArrayList<Message>();
     }
     
     /** 
@@ -106,48 +113,40 @@ public class BroadcastAudioExtensionChunk
         throws EOFException, IOException, JHOVE2Exception
     {
         long consumed = super.parse(jhove2, input);
+        int numErrors = 0;
         
         /* Description. */
         StringBuffer sb = new StringBuffer(256);
         for (int i=0; i<256; i++) {
             short b = input.readUnsignedByte();
-            consumed++;
             if (b != 0) {
                 sb.append((char) b);
             }
-            else {
-                break;
-            }
         }
         this.description = sb.toString();
+        consumed += 256;
         
         /* Originator. */
         sb = new StringBuffer(32);
         for (int i=0; i<32; i++) {
             short b = input.readUnsignedByte();
-            consumed++;
             if (b != 0) {
                 sb.append((char) b);
             }
-            else {
-                break;
-            }
         }
         this.originator = sb.toString();
+        consumed += 32;
         
         /* Originator reference. */
         sb = new StringBuffer(32);
         for (int i=0; i<32; i++) {
             short b = input.readUnsignedByte();
-            consumed++;
             if (b != 0) {
                 sb.append((char) b);
             }
-            else {
-                break;
-            }
         }
         this.originatorReference = sb.toString();
+        consumed += 32;
         
         /* Origination date. */
         sb = new StringBuffer(10);
@@ -188,18 +187,32 @@ public class BroadcastAudioExtensionChunk
         this.umid = sb.toString();
         consumed += 64;
         
-        /* Reserved. */
+        /* Reserved, must be NUL. */
         for (int i=0; i<190; i++) {
             short b = input.readUnsignedByte();
-            consumed++;
+            if (b != 0) {
+                numErrors++;
+                this.isValid = Validity.False;
+                Object [] args = new Object [] {input.getPosition()-1L, b};
+                Message msg = new Message(Severity.ERROR, Context.OBJECT,
+                        "org.jhove2.module.format.wave.bwf.BroadcastAudioExtensionChunk.nonNULDataInReservedField",
+                        args, jhove2.getConfigInfo());
+                this.nonNULDataInReservedFieldMessages.add(msg);
+            }
         }
+        consumed += 190;
         
         /* Coding history. */
         long len = this.size - 602L;
         sb = new StringBuffer((int) len);
         for (long i=0; i<len; i++) {
             short b = input.readUnsignedByte();
-            sb.append((char) b);
+            if (b != 0) {
+                sb.append((char) b);
+            }
+            else {
+                break;
+            }
         }
         this.codingHistory = sb.toString();
         consumed += len;
@@ -221,6 +234,14 @@ public class BroadcastAudioExtensionChunk
     @ReportableProperty(order=1, value="Description.")
     public String getDescription() {
         return this.description;
+    }
+    
+    /** Get non-NUL data in reserved field messages.
+     * @return Non-NUL data in reserved field messages
+     */
+    @ReportableProperty(order=21, value="Non-NUL data in reserved field messages.")
+    public List<Message> getNonNULDataInReservedFieldMessages() {
+        return this.nonNULDataInReservedFieldMessages;
     }
     
     /** Get origination date.
