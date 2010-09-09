@@ -25,6 +25,10 @@ extends AbstractReportable {
         return this.toString();
     }
 
+    public String[] getAsciiArray(){
+        return value;
+    }
+
     public void setValue(Input input, long count) throws IOException {
         List<String> list = new LinkedList <String>();
         byte[] buf = new byte[(int) count];

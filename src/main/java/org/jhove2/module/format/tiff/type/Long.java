@@ -27,4 +27,5 @@ extends AbstractReportable {
     public long getValue(){
         return value;
     }
+
 }

@@ -1,6 +1,38 @@
 /**
- * 
+ * JHOVE2 - Next-generation architecture for format-aware characterization
+ * <p>
+ * Copyright (c) 2010 by The Regents of the University of California. All rights reserved.
+ * </p>
+ * <p>
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * </p>
+ * <ul>
+ * <li>Redistributions of source code must retain the above copyright notice,
+ * this list of conditions and the following disclaimer.</li>
+ * <li>Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.</li>
+ * <li>Neither the name of the University of California/California Digital
+ * Library, Ithaka Harbors/Portico, or Stanford University, nor the names of its
+ * contributors may be used to endorse or promote products derived from this
+ * software without specific prior written permission.</li>
+ * </ul>
+ * <p>
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ * </p>
  */
+
 package org.jhove2.module.format.tiff;
 
 import java.io.EOFException;
@@ -30,6 +62,30 @@ import org.jhove2.module.format.Validator.Validity;
 public abstract class IFD 
 extends AbstractReportable {
 
+    protected static Properties tiffTagProps;
+
+    protected static Properties tiffTypeProps;
+
+    /**
+     * @return Properties the Tiff Tag Properties stored in the Java Properties file
+     */
+    public static Properties getTiffTags(ConfigInfo config)  throws JHOVE2Exception {
+        if (tiffTagProps==null){
+            tiffTagProps = config.getProperties("TiffTags");
+        }
+        return tiffTagProps;
+    }
+
+    /**
+     * @return Properties the Tiff Type Properties stored in the Java Properties file
+     */
+    public static Properties getTiffType(ConfigInfo config)  throws JHOVE2Exception {
+        if (tiffTypeProps==null){
+            tiffTypeProps = config.getProperties("TiffTypes");
+        }
+        return tiffTypeProps;
+    }
+
     /** IFD Entries in the IFD */
     protected HashMap<Integer, IFDEntry> entries = new HashMap<Integer, IFDEntry>();
 
@@ -51,16 +107,13 @@ extends AbstractReportable {
     /** True if this is the "thumbnail" IFD. */
     private boolean thumbnail;
 
+
     /** TIFF version determined by data in IFDEntry */
     private int version;
 
+
     /** Message for Zero IFD Entries */
     private Message zeroIFDEntriesMessage;
-
-    protected static Properties tiffTagProps;
-
-    protected static Properties tiffTypeProps;
-
 
     /** 
      * Instantiate an IFD Class with the Input source
@@ -70,9 +123,82 @@ extends AbstractReportable {
         super();
     }
 
+    /**
+     * Sort the entries in the HashMap and then return only the IFDEntries
+     * @return
+     */
+    @ReportableProperty(order = 3, value="IFD entries.")
+    public List<IFDEntry> getIFDEntries() {
+        Map<Integer, IFDEntry> sortedEntries = new TreeMap<Integer, IFDEntry>(entries);
+        List<IFDEntry> sortedList = new ArrayList<IFDEntry>(sortedEntries.values());
+        return sortedList;
+    }
 
     /**
-     * Parse a source unit input. Implicitly set the start and end elapsed time.
+     * get the offsetof the next IFD 
+     * @return long
+     */
+    @ReportableProperty(order = 4, value = "Offset of next IFD.")
+    public long getNextIFD() {
+        return nextIFD;
+    }
+
+    /**
+     * get the number of IFD entries
+     * @return int
+     */
+    @ReportableProperty (order = 2, value = "Number of IFD entries.")
+    public int getNumEntries() {
+        return numEntries;
+    }
+
+    /**
+     * get the byte offset of the IFD 
+     * @return long
+     */
+    @ReportableProperty(order = 1, value = "Byte offset of IFD.")
+    public long getOffset() {
+        return offset;
+    }
+
+    /**
+     * @return the version for this IFD
+     */
+    public int getVersion() {
+        return this.version;
+    }
+   
+    /**
+     * Get the Zero IFD entries message
+     */
+    @ReportableProperty(order=5, value = "Zero IFD Entries message.")
+    public Message getZeroIFDEntriesMessage(){
+        return zeroIFDEntriesMessage;
+    }
+
+    /**
+     * @return the flag indicating this if the first IFD
+     */
+    public boolean isFirst() {
+        return first;
+    }
+
+    /**
+     * @return the flag indicating this IFD is a thumbnail
+     */
+    public boolean isThumbnail() {
+        return thumbnail;
+    }
+
+    /**
+     * @return the isValid
+     */
+    public Validity isValid() {
+        return isValid;
+    }
+
+    /**
+     * Parse an IFD. Read and parse each IFDEntry encountered.
      * 
      * @param input
      *            JHOVE2 framework
@@ -87,7 +213,7 @@ extends AbstractReportable {
     public void parse(JHOVE2 jhove2, Input input) throws EOFException,
     IOException, JHOVE2Exception {
 
-       this.isValid = Validity.Undetermined;
+        this.isValid = Validity.Undetermined;
         long offsetInIFD = offset;
         nextIFD = 0L;
 
@@ -116,7 +242,7 @@ extends AbstractReportable {
         }
 
         try {
-            /* parse through the list of Directory Entries (IFDEntry) */
+            /* parse the IFD traversing through the list of Directory Entries (IFDEntry) */
             IFDEntry.resetPrevTag(0);
             
             for (int i=0; i<numEntries; i++) {
@@ -141,66 +267,6 @@ extends AbstractReportable {
     }
 
     /**
-     * get the byte offset of the IFD 
-     * @return long
-     */
-    @ReportableProperty(order = 1, value = "Byte offset of IFD.")
-    public long getOffset() {
-        return offset;
-    }
-
-    /**
-     * get the number of IFD entries
-     * @return int
-     */
-    @ReportableProperty (order = 2, value = "Number of IFD entries.")
-    public int getNumEntries() {
-        return numEntries;
-    }
-
-    /**
-     * Sort the entries in the HashMap and then return only the IFDEntries
-     * @return
-     */
-    @ReportableProperty(order = 3, value="IFD entries.")
-    public List<IFDEntry> getIFDEntries() {
-        Map<Integer, IFDEntry> sortedEntries = new TreeMap<Integer, IFDEntry>(entries);
-        List<IFDEntry> sortedList = new ArrayList<IFDEntry>(sortedEntries.values());
-        return sortedList;
-    }
-
-    /**
-     * get the offsetof the next IFD 
-     * @return long
-     */
-    @ReportableProperty(order = 4, value = "Offset of next IFD.")
-    public long getNextIFD() {
-        return nextIFD;
-    }
-
-    /**
-     * Get the Zero IFD entries message
-     */
-    @ReportableProperty(order=5, value = "Zero IFD Entries message.")
-    public Message getZeroIFDEntriesMessage(){
-        return zeroIFDEntriesMessage;
-    }
-   
-    /**
-     * @return the version for this IFD
-     */
-    public int getVersion() {
-        return this.version;
-    }
-
-    /**
-     * @return the isValid
-     */
-    public Validity isValid() {
-        return isValid;
-    }
-
-    /**
      * @parm boolean -
      * the flag indicating this if the first IFD
      */
@@ -208,46 +274,20 @@ extends AbstractReportable {
         this.first = first;
     }
 
+    public void setOffset(long offset) {
+        this.offset = offset;
+    }
+
     public void setThumbnail(boolean thumbnail) {
         this.thumbnail = thumbnail;
     }
 
     /**
-     * @return the flag indicating this if the first IFD
+     * validate the IFD
+     * 
+     * @return Validity
      */
-    public boolean isFirst() {
-        return first;
-    }
+    abstract Validity validate(JHOVE2 jhove2);
 
-    /**
-     * @return the flag indicating this IFD is a thumbnail
-     */
-    public boolean isThumbnail() {
-        return thumbnail;
-    }
-
-    public void setOffset(long offset) {
-        this.offset = offset;
-    }
-
-    /**
-     * @return Properties the Tiff Tag Properties stored in the Java Properties file
-     */
-    public static Properties getTiffTags(ConfigInfo config)  throws JHOVE2Exception {
-        if (tiffTagProps==null){
-            tiffTagProps = config.getProperties("TiffTags");
-        }
-        return tiffTagProps;
-    }
-
-    /**
-     * @return Properties the Tiff Type Properties stored in the Java Properties file
-     */
-    public static Properties getTiffType(ConfigInfo config)  throws JHOVE2Exception {
-        if (tiffTypeProps==null){
-            tiffTypeProps = config.getProperties("TiffTypes");
-        }
-        return tiffTypeProps;
-    }
 
 }

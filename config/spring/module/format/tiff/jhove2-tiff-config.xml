@@ -231,9 +231,18 @@
   		<property name="propertyFileBaseName" value="tiffTags"/>
    </bean>      
    
-	<!-- Tiff Types properties bean --> 
-   <bean id="TiffTypes" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
-  		<property name="propertyFileBaseName" value="tiffTypes"/>
+	<!-- compression description properties bean --> 
+   <bean id="Compression" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+  		<property name="propertyFileBaseName" value="compression"/>
    </bean>
 
+	<!-- Orientation description properties bean --> 
+   <bean id="Orientation" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+  		<property name="propertyFileBaseName" value="orientation"/>
+   </bean>
+   
+	<!-- Photometric description properties bean --> 
+   <bean id="Photometric" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+  		<property name="propertyFileBaseName" value="photometric"/>
+   </bean>   
 </beans>		   
