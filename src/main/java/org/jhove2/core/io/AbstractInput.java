@@ -73,6 +73,9 @@ public abstract class AbstractInput implements Input {
 
 	/** InputStream underlying the inputable. */
 	protected InputStream stream;
+	
+	/** Buffer type. */
+	protected Type bufferType;
 
 	/**
 	 * Current position relative to the beginning of the inputable, as a byte
@@ -150,6 +153,14 @@ public abstract class AbstractInput implements Input {
 	 */
 	public ByteOrder getByteOrder() {
 		return this.byteOrder;
+	}
+	
+	/** Get buffer type.
+	 * @return Buffer type
+	 */
+	@Override
+	public Type getBufferType() {
+	    return this.bufferType;
 	}
 
 	/**
@@ -654,4 +665,11 @@ public abstract class AbstractInput implements Input {
 
 	}
 
+	/** Set buffer type.
+	 * @param type Buffer type
+	 */
+	@Override
+	public void setBufferType(Type type) {
+	    this.bufferType = type;
+	}
 }

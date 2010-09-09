@@ -52,6 +52,7 @@ import org.jhove2.core.source.SourceCounter;
 import org.jhove2.module.AbstractModule;
 import org.jhove2.module.Command;
 import org.jhove2.module.Module;
+import org.jhove2.module.identify.IdentifierCommand;
 
 /**
  * The JHOVE2 core processing framework.
@@ -121,6 +122,22 @@ public class JHOVE2
 		this.moduleIDs = new HashSet<String>();
 	}
 
+    /**
+     * Characterize a {@link org.jhove2.core.source.Source} unit.
+     * This method will be used as a call-back by any format module that must
+     * recursively characterize components of a format instance.
+     * 
+     * @param source
+     *            Source unit
+     * @throws JHOVE2Exception
+     * @throws IOException
+     */
+    public void characterize(Source source)
+        throws IOException, JHOVE2Exception
+    {
+            this.characterize(source, false);
+    }
+    
 	/**
 	 * Characterize a {@link org.jhove2.core.source.Source} unit.
 	 * This method will be used as a call-back by any format module that must
@@ -128,10 +145,12 @@ public class JHOVE2
 	 * 
 	 * @param source
 	 *            Source unit
+	 * @param noIdentify
+	 *            If true, do not invoke the identify command
 	 * @throws JHOVE2Exception
 	 * @throws IOException
 	 */
-	public void characterize(Source source)
+	public void characterize(Source source, boolean noIdentify)
 		throws IOException, JHOVE2Exception
 	{
 		TimerInfo timer = source.getTimerInfo();
@@ -162,6 +181,10 @@ public class JHOVE2
 		    if (tryIt) {
 		        source.setDeleteTempFiles(this.getInvocation().getDeleteTempFiles());
 		        for (Command command : this.commands){
+		            if (noIdentify && command instanceof IdentifierCommand) {
+		                continue;
+		            }
+		            
 		            TimerInfo time2 = command.getTimerInfo();
 		            time2.resetStartTime();
 		            try {

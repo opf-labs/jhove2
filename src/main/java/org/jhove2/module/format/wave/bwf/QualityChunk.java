@@ -55,6 +55,9 @@ public class QualityChunk
     /** Cue sheet data. */
     protected String cueSheetData;
     
+    /** Chunk data, unparsed. */
+    protected String data;
+    
     /** End modulation data. */
     protected String endModulationData;
     
@@ -100,11 +103,23 @@ public class QualityChunk
     {
         long consumed = super.parse(jhove2, input);
         
+        /* File security code for the report. */
         this.securityCodeReport = input.readUnsignedInt();
         consumed += 4;
         
+        /* File security code for the WAVE data. */
         this.securityCodeWAVE = input.readUnsignedInt();
         consumed += 4;
+        
+        /* Chunk data, unparsed. */
+        long len = this.size -8L;
+        StringBuffer sb = new StringBuffer((int) len);
+        for (long i=0; i<len; i++) {
+            short b = input.readUnsignedByte();
+            sb.append((char) b);
+        }
+        this.data = sb.toString();
+        consumed += len;
         
         return consumed;
     }
@@ -123,6 +138,14 @@ public class QualityChunk
     @ReportableProperty(order=9, value="Cue sheet data.")
     public String getCueSheetData() {
         return this.cueSheetData;
+    }
+    
+    /** Get chunk data, unparsed.
+     * @return Chunk data
+     */
+    @ReportableProperty(order=3, value="Chunk data, unparsed.")
+    public String getData() {
+        return this.data;
     }
     
     /** Get end modulation data.

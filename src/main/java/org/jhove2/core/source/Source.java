@@ -133,6 +133,12 @@ public interface Source
 	 */
 	public File getFile();
 
+    /**
+     * Get existing {@link org.jhove2.core.io.Input} for the source unit.
+     * @return Input for the source unit
+     */
+    public Input getInput();
+    
 	/**
 	 * Get {@link org.jhove2.core.io.Input} for the source unit.
 	 * 

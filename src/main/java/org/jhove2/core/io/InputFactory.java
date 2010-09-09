@@ -121,6 +121,7 @@ public class InputFactory {
 				abstractInput = new DirectInput(file, bufferSize, order);
 			}
 		}
+		abstractInput.setBufferType(type);
 
 		return abstractInput;
 

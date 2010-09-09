@@ -38,17 +38,21 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.Message;
+import org.jhove2.core.Message.Context;
+import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.module.format.Validator;
-import org.jhove2.module.format.riff.GenericChunk;
+import org.jhove2.module.format.riff.Chunk;
 import org.jhove2.module.format.riff.ChunkFactory;
 
 /** WAVE (waveform audio file format) module.
@@ -74,10 +78,22 @@ public class WAVEModule
     public static final Coverage COVERAGE = Coverage.Inclusive;
   
     /** WAVE chunks. */
-    protected List<GenericChunk> genericChunks;
+    protected List<Chunk> chunks;
     
     /** WAVE validation status. */
     protected Validity isValid;
+    
+    /** Format chunk not before data chunk message. */
+    protected Message formatChunkNotBeforeDataChunkMessage;
+    
+    /** Missing required chunk message. */
+    protected Message missingRequiredDataChunkMessage;
+    
+    /** Missing required fact chunk message. */
+    protected Message missingRequiredFactChunkMessage;
+    
+    /** Missing required format chunk message. */
+    protected Message missingRequiredFormatChunkMessage;
 
     /** Instantiate a new <code>WAVEModule</code>.
      * @param format WAVE format
@@ -86,7 +102,7 @@ public class WAVEModule
     {
         super(VERSION, RELEASE, RIGHTS, format);
         
-        this.genericChunks  = new ArrayList<GenericChunk>();
+        this.chunks  = new ArrayList<Chunk>();
         this.isValid = Validity.Undetermined;
     }
     
@@ -126,9 +142,9 @@ public class WAVEModule
                     short b = input.readUnsignedByte();
                     sb.append((char) b);
                 }
-                GenericChunk genericChunk = ChunkFactory.getChunk(sb.toString(), jhove2);
-                consumed += genericChunk.parse(jhove2, input);
-                this.genericChunks.add(genericChunk);
+                Chunk chunk = ChunkFactory.getChunk(sb.toString(), jhove2);
+                consumed += chunk.parse(jhove2, input);
+                this.chunks.add(chunk);
             }
             finally {
                 input.close();
@@ -147,6 +163,73 @@ public class WAVEModule
     public Validity validate(JHOVE2 jhove2, Source source)
             throws JHOVE2Exception
     {
+        /* A valid WAVE must have a format chunk followed by a data chunk.
+         */
+        Iterator<Chunk> it = this.chunks.iterator();
+        while (it.hasNext()) {
+            Chunk ch = it.next();
+            String id = ch.getIdentifier();
+            if (id.equals("RIFF")) {
+                int     formatCategory = 0; 
+                boolean hasDataChunk   = false;
+                boolean hasFactChunk   = false;
+                boolean hasFormatChunk = false;
+                Object [] args         = null;
+                List<Chunk> children = ch.getChildChunks();
+                Iterator<Chunk> iter = children.iterator();
+                while (iter.hasNext()) {
+                    Chunk chunk = iter.next();
+                    id = chunk.getIdentifier();
+                    if (id.equals("data")) {
+                        hasDataChunk = true;
+                        
+                        /* Data chunk must come after the format chunk. */
+                        if (!hasFormatChunk) {
+                            this.isValid = Validity.False;
+                            this.formatChunkNotBeforeDataChunkMessage =
+                                new Message(Severity.ERROR, Context.OBJECT,
+                                        "org.jhove2.module.format.wave.WaveModule.formatChunkNotBeforeDataChunk",
+                                        args, jhove2.getConfigInfo());
+                        }
+                    }
+                    else if (id.equals("fact")) {
+                        hasFactChunk = true;
+                    }
+                    else if (id.equals("fmt ")) {
+                        hasFormatChunk = true;
+                        
+                        formatCategory =
+                            ((FormatChunk) chunk).getFormatCategory_raw();
+                    }
+                }
+                /* Format and data chunks are required. */
+                if (!hasDataChunk) {
+                    this.isValid = Validity.False;
+                    this.missingRequiredDataChunkMessage = 
+                        new Message(Severity.ERROR, Context.OBJECT,
+                                "org.jhove2.module.format.wave.WaveModule.missingRequiredDataChunk",
+                                args, jhove2.getConfigInfo());
+                }
+                if (!hasFormatChunk) {
+                    this.isValid = Validity.False;
+                    this.missingRequiredFormatChunkMessage = 
+                        new Message(Severity.ERROR, Context.OBJECT,
+                                "org.jhove2.module.format.wave.WaveModule.missingRequiredFormatChunk",
+                                args, jhove2.getConfigInfo());
+                }
+                
+                /* Fact chunk is required for non-PCM data. */
+                if (formatCategory != FormatChunk.WAVE_FORMAT_PCM &&
+                    !hasFactChunk) {
+                    this.isValid = Validity.False;
+                    this.missingRequiredFactChunkMessage =
+                        new Message(Severity.ERROR, Context.OBJECT,
+                                "org.jhove2.module.format.wave.WaveModule.missingRequiredFactChunk",
+                                args, jhove2.getConfigInfo());
+                }
+                break;
+            }
+        }
         return this.isValid();
     }
 
@@ -154,8 +237,8 @@ public class WAVEModule
      * @return Chunks
      */
     @ReportableProperty(order=1, value="Chunks.")
-    public List<GenericChunk> getChunks() {
-        return this.genericChunks;
+    public List<Chunk> getChunks() {
+        return this.chunks;
     }
     
     /** Get module coverage.
@@ -166,6 +249,38 @@ public class WAVEModule
     public Coverage getCoverage()
     {
         return COVERAGE;
+    }
+    
+    /** Get format chunk not before data chunk message.
+     * @return Format chunk not before data chunk message
+     */
+    @ReportableProperty(order=21, value="Format chunk does not appear before the data chunk.")
+    public Message getFormatChunkNotBeforeDataChunkMessage() {
+        return this.formatChunkNotBeforeDataChunkMessage;
+    }
+    
+    /** Get missing required data chunk message.
+     * @return Missing required data chunk message
+     */
+    @ReportableProperty(order=23, value="Missing required data chunk message.")
+    public Message getMissingRequiredDataChunkMessage() {
+        return this.missingRequiredDataChunkMessage;
+    }
+    
+    /** Get missing required fact chunk message.
+     * @return Missing required fact chunk message.
+     */
+    @ReportableProperty(order=24, value="Missing required fact chunk message.")
+    public Message getMissingRequiredFactChunkMessage() {
+        return this.missingRequiredFactChunkMessage;
+    }
+    
+    /** Get missing required format chunk message.
+     * @return Missing required format chunk message
+     */
+    @ReportableProperty(order=22, value="Missing required format chunk message.")
+    public Message GetMissingRequiredFormatChunkMessage() {
+        return this.missingRequiredFormatChunkMessage;
     }
 
     /** Get validation status.

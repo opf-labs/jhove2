@@ -88,6 +88,7 @@
 		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity" value="Unambiguous"/>
 		<property name="aliasIdentifiers">
 			<set value-type="org.jhove2.core.I8R">
+				<ref bean="EBUR85Identifier"/>
 				<ref bean="EBU3285Identifier"/>
 			</set>
 		</property>
@@ -106,10 +107,35 @@
 		<constructor-arg type="java.lang.String" value="EBU Tech 3285"/>
 		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="EBU"/>
 	</bean>
+	<!-- EBU R85–1997 identifier bean -->  
+	<bean id="EBUR85Identifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="EBU Technical Recommendation R85-1997"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="EBU"/>
+	</bean>
 		 			    
 	<!-- WAVE format chunk format categories properties bean --> 
 	<bean id="FormatCategories" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
 		<property name="propertyFileBaseName" value="format-categories"/>
 	</bean> 
-	     
+	     		 	     		 	     		 			    
+	<!-- Broadcast Wave Format (BWF) MPEG-1 decoder de-emphasis properties bean --> 
+	<bean id="MPEGEmphasis" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="mpeg-emphasis"/>
+	</bean> 
+	 	     		 			    
+	<!-- Broadcast Wave Format (BWF) MPEG-1 flags properties bean --> 
+	<bean id="MPEGFlags" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="mpeg-flags"/>
+	</bean> 
+	 			    
+	<!-- Broadcast Wave Format (BWF) MPEG-1 layers properties bean --> 
+	<bean id="MPEGLayers" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="mpeg-layers"/>
+	</bean> 
+	 	     		 			    
+	<!-- Broadcast Wave Format (BWF) MPEG-1 modes properties bean --> 
+	<bean id="MPEGModes" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="mpeg-modes"/>
+	</bean> 
+	 
 </beans>

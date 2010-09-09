@@ -105,6 +105,11 @@ public interface Input  {
 	 */
 	public long getBufferOffset();
 
+	/** Get buffer type.
+	 * @return Buffer type
+	 */
+	public Type getBufferType();
+	
 	/**
 	 * Get {@link java.io.File} backing the input.
 	 * 
@@ -233,4 +238,9 @@ public interface Input  {
 	 * @return Input size, in bytes
 	 */
 	public long getSize();
+	
+	/** Set buffer type.
+	 * @param type Buffer type
+	 */
+	public void setBufferType(Type type);
 }

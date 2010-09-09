@@ -32,7 +32,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.module.format.wave;
+package org.jhove2.module.format.wave.bwf;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -44,7 +44,7 @@ import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.io.Input;
 import org.jhove2.module.format.riff.GenericChunk;
 
-/** WAVE MPEG-1 audio chunk, as defined by EBU Tech 3285–E –- Supplement 1,
+/** Broadcast Wave Format (BWF) MPEG-1 audio chunk, as defined by EBU Tech 3285–E –- Supplement 1,
  * July 1997.
  * 
  * @author slabrams

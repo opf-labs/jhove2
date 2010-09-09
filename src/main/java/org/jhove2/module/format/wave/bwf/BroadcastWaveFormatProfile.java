@@ -34,12 +34,22 @@
 
 package org.jhove2.module.format.wave.bwf;
 
+import java.util.Iterator;
+import java.util.List;
+import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.Message;
+import org.jhove2.core.Message.Context;
+import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.AbstractFormatProfile;
 import org.jhove2.module.format.Validator;
+import org.jhove2.module.format.riff.Chunk;
+import org.jhove2.module.format.wave.FormatChunk;
+import org.jhove2.module.format.wave.WAVEModule;
+
 /** Broadcase Wave Format (BWF) profile.
  * 
  * @author slabrams
@@ -64,6 +74,15 @@ public class BroadcastWaveFormatProfile
   
     /** Broadcast Wave Format validation status. */
     protected Validity isValid;
+    
+    /** Baseline WAVE format is invalid message. */
+    protected Message baselineWAVEFormatIsInvalidMessage;
+    
+    /** Missing required broadcast audio extension chunk message. */
+    protected Message missingRequiredBextChunkMessage;
+  
+    /** Missing required MPEG-1 chunk message. */
+    protected Message missingRequiredMPEG1ChunkMessage;
 
     /** Instantiate a new <code>BroadcastWaveProfile</code>
      * @param format Broadcast Wave Format.
@@ -103,8 +122,90 @@ public class BroadcastWaveFormatProfile
     @Override
     public Validity validate(JHOVE2 jhove2, Source source)
             throws JHOVE2Exception
-    {
+    {                
+        Object [] args = null;
+        
+        /* Base WAVE must be valid. */
+        this.isValid = ((WAVEModule) this.module).isValid();
+        if (this.isValid == Validity.False) {
+            this.baselineWAVEFormatIsInvalidMessage = new Message(Severity.ERROR,
+                    Context.OBJECT,
+                    "org.jhove2.module.format.wave.bwf.baselineWAVEForamtIsInvalid",
+                    args, jhove2.getConfigInfo());
+        }
+        
+        /* Broadcast audio extension chunk is required. */
+        List<Chunk> chs = ((WAVEModule) this.module).getChunks();
+        Iterator<Chunk> it = chs.iterator();
+        while (it.hasNext()) {
+            Chunk ch = it.next();
+            String id = ch.getIdentifier();
+            if (id.equals("RIFF")) {
+                int     formatCategory = 0; 
+                boolean hasBextChunk   = false;
+                boolean hasMPEG1Chunk  = false;
+                List<Chunk> children = ch.getChildChunks();
+                Iterator<Chunk> iter = children.iterator();
+                while (iter.hasNext()) {
+                    Chunk chunk = iter.next();
+                    id = chunk.getIdentifier();
+                    
+                    if (id.equals("bext")) {
+                        hasBextChunk = true;
+                    }
+                    else if (id.equals("fmt ")) {
+                        formatCategory =
+                            ((FormatChunk) chunk).getFormatCategory_raw();
+                    }
+                    else if (id.equals("mext")) {
+                        hasMPEG1Chunk = true;
+                    }
+                }
+                
+                if (!hasBextChunk) {
+                    this.isValid = Validity.False;
+                    this.missingRequiredBextChunkMessage = new Message(Severity.ERROR,
+                            Context.OBJECT,
+                            "org.jhove2.module.format.wave.bwf.BroadcastWaveFormatProfile.missingRequiredBextChunk",
+                            args, jhove2.getConfigInfo());
+                }
+                if (formatCategory == FormatChunk.WAVE_FORMAT_MPEG &&
+                    !hasMPEG1Chunk) {
+                    this.isValid = Validity.False;
+                    this.missingRequiredMPEG1ChunkMessage = new Message(Severity.ERROR,
+                            Context.OBJECT,
+                            "org.jhove2.module.format.wave.bwf.BroadcastWaveFormatProfile.missingRequiredMPEG1Chunk",
+                            args, jhove2.getConfigInfo());
+                    
+                }
+                break;
+            }
+        }
+        
         return this.isValid;
     }
-
+    
+    /** Get baseline WAVE format is invalid message.
+     * @return Baseline WAVE format is invalid message
+     */
+    @ReportableProperty(order=21, value="Baseline WAVE format is invalid.")
+    public Message getBaselineWAVEFormatIsInvalidMessage() {
+        return this.baselineWAVEFormatIsInvalidMessage;
+    }
+    
+    /** Get missing required broadcast audio extension chunk message.
+     * @return Missing required broadcast audio extension chunk message
+     */
+    @ReportableProperty(order=22, value="Missing required broadcast audio extension chunk.")
+    public Message getMisingRequiredBroadcastAudioExtensionChunkMessage() {
+        return this.missingRequiredBextChunkMessage;
+    }
+    
+    /** Get missing required MPEG-1 chunk message.
+     * @return Missing required MPEG-1 chunk message
+     */
+    @ReportableProperty(order=23, value="Missing required MPEG-1 chunk message.")
+    public Message getMissingRequiredMPEG1ChunkMessage() {
+        return this.missingRequiredMPEG1ChunkMessage;
+    }
 }
