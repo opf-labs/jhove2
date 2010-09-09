@@ -8,6 +8,10 @@ REM This file is called by all the other .cmd files in order to set JAVA,
 REM JHOVE2_HOME, and CP. Edit this file if you need to modify the settings for
 REM these variables or define additional variables, such as JAVA_HOME. For more
 REM information, refer to the JHOVE2 User's Guide at http://jhove2.org.
+REM
+REM NOTE: The jhove2-<version>.jar filename jhove2-2.0.0 and the classpath @classpath@
+REM are injected via filtering as part of the maven build process.    
+
 
 REM If JAVA_HOME is not set, use java.exe in execution path
 if "%JAVA_HOME%" == "" (
