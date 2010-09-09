@@ -34,16 +34,17 @@
  */
 package org.jhove2.module.format.tiff;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.annotation.ReportableProperty.PropertyType;
+import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
@@ -51,8 +52,9 @@ import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
+import org.jhove2.core.source.Source;
+import org.jhove2.core.source.SourceFactory;
 import org.jhove2.module.format.Validator.Validity;
-import org.jhove2.module.format.icc.field.PreferredCMM;
 import org.jhove2.module.format.tiff.type.Ascii;
 import org.jhove2.module.format.tiff.type.AsciiArray;
 import org.jhove2.module.format.tiff.type.Byte;
@@ -90,7 +92,8 @@ implements Comparable<Object> {
     TILEWIDTH = 322,
     TILELENGTH = 323,
     TILEOFFSETS = 324,
-    TILEBYTECOUNTS = 325;
+    TILEBYTECOUNTS = 325,
+    ICCProfile = 34675;
 
 
     private static final int ARTIST = 315;
@@ -352,8 +355,26 @@ implements Comparable<Object> {
                     "org.jhove2.module.format.tiff.IFDEntry.UnknownTagMessage",
                     messageArgs, jhove2.getConfigInfo()));  
             return;
-        }        
-        readValues(input);
+        }       
+        
+        /* ICCProfile and XMPData tags need special handling */
+        
+        /* Parse the ICCProfile tag */
+        if (this.tag == ICCProfile) {
+            long position = input.getPosition();
+            byte[] buf = new byte[(int)this.count];
+            int bytesRead = input.getInputStream().read(buf, (int) this.valueOffset, (int) this.count);
+            ByteArrayInputStream bais = new ByteArrayInputStream(buf);
+          //  Source source = SourceFactory.getSource(Invocation.DEFAULT_TEMP_PREFIX,
+           //                         Invocation.DEFAULT_TEMP_SUFFIX,
+            //                        Invocation.DEFAULT_BUFFER_SIZE, bais);
+            //source.addPresumptiveFormat(fi)
+            
+
+//            SourceFactory.getSource(tmpPrefix, tmpSuffix, bufferSize, byteArray)
+        }
+        else
+            readValues(input);
 
         /* Validate specific tags and set version when applicable */
 
@@ -456,6 +477,7 @@ implements Comparable<Object> {
             if (version < 6) 
                 version = 6;
         }
+
 
     }
 
