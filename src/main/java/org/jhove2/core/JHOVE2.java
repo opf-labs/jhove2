@@ -37,10 +37,7 @@
 package org.jhove2.core;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.config.ConfigInfo;
@@ -51,7 +48,6 @@ import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceCounter;
 import org.jhove2.module.AbstractModule;
 import org.jhove2.module.Command;
-import org.jhove2.module.Module;
 import org.jhove2.module.identify.IdentifierCommand;
 
 /**
@@ -63,10 +59,10 @@ public class JHOVE2
 	extends AbstractModule
 {
 	/** Framework version identifier. */
-	public static final String VERSION = "1.9.5";
+	public static final String VERSION = "2.0.0";
 
 	/** Framework release date. */
-	public static final String RELEASE = "2010-02-16";
+	public static final String RELEASE = "2010-09-10";
 
 	/** Framework rights statement. */
 	public static final String RIGHTS = "Copyright 2010 by The Regents of the University of California, "
@@ -86,12 +82,7 @@ public class JHOVE2
 	/** Installation settings for framework. */
 	protected Installation installation;
 	
-	/** Identifiers of generic modules registered with the framework. */
-	protected Set<String> moduleIDs;
-	
-	/** Generic modules registered with the framework. */
-	protected List<Module> modules;
-	
+	/** Configuration settings for framework.  If not configured, default values will be used  */
 	protected ConfigInfo configInfo;
 
 	/**
@@ -116,10 +107,7 @@ public class JHOVE2
 		super(VERSION, RELEASE, RIGHTS, Scope.Generic);
 		
 		this.invocation = invocation;
-		this.sourceCounter = new SourceCounter();
-		
-		this.modules   = new ArrayList<Module>();
-		this.moduleIDs = new HashSet<String>();
+		this.sourceCounter = new SourceCounter();		
 	}
 
     /**
@@ -170,12 +158,14 @@ public class JHOVE2
                         Context.PROCESS,
                         "org.jhove2.core.source.FileSystemSource.FileNotFoundMessage",
                         new Object[]{name}, this.getConfigInfo()));
+                    tryIt = false;
                 }
                 else if (!fs.isReadable()) {
                     source.addMessage(new Message(Severity.ERROR,
                         Context.PROCESS,
                         "org.jhove2.core.source.FileSystemSource.FileNotReadableMessage",
                         new Object[]{name}, this.getConfigInfo()));
+                    tryIt = false;
                 }
             }
 		    if (tryIt) {
@@ -201,17 +191,6 @@ public class JHOVE2
 			timer.setEndTime();
 		}
 	}
-    
-    /** Add generic module.
-     * @param module Generic module
-     */
-    public void addModule(Module module) {
-        String id = module.getReportableIdentifier().toString();
-        if (!this.moduleIDs.contains(id)) {
-            this.moduleIDs.add(id);
-            this.modules.add(module);
-        }
-    }
     
 	/**
 	 * Determine if the fail fast limit has been exceeded.
@@ -270,14 +249,6 @@ public class JHOVE2
 		return use;
 	}
 	
-	/** Get framework  modules.
-	 * @return Framework modules
-	 */
-	@ReportableProperty(order = 4, value = "Framework modules.")
-	public List<Module> getModules() {
-		return this.modules;
-	}
-
 	/**
 	 * Get counter to track number and scope of source units processed
 	 * by the JHOVE2 framework.

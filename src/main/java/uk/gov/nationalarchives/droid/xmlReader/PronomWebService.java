@@ -36,6 +36,14 @@
 
 package uk.gov.nationalarchives.droid.xmlReader;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.StringReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.List;
+import java.util.Vector;
+
 import org.apache.soap.Body;
 import org.apache.soap.Envelope;
 import org.apache.soap.messaging.Message;
@@ -45,14 +53,6 @@ import org.jdom.JDOMException;
 import org.jdom.filter.ElementFilter;
 import org.jdom.filter.Filter;
 import org.jdom.input.SAXBuilder;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.StringReader;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.List;
-import java.util.Vector;
 
 /**
  * Provides the necessary infrastructure to communicate with the PRONOM web service.

@@ -55,10 +55,10 @@ import org.jhove2.module.format.Validator;
  */
 public class SgmlModule extends BaseFormatModule implements Validator {
 	/** Directory module version identifier. */
-	public static final String VERSION = "1.9.6";
+	public static final String VERSION = "2.0.0";
 
 	/** Directory module release date. */
-	public static final String RELEASE = "2010-05-19";
+	public static final String RELEASE = "2010-09-10";
 
 	/** Directory module rights statement. */
 	public static final String RIGHTS = "Copyright 2010 by Ithaka Harbors, Inc."

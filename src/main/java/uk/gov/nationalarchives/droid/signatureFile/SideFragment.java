@@ -49,10 +49,10 @@
  */
 package uk.gov.nationalarchives.droid.signatureFile;
 
+import java.util.ArrayList;
+
 import uk.gov.nationalarchives.droid.MessageDisplay;
 import uk.gov.nationalarchives.droid.xmlReader.SimpleElement;
-
-import java.util.ArrayList;
 
 /**
  * holds the details of a left or right fragment associated with a subsequence

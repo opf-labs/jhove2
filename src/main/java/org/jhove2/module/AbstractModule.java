@@ -40,8 +40,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jhove2.core.Agent;
-import org.jhove2.core.WrappedProduct;
 import org.jhove2.core.TimerInfo;
+import org.jhove2.core.WrappedProduct;
 import org.jhove2.core.reportable.AbstractReportable;
 
 /**
@@ -111,6 +111,9 @@ public abstract class AbstractModule
 		this.name        = this.getClass().getSimpleName();
 	}
 
+	public AbstractModule(){
+		super();
+	}
 	/**
 	 * Get module developers.
 	 * 

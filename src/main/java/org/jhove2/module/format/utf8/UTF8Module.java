@@ -139,6 +139,10 @@ public class UTF8Module
 		this.numLines          = 0L;
 		this.numNonCharacters  = 0L;
 	}
+	
+	public UTF8Module(){
+		this(null);
+	}
 
 	/**
 	 * Parse a source unit.

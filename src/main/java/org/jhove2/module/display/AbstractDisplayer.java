@@ -44,10 +44,11 @@ import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Properties;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+
 import org.jhove2.annotation.ReportableProperty.PropertyType;
 import org.jhove2.config.ConfigInfo;
 import org.jhove2.core.I8R;

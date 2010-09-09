@@ -49,6 +49,7 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -75,6 +76,10 @@ public abstract class AbstractSource
 	extends AbstractReportable
 	implements Source, Comparable<Source>
 {
+	/** Identifiers of generic modules registered with the Source. */
+	protected static Set<String> moduleIDs = new HashSet<String>();
+	
+	
 	/** Child source units. */
 	protected List<Source> children;
 
@@ -177,14 +182,24 @@ public abstract class AbstractSource
 
 	/**
 	 * Add a module that processed the source unit.
-	 * 
+	 * Generic modules are only add once, to the first Source upon which they are invoked
+	 * Specific modules are added to each Source upon which they are invoked
 	 * @param module
 	 *            Module that processed the source unit
 	 * @see org.jhove2.core.source.Source#addModule(org.jhove2.module.Module)
 	 */
 	@Override
 	public void addModule(Module module) {
-		this.modules.add(module);
+		if (module.getScope()== Module.Scope.Specific){
+			this.modules.add(module);
+		}
+		else {
+			String id = module.getReportableIdentifier().toString();
+			if (!moduleIDs.contains(id)) {
+					moduleIDs.add(id);
+					this.modules.add(module);
+			}
+        }
 	}
 	
 	/** Add a presumptively-identified format for this source unit.
@@ -209,6 +224,7 @@ public abstract class AbstractSource
 	 * Close the source unit. If the source unit is backed by a temporary file,
 	 * delete the file.
 	 */
+	@Override
 	public void close() {
 		if (this.file != null && this.isTemp && this.deleteTempFiles) {
 			this.file.delete();
@@ -303,6 +319,7 @@ public abstract class AbstractSource
 	 * @return File backing the source unit
 	 * @see org.jhove2.core.source.Source#getFile()
 	 */
+	@Override
 	public File getFile() {
 		return this.file;
 	}
@@ -360,6 +377,7 @@ public abstract class AbstractSource
 	 * @throws IOException
 	 *             I/O exception getting input
 	 */
+	@Override
 	public Input getInput(int bufferSize, Type bufferType, ByteOrder order)
 		throws FileNotFoundException, IOException
 	{
@@ -375,6 +393,7 @@ public abstract class AbstractSource
 	 * @throws FileNotFoundException
 	 * @see org.jhove2.core.source.Source#getInputStream()
 	 */
+	@Override
 	public InputStream getInputStream()
 		throws FileNotFoundException
 	{

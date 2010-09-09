@@ -35,12 +35,12 @@
 
 package org.jhove2.config.spring;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.TreeSet;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.TreeSet;
 
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;

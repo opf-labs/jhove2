@@ -123,6 +123,10 @@ public class ZipModule
 		this.entries = new ArrayList<ZipFileEntry> ();
 		this.isValid = Validity.Undetermined;
 	}
+	
+	public ZipModule(){
+		this(null);
+	}
 
 	/**
 	 * Parse a Zip source unit.

@@ -85,7 +85,8 @@ public interface Source
 
 	/**
 	 * Add a module that processed the source unit.
-	 * 
+	 * Generic modules are only add once, to the first Source upon which they are invoked
+	 * Specific modules are added to each Source upon which they are invoked
 	 * @param module
 	 *            Module that processed the source unit
 	 */

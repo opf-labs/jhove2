@@ -42,11 +42,11 @@ import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.config.ConfigInfo;
 import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.reportable.Reportable;
 import org.jhove2.module.Module;
-import org.jhove2.config.ConfigInfo;
 
 /**
  * Interface for JHOVE2 displayer modules.

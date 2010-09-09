@@ -28,8 +28,6 @@ public class UTF8CodeBlockTest extends UTF8ModuleTestBase {
     @Before
     public void setUp() throws Exception {
         parse(codeBlockTestFile);
-        int n = 0;
-       
     }
 
     /**

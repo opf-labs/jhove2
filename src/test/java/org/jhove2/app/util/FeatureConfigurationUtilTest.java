@@ -37,11 +37,13 @@
 
 package org.jhove2.app.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
-import java.lang.reflect.Type;
 
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.reportable.Reportable;
@@ -117,7 +119,7 @@ public class FeatureConfigurationUtilTest {
 			getReportableFromClassName(rClassName);
 			List<String> props = FeatureConfigurationUtil.
 			getPropertiesAsList(r);
-			assertTrue(props.size()==15);
+			assertTrue(props.size()==14);
 		}
 		catch (JHOVE2Exception e){
 			fail("unable to create reportable for " + rClassName);

@@ -48,9 +48,14 @@ import java.util.List;
 public interface Aggrefier
 	extends Recognizer
 {
-	/** Get aggregate recognizers.
+	/** Get aggregate Recognizers.
 	 * @return Aggregate recognizers
 	 */
 	public List<Recognizer> getRecognizers();
+	/**
+	 * Set aggregate Recognizers
+	 * @param recognizers Recognizers for Aggrefier
+	 */
+	public void setRecognizers(List<Recognizer> recognizers);
 
 }

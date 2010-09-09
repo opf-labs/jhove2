@@ -35,13 +35,15 @@
 
 package org.jhove2.config.spring;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.module.assess.RuleSetFactory;
 import org.jhove2.module.assess.RuleSet;
+import org.jhove2.module.assess.RuleSetFactory;
 
 /**
  * Spring-based implementation of
@@ -56,9 +58,9 @@ public class SpringRuleSetFactory
 	/**
      * Container for the collection of {@link org.jhove2.module.assess.RuleSet
      * RuleSet}(s) found in the Spring config files.
-     * Maps from ObjectFilter {@link Class#getName() className} to RuleSet.
+     * Maps from ObjectFilter {@link Class#getName() className} to List<RuleSet>.
       */
-	static ConcurrentMap<String, RuleSet> ruleSetMap;
+	static ConcurrentMap<String, List<RuleSet>> ruleSetMap;
 
 
 	/**
@@ -71,23 +73,29 @@ public class SpringRuleSetFactory
 	 * 
 	 * @throws JHOVE2Exception
 	 */
-	public static ConcurrentMap<String, RuleSet> getRuleSetMap()
+	public static ConcurrentMap<String, List<RuleSet>> getRuleSetMap()
 	    throws JHOVE2Exception
 	{
 	    if (ruleSetMap == null) {
-	    	ruleSetMap = new ConcurrentHashMap<String, RuleSet>();
+	    	ruleSetMap = new ConcurrentHashMap<String, List<RuleSet>>();
 	        /* Use Spring to get instances of all RuleSet objects  */
-	        Map<String, Object> map = SpringConfigInfo
+	        Map<String, Object> springBeans = SpringConfigInfo
 	                .getObjectsForType(RuleSet.class);
 	        /* For each of the RuleSets */
-	        for ( Object object : map.values()) {
+	        for ( Object bean : springBeans.values()) {
 	        	RuleSet ruleSet;
-	        	if (object instanceof RuleSet) {
-	        		ruleSet = (RuleSet) object;
+	        	if (bean instanceof RuleSet) {
+	        		ruleSet = (RuleSet) bean;
 		            /* Get the className for which the RuleSet applies */
-		            String className = ruleSet.getObjectFilter();	            		            
+		            String objectFilter = ruleSet.getObjectFilter();	            		            
 		            /* Add an entry into the ruleSetMap */
-		            ruleSetMap.put(className, ruleSet );	        		
+		            List<RuleSet> ruleSetsForFilter;
+		            ruleSetsForFilter = ruleSetMap.get(objectFilter);
+		            if (ruleSetsForFilter == null) {
+		                ruleSetsForFilter = new ArrayList<RuleSet>();
+		                ruleSetMap.put(objectFilter, ruleSetsForFilter);
+		            }
+		            ruleSetsForFilter.add(ruleSet );	        		
 	        	}
 	        }
 	    }
@@ -95,10 +103,10 @@ public class SpringRuleSetFactory
 	}
 
 	/**
-     * Returns a {@link org.jhove2.module.assess.RuleSet RuleSet} for assessment of a object having the type specified.
+     * Returns a list of {@link org.jhove2.module.assess.RuleSet RuleSet} for assessment of a object having the type specified.
      */
 	@Override
-    public RuleSet getRuleSet(String className)
+    public List<RuleSet> getRuleSetList(String className)
         throws JHOVE2Exception
     {
         return SpringRuleSetFactory.getRuleSetMap().get(className);

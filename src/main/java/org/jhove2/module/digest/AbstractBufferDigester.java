@@ -56,6 +56,10 @@ implements BufferDigester {
 
 	/** Message digester. */
 	protected MessageDigest digester;
+	
+	public AbstractBufferDigester(){
+		super();
+	}
 
 	/**
 	 * Instantiate a new <code>AbstractBufferDigester</code>

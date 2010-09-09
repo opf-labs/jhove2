@@ -7,20 +7,27 @@ import org.jhove2.core.reportable.AbstractReportable;
 
 public class MockReportable extends AbstractReportable {
 
+    /** the values allowed for the enumeration */
     public enum MockEnum {
         EV0, EV1, EV2, EV3, EV4
     }
 
+    /** a value from an enumeration */
     protected MockEnum cpEV;
     
+    /** some text */
     protected String cpString;
     
+    /** a long integer */
     protected long cpLong;
     
+    /** a true/false value */
     protected boolean cpBoolean;
     
+    /** a child object that contains data fields */
     protected MockReportable cpReportable;
     
+    /** a list of text strings */
     protected List<String> cpListString;
     
    /**

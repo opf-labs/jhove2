@@ -1,6 +1,6 @@
 package org.jhove2.module.assess;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import javax.annotation.Resource;
 

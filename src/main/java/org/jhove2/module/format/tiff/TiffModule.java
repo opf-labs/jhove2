@@ -18,9 +18,7 @@ import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
 import org.jhove2.core.io.Input;
-import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.Source;
-import org.jhove2.core.source.ZipFileSource;
 import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.module.format.Validator;
 
@@ -37,7 +35,7 @@ public class TiffModule extends BaseFormatModule implements Validator
     public static final String VERSION = "2.0.0";
 
     /** TIFF module release date. */
-    public static final String RELEASE = "2010-07-31";
+    public static final String RELEASE = "2010-09-10";
 
     /** TIFF module rights statement. */
     public static final String RIGHTS =
@@ -92,6 +90,10 @@ public class TiffModule extends BaseFormatModule implements Validator
     public TiffModule(Format format) {
         super(VERSION, RELEASE, RIGHTS, format);
     }
+    
+    public TiffModule() {
+        this(null);
+    }
 
     /**
      * Parse a source unit.
@@ -129,13 +131,6 @@ public class TiffModule extends BaseFormatModule implements Validator
         input = source.getInput(config.getBufferSize(), 
                 config.getBufferType());
         long start = 0L;
-        long end = 0L;
-
-        if (source instanceof FileSource) {
-            end = ((FileSource) source).getSize();
-        } else if (source instanceof ZipFileSource) {
-            end = ((ZipFileSource) source).getSize();
-        }
 
         try {
             input.setPosition(start);
@@ -236,7 +231,7 @@ public class TiffModule extends BaseFormatModule implements Validator
         }
 
         /* Parse the list of IFDs */                  
-        List list = new LinkedList<IFD>();
+        List<IFD> list = new LinkedList<IFD>();
         long nextIfdOffset = offset;
         while (nextIfdOffset != 0L) {
             /* offset must be word aligned (even number) */

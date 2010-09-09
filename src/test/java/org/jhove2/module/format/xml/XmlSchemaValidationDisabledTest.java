@@ -87,7 +87,7 @@ public class XmlSchemaValidationDisabledTest  extends XmlModuleTestBase {
         assertEquals(2,nsInfo.getNamespaceCount());
         String uri = nsInfo.getNamespaces().get(0).getURI();
         assertEquals("http://mynamespaceuri.org",uri);
-        NamespaceInformation.Namespace ns = nsInfo.namespaces.get(uri);
+        Namespace ns = nsInfo.namespaces.get(uri);
         assertEquals(1,ns.declarations.size());
         String expectLocation = "file:myschema.xsd";
         String foundLocation = ns.schemaLocations.get(expectLocation).location;

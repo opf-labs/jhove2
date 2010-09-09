@@ -48,8 +48,8 @@ package uk.gov.nationalarchives.droid;
 //import javax.swing.JFrame;
 //import javax.swing.JLabel;
 //import javax.swing.JPanel;
-import org.apache.commons.logging.*;
-//import uk.gov.nationalarchives.droid.GUI.FileIdentificationPane;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Allows messages to be displayed in the most appropriate manner to the user.

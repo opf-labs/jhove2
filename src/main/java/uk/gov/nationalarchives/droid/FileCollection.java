@@ -20,11 +20,11 @@
 
 package uk.gov.nationalarchives.droid;
 
+import java.util.Iterator;
+
 import uk.gov.nationalarchives.droid.binFileReader.InputStreamByteReader;
 import uk.gov.nationalarchives.droid.binFileReader.UrlByteReader;
 import uk.gov.nationalarchives.droid.xmlReader.SimpleElement;
-
-import java.util.Iterator;
 
 /**
  * Class to hold configuration data for the uk.

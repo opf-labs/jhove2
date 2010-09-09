@@ -64,7 +64,9 @@
 		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity" value="Unambiguous"/>
 		<property name="aliasIdentifiers">
 			<set value-type="org.jhove2.core.I8R">
+				<!-- XML DROID ID -->
 				<ref bean="PUIDfmt101"/>
+				<!-- XHTML DROID ID -->
 				<ref bean="PUIDfmt102"/>
 				<ref bean="PUIDfmt103"/>
 				<ref bean="XmlMIMEType"/>

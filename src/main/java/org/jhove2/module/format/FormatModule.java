@@ -46,7 +46,6 @@ import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.format.Format;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.Module;
-import org.jhove2.module.format.FormatProfile;
 
 /**
  * Interface for JHOVE2 format {@link org.jhove2.module.Module}s that model a

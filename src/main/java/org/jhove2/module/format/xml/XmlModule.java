@@ -63,10 +63,10 @@ import org.jhove2.module.format.Validator;
 public class XmlModule extends BaseFormatModule implements Validator {
 
     /** Module version identifier. */
-    public static final String VERSION = "1.9.5";
+    public static final String VERSION = "2.0.0";
 
     /** Module release date. */
-    public static final String RELEASE = "2010-02-16";
+    public static final String RELEASE = "2010-09-10";
 
     /** Module rights statement. */
     public static final String RIGHTS = "Copyright 2010 by The Board of Trustees of the Leland Stanford Junior University. "
@@ -188,6 +188,10 @@ public class XmlModule extends BaseFormatModule implements Validator {
      */
     public XmlModule(Format format) {
         super(VERSION, RELEASE, RIGHTS, format);
+    }
+    
+    public XmlModule(){
+    	this(null);
     }
 
     /** The instance of a SAX2 XMLReader class used to parse XML instances. */
@@ -334,7 +338,7 @@ public class XmlModule extends BaseFormatModule implements Validator {
      * @return list of XML entity references
      */
     @ReportableProperty(order = 7, value = "List of Entity References")
-    public ArrayList<EntityReferences.EntityReference> getEntityReferences() {
+    public ArrayList<EntityReference> getEntityReferences() {
         return entityReferences.getEntityReferenceList();
     }
 
@@ -354,7 +358,7 @@ public class XmlModule extends BaseFormatModule implements Validator {
      * @return list of XML Numeric Character References
      */
     @ReportableProperty(order = 9, value = "List of Numeric Character References")
-    public ArrayList<NumericCharacterReferences.NumericCharacterReference> getNumericCharacterReferences() {
+    public ArrayList<NumericCharacterReference> getNumericCharacterReferences() {
         return numericCharacterReferences.getNumericCharacterReferenceList();
     }
 
@@ -436,35 +440,42 @@ public class XmlModule extends BaseFormatModule implements Validator {
      *             the JHOV e2 exception
      */
     @Override
-    public long parse(JHOVE2 jhove2, Source source) throws EOFException,
+    public long parse(JHOVE2 jhove2, Source source) throws 
             IOException, JHOVE2Exception {
+        Input input = null;
+        try {
+            this.jhove2 = jhove2;
+            this.source = source;
+            
+            /* Use SAX2 to get what information is available from that mechanism */
+            saxParser.parse(source, jhove2);
 
-        this.jhove2 = jhove2;
-        this.source = source;
-        
-        /* Use SAX2 to get what information is available from that mechanism */
-        saxParser.parse(source, jhove2);
+            /* Get the input object */
+            Invocation config = jhove2.getInvocation();
+            input = source.getInput(config.getBufferSize(), config
+                    .getBufferType());
 
-        /* Get the input object */
-        Invocation config = jhove2.getInvocation();
-        Input input = source.getInput(config.getBufferSize(), config
-                .getBufferType());
-
-        /*
-         * Do a separate parse of the XML Declaration at the start of the
-         * document
-         */
-        input.setPosition(0L);
-        xmlDeclaration.parse(input);
-
-        /* Do a separate parse to inventory numeric character references */
-        if (this.ncrParser) {
+            /*
+             * Do a separate parse of the XML Declaration at the start of the
+             * document
+             */
             input.setPosition(0L);
-            numericCharacterReferences.parse(input,
-                    xmlDeclaration.encodingFromSAX2, jhove2);
+            xmlDeclaration.parse(input);
+
+            /* Do a separate parse to inventory numeric character references */
+            if (this.ncrParser) {
+                input.setPosition(0L);
+                numericCharacterReferences.parse(input,
+                        xmlDeclaration.encodingFromSAX2, jhove2);
+            }
+            validate(jhove2,source);
+            return 0;
+            
+        } finally {
+            if (input != null) {
+                input.close();
+            }
         }
-        validate(jhove2,source);
-        return 0;
-    }
+   }
 
 }

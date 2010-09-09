@@ -57,10 +57,10 @@ public class IdentifierCommand
 	extends AbstractCommand
 {
 	/** IdentifierCommand module version identifier. */
-	public static final String VERSION = "1.9.5";
+	public static final String VERSION = "2.0.0";
 
 	/** IdentifierCommand module release date. */
-	public static final String RELEASE = "2010-02-16";
+	public static final String RELEASE = "2010-09-10";
 
 	/** IdentifierCommand module rights statement. */
 	public static final String RIGHTS = "Copyright 2010 by The Regents of the University of California, "
@@ -94,8 +94,8 @@ public class IdentifierCommand
 			timer.setStartTime();
 			try {
 	            /* Register all identifying modules. */
-	            jhove2.addModule(identifier);
-	            jhove2.addModule(identifier.getFileSourceIdentifier());
+				source.addModule(identifier);
+				source.addModule(identifier.getFileSourceIdentifier());
 	            
 	            /* Identify the format. */
 				Set<FormatIdentification> formats = identifier.identify(jhove2,

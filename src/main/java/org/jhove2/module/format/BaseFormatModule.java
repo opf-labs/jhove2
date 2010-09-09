@@ -146,13 +146,7 @@ public class BaseFormatModule
 	   throws JHOVE2Exception
 	{
         this.timerInfo.setStartTime();
-        
-		if (this.getScope() == Scope.Specific) {
-			source.addModule(this);
-		}
-		else {
-			jhove2.addModule(this);
-		}
+        source.addModule(this);
 		try {
 			this.parse(jhove2, source);
 			if (this instanceof Validator) {

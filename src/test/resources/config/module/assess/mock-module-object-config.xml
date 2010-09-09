@@ -27,11 +27,11 @@
 		</property>
 		<property name="mpListReportable">
 			<list value-type="org.jhove2.module.assess.MockReportable">
-				<ref bean="MockReportable0" />
-				<ref bean="MockReportable1" />
-				<ref bean="MockReportable2" />
-				<ref bean="MockReportable3" />
-				<ref bean="MockReportable4" />
+				<ref local="MockReportable0" />
+				<ref local="MockReportable1" />
+				<ref local="MockReportable2" />
+				<ref local="MockReportable3" />
+				<ref local="MockReportable4" />
 			</list>
 		</property>
 	</bean>

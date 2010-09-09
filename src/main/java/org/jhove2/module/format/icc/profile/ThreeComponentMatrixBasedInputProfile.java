@@ -39,6 +39,7 @@ package org.jhove2.module.format.icc.profile;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
@@ -47,8 +48,8 @@ import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
 import org.jhove2.core.source.Source;
-import org.jhove2.module.format.Validator;
 import org.jhove2.module.format.AbstractFormatProfile;
+import org.jhove2.module.format.Validator;
 import org.jhove2.module.format.icc.ICCHeader;
 import org.jhove2.module.format.icc.ICCModule;
 import org.jhove2.module.format.icc.ICCTag;

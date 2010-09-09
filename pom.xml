@@ -1,13 +1,15 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.jhove2</groupId>
 	<artifactId>jhove2</artifactId>
-	<version>0.6.0</version>
+	<version>2.0.0</version>
 	<name>JHOVE2</name>
 	<description>JHOVE2: a next-generation architecture for
 		format-aware digital object preservation processing</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<geotools.version>2.6.5</geotools.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -86,6 +88,16 @@
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-main</artifactId>
+			<version>${geotools.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-shapefile</artifactId>
+			<version>${geotools.version}</version>
+		</dependency>
 	</dependencies>
 	<licenses>
 		<license>
@@ -107,6 +119,11 @@
 			<id>Codehaus Snapshots</id>
 			<name>codehaus.org</name>
 			<url>http://snapshots.repository.codehaus.org/</url>
+		</repository>
+		<repository>
+			<id>osgeo</id>
+			<name>Open Source Geospatial Foundation Repository</name>
+			<url>http://download.osgeo.org/webdav/geotools/</url>
 		</repository>
 	</repositories>
 	<build>
@@ -154,25 +171,92 @@
 					</additionalClasspathElements>
 				</configuration>
 			</plugin>
-			<!-- build the classpath from the project dependencies -->
+			<!-- build a UNIX classpath from the project dependencies -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<executions>
-					<execution></execution>
 					<execution>
-						<id>build-classpath</id>
-						<phase>package</phase>
+						<id>build-unix-classpath</id>
+						<phase>prepare-package</phase>
 						<goals>
 							<goal>build-classpath</goal>
 						</goals>
 						<configuration>
 							<prefix>$JHOVE2_HOME/lib</prefix>
-							<outputFile>${project.build.directory}/classpath_sh.out</outputFile>
+							<!-- Unix uses / as file separator and : as a path separator -->
+							<pathSeparator>:</pathSeparator>
+							<fileSeparator>\/</fileSeparator>
+							<outputFilterFile>true</outputFilterFile>
+							<outputFile>${project.basedir}/src/main/assembly/classpath_sh.properties</outputFile>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
+			<!-- build a Windows classpath from the project dependencies -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>build-windows-classpath</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>build-classpath</goal>
+						</goals>
+						<configuration>
+							<prefix>%JHOVE2_HOME%\lib</prefix>
+ 							<!-- Windows uses \ as file separator and ; as a path separator -->
+							<pathSeparator>;</pathSeparator> 
+ 							<fileSeparator>\\</fileSeparator>  
+  							<outputFilterFile>true</outputFilterFile>
+							<outputFile>${project.basedir}/src/main/assembly/classpath_cmd.properties</outputFile> 
+ 						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- Replace the classpath with the content of the properties file generated above -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>Inject classpath</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<tasks> <!-- We copy the .sh file with injection -->
+								<copy todir="${project.basedir}/src/main/scripts" overwrite="true">
+									<fileset dir="src/main/assembly">
+										<filename name="env.sh" />
+									</fileset>
+									<filterset>
+										<filtersfile
+											file="${project.basedir}/src/main/assembly/classpath_sh.properties" />
+										<filter token="jarName" value="${project.build.finalName}" />
+									</filterset>
+								</copy>
+								<!-- We copy the .cmd file with injection -->
+								<copy todir="${project.basedir}/src/main/scripts">
+									<fileset dir="src/main/assembly">
+										<filename name="env.cmd" />
+									</fileset>
+									<filterset>
+										<!--  filtering currently not filtering file separator string '\' properly for windows platform -->
+										<!--
+											<filtersfile
+											file="${project.basedir}/src/main/assembly/classpath_cmd.properties"/>
+										-->
+										<filter token="jarName" value="${project.build.finalName}" />
+									</filterset>
+								</copy>
+							</tasks>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>			     
 			<!-- generate the JHOVE2 Command Line jar executable -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -226,6 +310,7 @@
 					</execution>
 				</executions>
 			</plugin>
+			
 		</plugins>
 	</build>
 </project>
