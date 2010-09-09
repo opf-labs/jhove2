@@ -119,7 +119,7 @@ public class ICCTagTable
         consumed += 4;
         for (int i=0; i<this.count; i++) {
             ICCTag tag = new ICCTag();
-            consumed += tag.parse(jhove2, input);
+            consumed += tag.parse(jhove2, input, header.getOffset());
             Validity validity = tag.isValid();
             if (validity != Validity.True) {
                 this.isValid = validity;

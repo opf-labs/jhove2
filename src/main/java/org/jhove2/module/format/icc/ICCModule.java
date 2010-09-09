@@ -90,6 +90,7 @@ public class ICCModule
         this.isValid = Validity.Undetermined;
     }
     
+
     /** 
      * Parse an ICC source unit.
      * 
@@ -119,9 +120,13 @@ public class ICCModule
         if (input != null) {
             try {
                 input.setByteOrder(ByteOrder.BIG_ENDIAN);
-                input.setPosition(0L);
+                long start = 0L;
+                if ((start = input.getPosition()) == 0) {
+                    input.setPosition(0L);
+                }
             
                 this.header = new ICCHeader();
+                this.header.setOffset(start);
                 consumed = header.parse(jhove2, input);
                 Validity validity = header.isValid();
                 if (validity != Validity.True) {

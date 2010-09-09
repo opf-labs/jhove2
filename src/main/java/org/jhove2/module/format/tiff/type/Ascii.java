@@ -15,8 +15,8 @@ import org.jhove2.core.reportable.AbstractReportable;
  */
 public class Ascii 
 extends AbstractReportable {
+    
     private String value;
-
     /*
      * no-arg constructor
      */

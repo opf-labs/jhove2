@@ -171,6 +171,7 @@ public class FileSource
 			input = InputFactory.getInput(this.file, bufferSize, bufferType);
 		}
 
+		this.input = input;
 		return input;
 	}
 

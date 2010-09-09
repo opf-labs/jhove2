@@ -111,6 +111,9 @@ public class ICCHeader
     /** Header validity status. */
     protected Validity isValid;
     
+    /** Offset of where ICC Header begins */
+    protected long offset;
+    
     /** Preferred CMM type in raw form. */
     protected StringBuffer preferredCMM = new StringBuffer(4);
     
@@ -781,6 +784,13 @@ public class ICCHeader
         return this.invalidRenderingIntentMessage;
     }
     
+    /** Get the offset where the ICC Header starts in the input
+     *  @return the offset
+     */
+    public long getOffset() {
+        return offset;
+    }
+
     /** Get non-zero data in reserved field error message.
      * @return Non-zero data in reserved field error message
      */
@@ -1009,5 +1019,12 @@ public class ICCHeader
     public Validity isValid()
     {
          return this.isValid;
+    }
+    
+    /**
+     * @param offset the offset to set
+     */
+    public void setOffset(long offset) {
+        this.offset = offset;
     }
 }

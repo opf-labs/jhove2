@@ -195,7 +195,7 @@ public class ICCTag
      *             If an I/O exception is raised reading the source unit
      * @throws JHOVE2Exception
      */
-    public long parse(JHOVE2 jhove2, Input input)
+    public long parse(JHOVE2 jhove2, Input input, long offset)
         throws EOFException, IOException, JHOVE2Exception
     {
         long consumed = 0L;
@@ -224,8 +224,8 @@ public class ICCTag
         }
         consumed += 4;
         
-        /* Tag offset. */
-        this.offset = input.readUnsignedInt();
+        /* Tag offset + the offset of the start of the input. */
+        this.offset = input.readUnsignedInt() + offset;
         if ((this.offset & 0x00000003) != 0L) {
             numErrors++;
             this.isValid = Validity.False;
