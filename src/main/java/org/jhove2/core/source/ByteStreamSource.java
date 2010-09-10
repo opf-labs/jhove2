@@ -53,7 +53,10 @@ public class ByteStreamSource
         extends AbstractSource
 {
     /** Starting offset relative to parent source. */
-    protected long offset;
+    protected long endingOffset;
+    
+    /** Starting offset relative to parent source. */
+    protected long startingOffset;
     
     /** Parent source. */
     protected Source parent;
@@ -74,9 +77,10 @@ public class ByteStreamSource
     {
         super();
         
-        this.parent = parent;
-        this.offset = offset;
-        this.size   = size;
+        this.parent         = parent;
+        this.startingOffset = offset;
+        this.endingOffset   = offset + size;
+        this.size           = size;
         
         /* Make this byte stream a child of its parent. */
         parent.addChildSource(this);
@@ -114,18 +118,26 @@ public class ByteStreamSource
         return this.input;
     }
 
+    /** Get ending offset of the byte stream, relative to its parent.
+     * @return Ending offset
+     */
+    @ReportableProperty(order=1, value="Ending offset of the byte stream, relative to its parent.")
+    public long getEndingOffset() {
+        return this.endingOffset;
+    }
+    
     /** Get starting offset of the byte stream, relative to its parent.
      * @return Starting offset
      */
-    @ReportableProperty(order=1, value="Starting offset of the byte stream, relative to its parent.")
+    @ReportableProperty(order=2, value="Starting offset of the byte stream, relative to its parent.")
     public long getStartingOffset() {
-        return this.offset;
+        return this.startingOffset;
     }
     
     /** Get byte stream size, in bytes.
      * @return Byte stream size
      */
-    @ReportableProperty(order=2, value="Byte stream size, in bytes.")
+    @ReportableProperty(order=3, value="Byte stream size, in bytes.")
     public long getSize() {
         return this.size;
     }
