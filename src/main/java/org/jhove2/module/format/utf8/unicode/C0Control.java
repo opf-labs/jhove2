@@ -53,7 +53,9 @@ import org.jhove2.core.JHOVE2Exception;
  * 
  * @author mstrong, slabrams
  */
-public class C0Control implements Comparable<C0Control> {
+public class C0Control
+    implements Comparable<C0Control>
+{
 	/** Singleton C0 controls. */
 	protected static Set<C0Control> controls;
 
@@ -75,6 +77,30 @@ public class C0Control implements Comparable<C0Control> {
 		this.codePoint = codePoint;
 		this.mnemonic = mnemonic;
 	}
+	
+	/** Initialize the C0 code points.
+	 * @param jhove2 JHOVE2 framework
+	 * @throws JHOVE2Exception 
+	 */
+	protected static synchronized void init(JHOVE2 jhove2) throws JHOVE2Exception {
+	    if (controls == null) {
+	        /* Initialize the controls from s Java resource bundle. */
+	        controls = new TreeSet<C0Control>();
+	        Properties props = jhove2.getConfigInfo().getProperties("C0Control");
+	        if (props != null) {
+	            Set<String> set = props.stringPropertyNames();
+	            Iterator<String> iter = set.iterator();
+	            while (iter.hasNext()) {
+	                String mnemonic = iter.next();
+	                String value = props.getProperty(mnemonic);
+
+	                int point = Integer.parseInt(value, 16);
+	                C0Control control = new C0Control(mnemonic, point);
+	                    controls.add(control);
+	            }
+	        }
+	    }
+	}
 
 	/**
 	 * Get the C0 control for a code point.
@@ -87,23 +113,7 @@ public class C0Control implements Comparable<C0Control> {
 	 */
 	public static synchronized C0Control getControl(int codePoint, JHOVE2 jhove2)
 			throws JHOVE2Exception {
-		if (controls == null) {
-			/* Initialize the controls from s Java resource bundle. */
-			controls = new TreeSet<C0Control>();
-            Properties props = jhove2.getConfigInfo().getProperties("C0Control");
-			if (props != null) {
-				Set<String> set = props.stringPropertyNames();
-				Iterator<String> iter = set.iterator();
-				while (iter.hasNext()) {
-					String mnemonic = iter.next();
-					String value = props.getProperty(mnemonic);
-
-					int point = Integer.parseInt(value, 16);
-					C0Control control = new C0Control(mnemonic, point);
-					controls.add(control);
-				}
-			}
-		}
+	    init(jhove2);
 		C0Control control = null;
 		Iterator<C0Control> iter = controls.iterator();
 		while (iter.hasNext()) {
@@ -119,10 +129,14 @@ public class C0Control implements Comparable<C0Control> {
 
 	/**
 	 * Get the C0 controls.
-	 * 
+	 * @param jhove2 JHOVE2 framework
 	 * @return C0 controls
+	 * @throws JHOVE2Exception 
 	 */
-	public static Set<C0Control> getControls() {
+	public static Set<C0Control> getControls(JHOVE2 jhove2)
+	    throws JHOVE2Exception
+	{
+	    init(jhove2);
 		return controls;
 	}
 

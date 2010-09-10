@@ -70,17 +70,14 @@ public class RenderingIntent
         this.value  = value;
         this.intent = intent;
     }
-
-    /**
-     * Get the rendering intent for a value. 
-     * @param value  Rendering intent value
+    
+    /** Initialize the rendering intents.
      * @param jhove2 JHOVE2 framework
-     * @return Rendering intent, or null if the value is not a rendering intent value
-     * @throws JHOVE2Exception
+     * @throws JHOVE2Exception 
      */
-    public static synchronized RenderingIntent getRenderingIntent(int value,
-                                                                  JHOVE2 jhove2)
-            throws JHOVE2Exception {
+    protected static synchronized void init(JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
         if (intents == null) {
             /* Initialize the rendering intents from a Java resource bundle. */
             intents = new TreeSet<RenderingIntent>();
@@ -98,6 +95,20 @@ public class RenderingIntent
                 }
             }
         }
+    }
+
+    /**
+     * Get the rendering intent for a value. 
+     * @param value  Rendering intent value
+     * @param jhove2 JHOVE2 framework
+     * @return Rendering intent, or null if the value is not a rendering intent value
+     * @throws JHOVE2Exception
+     */
+    public static synchronized RenderingIntent getRenderingIntent(int value,
+                                                                  JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
+        init(jhove2);
         RenderingIntent renderingIntent = null;
         Iterator<RenderingIntent> iter = intents.iterator();
         while (iter.hasNext()) {
@@ -112,9 +123,14 @@ public class RenderingIntent
 
     /**
      * Get the rendering intents.
+     * @param jhove2 JHOVE2 framework
      * @return rendering intents
+     * @throws JHOVE2Exception 
      */
-    public static Set<RenderingIntent> getRenderingIntentes() {
+    public static Set<RenderingIntent> getRenderingIntents(JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
+        init(jhove2);
         return intents;
     }
 

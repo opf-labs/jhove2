@@ -38,6 +38,7 @@ import java.io.EOFException;
 import java.io.IOException;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.annotation.ReportableProperty.PropertyType;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
@@ -320,7 +321,8 @@ public class FormatChunk
     /** Get WAVE format chunk format category in descriptive form.
      * @return WAVE format chunk format category
      */
-    @ReportableProperty(order=2, value="WAVE format chunk format category in descriptive form.")
+    @ReportableProperty(order=2, value="WAVE format chunk format category in descriptive form.",
+            type=PropertyType.Descriptive)
     public String getFormatCategory_descriptive() {
         return this.formatCategory_d;
     }
@@ -328,7 +330,8 @@ public class FormatChunk
     /** Get WAVE format chunk format category in raw form.
      * @return WAVE format chunk format category
      */
-    @ReportableProperty(order=1, value="WAVE format chunk format category in raw form.")
+    @ReportableProperty(order=1, value="WAVE format chunk format category in raw form.",
+            type=PropertyType.Raw)
     public int getFormatCategory_raw() {
         return this.formatCategory;
     }

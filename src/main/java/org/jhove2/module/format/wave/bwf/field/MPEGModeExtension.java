@@ -1,5 +1,5 @@
 /**
- * JHOVE2 - Next-generation architecture for format-aware characterization
+ * JHOVE2 - Next-generation architecture for extension-aware characterization
  *
  * Copyright (c) 2009 by The Regents of the University of California
  * All rights reserved.
@@ -14,8 +14,8 @@
  *   this list of conditions and the following disclaimer in the documentation
  *   and/or other materials provided with the distribution.
  *
- * o Neither the category of the University of California/California Digital
- *   Library, Ithaka Harbors/Portico, or Stanford University, nor the categorys of
+ * o Neither the description of the University of California/California Digital
+ *   Library, Ithaka Harbors/Portico, or Stanford University, nor the descriptions of
  *   its contributors may be used to endorse or promote products derived from
  *   this software without specific prior written permission.
  *
@@ -41,135 +41,135 @@ import java.util.TreeSet;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 
-/** Broadcast Wave Format (BWF) MPEG-1 mode.
- * 
+/** Broadcast Wave ModeExtension (BWF) MPEG-1 joint-stereo coding parameter
+ * .
  * @author slabrams
  */
-public class MPEGMode
-    implements Comparable<MPEGMode>
+public class MPEGModeExtension
+    implements Comparable<MPEGModeExtension>
 {
-    /** Singleton MPEG mode modes. */
-    protected static Set<MPEGMode> modes;
+    /** Singleton MPEG extension extensions. */
+    protected static Set<MPEGModeExtension> extensions;
 
-    /** MPEG mode mode. */
-    protected int mode;
+    /** MPEG mode extension. */
+    protected int extension;
 
-    /** MPEG description. */
+    /** MPEG mode extension description. */
     protected String description;
 
     /**
-     * Instantiate a new <code>MPEGMode</code> object.
+     * Instantiate a new <code>MPEGModeExtension</code> object.
      * 
-     * @param mode
-     *            MPEG mode
+     * @param extension
+     *            MPEG mode extension
      * @param description
-     *            MPEG mode description
+     *            MPEG mode extension description
      */
-    public MPEGMode(int mode, String description) {
-        this.mode   = mode;
+    public MPEGModeExtension(int extension, String description) {
+        this.extension   = extension;
         this.description = description;
     }
     
-    /** Initialize the modes.
+    /** Initialize the mode extensions.
      * @param jhove2 JHOVE2 framework
      * @throws JHOVE2Exception 
      */
     protected static synchronized void init(JHOVE2 jhove2)
         throws JHOVE2Exception
     {
-        if (modes == null) {
-            /* Initialize the Mode modes from a Java resource bundle. */
-            modes = new TreeSet<MPEGMode>();
-            Properties props = jhove2.getConfigInfo().getProperties("MPEGModes");
+        if (extensions == null) {
+            /* Initialize the ModeExtension extensions from a Java resource bundle. */
+            extensions = new TreeSet<MPEGModeExtension>();
+            Properties props = jhove2.getConfigInfo().getProperties("MPEGModeExtensions");
             if (props != null) {
                 Set<String> set = props.stringPropertyNames();
                 Iterator<String> iter = set.iterator();
                 while (iter.hasNext()) {
-                    String mod  = iter.next();
-                    String des = props.getProperty(mod);
-                    MPEGMode m =
-                        new MPEGMode(Integer.valueOf(mod, 16), des);
-                    modes.add(m);
+                    String ext  = iter.next();
+                    String des = props.getProperty(ext);
+                    MPEGModeExtension ex =
+                        new MPEGModeExtension(Integer.valueOf(ext, 16), des);
+                    extensions.add(ex);
                 }
             }
         }
     }
 
     /**
-     * Get the description for a mode. 
-     * @param mode   MPEG mode
+     * Get the description for a MPEG mode extension. 
+     * @param extension MPEG mode extension
      * @param jhove2 JHOVE2 framework
-     * @return Mode MPEG mode description, or null if the mode is not defined
+     * @return ModeExtension MPEG mode extension description, or null if the extension is not defined
      * @throws JHOVE2Exception
      */
-    public static synchronized MPEGMode getMPEGMode(int mode, JHOVE2 jhove2)
+    public static synchronized MPEGModeExtension getMPEGModeExtension(int extension, JHOVE2 jhove2)
         throws JHOVE2Exception
     {
         init(jhove2);
-        MPEGMode mod = null;
-        Iterator<MPEGMode> iter = modes.iterator();
+        MPEGModeExtension ext = null;
+        Iterator<MPEGModeExtension> iter = extensions.iterator();
         while (iter.hasNext()) {
-            MPEGMode m = iter.next();
-            if (m.getMode() == mode) {
-                mod = m;
+            MPEGModeExtension ex = iter.next();
+            if (ex.getModeExtension() == extension) {
+                ext = ex;
                 break;
             }
         }
-        return mod;
+        return ext;
     }
 
     /**
-     * Get the MPEG modes.
+     * Get the MPEG mode extensions.
      * @param jhove2 JHOVE2 framework
-     * @return MPEG modes
+     * @return MPEG mode extensions
      * @throws JHOVE2Exception 
      */
-    public static Set<MPEGMode> getModes(JHOVE2 jhove2)
+    public static Set<MPEGModeExtension> getModeExtensions(JHOVE2 jhove2)
         throws JHOVE2Exception
     {
         init(jhove2);
-        return modes;
+        return extensions;
     }
 
     /**
-     * Get the MPEG mode.
-     * @return MPEG mode 
+     * Get the MPEG mode extension.
+     * @return MPEG mode extension 
      */
-    public int getMode() {
-        return this.mode;
+    public int getModeExtension() {
+        return this.extension;
     }
 
     /**
-     * Get the mode description.
-     * @return Mode description
+     * Get the MPEG mode extension description.
+     * @return MPEG mode extension description
      */
     public String getDescription() {
         return this.description;
     }
 
     /**
-     * Convert the MPEG mode to a Java string in the form:
-     * "mode: description".
+     * Convert the MPEG mode extension to a Java string in the form:
+     * "extension: description".
      * @return Java string representation of the description
      */
     public String toString() {
-        return this.getMode() + ": " + this.getDescription();
+        return this.getModeExtension() + ": " + this.getDescription();
     }
 
     /**
-     * Compare MPEG mode.
-     * @param mode
-     *             MPEG mode to be compared
-     * @return -1, 0, or 1 if this MPEG mode mode is less than,
+     * Compare MPEG mode extension extension.
+     * @param extension
+     *             MPEG mode extension to be compared
+     * @return -1, 0, or 1 if this MPEG extension extension is less than,
      *         equal to, or greater than the second
      */
     @Override
-    public int compareTo(MPEGMode mode) {
-        int mod = mode.getMode();
-        if (this.mode < mod) {
+    public int compareTo(MPEGModeExtension extension) {
+        int ext = extension.getModeExtension();
+        if (this.extension < ext) {
             return -1;
         }
-        else if (this.mode > mod) {
+        else if (this.extension > ext) {
             return 1;
         }
         return 0;

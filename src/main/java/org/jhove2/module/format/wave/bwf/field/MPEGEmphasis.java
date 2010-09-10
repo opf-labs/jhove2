@@ -1,5 +1,5 @@
 /**
- * JHOVE2 - Next-generation architecture for format-aware characterization
+ * JHOVE2 - Next-generation architecture for emphasis-aware characterization
  *
  * Copyright (c) 2009 by The Regents of the University of California
  * All rights reserved.
@@ -14,8 +14,8 @@
  *   this list of conditions and the following disclaimer in the documentation
  *   and/or other materials provided with the distribution.
  *
- * o Neither the category of the University of California/California Digital
- *   Library, Ithaka Harbors/Portico, or Stanford University, nor the categorys of
+ * o Neither the description of the University of California/California Digital
+ *   Library, Ithaka Harbors/Portico, or Stanford University, nor the descriptions of
  *   its contributors may be used to endorse or promote products derived from
  *   this software without specific prior written permission.
  *
@@ -41,135 +41,135 @@ import java.util.TreeSet;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 
-/** Broadcast Wave Format (BWF) MPEG-1 mode.
- * 
+/** Broadcast Wave Emphasis (BWF) MPEG-1 decoder de-emphasis
+ * .
  * @author slabrams
  */
-public class MPEGMode
-    implements Comparable<MPEGMode>
+public class MPEGEmphasis
+implements Comparable<MPEGEmphasis>
 {
-    /** Singleton MPEG mode modes. */
-    protected static Set<MPEGMode> modes;
+    /** Singleton MPEG emphasis emphases. */
+    protected static Set<MPEGEmphasis> emphases;
 
-    /** MPEG mode mode. */
-    protected int mode;
+    /** MPEG emphasis emphasis. */
+    protected int emphasis;
 
     /** MPEG description. */
     protected String description;
 
     /**
-     * Instantiate a new <code>MPEGMode</code> object.
+     * Instantiate a new <code>MPEGEmphasis</code> object.
      * 
-     * @param mode
-     *            MPEG mode
+     * @param emphasis
+     *            MPEG emphasis
      * @param description
-     *            MPEG mode description
+     *            MPEG emphasis description
      */
-    public MPEGMode(int mode, String description) {
-        this.mode   = mode;
+    public MPEGEmphasis(int emphasis, String description) {
+        this.emphasis   = emphasis;
         this.description = description;
     }
     
-    /** Initialize the modes.
+    /** Initialize the emphases.
      * @param jhove2 JHOVE2 framework
      * @throws JHOVE2Exception 
      */
     protected static synchronized void init(JHOVE2 jhove2)
         throws JHOVE2Exception
     {
-        if (modes == null) {
-            /* Initialize the Mode modes from a Java resource bundle. */
-            modes = new TreeSet<MPEGMode>();
-            Properties props = jhove2.getConfigInfo().getProperties("MPEGModes");
+        if (emphases == null) {
+            /* Initialize the Emphasis emphases from a Java resource bundle. */
+            emphases = new TreeSet<MPEGEmphasis>();
+            Properties props = jhove2.getConfigInfo().getProperties("MPEGEmphases");
             if (props != null) {
                 Set<String> set = props.stringPropertyNames();
                 Iterator<String> iter = set.iterator();
                 while (iter.hasNext()) {
-                    String mod  = iter.next();
-                    String des = props.getProperty(mod);
-                    MPEGMode m =
-                        new MPEGMode(Integer.valueOf(mod, 16), des);
-                    modes.add(m);
+                    String emp  = iter.next();
+                    String des = props.getProperty(emp);
+                    MPEGEmphasis e =
+                        new MPEGEmphasis(Integer.valueOf(emp, 16), des);
+                    emphases.add(e);
                 }
             }
         }
     }
 
     /**
-     * Get the description for a mode. 
-     * @param mode   MPEG mode
+     * Get the description for a emphasis. 
+     * @param emphasis   MPEG emphasis
      * @param jhove2 JHOVE2 framework
-     * @return Mode MPEG mode description, or null if the mode is not defined
+     * @return Emphasis MPEG emphasis description, or null if the emphasis is not defined
      * @throws JHOVE2Exception
      */
-    public static synchronized MPEGMode getMPEGMode(int mode, JHOVE2 jhove2)
+    public static synchronized MPEGEmphasis getMPEGEmphasis(int emphasis, JHOVE2 jhove2)
         throws JHOVE2Exception
     {
         init(jhove2);
-        MPEGMode mod = null;
-        Iterator<MPEGMode> iter = modes.iterator();
+        MPEGEmphasis emp = null;
+        Iterator<MPEGEmphasis> iter = emphases.iterator();
         while (iter.hasNext()) {
-            MPEGMode m = iter.next();
-            if (m.getMode() == mode) {
-                mod = m;
+            MPEGEmphasis e = iter.next();
+            if (e.getEmphasis() == emphasis) {
+                emp = e;
                 break;
             }
         }
-        return mod;
+        return emp;
     }
 
     /**
-     * Get the MPEG modes.
+     * Get the MPEG emphases.
      * @param jhove2 JHOVE2 framework
-     * @return MPEG modes
+     * @return MPEG emphases
      * @throws JHOVE2Exception 
      */
-    public static Set<MPEGMode> getModes(JHOVE2 jhove2)
+    public static Set<MPEGEmphasis> getEmphases(JHOVE2 jhove2)
         throws JHOVE2Exception
     {
         init(jhove2);
-        return modes;
+        return emphases;
     }
 
     /**
-     * Get the MPEG mode.
-     * @return MPEG mode 
+     * Get the MPEG emphasis.
+     * @return MPEG emphasis 
      */
-    public int getMode() {
-        return this.mode;
+    public int getEmphasis() {
+        return this.emphasis;
     }
 
     /**
-     * Get the mode description.
-     * @return Mode description
+     * Get the emphasis description.
+     * @return Emphasis description
      */
     public String getDescription() {
         return this.description;
     }
 
     /**
-     * Convert the MPEG mode to a Java string in the form:
-     * "mode: description".
+     * Convert the MPEG emphasis to a Java string in the form:
+     * "emphasis: description".
      * @return Java string representation of the description
      */
     public String toString() {
-        return this.getMode() + ": " + this.getDescription();
+        return this.getEmphasis() + ": " + this.getDescription();
     }
 
     /**
-     * Compare MPEG mode.
-     * @param mode
-     *             MPEG mode to be compared
-     * @return -1, 0, or 1 if this MPEG mode mode is less than,
+     * Compare MPEG emphasis.
+     * @param emphasis
+     *             MPEG emphasis to be compared
+     * @return -1, 0, or 1 if this MPEG emphasis emphasis is less than,
      *         equal to, or greater than the second
      */
     @Override
-    public int compareTo(MPEGMode mode) {
-        int mod = mode.getMode();
-        if (this.mode < mod) {
+    public int compareTo(MPEGEmphasis emphasis) {
+        int emp = emphasis.getEmphasis();
+        if (this.emphasis < emp) {
             return -1;
         }
-        else if (this.mode > mod) {
+        else if (this.emphasis > emp) {
             return 1;
         }
         return 0;

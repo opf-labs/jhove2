@@ -39,6 +39,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.annotation.ReportableProperty.PropertyType;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.io.Input;
@@ -129,7 +130,8 @@ public class MPEGChunk
     /** Get ancillary data type in descriptive form.
      * @return Ancillary data type in descriptive form
      */
-    @ReportableProperty(order=6, value="Ancillary data type in descriptive form.")
+    @ReportableProperty(order=6, value="Ancillary data type in descriptive form.",
+            type=PropertyType.Descriptive)
     public List<String> getAncillaryDataTypes() {
         return this.dataType_d;
     }
@@ -137,7 +139,8 @@ public class MPEGChunk
     /** Get ancillary data type in raw form.
      * @return Ancillary data type
      */
-    @ReportableProperty(order=5, value="Ancillary data type in hexadecimal form.")
+    @ReportableProperty(order=5, value="Ancillary data type in hexadecimal form.",
+            type=PropertyType.Raw)
     public String getAncillaryDataType_raw() {
         return this.dataType;
     }
@@ -153,7 +156,8 @@ public class MPEGChunk
     /** Get sound information in descriptive form.
      * @return Sound information
      */
-    @ReportableProperty(order=2, value="Sound information in descriptive form.")
+    @ReportableProperty(order=2, value="Sound information in descriptive form.",
+            type=PropertyType.Descriptive)
     public List<String> getSoundInformations() {
         return this.soundInformation_d;
     }
@@ -161,7 +165,8 @@ public class MPEGChunk
     /** Get sound information in raw form.
      * @return Sound information
      */
-    @ReportableProperty(order=1, value="Sound information in hexadecimal form.")
+    @ReportableProperty(order=1, value="Sound information in raw form.",
+            type=PropertyType.Raw)
     public String getSoundInformation() {
         return this.soundInformation;
     }

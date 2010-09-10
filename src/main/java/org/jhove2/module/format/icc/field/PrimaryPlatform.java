@@ -70,16 +70,14 @@ implements Comparable<PrimaryPlatform>
         this.signature       = signature;
         this.primaryPlatform = primaryPlatform;
     }
-
-    /**
-     * Get the primary platform for a signature. 
-     * @param signature Primary platform signature
-     * @param jhove2    JHOVE2 framework
-     * @return Primary platform, or null if the signature is not a colour space signature
-     * @throws JHOVE2Exception
+    
+    /** Initialize the primary platforms.
+     * @param jhove2 JHOVE2 framework
+     * @throws JHOVE2Exception 
      */
-    public static synchronized PrimaryPlatform getPrimaryPlatform(String signature, JHOVE2 jhove2)
-            throws JHOVE2Exception {
+    protected static synchronized void init(JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
         if (platforms == null) {
             /* Initialize the primary platforms from a Java resource bundle. */
             platforms = new TreeSet<PrimaryPlatform>();
@@ -95,6 +93,19 @@ implements Comparable<PrimaryPlatform>
                 }
             }
         }
+    }
+
+    /**
+     * Get the primary platform for a signature. 
+     * @param signature Primary platform signature
+     * @param jhove2    JHOVE2 framework
+     * @return Primary platform, or null if the signature is not a colour space signature
+     * @throws JHOVE2Exception
+     */
+    public static synchronized PrimaryPlatform getPrimaryPlatform(String signature, JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
+        init(jhove2);
         PrimaryPlatform primaryPlatform = null;
         Iterator<PrimaryPlatform> iter = platforms.iterator();
         while (iter.hasNext()) {
@@ -109,9 +120,14 @@ implements Comparable<PrimaryPlatform>
 
     /**
      * Get the primary platforms.
+     * @param jhove2 JHOVE2 framework
      * @return primary platforms
+     * @throws JHOVE2Exception 
      */
-    public static Set<PrimaryPlatform> getPrimaryPlatformes() {
+    public static Set<PrimaryPlatform> getPrimaryPlatformes(JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
+        init(jhove2);
         return platforms;
     }
 
