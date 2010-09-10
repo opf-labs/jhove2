@@ -46,6 +46,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.JHOVE2;
 import org.jhove2.core.Message;
 import org.jhove2.core.TimerInfo;
 import org.jhove2.core.format.FormatIdentification;
@@ -136,9 +137,20 @@ public interface Source
 
     /**
      * Get existing {@link org.jhove2.core.io.Input} for the source unit.
+     * @param jhove2 JHOVE2 framework
      * @return Input for the source unit
      */
-    public Input getInput();
+    public Input getInput(JHOVE2 jhove2)
+        throws FileNotFoundException, IOException;
+
+    /**
+     * Get existing {@link org.jhove2.core.io.Input} for the source unit.
+     * @param jhove2 JHOVE2 framework
+     * @param order  Byte order
+     * @return Input for the source unit
+     */
+    public Input getInput(JHOVE2 jhove2, ByteOrder order)
+        throws FileNotFoundException, IOException;
     
 	/**
 	 * Get {@link org.jhove2.core.io.Input} for the source unit.

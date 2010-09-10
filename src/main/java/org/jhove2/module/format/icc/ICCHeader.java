@@ -55,6 +55,8 @@ import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
+import org.jhove2.core.source.Source;
+import org.jhove2.module.format.Parser;
 import org.jhove2.module.format.Validator.Validity;
 import org.jhove2.module.format.icc.field.ColourSpace;
 import org.jhove2.module.format.icc.field.DeviceAttribute;
@@ -70,7 +72,8 @@ import org.jhove2.module.format.icc.type.XYZNumber;
  * @author slabrams
  */
 public class ICCHeader
-        extends AbstractReportable
+    extends AbstractReportable
+    implements Parser
 {
     /** D50 illuminant CIE XYZ values. These hexadecmial values are equivalent
      * to 0.9642, 1.0, 0.8249. */
@@ -237,9 +240,12 @@ public class ICCHeader
      *             If an I/O exception is raised reading the source unit
      * @throws JHOVE2Exception
      */
-    public long parse(JHOVE2 jhove2, Input input)
+    @Override
+    public long parse(JHOVE2 jhove2, Source source)
         throws EOFException, IOException, JHOVE2Exception
     {
+        Input input = source.getInput(jhove2);
+        
         long consumed = 0L;
         int numErrors = 0;
         this.isValid = Validity.True;

@@ -40,7 +40,6 @@ import java.io.IOException;
 import java.nio.ByteOrder;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.format.Format;
@@ -54,8 +53,8 @@ import org.jhove2.module.format.Validator;
  * @author slabrams
  */
 public class ICCModule
-        extends BaseFormatModule
-        implements Validator
+    extends BaseFormatModule
+    implements Validator
 {
     /** ICC module version identifier. */
     public static final String VERSION = "2.0.0";
@@ -112,17 +111,12 @@ public class ICCModule
     {
         long consumed = 0L;
         this.isValid = Validity.True;
-        Input input = null;
-        Invocation config = jhove2.getInvocation();
-        input = source.getInput(config.getBufferSize(), 
-                                config.getBufferType());
+        Input input = source.getInput(jhove2, ByteOrder.BIG_ENDIAN);
         if (input != null) {
+            input.setPosition(0L);
             try {
-                input.setByteOrder(ByteOrder.BIG_ENDIAN);
-                input.setPosition(0L);
-            
                 this.header = new ICCHeader();
-                consumed = header.parse(jhove2, input);
+                consumed = header.parse(jhove2, source);
                 Validity validity = header.isValid();
                 if (validity != Validity.True) {
                     this.isValid = validity;

@@ -75,11 +75,11 @@ public class DirectoryModule
 	 *            Directory format
 	 */
 	public DirectoryModule(Format format) {
-		super(VERSION, RELEASE, RIGHTS, Scope.Generic, format);
+		super(VERSION, RELEASE, RIGHTS, Scope.Specific, format);
 	}
 
 	public DirectoryModule(){
-		super(VERSION, RELEASE, RIGHTS, Scope.Generic, null);
+		super(VERSION, RELEASE, RIGHTS, Scope.Specific, null);
 	}
 	/**
 	 * Parse a directory source unit.

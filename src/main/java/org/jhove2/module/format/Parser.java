@@ -36,60 +36,31 @@
 
 package org.jhove2.module.format;
 
-import java.util.List;
-
-import org.jhove2.annotation.ReportableProperty;
+import java.io.EOFException;
+import java.io.IOException;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.format.Format;
 import org.jhove2.core.source.Source;
-import org.jhove2.module.Module;
 
-/**
- * Interface for JHOVE2 format {@link org.jhove2.module.Module}s that model a
- * format or format family.
+/** JHOVE2 interface for parsers.
  * 
- * @author mstrong, slabrams, smorrissey
+ * @author slabrams
  */
-public interface FormatModule
-	extends Module, Parser
+public interface Parser
 {
     /**
-     * Invoke the parsing of the source unit and validate all registered profiles.
-     * @param jhove2 JHOVE2 framework
-     * @param source Source to be parsed
+     * Parse a source unit.
+     * @param jhove2
+     *            JHOVE2 framework
+     * @param source
+     *            Source unit
+     * @return Number of bytes consumed
+     * @throws EOFException
+     *             If End-of-File is reached reading the source unit
+     * @throws IOException
+     *             If an I/O exception is raised reading the source unit
      * @throws JHOVE2Exception
-     * @see org.jhove2.module.Command#execute(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
      */
-    public void invoke(JHOVE2 jhove2, Source source)
-       throws JHOVE2Exception;
-	
-	/**
-	 * Get format module format.
-	 * 
-	 * @return Format module format
-	 */
-	@ReportableProperty(order = 1, value = "Format module format.")
-	public Format getFormat();
-
-	/**
-	 * Get format module format profiles.
-	 * 
-	 * @return Format module format profiles.
-	 */
-	@ReportableProperty(order = 2, value = "Format module format profiles.")
-	public List<FormatProfile> getProfiles();
-
-	/** Set module format.
-	 * @param format Module format
-	 */
-	public void setFormat(Format format);
-	
-	/**
-	 * Add a format module format profile.
-	 * 
-	 * @param profiles
-	 *            Format module format profile
-	 */
-	public void setProfiles(List<FormatProfile> profiles);
+    public long parse(JHOVE2 jhove2, Source source)
+        throws EOFException, IOException, JHOVE2Exception;
 }

@@ -56,6 +56,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.jhove2.core.Invocation;
+import org.jhove2.core.JHOVE2;
 import org.jhove2.core.Message;
 import org.jhove2.core.TimerInfo;
 import org.jhove2.core.format.FormatIdentification;
@@ -325,10 +326,42 @@ public abstract class AbstractSource
 	}
 
     /**
-     * Get existing {@link org.jhove2.core.io.Input} for the source unit.
+     * Get {@link org.jhove2.core.io.Input} for the source unit.  The open
+     * Input is returned if it exists.
+     * @param jhove2 JHOVE2 framework
+     * @return Input for the source unit
+     * @throws IOException 
+     * @throws FileNotFoundException 
+     */
+	@Override
+    public Input getInput(JHOVE2 jhove2)
+	    throws FileNotFoundException, IOException
+	{
+        return this.getInput(jhove2, ByteOrder.LITTLE_ENDIAN);
+    }
+
+    /**
+     * Get {@link org.jhove2.core.io.Input} for the source unit.  The open
+     * Input is returned if it exists.
+     * @param jhove2 JHOVE2 framework
+     * @param order  Byte order
      * @return Input for the source unit
      */
-    public Input getInput() {
+	@Override
+    public Input getInput(JHOVE2 jhove2, ByteOrder order)
+        throws FileNotFoundException, IOException
+    {
+        if (this.input == null) {
+            Invocation config = jhove2.getInvocation();
+            this.input = InputFactory.getInput(this.file,
+                                               config.getBufferSize(),
+                                               config.getBufferType(),
+                                               order);
+        }
+        else {
+            this.input.setByteOrder(order);
+        }
+        
         return this.input;
     }
     
@@ -354,7 +387,7 @@ public abstract class AbstractSource
 	public Input getInput(int bufferSize, Type bufferType)
 		throws FileNotFoundException, IOException
 	{
-		return getInput(bufferSize, bufferType, ByteOrder.LITTLE_ENDIAN);
+		return this.getInput(bufferSize, bufferType, ByteOrder.LITTLE_ENDIAN);
 	}
 
 	/**

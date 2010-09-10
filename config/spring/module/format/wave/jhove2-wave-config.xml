@@ -142,5 +142,15 @@
 	<bean id="MPEGModeExtensions" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
 		<property name="propertyFileBaseName" value="mpeg-mode-extensions"/>
 	</bean> 
+	 	  	     		 			    
+	<!-- Broadcast Wave Format (BWF) peak envelope format properties bean --> 
+	<bean id="PeakFormats" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="peak-formats"/>
+	</bean> 
+	 	 	  	     		 			    
+	<!-- Broadcast Wave Format (BWF) peak envelope points per peak properties bean --> 
+	<bean id="PeakPoints" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="peak-points"/>
+	</bean> 
 	 
 </beans>
