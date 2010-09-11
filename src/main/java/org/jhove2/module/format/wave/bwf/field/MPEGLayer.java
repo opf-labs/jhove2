@@ -69,16 +69,14 @@ public class MPEGLayer
         this.layer   = layer;
         this.description = description;
     }
-
-    /**
-     * Get the description for a layer. 
-     * @param layer   MPEG layer
+    
+    /** Initialize the layers.
      * @param jhove2 JHOVE2 framework
-     * @return Layer MPEG layer description, or null if the layer is not defined
-     * @throws JHOVE2Exception
+     * @throws JHOVE2Exception 
      */
-    public static synchronized MPEGLayer getMPEGLayer(int layer, JHOVE2 jhove2)
-            throws JHOVE2Exception {
+    protected static synchronized void init(JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
         if (layers == null) {
             /* Initialize the Layer layers from a Java resource bundle. */
             layers = new TreeSet<MPEGLayer>();
@@ -95,6 +93,19 @@ public class MPEGLayer
                 }
             }
         }
+    }
+
+    /**
+     * Get the description for a layer. 
+     * @param layer   MPEG layer
+     * @param jhove2 JHOVE2 framework
+     * @return Layer MPEG layer description, or null if the layer is not defined
+     * @throws JHOVE2Exception
+     */
+    public static synchronized MPEGLayer getMPEGLayer(int layer, JHOVE2 jhove2)
+        throws JHOVE2Exception 
+    {
+        init(jhove2);
         MPEGLayer lay = null;
         Iterator<MPEGLayer> iter = layers.iterator();
         while (iter.hasNext()) {
@@ -109,9 +120,14 @@ public class MPEGLayer
 
     /**
      * Get the MPEG layers.
+     * @param jhove2 JHOVE2 framework
      * @return MPEG layers
+     * @throws JHOVE2Exception 
      */
-    public static Set<MPEGLayer> getLayerCategories() {
+    public static Set<MPEGLayer> getLayers(JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
+        init(jhove2);
         return layers;
     }
 
@@ -142,7 +158,7 @@ public class MPEGLayer
 
     /**
      * Compare MPEG layer layer.
-     * @param chunk
+     * @param layer
      *             MPEG layer to be compared
      * @return -1, 0, or 1 if this MPEG layer layer is less than,
      *         equal to, or greater than the second

@@ -70,16 +70,14 @@ public class ProfileDeviceClass
         this.signature    = signature;
         this.profileClass = profileClass;
     }
-
-    /**
-     * Get the profile/device class for a signature. 
-     * @param signature profile/device class signature
-     * @param jhove2    JHOVE2 framework
-     * @return profile/device class, or null if the signature is not a CMM signature
-     * @throws JHOVE2Exception
+    
+    /** Initialize the profile/device classes.
+     * @param jhove2 JHOVE2 framework
+     * @throws JHOVE2Exception 
      */
-    public static synchronized ProfileDeviceClass getProfileDeviceClass(String signature, JHOVE2 jhove2)
-            throws JHOVE2Exception {
+    protected static synchronized void init(JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
         if (classes == null) {
             /* Initialize the profile/device classes from a Java resource bundle. */
             classes = new TreeSet<ProfileDeviceClass>();
@@ -95,6 +93,19 @@ public class ProfileDeviceClass
                 }
             }
         }
+    }
+
+    /**
+     * Get the profile/device class for a signature. 
+     * @param signature profile/device class signature
+     * @param jhove2    JHOVE2 framework
+     * @return profile/device class, or null if the signature is not a CMM signature
+     * @throws JHOVE2Exception
+     */
+    public static synchronized ProfileDeviceClass getProfileDeviceClass(String signature, JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
+        init(jhove2);
         ProfileDeviceClass profileClass = null;
         Iterator<ProfileDeviceClass> iter = classes.iterator();
         while (iter.hasNext()) {
@@ -109,10 +120,14 @@ public class ProfileDeviceClass
 
     /**
      * Get the profile/device classes.
-     * 
+     * @param jhove2 JHOVE2 framework
      * @return Profile/device classes
+     * @throws JHOVE2Exception 
      */
-    public static Set<ProfileDeviceClass> getProfileDeviceClasses() {
+    public static Set<ProfileDeviceClass> getProfileDeviceClasses(JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
+        init(jhove2);
         return classes;
     }
 

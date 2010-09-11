@@ -14,8 +14,8 @@
  *   this list of conditions and the following disclaimer in the documentation
  *   and/or other materials provided with the distribution.
  *
- * o Neither the category of the University of California/California Digital
- *   Library, Ithaka Harbors/Portico, or Stanford University, nor the categorys of
+ * o Neither the description of the University of California/California Digital
+ *   Library, Ithaka Harbors/Portico, or Stanford University, nor the descriptions of
  *   its contributors may be used to endorse or promote products derived from
  *   this software without specific prior written permission.
  *
@@ -41,135 +41,135 @@ import java.util.TreeSet;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 
-/** Broadcast Wave Format (BWF) MPEG-1 mode.
+/** Broadcast Wave Format (BWF) peak envelope chunk format.
  * 
  * @author slabrams
  */
-public class MPEGMode
-    implements Comparable<MPEGMode>
+public class PeakFormat
+    implements Comparable<PeakFormat>
 {
-    /** Singleton MPEG mode modes. */
-    protected static Set<MPEGMode> modes;
+    /** Singleton Peak format formats. */
+    protected static Set<PeakFormat> formats;
 
-    /** MPEG mode mode. */
-    protected int mode;
+    /** Peak format format. */
+    protected long format;
 
-    /** MPEG description. */
+    /** Peak format description. */
     protected String description;
 
     /**
-     * Instantiate a new <code>MPEGMode</code> object.
+     * Instantiate a new <code>PeakFormat</code> object.
      * 
-     * @param mode
-     *            MPEG mode
+     * @param format
+     *            Peak format
      * @param description
-     *            MPEG mode description
+     *            Peak format description
      */
-    public MPEGMode(int mode, String description) {
-        this.mode   = mode;
+    public PeakFormat(int format, String description) {
+        this.format      = format;
         this.description = description;
     }
     
-    /** Initialize the modes.
+    /** Initialize the formats.
      * @param jhove2 JHOVE2 framework
      * @throws JHOVE2Exception 
      */
     protected static synchronized void init(JHOVE2 jhove2)
         throws JHOVE2Exception
     {
-        if (modes == null) {
-            /* Initialize the Mode modes from a Java resource bundle. */
-            modes = new TreeSet<MPEGMode>();
-            Properties props = jhove2.getConfigInfo().getProperties("MPEGModes");
+        if (formats == null) {
+            /* Initialize the peak formats from a Java resource bundle. */
+            formats = new TreeSet<PeakFormat>();
+            Properties props = jhove2.getConfigInfo().getProperties("PeakFormats");
             if (props != null) {
                 Set<String> set = props.stringPropertyNames();
                 Iterator<String> iter = set.iterator();
                 while (iter.hasNext()) {
-                    String mod  = iter.next();
-                    String des = props.getProperty(mod);
-                    MPEGMode m =
-                        new MPEGMode(Integer.valueOf(mod, 16), des);
-                    modes.add(m);
+                    String fmt  = iter.next();
+                    String des = props.getProperty(fmt);
+                    PeakFormat f =
+                        new PeakFormat(Integer.valueOf(fmt), des);
+                    formats.add(f);
                 }
             }
         }
     }
 
     /**
-     * Get the description for a mode. 
-     * @param mode   MPEG mode
+     * Get the description for a format. 
+     * @param format   Peak format
      * @param jhove2 JHOVE2 framework
-     * @return Mode MPEG mode description, or null if the mode is not defined
+     * @return Format Peak format description, or null if the format is not defined
      * @throws JHOVE2Exception
      */
-    public static synchronized MPEGMode getMPEGMode(int mode, JHOVE2 jhove2)
+    public static synchronized PeakFormat getPeakFormat(long format, JHOVE2 jhove2)
         throws JHOVE2Exception
     {
         init(jhove2);
-        MPEGMode mod = null;
-        Iterator<MPEGMode> iter = modes.iterator();
+        PeakFormat fmt = null;
+        Iterator<PeakFormat> iter = formats.iterator();
         while (iter.hasNext()) {
-            MPEGMode m = iter.next();
-            if (m.getMode() == mode) {
-                mod = m;
+            PeakFormat f = iter.next();
+            if (f.getFormat() == format) {
+                fmt = f;
                 break;
             }
         }
-        return mod;
+        return fmt;
     }
 
     /**
-     * Get the MPEG modes.
+     * Get the peak formats.
      * @param jhove2 JHOVE2 framework
-     * @return MPEG modes
+     * @return Peak formats
      * @throws JHOVE2Exception 
      */
-    public static Set<MPEGMode> getModes(JHOVE2 jhove2)
+    public static Set<PeakFormat> getFormats(JHOVE2 jhove2)
         throws JHOVE2Exception
     {
         init(jhove2);
-        return modes;
+        return formats;
     }
 
     /**
-     * Get the MPEG mode.
-     * @return MPEG mode 
+     * Get the peak format.
+     * @return peak format 
      */
-    public int getMode() {
-        return this.mode;
+    public long getFormat() {
+        return this.format;
     }
 
     /**
-     * Get the mode description.
-     * @return Mode description
+     * Get the format description.
+     * @return Format description
      */
     public String getDescription() {
         return this.description;
     }
 
     /**
-     * Convert the MPEG mode to a Java string in the form:
-     * "mode: description".
+     * Convert the peak format to a Java string in the form:
+     * "format: description".
      * @return Java string representation of the description
      */
     public String toString() {
-        return this.getMode() + ": " + this.getDescription();
+        return this.getFormat() + ": " + this.getDescription();
     }
 
     /**
-     * Compare MPEG mode.
-     * @param mode
-     *             MPEG mode to be compared
-     * @return -1, 0, or 1 if this MPEG mode mode is less than,
+     * Compare peak format format.
+     * @param format
+     *             Peak format to be compared
+     * @return -1, 0, or 1 if this peak format format is less than,
      *         equal to, or greater than the second
      */
     @Override
-    public int compareTo(MPEGMode mode) {
-        int mod = mode.getMode();
-        if (this.mode < mod) {
+    public int compareTo(PeakFormat format) {
+        long fmt = format.getFormat();
+        if (this.format < fmt) {
             return -1;
         }
-        else if (this.mode > mod) {
+        else if (this.format > fmt) {
             return 1;
         }
         return 0;

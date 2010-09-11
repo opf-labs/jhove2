@@ -78,11 +78,11 @@ public class FileSetModule
 	 *            Pseudo-directory format
 	 */
 	public FileSetModule(Format format) {
-		super(VERSION, RELEASE, RIGHTS, Scope.Generic, format);
+		super(VERSION, RELEASE, RIGHTS, Scope.Specific, format);
 	}
 
 	public FileSetModule(){
-		super(VERSION, RELEASE, RIGHTS, Scope.Generic, null);
+		super(VERSION, RELEASE, RIGHTS, Scope.Specific, null);
 	}
 	/**
 	 * Parse pseudo-directory source unit.

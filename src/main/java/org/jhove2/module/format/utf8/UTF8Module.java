@@ -42,7 +42,6 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
@@ -167,19 +166,16 @@ public class UTF8Module
 		long consumed = 0L;
 		this.isValid = Validity.Undetermined;
 		int numErrors = 0;
-		Input input = null;
+		Input input = source.getInput(jhove2);;
 		try {
-			Invocation config = jhove2.getInvocation();
-			input = source.getInput(config.getBufferSize(), 
-					                config.getBufferType());
-			long start = 0L;
+			long start = source.getStartingOffset();
 			long end = 0L;
 			if (source instanceof FileSource) {
 				end = ((FileSource) source).getSize();
-			} else if (source instanceof ZipFileSource) {
+			}
+			else if (source instanceof ZipFileSource) {
 				end = ((ZipFileSource) source).getSize();
 			}
-			;
 			input.setPosition(start);
 
 			EOL eol = null;
@@ -190,7 +186,7 @@ public class UTF8Module
 				UTF8Character ch = new UTF8Character();
 				long n = 0L;
 				try {
-					n = ch.parse(jhove2, input);
+					n = ch.parse(jhove2, source);
 				} catch (EOFException e) {
 					this.isValid = Validity.False;
 					break;
@@ -232,7 +228,7 @@ public class UTF8Module
 					this.c1Characters.add(c1);
 				}
 				if (position == start && ch.isByteOrderMark()) {
-					Object[] messageParms = new Object[]{position};
+					Object[] messageParms = new Object[]{position - start};
 					this.bomMessage = new Message(Severity.INFO,
 							Context.OBJECT,
 							"org.jhove2.module.format.utf8.UTF8Module.bomMessage",
@@ -256,7 +252,8 @@ public class UTF8Module
 			} else if (prevCodePoint != Unicode.LF) {
 				this.numLines++;
 			}
-		} finally {
+		}
+		finally {
 			if (input != null) {
 				input.close();
 			}

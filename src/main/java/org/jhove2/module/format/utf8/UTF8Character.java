@@ -50,6 +50,8 @@ import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
+import org.jhove2.core.source.Source;
+import org.jhove2.module.format.Parser;
 import org.jhove2.module.format.Validator.Validity;
 import org.jhove2.module.format.utf8.unicode.C0Control;
 import org.jhove2.module.format.utf8.unicode.C1Control;
@@ -64,6 +66,7 @@ import org.jhove2.module.format.utf8.unicode.Unicode.EOL;
  */
 public class UTF8Character
 	extends AbstractReportable
+	implements Parser
 {
 	/** Byte Order Mark (BOM). */
 	public static final int BOM = 0xFEFF;
@@ -146,9 +149,13 @@ public class UTF8Character
 	 *             If an I/O exception is raised reading the source unit
 	 * @throws JHOVE2Exception
 	 */
-	public long parse(JHOVE2 jhove2, Input input) throws EOFException,
-			IOException, JHOVE2Exception {
+	@Override
+	public long parse(JHOVE2 jhove2, Source source)
+	    throws EOFException, IOException, JHOVE2Exception
+	{
 		this.isValid = Validity.True;
+		Input input = source.getInput(jhove2);
+		long offset = source.getStartingOffset();
 
 		/* Read the first byte. */
 		long consumed = 0L;
@@ -172,7 +179,8 @@ public class UTF8Character
 		} else if ((0x80 <= b[0] && b[0] <= 0xC1)
 				|| (0xF5 <= b[0] && b[0] <= 0xFF)) {
 			this.isValid = Validity.False;
-			Object[]messageArgs = new Object[]{0, input.getPosition(), b[0]};
+			Object[]messageArgs =
+			    new Object[]{0, input.getPosition()-offset, b[0]};
 			this.invalidByteValueMessages.add(new Message(Severity.ERROR,
 					Context.OBJECT,
 					"org.jhove2.module.format.utf8.UTF8Character.invalidByteValueMessages",
@@ -191,7 +199,7 @@ public class UTF8Character
 			if ((i == 2 && ((this.size == 3 && ((b[0] == 0xE0 && (0x0A > b[i] || b[i] > 0xBF)) || (b[0] == 0xED && (0x80 > b[i] || b[i] > 0x9F)))) || (this.size == 4 && ((b[0] == 0xF0 && (0x90 > b[i] || b[i] > 0xBF)) || (b[0] == 0xF4 && (0x80 > b[i] || b[i] > 0x8F))))))
 					|| (0x80 > b[i] || b[i] > 0xBF)) {
 				this.isValid = Validity.False;
-				Object[]messageArgs = new Object[]{i, input.getPosition(), b[i]};
+				Object[]messageArgs = new Object[]{i, input.getPosition()-offset, b[i]};
 				this.invalidByteValueMessages.add(new Message(Severity.ERROR,
 						Context.OBJECT, 
 						"org.jhove2.module.format.utf8.UTF8Character.invalidByteValueMessages",
@@ -226,7 +234,7 @@ public class UTF8Character
 				|| (0xD7FF < this.codePoint && this.codePoint < 0xE000)
 				|| this.codePoint > 0x10FFFF) {
 			this.isValid = Validity.False;
-			Object[] messageArgs = new Object[]{(input.getPosition() - consumed), this.codePoint};
+			Object[] messageArgs = new Object[]{input.getPosition()-consumed-offset, this.codePoint};
 			this.codePointOutOfRangeMessage = new Message(Severity.ERROR,
 					Context.OBJECT, 
 					"org.jhove2.module.format.utf8.UTF8Character.codePointOutOfRangeMessage",

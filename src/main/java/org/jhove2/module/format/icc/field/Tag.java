@@ -74,16 +74,12 @@ implements Comparable<Tag>
         this.signature = signature;
         this.name      = name;
     }
-
-    /**
-     * Get the tag for a signature. 
-     * @param signature  Tag signature
+    
+    /** Initialize the tags.
      * @param jhove2 JHOVE2 framework
-     * @return Tag, or null if the signature is not a tag signature
-     * @throws JHOVE2Exception
+     * @throws JHOVE2Exception 
      */
-    public static synchronized Tag getTag(String signature,
-                                          JHOVE2 jhove2)
+    protected static synchronized void init(JHOVE2 jhove2)
         throws JHOVE2Exception
     {
         if (tags == null) {
@@ -108,6 +104,20 @@ implements Comparable<Tag>
                 }
             }
         }
+    }
+
+    /**
+     * Get the tag for a signature. 
+     * @param signature  Tag signature
+     * @param jhove2 JHOVE2 framework
+     * @return Tag, or null if the signature is not a tag signature
+     * @throws JHOVE2Exception
+     */
+    public static synchronized Tag getTag(String signature,
+                                          JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
+        init(jhove2);
         Tag tag = null;
         Iterator<Tag> iter = tags.iterator();
         while (iter.hasNext()) {
@@ -122,9 +132,14 @@ implements Comparable<Tag>
 
     /**
      * Get the tags.
+     * @param jhove2 JHOVE2 framework
      * @return tags
+     * @throws JHOVE2Exception 
      */
-    public static Set<Tag> getTags() {
+    public static Set<Tag> getTags(JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
+        init(jhove2);
         return tags;
     }
 

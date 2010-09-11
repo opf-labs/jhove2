@@ -316,7 +316,7 @@ implements Comparable<Object> {
             }
             /* Parse the ICCProfile tag */
             if (this.tag == ICCProfile) {
-                ByteStreamSource bss = new ByteStreamSource(source, this.valueOffset, this.count);
+                ByteStreamSource bss = new ByteStreamSource(jhove2, source, this.valueOffset, this.count);
                 Map<String, Object> i8r = SpringConfigInfo.getObjectsForType(I8R.class);
                 I8R identifier = (I8R) i8r.get("ICCIdentifier");
                 FormatIdentification iccPresumptiveFormat = new FormatIdentification(identifier, Confidence.PositiveSpecific); 

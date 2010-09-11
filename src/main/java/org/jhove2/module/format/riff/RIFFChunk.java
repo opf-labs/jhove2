@@ -37,6 +37,7 @@ package org.jhove2.module.format.riff;
 import java.io.EOFException;
 import java.io.IOException;
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.annotation.ReportableProperty.PropertyType;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
@@ -134,7 +135,8 @@ public class RIFFChunk
     /** Get RIFF chunk form type in descriptive form.
      * @return RIFF chunk form type
      */
-    @ReportableProperty(order=2, value="RIFF chunk form type in descriptive form.")
+    @ReportableProperty(order=2, value="RIFF chunk form type in descriptive form.",
+            type=PropertyType.Descriptive)
     public String getFormType_descriptive() {
         return this.formType_d;
     }
@@ -142,7 +144,8 @@ public class RIFFChunk
     /** Get RIFF chunk form type in raw form.
      * @return RIFF chunk form type
      */
-    @ReportableProperty(order=1, value="RIFF chunk form type in raw form.")
+    @ReportableProperty(order=1, value="RIFF chunk form type in raw form.",
+            type=PropertyType.Raw)
     public String getFormType_raw() {
         return this.formType;
     }

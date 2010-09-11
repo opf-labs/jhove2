@@ -70,15 +70,13 @@ public class FormatCategory
         this.category = category;
     }
 
-    /**
-     * Get the class category for a format. 
-     * @param format Format chunk format
+    /** Initialize the format categories. 
      * @param jhove2 JHOVE2 framework
-     * @return Format format chunk format category, or null if the format is not defined
-     * @throws JHOVE2Exception
+     * @throws JHOVE2Exception 
      */
-    public static synchronized FormatCategory getFormatCategory(int format, JHOVE2 jhove2)
-            throws JHOVE2Exception {
+    protected static synchronized void init(JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
         if (categories == null) {
             /* Initialize the Format categories from a Java resource bundle. */
             categories = new TreeSet<FormatCategory>();
@@ -95,6 +93,19 @@ public class FormatCategory
                 }
             }
         }
+    }
+    
+    /**
+     * Get the class category for a format. 
+     * @param format Format chunk format
+     * @param jhove2 JHOVE2 framework
+     * @return Format format chunk format category, or null if the format is not defined
+     * @throws JHOVE2Exception
+     */
+    public static synchronized FormatCategory getFormatCategory(int format, JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
+        init(jhove2);
         FormatCategory category = null;
         Iterator<FormatCategory> iter = categories.iterator();
         while (iter.hasNext()) {
@@ -109,9 +120,14 @@ public class FormatCategory
 
     /**
      * Get the Format format chunk format categories.
+     * @param jhove2 JHOVE2 framework
      * @return Format format chunk format categories
+     * @throws JHOVE2Exception 
      */
-    public static Set<FormatCategory> getFormatCategories() {
+    public static Set<FormatCategory> getFormatCategories(JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
+        init(jhove2);
         return categories;
     }
 

@@ -69,16 +69,14 @@ public class MPEGFlag
         this.flag   = flag;
         this.description = description;
     }
-
-    /**
-     * Get the description for a flag. 
-     * @param flag   MPEG flag
+    
+    /** Initialize the flags.
      * @param jhove2 JHOVE2 framework
-     * @return Flag MPEG flag description, or null if the flag is not defined
-     * @throws JHOVE2Exception
+     * @throws JHOVE2Exception 
      */
-    public static synchronized MPEGFlag getMPEGFlag(int flag, JHOVE2 jhove2)
-            throws JHOVE2Exception {
+    protected static synchronized void init(JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
         if (flags == null) {
             /* Initialize the Flag flags from a Java resource bundle. */
             flags = new TreeSet<MPEGFlag>();
@@ -95,6 +93,19 @@ public class MPEGFlag
                 }
             }
         }
+    }
+
+    /**
+     * Get the description for a flag. 
+     * @param flag   MPEG flag
+     * @param jhove2 JHOVE2 framework
+     * @return Flag MPEG flag description, or null if the flag is not defined
+     * @throws JHOVE2Exception
+     */
+    public static synchronized MPEGFlag getMPEGFlag(int flag, JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
+        init(jhove2);
         MPEGFlag flg = null;
         Iterator<MPEGFlag> iter = flags.iterator();
         while (iter.hasNext()) {
@@ -109,9 +120,14 @@ public class MPEGFlag
 
     /**
      * Get the MPEG flags.
+     * @param jhove2 JHOVE2 framework
      * @return MPEG flags
+     * @throws JHOVE2Exception 
      */
-    public static Set<MPEGFlag> getFlagCategories() {
+    public static Set<MPEGFlag> getFlags(JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
+        init(jhove2);
         return flags;
     }
 
@@ -142,7 +158,7 @@ public class MPEGFlag
 
     /**
      * Compare MPEG flag flag.
-     * @param chunk
+     * @param flag
      *             MPEG flag to be compared
      * @return -1, 0, or 1 if this MPEG flag flag is less than,
      *         equal to, or greater than the second

@@ -68,17 +68,14 @@ public class StandardObserver
         this.value    = value;
         this.observer = observer;
     }
-
-    /**
-     * Get the observer for a standard observer value.
-     * 
-     * @param value  Standard observer value
+    
+    /** Initialize the standard observers.
      * @param jhove2 JHOVE2 framework
-     * @return Standard observer, or null if the value is not defined
-     * @throws JHOVE2Exception
+     * @throws JHOVE2Exception 
      */
-    public static synchronized StandardObserver getStandardObserver(long value, JHOVE2 jhove2)
-            throws JHOVE2Exception {
+    protected static synchronized void init(JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
         if (observers == null) {
             /* Initialize the standard observers from a Java resource bundle. */
             observers = new TreeSet<StandardObserver>();
@@ -94,6 +91,20 @@ public class StandardObserver
                 }
             }
         }
+    }
+
+    /**
+     * Get the observer for a standard observer value.
+     * 
+     * @param value  Standard observer value
+     * @param jhove2 JHOVE2 framework
+     * @return Standard observer, or null if the value is not defined
+     * @throws JHOVE2Exception
+     */
+    public static synchronized StandardObserver getStandardObserver(long value, JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
+        init(jhove2);
         StandardObserver observer = null;
         Iterator<StandardObserver> iter = observers.iterator();
         while (iter.hasNext()) {
@@ -106,6 +117,18 @@ public class StandardObserver
 
         return observer;
     }
+    
+    /** Get the standard observers.
+     * @param jhove2 JHOVE2 framework
+     * @throws JHOVE2Exception 
+     */
+    public static Set<StandardObserver> getStandardObservers(JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
+        init(jhove2);
+        return observers;
+    }
+
 
     /**
      * Get the standard observer.

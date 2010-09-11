@@ -37,6 +37,7 @@ package org.jhove2.module.format.icc;
 
 import java.io.EOFException;
 import java.io.IOException;
+import java.nio.ByteOrder;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.annotation.ReportableProperty.PropertyType;
@@ -47,6 +48,7 @@ import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
+import org.jhove2.core.source.Source;
 import org.jhove2.module.format.Validator.Validity;
 import org.jhove2.module.format.icc.field.PerceptualRenderingIntent;
 import org.jhove2.module.format.icc.field.SaturationRenderingIntent;
@@ -187,7 +189,7 @@ public class ICCTag
     
     /** Parse an ICC tag.
      * @param jhove2 JHOVE2 framework
-     * @param input  ICC input
+     * @param source ICC source
      * @return Number of bytes consumed
      * @throws EOFException
      *             If End-of-File is reached reading the source unit
@@ -195,12 +197,13 @@ public class ICCTag
      *             If an I/O exception is raised reading the source unit
      * @throws JHOVE2Exception
      */
-    public long parse(JHOVE2 jhove2, Input input, long offset)
+    public long parse(JHOVE2 jhove2, Source source, long offset)
         throws EOFException, IOException, JHOVE2Exception
     {
         long consumed = 0L;
         int numErrors = 0;
         this.isValid = Validity.True;
+        Input input  = source.getInput(jhove2, ByteOrder.BIG_ENDIAN);
 
         /* Tag signature. */
         for (int i=0; i<4; i++) {
