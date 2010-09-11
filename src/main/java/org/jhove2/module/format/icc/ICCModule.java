@@ -114,7 +114,7 @@ public class ICCModule
         this.isValid = Validity.True;
         Input input = source.getInput(jhove2, ByteOrder.BIG_ENDIAN);
         if (input != null) {
-            input.setPosition(0L);
+            input.setPosition(source.getStartingOffset());
             try {
                 long start = 0L;
                 if ((start = input.getPosition()) == 0) {

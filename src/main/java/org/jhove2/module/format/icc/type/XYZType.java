@@ -36,6 +36,7 @@ package org.jhove2.module.format.icc.type;
 
 import java.io.EOFException;
 import java.io.IOException;
+import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +48,7 @@ import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
+import org.jhove2.core.source.Source;
 import org.jhove2.module.format.Validator.Validity;
 
 /** ICC XYZ tristimulus value array element type, as defined in ICC.1:2004-10,
@@ -55,7 +57,7 @@ import org.jhove2.module.format.Validator.Validity;
  * @author slabrams
  */
 public class XYZType
-        extends AbstractReportable
+    extends AbstractReportable
 {
     /** XYZ type signature. */
     public static final String SIGNATURE = "XYZ ";
@@ -88,7 +90,7 @@ public class XYZType
     
     /** Parse an ICC XYZ tag type element.
      * @param jhove2 JHOVE2 framework
-     * @param input  ICC input
+     * @param source ICC source
      * @param elementSize Size in bytes of the XYZ type element
      * @return Number of bytes consumed
      * @throws EOFException
@@ -97,12 +99,13 @@ public class XYZType
      *             If an I/O exception is raised reading the source unit
      * @throws JHOVE2Exception
      */
-    public long parse(JHOVE2 jhove2, Input input, long elementSize)
+    public long parse(JHOVE2 jhove2, Source source, long elementSize)
         throws EOFException, IOException, JHOVE2Exception
     {
         long consumed  = 0L;
         int  numErrors = 0;
         this.isValid   = Validity.True;
+        Input input    = source.getInput(jhove2, ByteOrder.BIG_ENDIAN);
   
         /* Tag signature. */
         for (int i=0; i<4; i++) {

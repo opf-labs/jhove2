@@ -57,7 +57,7 @@ import org.jhove2.module.format.Validator.Validity;
  * @author slabrams
  */
 public class ICCTagTable
-        extends AbstractReportable
+    extends AbstractReportable
 {
     /** Tag count. */
     protected long count;

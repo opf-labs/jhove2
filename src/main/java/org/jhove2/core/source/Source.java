@@ -167,7 +167,7 @@ public interface Source
 		throws FileNotFoundException, IOException;
 
 	/**
-	 * Get {@link org.jhove2.core.io.Input} for the source unit.
+	 * Get little-endian {@link org.jhove2.core.io.Input} for the source unit.
 	 * 
 	 * @param bufferSize
 	 *            Input maximum buffer size

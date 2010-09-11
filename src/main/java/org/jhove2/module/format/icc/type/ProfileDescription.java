@@ -51,7 +51,7 @@ import org.jhove2.module.format.icc.field.TechnologySignature;
  * @author slabrams
  */
 public class ProfileDescription
-        extends AbstractReportable
+    extends AbstractReportable
 {
     /** Device attributes in raw form. */
     protected long deviceAttributes;

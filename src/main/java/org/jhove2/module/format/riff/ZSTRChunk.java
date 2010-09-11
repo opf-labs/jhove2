@@ -40,6 +40,7 @@ import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.io.Input;
+import org.jhove2.core.source.Source;
 import org.jhove2.module.format.riff.field.LISTINFOChunks;
 
 /** Generic module for handling all RIFF format NUL-terminated text string
@@ -66,8 +67,8 @@ public class ZSTRChunk
      * 
      * @param jhove2
      *            JHOVE2 framework
-     * @param input
-     *            RIFF input
+     * @param source
+     *            RIFF source
      * @return Number of bytes consumed
      * @throws EOFException
      *             If End-of-File is reached reading the source unit
@@ -75,10 +76,12 @@ public class ZSTRChunk
      *             If an I/O exception is raised reading the source unit
      * @throws JHOVE2Exception
      */
-    public long parse(JHOVE2 jhove2, Input input)
+    @Override
+    public long parse(JHOVE2 jhove2, Source source)
         throws EOFException, IOException, JHOVE2Exception
     {
-        long consumed = super.parse(jhove2, input);
+        long consumed = super.parse(jhove2, source);
+        Input input   = source.getInput(jhove2);
         
         /* Description. */
         LISTINFOChunks chunk =

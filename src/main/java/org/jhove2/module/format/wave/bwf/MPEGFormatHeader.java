@@ -46,6 +46,8 @@ import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
+import org.jhove2.core.source.Source;
+import org.jhove2.module.format.Parser;
 import org.jhove2.module.format.wave.bwf.field.MPEGEmphasis;
 import org.jhove2.module.format.wave.bwf.field.MPEGFlag;
 import org.jhove2.module.format.wave.bwf.field.MPEGLayer;
@@ -57,7 +59,8 @@ import org.jhove2.module.format.wave.bwf.field.MPEGModeExtension;
  * @author slabrams
  */
 public class MPEGFormatHeader
-        extends AbstractReportable
+    extends AbstractReportable
+    implements Parser
 {
     /** Bit rate, in bits/second. */
     protected long bitRate;
@@ -113,8 +116,8 @@ public class MPEGFormatHeader
      * 
      * @param jhove2
      *            JHOVE2 framework
-     * @param input
-     *            WAVE input
+     * @param source
+     *            WAVE source
      * @return Number of bytes consumed
      * @throws EOFException
      *             If End-of-File is reached reading the source unit
@@ -122,9 +125,11 @@ public class MPEGFormatHeader
      *             If an I/O exception is raised reading the source unit
      * @throws JHOVE2Exception
      */
-    public long parse(JHOVE2 jhove2, Input input)
+    @Override
+    public long parse(JHOVE2 jhove2, Source source)
         throws EOFException, IOException, JHOVE2Exception
     {
+        Input input   = source.getInput(jhove2);
         long consumed = 0L;
         
         /* MPEG audio layer. */
@@ -201,6 +206,7 @@ public class MPEGFormatHeader
         
         return consumed;
     }
+    
     /** Get bit rate, in bits/second.
      * @return Bit rate
      */

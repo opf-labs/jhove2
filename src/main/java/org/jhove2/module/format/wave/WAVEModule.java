@@ -36,12 +36,10 @@ package org.jhove2.module.format.wave;
 
 import java.io.EOFException;
 import java.io.IOException;
-import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
@@ -60,8 +58,8 @@ import org.jhove2.module.format.riff.ChunkFactory;
  * @author slabrams
  */
 public class WAVEModule
-        extends BaseFormatModule
-        implements Validator
+    extends BaseFormatModule
+    implements Validator
 {
     /** WAVE module version identifier. */
     public static final String VERSION = "2.0.0";
@@ -119,7 +117,7 @@ public class WAVEModule
      * @throws IOException
      *             If an I/O exception is raised reading the source unit
      * @throws JHOVE2Exception
-     * @see org.jhove2.module.format.FormatModule#parse(org.jhove2.core.JHOVE2,
+     * @see org.jhove2.module.format.Parser#parse(org.jhove2.core.JHOVE2,
      *      org.jhove2.core.source.Source)
      */
     @Override
@@ -128,14 +126,10 @@ public class WAVEModule
     {
         long consumed = 0L;
         this.isValid = Validity.True;
-        Input input = null;
-        Invocation config = jhove2.getInvocation();
-        input = source.getInput(config.getBufferSize(), 
-                                config.getBufferType());
+        Input input = source.getInput(jhove2);
         if (input != null) {
             try {
-                input.setByteOrder(ByteOrder.LITTLE_ENDIAN);
-                input.setPosition(0L);
+                input.setPosition(source.getStartingOffset());
                 
                 StringBuffer sb = new StringBuffer(4);
                 for (int i=0; i<4; i++) {
@@ -143,7 +137,7 @@ public class WAVEModule
                     sb.append((char) b);
                 }
                 Chunk chunk = ChunkFactory.getChunk(sb.toString(), jhove2);
-                consumed += chunk.parse(jhove2, input);
+                consumed += chunk.parse(jhove2, source);
                 this.chunks.add(chunk);
             }
             finally {

@@ -42,7 +42,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
@@ -140,7 +139,7 @@ public class TiffModule extends BaseFormatModule implements Validator
      * @throws IOException
      *             If an I/O exception is raised reading the source unit
      * @throws JHOVE2Exception
-     * @see org.jhove2.module.format.FormatModule#parse(org.jhove2.core.JHOVE2,
+     * @see org.jhove2.module.format.Parser#parse(org.jhove2.core.JHOVE2,
      *      org.jhove2.core.source.Source)
      */
     @Override
@@ -157,11 +156,8 @@ public class TiffModule extends BaseFormatModule implements Validator
         TiffTag.getTiffTags(jhove2);
 
         int numErrors = 0;
-        Input input = null;
-        Invocation config = jhove2.getInvocation();
-        input = source.getInput(config.getBufferSize(), 
-                config.getBufferType());
-        long start = 0L;
+        Input input = source.getInput(jhove2);
+        long start  = source.getStartingOffset();
 
         try {
             input.setPosition(start);
@@ -233,7 +229,7 @@ public class TiffModule extends BaseFormatModule implements Validator
             this.jhove2 = null;
             this.source = null;
         }
-        return 0;
+        return consumed;
     }
 
     /** 

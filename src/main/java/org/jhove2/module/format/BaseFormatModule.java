@@ -91,6 +91,9 @@ public class BaseFormatModule
 	 *    returns a non-format module*/
 	protected Message moduleNotFormatModuleMessage;
 	
+	/** Module does not implement the {@link org.jhove2.module.format.Validator} interface message. */
+	protected Message moduleDoesNotImplementValidatorInterfaceMessage;
+	
 	/**
 	 * Instantiate a new <code>BaseFormatModule</code>.
 	 */
@@ -152,6 +155,12 @@ public class BaseFormatModule
 			if (this instanceof Validator) {
 				((Validator) this).validate(jhove2, source);
 			}
+			else {
+			    this.moduleDoesNotImplementValidatorInterfaceMessage =
+			        new Message(Severity.INFO, Context.PROCESS,
+			                "org.jhove2.module.format.BaseFormatModule.moduleDoesNotImplementValidatorInterface",
+			                jhove2.getConfigInfo());
+			}
 			List<FormatProfile> profiles = this.getProfiles();
 			if (profiles.size() > 0) {
 				for (FormatProfile profile : profiles) {
@@ -169,11 +178,9 @@ public class BaseFormatModule
 			}
 		}
 		catch (EOFException e) {
-//			throw new JHOVE2Exception("EOFException", e);
 			this.addExceptionMessageToSource(jhove2, source, e);
 		}
 		catch (IOException e) {
-//			throw new JHOVE2Exception("IOException", e);
 			this.addExceptionMessageToSource(jhove2, source, e);
 		}
 		finally {
@@ -243,12 +250,20 @@ public class BaseFormatModule
 	{
 		return 0;
 	}
+	
+	/** Get module does not implement the {@link org.jhove2.module.format.Validator} interface message
+	 * @return Message
+	 */
+	@ReportableProperty(order=17, value="Module does not implement the Validator interface message.")
+	public Message getModuleDoesNotImplementValidatorInterfaceMessage() {
+	    return this.moduleDoesNotImplementValidatorInterfaceMessage;
+	}
 
 	/**
 	 * Accessor for moduleNotFoundMessage
 	 * @return moduleNotFoundMessage
 	 */
-	@ReportableProperty(order = 15, value = "Format Module Not Found Error Message")
+	@ReportableProperty(order = 15, value = "Format module not found message.")
 	public Message getModuleNotFoundMessage() {
 		return moduleNotFoundMessage;
 	}
@@ -265,7 +280,7 @@ public class BaseFormatModule
 	 * Accessor for moduleNotFormatModuleMessage
 	 * @return Message
 	 */
-	@ReportableProperty(order = 16, value = "Module returned is not Format Module Error Message")
+	@ReportableProperty(order = 16, value = "Module is not format module.")
 	public Message getModuleNotFormatModuleMessage() {
 		return moduleNotFormatModuleMessage;
 	}

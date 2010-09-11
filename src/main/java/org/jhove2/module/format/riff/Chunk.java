@@ -34,14 +34,10 @@
 
 package org.jhove2.module.format.riff;
 
-import java.io.EOFException;
-import java.io.IOException;
 import java.util.List;
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.JHOVE2;
-import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.Reportable;
+import org.jhove2.module.format.Parser;
 import org.jhove2.module.format.Validator.Validity;
 
 /** Resource Interchange File Format (RIFF) chunk interface.
@@ -49,27 +45,8 @@ import org.jhove2.module.format.Validator.Validity;
  * @author slabrams
  */
 public interface Chunk
-        extends Reportable
+    extends Parser, Reportable
 {
-    /** 
-     * Parse a RIFF chunk.
-     * 
-     * @param jhove2
-     *            JHOVE2 framework
-     * @param input
-     *            RIFF input
-     * @return Number of bytes consumed
-     * @throws EOFException
-     *             If End-of-File is reached reading the source unit
-     * @throws IOException
-     *             If an I/O exception is raised reading the source unit
-     * @throws JHOVE2Exception
-     * @see org.jhove2.module.format.FormatModule#parse(org.jhove2.core.JHOVE2,
-     *      org.jhove2.core.source.Source)
-     */
-    public long parse(JHOVE2 jhove2, Input input)
-        throws EOFException, IOException, JHOVE2Exception;
-
     /** Get child chunks.
      * @return Child chunks
      */

@@ -42,6 +42,7 @@ import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
+import org.jhove2.core.source.Source;
 import org.jhove2.module.format.Validator.Validity;
 
 /** Resource Interchange File Format (RIFF) chunk.
@@ -84,22 +85,24 @@ public class GenericChunk
      * 
      * @param jhove2
      *            JHOVE2 framework
-     * @param input
-     *            RIFF input
+     * @param source
+     *            RIFF source
      * @return Number of bytes consumed
      * @throws EOFException
      *             If End-of-File is reached reading the source unit
      * @throws IOException
      *             If an I/O exception is raised reading the source unit
      * @throws JHOVE2Exception
-     * @see org.jhove2.module.format.FormatModule#parse(org.jhove2.core.JHOVE2,
+     * @see org.jhove2.module.format.Parser#parse(org.jhove2.core.JHOVE2,
      *      org.jhove2.core.source.Source)
      */
-    public long parse(JHOVE2 jhove2, Input input)
+    @Override
+    public long parse(JHOVE2 jhove2, Source source)
         throws EOFException, IOException, JHOVE2Exception
     {
         long consumed = 0L;
         this.isValid  = Validity.True; 
+        Input input   = source.getInput(jhove2);
         this.offset   = input.getPosition();
         
         /* Chunk identifier. */

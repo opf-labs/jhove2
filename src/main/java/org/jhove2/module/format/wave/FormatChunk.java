@@ -45,6 +45,7 @@ import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.io.Input;
+import org.jhove2.core.source.Source;
 import org.jhove2.module.format.Validator.Validity;
 import org.jhove2.module.format.riff.GenericChunk;
 import org.jhove2.module.format.wave.bwf.MPEGFormatHeader;
@@ -221,8 +222,8 @@ public class FormatChunk
      * 
      * @param jhove2
      *            JHOVE2 framework
-     * @param input
-     *            WAVE input
+     * @param source
+     *            WAVE source
      * @return Number of bytes consumed
      * @throws EOFException
      *             If End-of-File is reached reading the source unit
@@ -230,10 +231,13 @@ public class FormatChunk
      *             If an I/O exception is raised reading the source unit
      * @throws JHOVE2Exception
      */
-    public long parse(JHOVE2 jhove2, Input input)
+    @Override
+    public long parse(JHOVE2 jhove2, Source source)
         throws EOFException, IOException, JHOVE2Exception
     {
-        long consumed = super.parse(jhove2, input);
+        long consumed = super.parse(jhove2, source);
+        Input input   = source.getInput(jhove2);
+        long offset   = source.getStartingOffset();
         int numErrors = 0;
         
         /* Format category */
@@ -246,7 +250,7 @@ public class FormatChunk
         else {
             numErrors++;
             this.isValid = Validity.False;
-            Object [] args = new Object [] {input.getPosition()-4L, this.formatCategory};
+            Object [] args = new Object [] {input.getPosition()-4L-offset, this.formatCategory};
             this.invalidFormatCategoryMessage = new Message(Severity.ERROR,
                     Context.OBJECT,
                     "org.jhove2.module.format.wave.FormatChunk.invalidFormatCategory",
@@ -279,7 +283,7 @@ public class FormatChunk
             
             if (this.formatCategory == WAVE_FORMAT_MPEG) {
                 this.mpeg = new MPEGFormatHeader();
-                consumed += this.mpeg.parse(jhove2, input);
+                consumed += this.mpeg.parse(jhove2, source);
             }
         }
         

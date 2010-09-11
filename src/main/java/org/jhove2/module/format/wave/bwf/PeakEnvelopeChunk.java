@@ -46,6 +46,7 @@ import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.io.Input;
+import org.jhove2.core.source.Source;
 import org.jhove2.module.format.Validator.Validity;
 import org.jhove2.module.format.riff.GenericChunk;
 import org.jhove2.module.format.wave.bwf.field.PeakFormat;
@@ -55,7 +56,7 @@ import org.jhove2.module.format.wave.bwf.field.PeakFormat;
  * @author slabrams
  */
 public class PeakEnvelopeChunk
-        extends GenericChunk
+    extends GenericChunk
 {
     /** Block size. */
     protected long blockSize;
@@ -111,8 +112,8 @@ public class PeakEnvelopeChunk
      * 
      * @param jhove2
      *            JHOVE2 framework
-     * @param input
-     *            WAVE input
+     * @param source
+     *            WAVE source
      * @return Number of bytes consumed
      * @throws EOFException
      *             If End-of-File is reached reading the source unit
@@ -120,10 +121,13 @@ public class PeakEnvelopeChunk
      *             If an I/O exception is raised reading the source unit
      * @throws JHOVE2Exception
      */
-    public long parse(JHOVE2 jhove2, Input input)
+    @Override
+    public long parse(JHOVE2 jhove2, Source source)
         throws EOFException, IOException, JHOVE2Exception
     {
-        long consumed = super.parse(jhove2, input);
+        long consumed = super.parse(jhove2, source);
+        Input input   = source.getInput(jhove2);
+        long offset   = source.getStartingOffset();
         
         /* Version. */
         this.version = input.readUnsignedInt();
@@ -171,7 +175,7 @@ public class PeakEnvelopeChunk
             short b = input.readUnsignedByte();
             if (b != 0) {
                 this.isValid = Validity.False;
-                Object [] args = new Object [] {input.getPosition()-1L, b};
+                Object [] args = new Object [] {input.getPosition()-1L-offset, b};
                 Message msg = new Message(Severity.ERROR,
                         Context.OBJECT,
                         "org.jhove2.module.format.wave.bwf.PeakEnvelopeChunk.nonNULDataInReservedField",

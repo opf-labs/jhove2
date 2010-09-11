@@ -36,6 +36,7 @@ package org.jhove2.module.format.icc.type;
 
 import java.io.EOFException;
 import java.io.IOException;
+import java.nio.ByteOrder;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2;
@@ -45,6 +46,8 @@ import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
+import org.jhove2.core.source.Source;
+import org.jhove2.module.format.Parser;
 import org.jhove2.module.format.Validator.Validity;
 
 /** ICC 8-bit lookup table (LUT) type element, as defined in
@@ -53,7 +56,8 @@ import org.jhove2.module.format.Validator.Validity;
  * @author slabrams
  */
 public class LUT8Type
-        extends AbstractReportable
+    extends AbstractReportable
+    implements Parser
 {
     /** LUT type signature. */
     public static final String SIGNATURE = "mft1";
@@ -115,7 +119,7 @@ public class LUT8Type
     
     /** Parse an ICC LUT 8 tag type.
      * @param jhove2 JHOVE2 framework
-     * @param input  ICC input
+     * @param source ICC source
      * @return Number of bytes consumed
      * @throws EOFException
      *             If End-of-File is reached reading the source unit
@@ -123,12 +127,14 @@ public class LUT8Type
      *             If an I/O exception is raised reading the source unit
      * @throws JHOVE2Exception
      */
-    public long parse(JHOVE2 jhove2, Input input)
+    @Override
+    public long parse(JHOVE2 jhove2, Source source)
         throws EOFException, IOException, JHOVE2Exception
     {
         long consumed  = 0L;
         int  numErrors = 0;
         this.isValid = Validity.True;
+        Input input  = source.getInput(jhove2, ByteOrder.BIG_ENDIAN);
   
         /* Tag signature. */
         for (int i=0; i<4; i++) {

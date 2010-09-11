@@ -42,7 +42,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
@@ -451,15 +450,13 @@ public class XmlModule extends BaseFormatModule implements Validator {
             saxParser.parse(source, jhove2);
 
             /* Get the input object */
-            Invocation config = jhove2.getInvocation();
-            input = source.getInput(config.getBufferSize(), config
-                    .getBufferType());
+            input = source.getInput(jhove2);
 
             /*
              * Do a separate parse of the XML Declaration at the start of the
              * document
              */
-            input.setPosition(0L);
+            input.setPosition(source.getStartingOffset());
             xmlDeclaration.parse(input);
 
             /* Do a separate parse to inventory numeric character references */

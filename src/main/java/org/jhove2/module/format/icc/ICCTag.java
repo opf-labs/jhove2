@@ -204,6 +204,7 @@ public class ICCTag
         int numErrors = 0;
         this.isValid = Validity.True;
         Input input  = source.getInput(jhove2, ByteOrder.BIG_ENDIAN);
+        long  start  = source.getStartingOffset();
 
         /* Tag signature. */
         for (int i=0; i<4; i++) {
@@ -219,7 +220,7 @@ public class ICCTag
         else {
             numErrors++;
             this.isValid = Validity.False;
-            Object [] args = new Object [] {input.getPosition()-4L, signature.toString()};
+            Object [] args = new Object [] {input.getPosition()-4L-start, signature.toString()};
             this.unknownTagMessage = new Message(Severity.ERROR,
                 Context.OBJECT,
                 "org.jhove2.module.format.icc.ICCTag.UnknownTag",
@@ -229,10 +230,10 @@ public class ICCTag
         
         /* Tag offset + the offset of the start of the input. */
         this.offset = input.readUnsignedInt() + offset;
-        if ((this.offset & 0x00000003) != 0L) {
+        if (((this.offset-start) & 0x00000003) != 0L) {
             numErrors++;
             this.isValid = Validity.False;
-            Object [] args = new Object [] {input.getPosition()-4L, this.offset};
+            Object [] args = new Object [] {input.getPosition()-4L-start, this.offset};
             this.offsetNotWordAlignedMessage = new Message(Severity.ERROR,
                     Context.OBJECT,
                     "org.jhove2.module.format.icc.ICCTAG.OffsetNotWordAligned",
@@ -265,26 +266,26 @@ public class ICCTag
             Validity isValid = Validity.Undetermined;
             if (sig.equals("mAB ")) {
                 this.lutA2BType = new LUTAToBType();
-                this.lutA2BType.parse(jhove2, input);
+                this.lutA2BType.parse(jhove2, source);
                 
                 isValid = this.lutA2BType.isValid();
             }
             else if (sig.equals("mft1")) {
                 this.lut8Type = new LUT8Type();
-                this.lut8Type.parse(jhove2, input);
+                this.lut8Type.parse(jhove2, source);
                 
                 isValid = this.lut8Type.isValid();
             }
             else if (sig.equals("mft2")) {
                 this.lut16Type = new LUT16Type();
-                this.lut16Type.parse(jhove2, input);
+                this.lut16Type.parse(jhove2, source);
                 
                 isValid = this.lut16Type.isValid();
             }
             else {
                 numErrors++;
                 isValid = Validity.False;
-                Object [] args = new Object [] {this.offset, sig};
+                Object [] args = new Object [] {this.offset-start, sig};
                 this.incorrectTagTypeMessage = new Message(Severity.ERROR,
                         Context.OBJECT,
                         "org.jhove2.module.format.icc.ICCTag.incorrectTagType",
@@ -304,13 +305,13 @@ public class ICCTag
             Validity isValid = Validity.Undetermined;
             if (sig.equals("mBA ")) {
                 this.lutB2AType = new LUTBToAType();
-                this.lutB2AType.parse(jhove2, input);
+                this.lutB2AType.parse(jhove2, source);
                     
                 isValid = this.lutB2AType.isValid();
             }
             else if (sig.equals("mft1")) {
                 this.lut8Type = new LUT8Type();
-                this.lut8Type.parse(jhove2, input);
+                this.lut8Type.parse(jhove2, source);
                     
                 isValid = this.lut8Type.isValid();
             }
@@ -320,7 +321,7 @@ public class ICCTag
             else {
                 numErrors++;
                 isValid = Validity.False;
-                Object [] args = new Object [] {this.offset, sig};
+                Object [] args = new Object [] {this.offset-start, sig};
                 this.incorrectTagTypeMessage = new Message(Severity.ERROR,
                         Context.OBJECT,
                         "org.jhove2.module.format.icc.ICCTag.incorrectTagType",
@@ -338,14 +339,14 @@ public class ICCTag
             Validity isValid = Validity.Undetermined;
             if (sig.equals("XYZ ")) {
                 this.xyzType = new XYZType();
-                this.xyzType.parse(jhove2, input, this.size);
+                this.xyzType.parse(jhove2, source, this.size);
             
                 isValid = this.xyzType.isValid();
             }
             else {
                 numErrors++;
                 isValid = Validity.False;
-                Object [] args = new Object [] {this.offset, sig};
+                Object [] args = new Object [] {this.offset-start, sig};
                 this.incorrectTagTypeMessage = new Message(Severity.ERROR,
                         Context.OBJECT,
                         "org.jhove2.module.format.icc.ICCTag.incorrectTagType",
@@ -362,20 +363,20 @@ public class ICCTag
             Validity isValid = Validity.Undetermined;
             if (sig.equals("curv")) {
                 this.curveType = new CurveType();
-                this.curveType.parse(jhove2, input);
+                this.curveType.parse(jhove2, source);
                 
                 isValid = this.curveType.isValid();
             }
             else if (sig.equals("para")){
                 this.parametricType = new ParametricCurveType();
-                this.parametricType.parse(jhove2, input);
+                this.parametricType.parse(jhove2, source);
                 
                 isValid = this.parametricType.isValid();
             }
             else {
                 numErrors++;
                 isValid = Validity.False;
-                Object [] args = new Object [] {this.offset, sig};
+                Object [] args = new Object [] {this.offset-start, sig};
                 this.incorrectTagTypeMessage = new Message(Severity.ERROR,
                         Context.OBJECT,
                         "org.jhove2.module.format.icc.ICCTag.incorrectTagType",
@@ -389,14 +390,14 @@ public class ICCTag
             Validity isValid = Validity.Undetermined;
             if (sig.equals("dtim")) {
                 this.dateTimeType = new DateTimeType();
-                this.dateTimeType.parse(jhove2, input);
+                this.dateTimeType.parse(jhove2, source);
             
                 isValid = this.dateTimeType.isValid();
             }
             else {
                 numErrors++;
                 isValid = Validity.False;
-                Object [] args = new Object [] {this.offset, sig};
+                Object [] args = new Object [] {this.offset-start, sig};
                 this.incorrectTagTypeMessage = new Message(Severity.ERROR,
                         Context.OBJECT,
                         "org.jhove2.module.format.icc.ICCTag.incorrectTagType",
@@ -410,14 +411,14 @@ public class ICCTag
             Validity isValid = Validity.Undetermined;
             if (sig.equals("sf32")) {
                 this.s15f16Type = new S15Fixed16ArrayType();
-                this.s15f16Type.parse(jhove2, input, this.size);
+                this.s15f16Type.parse(jhove2, source, this.size);
             
                 isValid = this.s15f16Type.isValid();
             }
             else {
                 numErrors++;
                 isValid = Validity.False;
-                Object [] args = new Object [] {this.offset, sig};
+                Object [] args = new Object [] {this.offset-start, sig};
                 this.incorrectTagTypeMessage = new Message(Severity.ERROR,
                         Context.OBJECT,
                         "org.jhove2.module.format.icc.ICCTag.incorrectTagType",
@@ -431,14 +432,14 @@ public class ICCTag
             Validity isValid = Validity.Undetermined;
             if (sig.equals("chrm")) {
                 this.chromaticityType = new ChromaticityType();
-                this.chromaticityType.parse(jhove2, input);
+                this.chromaticityType.parse(jhove2, source);
             
                 isValid = this.chromaticityType.isValid();
             }
             else {
                 numErrors++;
                 isValid = Validity.False;
-                Object [] args = new Object [] {this.offset, sig};
+                Object [] args = new Object [] {this.offset-start, sig};
                 this.incorrectTagTypeMessage = new Message(Severity.ERROR,
                         Context.OBJECT,
                         "org.jhove2.module.format.icc.ICCTag.incorrectTagType",
@@ -452,14 +453,14 @@ public class ICCTag
             Validity isValid = Validity.Undetermined;
             if (sig.equals("clro")) {
                 this.colorantOrderType = new ColorantOrderType();
-                this.colorantOrderType.parse(jhove2, input);
+                this.colorantOrderType.parse(jhove2, source);
             
                 isValid = this.colorantOrderType.isValid();
             }
             else {
                 numErrors++;
                 isValid = Validity.False;
-                Object [] args = new Object [] {this.offset, sig};
+                Object [] args = new Object [] {this.offset-start, sig};
                 this.incorrectTagTypeMessage = new Message(Severity.ERROR,
                         Context.OBJECT,
                         "org.jhove2.module.format.icc.ICCTag.incorrectTagType",
@@ -473,14 +474,14 @@ public class ICCTag
             Validity isValid = Validity.Undetermined;
             if (sig.equals("clrt")) {
                 this.colorantTableType = new ColorantTableType();
-                this.colorantTableType.parse(jhove2, input);
+                this.colorantTableType.parse(jhove2, source);
             
                 isValid = this.colorantTableType.isValid();
             }
             else {
                 numErrors++;
                 isValid = Validity.False;
-                Object [] args = new Object [] {this.offset, sig};
+                Object [] args = new Object [] {this.offset-start, sig};
                 this.incorrectTagTypeMessage = new Message(Severity.ERROR,
                         Context.OBJECT,
                         "org.jhove2.module.format.icc.ICCTag.incorrectTagType",
@@ -499,26 +500,26 @@ public class ICCTag
             Validity isValid = Validity.Undetermined;
             if (sig.equals("desc")) {
                 this.descriptionType = new DescriptionType();
-                this.descriptionType.parse(jhove2, input);
+                this.descriptionType.parse(jhove2, source);
                 
                 isValid = this.descriptionType.isValid();
             }
             else if (sig.equals("text")) {
                 this.textType = new TextType();
-                this.textType.parse(jhove2, input, this.size);
+                this.textType.parse(jhove2, source, this.size);
                 
                 isValid = this.textType.isValid();
             }
             else if (sig.equals("mluc")){
                 this.unicodeType = new MultiLocalizedUnicodeType();
-                this.unicodeType.parse(jhove2, input);
+                this.unicodeType.parse(jhove2, source);
             
                 isValid = this.unicodeType.isValid();
             }
             else {
                 numErrors++;
                 isValid = Validity.False;
-                Object [] args = new Object [] {this.offset, sig};
+                Object [] args = new Object [] {this.offset-start, sig};
                 this.incorrectTagTypeMessage = new Message(Severity.ERROR,
                         Context.OBJECT,
                         "org.jhove2.module.format.icc.ICCTag.incorrectTagType",
@@ -532,14 +533,14 @@ public class ICCTag
             Validity isValid = Validity.Undetermined;
             if (sig.equals("meas")) {
                 this.measurementType = new MeasurementType();
-                this.measurementType.parse(jhove2, input);
+                this.measurementType.parse(jhove2, source);
             
                 isValid = this.measurementType.isValid();
             }
             else {
                 numErrors++;
                 isValid = Validity.False;
-                Object [] args = new Object [] {this.offset, sig};
+                Object [] args = new Object [] {this.offset-start, sig};
                 this.incorrectTagTypeMessage = new Message(Severity.ERROR,
                         Context.OBJECT,
                         "org.jhove2.module.format.icc.ICCTag.incorrectTagType",
@@ -553,14 +554,14 @@ public class ICCTag
             Validity isValid = Validity.Undetermined;
             if (sig.equals("ncl2")) {
                 this.color2Type = new NamedColor2Type();
-                this.color2Type.parse(jhove2, input);
+                this.color2Type.parse(jhove2, source);
             
                 isValid = this.color2Type.isValid();
             }
             else {
                 numErrors++;
                 isValid = Validity.False;
-                Object [] args = new Object [] {this.offset, sig};
+                Object [] args = new Object [] {this.offset-start, sig};
                 this.incorrectTagTypeMessage = new Message(Severity.ERROR,
                         Context.OBJECT,
                         "org.jhove2.module.format.icc.ICCTag.incorrectTagType",
@@ -574,14 +575,14 @@ public class ICCTag
             Validity isValid = Validity.Undetermined;
             if (sig.equals("pseq")) {
                 this.sequenceType = new ProfileSequenceDescriptionType();
-                this.sequenceType.parse(jhove2, input);
+                this.sequenceType.parse(jhove2, source);
             
                 isValid = this.sequenceType.isValid();
             }
             else {
                 numErrors++;
                 isValid = Validity.False;
-                Object [] args = new Object [] {this.offset, sig};
+                Object [] args = new Object [] {this.offset-start, sig};
                 this.incorrectTagTypeMessage = new Message(Severity.ERROR,
                         Context.OBJECT,
                         "org.jhove2.module.format.icc.ICCTag.incorrectTagType",
@@ -595,14 +596,14 @@ public class ICCTag
             Validity isValid = Validity.Undetermined;
             if (sig.equals("rcs2")) {
                 this.rcs16Type = new ResponseCurveSet16Type();
-                this.rcs16Type.parse(jhove2, input);
+                this.rcs16Type.parse(jhove2, source);
             
                 isValid = this.rcs16Type.isValid();
             }
             else {
                 numErrors++;
                 isValid = Validity.False;
-                Object [] args = new Object [] {this.offset, sig};
+                Object [] args = new Object [] {this.offset-start, sig};
                 this.incorrectTagTypeMessage = new Message(Severity.ERROR,
                         Context.OBJECT,
                         "org.jhove2.module.format.icc.ICCTag.incorrectTagType",
@@ -618,14 +619,14 @@ public class ICCTag
             Validity isValid = Validity.Undetermined;
             if (sig.equals("sig ")) {
                 this.signatureType = new SignatureType();
-                this.signatureType.parse(jhove2, input);
+                this.signatureType.parse(jhove2, source);
             
                 isValid = this.signatureType.isValid();
             }
             else {
                 numErrors++;
                 isValid = Validity.False;
-                Object [] args = new Object [] {this.offset, sig};
+                Object [] args = new Object [] {this.offset-start, sig};
                 this.incorrectTagTypeMessage = new Message(Severity.ERROR,
                         Context.OBJECT,
                         "org.jhove2.module.format.icc.ICCTag.incorrectTagType",
@@ -660,7 +661,7 @@ public class ICCTag
             if (this.signatureType.getContentSignature_description() == null) {
                 numErrors++;
                 this.isValid = Validity.False;
-                Object [] args = new Object[] {input.getPosition()-4L,
+                Object [] args = new Object[] {input.getPosition()-4L-start,
                                                content.toString()};
                 this.invalidTechnologySignatureMessage = new Message(Severity.ERROR,
                         Context.OBJECT,
@@ -672,14 +673,14 @@ public class ICCTag
             Validity isValid = Validity.Undetermined;
             if (sig.equals("view")) {
                 this.conditionsType = new ViewingConditionsType();
-                this.conditionsType.parse(jhove2, input);
+                this.conditionsType.parse(jhove2, source);
             
                 isValid = this.conditionsType.isValid();
             }
             else {
                 numErrors++;
                 isValid = Validity.False;
-                Object [] args = new Object [] {this.offset, sig};
+                Object [] args = new Object [] {this.offset-start, sig};
                 this.incorrectTagTypeMessage = new Message(Severity.ERROR,
                         Context.OBJECT,
                         "org.jhove2.module.format.icc.ICCTag.incorrectTagType",

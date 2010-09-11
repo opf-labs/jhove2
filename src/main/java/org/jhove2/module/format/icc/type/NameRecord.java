@@ -37,12 +37,15 @@ package org.jhove2.module.format.icc.type;
 
 import java.io.EOFException;
 import java.io.IOException;
+import java.nio.ByteOrder;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
+import org.jhove2.core.source.Source;
+import org.jhove2.module.format.Parser;
 
 /** ICC multi-localized Unicode type name record, as defined in
  * ICC.1:2004-10, Table 44.
@@ -50,7 +53,8 @@ import org.jhove2.core.reportable.AbstractReportable;
  * @author slabrams
  */
 public class NameRecord
-        extends AbstractReportable
+    extends AbstractReportable
+    implements Parser
 {
     /** ISO 3166 country code. */
     protected StringBuffer countryCode = new StringBuffer(2);
@@ -74,7 +78,7 @@ public class NameRecord
     
     /** Parse an ICC tag type.
      * @param jhove2 JHOVE2 framework
-     * @param input  ICC input
+     * @param source ICC source
      * @return Number of bytes consumed
      * @throws EOFException
      *             If End-of-File is reached reading the source unit
@@ -82,10 +86,12 @@ public class NameRecord
      *             If an I/O exception is raised reading the source unit
      * @throws JHOVE2Exception
      */
-    public long parse(JHOVE2 jhove2, Input input)
+    @Override
+    public long parse(JHOVE2 jhove2, Source source)
         throws EOFException, IOException, JHOVE2Exception
     {
         long consumed = 0L;
+        Input input   = source.getInput(jhove2, ByteOrder.BIG_ENDIAN);
         
         /* Language code. */
         for (int i=0; i<2; i++) {

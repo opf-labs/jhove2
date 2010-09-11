@@ -44,6 +44,7 @@ import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.io.Input;
+import org.jhove2.core.source.Source;
 import org.jhove2.module.format.Validator.Validity;
 import org.jhove2.module.format.riff.field.FormType;
 
@@ -73,8 +74,8 @@ public class RIFFChunk
      * 
      * @param jhove2
      *            JHOVE2 framework
-     * @param input
-     *            RIFF input
+     * @param source
+     *            RIFF source
      * @return Number of bytes consumed
      * @throws EOFException
      *             If End-of-File is reached reading the source unit
@@ -82,11 +83,14 @@ public class RIFFChunk
      *             If an I/O exception is raised reading the source unit
      * @throws JHOVE2Exception
      */
-    public long parse(JHOVE2 jhove2, Input input)
+    @Override
+    public long parse(JHOVE2 jhove2, Source source)
         throws EOFException, IOException, JHOVE2Exception
     {
         /* Chunk identifier and size. */
-        long consumed = super.parse(jhove2, input);
+        long consumed = super.parse(jhove2, source);
+        Input input   = source.getInput(jhove2);
+        long offset   = source.getStartingOffset();
         int numErrors = 0;
         
         /* Chunk form type. */
@@ -103,7 +107,7 @@ public class RIFFChunk
         else {
             numErrors++;
             this.isValid = Validity.False;
-            Object [] args = new Object [] {input.getPosition()-4L, this.formType};
+            Object [] args = new Object [] {input.getPosition()-4L-offset, this.formType};
             this.invalidFormTypeMessage = new Message(Severity.ERROR,
                     Context.OBJECT,
                     "org.jhove2.module.format.riff.Chunk.invalidFormType",
@@ -122,7 +126,7 @@ public class RIFFChunk
             }
             consumed += 4;
             Chunk chunk = ChunkFactory.getChunk(sb.toString(), jhove2);
-            consumed += chunk.parse(jhove2, input);
+            consumed += chunk.parse(jhove2, source);
             this.chunks.add(chunk);
             
             pos = chunk.getNextChunkOffset();

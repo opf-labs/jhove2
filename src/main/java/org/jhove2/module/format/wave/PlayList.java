@@ -41,6 +41,8 @@ import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
+import org.jhove2.core.source.Source;
+import org.jhove2.module.format.Parser;
 
 /** WAVE play list.
  * 
@@ -48,6 +50,7 @@ import org.jhove2.core.reportable.AbstractReportable;
  */
 public class PlayList
     extends AbstractReportable
+    implements Parser
 {
     /** Play list length, in samples. */
     protected long length;
@@ -68,20 +71,22 @@ public class PlayList
      * 
      * @param jhove2
      *            JHOVE2 framework
-     * @param input
-     *            WAVE input
+     * @param source
+     *            WAVE source
      * @return Number of bytes consumed
      * @throws EOFException
      *             If End-of-File is reached reading the source unit
      * @throws IOException
      *             If an I/O exception is raised reading the source unit
      * @throws JHOVE2Exception
-     * @see org.jhove2.module.format.FormatModule#parse(org.jhove2.core.JHOVE2,
+     * @see org.jhove2.module.format.Parser#parse(org.jhove2.core.JHOVE2,
      *      org.jhove2.core.source.Source)
      */
-    public long parse(JHOVE2 jhove2, Input input)
+    @Override
+    public long parse(JHOVE2 jhove2, Source source)
         throws EOFException, IOException, JHOVE2Exception
     {
+        Input input   = source.getInput(jhove2);
         long consumed = 0L;
         
         /* Play list name. */
