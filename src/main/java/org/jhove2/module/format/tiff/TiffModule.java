@@ -53,6 +53,7 @@ import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.module.format.Validator;
+import org.jhove2.module.format.Validator.Validity;
 
 /**
  * JHOVE2 TIFF module. This module parses a TIFF instance and captures selected
@@ -61,7 +62,9 @@ import org.jhove2.module.format.Validator;
  * @author mstrong
  *
  */
-public class TiffModule extends BaseFormatModule implements Validator 
+public class TiffModule 
+       extends BaseFormatModule 
+       implements Validator 
 {
     /** TIFF module version identifier. */
     public static final String VERSION = "2.0.0";
@@ -78,7 +81,7 @@ public class TiffModule extends BaseFormatModule implements Validator
     public static final Coverage COVERAGE = Coverage.Inclusive;
 
     /** TIFF Module validity status. */
-    protected Validity validity;
+    protected Validity isValid;
 
     /** TIFF IFH - Image File Header */
     protected IFH ifh = new IFH();
@@ -121,6 +124,8 @@ public class TiffModule extends BaseFormatModule implements Validator
      */
     public TiffModule(Format format) {
         super(VERSION, RELEASE, RIGHTS, format);
+        
+        this.isValid = Validity.Undetermined;
     }
     
     public TiffModule() {
@@ -151,7 +156,7 @@ public class TiffModule extends BaseFormatModule implements Validator
         this.source = source;
 
         long consumed = 0L;
-        this.validity = Validity.Undetermined;
+        this.isValid = Validity.True;
         
         /* initialize the tiff tags */
         TiffTag.getTiffTags(jhove2);
@@ -175,7 +180,7 @@ public class TiffModule extends BaseFormatModule implements Validator
             /* validate first 2 bytes */
             if ((b[0] != b[1]) && 
                 (b[0] == 0x49 || b[0] == 0x4D)) {
-                this.validity = Validity.False;
+                this.isValid = Validity.False;
                 numErrors++;
                 Object[]messageArgs = new Object[]{0, input.getPosition(), b[0]};
                 this.invalidFirstTwoBytesMessage.add(new Message(Severity.ERROR,
@@ -197,7 +202,7 @@ public class TiffModule extends BaseFormatModule implements Validator
 
             int magic = input.readUnsignedShort();
             if (magic != 43 && magic != 42) {
-                this.validity = Validity.False;
+                this.isValid = Validity.False;
                 Object[]messageArgs = new Object[]{magic};
                 this.invalidMagicNumberMessage.add(new Message(Severity.ERROR,
                         Context.OBJECT,
@@ -214,12 +219,16 @@ public class TiffModule extends BaseFormatModule implements Validator
             /* loop through IfdList and validate each one */
             for (IFD ifd:ifdList){
                 if (ifd instanceof TiffIFD) {
-                    ifd.validate(jhove2);
+                    ifd.validate(jhove2, source);
+                    Validity validity = ifd.isValid();
+                    if (validity != Validity.True) {
+                        this.isValid = validity;
+                    }
                 }
             }
 
         } catch (EOFException e) {
-            this.validity = Validity.False;
+            this.isValid = Validity.False;
             this.prematureEOFMessage.add(new Message(Severity.ERROR,
                     Context.OBJECT,
                     "org.jhove2.module.format.tiff.TIFFModule.PrematureEOFMessage",
@@ -254,7 +263,7 @@ public class TiffModule extends BaseFormatModule implements Validator
 
             /* must have at least 1 IFD */
             if (offset == 0L) {
-                this.validity = Validity.False;
+                this.isValid = Validity.False;
                 this.invalidFieldMessage.add(new Message(Severity.ERROR,
                         Context.OBJECT,
                         "org.jhove2.module.format.tiff.TIFFModule.NoIFDInTIFFFileMessage",
@@ -272,7 +281,7 @@ public class TiffModule extends BaseFormatModule implements Validator
         while (nextIfdOffset != 0L) {
             /* offset must be word aligned (even number) */
             if ((offset & 1) != 0) {
-                this.validity = Validity.False;
+                this.isValid = Validity.False;
                 Object[]messageArgs = new Object[]{0, input.getPosition(), offset};
                 this.byteOffsetNotWordAlignedMessage.add(new Message(Severity.ERROR,
                         Context.OBJECT,
@@ -313,7 +322,10 @@ public class TiffModule extends BaseFormatModule implements Validator
             ifd.setThumbnail (true);
         }
         list.add(ifd);
-        version = ifd.getVersion();
+        int version = ifd.getVersion();
+        if (version > this.version) {
+            this.version = version;
+        }
 
         // TODO:  parse subIFDs chains here
 
@@ -347,7 +359,7 @@ public class TiffModule extends BaseFormatModule implements Validator
      */
     @Override
     public Validity validate(JHOVE2 jhove2, Source source) throws JHOVE2Exception {
-        return this.validity;
+        return this.isValid;
     }
 
     /**
@@ -357,14 +369,14 @@ public class TiffModule extends BaseFormatModule implements Validator
      */
     @Override
     public Validity isValid() {
-        if (validity == null) {
+        if (isValid == null) {
             try {
                 validate(jhove2, source);
             }
             catch (JHOVE2Exception e) {
             }
         }
-        return validity;
+        return isValid;
     }
 
     /**
@@ -394,6 +406,14 @@ public class TiffModule extends BaseFormatModule implements Validator
     @ReportableProperty(order = 3, value = "Fail fast message.")
     public Message getFailFast() {
         return this.failFastMessage;
+    }
+
+    /**
+     * @return the version
+     */
+    @ReportableProperty(order = 4, value = "TIFF version.")
+    public int getTiffVersion() {
+        return version;
     }
 
 }

@@ -61,7 +61,7 @@ import org.jhove2.module.format.Validator.Validity;
  *
  */
 public abstract class IFD 
-extends AbstractReportable {
+        extends AbstractReportable {
 
     protected static Properties tiffTagProps;
 
@@ -285,10 +285,12 @@ extends AbstractReportable {
 
     /**
      * validate the IFD
+     * @param source 
      * 
      * @return Validity
+     * @throws JHOVE2Exception 
      */
-    abstract Validity validate(JHOVE2 jhove2);
+    abstract Validity validate(JHOVE2 jhove2, Source source) throws JHOVE2Exception;
 
 
 }

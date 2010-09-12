@@ -28,13 +28,13 @@ public class ShortArray
      * @return the value stored in the ShortArray reportable object
      */
     @ReportableProperty(order = 1, value = "Tag SHORT Array value")
-    public String getShortArray() {
+    public String getValue() {
         return this.toString();
     }
     /**
      * @return the value Array
      */
-    public int[] getValueArray() {
+    public int[] getShortArrayValue() {
         return valueArray;
     }
     
