@@ -37,6 +37,7 @@ package org.jhove2.module.format.tiff;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
@@ -45,7 +46,9 @@ import org.jhove2.core.Message.Severity;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.Validator.Validity;
 import org.jhove2.module.format.tiff.type.Long;
+import org.jhove2.module.format.tiff.type.Byte;
 import org.jhove2.module.format.tiff.type.LongArray;
+import org.jhove2.module.format.tiff.type.Rational;
 import org.jhove2.module.format.tiff.type.Short;
 import org.jhove2.module.format.tiff.type.ShortArray;
 
@@ -59,6 +62,7 @@ extends IFD
     /** Partial list of Tiff Tags */
     public static final int
     ARTIST = 315,
+    BACKGROUNDCOLORINDICATOR = 34024,
     BITSPERSAMPLE = 258,
     CELLLENGTH = 265,
     CLIPPATH =343,
@@ -67,14 +71,19 @@ extends IFD
     DATETIME = 306,
     DOTRANGE = 336,
     EXTRASAMPLES = 338,
+    FILLORDER = 266,
     ICCPROFILE = 34675,
     IMAGEWIDTH = 256,
+    IMAGECOLORINDICATOR = 34023,
     IMAGELENGTH = 257,
+    INDEXED = 346,
     JPEGPROC = 512,
     ORIENTATION = 274,
     NEWSUBFILETYPE = 254,
     PLANARCONFIGURATION = 284,
     PHOTMETRIC_INTERPRETATION = 262,
+    RESOLUTIONUNIT = 296,
+    ROWSPERSTRIP = 278,
     SAMPLESPERPIXEL = 277,
     STRIPBYTECOUNTS = 279,
     STRIPOFFSETS = 273,
@@ -83,19 +92,27 @@ extends IFD
     TILELENGTH = 323,
     TILEWIDTH = 322,
     TILEOFFSETS = 324,
-    XCLIPPATHUNITS = 344;
+    XCLIPPATHUNITS = 344,
+    XRESOLUTION = 282,
+    YRESOLUTION = 283;
 
     /** compression tag value */
-    private long compression;
+    private int compression;
 
     /* dot range tag value */
-    private int[] dotRange;
+    private int[] dotRange = null;
 
     /* dot range out of range message */
     private Message dotRangeOutofRangeMessage;
     
     /** flag indicating if Photometric Interpreation is present */
     boolean hasPhotometricInterpretation = false;
+
+    /** flag indicating if strip byte counts tag is present */
+    private boolean hasStripByteCounts = false;
+
+    /** flag indicating if strip offsets are present */
+    public boolean hasStripOffsets = false;
 
     /** indicates if TileByteCounts tag present */
     private boolean hasTileByteCounts;
@@ -122,19 +139,19 @@ extends IFD
     private int photometricInterpretation;
 
     /** strip byte counts value */
-    long[] stripByteCounts;
+    long[] stripByteCounts = null;
 
     /** strip offsets value */
-    private long[] stripOffsets;
+    private long[] stripOffsets = null;
 
     /** tile byte counts tag value */
-    private long[] tileByteCounts;
+    private long[] tileByteCounts = null;
 
     /** tile length tag value */
     private long tileLength;
 
     /** tile offsets tag value */
-    private long [] tileOffsets;
+    private long [] tileOffsets = null;
 
     /** tiles and strips are both defined message */
     private Message tilesAndStripsDefinedMessage;
@@ -194,16 +211,16 @@ extends IFD
     private Message photometricInterpretationSppLT3InvalidMessage;
 
     /** color map bit code value */
-    private int[] colorMapBitCode;
+    private int[] colorMapBitCode = null;
     
     /** color map red value */
-    private int[] colorMapRed;
+    private int[] colorMapRed = null;
 
     /** color map green value */
-    private int[] colorMapGreen;
+    private int[] colorMapGreen = null;
 
     /** color map blue value */
-    private int[] colorMapBlue;
+    private int[] colorMapBlue = null;
     
     /** color map not defined for pallete color message */
     private Message colorMapNotDefinedForPalleteColorMessage;
@@ -215,10 +232,10 @@ extends IFD
     private long newSubfileType;
 
     /** bit per sample tag value */
-    private int[] bitsPerSample;
+    private int[] bitsPerSample = null;
 
     /** colorMap tag value */
-    private int[] colorMap;
+    private int[] colorMap = null;
 
     /** insufficient color map values for Pallete color message */
     private Message insufficientColorMapValuesForPalleteColorMessage;
@@ -238,6 +255,34 @@ extends IFD
     /** XCLipPathUnits not defined when ClipPaths defined message */
     private Message xClipPathUnitsNotDefinedMessage;
 
+    private int resolutionUnit;
+
+    private long xResolution;
+
+    private Rational yResolution;
+
+    private int orientation;
+
+    private int imageColorIndicator;
+
+    private int backgroundColorIndicator;
+
+    private int indexed;
+
+    private int fillOrder;
+
+    private boolean hasImageLength = false;
+
+    private boolean hasImageWidth = false;
+
+    private boolean hasXResolution = false;
+
+    private boolean hasYResolution = false;
+
+    private boolean hasRowsPerStrip;
+
+    private long rowsPerStrip;
+
 
     /** Instantiate a <code>TiffIFD</code> object
      *  represents a Tiff IFD 
@@ -250,14 +295,45 @@ extends IFD
     }
 
 
+    public void postParse() 
+    {
+        IFDEntry entry = null;
+    
+        if ((entry = entries.get(RESOLUTIONUNIT)) != null) {
+            this.resolutionUnit = ((Short) entry.getValue()).getValue();
+            }
+        if ((entry = entries.get(XRESOLUTION)) != null) {
+            this.xResolution = (((Rational) entry.getValue()).toLong());
+            hasXResolution = true;
+            }
+        if ((entry = entries.get(YRESOLUTION)) != null) {
+            this.yResolution = (Rational) entry.getValue();
+            hasYResolution = true;
+            }
+        if ((entry = entries.get(IMAGECOLORINDICATOR)) != null) {
+            this.imageColorIndicator = ((Byte) entry.getValue()).getValue();
+            }
+        if ((entry = entries.get(ORIENTATION)) != null) {
+            this.orientation = ((Short) entry.getValue()).getValue();
+            }
+        if ((entry = entries.get(BACKGROUNDCOLORINDICATOR)) != null) {
+            this.backgroundColorIndicator = ((Short) entry.getValue()).getValue();
+            }
+        if ((entry = entries.get(INDEXED)) != null) {
+            this.indexed = ((Short) entry.getValue()).getValue();
+            }
+        if ((entry = entries.get(FILLORDER)) != null) {
+            this.fillOrder = ((Short) entry.getValue()).getValue();
+            }
+        if ((entry = entries.get(ROWSPERSTRIP)) != null) {
+            this.rowsPerStrip = ((Long) entry.getValue()).getValue();
+            hasRowsPerStrip = true;
+            }
+    }
+    
     public Validity validate(JHOVE2 jhove2, Source source) throws JHOVE2Exception
     {
         IFDEntry entry = null;
-
-        boolean hasImageLength = false;
-        boolean hasImageWidth = false;
-        boolean hasStripByteCounts = false;
-        boolean hasStripOffsets = false;
 
         /* Validate The ImageLength (tag 257), ImageWidth (256), and PhotometricInterpretation (262) tags are defined */
         if ((entry = entries.get(IMAGELENGTH)) != null) {
@@ -275,7 +351,7 @@ extends IFD
         }
         if ((entry = entries.get(IMAGEWIDTH)) != null) {
             this.imageWidth = ((Long) entry.getValue()).getValue();
-            hasImageWidth = true;
+            hasImageWidth  = true;
         }
         else {
             this.isValid = Validity.False;
@@ -303,6 +379,7 @@ extends IFD
          * if version 6.0 then either all of StripByteCounts and StripOffsets or 
          * TileByteCounts (325), TileLength (323), TileOffsets (324), and TileWidth (322) are defined
          */
+
         if ((entry = entries.get(STRIPBYTECOUNTS)) != null) {
             this.stripByteCounts = ((LongArray) entry.getValue()).getLongArrayValue();
             hasStripByteCounts = true;
@@ -634,7 +711,547 @@ extends IFD
             this.isValid = Validity.True;
         return isValid;
     }
+
+
+    /**
+     * @return the compression
+     */
+    public int getCompression() {
+        return compression;
+    }
+
+
+    /**
+     * @return the dotRange
+     */
+    public int[] getDotRange() {
+        return dotRange;
+    }
+
+
+    /**
+     * @return the dotRangeOutofRangeMessage
+     */
+    @ReportableProperty(order = 1, value="Dot Range out of range message.")
+    public Message getDotRangeOutofRangeMessage() {
+        return dotRangeOutofRangeMessage;
+    }
+
+
+    /**
+     * @return the missingRequiredTagMessages
+     */
+    @ReportableProperty(order = 2, value = "Missing Required tag message.")
+    public List<Message> getMissingRequiredTagMessages() {
+        return missingRequiredTagMessages;
+    }
+
+
+    /**
+     * @return the photometricInterpretation
+     */
+    public int getPhotometricInterpretation() {
+        return photometricInterpretation;
+    }
+
+
+    /**
+     * @return the stripByteCounts
+     */
+    public long[] getStripByteCounts() {
+        return stripByteCounts;
+    }
+
+
+    /**
+     * @return the stripOffsets
+     */
+    public long[] getStripOffsets() {
+        return stripOffsets;
+    }
+
+
+    /**
+     * @return the tileByteCounts
+     */
+    public long[] getTileByteCounts() {
+        return tileByteCounts;
+    }
+
+
+    /**
+     * @return the tileLength
+     */
+    public long getTileLength() {
+        return tileLength;
+    }
+
+
+    /**
+     * @return the tileOffsets
+     */
+    public long[] getTileOffsets() {
+        return tileOffsets;
+    }
+
+
+    /**
+     * @return the tilesAndStripsDefinedMessage
+     */
+    @ReportableProperty(order = 3, value = "Tiles and strips defined message.")
+    public Message getTilesAndStripsDefinedMessage() {
+        return tilesAndStripsDefinedMessage;
+    }
+
+
+    /**
+     * @return the tilesAndStripsNotDefinedMessage
+     */
+    @ReportableProperty(order = 4, value = "tiles and strips not defined message.")
+    public Message getTilesAndStripsNotDefinedMessage() {
+        return tilesAndStripsNotDefinedMessage;
+    }
+
+
+    /**
+     * @return the tileWidth
+     */
+    public long getTileWidth() {
+        return tileWidth;
+    }
+
+
+    /**
+     * @return the stripByteCountsNotDefinedMessage
+     */
+    @ReportableProperty(order = 5, value = "StripByteCounts not defined message.")
+    public Message getStripByteCountsNotDefinedMessage() {
+        return stripByteCountsNotDefinedMessage;
+    }
+
+
+    /**
+     * @return the stripOffsetsNotDefinedMessage
+     */
+    @ReportableProperty(order = 6, value = "StripOffsets not defined message.")
+    public Message getStripOffsetsNotDefinedMessage() {
+        return stripOffsetsNotDefinedMessage;
+    }
+
+
+    /**
+     * @return the planarConfiguration
+     */
+    public int getPlanarConfiguration() {
+        return planarConfiguration;
+    }
+
+
+    /**
+     * @return the samplesPerPixel
+     */
+    public int getSamplesPerPixel() {
+        return samplesPerPixel;
+    }
+
+
+    /**
+     * @return the stripsLengthInconsistentMessage
+     */
+    @ReportableProperty(order = 7, value = "StripsLength is inconsistent message.")
+    public Message getStripsLengthInconsistentMessage() {
+        return StripsLengthInconsistentMessage;
+    }
+
+
+    /**
+     * @return the invalidStripOffsetMessage
+     */
+    @ReportableProperty(order = 8, value = "Invalid StripOffset message.")
+    public Message getInvalidStripOffsetMessage() {
+        return invalidStripOffsetMessage;
+    }
+
+
+    /**
+     * @return the tileByteCountsNotDefinedMessage
+     */
+    @ReportableProperty(order = 9, value = "TileByteCounts not defined message")
+    public Message getTileByteCountsNotDefinedMessage() {
+        return tileByteCountsNotDefinedMessage;
+    }
+
+
+    /**
+     * @return the tileOffsetsNotDefinedMessage
+     */
+    @ReportableProperty(order = 10, value = "TileOffsets not defined message.")
+    public Message getTileOffsetsNotDefinedMessage() {
+        return tileOffsetsNotDefinedMessage;
+    }
+
+
+    /**
+     * @return the tileWidthNotDefinedMessage
+     */
+    @ReportableProperty(order = 11, value = "TileWidth not defined message")
+    public Message getTileWidthNotDefinedMessage() {
+        return tileWidthNotDefinedMessage;
+    }
+
+
+    /**
+     * @return the tileLengthNotDefinedMessage
+     */
+    @ReportableProperty(order = 12, value = "TileLength not defined message")
+    public Message getTileLengthNotDefinedMessage() {
+        return tileLengthNotDefinedMessage;
+    }
+
+
+    /**
+     * @return the tileOffsetValuesInsufficientMessage
+     */
+    @ReportableProperty(order = 13, value = "TileOffsetValues are insufficient message.")
+    public Message getTileOffsetValuesInsufficientMessage() {
+        return tileOffsetValuesInsufficientMessage;
+    }
+
+
+    /**
+     * @return the tileByteCountsValuesInsufficientMessage
+     */
+    @ReportableProperty(order = 14, value = "TilesByteCountsValues are insufficient message.")
+    public Message getTileByteCountsValuesInsufficientMessage() {
+        return tileByteCountsValuesInsufficientMessage;
+    }
+
+
+    /**
+     * @return the transparencyMaskValueInconsistentMessage
+     */
+    @ReportableProperty(order = 15, value = "Transparency Mask value inconsistent message.")
+    public Message getTransparencyMaskValueInconsistentMessage() {
+        return transparencyMaskValueInconsistentMessage;
+    }
+
+
+    /**
+     * @return the bPSInvalidForTransparencyMaskMessage
+     */
+    @ReportableProperty(order = 16, value = "BitsPerSample Invalid for transparency mask message.")
+    public Message getBPSInvalidForTransparencyMaskMessage() {
+        return BPSInvalidForTransparencyMaskMessage;
+    }
+
+
+    /**
+     * @return the photometricInterpretationSppLT1InvalidMessage
+     */
+    @ReportableProperty(order = 17, value = "PhotometricInterpretation SamplesPerPixel less than one invalid message.")
+    public Message getPhotometricInterpretationSppLT1InvalidMessage() {
+        return photometricInterpretationSppLT1InvalidMessage;
+    }
+
+
+    /**
+     * @return the photometricInterpretationSppLT3InvalidMessage
+     */
+    @ReportableProperty(order = 17, value = "PhotometricInterpretation SamplesPerPixel less than three invalid message.")
+    public Message getPhotometricInterpretationSppLT3InvalidMessage() {
+        return photometricInterpretationSppLT3InvalidMessage;
+    }
+
+
+    /**
+     * @return the colorMapBitCode
+     */
+    public int[] getColorMapBitCode() {
+        return colorMapBitCode;
+    }
+
+
+    /**
+     * @return the colorMapRed
+     */
+    public int[] getColorMapRed() {
+        return colorMapRed;
+    }
+
+
+    /**
+     * @return the colorMapGreen
+     */
+    public int[] getColorMapGreen() {
+        return colorMapGreen;
+    }
+
+
+    /**
+     * @return the colorMapBlue
+     */
+    public int[] getColorMapBlue() {
+        return colorMapBlue;
+    }
+
+
+    /**
+     * @return the colorMapNotDefinedForPalleteColorMessage
+     */
+    @ReportableProperty(order = 18, value = "ColorMap not defined for pallete color message.")
+    public Message getColorMapNotDefinedForPalleteColorMessage() {
+        return colorMapNotDefinedForPalleteColorMessage;
+    }
+
+
+    /**
+     * @return the sppMustEqualOneForPalleteColorMessage
+     */
+    @ReportableProperty(order = 19, value = "Samples Per Pixel must equal one for pallete color message.")
+    public Message getSppMustEqualOneForPalleteColorMessage() {
+        return sppMustEqualOneForPalleteColorMessage;
+    }
+
+
+    /**
+     * @return the newSubfileType
+     */
+    public long getNewSubfileType() {
+        return newSubfileType;
+    }
+
+
+    /**
+     * @return the bitsPerSample
+     */
+    public int[] getBitsPerSample() {
+        return bitsPerSample;
+    }
+
+
+    /**
+     * @return the colorMap
+     */
+    public int[] getColorMap() {
+        return colorMap;
+    }
+
+
+    /**
+     * @return the insufficientColorMapValuesForPalleteColorMessage
+     */
+    @ReportableProperty(order = 20, value = "Insufficient colormpa values for pallete color message.")
+    public Message getInsufficientColorMapValuesForPalleteColorMessage() {
+        return insufficientColorMapValuesForPalleteColorMessage;
+    }
+
+
+    /**
+     * @return the colorMapNotDefinedForPalletteColorMessage
+     */
+    @ReportableProperty(order = 21, value = "Color map not defined for pallete color message.")
+    public Message getColorMapNotDefinedForPalletteColorMessage() {
+        return colorMapNotDefinedForPalletteColorMessage;
+    }
+
+
+    /**
+     * @return the cellLengthShouldNotBePresentMessage
+     */
+    @ReportableProperty(order = 22, value = "CellLength should not be present message.")
+    public Message getCellLengthShouldNotBePresentMessage() {
+        return cellLengthShouldNotBePresentMessage;
+    }
+
+
+    /**
+     * @return the sppExtraSamplesValueInvalidMessage
+     */
+    @ReportableProperty(order = 23, value = "Samples per pixel-extra samples value invalid message.")
+    public Message getSppExtraSamplesValueInvalidMessage() {
+        return sppExtraSamplesValueInvalidMessage;
+    }
+
+
+    /**
+     * @return the bpsValueInvalidforCIELabMessage
+     */
+    @ReportableProperty(order = 24, value = "Bits per sample value invalid for CIE L*a*b* message.")
+    public Message getBpsValueInvalidforCIELabMessage() {
+        return bpsValueInvalidforCIELabMessage;
+    }
+
+
+    /**
+     * @return the xClipPathUnitsNotDefinedMessage
+     */
+    @ReportableProperty(order = 25, value = "XClipPlathUnits not defined message.")
+    public Message getXClipPathUnitsNotDefinedMessage() {
+        return xClipPathUnitsNotDefinedMessage;
+    }
+
+    /**
+     * @return the hasPhotometricInterpretation
+     */
+    public boolean hasPhotometricInterpretation() {
+        return hasPhotometricInterpretation;
+    }
+
+    /**
+     * @return the hasImageLength
+     */
+    public boolean hasImageLength() {
+        return hasImageLength;
+    }
+
+
+    /**
+     * @return the hasImageWidth
+     */
+    public boolean hasImageWidth() {
+        return hasImageWidth;
+    }
+
+
+    /**
+     * @return the hasStripByteCounts
+     */
+    public boolean hasStripByteCounts() {
+        return hasStripByteCounts;
+    }
+
+
+    /**
+     * @return the hasStripOffsets
+     */
+    public boolean hasStripOffsets() {
+        return hasStripOffsets;
+    }
+
+
+    /**
+     * @return the hasTileByteCounts
+     */
+    public boolean hasTileByteCounts() {
+        return hasTileByteCounts;
+    }
+
+
+    /**
+     * @return the hasTileLength
+     */
+    public boolean hasTileLength() {
+        return hasTileLength;
+    }
+
+
+    /**
+     * @return the hasTileOffsets
+     */
+    public boolean hasTileOffsets() {
+        return hasTileOffsets;
+    }
+
+
+    /**
+     * @return the hasTileWidth
+     */
+    public boolean hasTileWidth() {
+        return hasTileWidth;
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public boolean hasXResolution() {
+        return this.hasXResolution;
+    }
+    
+    /**
+     * 
+     * @return boolean hasYResolution 
+     */
+    public boolean hasYResolution() {
+        return this.hasYResolution;
+    }
+
+    /**
+     * @return the resolutionUnit
+     */
+    public int getResolutionUnit() {
+        return resolutionUnit;
+    }
+
+    public long getXResolution() {
+        return xResolution;
+    }
+
+
+    /**
+     * @return the yResolution
+     */
+    public Rational getYResolution() {
+        return yResolution;
+    }
+
+    /**
+     * @return the orientation
+     */
+    public int getOrientation() {
+        return this.orientation;
+    }
+
+    /**
+     * @return the image color indicator tag value
+     */
+    public int getImageColorIndicator() {
+        return this.imageColorIndicator;
+    }
+
+    /**
+     * @return the background color indicator tag value 
+     */
+    public int getBackgroundColorIndicator() {
+        return this.backgroundColorIndicator;
+    }
+
+
+    /**
+     * @return the imageLength
+     */
+    public long getImageLength() {
+        return imageLength;
+    }
+
+
+    /**
+     * @return the imageWidth
+     */
+    public long getImageWidth() {
+        return imageWidth;
+    }
+
+
+    /**
+     * @return the indexed tag value
+     */
+    public int getIndexed() {
+        return indexed;
+    }
+
+    /**
+     * @return the fillOrder
+     */
+    public int getFillOrder() {
+        return this.fillOrder;
+    }
+
+
+    public boolean hasRowsPerStrip() {
+        return this.hasRowsPerStrip;
+    }
+
+
 }
-
-
 
