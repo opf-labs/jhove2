@@ -42,6 +42,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
@@ -52,6 +53,7 @@ import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.module.format.Validator;
+import org.jhove2.module.format.Validator.Validity;
 
 /**
  * JHOVE2 TIFF module. This module parses a TIFF instance and captures selected
@@ -60,9 +62,9 @@ import org.jhove2.module.format.Validator;
  * @author mstrong
  *
  */
-public class TiffModule
-    extends BaseFormatModule
-    implements Validator 
+public class TiffModule 
+       extends BaseFormatModule 
+       implements Validator 
 {
     /** TIFF module version identifier. */
     public static final String VERSION = "2.0.0";
@@ -149,7 +151,7 @@ public class TiffModule
      */
     @Override
     public long parse(JHOVE2 jhove2, Source source, Input input)
-        throws EOFException, IOException, JHOVE2Exception
+    throws EOFException, IOException, JHOVE2Exception
     {
         this.jhove2 = jhove2;
         this.source = source;
@@ -167,7 +169,7 @@ public class TiffModule
         try {
             // read the first two bytes to determine the endianess
             byte[] b = new byte[2];
-            b[0] = input.readSignedByte();  
+            b[0] = input.readSignedByte();
             b[1] = input.readSignedByte();
             ByteOrder byteOrder = null;
 
@@ -213,10 +215,10 @@ public class TiffModule
             /* loop through IfdList and validate each one */
             for (IFD ifd:ifdList){
                 if (ifd instanceof TiffIFD) {
-                    ifd.validate(jhove2);
+                    ifd.validate(jhove2, source);
+                    }
                 }
             }
-        }
         catch (EOFException e) {
             this.validity = Validity.False;
             this.prematureEOFMessage.add(new Message(Severity.ERROR,
@@ -225,7 +227,7 @@ public class TiffModule
                     jhove2.getConfigInfo()));       
             throw new JHOVE2Exception("TiffModule.parse(): Premature EOFException", e);
         }
-        finally {      
+        finally {
             this.jhove2 = null;
             this.source = null;
         }
@@ -310,7 +312,10 @@ public class TiffModule
             ifd.setThumbnail (true);
         }
         list.add(ifd);
-        version = ifd.getVersion();
+        int version = ifd.getVersion();
+        if (version > this.version) {
+            this.version = version;
+        }
 
         // TODO:  parse subIFDs chains here
 
@@ -387,4 +392,13 @@ public class TiffModule
     public Message getFailFast() {
         return this.failFastMessage;
     }
+
+    /**
+     * @return the version
+     */
+    @ReportableProperty(order = 4, value = "TIFF version.")
+    public int getTiffVersion() {
+        return version;
+    }
+
 }

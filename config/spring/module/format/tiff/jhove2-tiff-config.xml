@@ -10,55 +10,36 @@
 		   http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
 
-	<!-- TIFF/IT profile bean -->
-	<bean id="TiffItProfile" class="org.jhove2.module.format.tiff.tiffit.TiffItProfile"
-		scope="prototype">
-		<constructor-arg ref="TiffItFormat" />
-		<property name="developers">
-			<list value-type="org.jhove2.core.Agent">
-				<ref bean="CDLAgent" />
-			</list>
-		</property>
-	</bean>
-
-	<!-- TIFF/IT format bean -->
-	<bean id="TiffItFormat" class="org.jhove2.core.format.Format"
-		scope="singleton">
-		<constructor-arg type="java.lang.String" value="TiffIt" />
-		<constructor-arg ref="TiffItIdentifier" />
-		<constructor-arg type="org.jhove2.core.format.Format$Type"
-			value="Format" />
-		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
-			value="Unambiguous" />
-		<property name="aliasIdentifiers">
-			<set value-type="org.jhove2.core.I8R">
-				<ref bean="TiffItISO646" />
-			</set>
-		</property>
-	</bean>
-
-	<!-- TIFF/IT identifier bean -->
-	<bean id="TiffItIdentifier" class="org.jhove2.core.I8R" scope="singleton">
-		<constructor-arg type="java.lang.String"
-			value="http://jhove2.org/terms/format/tiff-it" />
-	</bean>
-
-	<!-- TIFF/IT ISO 646 -->
-	<bean id="TiffItISO646" class="org.jhove2.core.I8R" scope="singleton">
-		<constructor-arg type="java.lang.String" value="ISO/IEC 646:1991" />
-		<constructor-arg type="org.jhove2.core.I8R$Namespace"
-			value="ISO" />
-	</bean>
-
-
 	<!-- TIFF: module bean -->
 	<bean id="TiffModule" class="org.jhove2.module.format.tiff.TiffModule"
 		scope="prototype">
 		<constructor-arg ref="TiffFormat" />
-<!--		<property name="profile" ref="TiffItProfile" />-->
+		<!--		<property name="profile" ref="TiffItProfile" />-->
 		<property name="profiles">
 			<list value-type="org.jhove2.module.format.FormatProfile">
-				<ref bean="TiffItProfile"/>
+				<ref bean="TiffClassBProfile" />
+				<ref bean="TiffClassGProfile" />
+				<ref bean="TiffClassPProfile" />
+				<ref bean="TiffClassRProfile" />
+				<ref bean="TiffClassYProfile" />
+				<ref bean="TiffItProfile" />
+				<ref bean="TiffITBLProfile" />
+				<ref bean="TiffITBPProfile" />
+				<ref bean="TiffITCTProfile" />
+				<ref bean="TiffITFPProfile" />
+				<ref bean="TiffITHCProfile" />
+				<ref bean="TiffITLWProfile" />
+				<ref bean="TiffITMPProfile" />
+				<ref bean="TiffITMPP1Profile" />
+				<ref bean="TiffITMPP2Profile" />
+				<ref bean="TiffITSDProfile" />
+				<ref bean="TiffITSDP2Profile" />
+				<ref bean="TiffEPProfile" />
+				<ref bean="TiffGeoTIFFProfile" />
+				<ref bean="TiffDLFProfile" />
+				<ref bean="TiffDLFBWProfile" />
+				<ref bean="TiffDLFGrayProfile" />
+				<ref bean="TiffDLFColorProfile" />
 			</list>
 		</property>
 		<property name="developers">
@@ -148,10 +129,10 @@
 		<property name="author" value="Aldus/Microsoft" />
 		<property name="date" value="April 31, 1987" />
 		<property name="edition" value="Version 4.0" />
-<!--		<property name="identifier" ref="Tiff4.0SpecificationURL" />-->
+		<!--		<property name="identifier" ref="Tiff4.0SpecificationURL" />-->
 		<property name="identifiers">
 			<list value-type="org.jhove2.core.I8R">
-				<ref bean="Tiff4.0SpecificationURL"/>
+				<ref bean="Tiff4.0SpecificationURL" />
 			</list>
 		</property>
 		<property name="publisher" value="???" />
@@ -169,10 +150,10 @@
 		<property name="author" value="Aldus/Microsoft" />
 		<property name="date" value="August 8, 1988" />
 		<property name="edition" value="Version 5.0" />
-<!--		<property name="identifier" ref="Tiff5.0SpecificationURL" />-->
+		<!--		<property name="identifier" ref="Tiff5.0SpecificationURL" />-->
 		<property name="identifiers">
 			<list value-type="org.jhove2.core.I8R">
-				<ref bean="Tiff5.0SpecificationURL"/>
+				<ref bean="Tiff5.0SpecificationURL" />
 			</list>
 		</property>
 		<property name="publisher" value="???" />
@@ -189,10 +170,10 @@
 		<property name="author" value="Adobe Systems, Inc" />
 		<property name="date" value="June 3, 1992" />
 		<property name="edition" value="Version 6.0" />
-<!--		<property name="identifier" ref="Tiff6.0SpecificationURL" />-->
+		<!--		<property name="identifier" ref="Tiff6.0SpecificationURL" />-->
 		<property name="identifiers">
 			<list value-type="org.jhove2.core.I8R">
-				<ref bean="Tiff6.0SpecificationURL"/>
+				<ref bean="Tiff6.0SpecificationURL" />
 			</list>
 		</property>
 		<property name="publisher" value="Addison-Wesley" />
@@ -225,24 +206,769 @@
 			value="URL" />
 	</bean>
 
+	<!-- TIFF Profiles -->
 
-	<!-- Tiff Tags properties bean --> 
-   <bean id="TiffTags" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
-  		<property name="propertyFileBaseName" value="tiffTags"/>
-   </bean>      
-   
-	<!-- compression description properties bean --> 
-   <bean id="Compression" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
-  		<property name="propertyFileBaseName" value="compression"/>
-   </bean>
+	<!-- TIFF Baseline Profiles -->
 
-	<!-- Orientation description properties bean --> 
-   <bean id="Orientation" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
-  		<property name="propertyFileBaseName" value="orientation"/>
-   </bean>
-   
-	<!-- Photometric description properties bean --> 
-   <bean id="Photometric" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
-  		<property name="propertyFileBaseName" value="photometric"/>
-   </bean>   
+	<!-- TIFF Baseline bilevel (Class B) profile bean -->
+	<bean id="TiffClassBProfile" class="org.jhove2.module.format.tiff.profile.TiffClassBProfile"
+		scope="prototype">
+		<constructor-arg ref="TiffClassBFormat" />
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- TIFF Baseline bilevel (Class B) format bean -->
+	<bean id="TiffClassBFormat" class="org.jhove2.core.format.Format"
+		scope="singleton">
+		<constructor-arg type="java.lang.String" value="TiffClassBIdentifier" />
+		<constructor-arg ref="TiffItIdentifier" />
+		<constructor-arg type="org.jhove2.core.format.Format$Type"
+			value="Format" />
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
+			value="Unambiguous" />
+	</bean>
+
+	<!-- TIFF Baseline bilevel (Class B) identifier bean -->
+	<bean id="TiffClassBIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String"
+			value="http://jhove2.org/terms/format/tiff-class-b-profile" />
+	</bean>
+
+	<!-- TIFF Baseline grayscale (Class G) profile bean -->
+	<bean id="TiffClassGProfile" class="org.jhove2.module.format.tiff.profile.TiffClassGProfile"
+		scope="prototype">
+		<constructor-arg ref="TiffClassGFormat" />
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- TIFF Baseline grayscale (Class G) format bean -->
+	<bean id="TiffClassGFormat" class="org.jhove2.core.format.Format"
+		scope="singleton">
+		<constructor-arg type="java.lang.String" value="TiffClassGIdentifier" />
+		<constructor-arg ref="TiffItIdentifier" />
+		<constructor-arg type="org.jhove2.core.format.Format$Type"
+			value="Format" />
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
+			value="Unambiguous" />
+	</bean>
+
+	<!-- TIFF Baseline grayscale (Class G) identifier bean -->
+	<bean id="TiffClassGIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String"
+			value="http://jhove2.org/terms/format/tiff-class-g-profile" />
+	</bean>
+
+	<!-- TIFF Baseline palette-color (Class P) profile bean -->
+	<bean id="TiffClassPProfile" class="org.jhove2.module.format.tiff.profile.TiffClassPProfile"
+		scope="prototype">
+		<constructor-arg ref="TiffClassPFormat" />
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- TIFF Baseline palette-color (Class P) format bean -->
+	<bean id="TiffClassPFormat" class="org.jhove2.core.format.Format"
+		scope="singleton">
+		<constructor-arg type="java.lang.String" value="TiffClassPIdentifier" />
+		<constructor-arg ref="TiffItIdentifier" />
+		<constructor-arg type="org.jhove2.core.format.Format$Type"
+			value="Format" />
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
+			value="Unambiguous" />
+	</bean>
+
+	<!-- TIFF Baseline palette-color (Class P) identifier bean -->
+	<bean id="TiffClassPIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String"
+			value="http://jhove2.org/terms/format/tiff-class-p-profile" />
+	</bean>
+
+	<!-- TIFF Baseline RGB (Class R) profile bean -->
+	<bean id="TiffClassRProfile" class="org.jhove2.module.format.tiff.profile.TiffClassRProfile"
+		scope="prototype">
+		<constructor-arg ref="TiffClassRFormat" />
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- TIFF Baseline RGB (Class R) format bean -->
+	<bean id="TiffClassRFormat" class="org.jhove2.core.format.Format"
+		scope="singleton">
+		<constructor-arg type="java.lang.String" value="TiffClassRIdentifier" />
+		<constructor-arg ref="TiffItIdentifier" />
+		<constructor-arg type="org.jhove2.core.format.Format$Type"
+			value="Format" />
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
+			value="Unambiguous" />
+	</bean>
+
+	<!-- TIFF Baseline RGB (Class R) identifier bean -->
+	<bean id="TiffClassRIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String"
+			value="http://jhove2.org/terms/format/tiff-class-r-profile" />
+	</bean>
+
+	<!-- TIFF Extension Profiles -->
+
+	<!-- TIFF Extension YCbCr (Class Y) profile bean -->
+	<bean id="TiffClassYProfile" class="org.jhove2.module.format.tiff.profile.TiffClassYProfile"
+		scope="prototype">
+		<constructor-arg ref="TiffClassYFormat" />
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- TIFF Extension YCbCr (Class Y) format bean -->
+	<bean id="TiffClassYFormat" class="org.jhove2.core.format.Format"
+		scope="singleton">
+		<constructor-arg type="java.lang.String" value="TiffClassYIdentifier" />
+		<constructor-arg ref="TiffItIdentifier" />
+		<constructor-arg type="org.jhove2.core.format.Format$Type"
+			value="Format" />
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
+			value="Unambiguous" />
+	</bean>
+
+	<!-- TIFF Extension YCbCr (Class Y) identifier bean -->
+	<bean id="TiffClassYIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String"
+			value="http://jhove2.org/terms/format/tiff-class-y-profile" />
+	</bean>
+
+	<!--  TIFF/IT Profiles -->
+
+	<!-- TIFF/IT profile bean -->
+	<bean id="TiffItProfile" class="org.jhove2.module.format.tiff.profile.TiffItProfile"
+		scope="prototype">
+		<constructor-arg ref="TiffItFormat" />
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- TIFF/IT format bean -->
+	<bean id="TiffItFormat" class="org.jhove2.core.format.Format"
+		scope="singleton">
+		<constructor-arg type="java.lang.String" value="TiffIt" />
+		<constructor-arg ref="TiffItIdentifier" />
+		<constructor-arg type="org.jhove2.core.format.Format$Type"
+			value="Format" />
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
+			value="Unambiguous" />
+		<property name="aliasIdentifiers">
+			<set value-type="org.jhove2.core.I8R">
+				<ref bean="TiffItISO12639" />
+			</set>
+		</property>
+	</bean>
+
+	<!-- TIFF/IT identifier bean -->
+	<bean id="TiffItIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String"
+			value="http://jhove2.org/terms/format/tiff-it" />
+	</bean>
+
+	<!-- TIFF/IT ISO 12639 -->
+	<bean id="TiffItISO12639" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="ISO 12639:2004" />
+		<constructor-arg type="org.jhove2.core.I8R$Namespace"
+			value="ISO" />
+	</bean>
+
+	<!-- TIFF/IT-BL profile bean -->
+	<bean id="TiffITBLProfile" class="org.jhove2.module.format.tiff.profile.TiffITBLProfile"
+		scope="prototype">
+		<constructor-arg ref="TiffITBLFormat" />
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- TIFF/IT-BL format bean -->
+	<bean id="TiffITBLFormat" class="org.jhove2.core.format.Format"
+		scope="singleton">
+		<constructor-arg type="java.lang.String" value="TiffITBL" />
+		<constructor-arg ref="TiffITBLIdentifier" />
+		<constructor-arg type="org.jhove2.core.format.Format$Type"
+			value="Format" />
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
+			value="Unambiguous" />
+		<property name="aliasIdentifiers">
+			<set value-type="org.jhove2.core.I8R">
+				<ref bean="TiffItISO12639" />
+			</set>
+		</property>
+	</bean>
+
+	<!-- TIFF/IT-BL identifier bean -->
+	<bean id="TiffITBLIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String"
+			value="http://jhove2.org/terms/format/tiff-it-bl" />
+	</bean>
+
+	<!-- TIFF/IT-BP profile bean -->
+	<bean id="TiffITBPProfile" class="org.jhove2.module.format.tiff.profile.TiffITBPProfile"
+		scope="prototype">
+		<constructor-arg ref="TiffItBPFormat" />
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- TIFF/IT-BP format bean -->
+	<bean id="TiffItBPFormat" class="org.jhove2.core.format.Format"
+		scope="singleton">
+		<constructor-arg type="java.lang.String" value="TiffItBP" />
+		<constructor-arg ref="TiffITBPIdentifier" />
+		<constructor-arg type="org.jhove2.core.format.Format$Type"
+			value="Format" />
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
+			value="Unambiguous" />
+		<property name="aliasIdentifiers">
+			<set value-type="org.jhove2.core.I8R">
+				<ref bean="TiffItISO12639" />
+			</set>
+		</property>
+	</bean>
+
+	<!-- TIFF/IT-BP identifier bean -->
+	<bean id="TiffITBPIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String"
+			value="http://jhove2.org/terms/format/tiff-it-bp" />
+	</bean>
+
+	<!-- TIFF/IT-CT profile bean -->
+	<bean id="TiffITCTProfile" class="org.jhove2.module.format.tiff.profile.TiffITCTProfile"
+		scope="prototype">
+		<constructor-arg ref="TiffITCTFormat" />
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- TIFF/IT-CT format bean -->
+	<bean id="TiffITCTFormat" class="org.jhove2.core.format.Format"
+		scope="singleton">
+		<constructor-arg type="java.lang.String" value="TiffITCT" />
+		<constructor-arg ref="TiffITCTIdentifier" />
+		<constructor-arg type="org.jhove2.core.format.Format$Type"
+			value="Format" />
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
+			value="Unambiguous" />
+		<property name="aliasIdentifiers">
+			<set value-type="org.jhove2.core.I8R">
+				<ref bean="TiffItISO12639" />
+			</set>
+		</property>
+	</bean>
+
+	<!-- TIFF/IT-CT identifier bean -->
+	<bean id="TiffITCTIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String"
+			value="http://jhove2.org/terms/format/tiff-it-ct" />
+	</bean>
+
+	<!-- TIFF/IT-FP profile bean -->
+	<bean id="TiffITFPProfile" class="org.jhove2.module.format.tiff.profile.TiffITFPProfile"
+		scope="prototype">
+		<constructor-arg ref="TiffITFPFormat" />
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- TIFF/IT-FP format bean -->
+	<bean id="TiffITFPFormat" class="org.jhove2.core.format.Format"
+		scope="singleton">
+		<constructor-arg type="java.lang.String" value="TiffITFP" />
+		<constructor-arg ref="TiffITFPIdentifier" />
+		<constructor-arg type="org.jhove2.core.format.Format$Type"
+			value="Format" />
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
+			value="Unambiguous" />
+		<property name="aliasIdentifiers">
+			<set value-type="org.jhove2.core.I8R">
+				<ref bean="TiffItISO12639" />
+			</set>
+		</property>
+	</bean>
+
+	<!-- TIFF/IT-FP identifier bean -->
+	<bean id="TiffITFPIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String"
+			value="http://jhove2.org/terms/format/tiff-it-fp" />
+	</bean>
+
+	<!-- TIFF/IT-HC profile bean -->
+	<bean id="TiffITHCProfile" class="org.jhove2.module.format.tiff.profile.TiffITHCProfile"
+		scope="prototype">
+		<constructor-arg ref="TiffITHCFormat" />
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- TIFF/IT-HC format bean -->
+	<bean id="TiffITHCFormat" class="org.jhove2.core.format.Format"
+		scope="singleton">
+		<constructor-arg type="java.lang.String" value="TiffITHC" />
+		<constructor-arg ref="TiffITHCIdentifier" />
+		<constructor-arg type="org.jhove2.core.format.Format$Type"
+			value="Format" />
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
+			value="Unambiguous" />
+		<property name="aliasIdentifiers">
+			<set value-type="org.jhove2.core.I8R">
+				<ref bean="TiffItISO12639" />
+			</set>
+		</property>
+	</bean>
+
+	<!-- TIFF/IT-HC identifier bean -->
+	<bean id="TiffITHCIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String"
+			value="http://jhove2.org/terms/format/tiff-it-hc" />
+	</bean>
+
+	<!-- TIFF/IT-LW profile bean -->
+	<bean id="TiffITLWProfile" class="org.jhove2.module.format.tiff.profile.TiffITLWProfile"
+		scope="prototype">
+		<constructor-arg ref="TiffITLWFormat" />
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- TIFF/IT-LW format bean -->
+	<bean id="TiffITLWFormat" class="org.jhove2.core.format.Format"
+		scope="singleton">
+		<constructor-arg type="java.lang.String" value="TiffITLW" />
+		<constructor-arg ref="TiffITLWIdentifier" />
+		<constructor-arg type="org.jhove2.core.format.Format$Type"
+			value="Format" />
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
+			value="Unambiguous" />
+		<property name="aliasIdentifiers">
+			<set value-type="org.jhove2.core.I8R">
+				<ref bean="TiffItISO12639" />
+			</set>
+		</property>
+	</bean>
+
+	<!-- TIFF/IT-LW identifier bean -->
+	<bean id="TiffITLWIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String"
+			value="http://jhove2.org/terms/format/tiff-it-lw" />
+	</bean>
+
+	<!-- TIFF/IT-MP Full Comforance Level profile bean -->
+	<bean id="TiffITMPProfile" class="org.jhove2.module.format.tiff.profile.TiffITMPProfile"
+		scope="prototype">
+		<constructor-arg ref="TiffITMPFormat" />
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- TIFF/IT-MP Full Comforance Level format bean -->
+	<bean id="TiffITMPFormat" class="org.jhove2.core.format.Format"
+		scope="singleton">
+		<constructor-arg type="java.lang.String" value="TiffITMP" />
+		<constructor-arg ref="TiffITMPIdentifier" />
+		<constructor-arg type="org.jhove2.core.format.Format$Type"
+			value="Format" />
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
+			value="Unambiguous" />
+		<property name="aliasIdentifiers">
+			<set value-type="org.jhove2.core.I8R">
+				<ref bean="TiffItISO12639" />
+			</set>
+		</property>
+	</bean>
+
+	<!-- TIFF/IT-MP Full Comforance Level identifier bean -->
+	<bean id="TiffITMPIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String"
+			value="http://jhove2.org/terms/format/tiff-it-mp" />
+	</bean>
+
+	<!-- TIFF/IT-MPP1 Comforance Level profile bean -->
+	<bean id="TiffITMPP1Profile" class="org.jhove2.module.format.tiff.profile.TiffITMPP1Profile"
+		scope="prototype">
+		<constructor-arg ref="TiffITMPP1Format" />
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- TIFF/IT-MPP1 Comforance Level format bean -->
+	<bean id="TiffITMPP1Format" class="org.jhove2.core.format.Format"
+		scope="singleton">
+		<constructor-arg type="java.lang.String" value="TiffITMPP1" />
+		<constructor-arg ref="TiffITMPP1Identifier" />
+		<constructor-arg type="org.jhove2.core.format.Format$Type"
+			value="Format" />
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
+			value="Unambiguous" />
+		<property name="aliasIdentifiers">
+			<set value-type="org.jhove2.core.I8R">
+				<ref bean="TiffItISO12639" />
+			</set>
+		</property>
+	</bean>
+
+	<!-- TIFF/IT-MPP1 Comforance Level identifier bean -->
+	<bean id="TiffITMPP1Identifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String"
+			value="http://jhove2.org/terms/format/tiff-it-mp-p1" />
+	</bean>
+
+	<!-- TIFF/IT-MPP2 Comforance Level profile bean -->
+	<bean id="TiffITMPP2Profile" class="org.jhove2.module.format.tiff.profile.TiffITMPP2Profile"
+		scope="prototype">
+		<constructor-arg ref="TiffITMPP2Format" />
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- TIFF/IT-MPP2 Comforance Level format bean -->
+	<bean id="TiffITMPP2Format" class="org.jhove2.core.format.Format"
+		scope="singleton">
+		<constructor-arg type="java.lang.String" value="TiffITMPP2" />
+		<constructor-arg ref="TiffITMPP2Identifier" />
+		<constructor-arg type="org.jhove2.core.format.Format$Type"
+			value="Format" />
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
+			value="Unambiguous" />
+		<property name="aliasIdentifiers">
+			<set value-type="org.jhove2.core.I8R">
+				<ref bean="TiffItISO12639" />
+			</set>
+		</property>
+	</bean>
+
+	<!-- TIFF/IT-MPP2 Comforance Level identifier bean -->
+	<bean id="TiffITMPP2Identifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String"
+			value="http://jhove2.org/terms/format/tiff-it-mp-p2" />
+	</bean>
+
+	<!-- TIFF/IT-SD Full Comforance Level profile bean -->
+	<bean id="TiffITSDProfile" class="org.jhove2.module.format.tiff.profile.TiffITSDProfile"
+		scope="prototype">
+		<constructor-arg ref="TiffITSDFormat" />
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- TIFF/IT-SD Full Comforance Level format bean -->
+	<bean id="TiffITSDFormat" class="org.jhove2.core.format.Format"
+		scope="singleton">
+		<constructor-arg type="java.lang.String" value="TiffITSD" />
+		<constructor-arg ref="TiffITSDIdentifier" />
+		<constructor-arg type="org.jhove2.core.format.Format$Type"
+			value="Format" />
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
+			value="Unambiguous" />
+		<property name="aliasIdentifiers">
+			<set value-type="org.jhove2.core.I8R">
+				<ref bean="TiffItISO12639" />
+			</set>
+		</property>
+	</bean>
+
+	<!-- TIFF/IT-SD Full Comforance Level identifier bean -->
+	<bean id="TiffITSDIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String"
+			value="http://jhove2.org/terms/format/tiff-it-sd" />
+	</bean>
+
+	<!-- TIFF/IT-SDP2 Comforance Level profile bean -->
+	<bean id="TiffITSDP2Profile" class="org.jhove2.module.format.tiff.profile.TiffITSDP2Profile"
+		scope="prototype">
+		<constructor-arg ref="TiffITSDP2Format" />
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- TIFF/IT-SDP2 Comforance Level format bean -->
+	<bean id="TiffITSDP2Format" class="org.jhove2.core.format.Format"
+		scope="singleton">
+		<constructor-arg type="java.lang.String" value="TiffITSDP2" />
+		<constructor-arg ref="TiffITSDP2Identifier" />
+		<constructor-arg type="org.jhove2.core.format.Format$Type"
+			value="Format" />
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
+			value="Unambiguous" />
+		<property name="aliasIdentifiers">
+			<set value-type="org.jhove2.core.I8R">
+				<ref bean="TiffItISO12639" />
+			</set>
+		</property>
+	</bean>
+
+	<!-- TIFF/IT-SDP2 Comforance Level identifier bean -->
+	<bean id="TiffITSDP2Identifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String"
+			value="http://jhove2.org/terms/format/tiff-it-sd-p2" />
+	</bean>
+
+	<!--  TIFF/EP Profile -->
+
+	<!-- TIFF/EP profile bean -->
+	<bean id="TiffEPProfile" class="org.jhove2.module.format.tiff.profile.TiffEPProfile"
+		scope="prototype">
+		<constructor-arg ref="TiffEPFormat" />
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- TIFF/EP format bean -->
+	<bean id="TiffEPFormat" class="org.jhove2.core.format.Format"
+		scope="singleton">
+		<constructor-arg type="java.lang.String" value="TiffEP" />
+		<constructor-arg ref="TiffEPIdentifier" />
+		<constructor-arg type="org.jhove2.core.format.Format$Type"
+			value="Format" />
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
+			value="Unambiguous" />
+		<property name="aliasIdentifiers">
+			<set value-type="org.jhove2.core.I8R">
+				<ref bean="TiffEpISO12234" />
+			</set>
+		</property>
+	</bean>
+
+	<!-- TIFF/EP identifier bean -->
+	<bean id="TiffEPIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String"
+			value="http://jhove2.org/terms/format/tiff-ep" />
+	</bean>
+
+	<!-- TIFF/EP ISO 12234-2:2001 -->
+	<bean id="TiffEpISO12234" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="12234-2:2001" />
+		<constructor-arg type="org.jhove2.core.I8R$Namespace"
+			value="ISO" />
+	</bean>
+
+
+	<!--  TIFF GeoTIFF 1.0 Profile -->
+
+	<!-- TIFF GeoTIFF 1.0 profile bean -->
+	<bean id="TiffGeoTIFFProfile" class="org.jhove2.module.format.tiff.profile.TiffGeoTIFFProfile"
+		scope="prototype">
+		<constructor-arg ref="TiffGeoTIFFFormat" />
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- TIFF GeoTIFF 1.0 format bean -->
+	<bean id="TiffGeoTIFFFormat" class="org.jhove2.core.format.Format"
+		scope="singleton">
+		<constructor-arg type="java.lang.String" value="TiffGeoTIFFF" />
+		<constructor-arg ref="TiffGeoTIFFFIdentifier" />
+		<constructor-arg type="org.jhove2.core.format.Format$Type"
+			value="Format" />
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
+			value="Unambiguous" />
+	</bean>
+
+	<!-- TIFF GeoTIFFF identifier bean -->
+	<bean id="TiffGeoTIFFFIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String"
+			value="http://jhove2.org/terms/format/tiff-geo-tiff" />
+	</bean>
+
+	<!--  TIFF DLF Profile -->
+
+	<!-- TIFF DLF profile bean -->
+	<bean id="TiffDLFProfile" class="org.jhove2.module.format.tiff.profile.TiffDLFProfile"
+		scope="prototype">
+		<constructor-arg ref="TiffDLFFormat" />
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- TIFF DLF format bean -->
+	<bean id="TiffDLFFormat" class="org.jhove2.core.format.Format"
+		scope="singleton">
+		<constructor-arg type="java.lang.String" value="TiffDLF" />
+		<constructor-arg ref="TiffDLFIdentifier" />
+		<constructor-arg type="org.jhove2.core.format.Format$Type"
+			value="Format" />
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
+			value="Unambiguous" />
+	</bean>
+
+	<!-- TIFF DLF identifier bean -->
+	<bean id="TiffDLFIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String"
+			value="http://jhove2.org/terms/format/tiff-dlf" />
+	</bean>
+
+	<!--  TIFF DLF B&W Profile -->
+
+	<!-- TIFF DLF B&W profile bean -->
+	<bean id="TiffDLFBWProfile" class="org.jhove2.module.format.tiff.profile.TiffDLFBWProfile"
+		scope="prototype">
+		<constructor-arg ref="TiffDLFBWFormat" />
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- TIFF DLF B&W format bean -->
+	<bean id="TiffDLFBWFormat" class="org.jhove2.core.format.Format"
+		scope="singleton">
+		<constructor-arg type="java.lang.String" value="TiffDLFBW" />
+		<constructor-arg ref="TiffDLFBWIdentifier" />
+		<constructor-arg type="org.jhove2.core.format.Format$Type"
+			value="Format" />
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
+			value="Unambiguous" />
+	</bean>
+
+	<!-- TIFF DLF B&W identifier bean -->
+	<bean id="TiffDLFBWIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String"
+			value="http://jhove2.org/terms/format/tiff-dlf-bw" />
+	</bean>
+
+	<!--  TIFF DLF Grayscale Profile -->
+
+	<!-- TIFF DLF Grayscale profile bean -->
+	<bean id="TiffDLFGrayProfile" class="org.jhove2.module.format.tiff.profile.TiffDLFGrayProfile"
+		scope="prototype">
+		<constructor-arg ref="TiffDLFGrayFormat" />
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- TIFF DLF Grayscale format bean -->
+	<bean id="TiffDLFGrayFormat" class="org.jhove2.core.format.Format"
+		scope="singleton">
+		<constructor-arg type="java.lang.String" value="TiffDLFGray" />
+		<constructor-arg ref="TiffDLFGrayIdentifier" />
+		<constructor-arg type="org.jhove2.core.format.Format$Type"
+			value="Format" />
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
+			value="Unambiguous" />
+	</bean>
+
+	<!-- TIFF DLF Grayscale identifier bean -->
+	<bean id="TiffDLFGrayIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String"
+			value="http://jhove2.org/terms/format/tiff-dlf-gray" />
+	</bean>
+
+	<!--  TIFF DLF Color Profile -->
+
+	<!-- TIFF DLF Color profile bean -->
+	<bean id="TiffDLFColorProfile" class="org.jhove2.module.format.tiff.profile.TiffDLFColorProfile"
+		scope="prototype">
+		<constructor-arg ref="TiffDLFColorFormat" />
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- TIFF DLF Color format bean -->
+	<bean id="TiffDLFColorFormat" class="org.jhove2.core.format.Format"
+		scope="singleton">
+		<constructor-arg type="java.lang.String" value="TiffDLFColor" />
+		<constructor-arg ref="TiffDLFColorIdentifier" />
+		<constructor-arg type="org.jhove2.core.format.Format$Type"
+			value="Format" />
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
+			value="Unambiguous" />
+	</bean>
+
+	<!-- TIFF DLF Color identifier bean -->
+	<bean id="TiffDLFColorIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String"
+			value="http://jhove2.org/terms/format/tiff-dlf-color" />
+	</bean>
+
+	<!--  Properties Beans  -->
+
+	<!-- Tiff Tags properties bean -->
+	<bean id="TiffTags" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="tiffTags" />
+	</bean>
+
+	<!-- compression description properties bean -->
+	<bean id="Compression" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="compression" />
+	</bean>
+
+	<!-- Orientation description properties bean -->
+	<bean id="Orientation" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="orientation" />
+	</bean>
+
+	<!-- Photometric description properties bean -->
+	<bean id="Photometric" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="photometric" />
+	</bean>
 </beans>		   

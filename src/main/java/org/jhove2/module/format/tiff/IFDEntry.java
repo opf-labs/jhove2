@@ -38,7 +38,6 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -77,38 +76,19 @@ import org.jhove2.module.format.tiff.type.SShortArray;
 import org.jhove2.module.format.tiff.type.Short;
 import org.jhove2.module.format.tiff.type.ShortArray;
 import org.jhove2.module.format.tiff.type.desc.Compression;
-import org.jhove2.module.identify.Identifier;
 
 /** TIFF IFD entry.
  * 
  * @author mstrong
+ *
  */
 public class IFDEntry 
 extends AbstractReportable
 implements Comparable<Object> {
 
-    private static final int 
-    DATETIME = 306,
-    COMPRESSION = 259,
-    CELLLENGTH = 265,
-    ORIENTATION = 274,
-    PHOTMETRIC_INTERPRETATION = 262,
-    TILEWIDTH = 322,
-    TILELENGTH = 323,
-    TILEOFFSETS = 324,
-    TILEBYTECOUNTS = 325,
-    ICCProfile = 34675;
-
-
-    private static final int ARTIST = 315;
-
-
-    private static final int COLORMAP = 320;
-
 
     /** The number of values, Count of the indicated Type */
     protected long count;
-
 
     /** compression in descriptive form */
     protected String compression_d;
@@ -217,6 +197,7 @@ implements Comparable<Object> {
 
     private Message TileLengthNotMultipleOf16Message;
 
+
     @ReportableProperty(order=5, value = "Entry value/offset.")
     public long getValueOffset() {
         return valueOffset;
@@ -225,6 +206,7 @@ implements Comparable<Object> {
     public int getVersion() {
         return version;
     }
+
 
     /** no arg constructor */
     public IFDEntry() {
@@ -238,6 +220,7 @@ implements Comparable<Object> {
         this.count = count;
         this.valueOffset = valueOffset;
     }
+
 
     /**
      * parse the IFD Entry 
@@ -309,7 +292,7 @@ implements Comparable<Object> {
                 this.valueOffset = value;
             }
             /* Parse the ICCProfile tag */
-            if (this.tag == ICCProfile) {
+            if (this.tag == TiffIFD.ICCPROFILE) {
                 ByteStreamSource bss = new ByteStreamSource(jhove2, source, this.valueOffset, this.count);
                 Map<String, Object> i8r = SpringConfigInfo.getObjectsForType(I8R.class);
                 I8R identifier = (I8R) i8r.get("ICCIdentifier");
@@ -318,7 +301,6 @@ implements Comparable<Object> {
                 jhove2.characterize(bss, input, true);
             }
             else {
-                readValues(input);
                 validate(jhove2, input); 
             }
             /* reset the input position so that the offset is set up correctly since when you read values the
@@ -338,7 +320,8 @@ implements Comparable<Object> {
      *  1) if tag is known and defined
      *  2) that the type matches expected type values for that tag definition
      *  3) that count expected matches the count read in
-     *  4) performing any other validations for a particular tag
+     *  4) if above are valid, read in the values for that tag
+     *  5) performing any other validations for a particular tag
      *  
      * @param jhove2
      * @throws JHOVE2Exception
@@ -365,19 +348,21 @@ implements Comparable<Object> {
             return;
         }       
 
+        readValues(input);
+        
         /* Validate specific tags and set version when applicable */
 
-        if (this.tag == ARTIST) {
+        if (this.tag == TiffIFD.ARTIST) {
             if (version < 5) {
                 version = 5;
             }
         }
-        else if (this.tag == COLORMAP) {
+        else if (this.tag == TiffIFD.COLORMAP) {
             if (version < 5) {
                 version = 5;
             }
         }
-        else if (this.tag == COMPRESSION) {
+        else if (this.tag == TiffIFD.COMPRESSION) {
             // get the scheme to determine version
             int scheme = ((Short) this.getValue()).getValue();
             if (scheme == 5 && version < 5) {
@@ -395,7 +380,7 @@ implements Comparable<Object> {
         }
 
         /* validate Date format is YYYY:MM:DD HH:MM:SS */
-        else if (this.tag == DATETIME) {
+        else if (this.tag == TiffIFD.DATETIME) {
             SimpleDateFormat date = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss");
             String dateTime = (String)((AsciiArray) this.getValue()).toString();
             try {
@@ -423,8 +408,14 @@ implements Comparable<Object> {
                         messageArgs, jhove2.getConfigInfo());
             }
         }
-        /* Validate TILEWIDTH */
-        else if (this.tag == TILEWIDTH ) {
+        
+        else if (this.tag == TiffIFD.EXTRASAMPLES) {
+            if (version < 6)
+                version = 6;
+        }
+        
+        /* Validate TILEWIDTH value is integral multiple of 16  */
+        else if (this.tag == TiffIFD.TILEWIDTH ) {
             if (version < 6) 
                 version = 6;
             long tileWidth = ((Long) this.getValue()).getValue();
@@ -440,8 +431,8 @@ implements Comparable<Object> {
 
         }
 
-        /* Validate TILELENGTH */
-        if (this.tag == TILELENGTH ) {
+        /* Validate TILELENGTH  value is integral multiple of 16  */
+        if (this.tag == TiffIFD.TILELENGTH ) {
             if (version < 6) 
                 version = 6;
             long tileLength = ((Long) this.getValue()).getValue();
@@ -457,17 +448,15 @@ implements Comparable<Object> {
         }
 
         /* Set version for TILEOFFSETS */
-        if (this.tag == TILEOFFSETS ) {
+        if (this.tag == TiffIFD.TILEOFFSETS ) {
             if (version < 6) 
                 version = 6;
         }
         /* Set version for TILEBYTECOUNTS */
-        if (this.tag == TILEBYTECOUNTS ) {
+        if (this.tag == TiffIFD.TILEBYTECOUNTS ) {
             if (version < 6) 
                 version = 6;
         }
-
-
     }
 
 
@@ -499,11 +488,11 @@ implements Comparable<Object> {
      * For unsigned integers, readers accept BYTE, SHORT, LONG or IFD types
      * 
      * @param jhove2 - JHOVE2 framework
-     * @param expected - the list of expected types defined for this tag
+     * @param list - the list of expected types defined for this tag
      * @param string - the type read in 
      * @throws JHOVE2Exception
      */
-    private void checkType(JHOVE2 jhove2, TiffType type, String[] expected) throws JHOVE2Exception {
+    private void checkType(JHOVE2 jhove2, TiffType type, List<String> expectedTypes) throws JHOVE2Exception {
 
         int typeNum = type.num();
         String typeReadIn = type.name();
@@ -512,24 +501,33 @@ implements Comparable<Object> {
             version = 6;
         }
 
+        boolean typeAccepted = false;
         if ((type.equals(TiffType.BYTE) || (type.equals(TiffType.SHORT)) ||
                 (type.equals(TiffType.LONG)) || (type.equals(TiffType.IFD)))) {
-            //        if (typeReadIn.equalsIgnoreCase("BYTE") || typeReadIn.equalsIgnoreCase("SHORT") ||
-            //                typeReadIn.equalsIgnoreCase("LONG") || typeReadIn.equalsIgnoreCase("IFD")) {
-            for (String expectedEntry:expected){
+            for (String expectedEntry:expectedTypes){
                 if (expectedEntry.equalsIgnoreCase("BYTE") || expectedEntry.equalsIgnoreCase("SHORT") || 
                         expectedEntry.equalsIgnoreCase("LONG") || expectedEntry.equalsIgnoreCase("IFD"))             
-                    return;  // type is valid
+                    typeAccepted = true;  // type is valid
             }
         }
-        for (String expectedEntry:expected){
+
+        // assign LONG type to tag if it can be SHORT or LONG
+        if (typeAccepted) {
+            if (expectedTypes.contains("SHORT") && expectedTypes.contains("LONG")) {
+                this.tiffType = TiffType.LONG;
+            }
+            return;
+        }
+
+        for (String expectedEntry:expectedTypes){
             if (!expectedEntry.equalsIgnoreCase(typeReadIn)) {
                 this.isValid = Validity.False;
-                Object[]messageArgs = new Object[]{typeReadIn, this.tag, Arrays.toString(expected)};
+                Object[]messageArgs = new Object[]{typeReadIn, this.tag, expectedTypes};
                 this.TypeMismatchMessage = (new Message(Severity.ERROR,
                         Context.OBJECT,
                         "org.jhove2.module.format.tiff.IFDEntry.TypeMismatchMessage",
-                        messageArgs, jhove2.getConfigInfo()));               
+                        messageArgs, jhove2.getConfigInfo()));
+                throw new JHOVE2Exception("IFDEntry.checkType(): Type Mismatch Exception");
             }        
         }
     }
