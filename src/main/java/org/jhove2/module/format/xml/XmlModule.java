@@ -225,7 +225,7 @@ public class XmlModule extends BaseFormatModule implements Validator {
      * Data store for XML numeric character references captured during the
      * parse.
      */
-    protected NumericCharacterReferences numericCharacterReferences = new NumericCharacterReferences();
+    protected NumericCharacterReferenceInformation numericCharacterReferenceInformation = new NumericCharacterReferenceInformation();
 
     /**
      * Data store for XML processing instruction information captured during the
@@ -357,9 +357,9 @@ public class XmlModule extends BaseFormatModule implements Validator {
      * 
      * @return list of XML Numeric Character References
      */
-    @ReportableProperty(order = 9, value = "List of Numeric Character References")
-    public ArrayList<NumericCharacterReference> getNumericCharacterReferences() {
-        return numericCharacterReferences.getNumericCharacterReferenceList();
+    @ReportableProperty(order = 9, value = "Numeric Character Reference Information")
+    public NumericCharacterReferenceInformation getNumericCharacterReferenceInformation() {
+        return numericCharacterReferenceInformation;
     }
 
     /**
@@ -465,7 +465,7 @@ public class XmlModule extends BaseFormatModule implements Validator {
             /* Do a separate parse to inventory numeric character references */
             if (this.ncrParser) {
                 input.setPosition(0L);
-                numericCharacterReferences.parse(input,
+                numericCharacterReferenceInformation.parse(input,
                         xmlDeclaration.encodingFromSAX2, jhove2);
             }
             validate(jhove2,source);
