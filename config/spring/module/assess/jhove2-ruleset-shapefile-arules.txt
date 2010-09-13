@@ -1,0 +1,10 @@
+ruleset ShapefileRuleSet enabled org.jhove2.module.format.shapefile.ShapefileModule
+desc Ruleset for Shapefile module
+
+rule HasProjectFile enabled
+desc Does the shapefile include a .PRJ project file?
+cons Has project file
+alt Lacks project file
+quant all
+pred shapefileFeatures.coordinateSystem != null
+
