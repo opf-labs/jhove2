@@ -43,6 +43,7 @@ import java.util.List;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.format.Format;
+import org.jhove2.core.io.Input;
 import org.jhove2.core.source.DirectorySource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.BaseFormatModule;
@@ -54,7 +55,6 @@ import org.jhove2.module.format.BaseFormatModule;
  */
 public class DirectoryModule
 	extends BaseFormatModule
-
 {
 	/** Directory module version identifier. */
 	public static final String VERSION = "2.0.0";
@@ -88,6 +88,8 @@ public class DirectoryModule
 	 *            JHOVE2 framework
 	 * @param source
 	 *            Directory source unit
+	 * @param input
+	 *            Directory source input, which will be null
 	 * @return 0
 	 * @throws EOFException
 	 *             If End-of-File is reached reading the source unit
@@ -95,17 +97,25 @@ public class DirectoryModule
 	 *             If an I/O exception is raised reading the source unit
 	 * @throws JHOVE2Exception
 	 * @see org.jhove2.module.format.FormatModule#parse(org.jhove2.core.JHOVE2,
-	 *      org.jhove2.core.source.Source)
+	 *      org.jhove2.core.source.Source, org.jhov2.core.io.Input)
 	 */
 	@Override
-	public long parse(JHOVE2 jhove2, Source source)
+	public long parse(JHOVE2 jhove2, Source source, Input input)
 		throws EOFException, IOException, JHOVE2Exception
 	{
 		if (source instanceof DirectorySource) {
-			List<Source> children = ((DirectorySource) source)
-					.getChildSources();
+			List<Source> children =
+			    ((DirectorySource) source).getChildSources();
 			for (Source src : children) {
-				jhove2.characterize(src);
+			    Input inpt = src.getInput(jhove2);
+			    try {
+			        jhove2.characterize(src, inpt);
+			    }
+			    finally {
+			        if (inpt != null) {
+			            inpt.close();
+			        }
+			    }
 			}
 		}
 		return 0;

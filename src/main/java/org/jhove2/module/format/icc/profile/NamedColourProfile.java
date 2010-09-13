@@ -47,6 +47,7 @@ import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
+import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.AbstractFormatProfile;
 import org.jhove2.module.format.Validator;
@@ -95,11 +96,12 @@ public class NamedColourProfile
     /** Validate the named colour profile.
      * @param jhove2 JHOVE2 framework
      * @param source ICC source unit
-     * @see org.jhove2.module.format.Validator#validate(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
+     * @param input  ICC source input
+     * @see org.jhove2.module.format.Validator#validate(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source, org.jhove2.core.io.Input)
      */
     @Override
-    public Validity validate(JHOVE2 jhove2, Source source)
-            throws JHOVE2Exception
+    public Validity validate(JHOVE2 jhove2, Source source, Input input)
+        throws JHOVE2Exception
     {
         if (this.module != null) {
             ICCTagTable table = ((ICCModule) this.module).getTagTable();

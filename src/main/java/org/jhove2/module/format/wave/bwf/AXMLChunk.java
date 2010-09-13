@@ -63,18 +63,18 @@ public class AXMLChunk
     
     /** Parse an AXML chunk.
      * @param jhove2 JHOVE2 framework
-     * @param source WAVE source
+     * @param source WAVE source unit
+     * @param input  WAVE source input
      * @return Number of bytes consumed
      * @throws JHOVE2Exception 
      * @throws IOException 
      * @throws EOFException 
      */
     @Override
-    public long parse(JHOVE2 jhove2, Source source)
+    public long parse(JHOVE2 jhove2, Source source, Input input)
         throws EOFException, IOException, JHOVE2Exception
     {
-        long consumed = super.parse(jhove2, source);
-        Input input   = source.getInput(jhove2);
+        long consumed = super.parse(jhove2, source, input);
         
         /* The chunk contents are in XML; invoke the XML module. */
         ByteStreamSource child =
@@ -84,7 +84,7 @@ public class AXMLChunk
         FormatIdentification id = new FormatIdentification(xml, Confidence.PositiveGeneric);
         child.addPresumptiveFormat(id);
         source.addChildSource(child);
-        jhove2.characterize(child, true);      
+        jhove2.characterize(child, input, true);      
         consumed += this.size;
         
         return consumed;

@@ -37,7 +37,6 @@ package org.jhove2.module.format.icc.type;
 
 import java.io.EOFException;
 import java.io.IOException;
-import java.nio.ByteOrder;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2;
@@ -78,7 +77,8 @@ public class NameRecord
     
     /** Parse an ICC tag type.
      * @param jhove2 JHOVE2 framework
-     * @param source ICC source
+     * @param source ICC source unit
+     * @param input  ICC source input
      * @return Number of bytes consumed
      * @throws EOFException
      *             If End-of-File is reached reading the source unit
@@ -87,11 +87,10 @@ public class NameRecord
      * @throws JHOVE2Exception
      */
     @Override
-    public long parse(JHOVE2 jhove2, Source source)
+    public long parse(JHOVE2 jhove2, Source source, Input input)
         throws EOFException, IOException, JHOVE2Exception
     {
         long consumed = 0L;
-        Input input   = source.getInput(jhove2, ByteOrder.BIG_ENDIAN);
         
         /* Language code. */
         for (int i=0; i<2; i++) {

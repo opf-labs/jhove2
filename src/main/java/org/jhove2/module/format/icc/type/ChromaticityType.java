@@ -36,7 +36,6 @@ package org.jhove2.module.format.icc.type;
 
 import java.io.EOFException;
 import java.io.IOException;
-import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,7 +100,8 @@ public class ChromaticityType
     
     /** Parse an ICC chromoticity tag type element.
      * @param jhove2 JHOVE2 framework
-     * @param source ICC source
+     * @param source ICC source unit
+     * @param input  ICC source input
      * @return Number of bytes consumed
      * @throws EOFException
      *             If End-of-File is reached reading the source unit
@@ -110,13 +110,13 @@ public class ChromaticityType
      * @throws JHOVE2Exception
      */
     @Override
-    public long parse(JHOVE2 jhove2, Source source)
+    public long parse(JHOVE2 jhove2, Source source, Input input)
         throws EOFException, IOException, JHOVE2Exception
     {
         long consumed  = 0L;
         int  numErrors = 0;
         this.isValid   = Validity.True;
-        Input input  = source.getInput(jhove2, ByteOrder.BIG_ENDIAN);
+        long start     = source.getStartingOffset();
   
         /* Tag signature. */
         for (int i=0; i<4; i++) {
@@ -127,7 +127,7 @@ public class ChromaticityType
             numErrors++;
             this.isValid = Validity.False;
             Object [] args =
-                new Object [] {input.getPosition()-4L, SIGNATURE,
+                new Object [] {input.getPosition()-4L-start, SIGNATURE,
                                signature.toString()};
             this.invalidTagTypeMessage = new Message(Severity.ERROR,
                 Context.OBJECT,
@@ -141,7 +141,7 @@ public class ChromaticityType
         if (reserved != 0) {
             numErrors++;
             this.isValid = Validity.False;
-            Object [] args = new Object [] {input.getPosition()-4L};
+            Object [] args = new Object [] {input.getPosition()-4L-start};
             this.nonZeroDataInReservedFieldMessage = new Message(Severity.ERROR,
                     Context.OBJECT,
                     "org.jhove2.module.format.icc.ICCTag.NonZeroDataInReservedField",
@@ -163,7 +163,7 @@ public class ChromaticityType
         else {
             numErrors++;
             this.isValid = Validity.False;
-            Object [] args = new Object [] {input.getPosition()-2L, this.type};
+            Object [] args = new Object [] {input.getPosition()-2L-start, this.type};
             this.invalidColorantEncodingMessage = new Message(Severity.ERROR,
                     Context.OBJECT,
                     "org.jhove2.module.format.icc.ICCTag.invalidColorantEncoding",

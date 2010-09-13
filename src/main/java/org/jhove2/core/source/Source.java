@@ -136,7 +136,9 @@ public interface Source
 	public File getFile();
 
     /**
-     * Get existing {@link org.jhove2.core.io.Input} for the source unit.
+     * Get little-endian {@link org.jhove2.core.io.Input} for the source unit
+     * with the buffer size and type specified by the
+     * {@link org.jhove2.core.Invocation}.
      * @param jhove2 JHOVE2 framework
      * @return Input for the source unit
      */
@@ -144,7 +146,8 @@ public interface Source
         throws FileNotFoundException, IOException;
 
     /**
-     * Get existing {@link org.jhove2.core.io.Input} for the source unit.
+     * Get {@link org.jhove2.core.io.Input} for the source unit with the 
+     * buffer size and type specified by the {@link org.jhove2.core.Invocation}.
      * @param jhove2 JHOVE2 framework
      * @param order  Byte order
      * @return Input for the source unit

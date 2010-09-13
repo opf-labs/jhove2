@@ -52,7 +52,7 @@ import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.Parser;
-import org.jhove2.module.format.Validator.Validity;
+import org.jhove2.module.format.Validator;
 import org.jhove2.module.format.utf8.unicode.C0Control;
 import org.jhove2.module.format.utf8.unicode.C1Control;
 import org.jhove2.module.format.utf8.unicode.CodeBlock;
@@ -66,8 +66,11 @@ import org.jhove2.module.format.utf8.unicode.Unicode.EOL;
  */
 public class UTF8Character
 	extends AbstractReportable
-	implements Parser
+	implements Parser, Validator
 {
+    /** Validation coverage. */
+    public static final Coverage COVERAGE = Coverage.Inclusive;
+    
 	/** Byte Order Mark (BOM). */
 	public static final int BOM = 0xFEFF;
 
@@ -140,8 +143,10 @@ public class UTF8Character
 	 * 
 	 * @param jhove2
 	 *            JHOVE2 framework
+	 * @param source
+	 *            UTF-8 source unit
 	 * @param input
-	 *            Input
+	 *            UTF-8 source input
 	 * @return Number of bytes consumed
 	 * @throws EOFException
 	 *             If End-of-File is reached reading the source unit
@@ -150,11 +155,10 @@ public class UTF8Character
 	 * @throws JHOVE2Exception
 	 */
 	@Override
-	public long parse(JHOVE2 jhove2, Source source)
+	public long parse(JHOVE2 jhove2, Source source, Input input)
 	    throws EOFException, IOException, JHOVE2Exception
 	{
 		this.isValid = Validity.True;
-		Input input = source.getInput(jhove2);
 		long offset = source.getStartingOffset();
 
 		/* Read the first byte. */
@@ -265,9 +269,14 @@ public class UTF8Character
 	 * 
 	 * @param jhove2
 	 *            JHOVE2 framework
+	 * @param source
+	 *            UTF-8 source unit
+	 * @param input
+	 *            UTF-8 source input
 	 * @return Source unit validity
 	 */
-	public Validity validate(JHOVE2 jhove2) {
+	@Override
+	public Validity validate(JHOVE2 jhove2, Source source, Input input) {
 		return this.isValid;
 	}
 
@@ -347,6 +356,15 @@ public class UTF8Character
 		return this.codePointOutOfRangeMessage;
 	}
 
+    /** Get validation coverage.
+     * @return Validation coverage
+     */
+    @Override
+    public Coverage getCoverage()
+    {
+        return COVERAGE;
+    }
+    
 	/**
 	 * Get invalid byte value message.
 	 * 
@@ -412,10 +430,8 @@ public class UTF8Character
 	 * 
 	 * @return True if a valid ASCII character stream
 	 */
+	@Override
 	public Validity isValid() {
 		return this.isValid;
 	}
-
-
-
 }

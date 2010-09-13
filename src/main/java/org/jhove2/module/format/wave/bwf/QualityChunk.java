@@ -91,7 +91,8 @@ public class QualityChunk
      * @param jhove2
      *            JHOVE2 framework
      * @param source
-     *            WAVE source
+     *            WAVE source unit
+     * @param input  WAVE source input
      * @return Number of bytes consumed
      * @throws EOFException
      *             If End-of-File is reached reading the source unit
@@ -100,11 +101,10 @@ public class QualityChunk
      * @throws JHOVE2Exception
      */
     @Override
-    public long parse(JHOVE2 jhove2, Source source)
+    public long parse(JHOVE2 jhove2, Source source, Input input)
         throws EOFException, IOException, JHOVE2Exception
     {
-        long consumed = super.parse(jhove2, source);
-        Input input   = source.getInput(jhove2);
+        long consumed = super.parse(jhove2, source, input);
         
         /* File security code for the report. */
         this.securityCodeReport = input.readUnsignedInt();

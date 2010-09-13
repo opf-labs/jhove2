@@ -1,17 +1,12 @@
 package org.jhove2.module.format.shapefile;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
-import java.io.FilenameFilter;
 
-import org.jhove2.app.util.FeatureConfigurationUtil;
 import org.jhove2.config.spring.SpringConfigInfo;
 import org.jhove2.core.JHOVE2;
-import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.FileSource;
 import org.junit.Before;
@@ -40,7 +35,7 @@ public class EmptyShapefileTest {
 		try {
 			JHOVE2 jhove = new JHOVE2();
 			jhove.setConfigInfo(new SpringConfigInfo());
-			sfModule.parse(jhove, clump);
+			sfModule.parse(jhove, clump, null);
 		} catch (Exception e) {
 			;
 		} finally {

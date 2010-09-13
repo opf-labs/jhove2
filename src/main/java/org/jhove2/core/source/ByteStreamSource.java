@@ -36,14 +36,10 @@
 
 package org.jhove2.core.source;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.ByteOrder;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2;
-import org.jhove2.core.io.Input;
-import org.jhove2.core.io.Input.Type;
 
 /** JHOVE2 byte stream source.  A byte stream source is always a child of
  * some other source unit.
@@ -51,7 +47,7 @@ import org.jhove2.core.io.Input.Type;
  * @author mstrong, slabrams
  */
 public class ByteStreamSource
-        extends AbstractSource
+    extends AbstractSource
 {
     /** Starting offset relative to parent source. */
     protected long endingOffset;
@@ -82,40 +78,8 @@ public class ByteStreamSource
         
         /* Make this byte stream a child of its parent. */
         parent.addChildSource(this);
-        
-        /* Re-use the existing open input of the parent. */
-        this.input  = parent.getInput(jhove2);
-        
-        /* Set the position to the start of the byte stream. */
-        this.input.setPosition(offset);
-    }
-    
-    /**
-     * Get {@link org.jhove2.core.io.Input} for the source unit. Concrete
-     * classes extending this abstract class must provide an implementation of
-     * this method if they are are based on parsable input. Classes without
-     * parsable input (e.g. {@link org.jhove2.core.source.ClumpSource} or
-     * {@link org.jhove2.core.source.DirectorySource} can let this inherited
-     * method return null.
-     * 
-     * @param bufferSize
-     *            Input maximum buffer size, in bytes
-     * @param bufferType
-     *            Input buffer type
-     * @param order
-     *            Byte order
-     * @return null
-     * @throws FileNotFoundException
-     *             File not found
-     * @throws IOException
-     *             I/O exception getting input
-     */
-    public Input getInput(int bufferSize, Type bufferType, ByteOrder order)
-        throws FileNotFoundException, IOException
-    {
-        return this.input;
-    }
-
+     }
+  
     /** Get ending offset of the byte stream, relative to its parent.
      * @return Ending offset
      */

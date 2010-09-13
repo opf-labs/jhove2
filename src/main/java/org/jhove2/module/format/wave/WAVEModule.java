@@ -111,6 +111,7 @@ public class WAVEModule
      *            JHOVE2 framework
      * @param source
      *            WAVE source unit
+     * @param input  WAVE source input
      * @return Number of bytes consumed
      * @throws EOFException
      *             If End-of-File is reached reading the source unit
@@ -118,32 +119,24 @@ public class WAVEModule
      *             If an I/O exception is raised reading the source unit
      * @throws JHOVE2Exception
      * @see org.jhove2.module.format.Parser#parse(org.jhove2.core.JHOVE2,
-     *      org.jhove2.core.source.Source)
+     *      org.jhove2.core.source.Source, org.jhove2.core.io.Input)
      */
     @Override
-    public long parse(JHOVE2 jhove2, Source source)
+    public long parse(JHOVE2 jhove2, Source source, Input input)
         throws EOFException, IOException, JHOVE2Exception
     {
         long consumed = 0L;
         this.isValid = Validity.True;
-        Input input = source.getInput(jhove2);
-        if (input != null) {
-            try {
-                input.setPosition(source.getStartingOffset());
+        input.setPosition(source.getStartingOffset());
                 
-                StringBuffer sb = new StringBuffer(4);
-                for (int i=0; i<4; i++) {
-                    short b = input.readUnsignedByte();
-                    sb.append((char) b);
-                }
-                Chunk chunk = ChunkFactory.getChunk(sb.toString(), jhove2);
-                consumed += chunk.parse(jhove2, source);
-                this.chunks.add(chunk);
-            }
-            finally {
-                input.close();
-            }
+        StringBuffer sb = new StringBuffer(4);
+        for (int i=0; i<4; i++) {
+            short b = input.readUnsignedByte();
+            sb.append((char) b);
         }
+        Chunk chunk = ChunkFactory.getChunk(sb.toString(), jhove2);
+        consumed += chunk.parse(jhove2, source, input);
+        this.chunks.add(chunk);
 
         return consumed;
     }
@@ -151,11 +144,12 @@ public class WAVEModule
     /** Validate the WAVE source unit.
      * @param jhove2 JHOVE2 framework
      * @param source WAVE source unit
-     * @see org.jhove2.module.format.Validator#validate(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
+     * @param input  WAVE source input
+     * @see org.jhove2.module.format.Validator#validate(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source, org.jhov2.core.io.Input)
      */
     @Override
-    public Validity validate(JHOVE2 jhove2, Source source)
-            throws JHOVE2Exception
+    public Validity validate(JHOVE2 jhove2, Source source, Input input)
+        throws JHOVE2Exception
     {
         /* A valid WAVE must have a format chunk followed by a data chunk.
          */

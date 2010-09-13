@@ -38,6 +38,7 @@ package org.jhove2.module.format.tiff.tiffit;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.format.Format;
+import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.AbstractFormatProfile;
 import org.jhove2.module.format.Validator;
@@ -66,7 +67,6 @@ public class TiffItProfile
 	/** TIFF-IT validation status. */
 	protected Validity isValid;
 
-
 	/**
 	 * Instantiate a new <code>TiffItProfile</code>.
 	 * 
@@ -88,7 +88,6 @@ public class TiffItProfile
 	 */
 	@Override
 	public Coverage getCoverage() {
-		// TODO Auto-generated method stub
 		return COVERAGE;
 	}
 
@@ -110,13 +109,16 @@ public class TiffItProfile
 	 *            JHOVE2 framework
 	 * @param source
 	 *            TIFF-IT source unit
+	 * @param input
+	 *            TIFF-IT source input
 	 * @return TIFF-IT validation status
 	 * @see org.jhove2.module.format.Validator#validate(org.jhove2.core.JHOVE2,
-	 *      org.jhove2.core.source.Source)
+	 *      org.jhove2.core.source.Source, org.jhove2.core.io.Input)
 	 */
 	@Override
-	public Validity validate(JHOVE2 jhove2, Source source)
-			throws JHOVE2Exception {
+	public Validity validate(JHOVE2 jhove2, Source source, Input input)
+	    throws JHOVE2Exception
+	{
 		if (this.module != null) {
 			this.isValid = Validity.True;
 		}

@@ -71,7 +71,8 @@ public class CuePointsChunk
      * @param jhove2
      *            JHOVE2 framework
      * @param source
-     *            WAVE source
+     *            WAVE source unit
+     * @param input  WAVE source input
      * @return Number of bytes consumed
      * @throws EOFException
      *             If End-of-File is reached reading the source unit
@@ -79,14 +80,13 @@ public class CuePointsChunk
      *             If an I/O exception is raised reading the source unit
      * @throws JHOVE2Exception
      * @see org.jhove2.module.format.Parser#parse(org.jhove2.core.JHOVE2,
-     *      org.jhove2.core.source.Source)
+     *      org.jhove2.core.source.Source, org.jhove2.core.io.Input)
      */
     @Override
-    public long parse(JHOVE2 jhove2, Source source)
+    public long parse(JHOVE2 jhove2, Source source, Input input)
         throws EOFException, IOException, JHOVE2Exception
     {
-        long consumed = super.parse(jhove2, source);
-        Input input   = source.getInput(jhove2);
+        long consumed = super.parse(jhove2, source, input);
         
         /* Count of cue points */
         this.count = input.readUnsignedInt();
@@ -95,7 +95,7 @@ public class CuePointsChunk
         /* Cue points. */
         for (int i=0; i<this.count; i++) {
             CuePoint cue = new CuePoint();
-            consumed += cue.parse(jhove2, source);
+            consumed += cue.parse(jhove2, source, input);
             
             this.cuePoints.add(cue);
         }

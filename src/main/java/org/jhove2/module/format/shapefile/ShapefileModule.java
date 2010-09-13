@@ -37,23 +37,13 @@
 
 package org.jhove2.module.format.shapefile;
 
-import java.io.EOFException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.TreeMap;
 import java.util.Map.Entry;
 
-import org.geotools.data.AbstractFeatureSource;
-import org.geotools.data.FeatureSource;
-import org.geotools.data.FileDataStore;
-import org.geotools.data.FileDataStoreFinder;
-import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.shapefile.ShapefileFeatureExtractor;
-import org.geotools.data.shapefile.shp.ShapefileHeader;
-import org.geotools.data.shapefile.shp.ShapefileReader;
-import org.geotools.feature.FeatureCollection;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
@@ -61,17 +51,13 @@ import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
+import org.jhove2.core.io.Input;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.FileSource;
-import org.jhove2.core.source.NamedSource;
 import org.jhove2.core.source.Source;
-import org.jhove2.module.Module.Scope;
 import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.module.format.Validator;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
 
-// TODO: Auto-generated Javadoc
 /**
  * JHOVE2 Shapefile module.  Used to extract information from shapefiles.
  * 
@@ -156,14 +142,15 @@ public class ShapefileModule
 	 *
 	 * @param jhove2 JHOVE2 framework
 	 * @param source Shapefile source unit
+	 * @param input  Shapefile source input
 	 * @return 0
 	 * @throws IOException If an I/O exception is raised reading the source unit
 	 * @throws JHOVE2Exception If parse is non-fuctional
 	 * @see {org.jhove2.module.format.Parser#parse(org.jhove2.core.JHOVE2,
-	 * org.jhove2.core.source.Source)}
+	 * org.jhove2.core.source.Source, core.jhove2.core.io.Input)}
 	 */
 	@Override
-	public long parse(JHOVE2 jhove2, Source source)
+	public long parse(JHOVE2 jhove2, Source source, Input input)
 		throws IOException, JHOVE2Exception
 	{
 		if (source instanceof ClumpSource) {
@@ -191,13 +178,16 @@ public class ShapefileModule
 	 *
 	 * @param jhove2 JHOVE2 framework
 	 * @param source Source unit
+	 * @param input  Source input
 	 * @return UTF-8 validation status
 	 * @throws JHOVE2Exception the jHOV e2 exception
 	 * @see org.jhove2.module.format.Validator#validate(org.jhove2.core.JHOVE2,
-	 * org.jhove2.core.source.Source)
+	 * org.jhove2.core.source.Source, org.jhove2.core.io.Input)
 	 */
 	@Override
-	public Validity validate(JHOVE2 jhove2, Source source) throws JHOVE2Exception {
+	public Validity validate(JHOVE2 jhove2, Source source, Input input)
+	    throws JHOVE2Exception
+	{
 	    boolean hasConsistentRecordCount = false;
 	    long mainRecordCount = this.getShapefileFeatures().getShapefileRecordCount();
 	    long dbfRecordCount = this.getShapefileFeatures().getDbfHeader().getRecordCount();

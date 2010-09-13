@@ -59,8 +59,10 @@ import org.jhove2.module.format.Validator;
  * 
  * @author rnanders
  */
-public class XmlModule extends BaseFormatModule implements Validator {
-
+public class XmlModule
+    extends BaseFormatModule
+    implements Validator
+{
     /** Module version identifier. */
     public static final String VERSION = "2.0.0";
 
@@ -77,9 +79,6 @@ public class XmlModule extends BaseFormatModule implements Validator {
     /** The JHOVE2 object passed in by the parse method */
     protected JHOVE2 jhove2; 
     
-    /** The Source object passed in by the parse method */
-    protected  Source source;
-
     /** XML validation status. */
     protected Validity validity;
 
@@ -100,13 +99,6 @@ public class XmlModule extends BaseFormatModule implements Validator {
      */
     @Override
     public Validity isValid() {
-        if (validity == null) {
-            try {
-                validate(jhove2, source);
-            }
-            catch (JHOVE2Exception e) {
-            }
-        }
         return validity;
     }
 
@@ -114,20 +106,21 @@ public class XmlModule extends BaseFormatModule implements Validator {
      * Validate the XML parse results.
      * 
      * @param jhove2
-     *            the jhove2
+     *            JHOVE2 framework
      * @param source
-     *            the source
-     * 
+     *            XML source unit
+     * @param input XML source input
      * @return the validity
      * 
      * @throws JHOVE2Exception
-     *             the JHOV e2 exception
+     *             the JHOVE2 exception
      */
     @Override
-    public Validity validate(JHOVE2 jhove2, Source source)
-            throws JHOVE2Exception {
+    public Validity validate(JHOVE2 jhove2, Source source, Input input)
+        throws JHOVE2Exception
+    {
         /* See if validity has been previously set to False, e.g. by parse exception trap */
-        if ((validity != null) && (validity == Validity.False)) {
+        if (validity == Validity.False) {
             return validity;
         }            
        /* Check to see if there were SAX parser errors of any sort */
@@ -187,6 +180,7 @@ public class XmlModule extends BaseFormatModule implements Validator {
      */
     public XmlModule(Format format) {
         super(VERSION, RELEASE, RIGHTS, format);
+        this.validity = Validity.Undetermined;
     }
     
     public XmlModule(){
@@ -425,54 +419,44 @@ public class XmlModule extends BaseFormatModule implements Validator {
      * Parse a source unit.
      * 
      * @param jhove2
-     *            the jhove2
+     *            JHOVE2 framework
      * @param source
-     *            the source
-     * 
-     * @return the long
+     *            XML source unit
+     * @param input
+     *            XML source input
+     * @return Number of bytes consumed
      * 
      * @throws EOFException
      *             the EOF exception
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      * @throws JHOVE2Exception
-     *             the JHOV e2 exception
+     *             the JHOVE2 exception
      */
     @Override
-    public long parse(JHOVE2 jhove2, Source source) throws 
-            IOException, JHOVE2Exception {
-        Input input = null;
-        try {
-            this.jhove2 = jhove2;
-            this.source = source;
+    public long parse(JHOVE2 jhove2, Source source, Input input)
+        throws IOException, JHOVE2Exception
+    {
+        this.jhove2 = jhove2;
             
-            /* Use SAX2 to get what information is available from that mechanism */
-            saxParser.parse(source, jhove2);
+        /* Use SAX2 to get what information is available from that mechanism */
+        saxParser.parse(source, jhove2);
 
-            /* Get the input object */
-            input = source.getInput(jhove2);
+        /*
+         * Do a separate parse of the XML Declaration at the start of the
+         * document
+         */
+        input.setPosition(source.getStartingOffset());
+        xmlDeclaration.parse(input);
 
-            /*
-             * Do a separate parse of the XML Declaration at the start of the
-             * document
-             */
-            input.setPosition(source.getStartingOffset());
-            xmlDeclaration.parse(input);
-
-            /* Do a separate parse to inventory numeric character references */
-            if (this.ncrParser) {
-                input.setPosition(0L);
-                numericCharacterReferences.parse(input,
-                        xmlDeclaration.encodingFromSAX2, jhove2);
-            }
-            validate(jhove2,source);
-            return 0;
-            
-        } finally {
-            if (input != null) {
-                input.close();
-            }
-        }
+        /* Do a separate parse to inventory numeric character references */
+        if (this.ncrParser) {
+            input.setPosition(0L);
+            numericCharacterReferences.parse(input,
+                    xmlDeclaration.encodingFromSAX2, jhove2);
+        }   
+        validate(jhove2, source, input);
+        
+        return 0;
    }
-
 }

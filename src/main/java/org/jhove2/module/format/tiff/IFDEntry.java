@@ -34,7 +34,6 @@
  */
 package org.jhove2.module.format.tiff;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -50,14 +49,12 @@ import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
-import org.jhove2.core.I8R.Namespace;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.FormatIdentification;
 import org.jhove2.core.format.FormatIdentification.Confidence;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
-import org.jhove2.core.source.AbstractSource;
 import org.jhove2.core.source.ByteStreamSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.Validator.Validity;
@@ -82,9 +79,9 @@ import org.jhove2.module.format.tiff.type.ShortArray;
 import org.jhove2.module.format.tiff.type.desc.Compression;
 import org.jhove2.module.identify.Identifier;
 
-/**
+/** TIFF IFD entry.
+ * 
  * @author mstrong
- *
  */
 public class IFDEntry 
 extends AbstractReportable
@@ -220,7 +217,6 @@ implements Comparable<Object> {
 
     private Message TileLengthNotMultipleOf16Message;
 
-
     @ReportableProperty(order=5, value = "Entry value/offset.")
     public long getValueOffset() {
         return valueOffset;
@@ -229,7 +225,6 @@ implements Comparable<Object> {
     public int getVersion() {
         return version;
     }
-
 
     /** no arg constructor */
     public IFDEntry() {
@@ -243,7 +238,6 @@ implements Comparable<Object> {
         this.count = count;
         this.valueOffset = valueOffset;
     }
-
 
     /**
      * parse the IFD Entry 
@@ -321,7 +315,7 @@ implements Comparable<Object> {
                 I8R identifier = (I8R) i8r.get("ICCIdentifier");
                 FormatIdentification iccPresumptiveFormat = new FormatIdentification(identifier, Confidence.PositiveSpecific); 
                 bss.addPresumptiveFormat(iccPresumptiveFormat);
-                jhove2.characterize(bss, true);
+                jhove2.characterize(bss, input, true);
             }
             else {
                 readValues(input);

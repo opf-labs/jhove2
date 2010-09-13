@@ -88,9 +88,6 @@ public abstract class AbstractSource
 
 	/** Source unit backing file. */
 	protected File file;
-	
-	/** Input. */
-	protected Input input;
 
 	/**
 	 * Source unit backing file temporary status: true if the source unit
@@ -329,7 +326,9 @@ public abstract class AbstractSource
 	}
 
     /**
-     * Get {@link org.jhove2.core.io.Input} for the source unit.  The open
+     * Get little-endian {@link org.jhove2.core.io.Input} for the source unit
+     * with the buffer size and type specified by the 
+     * {@link org.jhove2.core.Invocation}.
      * Input is returned if it exists.
      * @param jhove2 JHOVE2 framework
      * @return Input for the source unit
@@ -344,8 +343,8 @@ public abstract class AbstractSource
     }
 
     /**
-     * Get {@link org.jhove2.core.io.Input} for the source unit.  The open
-     * Input is returned if it exists.
+     * Get {@link org.jhove2.core.io.Input} for the source unit with the 
+     * buffer size and type specified by the {@link org.jhove2.core.Invocation}
      * @param jhove2 JHOVE2 framework
      * @param order  Byte order
      * @return Input for the source unit
@@ -354,25 +353,19 @@ public abstract class AbstractSource
     public Input getInput(JHOVE2 jhove2, ByteOrder order)
         throws FileNotFoundException, IOException
     {
-        if (this.input == null) {
-            Invocation config = jhove2.getInvocation();
-            this.input = InputFactory.getInput(this.file,
-                                               config.getBufferSize(),
-                                               config.getBufferType(),
-                                               order);
-        }
-        else {
-            this.input.setByteOrder(order);
-        }
-        
-        return this.input;
+	    Invocation invocation = jhove2.getInvocation();
+	    
+        return this.getInput(invocation.getBufferSize(),
+                             invocation.getBufferType(),
+                             order);
     }
     
 	/**
-	 * Create and get {@link org.jhove2.core.io.Input} for the source unit. Concrete
-	 * classes extending this abstract class must provide an implementation of
-	 * this method if they are are based on parsable input. Classes without
-	 * parsable input (e.g. {@link org.jhove2.core.source.ClumpSource} or
+	 * Create and get little-endian {@link org.jhove2.core.io.Input} for the
+	 * source unit. Concrete classes extending this abstract class must
+	 * provide an implementation of this method if they are are based on
+	 * parsable input. Classes without parsable input
+	 * (e.g. {@link org.jhove2.core.source.ClumpSource} or
 	 * {@link org.jhove2.core.source.DirectorySource} can let this inherited
 	 * method return null.
 	 * 
@@ -417,9 +410,7 @@ public abstract class AbstractSource
 	public Input getInput(int bufferSize, Type bufferType, ByteOrder order)
 		throws FileNotFoundException, IOException
 	{
-		this.input = InputFactory.getInput(this.file, bufferSize, bufferType, order);
-		
-		return input;
+		return InputFactory.getInput(this.file, bufferSize, bufferType, order);
 	}
 
 	/**

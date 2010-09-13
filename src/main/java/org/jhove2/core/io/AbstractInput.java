@@ -113,15 +113,18 @@ public abstract class AbstractInput implements Input {
 	 *             I/O exception instantiating input
 	 */
 	public AbstractInput(File file, ByteOrder order)
-			throws FileNotFoundException, IOException {
-		this.file = file;
-		this.byteOrder = order;
-		this.stream = (InputStream) new FileInputStream(file);
-		this.fileSize = file.length();
-		this.inputablePosition = 0L;
+		throws FileNotFoundException, IOException
+	{
+	    if (!file.isDirectory()) {
+	        this.file = file;
+	        this.byteOrder = order;   
+	        this.stream = (InputStream) new FileInputStream(file);
+	        this.fileSize = file.length();
+	        this.inputablePosition = 0L;
 
-		RandomAccessFile raf = new RandomAccessFile(file, "r");
-		this.channel = raf.getChannel();
+	        RandomAccessFile raf = new RandomAccessFile(file, "r");
+	        this.channel = raf.getChannel();
+	    }
 	}
 
 	/**
@@ -130,9 +133,15 @@ public abstract class AbstractInput implements Input {
 	 * @see org.jhove2.core.io.Input#close()
 	 */
 	@Override
-	public void close() throws IOException {
-		this.stream.close();
-		this.channel.close();
+	public void close()
+	    throws IOException
+	{
+	    if (this.stream != null) {
+	        this.stream.close();
+	    }
+	    if (this.channel != null) {
+	        this.channel.close();
+	    }
 	}
 
 	/**
@@ -221,15 +230,18 @@ public abstract class AbstractInput implements Input {
 	 */
 	@Override
 	public byte[] getByteArray() {
-		byte[] buffer;
-		if (this.buffer.hasArray())
-			buffer = this.buffer.array();
-		else {
-			buffer = new byte[this.buffer.limit()]; // capacity()];
-			this.buffer.mark();
-			this.buffer.position(0);
-			this.buffer.get(buffer);
-			this.buffer.reset();
+		byte[] buffer = null;
+		if (this.buffer != null) {
+		    if (this.buffer.hasArray()) {
+		        buffer = this.buffer.array();
+		    }
+		    else {
+		        buffer = new byte[this.buffer.limit()]; // capacity()];
+		        this.buffer.mark();
+		        this.buffer.position(0);
+		        this.buffer.get(buffer);
+		        this.buffer.reset();
+		    }
 		}
 
 		return buffer;
@@ -251,14 +263,16 @@ public abstract class AbstractInput implements Input {
 	 * @throws IOException
 	 */
 	protected long getNextBuffer() throws IOException {
-		this.buffer.clear();
-		int n = this.channel.read(this.buffer);
-		this.buffer.flip();
-		this.bufferOffset = this.channel.position() - n;
-		this.bufferSize = n;
-		this.inputablePosition = this.bufferOffset + this.buffer.position();
-
-		return this.bufferSize;
+	    if (this.buffer != null && this.channel != null) {
+	        this.buffer.clear();
+	        int n = this.channel.read(this.buffer);
+	        this.buffer.flip();
+	        this.bufferOffset = this.channel.position() - n;
+	        this.bufferSize = n;
+	        this.inputablePosition = this.bufferOffset + this.buffer.position();
+	        return this.bufferSize;
+	    }
+	    return 0L;
 	}
 
 	/**

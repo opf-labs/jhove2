@@ -85,7 +85,6 @@ public class ZipFileEntry
         throws EOFException, IOException, JHOVE2Exception
     {
         long consumed = 0L;
-        int numErrors = 0;
         this.isValid = Validity.True;
         
         this.header = new ZipLocalFileHeader();

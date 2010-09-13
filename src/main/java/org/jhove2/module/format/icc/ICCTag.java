@@ -37,7 +37,6 @@ package org.jhove2.module.format.icc;
 
 import java.io.EOFException;
 import java.io.IOException;
-import java.nio.ByteOrder;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.annotation.ReportableProperty.PropertyType;
@@ -189,7 +188,8 @@ public class ICCTag
     
     /** Parse an ICC tag.
      * @param jhove2 JHOVE2 framework
-     * @param source ICC source
+     * @param source ICC source unit
+     * @param input  ICC source input
      * @return Number of bytes consumed
      * @throws EOFException
      *             If End-of-File is reached reading the source unit
@@ -197,13 +197,12 @@ public class ICCTag
      *             If an I/O exception is raised reading the source unit
      * @throws JHOVE2Exception
      */
-    public long parse(JHOVE2 jhove2, Source source, long offset)
+    public long parse(JHOVE2 jhove2, Source source, Input input, long offset)
         throws EOFException, IOException, JHOVE2Exception
     {
         long consumed = 0L;
         int numErrors = 0;
         this.isValid = Validity.True;
-        Input input  = source.getInput(jhove2, ByteOrder.BIG_ENDIAN);
         long  start  = source.getStartingOffset();
 
         /* Tag signature. */
@@ -266,19 +265,19 @@ public class ICCTag
             Validity isValid = Validity.Undetermined;
             if (sig.equals("mAB ")) {
                 this.lutA2BType = new LUTAToBType();
-                this.lutA2BType.parse(jhove2, source);
+                this.lutA2BType.parse(jhove2, source, input);
                 
                 isValid = this.lutA2BType.isValid();
             }
             else if (sig.equals("mft1")) {
                 this.lut8Type = new LUT8Type();
-                this.lut8Type.parse(jhove2, source);
+                this.lut8Type.parse(jhove2, source, input);
                 
                 isValid = this.lut8Type.isValid();
             }
             else if (sig.equals("mft2")) {
                 this.lut16Type = new LUT16Type();
-                this.lut16Type.parse(jhove2, source);
+                this.lut16Type.parse(jhove2, source, input);
                 
                 isValid = this.lut16Type.isValid();
             }
@@ -305,13 +304,13 @@ public class ICCTag
             Validity isValid = Validity.Undetermined;
             if (sig.equals("mBA ")) {
                 this.lutB2AType = new LUTBToAType();
-                this.lutB2AType.parse(jhove2, source);
+                this.lutB2AType.parse(jhove2, source, input);
                     
                 isValid = this.lutB2AType.isValid();
             }
             else if (sig.equals("mft1")) {
                 this.lut8Type = new LUT8Type();
-                this.lut8Type.parse(jhove2, source);
+                this.lut8Type.parse(jhove2, source, input);
                     
                 isValid = this.lut8Type.isValid();
             }
@@ -339,7 +338,7 @@ public class ICCTag
             Validity isValid = Validity.Undetermined;
             if (sig.equals("XYZ ")) {
                 this.xyzType = new XYZType();
-                this.xyzType.parse(jhove2, source, this.size);
+                this.xyzType.parse(jhove2, source, input, this.size);
             
                 isValid = this.xyzType.isValid();
             }
@@ -363,13 +362,13 @@ public class ICCTag
             Validity isValid = Validity.Undetermined;
             if (sig.equals("curv")) {
                 this.curveType = new CurveType();
-                this.curveType.parse(jhove2, source);
+                this.curveType.parse(jhove2, source, input);
                 
                 isValid = this.curveType.isValid();
             }
             else if (sig.equals("para")){
                 this.parametricType = new ParametricCurveType();
-                this.parametricType.parse(jhove2, source);
+                this.parametricType.parse(jhove2, source, input);
                 
                 isValid = this.parametricType.isValid();
             }
@@ -390,7 +389,7 @@ public class ICCTag
             Validity isValid = Validity.Undetermined;
             if (sig.equals("dtim")) {
                 this.dateTimeType = new DateTimeType();
-                this.dateTimeType.parse(jhove2, source);
+                this.dateTimeType.parse(jhove2, source, input);
             
                 isValid = this.dateTimeType.isValid();
             }
@@ -411,7 +410,7 @@ public class ICCTag
             Validity isValid = Validity.Undetermined;
             if (sig.equals("sf32")) {
                 this.s15f16Type = new S15Fixed16ArrayType();
-                this.s15f16Type.parse(jhove2, source, this.size);
+                this.s15f16Type.parse(jhove2, source, input, this.size);
             
                 isValid = this.s15f16Type.isValid();
             }
@@ -432,7 +431,7 @@ public class ICCTag
             Validity isValid = Validity.Undetermined;
             if (sig.equals("chrm")) {
                 this.chromaticityType = new ChromaticityType();
-                this.chromaticityType.parse(jhove2, source);
+                this.chromaticityType.parse(jhove2, source, input);
             
                 isValid = this.chromaticityType.isValid();
             }
@@ -453,7 +452,7 @@ public class ICCTag
             Validity isValid = Validity.Undetermined;
             if (sig.equals("clro")) {
                 this.colorantOrderType = new ColorantOrderType();
-                this.colorantOrderType.parse(jhove2, source);
+                this.colorantOrderType.parse(jhove2, source, input);
             
                 isValid = this.colorantOrderType.isValid();
             }
@@ -474,7 +473,7 @@ public class ICCTag
             Validity isValid = Validity.Undetermined;
             if (sig.equals("clrt")) {
                 this.colorantTableType = new ColorantTableType();
-                this.colorantTableType.parse(jhove2, source);
+                this.colorantTableType.parse(jhove2, source, input);
             
                 isValid = this.colorantTableType.isValid();
             }
@@ -500,19 +499,19 @@ public class ICCTag
             Validity isValid = Validity.Undetermined;
             if (sig.equals("desc")) {
                 this.descriptionType = new DescriptionType();
-                this.descriptionType.parse(jhove2, source);
+                this.descriptionType.parse(jhove2, source, input);
                 
                 isValid = this.descriptionType.isValid();
             }
             else if (sig.equals("text")) {
                 this.textType = new TextType();
-                this.textType.parse(jhove2, source, this.size);
+                this.textType.parse(jhove2, source, input, this.size);
                 
                 isValid = this.textType.isValid();
             }
             else if (sig.equals("mluc")){
                 this.unicodeType = new MultiLocalizedUnicodeType();
-                this.unicodeType.parse(jhove2, source);
+                this.unicodeType.parse(jhove2, source, input);
             
                 isValid = this.unicodeType.isValid();
             }
@@ -533,7 +532,7 @@ public class ICCTag
             Validity isValid = Validity.Undetermined;
             if (sig.equals("meas")) {
                 this.measurementType = new MeasurementType();
-                this.measurementType.parse(jhove2, source);
+                this.measurementType.parse(jhove2, source, input);
             
                 isValid = this.measurementType.isValid();
             }
@@ -554,7 +553,7 @@ public class ICCTag
             Validity isValid = Validity.Undetermined;
             if (sig.equals("ncl2")) {
                 this.color2Type = new NamedColor2Type();
-                this.color2Type.parse(jhove2, source);
+                this.color2Type.parse(jhove2, source, input);
             
                 isValid = this.color2Type.isValid();
             }
@@ -575,7 +574,7 @@ public class ICCTag
             Validity isValid = Validity.Undetermined;
             if (sig.equals("pseq")) {
                 this.sequenceType = new ProfileSequenceDescriptionType();
-                this.sequenceType.parse(jhove2, source);
+                this.sequenceType.parse(jhove2, source, input);
             
                 isValid = this.sequenceType.isValid();
             }
@@ -596,7 +595,7 @@ public class ICCTag
             Validity isValid = Validity.Undetermined;
             if (sig.equals("rcs2")) {
                 this.rcs16Type = new ResponseCurveSet16Type();
-                this.rcs16Type.parse(jhove2, source);
+                this.rcs16Type.parse(jhove2, source, input);
             
                 isValid = this.rcs16Type.isValid();
             }
@@ -619,7 +618,7 @@ public class ICCTag
             Validity isValid = Validity.Undetermined;
             if (sig.equals("sig ")) {
                 this.signatureType = new SignatureType();
-                this.signatureType.parse(jhove2, source);
+                this.signatureType.parse(jhove2, source, input);
             
                 isValid = this.signatureType.isValid();
             }
@@ -673,7 +672,7 @@ public class ICCTag
             Validity isValid = Validity.Undetermined;
             if (sig.equals("view")) {
                 this.conditionsType = new ViewingConditionsType();
-                this.conditionsType.parse(jhove2, source);
+                this.conditionsType.parse(jhove2, source, input);
             
                 isValid = this.conditionsType.isValid();
             }

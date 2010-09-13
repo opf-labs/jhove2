@@ -117,7 +117,8 @@ public class MPEGFormatHeader
      * @param jhove2
      *            JHOVE2 framework
      * @param source
-     *            WAVE source
+     *            WAVE source unit
+     * @param input  WAVE source input
      * @return Number of bytes consumed
      * @throws EOFException
      *             If End-of-File is reached reading the source unit
@@ -126,10 +127,9 @@ public class MPEGFormatHeader
      * @throws JHOVE2Exception
      */
     @Override
-    public long parse(JHOVE2 jhove2, Source source)
+    public long parse(JHOVE2 jhove2, Source source, Input input)
         throws EOFException, IOException, JHOVE2Exception
     {
-        Input input   = source.getInput(jhove2);
         long consumed = 0L;
         
         /* MPEG audio layer. */

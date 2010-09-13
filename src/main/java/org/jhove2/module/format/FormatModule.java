@@ -42,6 +42,7 @@ import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.format.Format;
+import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.Module;
 
@@ -55,13 +56,15 @@ public interface FormatModule
 	extends Module, Parser
 {
     /**
-     * Invoke the parsing of the source unit and validate all registered profiles.
+     * Invoke the parsing of the {@link org.jhove2.core.source.Source} unit's
+     * {@link org.jhove2.core.io.Input} and validate all registered profiles.
      * @param jhove2 JHOVE2 framework
      * @param source Source to be parsed
+     * @param input  Source input
      * @throws JHOVE2Exception
-     * @see org.jhove2.module.Command#execute(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
+     * @see org.jhove2.module.Command#execute(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source, org.jhove2.core.io.Input)
      */
-    public void invoke(JHOVE2 jhove2, Source source)
+    public void invoke(JHOVE2 jhove2, Source source, Input input)
        throws JHOVE2Exception;
 	
 	/**

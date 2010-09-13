@@ -49,6 +49,7 @@ import org.jhove2.core.TimerInfo;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
+import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractModule;
 
@@ -129,7 +130,8 @@ public class BaseFormatModule
 	 *            Format scope: generic or specific (to a source unit)
 	 * @param format
 	 *            Format module format
-	 */	public BaseFormatModule(String version, String release, String rights,
+	 */
+	public BaseFormatModule(String version, String release, String rights,
 			                Scope scope, Format format)
 	{
 		super(version, release, rights, scope);
@@ -138,22 +140,24 @@ public class BaseFormatModule
 	}
 
 	/**
-	 * Invoke the parsing of the source unit and validate all registered profiles.
+	 * Invoke the parsing of the {@link org.jhove2.core.source.Source} unit's
+	 * {@link org.jhove2.core.io.Input} and validate all registered profiles.
 	 * @param jhove2 JHOVE2 framework
 	 * @param source Source to be parsed
+	 * @param input  Source input
 	 * @throws JHOVE2Exception
-	 * @see org.jhove2.module.Command#execute(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
+	 * @see org.jhove2.module.Command#execute(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source, org.jhove2.core.io.Input)
 	 */
 	@Override
-	public void invoke(JHOVE2 jhove2, Source source)
+	public void invoke(JHOVE2 jhove2, Source source, Input input)
 	   throws JHOVE2Exception
 	{
         this.timerInfo.setStartTime();
         source.addModule(this);
 		try {
-			this.parse(jhove2, source);
+			this.parse(jhove2, source, input);
 			if (this instanceof Validator) {
-				((Validator) this).validate(jhove2, source);
+				((Validator) this).validate(jhove2, source, input);
 			}
 			else {
 			    this.moduleDoesNotImplementValidatorInterfaceMessage =
@@ -170,7 +174,7 @@ public class BaseFormatModule
 						TimerInfo timer = profile.getTimerInfo();
 						timer.setStartTime();
 						
-						((Validator) profile).validate(jhove2, source);
+						((Validator) profile).validate(jhove2, source, input);
 						
 						timer.setEndTime();
 					}
@@ -187,12 +191,26 @@ public class BaseFormatModule
 		    this.timerInfo.setEndTime();
 		}
 	}
-	
+
+    /** Parse the formatted {@link org.jhove2.core.source.Source} unit's
+     * {@link org.jhove2.core.io.Input}.
+     * @param jhove2 JHOVE2 framework
+     * @param source Source unit
+     * @param input  Source input
+     */
+    @Override
+    public long parse(JHOVE2 jhove2, Source source, Input input)
+        throws EOFException, IOException, JHOVE2Exception
+    {
+        return 0;
+    }
+    	
 	protected void addExceptionMessageToSource(JHOVE2 jhove2, Source source, Exception e)
-	throws JHOVE2Exception {
+	    throws JHOVE2Exception
+	{
 		String exceptionType = e.getClass().getSimpleName();
 		String eMessage = e.getLocalizedMessage();
-		if (eMessage==null){
+		if (eMessage == null) {
 			eMessage = "";
 		}
 		String[] messageText = {exceptionType, eMessage};
@@ -202,6 +220,7 @@ public class BaseFormatModule
                 messageText, jhove2.getConfigInfo()));
 		
 	}
+	
 	/**
 	 * Get format module format.
 	 * @return Format module format
@@ -215,6 +234,7 @@ public class BaseFormatModule
 	/** Set the base format.
 	 * @param format Base format
 	 */
+	@Override
 	public void setFormat(Format format){
 		this.format = format;
 	}
@@ -240,17 +260,6 @@ public class BaseFormatModule
 		this.profiles = profiles;
 	}
 
-	/** Parse the format.
-	 * @param jhove2 JHOVE2 framework
-	 * @param source Source unit
-	 */
-	@Override
-	public long parse(JHOVE2 jhove2, Source source)
-		throws EOFException, IOException, JHOVE2Exception
-	{
-		return 0;
-	}
-	
 	/** Get module does not implement the {@link org.jhove2.module.format.Validator} interface message
 	 * @return Message
 	 */

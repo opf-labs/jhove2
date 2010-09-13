@@ -45,12 +45,18 @@ import org.jhove2.module.AbstractModule;
  * 
  * @author mstrong, slabrams
  */
-public class AbstractFormatProfile
+public abstract class AbstractFormatProfile
 	extends AbstractModule
 	implements FormatProfile
 {
+    /** Format profile coverage. */
+    protected Coverage coverage;
+    
 	/** Format profile format. */
 	protected Format format;
+	
+	/** Format profile validation status. */
+	protected Validity isValid;
 
 	/** Format profile format module. */
 	protected FormatModule module;
@@ -68,16 +74,27 @@ public class AbstractFormatProfile
 	 *            Format profile format
 	 */
 	public AbstractFormatProfile(String version, String release, String rights,
-			                     Format format) {
+			                     Format format)
+	{
 		super(version, release, rights, Scope.Specific);
-		this.format   = format;
+		this.format  = format;
+		this.isValid = Validity.Undetermined;
 	}
 	
 	public AbstractFormatProfile(){
 		super();
-		this.scope = Scope.Specific;
+		this.scope   = Scope.Specific;
+        this.isValid = Validity.Undetermined;
 	}
 
+    /** Get validation coverage.
+     * @return Validation coverage
+     */
+    @Override
+    public Coverage getCoverage() {
+        return this.coverage;
+    }
+ 
 	/**
 	 * Get format profile format.
 	 * 
@@ -88,7 +105,32 @@ public class AbstractFormatProfile
 	public Format getFormat() {
 		return this.format;
 	}
-
+	   
+    /**
+     * Get validation status.
+     * 
+     * @return Validation status
+     */
+    @Override
+    public Validity isValid() {
+        return this.isValid;
+    }
+    
+    /** Set format profile validation coverage.
+     * @param coverage Format profile validation coverage
+     */
+    public void setCoverage(Coverage coverage) {
+        this.coverage = coverage;
+    }
+    
+    /** Set format profile format.
+     * @param format Format profile format
+     */
+    @Override
+    public void setFormat(Format format) {
+        this.format = format;
+    }
+    
 	/**
 	 * Set format profile format module.
 	 * 

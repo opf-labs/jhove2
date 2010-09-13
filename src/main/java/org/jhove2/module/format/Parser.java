@@ -40,6 +40,7 @@ import java.io.EOFException;
 import java.io.IOException;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 
 /** JHOVE2 interface for parsers.
@@ -49,11 +50,14 @@ import org.jhove2.core.source.Source;
 public interface Parser
 {
     /**
-     * Parse a source unit.
+     * Parse a {@link org.jhove2.core.source.Source} unit's
+     * {@link org.jhove2.core.io.Input}.
      * @param jhove2
      *            JHOVE2 framework
      * @param source
      *            Source unit
+     * @param input
+     *            Source input
      * @return Number of bytes consumed
      * @throws EOFException
      *             If End-of-File is reached reading the source unit
@@ -61,6 +65,6 @@ public interface Parser
      *             If an I/O exception is raised reading the source unit
      * @throws JHOVE2Exception
      */
-    public long parse(JHOVE2 jhove2, Source source)
+    public long parse(JHOVE2 jhove2, Source source, Input input)
         throws EOFException, IOException, JHOVE2Exception;
 }

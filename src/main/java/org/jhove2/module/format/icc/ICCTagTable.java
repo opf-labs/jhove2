@@ -37,7 +37,6 @@ package org.jhove2.module.format.icc;
 
 import java.io.EOFException;
 import java.io.IOException;
-import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -93,7 +92,8 @@ public class ICCTagTable
     
     /** Parse an ICC tag table.
      * @param jhove2 JHOVE2 framework
-     * @param source ICC source
+     * @param source ICC source unit
+     * @param input  ICC source input
      * @param header ICC header
      * @return Number of bytes consumed
      * @throws EOFException
@@ -102,7 +102,7 @@ public class ICCTagTable
      *             If an I/O exception is raised reading the source unit
      * @throws JHOVE2Exception
      */
-    public long parse(JHOVE2 jhove2, Source source, ICCHeader header)
+    public long parse(JHOVE2 jhove2, Source source, Input input, ICCHeader header)
         throws EOFException, IOException, JHOVE2Exception
     {
         long    consumed = 0L;
@@ -116,13 +116,12 @@ public class ICCTagTable
         boolean hasProfileSequenceDescriptionTag = false;
         int     numErrors = 0;
         this.isValid = Validity.True;
-        Input input  = source.getInput(jhove2, ByteOrder.BIG_ENDIAN);
         
         this.count = input.readUnsignedInt();
         consumed += 4;
         for (int i=0; i<this.count; i++) {
             ICCTag tag = new ICCTag();
-            consumed += tag.parse(jhove2, source, header.getOffset());
+            consumed += tag.parse(jhove2, source, input, header.getOffset());
             Validity validity = tag.isValid();
             if (validity != Validity.True) {
                 this.isValid = validity;

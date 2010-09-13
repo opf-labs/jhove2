@@ -37,7 +37,6 @@ package org.jhove2.module.format.icc;
 
 import java.io.EOFException;
 import java.io.IOException;
-import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -236,7 +235,9 @@ public class ICCHeader
      * @param jhove2
      *            JHOVE2 framework
      * @param source
-     *            ICC source
+     *            ICC source unit
+     * @param input
+     *            ICC source input
      * @return Number of bytes consumed
      * @throws EOFException
      *             If End-of-File is reached reading the source unit
@@ -245,13 +246,12 @@ public class ICCHeader
      * @throws JHOVE2Exception
      */
     @Override
-    public long parse(JHOVE2 jhove2, Source source)
+    public long parse(JHOVE2 jhove2, Source source, Input input)
         throws EOFException, IOException, JHOVE2Exception
     {
         long consumed = 0L;
         int numErrors = 0;
         this.isValid = Validity.True;
-        Input input  = source.getInput(jhove2, ByteOrder.BIG_ENDIAN);
         long offset  = source.getStartingOffset();
         
         /* Profile size. */

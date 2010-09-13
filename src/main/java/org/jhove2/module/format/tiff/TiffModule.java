@@ -60,7 +60,9 @@ import org.jhove2.module.format.Validator;
  * @author mstrong
  *
  */
-public class TiffModule extends BaseFormatModule implements Validator 
+public class TiffModule
+    extends BaseFormatModule
+    implements Validator 
 {
     /** TIFF module version identifier. */
     public static final String VERSION = "2.0.0";
@@ -120,6 +122,7 @@ public class TiffModule extends BaseFormatModule implements Validator
      */
     public TiffModule(Format format) {
         super(VERSION, RELEASE, RIGHTS, format);
+        this.validity = Validity.Undetermined;
     }
     
     public TiffModule() {
@@ -133,18 +136,20 @@ public class TiffModule extends BaseFormatModule implements Validator
      *            JHOVE2 framework
      * @param source
      *            TIFF source unit
-     * @return 0
+     * @param input
+     *            TIFF source input
+     * @return Number of bytes consumed
      * @throws EOFException
      *             If End-of-File is reached reading the source unit
      * @throws IOException
      *             If an I/O exception is raised reading the source unit
      * @throws JHOVE2Exception
      * @see org.jhove2.module.format.Parser#parse(org.jhove2.core.JHOVE2,
-     *      org.jhove2.core.source.Source)
+     *      org.jhove2.core.source.Source, org.jhove2.core.io.Input)
      */
     @Override
-    public long parse(JHOVE2 jhove2, Source source)
-    throws EOFException, IOException, JHOVE2Exception
+    public long parse(JHOVE2 jhove2, Source source, Input input)
+        throws EOFException, IOException, JHOVE2Exception
     {
         this.jhove2 = jhove2;
         this.source = source;
@@ -156,15 +161,13 @@ public class TiffModule extends BaseFormatModule implements Validator
         TiffTag.getTiffTags(jhove2);
 
         int numErrors = 0;
-        Input input = source.getInput(jhove2);
         long start  = source.getStartingOffset();
 
+        input.setPosition(start);
         try {
-            input.setPosition(start);
-
             // read the first two bytes to determine the endianess
             byte[] b = new byte[2];
-            b[0] = input.readSignedByte();
+            b[0] = input.readSignedByte();  
             b[1] = input.readSignedByte();
             ByteOrder byteOrder = null;
 
@@ -213,8 +216,8 @@ public class TiffModule extends BaseFormatModule implements Validator
                     ifd.validate(jhove2);
                 }
             }
-
-        } catch (EOFException e) {
+        }
+        catch (EOFException e) {
             this.validity = Validity.False;
             this.prematureEOFMessage.add(new Message(Severity.ERROR,
                     Context.OBJECT,
@@ -222,13 +225,11 @@ public class TiffModule extends BaseFormatModule implements Validator
                     jhove2.getConfigInfo()));       
             throw new JHOVE2Exception("TiffModule.parse(): Premature EOFException", e);
         }
-        finally {
-            if (input != null) {
-                input.close();
-            }           
+        finally {      
             this.jhove2 = null;
             this.source = null;
         }
+        
         return consumed;
     }
 
@@ -342,7 +343,9 @@ public class TiffModule extends BaseFormatModule implements Validator
      *      
      */
     @Override
-    public Validity validate(JHOVE2 jhove2, Source source) throws JHOVE2Exception {
+    public Validity validate(JHOVE2 jhove2, Source source, Input input)
+        throws JHOVE2Exception
+    {
         return this.validity;
     }
 
@@ -353,14 +356,7 @@ public class TiffModule extends BaseFormatModule implements Validator
      */
     @Override
     public Validity isValid() {
-        if (validity == null) {
-            try {
-                validate(jhove2, source);
-            }
-            catch (JHOVE2Exception e) {
-            }
-        }
-        return validity;
+        return this.validity;
     }
 
     /**
@@ -369,7 +365,7 @@ public class TiffModule extends BaseFormatModule implements Validator
      */
     @ReportableProperty(order = 1, value="IFH")
     public IFH getIFH() {
-        return ifh;
+        return this.ifh;
     }
 
     /**
@@ -379,7 +375,7 @@ public class TiffModule extends BaseFormatModule implements Validator
      */
     @ReportableProperty(order = 2, value="IFDs.")
     public List<IFD> getIFDs() {
-        return ifdList;
+        return this.ifdList;
     }
 
      /**
@@ -391,5 +387,4 @@ public class TiffModule extends BaseFormatModule implements Validator
     public Message getFailFast() {
         return this.failFastMessage;
     }
-
 }

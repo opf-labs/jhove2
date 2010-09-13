@@ -46,6 +46,7 @@ import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.TimerInfo;
 import org.jhove2.core.format.FormatIdentification;
 import org.jhove2.core.format.FormatIdentification.Confidence;
+import org.jhove2.core.io.Input;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.DirectorySource;
 import org.jhove2.core.source.FileSetSource;
@@ -90,6 +91,8 @@ public class IdentifierModule
 	 *            JHOVE2 framework
 	 * @param source
 	 *            Source unit
+	 * @param input
+	 *            Source input
 	 * @return Presumptively identified presumptiveFormatIds
 	 * @throws IOException
 	 *             I/O exception encountered identifying the source unit
@@ -98,7 +101,8 @@ public class IdentifierModule
 	 *      org.jhove2.core.source.Source)
 	 */
 	@Override
-	public Set<FormatIdentification> identify(JHOVE2 jhove2, Source source)
+	public Set<FormatIdentification> identify(JHOVE2 jhove2, Source source,
+	                                          Input input)
 		throws IOException, JHOVE2Exception
 	{
 		Set<FormatIdentification> presumptiveFormatIDs = 
@@ -134,7 +138,7 @@ public class IdentifierModule
 			timer.setStartTime();
 			try {
 				Set<FormatIdentification> formats =
-					fileSourceIdentifier.identify(jhove2, source);
+					fileSourceIdentifier.identify(jhove2, source, input);
 				presumptiveFormatIDs.addAll(formats);
 			}
 			finally {

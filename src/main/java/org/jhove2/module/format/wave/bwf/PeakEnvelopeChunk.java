@@ -113,7 +113,8 @@ public class PeakEnvelopeChunk
      * @param jhove2
      *            JHOVE2 framework
      * @param source
-     *            WAVE source
+     *            WAVE source unit
+     * @param input  WAVE source input
      * @return Number of bytes consumed
      * @throws EOFException
      *             If End-of-File is reached reading the source unit
@@ -122,12 +123,11 @@ public class PeakEnvelopeChunk
      * @throws JHOVE2Exception
      */
     @Override
-    public long parse(JHOVE2 jhove2, Source source)
+    public long parse(JHOVE2 jhove2, Source source, Input input)
         throws EOFException, IOException, JHOVE2Exception
     {
-        long consumed = super.parse(jhove2, source);
-        Input input   = source.getInput(jhove2);
-        long offset   = source.getStartingOffset();
+        long consumed = super.parse(jhove2, source, input);
+        long start    = source.getStartingOffset();
         
         /* Version. */
         this.version = input.readUnsignedInt();
@@ -175,7 +175,7 @@ public class PeakEnvelopeChunk
             short b = input.readUnsignedByte();
             if (b != 0) {
                 this.isValid = Validity.False;
-                Object [] args = new Object [] {input.getPosition()-1L-offset, b};
+                Object [] args = new Object [] {input.getPosition()-1L-start, b};
                 Message msg = new Message(Severity.ERROR,
                         Context.OBJECT,
                         "org.jhove2.module.format.wave.bwf.PeakEnvelopeChunk.nonNULDataInReservedField",
