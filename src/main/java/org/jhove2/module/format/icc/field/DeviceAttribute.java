@@ -80,28 +80,30 @@ implements Comparable<DeviceAttribute>
      * @param jhove2 JHOVE2 framework
      * @throws JHOVE2Exception
      */
-    protected static synchronized void initDeviceAttributes(JHOVE2 jhove2)
+    protected static synchronized void init(JHOVE2 jhove2)
         throws JHOVE2Exception
     {
-        /* Initialize the device attributes from a Java resource bundle. */
-        attrs = new TreeSet<DeviceAttribute>();
-        Properties props =
-            jhove2.getConfigInfo().getProperties("DeviceAttributes");
-        if (props != null) {
-            Set<String> set = props.stringPropertyNames();
-            Iterator<String> iter = set.iterator();
-            while (iter.hasNext()) {
-                String bit = iter.next();
-                String neg = props.getProperty(bit);
-                String pos = neg;
-                int in = neg.indexOf('|');
-                if (in > 0) {
-                    pos = neg.substring(in+1);
-                    neg = neg.substring(0, in);
+        if (attrs == null) {
+            /* Initialize the device attributes from a Java resource bundle. */
+            attrs = new TreeSet<DeviceAttribute>();
+            Properties props =
+                jhove2.getConfigInfo().getProperties("DeviceAttributes");
+            if (props != null) {
+                Set<String> set = props.stringPropertyNames();
+                Iterator<String> iter = set.iterator();
+                while (iter.hasNext()) {
+                    String bit = iter.next();
+                    String neg = props.getProperty(bit);
+                    String pos = neg;
+                    int in = neg.indexOf('|');
+                    if (in > 0) {
+                        pos = neg.substring(in+1);
+                        neg = neg.substring(0, in);
+                    }
+                    DeviceAttribute attr =
+                        new DeviceAttribute(Integer.valueOf(bit), neg, pos);
+                    attrs.add(attr);
                 }
-                DeviceAttribute attr =
-                    new DeviceAttribute(Integer.valueOf(bit), neg, pos);
-                attrs.add(attr);
             }
         }
     }
@@ -122,9 +124,7 @@ implements Comparable<DeviceAttribute>
     public static Set<DeviceAttribute> getDeviceAttributes(JHOVE2 jhove2)
         throws JHOVE2Exception
     {
-        if (attrs == null) {
-            initDeviceAttributes(jhove2);
-        }
+        init(jhove2);
         return attrs;
     }
 

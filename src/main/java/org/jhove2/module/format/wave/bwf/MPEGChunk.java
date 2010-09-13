@@ -39,9 +39,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.annotation.ReportableProperty.PropertyType;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.io.Input;
+import org.jhove2.core.source.Source;
 import org.jhove2.module.format.riff.GenericChunk;
 
 /** Broadcast Wave Format (BWF) MPEG-1 audio chunk, as defined by EBU Tech 3285–E –- Supplement 1,
@@ -83,8 +85,9 @@ public class MPEGChunk
      * 
      * @param jhove2
      *            JHOVE2 framework
-     * @param input
-     *            WAVE input
+     * @param source
+     *            WAVE source unit
+     * @param input  WAVE input
      * @return Number of bytes consumed
      * @throws EOFException
      *             If End-of-File is reached reading the source unit
@@ -92,10 +95,11 @@ public class MPEGChunk
      *             If an I/O exception is raised reading the source unit
      * @throws JHOVE2Exception
      */
-    public long parse(JHOVE2 jhove2, Input input)
+    @Override
+    public long parse(JHOVE2 jhove2, Source source, Input input)
         throws EOFException, IOException, JHOVE2Exception
     {
-        long consumed = super.parse(jhove2, input);
+        long consumed = super.parse(jhove2, source, input);
         
         /* Sound information. */
         int sh = input.readUnsignedShort();
@@ -129,7 +133,8 @@ public class MPEGChunk
     /** Get ancillary data type in descriptive form.
      * @return Ancillary data type in descriptive form
      */
-    @ReportableProperty(order=6, value="Ancillary data type in descriptive form.")
+    @ReportableProperty(order=6, value="Ancillary data type in descriptive form.",
+            type=PropertyType.Descriptive)
     public List<String> getAncillaryDataTypes() {
         return this.dataType_d;
     }
@@ -137,7 +142,8 @@ public class MPEGChunk
     /** Get ancillary data type in raw form.
      * @return Ancillary data type
      */
-    @ReportableProperty(order=5, value="Ancillary data type in hexadecimal form.")
+    @ReportableProperty(order=5, value="Ancillary data type in hexadecimal form.",
+            type=PropertyType.Raw)
     public String getAncillaryDataType_raw() {
         return this.dataType;
     }
@@ -153,7 +159,8 @@ public class MPEGChunk
     /** Get sound information in descriptive form.
      * @return Sound information
      */
-    @ReportableProperty(order=2, value="Sound information in descriptive form.")
+    @ReportableProperty(order=2, value="Sound information in descriptive form.",
+            type=PropertyType.Descriptive)
     public List<String> getSoundInformations() {
         return this.soundInformation_d;
     }
@@ -161,7 +168,8 @@ public class MPEGChunk
     /** Get sound information in raw form.
      * @return Sound information
      */
-    @ReportableProperty(order=1, value="Sound information in hexadecimal form.")
+    @ReportableProperty(order=1, value="Sound information in raw form.",
+            type=PropertyType.Raw)
     public String getSoundInformation() {
         return this.soundInformation;
     }

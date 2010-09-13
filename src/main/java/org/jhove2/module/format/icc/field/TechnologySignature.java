@@ -70,16 +70,14 @@ public class TechnologySignature
         this.signature  = signature;
         this.technology = technology;
     }
-
-    /**
-     * Get the technology for a signature. 
-     * @param signature Technology signature
-     * @param jhove2    JHOVE2 framework
-     * @return Data colour space, or null if the signature is not a colour space signature
-     * @throws JHOVE2Exception
+    
+    /** Initialize the technology signatures.
+     * @param jhove2 JHOVE2 framework
+     * @throws JHOVE2Exception 
      */
-    public static synchronized TechnologySignature getTechnology(String signature, JHOVE2 jhove2)
-            throws JHOVE2Exception {
+    protected static synchronized void init(JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
         if (technologies == null) {
             /* Initialize the technology signatures from a Java resource bundle. */
             technologies = new TreeSet<TechnologySignature>();
@@ -95,6 +93,19 @@ public class TechnologySignature
                 }
             }
         }
+    }
+
+    /**
+     * Get the technology for a signature. 
+     * @param signature Technology signature
+     * @param jhove2    JHOVE2 framework
+     * @return Technology, or null if the signature is not a technology signature
+     * @throws JHOVE2Exception
+     */
+    public static synchronized TechnologySignature getTechnology(String signature, JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
+        init(jhove2);
         TechnologySignature technology = null;
         Iterator<TechnologySignature> iter = technologies.iterator();
         while (iter.hasNext()) {
@@ -109,9 +120,14 @@ public class TechnologySignature
 
     /**
      * Get the technology signatures.
+     * @param jhove2 JHOVE2 framework
      * @return technology signatures
+     * @throws JHOVE2Exception 
      */
-    public static Set<TechnologySignature> getSignatures() {
+    public static Set<TechnologySignature> getSignatures(JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
+        init(jhove2);
         return technologies;
     }
 

@@ -531,8 +531,14 @@ public abstract class AbstractDisplayer
 			if (props != null) {
 				Set<String> keys = props.stringPropertyNames();
 				for (String key : keys) {
+				    /* Remove any trailing white space from the display directive. */
+                    String prop = props.getProperty(key);
+                    int in = prop.indexOf(' ');
+                    if (in > 1) {
+                        prop = prop.substring(0, in);
+                    }
 					DisplayVisibility value =
-					    DisplayVisibility.valueOf(props.getProperty(key));
+					    DisplayVisibility.valueOf(prop);
 					if (value != null && value != DisplayVisibility.Always) {
 						visibilities.put(key, value);
 					}

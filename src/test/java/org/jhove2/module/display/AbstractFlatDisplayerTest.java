@@ -42,6 +42,7 @@ import javax.annotation.Resource;
 import org.jhove2.app.util.FeatureConfigurationUtil;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.Reportable;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
@@ -80,7 +81,8 @@ public class AbstractFlatDisplayerTest {
 		try {
 			String filePath = utf8DirPath.concat(testFile01);
 			Source source = SourceFactory.getSource(filePath);
-			JHOVE2.characterize(source);
+			Input  input  = source.getInput(JHOVE2);
+			JHOVE2.characterize(source, input);
 			Displayer displayer = new XMLDisplayer();
 			displayer.setConfigInfo(JHOVE2.getConfigInfo());
 			displayer.display(source);			

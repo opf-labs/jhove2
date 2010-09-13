@@ -1,16 +1,11 @@
 package org.jhove2.module.format.shapefile;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
-import java.io.FilenameFilter;
 
-import org.jhove2.app.util.FeatureConfigurationUtil;
 import org.jhove2.core.JHOVE2;
-import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.FileSource;
 import org.junit.Before;
@@ -37,7 +32,7 @@ public class WorldBordersTest {
 			fail("Could not create clump source");
 		}
 		try {
-			sfModule.parse(new JHOVE2(), clump);
+			sfModule.parse(new JHOVE2(), clump, null);
 			features = sfModule.getShapefileFeatures();
 		} catch (Exception e) {
 			fail("Could not parse clump source");

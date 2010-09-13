@@ -42,6 +42,7 @@ import java.util.Set;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.format.FormatIdentification;
+import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.Module;
 
@@ -60,13 +61,15 @@ public interface Identifier
 	 *            JHOVE2 framework
 	 * @param source
 	 *            Source unit
+	 * @param input
+	 *            Source input
 	 * @return Set of presumptive format identifications
 	 * @throws IOException
 	 *             I/O exception encountered identifying the source unit
 	 * @throws JHOVE2Exception
 	 */
-	public Set<FormatIdentification> identify(JHOVE2 jhove2, Source source)
-			throws IOException, JHOVE2Exception;
+	public Set<FormatIdentification> identify(JHOVE2 jhove2, Source source, Input input)
+		throws IOException, JHOVE2Exception;
 
 	/**
 	 * Get file source identifier module.

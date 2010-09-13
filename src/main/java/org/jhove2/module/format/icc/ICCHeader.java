@@ -55,6 +55,8 @@ import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
+import org.jhove2.core.source.Source;
+import org.jhove2.module.format.Parser;
 import org.jhove2.module.format.Validator.Validity;
 import org.jhove2.module.format.icc.field.ColourSpace;
 import org.jhove2.module.format.icc.field.DeviceAttribute;
@@ -70,7 +72,8 @@ import org.jhove2.module.format.icc.type.XYZNumber;
  * @author slabrams
  */
 public class ICCHeader
-        extends AbstractReportable
+    extends AbstractReportable
+    implements Parser
 {
     /** D50 illuminant CIE XYZ values. These hexadecmial values are equivalent
      * to 0.9642, 1.0, 0.8249. */
@@ -231,8 +234,10 @@ public class ICCHeader
      * 
      * @param jhove2
      *            JHOVE2 framework
+     * @param source
+     *            ICC source unit
      * @param input
-     *            ICC input
+     *            ICC source input
      * @return Number of bytes consumed
      * @throws EOFException
      *             If End-of-File is reached reading the source unit
@@ -240,12 +245,14 @@ public class ICCHeader
      *             If an I/O exception is raised reading the source unit
      * @throws JHOVE2Exception
      */
-    public long parse(JHOVE2 jhove2, Input input)
+    @Override
+    public long parse(JHOVE2 jhove2, Source source, Input input)
         throws EOFException, IOException, JHOVE2Exception
     {
         long consumed = 0L;
         int numErrors = 0;
         this.isValid = Validity.True;
+        long offset  = source.getStartingOffset();
         
         /* Profile size. */
         this.profileSize = input.readUnsignedInt();
@@ -270,7 +277,7 @@ public class ICCHeader
             else {
                 numErrors++;
                 this.isValid = Validity.False;
-                Object [] args = new Object[] {input.getPosition()-4L,
+                Object [] args = new Object[] {input.getPosition()-4L-offset,
                                                this.preferredCMM.toString()};
                 this.invalidPreferredCMMMessage = new Message(Severity.ERROR,
                         Context.OBJECT,
@@ -313,7 +320,7 @@ public class ICCHeader
         else {
             numErrors++;
             this.isValid = Validity.False;
-            Object [] args = new Object[] {input.getPosition()-4L,
+            Object [] args = new Object[] {input.getPosition()-4L-offset,
                                            this.profileDeviceClass.toString()};
             this.invalidProfileDeviceClassMessage = new Message(Severity.ERROR,
                     Context.OBJECT,
@@ -334,7 +341,7 @@ public class ICCHeader
         else {
             numErrors++;
             this.isValid = Validity.False;
-            Object [] args = new Object[] {input.getPosition()-4L,
+            Object [] args = new Object[] {input.getPosition()-4L-offset,
                                            this.colourSpace.toString()};
             this.invalidColourSpaceMessage = new Message(Severity.ERROR,
                     Context.OBJECT,
@@ -355,7 +362,7 @@ public class ICCHeader
         else {
             numErrors++;
             this.isValid = Validity.False;
-            Object [] args = new Object[] {input.getPosition(),
+            Object [] args = new Object[] {input.getPosition()-4L-offset,
                                            this.profileConnectionSpace.toString()};
             this.invalidColourSpaceMessage = new Message(Severity.ERROR,
                     Context.OBJECT,
@@ -367,7 +374,7 @@ public class ICCHeader
             !this.profileConnectionSpace.toString().equals("Lab ")) {
             numErrors++;
             this.isValid = Validity.False;
-            Object [] args = new Object[] {input.getPosition()-4L,
+            Object [] args = new Object[] {input.getPosition()-4L-offset,
                                            this.profileConnectionSpace.toString()};
             this.invalidProfileConnectionSpaceForNonDeviceLinkProfileMessage =
                 new Message(Severity.ERROR, Context.OBJECT,
@@ -386,6 +393,7 @@ public class ICCHeader
         cal.setTimeZone(TimeZone.getTimeZone("UTC"));
         this.dateAndTime = cal.getTime();
         consumed += 12;
+        System.out.println("# DATE " + this.dateAndTime);
         
         /* Profile file signature. */
         for (int i=0; i<4; i++) {
@@ -394,7 +402,7 @@ public class ICCHeader
         if (!this.profileFileSignature.toString().equals("acsp")) {
             numErrors++;
             this.isValid = Validity.False;
-            Object [] args = new Object[] {input.getPosition()-4L,
+            Object [] args = new Object[] {input.getPosition()-4L-offset,
                                            this.profileFileSignature.toString()};
             this.invalidProfileFileSignatureMessage = new Message(Severity.ERROR,
                     Context.OBJECT,
@@ -421,7 +429,7 @@ public class ICCHeader
             else {
                 numErrors++;
                 this.isValid = Validity.False;
-                Object [] args = new Object[] {input.getPosition()-4L,
+                Object [] args = new Object[] {input.getPosition()-4L-offset,
                                                this.primaryPlatform.toString()};
                 this.invalidColourSpaceMessage = new Message(Severity.ERROR,
                         Context.OBJECT,
@@ -501,7 +509,7 @@ public class ICCHeader
         if (highOrder != 0) {
             numErrors++;
             this.isValid = Validity.False;
-            Object [] args = new Object[] {input.getPosition()-2L, highOrder};
+            Object [] args = new Object[] {input.getPosition()-2L-offset, highOrder};
             this.nonZeroHighOrderRenderingIntentMessage = new Message(Severity.ERROR,
                     Context.OBJECT,
                     "org.jhove2.module.format.icc.ICCHeader.nonZeroHighOrderRenderingIntent",
@@ -518,7 +526,7 @@ public class ICCHeader
         else {
             numErrors++;
             this.isValid = Validity.False;
-            Object [] args = new Object[] {input.getPosition()-4L,
+            Object [] args = new Object[] {input.getPosition()-4L-offset,
                                            this.renderingIntent};
             this.invalidRenderingIntentMessage = new Message(Severity.ERROR,
                     Context.OBJECT,
@@ -540,7 +548,7 @@ public class ICCHeader
             
             numErrors++;
             this.isValid = Validity.False;
-            Object [] args = new Object[] {input.getPosition()-12L, this.illuminant.toString()};
+            Object [] args = new Object[] {input.getPosition()-12L-offset, this.illuminant.toString()};
             this.pcsIlluminantNotD50Message = new Message(Severity.ERROR,
                     Context.OBJECT,
                     "org.jhove2.module.format.icc.ICCHeader.pcsIlluminantNotD50",
@@ -575,7 +583,7 @@ public class ICCHeader
             if (in != 0L) {
                 numErrors++;
                 this.isValid = Validity.False;
-                Object [] args = new Object[] {input.getPosition()-1L, in};
+                Object [] args = new Object[] {input.getPosition()-1L-offset, in};
                 this.nonZeroDataInReservedFieldMessages.add(new Message(Severity.ERROR,
                     Context.OBJECT,
                     "org.jhove2.module.format.icc.ICCHeader.nonZeroDataInReservedField",

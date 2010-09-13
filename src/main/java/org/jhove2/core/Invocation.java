@@ -50,7 +50,6 @@ import org.jhove2.core.reportable.AbstractReportable;
 public class Invocation
 	extends AbstractReportable
 {
-
 	/** Default temporary file suffix. */
 	public static final String DEFAULT_TEMP_SUFFIX = ".dat";
 
@@ -258,6 +257,7 @@ public class Invocation
 	public void setBufferType(Type type) {
 		this.bufferType = type;
 	}
+	
 	/**
 	 * Set temporary file deletion flag.
 	 * @param deleteTempFiles Temporary file deletion flag: if true, delete
@@ -316,5 +316,4 @@ public class Invocation
 	public void setTempSuffix(String tempSuffix) {
 		this.tempSuffix = tempSuffix;
 	}
-
 }

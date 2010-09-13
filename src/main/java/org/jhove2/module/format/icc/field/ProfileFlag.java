@@ -79,28 +79,30 @@ implements Comparable<ProfileFlag>
      * Initialize the profile flags from their properties file. 
      * @param jhove2 JHOVE2 framework
      */
-    protected static synchronized void initProfileFlags(JHOVE2 jhove2)
+    protected static synchronized void init(JHOVE2 jhove2)
         throws JHOVE2Exception
     {
-        /* Initialize the profile flags from a Java resource bundle. */
-        flags = new TreeSet<ProfileFlag>();
-        Properties props =
-            jhove2.getConfigInfo().getProperties("ProfileFlags");
-        if (props != null) {
-            Set<String> set = props.stringPropertyNames();
-            Iterator<String> iter = set.iterator();
-            while (iter.hasNext()) {
-                String bit = iter.next();
-                String neg = props.getProperty(bit);
-                String pos = neg;
-                int in = neg.indexOf('|');
-                if (in > 0) {
-                    pos = neg.substring(in+1);
-                    neg = neg.substring(0, in);
+        if (flags == null) {
+            /* Initialize the profile flags from a Java resource bundle. */
+            flags = new TreeSet<ProfileFlag>();
+            Properties props =
+                jhove2.getConfigInfo().getProperties("ProfileFlags");
+            if (props != null) {
+                Set<String> set = props.stringPropertyNames();
+                Iterator<String> iter = set.iterator();
+                while (iter.hasNext()) {
+                    String bit = iter.next();
+                    String neg = props.getProperty(bit);
+                    String pos = neg;
+                    int in = neg.indexOf('|');
+                    if (in > 0) {
+                        pos = neg.substring(in+1);
+                        neg = neg.substring(0, in);
+                    }
+                    ProfileFlag flag =
+                        new ProfileFlag(Integer.valueOf(bit), neg, pos);
+                    flags.add(flag);
                 }
-                ProfileFlag flag =
-                    new ProfileFlag(Integer.valueOf(bit), neg, pos);
-                flags.add(flag);
             }
         }
     }
@@ -119,10 +121,10 @@ implements Comparable<ProfileFlag>
      * @return Profile flags
      * @throws JHOVE2Exception 
      */
-    public static Set<ProfileFlag> getProfileFlags(JHOVE2 jhove2) throws JHOVE2Exception {
-        if (flags == null) {
-            initProfileFlags(jhove2);
-        }
+    public static Set<ProfileFlag> getProfileFlags(JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
+        init(jhove2);
         return flags;
     }
 

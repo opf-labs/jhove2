@@ -56,6 +56,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.jhove2.core.Invocation;
+import org.jhove2.core.JHOVE2;
 import org.jhove2.core.Message;
 import org.jhove2.core.TimerInfo;
 import org.jhove2.core.format.FormatIdentification;
@@ -78,8 +79,7 @@ public abstract class AbstractSource
 {
 	/** Identifiers of generic modules registered with the Source. */
 	protected static Set<String> moduleIDs = new HashSet<String>();
-	
-	
+
 	/** Child source units. */
 	protected List<Source> children;
 
@@ -88,9 +88,6 @@ public abstract class AbstractSource
 
 	/** Source unit backing file. */
 	protected File file;
-	
-	/** Input. */
-	protected Input input;
 
 	/**
 	 * Source unit backing file temporary status: true if the source unit
@@ -107,6 +104,9 @@ public abstract class AbstractSource
 	/** Presumptive identifications for the source unit. */
 	protected Set<FormatIdentification> presumptiveFormatIdentifications;
     
+	/** Starting offset, in bytes. */
+	protected long startingOffset;
+	
     /**
      * Timer info  used to track elapsed time for running of this module
      */
@@ -126,6 +126,7 @@ public abstract class AbstractSource
 		this.messages        = new ArrayList<Message>();
 		this.modules         = new ArrayList<Module>();
 		this.presumptiveFormatIdentifications = new TreeSet<FormatIdentification>();
+		this.startingOffset  = 0L;
         this.timerInfo       = new TimerInfo();
 	}
 
@@ -325,18 +326,46 @@ public abstract class AbstractSource
 	}
 
     /**
-     * Get existing {@link org.jhove2.core.io.Input} for the source unit.
+     * Get little-endian {@link org.jhove2.core.io.Input} for the source unit
+     * with the buffer size and type specified by the 
+     * {@link org.jhove2.core.Invocation}.
+     * Input is returned if it exists.
+     * @param jhove2 JHOVE2 framework
+     * @return Input for the source unit
+     * @throws IOException 
+     * @throws FileNotFoundException 
+     */
+	@Override
+    public Input getInput(JHOVE2 jhove2)
+	    throws FileNotFoundException, IOException
+	{
+        return this.getInput(jhove2, ByteOrder.LITTLE_ENDIAN);
+    }
+
+    /**
+     * Get {@link org.jhove2.core.io.Input} for the source unit with the 
+     * buffer size and type specified by the {@link org.jhove2.core.Invocation}
+     * @param jhove2 JHOVE2 framework
+     * @param order  Byte order
      * @return Input for the source unit
      */
-    public Input getInput() {
-        return this.input;
+	@Override
+    public Input getInput(JHOVE2 jhove2, ByteOrder order)
+        throws FileNotFoundException, IOException
+    {
+	    Invocation invocation = jhove2.getInvocation();
+	    
+        return this.getInput(invocation.getBufferSize(),
+                             invocation.getBufferType(),
+                             order);
     }
     
 	/**
-	 * Create and get {@link org.jhove2.core.io.Input} for the source unit. Concrete
-	 * classes extending this abstract class must provide an implementation of
-	 * this method if they are are based on parsable input. Classes without
-	 * parsable input (e.g. {@link org.jhove2.core.source.ClumpSource} or
+	 * Create and get little-endian {@link org.jhove2.core.io.Input} for the
+	 * source unit. Concrete classes extending this abstract class must
+	 * provide an implementation of this method if they are are based on
+	 * parsable input. Classes without parsable input
+	 * (e.g. {@link org.jhove2.core.source.ClumpSource} or
 	 * {@link org.jhove2.core.source.DirectorySource} can let this inherited
 	 * method return null.
 	 * 
@@ -354,7 +383,7 @@ public abstract class AbstractSource
 	public Input getInput(int bufferSize, Type bufferType)
 		throws FileNotFoundException, IOException
 	{
-		return getInput(bufferSize, bufferType, ByteOrder.LITTLE_ENDIAN);
+		return this.getInput(bufferSize, bufferType, ByteOrder.LITTLE_ENDIAN);
 	}
 
 	/**
@@ -381,9 +410,7 @@ public abstract class AbstractSource
 	public Input getInput(int bufferSize, Type bufferType, ByteOrder order)
 		throws FileNotFoundException, IOException
 	{
-		this.input = InputFactory.getInput(this.file, bufferSize, bufferType, order);
-		
-		return input;
+		return InputFactory.getInput(this.file, bufferSize, bufferType, order);
 	}
 
 	/**
@@ -449,7 +476,16 @@ public abstract class AbstractSource
 	public Set<FormatIdentification> getPresumptiveFormats() {
 		return presumptiveFormatIdentifications;
 	}
-
+    
+    /** Get starting offset of the source unit, in bytes.
+     * @return Starting offset of the source unit
+     * Except for {@link ByteStreamSource}s, this will generally be 0.
+     */
+    @Override
+    public long getStartingOffset() {
+        return this.startingOffset;
+    }
+    
 	/**
 	 * Get elapsed time processing the source unit.
 	 * @return Elapsed time

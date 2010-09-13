@@ -45,6 +45,7 @@ import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.io.Input;
+import org.jhove2.core.source.Source;
 import org.jhove2.module.format.Validator.Validity;
 import org.jhove2.module.format.riff.GenericChunk;
 
@@ -53,7 +54,7 @@ import org.jhove2.module.format.riff.GenericChunk;
  * @author slabrams
  */
 public class BroadcastAudioExtensionChunk
-        extends GenericChunk
+    extends GenericChunk
 {
     /** Coding history. */
     protected String codingHistory;
@@ -100,8 +101,9 @@ public class BroadcastAudioExtensionChunk
      * 
      * @param jhove2
      *            JHOVE2 framework
-     * @param input
-     *            WAVE input
+     * @param source
+     *            WAVE source unit
+     * @param input  WAVE source input
      * @return Number of bytes consumed
      * @throws EOFException
      *             If End-of-File is reached reading the source unit
@@ -109,10 +111,12 @@ public class BroadcastAudioExtensionChunk
      *             If an I/O exception is raised reading the source unit
      * @throws JHOVE2Exception
      */
-    public long parse(JHOVE2 jhove2, Input input)
+    @Override
+    public long parse(JHOVE2 jhove2, Source source, Input input)
         throws EOFException, IOException, JHOVE2Exception
     {
-        long consumed = super.parse(jhove2, input);
+        long consumed = super.parse(jhove2, source, input);
+        long start    = source.getStartingOffset();
         int numErrors = 0;
         
         /* Description. */
@@ -193,7 +197,7 @@ public class BroadcastAudioExtensionChunk
             if (b != 0) {
                 numErrors++;
                 this.isValid = Validity.False;
-                Object [] args = new Object [] {input.getPosition()-1L, b};
+                Object [] args = new Object [] {input.getPosition()-1L-start, b};
                 Message msg = new Message(Severity.ERROR, Context.OBJECT,
                         "org.jhove2.module.format.wave.bwf.BroadcastAudioExtensionChunk.nonNULDataInReservedField",
                         args, jhove2.getConfigInfo());

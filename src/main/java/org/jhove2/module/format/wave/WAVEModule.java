@@ -36,12 +36,10 @@ package org.jhove2.module.format.wave;
 
 import java.io.EOFException;
 import java.io.IOException;
-import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
@@ -60,8 +58,8 @@ import org.jhove2.module.format.riff.ChunkFactory;
  * @author slabrams
  */
 public class WAVEModule
-        extends BaseFormatModule
-        implements Validator
+    extends BaseFormatModule
+    implements Validator
 {
     /** WAVE module version identifier. */
     public static final String VERSION = "2.0.0";
@@ -113,43 +111,32 @@ public class WAVEModule
      *            JHOVE2 framework
      * @param source
      *            WAVE source unit
+     * @param input  WAVE source input
      * @return Number of bytes consumed
      * @throws EOFException
      *             If End-of-File is reached reading the source unit
      * @throws IOException
      *             If an I/O exception is raised reading the source unit
      * @throws JHOVE2Exception
-     * @see org.jhove2.module.format.FormatModule#parse(org.jhove2.core.JHOVE2,
-     *      org.jhove2.core.source.Source)
+     * @see org.jhove2.module.format.Parser#parse(org.jhove2.core.JHOVE2,
+     *      org.jhove2.core.source.Source, org.jhove2.core.io.Input)
      */
     @Override
-    public long parse(JHOVE2 jhove2, Source source)
+    public long parse(JHOVE2 jhove2, Source source, Input input)
         throws EOFException, IOException, JHOVE2Exception
     {
         long consumed = 0L;
         this.isValid = Validity.True;
-        Input input = null;
-        Invocation config = jhove2.getInvocation();
-        input = source.getInput(config.getBufferSize(), 
-                                config.getBufferType());
-        if (input != null) {
-            try {
-                input.setByteOrder(ByteOrder.LITTLE_ENDIAN);
-                input.setPosition(0L);
+        input.setPosition(source.getStartingOffset());
                 
-                StringBuffer sb = new StringBuffer(4);
-                for (int i=0; i<4; i++) {
-                    short b = input.readUnsignedByte();
-                    sb.append((char) b);
-                }
-                Chunk chunk = ChunkFactory.getChunk(sb.toString(), jhove2);
-                consumed += chunk.parse(jhove2, input);
-                this.chunks.add(chunk);
-            }
-            finally {
-                input.close();
-            }
+        StringBuffer sb = new StringBuffer(4);
+        for (int i=0; i<4; i++) {
+            short b = input.readUnsignedByte();
+            sb.append((char) b);
         }
+        Chunk chunk = ChunkFactory.getChunk(sb.toString(), jhove2);
+        consumed += chunk.parse(jhove2, source, input);
+        this.chunks.add(chunk);
 
         return consumed;
     }
@@ -157,11 +144,12 @@ public class WAVEModule
     /** Validate the WAVE source unit.
      * @param jhove2 JHOVE2 framework
      * @param source WAVE source unit
-     * @see org.jhove2.module.format.Validator#validate(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
+     * @param input  WAVE source input
+     * @see org.jhove2.module.format.Validator#validate(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source, org.jhov2.core.io.Input)
      */
     @Override
-    public Validity validate(JHOVE2 jhove2, Source source)
-            throws JHOVE2Exception
+    public Validity validate(JHOVE2 jhove2, Source source, Input input)
+        throws JHOVE2Exception
     {
         /* A valid WAVE must have a format chunk followed by a data chunk.
          */

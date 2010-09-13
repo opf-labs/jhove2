@@ -48,7 +48,7 @@ import org.jhove2.module.Module;
  * @author mstrong, slabrams
  */
 public interface FormatProfile
-	extends Module
+	extends Module, Validator
 {
 	/**
 	 * Get format profile format.
@@ -56,6 +56,11 @@ public interface FormatProfile
 	 */
 	@ReportableProperty("Format profile format.")
 	public Format getFormat();
+	
+	/** Set format profile format.
+	 * @param format Format profile format
+	 */
+	public void setFormat(Format format);
 
 	/**
 	 * Set format profile format module.

@@ -42,6 +42,7 @@ import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.TimerInfo;
 import org.jhove2.core.format.FormatIdentification;
+import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractCommand;
 
@@ -79,12 +80,13 @@ public class IdentifierCommand
 	 * Identify the presumptive formats of the source unit.
 	 * @param jhove2 JHOVE2 framework object
 	 * @param source Source to be identified
+	 * @param input  Source input
 	 * @throws JHOVE2Exception
 	 * @see org.jhove2.module.Command#execute(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
 	 * @see org.jhove2.module.identify.Identifier#identify(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
 	 */
 	@Override
-	public void execute(JHOVE2 jhove2, Source source)
+	public void execute(JHOVE2 jhove2, Source source, Input input)
 		throws JHOVE2Exception
 	{
 		try {		
@@ -98,8 +100,8 @@ public class IdentifierCommand
 				source.addModule(identifier.getFileSourceIdentifier());
 	            
 	            /* Identify the format. */
-				Set<FormatIdentification> formats = identifier.identify(jhove2,
-					                                                    source);
+				Set<FormatIdentification> formats =
+				    identifier.identify(jhove2, source, input);
 				source.addPresumptiveFormats(formats);
 			}
 			finally {

@@ -70,17 +70,14 @@ public class PreferredCMM
         this.signature   = signature;
         this.description = description;
     }
-
-    /**
-     * Get the preferred CMM description for a signature.
-     * 
-     * @param signature CMM signature
-     * @param jhove2    JHOVE2 framework
-     * @return Preferred CMM, or null if the signature is not a CMM signature
-     * @throws JHOVE2Exception
+    
+    /** Initialize the CMMs.
+     * @param jhove2 JHOVE2 framework
+     * @throws JHOVE2Exception 
      */
-    public static synchronized PreferredCMM getPreferredCMM(String signature, JHOVE2 jhove2)
-            throws JHOVE2Exception {
+    protected static synchronized void init(JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
         if (CMMs == null) {
             /* Initialize the CMMs from a Java resource bundle. */
             CMMs = new TreeSet<PreferredCMM>();
@@ -96,6 +93,20 @@ public class PreferredCMM
                 }
             }
         }
+    }
+
+    /**
+     * Get the preferred CMM description for a signature.
+     * 
+     * @param signature CMM signature
+     * @param jhove2    JHOVE2 framework
+     * @return Preferred CMM, or null if the signature is not a CMM signature
+     * @throws JHOVE2Exception
+     */
+    public static synchronized PreferredCMM getPreferredCMM(String signature, JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
+        init(jhove2);
         PreferredCMM prefCMM = null;
         Iterator<PreferredCMM> iter = CMMs.iterator();
         while (iter.hasNext()) {
@@ -111,10 +122,14 @@ public class PreferredCMM
 
     /**
      * Get the preferred CMMs.
-     * 
+     * @param jhove2 JHOVE2 framework
      * @return PreferredCMMs
+     * @throws JHOVE2Exception 
      */
-    public static Set<PreferredCMM> getPreferredCMMs() {
+    public static Set<PreferredCMM> getPreferredCMMs(JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
+        init(jhove2);
         return CMMs;
     }
 

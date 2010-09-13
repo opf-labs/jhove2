@@ -43,6 +43,7 @@ import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.format.Format;
+import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.module.format.Validator;
@@ -53,7 +54,10 @@ import org.jhove2.module.format.Validator;
  *  
  * @author smorrissey
  */
-public class SgmlModule extends BaseFormatModule implements Validator {
+public class SgmlModule
+    extends BaseFormatModule
+    implements Validator
+{
 	/** Directory module version identifier. */
 	public static final String VERSION = "2.0.0";
 
@@ -85,22 +89,30 @@ public class SgmlModule extends BaseFormatModule implements Validator {
 	protected SgmlDocumentProperties documentProperties;
 
 	/**
-	 * Instantiates a new SgmlModule instance.
+	 * Instantiates a new <code>SgmlModule</code> instance.
 	 * 
 	 * @param format
 	 *            the Format object
 	 */
 	public SgmlModule(Format format) {
 		super(VERSION, RELEASE, RIGHTS, format);
+        this.validity = Validity.Undetermined;
+	}
+	
+	/** Instantiate a new <code>SgmlModule</code>. */
+	public SgmlModule() {
+	    this(null);
 	}
 
 	/** Parse the format.
 	 * @param jhove2 JHOVE2 framework
 	 * @param source Source unit
+	 * @param input  Source input
+	 * @return Number of bytes consumed
 	 */
 	@Override
-	public long parse(JHOVE2 jhove2, Source source)
-	throws EOFException, IOException, JHOVE2Exception
+	public long parse(JHOVE2 jhove2, Source source, Input input)
+	    throws EOFException, IOException, JHOVE2Exception
 	{
 		this.jhove2 = jhove2;
 		this.source = source;
@@ -118,14 +130,17 @@ public class SgmlModule extends BaseFormatModule implements Validator {
 	}
 
 
-	/* (non-Javadoc)
-	 * @see org.jhove2.module.format.Validator#validate(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
+	/** Validate the SGML source unit.
+	 * @param jhove2 JHOVE2 framework
+	 * @param source SGML source unit
+	 * @param input  SGML source input
+	 * @see org.jhove2.module.format.Validator#validate(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source, org.jhove2.core.io.Input)
 	 * There are no profiles of the SGML format; this method will return the validation status of the SGML document
 	 */
 	@Override
-	public Validity validate(JHOVE2 jhove2, Source source)
-	throws JHOVE2Exception {
-		this.validity = Validity.Undetermined;
+	public Validity validate(JHOVE2 jhove2, Source source, Input input)
+	    throws JHOVE2Exception
+	{
 		if (this.getDocumentProperties() != null){
 			if (this.getDocumentProperties().isSgmlValid()){
 				this.validity = Validity.True;
@@ -137,7 +152,7 @@ public class SgmlModule extends BaseFormatModule implements Validator {
 		return this.validity;
 	}
 
-	/* (non-Javadoc)
+	/** Get validation coverage.
 	 * @see org.jhove2.module.format.Validator#getCoverage()
 	 */
 	@Override
@@ -145,26 +160,19 @@ public class SgmlModule extends BaseFormatModule implements Validator {
 		return COVERAGE;
 	}
 
-	/* (non-Javadoc)
+	/** Get validation status.
 	 * @see org.jhove2.module.format.Validator#isValid()
 	 */
 	@Override
 	public Validity isValid() {
-		if (validity == null) {
-			try {
-				validate(jhove2, source);
-			}
-			catch (JHOVE2Exception e) {
-			}
-		}
-		return validity;
+		return this.validity;
 	}
 
 	/**
 	 * @return the sgmlParser
 	 */
 	public SgmlParser getSgmlParser() {
-		return sgmlParser;
+		return this.sgmlParser;
 	}
 
 	/**

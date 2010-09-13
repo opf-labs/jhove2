@@ -68,17 +68,14 @@ public class MeasurementGeometry
         this.value    = value;
         this.geometry = geometry;
     }
-
-    /**
-     * Get the geometry for a measurement geometry value.
-     * 
-     * @param value  Measurement geometry value
+    
+    /** Initialize the measurement geometries.
      * @param jhove2 JHOVE2 framework
-     * @return Measurement geometry, or null if the value is not defined
-     * @throws JHOVE2Exception
+     * @throws JHOVE2Exception 
      */
-    public static synchronized MeasurementGeometry getMeasurementGeometry(long value, JHOVE2 jhove2)
-            throws JHOVE2Exception {
+    protected static synchronized void init(JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
         if (geometries == null) {
             /* Initialize the measurement geometrys from a Java resource bundle. */
             geometries = new TreeSet<MeasurementGeometry>();
@@ -94,6 +91,20 @@ public class MeasurementGeometry
                 }
             }
         }
+    }
+
+    /**
+     * Get the geometry for a measurement geometry value.
+     * 
+     * @param value  Measurement geometry value
+     * @param jhove2 JHOVE2 framework
+     * @return Measurement geometry, or null if the value is not defined
+     * @throws JHOVE2Exception
+     */
+    public static synchronized MeasurementGeometry getMeasurementGeometry(long value, JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
+        init(jhove2);
         MeasurementGeometry geometry = null;
         Iterator<MeasurementGeometry> iter = geometries.iterator();
         while (iter.hasNext()) {
@@ -105,6 +116,19 @@ public class MeasurementGeometry
         }
 
         return geometry;
+    }
+
+    /**
+     * Get the measurement geometries.
+     * @param jhove2 JHOVE2 framework
+     * @return Measurement geometries
+     * @throws JHOVE2Exception 
+     */
+    public static Set<MeasurementGeometry> getMeasurementGeometries(JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
+        init(jhove2);
+        return geometries;
     }
 
     /**

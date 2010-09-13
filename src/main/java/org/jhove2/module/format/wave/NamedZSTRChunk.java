@@ -40,6 +40,7 @@ import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.io.Input;
+import org.jhove2.core.source.Source;
 import org.jhove2.module.format.riff.GenericChunk;
 
 /** WAVE format named NUL-terminated text string (ZSTR) chunk, particularly
@@ -48,7 +49,7 @@ import org.jhove2.module.format.riff.GenericChunk;
  * @author slabrams
  */
 public class NamedZSTRChunk
-        extends GenericChunk
+    extends GenericChunk
 {
     /** Chunk name. */
     protected String name;
@@ -66,8 +67,9 @@ public class NamedZSTRChunk
      * 
      * @param jhove2
      *            JHOVE2 framework
-     * @param input
-     *            WAVE input
+     * @param source
+     *            WAVE source unit
+     * @param input  WAVE source input
      * @return Number of bytes consumed
      * @throws EOFException
      *             If End-of-File is reached reading the source unit
@@ -75,10 +77,11 @@ public class NamedZSTRChunk
      *             If an I/O exception is raised reading the source unit
      * @throws JHOVE2Exception
      */
-    public long parse(JHOVE2 jhove2, Input input)
+    @Override
+    public long parse(JHOVE2 jhove2, Source source, Input input)
         throws EOFException, IOException, JHOVE2Exception
     {
-        long consumed = super.parse(jhove2, input);
+        long consumed = super.parse(jhove2, source, input);
         
         StringBuffer sb = new StringBuffer(4);
         for (int i=0; i<4; i++) {

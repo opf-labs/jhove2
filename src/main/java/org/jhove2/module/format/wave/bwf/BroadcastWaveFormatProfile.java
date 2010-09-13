@@ -43,6 +43,7 @@ import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
+import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.AbstractFormatProfile;
 import org.jhove2.module.format.Validator;
@@ -55,8 +56,8 @@ import org.jhove2.module.format.wave.WAVEModule;
  * @author slabrams
  */
 public class BroadcastWaveFormatProfile
-        extends AbstractFormatProfile
-        implements Validator
+    extends AbstractFormatProfile
+    implements Validator
 {
     /** Broadcast Wave Format module version identifier. */
     public static final String VERSION = "2.0.0";
@@ -116,12 +117,13 @@ public class BroadcastWaveFormatProfile
 
     /** Validate the Broadcast Wave Format (BWF) source unit
      * @param jhove2 JHOVE2 framework
-     * @param source Broadcast Wave Format source unit
-     * @see org.jhove2.module.format.Validator#validate(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
+     * @param source Broadcast Wave Format source unit unit
+     * @param input  Broadcast Wave Format source input
+     * @see org.jhove2.module.format.Validator#validate(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source, org.jhove2.core.io.Input)
      */
     @Override
-    public Validity validate(JHOVE2 jhove2, Source source)
-            throws JHOVE2Exception
+    public Validity validate(JHOVE2 jhove2, Source source, Input input)
+        throws JHOVE2Exception
     {                
         Object [] args = null;
         

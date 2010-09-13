@@ -70,16 +70,14 @@ public class SaturationRenderingIntent
         this.signature = signature;
         this.gamut     = gamut;
     }
-
-    /**
-     * Get the saturation rendering intent gamut for a signature. 
-     * @param signature Data saturation rendering intent gamut signature
-     * @param jhove2    JHOVE2 framework
-     * @return Data saturation rendering intent gamut, or null if the signature is not a saturation rendering intent gamut signature
-     * @throws JHOVE2Exception
+    
+    /** Initialize the rendering intents.
+     * @param jhove2 JHOVE2 framework
+     * @throws JHOVE2Exception 
      */
-    public static synchronized SaturationRenderingIntent getSaturationRenderingIntent(String signature, JHOVE2 jhove2)
-            throws JHOVE2Exception {
+    protected static synchronized void init(JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
         if (gamuts == null) {
             /* Initialize the saturation rendering intent gamuts from a Java resource bundle. */
             gamuts = new TreeSet<SaturationRenderingIntent>();
@@ -95,6 +93,19 @@ public class SaturationRenderingIntent
                 }
             }
         }
+    }
+
+    /**
+     * Get the saturation rendering intent gamut for a signature. 
+     * @param signature Data saturation rendering intent gamut signature
+     * @param jhove2    JHOVE2 framework
+     * @return Data saturation rendering intent gamut, or null if the signature is not a saturation rendering intent gamut signature
+     * @throws JHOVE2Exception
+     */
+    public static synchronized SaturationRenderingIntent getSaturationRenderingIntent(String signature, JHOVE2 jhove2)
+        throws JHOVE2Exception    
+    {
+        init(jhove2);
         SaturationRenderingIntent gamut = null;
         Iterator<SaturationRenderingIntent> iter = gamuts.iterator();
         while (iter.hasNext()) {
@@ -109,9 +120,14 @@ public class SaturationRenderingIntent
 
     /**
      * Get the saturation rendering intent gamuts.
+     * @param jhove2 JHOVE2 framework
      * @return saturation rendering intent gamuts
+     * @throws JHOVE2Exception 
      */
-    public static Set<SaturationRenderingIntent> getSaturationRenderingIntentes() {
+    public static Set<SaturationRenderingIntent> getSaturationRenderingIntentes(JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
+        init(jhove2);
         return gamuts;
     }
 

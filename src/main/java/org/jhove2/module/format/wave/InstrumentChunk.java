@@ -43,6 +43,7 @@ import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.io.Input;
+import org.jhove2.core.source.Source;
 import org.jhove2.module.format.Validator.Validity;
 import org.jhove2.module.format.riff.GenericChunk;
 
@@ -51,7 +52,7 @@ import org.jhove2.module.format.riff.GenericChunk;
  * @author slabrams
  */
 public class InstrumentChunk
-        extends GenericChunk
+    extends GenericChunk
 {
     /** Instrument pitch shift adjustment in cents. */
     protected byte fineTune;
@@ -96,8 +97,9 @@ public class InstrumentChunk
      * 
      * @param jhove2
      *            JHOVE2 framework
-     * @param input
-     *            WAVE input
+     * @param source
+     *            WAVE source unit
+     * @param input  WAVE source input
      * @return Number of bytes consumed
      * @throws EOFException
      *             If End-of-File is reached reading the source unit
@@ -105,16 +107,18 @@ public class InstrumentChunk
      *             If an I/O exception is raised reading the source unit
      * @throws JHOVE2Exception
      */
-    public long parse(JHOVE2 jhove2, Input input)
+    @Override
+    public long parse(JHOVE2 jhove2, Source source, Input input)
         throws EOFException, IOException, JHOVE2Exception
     {
-        long consumed = super.parse(jhove2, input);
+        long consumed = super.parse(jhove2, source, input);
+        long start    = source.getStartingOffset();
         
         /* Unshifted note. */
         this.unshiftedNote = input.readUnsignedByte();
         if (this.unshiftedNote < 0 || this.unshiftedNote > 127) {
             this.isValid = Validity.False;
-            Object [] args = new Object [] {input.getPosition()-1L, this.unshiftedNote};
+            Object [] args = new Object [] {input.getPosition()-1L-start, this.unshiftedNote};
             this.invalidUnshiftedNoteMessage = new Message(Severity.ERROR,
                     Context.OBJECT,
                     "org.jhove2.module.format.wave.InstrumentChunk.invalidUnshiftedNote",
@@ -126,7 +130,7 @@ public class InstrumentChunk
         this.fineTune = input.readSignedByte();
         if (this.fineTune < -50 || this.fineTune > 50) {
             this.isValid = Validity.False;
-            Object [] args = new Object [] {input.getPosition()-1L, this.fineTune};
+            Object [] args = new Object [] {input.getPosition()-1L-start, this.fineTune};
             this.invalidFineTuneMessage = new Message(Severity.ERROR,
                     Context.OBJECT,
                     "org.jhove2.module.format.wave.InstrumentChunk.invalidFineTune",
@@ -142,7 +146,7 @@ public class InstrumentChunk
         this.lowNote = input.readUnsignedByte();
         if (this.lowNote < 0 || this.lowNote > 127) {
             this.isValid = Validity.False;
-            Object [] args = new Object [] {input.getPosition()-1L, this.lowNote};
+            Object [] args = new Object [] {input.getPosition()-1L-start, this.lowNote};
             this.invalidMIDINoteMessage = new Message(Severity.ERROR,
                     Context.OBJECT,
                     "org.jhove2.module.format.wave.InstrumentChunk.invalidMIDINote",
@@ -154,7 +158,7 @@ public class InstrumentChunk
         this.highNote = input.readUnsignedByte();
         if (this.highNote < 0 || this.highNote > 127) {
             this.isValid = Validity.False;
-            Object [] args = new Object [] {input.getPosition()-1L, this.highNote};
+            Object [] args = new Object [] {input.getPosition()-1L-start, this.highNote};
             this.invalidMIDINoteMessage = new Message(Severity.ERROR,
                     Context.OBJECT,
                     "org.jhove2.module.format.wave.InstrumentChunk.invalidMIDINote",
@@ -166,7 +170,7 @@ public class InstrumentChunk
         this.lowVelocity = input.readUnsignedByte();
         if (this.lowVelocity < 0 || this.lowVelocity > 127) {
             this.isValid = Validity.False;
-            Object [] args = new Object [] {input.getPosition()-1L, this.lowVelocity};
+            Object [] args = new Object [] {input.getPosition()-1L-start, this.lowVelocity};
             this.invalidMIDINoteMessage = new Message(Severity.ERROR,
                     Context.OBJECT,
                     "org.jhove2.module.format.wave.InstrumentChunk.invalidMIDIVelocity",
@@ -178,7 +182,7 @@ public class InstrumentChunk
         this.highVelocity = input.readUnsignedByte();
         if (this.highVelocity < 0 || this.highVelocity > 127) {
             this.isValid = Validity.False;
-            Object [] args = new Object [] {input.getPosition()-1L, this.highVelocity};
+            Object [] args = new Object [] {input.getPosition()-1L-start, this.highVelocity};
             this.invalidMIDINoteMessage = new Message(Severity.ERROR,
                     Context.OBJECT,
                     "org.jhove2.module.format.wave.InstrumentChunk.invalidMIDIVelocity",

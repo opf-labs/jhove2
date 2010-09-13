@@ -40,6 +40,7 @@ import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.io.Input;
+import org.jhove2.core.source.Source;
 import org.jhove2.module.format.riff.GenericChunk;
 
 /** WAVE format text with data length chunk.
@@ -47,7 +48,7 @@ import org.jhove2.module.format.riff.GenericChunk;
  * @author slabrams
  */
 public class TextWithDataLengthChunk
-        extends GenericChunk
+    extends GenericChunk
 {
     /** Code page. */
     protected int codePage;
@@ -80,8 +81,9 @@ public class TextWithDataLengthChunk
      * 
      * @param jhove2
      *            JHOVE2 framework
-     * @param input
-     *            WAVE input
+     * @param source
+     *            WAVE source unit
+     * @param input  WAVE source input
      * @return Number of bytes consumed
      * @throws EOFException
      *             If End-of-File is reached reading the source unit
@@ -89,10 +91,11 @@ public class TextWithDataLengthChunk
      *             If an I/O exception is raised reading the source unit
      * @throws JHOVE2Exception
      */
-    public long parse(JHOVE2 jhove2, Input input)
+    @Override
+    public long parse(JHOVE2 jhove2, Source source, Input input)
         throws EOFException, IOException, JHOVE2Exception
     {
-        long consumed = super.parse(jhove2, input);
+        long consumed = super.parse(jhove2, source, input);
         
         /* Name. */
         StringBuffer sb = new StringBuffer(4);

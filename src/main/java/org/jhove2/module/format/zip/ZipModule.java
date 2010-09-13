@@ -133,6 +133,8 @@ public class ZipModule
 	 * 
 	 * @param source
 	 *            Zip source unit
+	 * @input param
+	 *            Zip source input
 	 * @return 0
 	 * @throws EOFException
 	 *             If End-of-File is reached reading the source unit
@@ -140,130 +142,135 @@ public class ZipModule
 	 *             If an I/O exception is raised reading the source unit
 	 * @throws JHOVE2Exception
 	 * @see org.jhove2.module.format.FormatModule#parse(org.jhove2.core.JHOVE2,
-	 *      org.jhove2.core.source.Source)
+	 *      org.jhove2.core.source.Source, org.jhove2.core.io.Input)
 	 */
 	@Override
-	public long parse(JHOVE2 jhove2, Source source)
+	public long parse(JHOVE2 jhove2, Source source, Input input)
 		throws EOFException, IOException, JHOVE2Exception
 	{
 	    long consumed = 0L;
         /* this.isValid = Validity.True; */
-	    
-		Input input = null;
-		Invocation config = jhove2.getInvocation();
-		input = source.getInput(config.getBufferSize(),
-		                       config.getBufferType());
-		if (input != null) {
-		    try {
-		        input.setByteOrder(ByteOrder.LITTLE_ENDIAN);
+	    input.setByteOrder(ByteOrder.LITTLE_ENDIAN);
 		        
-		        /* Use the native Java Zip classes to retrieve the (possibly)
-		         * compressed entries as individual source units.
-		         */
-				File file = input.getFile();
-				ZipFile zip = new ZipFile(file, ZipFile.OPEN_READ);
-				if (zip != null) {
-				    try {
-				        /*
-				         * Zip entries are not necessarily in hierarchical order.
-				         * Build a map of directory names and source units so we 
-				         * can associate file entries to their correct parent.
-				         */
-				        Map<String, Source> map = new TreeMap<String, Source>();
-				        Enumeration<? extends ZipEntry> en = zip.entries();
-				        while (en.hasMoreElements()) {
-				            ZipEntry entry = en.nextElement();
-				            if (entry.isDirectory()) {
-				                Source src =
-				                    SourceFactory.getSource(config.getTempPrefix(),
-				                                            config.getTempSuffix(),
-				                                            config.getBufferSize(),
-				                                            zip, entry);
-				                if (src != null) {
-				                    String key = entry.getName();
-				                    /* Remove trailing slash. */
-				                    int len = key.length() - 1;
-				                    if (key.charAt(len) == '/') {
-				                        key = key.substring(0, len);
-				                    }
-				                    map.put(key, src);
-				                }
-				            }
-				        }
+	    /* Use the native Java Zip classes to retrieve the (possibly)
+	     * compressed entries as individual source units.
+	     */
+	    File file = input.getFile();
+	    ZipFile zip = new ZipFile(file, ZipFile.OPEN_READ);
+	    if (zip != null) {
+	        Invocation config = jhove2.getInvocation();
+	        try {
+	            /*
+	             * Zip entries are not necessarily in hierarchical order.
+	             * Build a map of directory names and source units so we 
+	             * can associate file entries to their correct parent.
+	             */
+	            Map<String, Source> map = new TreeMap<String, Source>();
+	            Enumeration<? extends ZipEntry> en = zip.entries();
+	            while (en.hasMoreElements()) {
+	                ZipEntry entry = en.nextElement();
+	                if (entry.isDirectory()) {
+	                    Source src =
+	                        SourceFactory.getSource(config.getTempPrefix(),
+	                                                config.getTempSuffix(),
+	                                                config.getBufferSize(),
+	                                                zip, entry);
+	                    if (src != null) {
+	                        String key = entry.getName();
+	                        /* Remove trailing slash. */
+	                        int len = key.length() - 1;
+	                        if (key.charAt(len) == '/') {
+	                            key = key.substring(0, len);
+	                        }
+	                        map.put(key, src);
+	                    }
+	                }
+	            }
 
-				        /*
-				         * Characterize each entry and associate it with its parent
-				         * source unit.
-				         */
-				        en = zip.entries();
-				        while (en.hasMoreElements()) {
-				            ZipEntry entry = en.nextElement();
-				            String name = entry.getName();
-				            if (entry.isDirectory()) {
-				                int len = name.length() - 1;
-				                if (name.charAt(len) == '/') {
-				                    name = name.substring(0, len);
-				                }
-				                /* Get the source unit from the map. */
-				                Source src = map.get(name);
-				                if (src != null) {
-				                    jhove2.characterize(src);
+	            /*
+	             * Characterize each entry and associate it with its parent
+	             * source unit.
+	             */
+	            en = zip.entries();
+	            while (en.hasMoreElements()) {
+	                ZipEntry entry = en.nextElement();
+	                String name = entry.getName();
+	                if (entry.isDirectory()) {
+	                    int len = name.length() - 1;
+	                    if (name.charAt(len) == '/') {
+	                        name = name.substring(0, len);
+	                    }
+	                    /* Get the source unit from the map. */
+	                    Source src = map.get(name);
+	                    if (src != null) {
+	                        Input inpt = src.getInput(jhove2);
+	                        try {
+	                            jhove2.characterize(src, inpt);
+	                        }
+	                        finally {
+	                            if (inpt != null) {
+	                                inpt.close();
+	                            }
+	                        }
+	                        
+	                        int in = name.lastIndexOf('/');
+	                        if (in > -1 && in < name.length() - 1) {
+	                            /*
+	                             * Directory is a child of a Zip directory
+	                             * entry that can be retrieved from the map.
+	                             */
+	                            String key = name.substring(0, in);
+	                            Source parent = map.get(key);
+	                            if (parent != null) {
+	                                parent.addChildSource(src);
+	                            }
+	                        }
+	                        else {
+	                            /* Directory is a child of the Zip file. */
+	                            source.addChildSource(src);
+	                        }
+	                    }
+	                }
+	                else {
+	                    Source src =
+	                        SourceFactory.getSource(config.getTempPrefix(),
+	                                                config.getTempSuffix(),
+	                                                config.getBufferSize(),
+	                                                zip, entry);
+	                    if (src != null) {
+	                        Input inpt = src.getInput(jhove2);
+	                        try {
+	                            jhove2.characterize(src, inpt);
+	                        }
+	                        finally {
+	                            if (inpt != null) {
+	                                inpt.close();
+	                            }
+	                        }
 
-				                    int in = name.lastIndexOf('/');
-				                    if (in > -1 && in < name.length() - 1) {
-				                        /*
-				                         * Directory is a child of a Zip directory
-				                         * entry that can be retrieved from the map.
-				                         */
-				                        String key = name.substring(0, in);
-				                        Source parent = map.get(key);
-				                        if (parent != null) {
-				                            parent.addChildSource(src);
-				                        }
-				                    }
-				                    else {
-				                        /* Directory is a child of the Zip file. */
-				                        source.addChildSource(src);
-				                    }
-				                }
-				            }
-				            else {
-				                Source src =
-				                     SourceFactory.getSource(config.getTempPrefix(),
-				                                             config.getTempSuffix(),
-				                                             config.getBufferSize(),
-				                                             zip, entry);
-				                if (src != null) {
-				                    jhove2.characterize(src);
-
-				                    int in = name.lastIndexOf('/');
-				                    if (in < 0) {
-				                        /* File is a child of the Zip file. */
-				                        source.addChildSource(src);
-				                    } else {
-				                        /*
-				                         * File is a child of a Zip file entry that can
-				                         * be retrieved from the map.
-				                         */
-				                        String key = name.substring(0, in);
-				                        Source parent = map.get(key);
-				                        if (parent != null) {
-				                            parent.addChildSource(src);
-				                        }
-				                    }
-				                }
-				            }
-				        }
-				    }  
-				    finally {
-				        zip.close();
-				    }
-				}
-			}
-		    finally {
-		        input.close();
-			}
-		}
+	                        int in = name.lastIndexOf('/');
+	                        if (in < 0) {
+	                            /* File is a child of the Zip file. */
+	                            source.addChildSource(src);
+	                        } else {
+	                            /*
+	                             * File is a child of a Zip file entry that can
+	                             * be retrieved from the map.
+	                             */
+	                            String key = name.substring(0, in);
+	                            Source parent = map.get(key);
+	                            if (parent != null) {
+	                                parent.addChildSource(src);
+	                            }
+	                        }
+	                    }
+	                }
+	            }
+	        }  
+	        finally {
+	            zip.close();
+	        }
+	    }
 
 		return consumed;
 	}
@@ -271,11 +278,12 @@ public class ZipModule
     /** Validate the Zip file.
      * @param jhove2 JHOVE2 framework object
      * @param source Zip file source unit
-     * @see org.jhove2.module.format.Validator#validate(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
+     * @param input  Zip file source input
+     * @see org.jhove2.module.format.Validator#validate(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source, org.jhove2.core.io.Input)
      */
     @Override
-    public Validity validate(JHOVE2 jhove2, Source source)
-            throws JHOVE2Exception
+    public Validity validate(JHOVE2 jhove2, Source source, Input input)
+        throws JHOVE2Exception
     {
         return this.isValid();
     }

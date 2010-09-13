@@ -70,16 +70,14 @@ public class PerceptualRenderingIntent
         this.signature = signature;
         this.gamut     = gamut;
     }
-
-    /**
-     * Get the perceptual rendering intent gamut for a signature. 
-     * @param signature Data perceptual rendering intent gamut signature
-     * @param jhove2    JHOVE2 framework
-     * @return Data perceptual rendering intent gamut, or null if the signature is not a perceptual rendering intent gamut signature
-     * @throws JHOVE2Exception
+    
+    /** Initialize the rendering intents.
+     * @param jhove2 JHOVE2 framework
+     * @throws JHOVE2Exception 
      */
-    public static synchronized PerceptualRenderingIntent getPerceptualRenderingIntent(String signature, JHOVE2 jhove2)
-            throws JHOVE2Exception {
+    protected static synchronized void init(JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
         if (gamuts == null) {
             /* Initialize the perceptual rendering intent gamuts from a Java resource bundle. */
             gamuts = new TreeSet<PerceptualRenderingIntent>();
@@ -95,6 +93,19 @@ public class PerceptualRenderingIntent
                 }
             }
         }
+    }
+
+    /**
+     * Get the perceptual rendering intent gamut for a signature. 
+     * @param signature Data perceptual rendering intent gamut signature
+     * @param jhove2    JHOVE2 framework
+     * @return Data perceptual rendering intent gamut, or null if the signature is not a perceptual rendering intent gamut signature
+     * @throws JHOVE2Exception
+     */
+    public static synchronized PerceptualRenderingIntent getPerceptualRenderingIntent(String signature, JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
+        init(jhove2);
         PerceptualRenderingIntent gamut = null;
         Iterator<PerceptualRenderingIntent> iter = gamuts.iterator();
         while (iter.hasNext()) {
@@ -109,9 +120,14 @@ public class PerceptualRenderingIntent
 
     /**
      * Get the perceptual rendering intent gamuts.
+     * @param jhove2 JHOVE2 framework
      * @return perceptual rendering intent gamuts
+     * @throws JHOVE2Exception 
      */
-    public static Set<PerceptualRenderingIntent> getPerceptualRenderingIntentes() {
+    public static Set<PerceptualRenderingIntent> getPerceptualRenderingIntentes(JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
+        init(jhove2);
         return gamuts;
     }
 

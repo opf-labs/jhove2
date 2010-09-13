@@ -47,6 +47,7 @@ import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
 import org.jhove2.core.format.FormatFactory;
 import org.jhove2.core.format.FormatIdentification;
+import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractCommand;
 import org.jhove2.module.Module;
@@ -89,16 +90,18 @@ public class DispatcherCommand
      * modules (if one exists), and invokes the modules to extract format
      * features of the format instance
      * 
-     * @param source
-     *            Source with FormatIdentifications
      * @param jhove2
      *            JHOVE2 framework object
+     * @param source
+     *            Source with FormatIdentifications
+     * @param input
+     *            Source input
      * @throws JHOVE2Exception
      * @see org.jhove2.module.Command#execute(org.jhove2.core.JHOVE2,
      *      org.jhove2.core.source.Source)
      */
     @Override
-    public void execute(JHOVE2 jhove2, Source source)
+    public void execute(JHOVE2 jhove2, Source source, Input input)
         throws JHOVE2Exception
     {
         /*
@@ -161,7 +164,7 @@ public class DispatcherCommand
                 if (!visitedModules.contains(formatModule
                         .getReportableIdentifier())) {
                     visitedModules.add(formatModule.getReportableIdentifier());
-                    formatModule.invoke(jhove2, source);
+                    formatModule.invoke(jhove2, source, input);
                 }
             }
         }

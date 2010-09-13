@@ -69,16 +69,13 @@ public class MeasurementFlare
         this.flare = flare;
     }
 
-    /**
-     * Get the flare for a measurement flare value.
-     * 
-     * @param value  Measurement flare value
+    /** Initialize the measurement flares.
      * @param jhove2 JHOVE2 framework
-     * @return Measurement flare, or null if the value is not defined
-     * @throws JHOVE2Exception
+     * @throws JHOVE2Exception 
      */
-    public static synchronized MeasurementFlare getMeasurementFlare(long value, JHOVE2 jhove2)
-            throws JHOVE2Exception {
+    protected static synchronized void init(JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
         if (flares == null) {
             /* Initialize the measurement flares from a Java resource bundle. */
             flares = new TreeSet<MeasurementFlare>();
@@ -94,6 +91,20 @@ public class MeasurementFlare
                 }
             }
         }
+    }
+    
+    /**
+     * Get the flare for a measurement flare value.
+     * 
+     * @param value  Measurement flare value
+     * @param jhove2 JHOVE2 framework
+     * @return Measurement flare, or null if the value is not defined
+     * @throws JHOVE2Exception
+     */
+    public static synchronized MeasurementFlare getMeasurementFlare(long value, JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
+        init(jhove2);
         MeasurementFlare flare = null;
         Iterator<MeasurementFlare> iter = flares.iterator();
         while (iter.hasNext()) {
@@ -107,6 +118,19 @@ public class MeasurementFlare
         return flare;
     }
 
+    /**
+     * Get the measurement flares.
+     * @param jhove2 JHOVE2 framework
+     * @return Measurement flares
+     * @throws JHOVE2Exception 
+     */
+    public static Set<MeasurementFlare> getMeasurementFlares(JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
+        init(jhove2);
+        return flares;
+    }
+    
     /**
      * Get the measurement flare.
      * @return Measurement flare

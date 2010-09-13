@@ -55,9 +55,10 @@ import org.xml.sax.helpers.DefaultHandler;
  * @see <a
  *      href="http://www.saxproject.org/apidoc/org/xml/sax/ErrorHandler.html">ErrorHandler javadoc</a>
  */
-public class SaxParserErrorHandler extends DefaultHandler implements
-        ErrorHandler {
-
+public class SaxParserErrorHandler
+    extends DefaultHandler
+    implements ErrorHandler
+{
     /** The XmlModule object that is invoking the parser. */
     private XmlModule xmlModule;
 

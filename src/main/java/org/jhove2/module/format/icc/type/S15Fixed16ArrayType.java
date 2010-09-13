@@ -47,6 +47,7 @@ import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
+import org.jhove2.core.source.Source;
 import org.jhove2.module.format.Validator.Validity;
 
 /** ICC signed 32-bit fixed point number array type element,
@@ -55,7 +56,7 @@ import org.jhove2.module.format.Validator.Validity;
  * @author slabrams
  */
 public class S15Fixed16ArrayType
-        extends AbstractReportable
+    extends AbstractReportable
 {
     /** Type signature. */
     public static final String SIGNATURE = "sf32";
@@ -88,7 +89,8 @@ public class S15Fixed16ArrayType
     
     /** Parse an ICC fixed signed array tag type element.
      * @param jhove2 JHOVE2 framework
-     * @param input  ICC input
+     * @param source ICC source unit
+     * @param input  ICC source input
      * @param elementSize Size in bytes of the element
      * @return Number of bytes consumed
      * @throws EOFException
@@ -97,12 +99,13 @@ public class S15Fixed16ArrayType
      *             If an I/O exception is raised reading the source unit
      * @throws JHOVE2Exception
      */
-    public long parse(JHOVE2 jhove2, Input input, long elementSize)
+    public long parse(JHOVE2 jhove2, Source source, Input input, long elementSize)
         throws EOFException, IOException, JHOVE2Exception
     {
         long consumed  = 0L;
         int  numErrors = 0;
         this.isValid   = Validity.True;
+        long start     = source.getStartingOffset();
   
         /* Tag signature. */
         for (int i=0; i<4; i++) {
@@ -113,7 +116,7 @@ public class S15Fixed16ArrayType
             numErrors++;
             this.isValid = Validity.False;
             Object [] args =
-                new Object [] {input.getPosition()-4L, SIGNATURE,
+                new Object [] {input.getPosition()-4L-start, SIGNATURE,
                                signature.toString()};
             this.invalidTagTypeMessage = new Message(Severity.ERROR,
                 Context.OBJECT,
@@ -127,7 +130,7 @@ public class S15Fixed16ArrayType
         if (reserved != 0) {
             numErrors++;
             this.isValid = Validity.False;
-            Object [] args = new Object [] {input.getPosition()-4L};
+            Object [] args = new Object [] {input.getPosition()-4L-start};
             this.nonZeroDataInReservedFieldMessage = new Message(Severity.ERROR,
                     Context.OBJECT,
                     "org.jhove2.module.format.icc.ICCTag.NonZeroDataInReservedField",

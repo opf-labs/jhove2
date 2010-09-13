@@ -49,6 +49,7 @@ import javax.annotation.Resource;
 import org.jhove2.app.util.FeatureConfigurationUtil;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
 import org.jhove2.module.format.Validator.Validity;
@@ -204,8 +205,9 @@ public class OpenSpWrapperTest {
 		sp.setOnsgmlsPath(oldPath);
 		assertNull(testSgmlModule.getDocumentProperties());
 		try {
-			assertEquals(Validity.Undetermined, testSgmlModule.validate(JHOVE2, testSgmlModule.source));
-		} catch (JHOVE2Exception e) {
+		    Input input = testSgmlModule.source.getInput(JHOVE2);
+			assertEquals(Validity.Undetermined, testSgmlModule.validate(JHOVE2, testSgmlModule.source, input));
+		} catch (Exception e) {
 			fail("sgml module Validate method threw exception " + e.getMessage());
 			e.printStackTrace();
 		}

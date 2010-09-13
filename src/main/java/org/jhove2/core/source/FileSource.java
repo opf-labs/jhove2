@@ -43,9 +43,6 @@ import java.util.Date;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.io.Input;
-import org.jhove2.core.io.InputFactory;
-import org.jhove2.core.io.Input.Type;
 
 /**
  * JHOVE2 file system file source unit.
@@ -150,31 +147,7 @@ public class FileSource
     {
         return this.fileName;
     }
-    
-	/**
-	 * Get {@link org.jhove2.core.io.Input} for the source unit.
-	 * 
-	 * @param bufferSize
-	 *            Buffer size
-	 * @param bufferType
-	 *            Buffer type
-	 * @return Input for the source unit
-	 * @throws FileNotFoundException
-	 *             File not found
-	 * @throws IOException
-	 *             I/O exception getting input
-	 */
-	public Input getInput(int bufferSize, Type bufferType)
-			throws FileNotFoundException, IOException {
-		Input input = null;
-		if (this.file != null && this.isExtant && this.isReadable) {
-			input = InputFactory.getInput(this.file, bufferSize, bufferType);
-		}
-
-		this.input = input;
-		return input;
-	}
-
+ 
     /**
      * Get file last modified date.
      * 

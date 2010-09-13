@@ -70,16 +70,13 @@ public class FunctionType
         this.parameters = parameters;
     }
 
-    /**
-     * Get the parameters for a function  value.
-     * 
-     * @param value  Function value
+    /** Initialize the function types.
      * @param jhove2 JHOVE2 framework
-     * @return Function parameters, or null if the value is not defined
-     * @throws JHOVE2Exception
+     * @throws JHOVE2Exception 
      */
-    public static synchronized FunctionType getFunctionType(int value, JHOVE2 jhove2)
-            throws JHOVE2Exception {
+    protected static synchronized void init(JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
         if (types == null) {
             /* Initialize the CMMs from a Java resource bundle. */
             types = new TreeSet<FunctionType>();
@@ -95,6 +92,20 @@ public class FunctionType
                 }
             }
         }
+    }
+    
+    /**
+     * Get the parameters for a function  value.
+     * 
+     * @param value  Function value
+     * @param jhove2 JHOVE2 framework
+     * @return Function parameters, or null if the value is not defined
+     * @throws JHOVE2Exception
+     */
+    public static synchronized FunctionType getFunctionType(int value, JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
+        init(jhove2);
         FunctionType type = null;
         Iterator<FunctionType> iter = types.iterator();
         while (iter.hasNext()) {
@@ -106,6 +117,17 @@ public class FunctionType
         }
 
         return type;
+    }
+    
+    /** Get function types.
+     * @param jhove2 JHOVE2 framework
+     * @throws JHOVE2Exception 
+     */
+    public static Set<FunctionType> getFunctionTypes(JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
+        init(jhove2);
+        return types;
     }
 
     /**

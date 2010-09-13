@@ -40,6 +40,7 @@ import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.io.Input;
+import org.jhove2.core.source.Source;
 
 /** RIFF format LIST chunk.
  * 
@@ -61,21 +62,24 @@ public class LISTChunk
      * 
      * @param jhove2
      *            JHOVE2 framework
+     * @param source
+     *            RIFF source unit
      * @param input
-     *            RIFF input
+     *            RIFF source input
      * @return Number of bytes consumed
      * @throws EOFException
      *             If End-of-File is reached reading the source unit
      * @throws IOException
      *             If an I/O exception is raised reading the source unit
      * @throws JHOVE2Exception
-     * @see org.jhove2.module.format.FormatModule#parse(org.jhove2.core.JHOVE2,
-     *      org.jhove2.core.source.Source)
+     * @see org.jhove2.module.format.Parser#parse(org.jhove2.core.JHOVE2,
+     *      org.jhove2.core.source.Source, org.jhove2.core.io.Input)
      */
-    public long parse(JHOVE2 jhove2, Input input)
+    @Override
+    public long parse(JHOVE2 jhove2, Source source, Input input)
         throws EOFException, IOException, JHOVE2Exception
     {
-        long consumed = super.parse(jhove2, input);
+        long consumed = super.parse(jhove2, source, input);
         
         /* List type. */
         StringBuffer sb = new StringBuffer(4);
@@ -97,7 +101,7 @@ public class LISTChunk
             }
             consumed += 4;
             Chunk chunk = ChunkFactory.getChunk(sb.toString(), jhove2);
-            consumed += chunk.parse(jhove2, input);
+            consumed += chunk.parse(jhove2, source, input);
             this.chunks.add(chunk);
             
             pos = chunk.getNextChunkOffset();
@@ -106,6 +110,7 @@ public class LISTChunk
         
         return consumed;
     }
+    
     /** Get the list type.
      * @return List type
      */

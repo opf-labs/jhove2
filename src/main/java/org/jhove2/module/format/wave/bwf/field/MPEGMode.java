@@ -69,16 +69,14 @@ public class MPEGMode
         this.mode   = mode;
         this.description = description;
     }
-
-    /**
-     * Get the description for a mode. 
-     * @param mode   MPEG mode
+    
+    /** Initialize the modes.
      * @param jhove2 JHOVE2 framework
-     * @return Mode MPEG mode description, or null if the mode is not defined
-     * @throws JHOVE2Exception
+     * @throws JHOVE2Exception 
      */
-    public static synchronized MPEGMode getMPEGMode(int mode, JHOVE2 jhove2)
-            throws JHOVE2Exception {
+    protected static synchronized void init(JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
         if (modes == null) {
             /* Initialize the Mode modes from a Java resource bundle. */
             modes = new TreeSet<MPEGMode>();
@@ -95,6 +93,19 @@ public class MPEGMode
                 }
             }
         }
+    }
+
+    /**
+     * Get the description for a mode. 
+     * @param mode   MPEG mode
+     * @param jhove2 JHOVE2 framework
+     * @return Mode MPEG mode description, or null if the mode is not defined
+     * @throws JHOVE2Exception
+     */
+    public static synchronized MPEGMode getMPEGMode(int mode, JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
+        init(jhove2);
         MPEGMode mod = null;
         Iterator<MPEGMode> iter = modes.iterator();
         while (iter.hasNext()) {
@@ -109,9 +120,14 @@ public class MPEGMode
 
     /**
      * Get the MPEG modes.
+     * @param jhove2 JHOVE2 framework
      * @return MPEG modes
+     * @throws JHOVE2Exception 
      */
-    public static Set<MPEGMode> getModeCategories() {
+    public static Set<MPEGMode> getModes(JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
+        init(jhove2);
         return modes;
     }
 
@@ -141,8 +157,8 @@ public class MPEGMode
     }
 
     /**
-     * Compare MPEG mode mode.
-     * @param chunk
+     * Compare MPEG mode.
+     * @param mode
      *             MPEG mode to be compared
      * @return -1, 0, or 1 if this MPEG mode mode is less than,
      *         equal to, or greater than the second

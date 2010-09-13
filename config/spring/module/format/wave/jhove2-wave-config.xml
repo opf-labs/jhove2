@@ -119,8 +119,8 @@
 	</bean> 
 	     		 	     		 	     		 			    
 	<!-- Broadcast Wave Format (BWF) MPEG-1 decoder de-emphasis properties bean --> 
-	<bean id="MPEGEmphasis" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
-		<property name="propertyFileBaseName" value="mpeg-emphasis"/>
+	<bean id="MPEGEmphases" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="mpeg-emphases"/>
 	</bean> 
 	 	     		 			    
 	<!-- Broadcast Wave Format (BWF) MPEG-1 flags properties bean --> 
@@ -136,6 +136,21 @@
 	<!-- Broadcast Wave Format (BWF) MPEG-1 modes properties bean --> 
 	<bean id="MPEGModes" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
 		<property name="propertyFileBaseName" value="mpeg-modes"/>
+	</bean> 
+	  	     		 			    
+	<!-- Broadcast Wave Format (BWF) MPEG-1 joint-stereo coding parameters properties bean --> 
+	<bean id="MPEGModeExtensions" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="mpeg-mode-extensions"/>
+	</bean> 
+	 	  	     		 			    
+	<!-- Broadcast Wave Format (BWF) peak envelope format properties bean --> 
+	<bean id="PeakFormats" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="peak-formats"/>
+	</bean> 
+	 	 	  	     		 			    
+	<!-- Broadcast Wave Format (BWF) peak envelope points per peak properties bean --> 
+	<bean id="PeakPoints" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="peak-points"/>
 	</bean> 
 	 
 </beans>

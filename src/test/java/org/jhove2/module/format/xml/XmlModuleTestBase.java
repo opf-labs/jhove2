@@ -46,6 +46,7 @@ import javax.annotation.Resource;
 import org.jhove2.app.util.FeatureConfigurationUtil;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.io.Input;
 import org.jhove2.core.source.FileSource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -111,7 +112,8 @@ public class XmlModuleTestBase {
         assertTrue(testFile.exists());
         try {
             FileSource fileSource = new FileSource(testFile);
-            testXmlModule.parse(JHOVE2, fileSource);
+            Input input = fileSource.getInput(JHOVE2);
+            testXmlModule.parse(JHOVE2, fileSource, input);
         }
         catch (Exception e) {
             // fail("Exception thrown: " + e.getMessage());
