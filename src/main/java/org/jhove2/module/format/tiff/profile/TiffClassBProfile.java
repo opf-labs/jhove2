@@ -42,8 +42,6 @@ import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
-import org.jhove2.core.io.Input;
-import org.jhove2.core.source.Source;
 import org.jhove2.module.format.tiff.TiffIFD;
 
 /**
@@ -165,7 +163,7 @@ public class TiffClassBProfile extends TiffProfile {
         if (!isPhotometricInterpretationValid (ifd, new int [] {0, 1} )) {
             this.isValid = Validity.False;
             this.invalidPhotometricInterpretationValueMessage = new Message(Severity.ERROR, Context.OBJECT,
-                    "org.jhove2.module.format.tiff.profile.TIFFProfile.InvalidCompressionValueMessage",
+                    "org.jhove2.module.format.tiff.profile.TIFFProfile.InvalidPhotometricInterpretationValueMessage",
                     jhove2.getConfigInfo());
         }
 

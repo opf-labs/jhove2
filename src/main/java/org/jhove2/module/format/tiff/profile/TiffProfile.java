@@ -84,6 +84,9 @@ implements Validator
     /** tag cannot be present for this profile message */
     protected Message tagShouldNotBePresentMessage;
 
+    /** Invalid Value for bits per sample message */
+    protected Message invalidBPSValueMessage;
+
     /** Invalid compression value message */
     protected Message invalidCompressionValueMessage;
 
@@ -92,6 +95,11 @@ implements Validator
 
     /** Invalid resolution unit value message */
     protected Message invalidResolutionUnitValueMessage;
+    
+    /** Invalid Value for samples per pixel message */
+    Message invalidSPPValueMessage;
+
+
 
 
     /** Instantiate a new <code>TiffProfile</code>.
@@ -590,14 +598,33 @@ implements Validator
     public Message getInvalidResolutionUnitValueMessage() {
         return this.invalidResolutionUnitValueMessage;
     }
+    
+    /** get invalid samples per pixel value message
+     * 
+     * @return invalid samples per pixel value message
+     */
+    @ReportableProperty(order = 5, value = "Invalid SPP Value Message.")
+    public Message getInvalidSPPValueMessage() {
+        return invalidSPPValueMessage;
+    }
 
     /** Get Tag cannot be present message.
      * @return tag cannot be present message
      */
-    @ReportableProperty(order=5, value="tag cannot be present in this profile message.")
+    @ReportableProperty(order=6, value="tag cannot be present in this profile message.")
     public Message getTagShouldNotBePresentMessage() {
         return this.tagShouldNotBePresentMessage;
     }
+    
+    /** get invalid bits per sample value message
+     * 
+     * @return invalid bitsPerSample value message
+     */
+    @ReportableProperty(order = 7, value = "Invalid BPS Value Message.")
+    public Message getInvalidBPSValueMessage() {
+        return invalidBPSValueMessage;
+    }
+
     
     /** Get validation status.
      * @return Validation status
