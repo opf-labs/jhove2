@@ -61,6 +61,8 @@ import org.jhove2.module.format.tiff.type.ShortArray;
 public class TiffIFD 
 extends IFD 
 {    
+    public static final int NULL = -1;
+    
     /** Partial list of Tiff Tags */
     public static final int
     ARTIST = 315,
@@ -68,11 +70,15 @@ extends IFD
     BACKGROUNDCOLORVALUE = 34026,
     BITSPERSAMPLE = 258,
     CELLLENGTH = 265,
+    CFAREPEATPATTTERNDIM = 33421,
+    CFAPATTERN = 33422,
     CLIPPATH =343,
     COLORMAP = 320,
     COLORSEQUENCE = 34017,
+    COPYRIGHT = 33432,
     COMPRESSION = 259,
     DATETIME = 306,
+    DATETIMEORIGINAL = 36867,
     DOCUMENTNAME = 269,
     DOTRANGE = 336,
     EXTRASAMPLES = 338,
@@ -83,32 +89,41 @@ extends IFD
     IMAGEWIDTH = 256,
     IMAGECOLORINDICATOR = 34023,
     IMAGECOLORVALUE = 34025,
+    IMAGEDESCRIPTION = 270,
     IMAGELENGTH = 257,
     INDEXED = 346,
     JPEGPROC = 512,
+    MAKE = 271, 
     MODEL = 272,
     ORIENTATION = 274,
     PAGENAME = 285,
     NEWSUBFILETYPE = 254,
     PLANARCONFIGURATION = 284,
+    REFERENCEBLACKWHITE = 532,
     PHOTMETRIC_INTERPRETATION = 262,
     RESOLUTIONUNIT = 296,
     ROWSPERSTRIP = 278,
     SAMPLESPERPIXEL = 277,
+    SENSINGMETHOD = 37399,
     SITE = 34016,
+    SOFTWARE = 305,
     STRIPBYTECOUNTS = 279,
     STRIPOFFSETS = 273,
     THRESHHOLDING = 263,
+    TIFFEPSTANDARDID = 37398, 
     TILEBYTECOUNTS = 325, 
     TILELENGTH = 323,
     TILEWIDTH = 322,
     TILEOFFSETS = 324,
     XCLIPPATHUNITS = 344,
     XRESOLUTION = 282,
+    YCBCRCOEFFICIENTS = 529,
+    YCBCRSUBSAMPLING = 530,
+    YCBCRPOSITIONING = 531,
     YRESOLUTION = 283;
 
     /** compression tag value */
-    private int compression;
+    private int compression = NULL;
 
     /* dot range tag value */
     private int[] dotRange = null;
@@ -138,16 +153,16 @@ extends IFD
     private boolean hasTileWidth;
 
     /** image length tag value */
-    private long imageLength;
+    private long imageLength = NULL;
 
     /** image width tag value */
-    private long imageWidth;
+    private long imageWidth = NULL;
 
     /** Missing required tag message. */
     protected List<Message> missingRequiredTagMessages;
 
     /** photometric interpretation value */
-    private int photometricInterpretation;
+    private int photometricInterpretation = NULL;
 
     /** strip byte counts value */
     long[] stripByteCounts = null;
@@ -159,7 +174,7 @@ extends IFD
     private long[] tileByteCounts = null;
 
     /** tile length tag value */
-    private long tileLength;
+    private long tileLength = NULL;
 
     /** tile offsets tag value */
     private long [] tileOffsets = null;
@@ -171,7 +186,7 @@ extends IFD
     private Message tilesAndStripsNotDefinedMessage;
 
     /** tileWidth tag value */
-    private long tileWidth;
+    private long tileWidth = NULL;
 
     /** strip byte counts tag not defined message */
     private Message stripByteCountsNotDefinedMessage;
@@ -180,10 +195,10 @@ extends IFD
     private Message stripOffsetsNotDefinedMessage;
 
     /** Planar configuration tag value */
-    private int planarConfiguration;
+    private int planarConfiguration = NULL;
 
     /** samples per pixel tag value */
-    private int samplesPerPixel;
+    private int samplesPerPixel = NULL;
 
     /** strip lengths inconsisten message */
     private Message StripsLengthInconsistentMessage;
@@ -240,7 +255,7 @@ extends IFD
     private Message sppMustEqualOneForPalleteColorMessage;
 
     /** newSubfileType tag value */
-    private long newSubfileType;
+    private long newSubfileType = NULL;
 
     /** bit per sample tag value */
     private int[] bitsPerSample = null;
@@ -266,21 +281,21 @@ extends IFD
     /** XCLipPathUnits not defined when ClipPaths defined message */
     private Message xClipPathUnitsNotDefinedMessage;
 
-    private int resolutionUnit;
+    private int resolutionUnit = NULL;
 
-    private long xResolution;
+    private long xResolution = NULL;
 
-    private Rational yResolution;
+    private Rational yResolution = null;
 
-    private int orientation;
+    private int orientation = NULL;
 
-    private int imageColorIndicator;
+    private int imageColorIndicator = NULL;
 
-    private int backgroundColorIndicator;
+    private int backgroundColorIndicator = NULL;
 
-    private int indexed;
+    private int indexed = NULL;
 
-    private int fillOrder;
+    private int fillOrder = NULL;
 
     private boolean hasImageLength = false;
 
@@ -290,9 +305,9 @@ extends IFD
 
     private boolean hasYResolution = false;
 
-    private boolean hasRowsPerStrip;
+    private boolean hasRowsPerStrip = false;
 
-    private long rowsPerStrip;
+    private long rowsPerStrip = NULL;
 
 
     /** Instantiate a <code>TiffIFD</code> object

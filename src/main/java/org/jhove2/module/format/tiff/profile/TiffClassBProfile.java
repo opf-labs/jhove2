@@ -138,7 +138,10 @@ public class TiffClassBProfile extends TiffProfile {
             this.missingRequiredTagMessages.add(msg);
         }
 
-        /* Check required values. */
+        /* 
+         * Check required values.  
+         */
+        
         if (ifd.getSamplesPerPixel () > 1) {
             this.isValid = Validity.False;
             this.invalidSPPValueMessage = new Message(Severity.ERROR, Context.OBJECT,

@@ -463,7 +463,7 @@
 	</bean>
 
 	<!-- TIFF/IT-BPP1 profile bean -->
-	<bean id="TiffItBPP1Profile" class="org.jhove2.module.format.tiff.profile.TiffITBPP1Profile"
+	<bean id="TiffITBPP1Profile" class="org.jhove2.module.format.tiff.profile.TiffITBPP1Profile"
 		scope="prototype">
 		<constructor-arg ref="TiffItBPP1Format" />
 		<property name="developers">
@@ -496,7 +496,7 @@
 	</bean>
 
 	<!-- TIFF/IT-BPP2 profile bean -->
-	<bean id="TiffItBPP2Profile" class="org.jhove2.module.format.tiff.profile.TiffITBPP2Profile"
+	<bean id="TiffITBPP2Profile" class="org.jhove2.module.format.tiff.profile.TiffITBPP2Profile"
 		scope="prototype">
 		<constructor-arg ref="TiffItBPP2Format" />
 		<property name="developers">

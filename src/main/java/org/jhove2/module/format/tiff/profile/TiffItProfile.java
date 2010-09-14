@@ -52,8 +52,9 @@ import org.jhove2.module.format.tiff.TiffIFD;
  *
  */
 public class TiffItProfile 
-extends TiffProfile 
-implements Validator {
+        extends TiffProfile 
+        implements Validator 
+{
 
 
     /** Invalid Value for samples per pixel message */

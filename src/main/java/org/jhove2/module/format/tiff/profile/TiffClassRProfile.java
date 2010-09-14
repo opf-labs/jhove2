@@ -41,7 +41,6 @@ import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
-import org.jhove2.module.format.Validator.Validity;
 import org.jhove2.module.format.tiff.TiffIFD;
 
 /**

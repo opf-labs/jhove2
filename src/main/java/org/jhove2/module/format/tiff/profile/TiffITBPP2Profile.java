@@ -81,9 +81,8 @@ public class TiffITBPP2Profile extends TiffItProfile {
         
         if (!isNewSubfileTypeValid(ifd, 0)) {
             this.invalidNewSubfileTypeMessage = new Message(Severity.ERROR, Context.OBJECT,
-                    "org.jhove2.module.format.tiff.profile.TIFFITProfile.invalidNewSubfileTypeMessage",
+                    "org.jhove2.module.format.tiff.profile.TIFFITProfile.InvalidNewSubfileTypeMessage",
                     jhove2.getConfigInfo());
-            
         }
 
         if (!isCompressionValid (ifd, new int[] {1, 4, 8} )) {
@@ -142,7 +141,7 @@ public class TiffITBPP2Profile extends TiffItProfile {
         if (!isBackgroundColorIndicatorValid (ifd, validValues)) {
             this.isValid = Validity.False;
             this.invalidBackgroundColorIndicatorMessage = new Message(Severity.ERROR, Context.OBJECT,
-                    "org.jhove2.module.format.tiff.profile.TIFFITProfile.invalidBackgroundColorIndicatorMessage",
+                    "org.jhove2.module.format.tiff.profile.TIFFITProfile.InvalidBackgroundColorIndicatorMessage",
                     jhove2.getConfigInfo());
         }
 

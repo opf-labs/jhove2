@@ -81,7 +81,7 @@ public class TiffITBPP1Profile extends TiffItProfile {
         
         if (!isNewSubfileTypeValid(ifd, 0)) {
             this.invalidNewSubfileTypeMessage = new Message(Severity.ERROR, Context.OBJECT,
-                    "org.jhove2.module.format.tiff.profile.TIFFITProfile.invalidNewSubfileTypeMessage",
+                    "org.jhove2.module.format.tiff.profile.TIFFITProfile.InvalidNewSubfileTypeMessage",
                     jhove2.getConfigInfo());
             
         }

@@ -90,14 +90,20 @@ implements Validator
     /** Invalid compression value message */
     protected Message invalidCompressionValueMessage;
 
+    /** Invalid orientation value message */
+    protected Message invalidOrientationValueMessage;
+
     /** Invalid photometric interpretation value message */
     protected Message invalidPhotometricInterpretationValueMessage;
+    
+    /** Invalid plana configuration value message */
+    protected Message invalidPlanarConfigurationValueMessage;
 
     /** Invalid resolution unit value message */
     protected Message invalidResolutionUnitValueMessage;
     
     /** Invalid Value for samples per pixel message */
-    Message invalidSPPValueMessage;
+    protected Message invalidSPPValueMessage;
 
 
 
@@ -587,7 +593,7 @@ implements Validator
      * @return invalid PhotometricInterpretation Value Message
      */
     @ReportableProperty(order=3, value="Invalid PhotometricInterpretation Value Message.")
-    public Message getinvalidPhotometricInterpretationValueMessage() {
+    public Message getInvalidPhotometricInterpretationValueMessage() {
         return this.invalidPhotometricInterpretationValueMessage;
     }
 
@@ -623,6 +629,22 @@ implements Validator
     @ReportableProperty(order = 7, value = "Invalid BPS Value Message.")
     public Message getInvalidBPSValueMessage() {
         return invalidBPSValueMessage;
+    }
+
+    /**
+     * @return the invalidPlanarConfigurationValueMessage
+     */
+    @ReportableProperty(order = 8, value = "Invalid planar configuration value message.")
+    public Message getInvalidPlanarConfigurationValueMessage() {
+        return invalidPlanarConfigurationValueMessage;
+    }
+
+    /**
+     * @return invalidOrientationValueMessage the invalidOrientationValueMessage
+     */
+    @ReportableProperty(order = 9, value = "Invalid orientation value message.")
+    public Message getInvalidOrientationValueMessage() {
+        return this.invalidOrientationValueMessage;
     }
 
     
