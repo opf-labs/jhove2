@@ -454,7 +454,7 @@ public class XmlModule
 
         /* Do a separate parse to inventory numeric character references */
         if (this.ncrParser) {
-            input.setPosition(0L);
+            input.setPosition(source.getStartingOffset());
             numericCharacterReferenceInformation.parse(input,
                     xmlDeclaration.encodingFromSAX2, jhove2);
         }   
