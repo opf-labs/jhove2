@@ -189,13 +189,17 @@ implements Comparable<Object> {
 
     protected SShortArray sShortArrayValue;
 
+    /** invalid date/time value message */
     private Message invalidDateTimeMessage;
 
+    /** invalid date time format message */
     private Message invalidDateTimeFormatMessage;
 
-    private Message TileWidthNotMultipleOf16Message;
+    /** invalid tilewidth not multiple of 16 message */
+    private Message tileWidthNotMultipleof16Message;
 
-    private Message TileLengthNotMultipleOf16Message;
+    /** invalid tile length not multiple of 16 message */
+    private Message tileLengthNotMultipleof16Message;
 
 
     @ReportableProperty(order=5, value = "Entry value/offset.")
@@ -423,9 +427,9 @@ implements Comparable<Object> {
             if (tileWidth%16 > 0) {
                 this.isValid = Validity.False;
                 Object[]messageArgs = new Object[]{this.tag, valueOffset};
-                this.TileWidthNotMultipleOf16Message = (new Message(Severity.WARNING,
+                this.tileWidthNotMultipleof16Message = (new Message(Severity.WARNING,
                         Context.OBJECT,
-                        "org.jhove2.module.format.tiff.IFDEntry.TileWidthNotMultipleOf16Message",
+                        "org.jhove2.module.format.tiff.IFDEntry.tileWidthNotMultipleof16Message",
                         messageArgs, jhove2.getConfigInfo()));  
             }
 
@@ -439,9 +443,9 @@ implements Comparable<Object> {
             if (tileLength%16 > 0) {
                 this.isValid = Validity.False;
                 Object[]messageArgs = new Object[]{this.tag, valueOffset};
-                this.TileLengthNotMultipleOf16Message = (new Message(Severity.WARNING,
+                this.tileLengthNotMultipleof16Message = (new Message(Severity.WARNING,
                         Context.OBJECT,
-                        "org.jhove2.module.format.tiff.IFDEntry.TileLengthNotMultipleOf16Message",
+                        "org.jhove2.module.format.tiff.IFDEntry.tileLengthNotMultipleof16Message",
                         messageArgs, jhove2.getConfigInfo()));  
                 return;
             }
@@ -812,7 +816,23 @@ implements Comparable<Object> {
      */
     @ReportableProperty(order=15, value="Invalid Date Time Format Message.")
     public Message getInvalidDateTimeFormatMessage() {
-        return invalidDateTimeFormatMessage;
+        return this.invalidDateTimeFormatMessage;
+    }
+
+    /**
+     * @return the tileWidthNotMultipleOf16Message
+     */
+    @ReportableProperty(order = 16, value = "TileWidth not multiple of 16 message.")
+    public Message getTileWidthNotMultipleOf16Message() {
+        return this.tileWidthNotMultipleof16Message;
+    }
+
+    /**
+     * @return the tileLengthNotMultipleOf16Message
+     */
+    @ReportableProperty(order = 17, value = "TileLength not multiple of 16 message.")
+    public Message getTileLengthNotMultipleOf16Message() {
+        return this.tileLengthNotMultipleof16Message;
     }
 
     @ReportableProperty(order=3, value="Compression Scheme in descriptive form.",

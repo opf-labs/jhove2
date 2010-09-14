@@ -36,19 +36,16 @@
 package org.jhove2.module.format.tiff.profile;
 
 import java.util.ArrayList;
-import java.util.List;
 
+import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
+import org.jhove2.core.Message.Context;
+import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
-import org.jhove2.core.io.Input;
-import org.jhove2.core.source.Source;
 import org.jhove2.module.format.Validator;
-import org.jhove2.module.format.tiff.IFD;
-import org.jhove2.module.format.tiff.IFDEntry;
 import org.jhove2.module.format.tiff.TiffIFD;
-import org.jhove2.module.format.tiff.TiffModule;
 
 /**
  * @author mstrong
@@ -58,6 +55,21 @@ public class TiffItProfile
 extends TiffProfile 
 implements Validator {
 
+
+    /** Invalid Value for samples per pixel message */
+    protected Message invalidSPPValueMessage;
+
+    /** Invalid Value for bits per sample message */
+    protected Message invalidBPSValueMessage;
+
+    /** Invalid ImageColorIndicator message */
+    protected Message invalidImageColorIndicatorMessage;
+
+    /** invalid BackgroundColorIndicator message */
+    protected Message invalidBackgroundColorIndicatorMessage;
+    
+    /** invalid NewSubfileType message */
+    protected Message invalidNewSubfileTypeMessage;
 
     /**
      * Instantiate a new <code>TiffItProfile</code>.
@@ -81,41 +93,72 @@ implements Validator {
      * 
      * @param jhove2
      *            JHOVE2 framework
-     * @param source
-     *            TIFF-IT source unit
-     * @return TIFF-IT validation status
-     * @see org.jhove2.module.format.Validator#validate(org.jhove2.core.JHOVE2,
-     *      org.jhove2.core.source.Source)
+     * @param IFD
+     *            TIFF IFD
+     * @see org.jhove2.module.format.tiff.profile.TiffProfile#validateThisProfile
+     *      (org.jhove2.core.JHOVE2,
+     *      org.jhove2.module.format.tiff.TiffIFD)
      */
     @Override
-    public Validity validate(JHOVE2 jhove2, Source source, Input input)
-    throws JHOVE2Exception {
-        if (this.module != null) {
-            int version = ((TiffModule) this.module).getTiffVersion();
-            if (version < 6) {
-                isValid = Validity.False;
-            }
-            else {
-
-                List<IFD> ifdList = ((TiffModule) this.module).getIFDs();
-                if (ifdList != null) {
-                    /* traverse through list */
-                    for (IFD ifd : ifdList) {
-                        List<IFDEntry> entries = ifd.getIFDEntries();
-                        /* check entries for validity and conforance to Profile*/
-                    }
-                }
-            }
-
+    public void validateThisProfile(JHOVE2 jhove2, TiffIFD ifd) throws JHOVE2Exception 
+    {
+        /* Check required tags. */
+        if (!ifd.hasImageLength()) {
+            this.isValid = Validity.False;
+            Object [] args = new Object [] {"ImageLength"};
+            Message msg = new Message(Severity.ERROR, Context.OBJECT,
+                    "org.jhove2.module.format.tiff.profile.TIFFProfile.MissingRequiredTag",
+                    args, jhove2.getConfigInfo());
+            this.missingRequiredTagMessages.add(msg);
         }
-        return this.isValid;
-    }
-
-    @Override
-    public void validateThisProfile(JHOVE2 jhove2, TiffIFD ifd)
-            throws JHOVE2Exception {
-        // TODO Auto-generated method stub
-        
+        if (!ifd.hasImageWidth()) {
+            this.isValid = Validity.False;
+            Object [] args = new Object [] {"ImageWidth"};
+            Message msg = new Message(Severity.ERROR, Context.OBJECT,
+                    "org.jhove2.module.format.tiff.profile.TIFFProfile.MissingRequiredTag",
+                    args, jhove2.getConfigInfo());
+            this.missingRequiredTagMessages.add(msg);
+        }
+        if (!ifd.hasStripOffsets()) {
+            this.isValid = Validity.False;
+            Object [] args = new Object [] {"StripOffsets"};
+            Message msg = new Message(Severity.ERROR, Context.OBJECT,
+                    "org.jhove2.module.format.tiff.profile.TIFFProfile.MissingRequiredTag",
+                    args, jhove2.getConfigInfo());
+            this.missingRequiredTagMessages.add(msg);
+        }
+        if (!ifd.hasRowsPerStrip()) {
+            this.isValid = Validity.False;
+            Object [] args = new Object [] {"RowsPerStrip"};
+            Message msg = new Message(Severity.ERROR, Context.OBJECT,
+                    "org.jhove2.module.format.tiff.profile.TIFFProfile.MissingRequiredTag",
+                    args, jhove2.getConfigInfo());
+            this.missingRequiredTagMessages.add(msg);
+        }
+        if (!ifd.hasStripByteCounts()) {
+            this.isValid = Validity.False;
+            Object [] args = new Object [] {"StripByteCounts"};
+            Message msg = new Message(Severity.ERROR, Context.OBJECT,
+                    "org.jhove2.module.format.tiff.profile.TIFFProfile.MissingRequiredTag",
+                    args, jhove2.getConfigInfo());
+            this.missingRequiredTagMessages.add(msg);
+        }
+        if (!ifd.hasXResolution()) {
+            this.isValid = Validity.False;
+            Object [] args = new Object [] {"XResolution"};
+            Message msg = new Message(Severity.ERROR, Context.OBJECT,
+                    "org.jhove2.module.format.tiff.profile.TIFFProfile.MissingRequiredTag",
+                    args, jhove2.getConfigInfo());
+            this.missingRequiredTagMessages.add(msg);
+        }
+        if (!ifd.hasYResolution()) {
+            this.isValid = Validity.False;
+            Object [] args = new Object [] {"YResolution"};
+            Message msg = new Message(Severity.ERROR, Context.OBJECT,
+                    "org.jhove2.module.format.tiff.profile.TIFFProfile.MissingRequiredTag",
+                    args, jhove2.getConfigInfo());
+            this.missingRequiredTagMessages.add(msg);
+        }
     }
     
     /** Get TIFF-IT profile validation coverage.
@@ -124,6 +167,48 @@ implements Validator {
     @Override
     public Coverage getCoverage() {
         return COVERAGE;
+    }
+
+    /** get invalid bits per sample value message
+     * 
+     * @return invalid bitsPerSample value message
+     */
+    @ReportableProperty(order = 1, value = "Invalid BPS Value Message.")
+    public Message getInvalidBPSValueMessage() {
+        return invalidBPSValueMessage;
+    }
+
+    /** get invalid samples per pixel value message
+     * 
+     * @return invalid samples per pixel value message
+     */
+    @ReportableProperty(order = 2, value = "Invalid SPP Value Message.")
+    public Message getInvalidSPPValueMessage() {
+        return invalidSPPValueMessage;
+    }
+
+    /**
+     * @return the invalidInvalidImageColorIndicatorMessage
+     */
+    @ReportableProperty(order = 3, value = "Invalid ImageColorIndicator Value Message.")
+    public Message getInvalidImageColorIndicatorMessage() {
+        return invalidImageColorIndicatorMessage;
+    }
+
+    /**
+     * @return the invalidBackgroundColorIndicatorMessage
+     */
+    @ReportableProperty(order = 4, value = "Invalid BackgroundColorIndicator Value Message.")
+    public Message getInvalidBackgroundColorIndicatorMessage() {
+        return invalidBackgroundColorIndicatorMessage;
+    }
+
+    /**
+     * @return the invalidNewSubfileTypeMessage
+     */
+    @ReportableProperty(order = 5, value = "Invalid NewSubfileType message")
+    public Message getInvalidNewSubfileTypeMessage() {
+        return invalidNewSubfileTypeMessage;
     }
 
     /**

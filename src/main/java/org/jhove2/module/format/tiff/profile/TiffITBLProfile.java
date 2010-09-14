@@ -35,7 +35,6 @@
  */
 package org.jhove2.module.format.tiff.profile;
 
-import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
@@ -48,7 +47,7 @@ import org.jhove2.module.format.tiff.TiffIFD;
  * @author MStrong
  *
  */
-public class TiffITBLProfile extends TiffProfile {
+public class TiffITBLProfile extends TiffItProfile {
 
     /** Profile version identifier. */
     public static final String VERSION = "2.0.0";
@@ -64,12 +63,6 @@ public class TiffITBLProfile extends TiffProfile {
     /** Profile validation coverage. */
     public static final Coverage COVERAGE = Coverage.Inclusive;
 
-    /** Invalid Value for samples per pixel message */
-    Message invalidSPPValueMessage;
-
-    /** Invalid Value for bits per sample message */
-    private Message invalidBPSValueMessage;
-
     public TiffITBLProfile(Format format) {
         super(format);
     }
@@ -81,115 +74,70 @@ public class TiffITBLProfile extends TiffProfile {
     public void validateThisProfile(JHOVE2 jhove2, TiffIFD ifd) throws JHOVE2Exception 
     {
         /* Check required tags. */
-        if (!ifd.hasImageLength()) {
-            this.isValid = Validity.False;
-            Object [] args = new Object [] {"ImageLength"};
-            Message msg = new Message(Severity.ERROR, Context.OBJECT,
-                    "org.jhove2.module.format.tiff.profile.TIFFProfile.MissingRequiredTag",
-                    args, jhove2.getConfigInfo());
-            this.missingRequiredTagMessages.add(msg);
-        }
-        if (!ifd.hasImageWidth()) {
-            this.isValid = Validity.False;
-            Object [] args = new Object [] {"ImageWidth"};
-            Message msg = new Message(Severity.ERROR, Context.OBJECT,
-                    "org.jhove2.module.format.tiff.profile.TIFFProfile.MissingRequiredTag",
-                    args, jhove2.getConfigInfo());
-            this.missingRequiredTagMessages.add(msg);
-        }
-        if (!ifd.hasStripOffsets()) {
-            this.isValid = Validity.False;
-            Object [] args = new Object [] {"StripOffsets"};
-            Message msg = new Message(Severity.ERROR, Context.OBJECT,
-                    "org.jhove2.module.format.tiff.profile.TIFFProfile.MissingRequiredTag",
-                    args, jhove2.getConfigInfo());
-            this.missingRequiredTagMessages.add(msg);
-        }
-        if (!ifd.hasRowsPerStrip()) {
-            this.isValid = Validity.False;
-            Object [] args = new Object [] {"RowsPerStrip"};
-            Message msg = new Message(Severity.ERROR, Context.OBJECT,
-                    "org.jhove2.module.format.tiff.profile.TIFFProfile.MissingRequiredTag",
-                    args, jhove2.getConfigInfo());
-            this.missingRequiredTagMessages.add(msg);
-        }
-        if (!ifd.hasStripByteCounts()) {
-            this.isValid = Validity.False;
-            Object [] args = new Object [] {"StripByteCounts"};
-            Message msg = new Message(Severity.ERROR, Context.OBJECT,
-                    "org.jhove2.module.format.tiff.profile.TIFFProfile.MissingRequiredTag",
-                    args, jhove2.getConfigInfo());
-            this.missingRequiredTagMessages.add(msg);
-        }
-        if (!ifd.hasXResolution()) {
-            this.isValid = Validity.False;
-            Object [] args = new Object [] {"XResolution"};
-            Message msg = new Message(Severity.ERROR, Context.OBJECT,
-                    "org.jhove2.module.format.tiff.profile.TIFFProfile.MissingRequiredTag",
-                    args, jhove2.getConfigInfo());
-            this.missingRequiredTagMessages.add(msg);
-        }
-        if (!ifd.hasYResolution()) {
-            this.isValid = Validity.False;
-            Object [] args = new Object [] {"YResolution"};
-            Message msg = new Message(Severity.ERROR, Context.OBJECT,
-                    "org.jhove2.module.format.tiff.profile.TIFFProfile.MissingRequiredTag",
-                    args, jhove2.getConfigInfo());
-            this.missingRequiredTagMessages.add(msg);
-        }
-
+        super.validateThisProfile(jhove2, ifd);
+        
         /* Check required values. */
-        if (ifd.getSamplesPerPixel () > 1) {
-            this.isValid = Validity.False;
-            this.invalidSPPValueMessage = new Message(Severity.ERROR, Context.OBJECT,
-                    "org.jhove2.module.format.tiff.profile.TIFFClassBProfile.InvalidSPPValueMessage",
-                    jhove2.getConfigInfo());
-        }
         int [] bps = ifd.getBitsPerSample ();
-        if (bps == null || (bps[0] > 1)) {
+        if (bps == null || (bps[0] != 1)) {
             this.isValid = Validity.False;
+            Object [] args = new Object [] {1};
             this.invalidBPSValueMessage = new Message(Severity.ERROR, Context.OBJECT,
-                    "org.jhove2.module.format.tiff.profile.TIFFClassBProfile.InvalidBPSValueMessage",
-                    jhove2.getConfigInfo());
+                    "org.jhove2.module.format.tiff.profile.TIFFITProfile.InvalidBPSValueMessage",
+                    args, jhove2.getConfigInfo());
         }
-
-        if (!isCompressionValid (ifd, new int [] {1, 2, 32773} )) {
+        if (!isCompressionValid (ifd, 32898 )) {
             this.isValid = Validity.False;
+            Object [] args = new Object [] {32898};
             this.invalidCompressionValueMessage = new Message(Severity.ERROR, Context.OBJECT,
-                    "org.jhove2.module.format.tiff.profile.TIFFProfile.InvalidCompressionValueMessage",
-                    jhove2.getConfigInfo());
+                    "org.jhove2.module.format.tiff.profile.TIFFITProfile.InvalidCompressionValueMessage",
+                    args, jhove2.getConfigInfo());
         }
 
         if (!isPhotometricInterpretationValid (ifd, new int [] {0, 1} )) {
             this.isValid = Validity.False;
             this.invalidPhotometricInterpretationValueMessage = new Message(Severity.ERROR, Context.OBJECT,
-                    "org.jhove2.module.format.tiff.profile.TIFFProfile.InvalidCompressionValueMessage",
+                    "org.jhove2.module.format.tiff.profile.TIFFProfile.InvalidPhotometricInterpretationValueMessage",
                     jhove2.getConfigInfo());
         }
 
-        if (!isResolutionUnitValid (ifd, new int [] {1, 2, 3} )) {
+        if (!isSamplesPerPixelValid (ifd, 1)) {
             this.isValid = Validity.False;
-            this.invalidResolutionUnitValueMessage = new Message(Severity.ERROR, Context.OBJECT,
-                    "org.jhove2.module.format.tiff.profile.TIFFProfile.InvalidResolutionUnitValueMessage",
+            Object [] args = new Object [] {1};
+            this.invalidSPPValueMessage = new Message(Severity.ERROR, Context.OBJECT,
+                    "org.jhove2.module.format.tiff.profile.TIFFITProfile.InvalidSPPValueMessage",
+                    args,jhove2.getConfigInfo());
+        }
+        int [] validValues;
+        /* ImageColorIndicator=1, but only if ImageColorValue is defined */ 
+        if ((ifd.getEntries().get(TiffIFD.IMAGECOLORVALUE)) != null)
+            validValues = new int [] {1};
+        else {
+            /* ImageColorIndicator=0,1,2 */
+            validValues = new int [] {0, 1, 2};
+        }
+        if (!isImageColorIndicatorValid (ifd, validValues)) {
+            this.isValid = Validity.False;
+            this.invalidImageColorIndicatorMessage = new Message(Severity.ERROR, Context.OBJECT,
+                    "org.jhove2.module.format.tiff.profile.TIFFITProfile.InvalidImageColorIndicatorMessage",
+                    jhove2.getConfigInfo());
+        }
+
+        /* BackgroundColorIndicator=0,1, or 2; 
+         *  BackgroundColorIndicator=1, but only if BackgroundColorValue is defined. */
+        if ((ifd.getEntries().get(TiffIFD.BACKGROUNDCOLORVALUE))  != null) {
+            validValues = new int [] {1};
+        }
+        else {
+            validValues = new int [] {0, 1, 2};
+        }
+        if (!isBackgroundColorIndicatorValid (ifd, validValues)) {
+            this.isValid = Validity.False;
+            this.invalidBackgroundColorIndicatorMessage = new Message(Severity.ERROR, Context.OBJECT,
+                    "org.jhove2.module.format.tiff.profile.TIFFITProfile.invalidBackgroundColorIndicatorMessage",
                     jhove2.getConfigInfo());
         }
     }
 
-    /** get invalid bits per sample value message
-     * 
-     * @return invalid bitsPerSample value message
-     */
-    @ReportableProperty(order = 1, value = "Invalid BPS Value Message.")
-    public Message getInvalidBPSValueMessage() {
-        return invalidBPSValueMessage;
-    }
 
-    /** get invalid samples per pixel value message
-     * 
-     * @return invalid samples per pixel value message
-     */
-    @ReportableProperty(order = 2, value = "Invalid SPP Value Message.")
-    public Message getInvalidSPPValueMessage() {
-        return invalidSPPValueMessage;
-    }
+
 }

@@ -80,6 +80,9 @@ implements Validator
 
     /** Missing required tag messages. */
     protected List<Message> missingRequiredTagMessages;
+    
+    /** tag cannot be present for this profile message */
+    protected Message tagShouldNotBePresentMessage;
 
     /** Invalid compression value message */
     protected Message invalidCompressionValueMessage;
@@ -588,6 +591,14 @@ implements Validator
         return this.invalidResolutionUnitValueMessage;
     }
 
+    /** Get Tag cannot be present message.
+     * @return tag cannot be present message
+     */
+    @ReportableProperty(order=5, value="tag cannot be present in this profile message.")
+    public Message getTagShouldNotBePresentMessage() {
+        return this.tagShouldNotBePresentMessage;
+    }
+    
     /** Get validation status.
      * @return Validation status
      * @see org.jhove2.module.format.Validator#isValid()

@@ -136,6 +136,10 @@ public abstract class IFD
         return sortedList;
     }
 
+    public Map<Integer, IFDEntry> getEntries() {
+        return this.entries;
+    }
+
     /**
      * get the offsetof the next IFD 
      * @return long

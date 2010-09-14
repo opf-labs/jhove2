@@ -25,6 +25,8 @@
 				<ref bean="TiffItProfile" />
 				<ref bean="TiffITBLProfile" />
 				<ref bean="TiffITBPProfile" />
+				<ref bean="TiffITBPP1Profile" />
+				<ref bean="TiffITBPP2Profile" />
 				<ref bean="TiffITCTProfile" />
 				<ref bean="TiffITFPProfile" />
 				<ref bean="TiffITHCProfile" />
@@ -458,6 +460,72 @@
 	<bean id="TiffITBPIdentifier" class="org.jhove2.core.I8R" scope="singleton">
 		<constructor-arg type="java.lang.String"
 			value="http://jhove2.org/terms/format/tiff-it-bp" />
+	</bean>
+
+	<!-- TIFF/IT-BPP1 profile bean -->
+	<bean id="TiffItBPP1Profile" class="org.jhove2.module.format.tiff.profile.TiffITBPP1Profile"
+		scope="prototype">
+		<constructor-arg ref="TiffItBPP1Format" />
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- TIFF/IT-BPP1 format bean -->
+	<bean id="TiffItBPP1Format" class="org.jhove2.core.format.Format"
+		scope="singleton">
+		<constructor-arg type="java.lang.String" value="TiffItBPP1" />
+		<constructor-arg ref="TiffITBPP1Identifier" />
+		<constructor-arg type="org.jhove2.core.format.Format$Type"
+			value="Format" />
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
+			value="Unambiguous" />
+		<property name="aliasIdentifiers">
+			<set value-type="org.jhove2.core.I8R">
+				<ref bean="TiffItISO12639" />
+			</set>
+		</property>
+	</bean>
+
+	<!-- TIFF/IT-BPP1 identifier bean -->
+	<bean id="TiffITBPP1Identifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String"
+			value="http://jhove2.org/terms/format/tiff-it-bp-p1" />
+	</bean>
+
+	<!-- TIFF/IT-BPP2 profile bean -->
+	<bean id="TiffItBPP2Profile" class="org.jhove2.module.format.tiff.profile.TiffITBPP2Profile"
+		scope="prototype">
+		<constructor-arg ref="TiffItBPP2Format" />
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- TIFF/IT-BPP2 format bean -->
+	<bean id="TiffItBPP2Format" class="org.jhove2.core.format.Format"
+		scope="singleton">
+		<constructor-arg type="java.lang.String" value="TiffItBPP2" />
+		<constructor-arg ref="TiffITBPP2Identifier" />
+		<constructor-arg type="org.jhove2.core.format.Format$Type"
+			value="Format" />
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
+			value="Unambiguous" />
+		<property name="aliasIdentifiers">
+			<set value-type="org.jhove2.core.I8R">
+				<ref bean="TiffItISO12639" />
+			</set>
+		</property>
+	</bean>
+
+	<!-- TIFF/IT-BPP2 identifier bean -->
+	<bean id="TiffITBPP2Identifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String"
+			value="http://jhove2.org/terms/format/tiff-it-bp-p1" />
 	</bean>
 
 	<!-- TIFF/IT-CT profile bean -->
