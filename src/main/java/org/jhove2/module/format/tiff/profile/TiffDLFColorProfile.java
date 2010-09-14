@@ -37,14 +37,18 @@ package org.jhove2.module.format.tiff.profile;
 
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.Message;
+import org.jhove2.core.Message.Context;
+import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
+import org.jhove2.module.format.Validator.Validity;
 import org.jhove2.module.format.tiff.TiffIFD;
 
 /**
  * @author MStrong
  *
  */
-public class TiffDLFColorProfile extends TiffProfile {
+public class TiffDLFColorProfile extends TiffDLFProfile {
 
     /** Profile version identifier. */
     public static final String VERSION = "2.0.0";
@@ -70,9 +74,46 @@ public class TiffDLFColorProfile extends TiffProfile {
     @Override
     public void validateThisProfile(JHOVE2 jhove2, TiffIFD ifd) throws JHOVE2Exception 
     {
-        /* Check required tags. */
 
         /* Check required values. */
-    }
-    
+
+        if (!isCompressionValid (ifd, new int [] {1, 5, 32773} )) {
+            this.isValid = Validity.False;
+            this.invalidCompressionValueMessage = new Message(Severity.ERROR, Context.OBJECT,
+                    "org.jhove2.module.format.tiff.profile.TIFFProfile.InvalidCompressionValueMessage",
+                    jhove2.getConfigInfo());
+        }
+
+        if (!isPhotometricInterpretationValid (ifd, new int [] {2, 6} )) {
+            this.isValid = Validity.False;
+            this.invalidPhotometricInterpretationValueMessage = new Message(Severity.ERROR, Context.OBJECT,
+                    "org.jhove2.module.format.tiff.profile.TIFFProfile.InvalidPhotometricInterpretationValueMessage",
+                    jhove2.getConfigInfo());
+        }
+
+        if (!isSamplesPerPixelValid(ifd, 3)) {
+            this.isValid = Validity.False;
+            this.invalidSPPValueMessage = new Message(Severity.ERROR, Context.OBJECT,
+                    "org.jhove2.module.format.tiff.profile.TIFFProfile.InvalidSPPValueMessage",
+                    jhove2.getConfigInfo());
+        }
+
+        int [] bps = ifd.getBitsPerSample ();
+        for (int i=0; i<bps.length; i++) {
+            if (bps[i] != 8) {
+                this.isValid = Validity.False;
+                this.invalidBPSValueMessage = new Message(Severity.ERROR, Context.OBJECT,
+                        "org.jhove2.module.format.tiff.profile.TIFFProfile.InvalidBPSValueMessage",
+                        jhove2.getConfigInfo());
+            }
+        }
+
+        /* XResolution and YResolution >= 300 (in) or 760 (cm) */
+        if (!hasMinimumResolution (ifd, 300.0, 760.0)) {
+            this.isValid = Validity.False;
+            this.minimumResolutionValueInvalidMessage = new Message(Severity.ERROR, Context.OBJECT,
+                    "org.jhove2.module.format.tiff.profile.TIFFDLFProfile.MinimumResolutionValueInvalidMessage",
+                    jhove2.getConfigInfo());
+        }
+    }    
 }

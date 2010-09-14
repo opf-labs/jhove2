@@ -35,10 +35,15 @@
  */
 package org.jhove2.module.format.tiff.profile;
 
+import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.Message;
+import org.jhove2.core.Message.Context;
+import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
 import org.jhove2.module.format.tiff.TiffIFD;
+import org.jhove2.module.format.tiff.type.Rational;
 
 /**
  * @author MStrong
@@ -59,6 +64,9 @@ public class TiffDLFProfile extends TiffProfile {
 
     /** Profile validation coverage. */
     public static final Coverage COVERAGE = Coverage.Inclusive;
+    
+    /** minimum resolution value invalid message */
+    protected Message minimumResolutionValueInvalidMessage;
 
     public TiffDLFProfile(Format format) {
         super(format);
@@ -70,9 +78,62 @@ public class TiffDLFProfile extends TiffProfile {
     @Override
     public void validateThisProfile(JHOVE2 jhove2, TiffIFD ifd) throws JHOVE2Exception 
     {
-        /* Check required tags. */
 
         /* Check required values. */
+
+        if (!isPhotometricInterpretationValid (ifd, new int [] {0, 1} )) {
+            this.isValid = Validity.False;
+            this.invalidPhotometricInterpretationValueMessage = new Message(Severity.ERROR, Context.OBJECT,
+                    "org.jhove2.module.format.tiff.profile.TIFFProfile.InvalidPhotometricInterpretationValueMessage",
+                    jhove2.getConfigInfo());
+        }
     }
-    
+
+    /** Checks for minimum X and Y resolution.
+     *  All of the DLF profiles have similar tests for
+     *  XResolution and YResolution. In all cases the
+     *  values depend on the ResolutionUnit, which must be
+     *  either 2 or 3.
+     *
+     *  @param tifd  The TiffIFD from which to extract the tags.
+     *  @param minUnit2Res  The minimum XResolution and YResolution
+     *                      when ResolutionUnit is 2
+     *  @param minUnit3Res  The minimum XResolution and YResolution
+     *                      when ResolutionUnit is 3
+     */
+
+    protected boolean hasMinimumResolution (TiffIFD ifd, double minUnit2Res,
+            double minUnit3Res) 
+    {
+        if (!ifd.hasXResolution() || !ifd.hasYResolution()) {
+            return false;
+        }
+
+        Rational XResolution = (Rational) ifd.getEntries().get(TiffIFD.XRESOLUTION).getValue();
+        Rational YResolution = (Rational) ifd.getEntries().get(TiffIFD.YRESOLUTION).getValue();
+
+        int resUnit = ifd.getResolutionUnit();
+        if (resUnit == 2) {
+            if (XResolution.toDouble() < minUnit2Res || YResolution.toDouble() < minUnit2Res) {
+                return false;
+            }
+        }
+        else if (resUnit == 3) {
+            if (XResolution.toDouble() < minUnit3Res || YResolution.toDouble() < minUnit3Res) {
+                return false;
+            }
+        }
+        else {
+            return false;  // resUnit must be 2 or 3
+        }
+        return true;       // passed all tests
+    }
+
+    /**
+     * @return the minimumResolutionValueInvalidMessage
+     */
+    @ReportableProperty(order = 1, value = "Minimum Resolution value message.")
+    public Message getMinimumResolutionValueInvalidMessage() {
+        return minimumResolutionValueInvalidMessage;
+    }
 }

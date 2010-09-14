@@ -37,14 +37,18 @@ package org.jhove2.module.format.tiff.profile;
 
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.Message;
+import org.jhove2.core.Message.Context;
+import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
+import org.jhove2.module.format.Validator.Validity;
 import org.jhove2.module.format.tiff.TiffIFD;
 
 /**
  * @author MStrong
  *
  */
-public class TiffDLFGrayProfile extends TiffProfile {
+public class TiffDLFGrayProfile extends TiffDLFProfile {
 
     /** Profile version identifier. */
     public static final String VERSION = "2.0.0";
@@ -73,6 +77,44 @@ public class TiffDLFGrayProfile extends TiffProfile {
         /* Check required tags. */
 
         /* Check required values. */
-    }
+        if (!isCompressionValid (ifd, new int [] {1, 5, 32773} )) {
+            this.isValid = Validity.False;
+            this.invalidCompressionValueMessage = new Message(Severity.ERROR, Context.OBJECT,
+                    "org.jhove2.module.format.tiff.profile.TIFFProfile.InvalidCompressionValueMessage",
+                    jhove2.getConfigInfo());
+        }
+
+        if (!isPhotometricInterpretationValid (ifd, new int [] {0, 1} )) {
+            this.isValid = Validity.False;
+            this.invalidPhotometricInterpretationValueMessage = new Message(Severity.ERROR, Context.OBJECT,
+                    "org.jhove2.module.format.tiff.profile.TIFFProfile.InvalidPhotometricInterpretationValueMessage",
+                    jhove2.getConfigInfo());
+        }
+
+        if (!isSamplesPerPixelValid(ifd, 1)) {
+            this.isValid = Validity.False;
+            this.invalidSPPValueMessage = new Message(Severity.ERROR, Context.OBJECT,
+                    "org.jhove2.module.format.tiff.profile.TIFFProfile.InvalidSPPValueMessage",
+                    jhove2.getConfigInfo());
+        }
+
+        int [] bps = ifd.getBitsPerSample ();
+        if (bps == null || bps[0] != 8) {
+                this.isValid = Validity.False;
+                this.invalidBPSValueMessage = new Message(Severity.ERROR, Context.OBJECT,
+                        "org.jhove2.module.format.tiff.profile.TIFFProfile.InvalidBPSValueMessage",
+                        jhove2.getConfigInfo());
+            }
+        
+
+        /* XResolution and YResolution >= 300 (in) or 760 (cm) */
+        if (!hasMinimumResolution (ifd, 300.0, 760.0)) {
+            this.isValid = Validity.False;
+            this.minimumResolutionValueInvalidMessage = new Message(Severity.ERROR, Context.OBJECT,
+                    "org.jhove2.module.format.tiff.profile.TIFFDLFProfile.MinimumResolutionValueInvalidMessage",
+                    jhove2.getConfigInfo());
+        }
+    }      
     
+
 }
