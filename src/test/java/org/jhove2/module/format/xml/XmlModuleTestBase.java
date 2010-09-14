@@ -117,6 +117,7 @@ public class XmlModuleTestBase {
         }
         catch (Exception e) {
             // fail("Exception thrown: " + e.getMessage());
+        	// e.printStackTrace();
         }        
     }
     

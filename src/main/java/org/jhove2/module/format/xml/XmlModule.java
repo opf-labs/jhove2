@@ -81,6 +81,9 @@ public class XmlModule
     
     /** XML validation status. */
     protected Validity validity;
+    
+    /** Unresolved schema reference in XML document */
+    protected boolean unresolvedSchemaReference;
 
     /**
      * Get module validation coverage.
@@ -140,9 +143,9 @@ public class XmlModule
                     messageArgs, jhove2.getConfigInfo()));
             return (validity = Validity.False);
         }
-        /* See if validity has been previously set to undetermined, e.g. if schema file not found */
-        if ((validity != null) && (validity == Validity.Undetermined)) {
-            return validity;
+        /* Did SAX parser find a referenced schema file that could not be resolved? */
+        if (this.unresolvedSchemaReference) {
+            return (validity = Validity.Undetermined);
         }    
         /* No validation errors found, but make sure schema validation was enabled, if appropriate */
         if (namespaceInformation.hasSchemaLocations) {
@@ -452,7 +455,7 @@ public class XmlModule
         /* Do a separate parse to inventory numeric character references */
         if (this.ncrParser) {
             input.setPosition(0L);
-            numericCharacterReferences.parse(input,
+            numericCharacterReferenceInformation.parse(input,
                     xmlDeclaration.encodingFromSAX2, jhove2);
         }   
         validate(jhove2, source, input);
