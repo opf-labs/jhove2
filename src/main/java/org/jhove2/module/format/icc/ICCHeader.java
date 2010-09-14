@@ -393,7 +393,6 @@ public class ICCHeader
         cal.setTimeZone(TimeZone.getTimeZone("UTC"));
         this.dateAndTime = cal.getTime();
         consumed += 12;
-        System.out.println("# DATE " + this.dateAndTime);
         
         /* Profile file signature. */
         for (int i=0; i<4; i++) {

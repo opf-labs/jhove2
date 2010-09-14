@@ -77,7 +77,6 @@ import org.jhove2.module.format.tiff.type.SShortArray;
 import org.jhove2.module.format.tiff.type.Short;
 import org.jhove2.module.format.tiff.type.ShortArray;
 import org.jhove2.module.format.tiff.type.desc.Compression;
-import org.jhove2.module.identify.Identifier;
 
 /** TIFF IFD entry.
  * 
@@ -97,6 +96,7 @@ implements Comparable<Object> {
     TILELENGTH = 323,
     TILEOFFSETS = 324,
     TILEBYTECOUNTS = 325,
+    XMP = 700,
     ICCProfile = 34675;
 
 
@@ -316,6 +316,15 @@ implements Comparable<Object> {
                 FormatIdentification iccPresumptiveFormat = new FormatIdentification(identifier, Confidence.PositiveSpecific); 
                 bss.addPresumptiveFormat(iccPresumptiveFormat);
                 jhove2.characterize(bss, input, true);
+            }
+            /* Parse the XMP tag */
+            else if (this.tag == XMP) {
+                ByteStreamSource bss = new ByteStreamSource(jhove2, source, this.valueOffset, this.count);
+                Map<String, Object> i8r = SpringConfigInfo.getObjectsForType(I8R.class);
+                I8R identifier = (I8R) i8r.get("XmlIdentifier");
+                FormatIdentification xmlPresumptiveFormat = new FormatIdentification(identifier, Confidence.PositiveGeneric); 
+                bss.addPresumptiveFormat(xmlPresumptiveFormat);
+                jhove2.characterize(bss, input, true);                
             }
             else {
                 readValues(input);

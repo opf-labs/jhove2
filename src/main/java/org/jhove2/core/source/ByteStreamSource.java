@@ -36,9 +36,14 @@
 
 package org.jhove2.core.source;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 
 /** JHOVE2 byte stream source.  A byte stream source is always a child of
@@ -49,8 +54,16 @@ import org.jhove2.core.JHOVE2;
 public class ByteStreamSource
     extends AbstractSource
 {
+    /** I/O buffer size. */
+    protected int bufferSize;
+    
     /** Starting offset relative to parent source. */
     protected long endingOffset;
+    
+    /** Backing file that is an appropriate subset of the parent source's
+     * backing file; not created unless it is actually requested.
+     */
+    protected File backingFile;
      
     /** Parent source. */
     protected Source parent;
@@ -58,6 +71,12 @@ public class ByteStreamSource
     /** Size of the byte stream, in bytes. */
     protected long size;
     
+    /** Temporary file prefix. */
+    protected String tempPrefix;
+    
+    /** Temporary file suffix. */
+    protected String tempSuffix;
+   
     /** Instantiate a new <code>ByteStreamSource</code>.  The new byte stream
      * is automatically added as a child reportable of its parent source unit.
      * @param jhove2 JHOVE2 framework
@@ -72,9 +91,18 @@ public class ByteStreamSource
         super();
         
         this.parent         = parent;
+        this.file           = parent.getFile();
         this.startingOffset = offset;
         this.endingOffset   = offset + size;
         this.size           = size;
+        
+        /* Keep a copy of the temporary file prefix and suffix and I/O buffer
+         * size in case we have to create a temporary backing file.
+         */
+        Invocation invocation = jhove2.getInvocation();
+        this.tempPrefix = invocation.getTempPrefix();
+        this.tempSuffix = invocation.getTempSuffix();
+        this.bufferSize = invocation.getBufferSize();
         
         /* Make this byte stream a child of its parent. */
         parent.addChildSource(this);
@@ -86,6 +114,49 @@ public class ByteStreamSource
     @ReportableProperty(order=2, value="Ending offset of the byte stream, relative to its parent.")
     public long getEndingOffset() {
         return this.endingOffset;
+    }
+
+    /**
+     * Get {@link java.io.File} backing the source unit.
+     * 
+     * @return File backing the source unit
+     * @see org.jhove2.core.source.Source#getFile()
+     */
+    @Override
+    public File getFile() {
+        if (this.backingFile == null) {
+            if (this.file != null) {
+                try {
+                    this.backingFile =
+                        this.createTempFile(this.tempPrefix, this.tempSuffix,
+                                            this.bufferSize, this.file,
+                                            this.startingOffset, this.size);
+                }
+                catch (IOException e) {
+                    /* TODO: Create and add an appropriate message.
+                     * Do we have access to a ConfigInfo?
+                     */
+                }
+            }
+            else {
+                /* TODO: Create and add an appropriate message. */
+            }
+        }
+        return this.backingFile;
+    }
+
+    /**
+     * Get {@link java.io.InputStream} backing the source unit
+     * 
+     * @return Input stream backing the source unit
+     * @throws FileNotFoundException
+     * @see org.jhove2.core.source.Source#getInputStream()
+     */
+    @Override
+    public InputStream getInputStream()
+        throws FileNotFoundException
+    {
+        return new FileInputStream(this.getFile());
     }
      
     /** Get byte stream size, in bytes.

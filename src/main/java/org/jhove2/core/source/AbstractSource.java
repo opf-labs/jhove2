@@ -253,7 +253,6 @@ public abstract class AbstractSource
 		WritableByteChannel out = Channels.newChannel(outStream);
 		final ByteBuffer buffer = ByteBuffer.allocateDirect(bufferSize);
 
-
 		while ((in.read(buffer)) > 0) {
 			buffer.flip();
 			out.write(buffer);
@@ -270,6 +269,61 @@ public abstract class AbstractSource
 
 		return tempFile;
 	}
+
+    /**
+     * Create a temporary backing file that is a subset of an input stream.
+     * 
+     * @param tmpPrefix Temporary file prefix
+     * @param tmpSuffix Temporary file suffix
+     * @param  bufferSize Buffer size used during transfer to temporary file 
+     * @param inFile Input file
+     * @param offset Starting offset of the subset
+     * @param size   Size of the subset
+     * @return file Temporary backing file
+     * @throws IOException
+     */
+    protected File createTempFile(String tmpPrefix, String tmpSuffix,
+                                  int bufferSize, File inFile, 
+                                  long offset, long size)
+        throws IOException
+    {
+        /* Position input stream to starting offset. */
+        InputStream inStream = new FileInputStream(inFile);
+        inStream.skip(offset);
+        ReadableByteChannel in = Channels.newChannel(inStream);
+        
+        /* Create temporary file. */
+        File tempFile = File.createTempFile(tmpPrefix, tmpSuffix);
+        OutputStream outStream = new FileOutputStream(tempFile);
+        WritableByteChannel out = Channels.newChannel(outStream);
+        
+        ByteBuffer buffer = ByteBuffer.allocateDirect(bufferSize);
+
+        long consumed = 0;
+        int n = 0;
+        while (consumed < size) {
+            long remaining = size - consumed;
+            if (remaining < bufferSize) {
+                buffer = ByteBuffer.allocateDirect((int) remaining);
+            }
+            if ((n = in.read(buffer)) > 0) {
+                buffer.flip();
+                out.write(buffer);
+                buffer.compact(); /* in case write was incomplete. */
+                consumed += n;
+            }
+        }
+        buffer.flip();
+        while (buffer.hasRemaining()) {
+            out.write(buffer);
+        }
+
+        /* Closing the channel implicitly closes the stream. */
+        in.close();
+        out.close();
+
+        return tempFile;
+    }
 
 	/**
 	 * Delete child source unit.
@@ -390,7 +444,7 @@ public abstract class AbstractSource
 	 * Create and get {@link org.jhove2.core.io.Input} for the source unit. Concrete
 	 * classes extending this abstract class must provide an implementation of
 	 * this method if they are are based on parsable input. Classes without
-	 * parsable input (e.g. {@link org.jhove2.core.source.ClumpSource} or
+	 * parsable input (e.g. {@link org.jhove2.core.source.ClumpSr33nource} or
 	 * {@link org.jhove2.core.source.DirectorySource} can let this inherited
 	 * method return null.
 	 * 

@@ -236,11 +236,15 @@ public abstract class AbstractInput implements Input {
 		        buffer = this.buffer.array();
 		    }
 		    else {
-		        buffer = new byte[this.buffer.limit()]; // capacity()];
-		        this.buffer.mark();
+		        buffer = new byte[this.buffer.limit()];
+		        /* Instead of using buffer.mark() and reset(), we explicitly
+		         * save the current the position and reset it after getting
+		         * the next buffer.
+		         */
+		        int mark_position = this.buffer.position();
 		        this.buffer.position(0);
 		        this.buffer.get(buffer);
-		        this.buffer.reset();
+                this.buffer.position(mark_position);
 		    }
 		}
 
