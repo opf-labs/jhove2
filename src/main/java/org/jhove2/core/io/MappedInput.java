@@ -50,13 +50,14 @@ import java.nio.channels.FileChannel;
  * 
  * @author mstrong, slabrams
  */
-public class MappedInput extends AbstractInput {
-
+public class MappedInput
+    extends AbstractInput
+{
 	/** Maximum buffer size, in bytes. */
 	protected int maxBufferSize;
 
 	/**
-	 * Instantiate a new <code>MappedInput</code> object.
+	 * Instantiate a new, big-endian <code>MappedInput</code> object.
 	 * 
 	 * @param file
 	 *            Java {@link java.io.File} underlying the inputable
@@ -68,8 +69,9 @@ public class MappedInput extends AbstractInput {
 	 *             I/O exception instantiating input
 	 */
 	public MappedInput(File file, int maxBufferSize)
-			throws FileNotFoundException, IOException {
-		this(file, maxBufferSize, ByteOrder.LITTLE_ENDIAN);
+		throws FileNotFoundException, IOException
+	{
+		this(file, maxBufferSize, ByteOrder.BIG_ENDIAN);
 	}
 
 	/**
@@ -87,7 +89,8 @@ public class MappedInput extends AbstractInput {
 	 *             I/O exception instantiating input
 	 */
 	public MappedInput(File file, int maxBufferSize, ByteOrder order)
-			throws FileNotFoundException, IOException {
+		throws FileNotFoundException, IOException
+	{
 		super(file, order);
 
 		/* Allocate memory mapped buffer and initialize it.

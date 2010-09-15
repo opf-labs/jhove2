@@ -36,6 +36,7 @@ package org.jhove2.module.format.wave;
 
 import java.io.EOFException;
 import java.io.IOException;
+import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -127,6 +128,7 @@ public class WAVEModule
     {
         long consumed = 0L;
         this.isValid = Validity.True;
+        input.setByteOrder(ByteOrder.LITTLE_ENDIAN);
         input.setPosition(source.getStartingOffset());
                 
         StringBuffer sb = new StringBuffer(4);

@@ -52,7 +52,9 @@ import java.nio.channels.FileChannel;
  * 
  * @author mstrong, slabrams
  */
-public abstract class AbstractInput implements Input {
+public abstract class AbstractInput
+    implements Input
+{
 	/** Buffer to hold data from channel. */
 	protected ByteBuffer buffer;
 
@@ -87,7 +89,7 @@ public abstract class AbstractInput implements Input {
 	protected long fileSize;
 
 	/**
-	 * Instantiate a new <code>AbstractInput</code>.
+	 * Instantiate a new, big-endian <code>AbstractInput</code>.
 	 * 
 	 * @param file
 	 *            Java {@link java.io.File} underlying the inputable
@@ -96,8 +98,10 @@ public abstract class AbstractInput implements Input {
 	 * @throws IOException
 	 *             I/O exception instantiating input
 	 */
-	public AbstractInput(File file) throws FileNotFoundException, IOException {
-		this(file, ByteOrder.LITTLE_ENDIAN);
+	public AbstractInput(File file)
+	    throws FileNotFoundException, IOException
+	{
+		this(file, ByteOrder.BIG_ENDIAN);
 	}
 
 	/**
