@@ -65,7 +65,7 @@ public class TiffEPProfile extends TiffProfile {
     public static final Coverage COVERAGE = Coverage.Inclusive;
 
     /** missing strip tag or tile tag message */
-    private Message missingStripOrTileTagMessage;
+    private Message missingStripOrTileTagsMessage;
 
     /** sensingMethod tag value is invalid message */
     private Message invalidSensingMethodValueMessage;
@@ -422,10 +422,10 @@ public class TiffEPProfile extends TiffProfile {
                         && ifd.hasTileOffsets() && ifd.hasTileByteCounts())) {
             if ((ifd.getEntries().get(TiffIFD.TIFFEPSTANDARDID)) == null) {
                 this.isValid = Validity.False;
-                this.missingStripOrTileTagMessage = new Message(
+                this.missingStripOrTileTagsMessage = new Message(
                         Severity.WARNING,
                         Context.OBJECT,
-                        "org.jhove2.module.format.tiff.profile.TIFFEPProfile.MissingStripOrTileTag",
+                        "org.jhove2.module.format.tiff.profile.TIFFEPProfile.MissingStripOrTileTags",
                         jhove2.getConfigInfo());
             }
         }
@@ -434,9 +434,9 @@ public class TiffEPProfile extends TiffProfile {
     /**
      * @return the missingStripOrTileTagMessage
      */
-    @ReportableProperty(order = 1, value = "Missing strip or tile tag message.")
-    public Message getMissingStripOrTileTag() {
-        return missingStripOrTileTagMessage;
+    @ReportableProperty(order = 1, value = "Missing strip or tile tags message.")
+    public Message getMissingStripOrTileTags() {
+        return missingStripOrTileTagsMessage;
     }
 
     /**
