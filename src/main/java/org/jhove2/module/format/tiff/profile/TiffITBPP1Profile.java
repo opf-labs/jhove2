@@ -159,7 +159,7 @@ public class TiffITBPP1Profile extends TiffItProfile {
             this.invalidBackgroundColorIndicatorMessage = new Message(
                     Severity.WARNING,
                     Context.OBJECT,
-                    "org.jhove2.module.format.tiff.profile.TIFFITProfile.invalidBackgroundColorIndicatorMessage",
+                    "org.jhove2.module.format.tiff.profile.TIFFITProfile.InvalidBackgroundColorIndicatorMessage",
                     jhove2.getConfigInfo());
         }
 
