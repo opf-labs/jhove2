@@ -1,7 +1,8 @@
 /**
  * JHOVE2 - Next-generation architecture for format-aware characterization
  * <p>
- * Copyright (c) 2010 by The Regents of the University of California. All rights reserved.
+ * Copyright (c) 2010 by The Regents of the University of California. All rights
+ * reserved.
  * </p>
  * <p>
  * Redistribution and use in source and binary forms, with or without
@@ -49,13 +50,9 @@ import org.jhove2.module.format.tiff.TiffIFD;
 
 /**
  * @author mstrong
- *
+ * 
  */
-public class TiffItProfile 
-        extends TiffProfile 
-        implements Validator 
-{
-
+public class TiffItProfile extends TiffProfile implements Validator {
 
     /** Invalid Value for samples per pixel message */
     protected Message invalidSPPValueMessage;
@@ -68,7 +65,7 @@ public class TiffItProfile
 
     /** invalid BackgroundColorIndicator message */
     protected Message invalidBackgroundColorIndicatorMessage;
-    
+
     /** invalid NewSubfileType message */
     protected Message invalidNewSubfileTypeMessage;
 
@@ -85,7 +82,7 @@ public class TiffItProfile
         this.missingRequiredTagMessages = new ArrayList<Message>();
     }
 
-    public TiffItProfile(){
+    public TiffItProfile() {
         this(null);
     }
 
@@ -97,72 +94,87 @@ public class TiffItProfile
      * @param IFD
      *            TIFF IFD
      * @see org.jhove2.module.format.tiff.profile.TiffProfile#validateThisProfile
-     *      (org.jhove2.core.JHOVE2,
-     *      org.jhove2.module.format.tiff.TiffIFD)
+     *      (org.jhove2.core.JHOVE2, org.jhove2.module.format.tiff.TiffIFD)
      */
     @Override
-    public void validateThisProfile(JHOVE2 jhove2, TiffIFD ifd) throws JHOVE2Exception 
-    {
+    public void validateThisProfile(JHOVE2 jhove2, TiffIFD ifd)
+            throws JHOVE2Exception {
         /* Check required tags. */
         if (!ifd.hasImageLength()) {
             this.isValid = Validity.False;
-            Object [] args = new Object [] {"ImageLength"};
-            Message msg = new Message(Severity.ERROR, Context.OBJECT,
+            Object[] args = new Object[] { "ImageLength" };
+            Message msg = new Message(
+                    Severity.WARNING,
+                    Context.OBJECT,
                     "org.jhove2.module.format.tiff.profile.TIFFProfile.MissingRequiredTag",
                     args, jhove2.getConfigInfo());
             this.missingRequiredTagMessages.add(msg);
         }
         if (!ifd.hasImageWidth()) {
             this.isValid = Validity.False;
-            Object [] args = new Object [] {"ImageWidth"};
-            Message msg = new Message(Severity.ERROR, Context.OBJECT,
+            Object[] args = new Object[] { "ImageWidth" };
+            Message msg = new Message(
+                    Severity.WARNING,
+                    Context.OBJECT,
                     "org.jhove2.module.format.tiff.profile.TIFFProfile.MissingRequiredTag",
                     args, jhove2.getConfigInfo());
             this.missingRequiredTagMessages.add(msg);
         }
         if (!ifd.hasStripOffsets()) {
             this.isValid = Validity.False;
-            Object [] args = new Object [] {"StripOffsets"};
-            Message msg = new Message(Severity.ERROR, Context.OBJECT,
+            Object[] args = new Object[] { "StripOffsets" };
+            Message msg = new Message(
+                    Severity.WARNING,
+                    Context.OBJECT,
                     "org.jhove2.module.format.tiff.profile.TIFFProfile.MissingRequiredTag",
                     args, jhove2.getConfigInfo());
             this.missingRequiredTagMessages.add(msg);
         }
         if (!ifd.hasRowsPerStrip()) {
             this.isValid = Validity.False;
-            Object [] args = new Object [] {"RowsPerStrip"};
-            Message msg = new Message(Severity.ERROR, Context.OBJECT,
+            Object[] args = new Object[] { "RowsPerStrip" };
+            Message msg = new Message(
+                    Severity.WARNING,
+                    Context.OBJECT,
                     "org.jhove2.module.format.tiff.profile.TIFFProfile.MissingRequiredTag",
                     args, jhove2.getConfigInfo());
             this.missingRequiredTagMessages.add(msg);
         }
         if (!ifd.hasStripByteCounts()) {
             this.isValid = Validity.False;
-            Object [] args = new Object [] {"StripByteCounts"};
-            Message msg = new Message(Severity.ERROR, Context.OBJECT,
+            Object[] args = new Object[] { "StripByteCounts" };
+            Message msg = new Message(
+                    Severity.WARNING,
+                    Context.OBJECT,
                     "org.jhove2.module.format.tiff.profile.TIFFProfile.MissingRequiredTag",
                     args, jhove2.getConfigInfo());
             this.missingRequiredTagMessages.add(msg);
         }
         if (!ifd.hasXResolution()) {
             this.isValid = Validity.False;
-            Object [] args = new Object [] {"XResolution"};
-            Message msg = new Message(Severity.ERROR, Context.OBJECT,
+            Object[] args = new Object[] { "XResolution" };
+            Message msg = new Message(
+                    Severity.WARNING,
+                    Context.OBJECT,
                     "org.jhove2.module.format.tiff.profile.TIFFProfile.MissingRequiredTag",
                     args, jhove2.getConfigInfo());
             this.missingRequiredTagMessages.add(msg);
         }
         if (!ifd.hasYResolution()) {
             this.isValid = Validity.False;
-            Object [] args = new Object [] {"YResolution"};
-            Message msg = new Message(Severity.ERROR, Context.OBJECT,
+            Object[] args = new Object[] { "YResolution" };
+            Message msg = new Message(
+                    Severity.WARNING,
+                    Context.OBJECT,
                     "org.jhove2.module.format.tiff.profile.TIFFProfile.MissingRequiredTag",
                     args, jhove2.getConfigInfo());
             this.missingRequiredTagMessages.add(msg);
         }
     }
-    
-    /** Get TIFF-IT profile validation coverage.
+
+    /**
+     * Get TIFF-IT profile validation coverage.
+     * 
      * @return TIFF-IT profile validation coverage
      */
     @Override
@@ -170,19 +182,23 @@ public class TiffItProfile
         return COVERAGE;
     }
 
-    /** get invalid bits per sample value message
+    /**
+     * get invalid bits per sample value message
      * 
      * @return invalid bitsPerSample value message
      */
+    @Override
     @ReportableProperty(order = 1, value = "Invalid BPS Value Message.")
     public Message getInvalidBPSValueMessage() {
         return invalidBPSValueMessage;
     }
 
-    /** get invalid samples per pixel value message
+    /**
+     * get invalid samples per pixel value message
      * 
      * @return invalid samples per pixel value message
      */
+    @Override
     @ReportableProperty(order = 2, value = "Invalid SPP Value Message.")
     public Message getInvalidSPPValueMessage() {
         return invalidSPPValueMessage;
