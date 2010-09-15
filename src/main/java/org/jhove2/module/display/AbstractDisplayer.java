@@ -44,11 +44,12 @@ import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Properties;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import org.jhove2.annotation.ReportableProperty.PropertyType;
 import org.jhove2.config.ConfigInfo;
 import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2Exception;
@@ -71,16 +72,7 @@ public abstract class AbstractDisplayer
 	public enum DisplayVisibility {
 		Always, IfFalse, IfNegative, IfNonNegative, IfNonPositive, IfNonZero, IfPositive, IfTrue, IfZero, Never
 	}
-	
-	/**
-	 * Show identifiers flag: if true, show identifiers in JSON and Text display
-	 * mode.
-	 */
-	protected boolean showIdentifiers;
 
-	/** Output file pathname, if System.out is not being used. */
-	protected String filePathname;
-	
 	/** Units of measure configured by the user. */
 	private static ConcurrentMap<String, String> units;
 
@@ -95,10 +87,25 @@ public abstract class AbstractDisplayer
     /** Configuration. */
 	protected ConfigInfo configInfo;
 
+    /** Output file pathname, if System.out is not being used. */
+    protected String filePathname;
+    
     /** Indentation flag.  If true, displayed output is indented to indicate
      * subsidiary relationships.
      */
     protected boolean shouldIndent;
+    
+    /** Show descriptive properties flag: if true, show properties. */
+    protected boolean showDescriptiveProperties;
+    
+    /**
+     * Show identifiers flag: if true, show identifiers in JSON and Text display
+     * mode.
+     */
+    protected boolean showIdentifiers;
+    
+    /** Show raw properties flag: if true, show properties. */
+    protected boolean showRawProperties;
     
 	/**
 	 * Instantiate a new <code>AbstractDisplayer</code>.
@@ -114,6 +121,8 @@ public abstract class AbstractDisplayer
 		super(version, date, rights, Scope.Generic);
 		
 		this.setCharacterEncoding(DEFAULT_CHARACTER_ENCODING);
+		this.setShowDescriptiveProperties(DEFAULT_SHOW_DESCRIPTIVE_PROPERTIES);
+		this.setShowRawProperties(DEFAULT_SHOW_RAW_PROPERTIES);
 		this.setShowIdentifiers(DEFAULT_SHOW_IDENTIFIERS);
 	}
 
@@ -246,14 +255,23 @@ public abstract class AbstractDisplayer
 		for (ReportableSourceInfo source : list) {
 			Set<ReportablePropertyInfo> props = source.getProperties();
 			for (ReportablePropertyInfo prop : props) {
+			    /* Check if descriptive or raw properties should be displayed. */
+			    PropertyType type = prop.getPropertyType();
+			    if ((type == PropertyType.Descriptive && !this.showDescriptiveProperties) ||
+			        (type == PropertyType.Raw         && !this.showRawProperties)) {
+			        continue;
+			    }
 				I8R id = prop.getIdentifier();
 				String ident = id.getValue();
+				
+				/* Check if a displayer directive applies. */
 				DisplayVisibility visbility = visibilities.get(ident);
 				if (visbility != null && visbility == DisplayVisibility.Never) {
 					continue;
 				}
-				Method method = prop.getMethod();
-				String propertyName = method.getName();
+				Method method       = prop.getMethod();
+				String methodName   = method.getName();
+				String propertyName = methodName;
 				if (propertyName.indexOf("get") == 0) {
 					propertyName = propertyName.substring(3);
 				}
@@ -263,18 +281,18 @@ public abstract class AbstractDisplayer
 						if (visbility != null) {
 							if (value instanceof Boolean) {
 								boolean b = ((Boolean) value).booleanValue();
-								if ((b && visbility == DisplayVisibility.IfFalse)
-										|| (!b && visbility == DisplayVisibility.IfTrue)) {
+								if (( b && visbility == DisplayVisibility.IfFalse) ||
+								    (!b && visbility == DisplayVisibility.IfTrue)) {
 									continue;
 								}
 							} else if (value instanceof Number) {
 								double d = ((Number) value).doubleValue();
-								if ((d == 0.0 && visbility == DisplayVisibility.IfNonZero)
-										|| (d != 0.0 && visbility == DisplayVisibility.IfZero)
-										|| (d < 0.0 && visbility == DisplayVisibility.IfNonNegative)
-										|| (d > 0.0 && visbility == DisplayVisibility.IfNonPositive)
-										|| (d <= 0.0 && visbility == DisplayVisibility.IfPositive)
-										|| (d >= 0.0 && visbility == DisplayVisibility.IfNegative)) {
+								if ((d == 0.0 && visbility == DisplayVisibility.IfNonZero)     ||
+								    (d != 0.0 && visbility == DisplayVisibility.IfZero)        ||
+									(d <  0.0 && visbility == DisplayVisibility.IfNonNegative) ||
+									(d >  0.0 && visbility == DisplayVisibility.IfNonPositive) ||
+									(d <= 0.0 && visbility == DisplayVisibility.IfPositive)    ||
+									(d >= 0.0 && visbility == DisplayVisibility.IfNegative)) {
 									continue;
 								}
 							}
@@ -315,11 +333,10 @@ public abstract class AbstractDisplayer
 	 * @param order
 	 *            Ordinal position of this property with respect to its
 	 *            enclosing reportable or collection
-	 * @param unit Unit of measure (may be null)
+	 * @param unit Unit of measure (optional, may be null)
 	 */
 	protected void display(PrintStream out, int level, String name,
-			               I8R identifier, Object value, int order,
-			               String unit)
+			               I8R identifier, Object value, int order, String unit)
 		throws JHOVE2Exception
 	{
 		if (value instanceof List<?>) {
@@ -371,28 +388,28 @@ public abstract class AbstractDisplayer
 		}
 	}
 
-	/**
-	 * Display property with no unit of measure.
-	 * 
-	 * @param out
-	 *            Print stream
-	 * @param level
-	 *            Nesting level
-	 * @param name
-	 *            Property name
-	 * @param identifier
-	 *            Property identifier in the JHOVE2 namespace
-	 * @param value
-	 *            Property value
-	 * @param order
-	 *            Ordinal position of this property with respect to its
-	 *            enclosing {@link org.jhove2.core.reportable.Reportable} or collection
-	 */
-	@Override
-	public void displayProperty(PrintStream out, int level, String name,
-			                    I8R identifier, Object value, int order) {
-		this.displayProperty(out, level, name, identifier, value, order, null);
-	}
+    /**
+     * Display property with no unit of measure.
+     * 
+     * @param out
+     *            Print stream
+     * @param level
+     *            Nesting level
+     * @param name
+     *            Property name
+     * @param identifier
+     *            Property identifier in the JHOVE2 namespace
+     * @param value
+     *            Property value
+     * @param order
+     *            Ordinal position of this property with respect to its
+     *            enclosing {@link org.jhove2.core.reportable.Reportable}
+     *            or collection
+     */
+    public void displayProperty(PrintStream out, int level, String name,
+                                I8R identifier, Object value, int order) {
+        this.displayProperty(out, level, name, identifier, value, order, null);
+    }
     
     /** Get the character encoding.
      * @return Character encoding
@@ -447,7 +464,15 @@ public abstract class AbstractDisplayer
 	public boolean getShouldIndent() {
 		return this.shouldIndent;
 	}
-	
+
+    /** Get show descriptive properties flag.
+     * @param Show descriptive properties flag: if true, show properties
+     * @see org.jhove2.module.display.Displayer#getShowDescriptiveProperties()
+     */
+    public boolean getShowDescriptiveProperties() {
+        return this.showDescriptiveProperties;	
+    }
+    
 	/**
 	 * Get show identifiers flag.
 	 * 
@@ -459,7 +484,15 @@ public abstract class AbstractDisplayer
 	public boolean getShowIdentifiers() {
 		return this.showIdentifiers;
 	}
-	
+
+    /** Get show raw properties flag.
+     * @param Show raw properties flag: if true, show properties
+     * @see org.jhove2.module.display.Displayer#getShowRawProperties()
+     */
+    public boolean getShowRawProperties() {
+        return this.showRawProperties;  
+    }
+  
 	/** Utility method to get user-specified units of measure.
 	 * @param displayer TODO
 	 * @return TreeMap mapping from Reportable property I8R to a unit of measure
@@ -498,9 +531,15 @@ public abstract class AbstractDisplayer
 			if (props != null) {
 				Set<String> keys = props.stringPropertyNames();
 				for (String key : keys) {
-					DisplayVisibility value = DisplayVisibility.valueOf(props
-							.getProperty(key));
-					if (value != null) {
+				    /* Remove any trailing white space from the display directive. */
+                    String prop = props.getProperty(key);
+                    int in = prop.indexOf(' ');
+                    if (in > 1) {
+                        prop = prop.substring(0, in);
+                    }
+					DisplayVisibility value =
+					    DisplayVisibility.valueOf(prop);
+					if (value != null && value != DisplayVisibility.Always) {
 						visibilities.put(key, value);
 					}
 				}
@@ -530,18 +569,36 @@ public abstract class AbstractDisplayer
 	public void setFilePathname(String filePathname) {
 		this.filePathname = filePathname;
 	}
-
-	/**
-	 * Set show identifiers flag.
-	 * 
-	 * @param flag
-	 *            If true, show identifiers in JSON and Text display mode
-	 * @see org.jhove2.module.display.Displayer#setShowIdentifiers(boolean)
-	 */
+	   
+    /** Set show descriptive properties flag.
+     * @param flag If true, show descriptive properties
+     * @see org.jhove2.module.display.Displayer#setShowIdentifiers(boolean)
+     */
 	@Override
-	public void setShowIdentifiers(boolean flag) {
-		this.showIdentifiers = flag;
-	}
+    public void setShowDescriptiveProperties(boolean flag) {
+        this.showDescriptiveProperties = flag;
+    }
+
+    /**
+     * Set show identifiers flag.
+     * 
+     * @param flag
+     *            If true, show identifiers in JSON and Text display mode
+     * @see org.jhove2.module.display.Displayer#setShowIdentifiers(boolean)
+     */
+    @Override
+    public void setShowIdentifiers(boolean flag) {
+        this.showIdentifiers = flag;
+    }
+
+    /** Set show raw properties flag.
+     * @param flag If true, show raw properties
+     * @see org.jhove2.module.display.Displayer#setShowIdentifiers(boolean)
+     */
+    @Override
+    public void setShowRawProperties(boolean flag) {
+        this.showRawProperties = flag;
+    }
 
 	/**
 	 * Set indentation flag.  If true, displayed output is indented to indicate

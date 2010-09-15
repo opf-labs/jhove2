@@ -35,15 +35,16 @@
  */
 package org.jhove2.module.display;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 import javax.annotation.Resource;
-
 
 import org.jhove2.app.util.FeatureConfigurationUtil;
 import org.jhove2.config.spring.SpringConfigInfo;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.io.Input;
+import org.jhove2.core.reportable.Reportable;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
 import org.junit.Test;
@@ -81,7 +82,8 @@ public class AbstractDisplayerTest {
 		try {
 			String filePath = utf8DirPath.concat(testFile01);
 			Source source = SourceFactory.getSource(filePath);
-			JHOVE2.characterize(source);
+			Input  input  = source.getInput(JHOVE2);
+			JHOVE2.characterize(source, input);
 			Displayer displayer = SpringConfigInfo.getReportable(Displayer.class,
 					Displayer.DEFAULT_DISPLAYER_TYPE);
 			displayer.setConfigInfo(JHOVE2.getConfigInfo());

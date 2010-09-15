@@ -122,11 +122,11 @@ public class NamespaceInformation extends AbstractReportable {
         ArrayList<String> namespaceWarnings = new ArrayList<String>();
         TreeMap<String, Integer> prefixUses = new TreeMap<String, Integer>();
         for (Namespace namespace : namespaces.values()) {
-            Collection<Namespace.Declaration> declarationList = namespace.declarations.values();
+            Collection<NamespaceDeclaration> declarationList = namespace.declarations.values();
             if (declarationList.size() > 1) {
                 namespaceWarnings.add("Multiple prefixes used for " + namespace.uri);
             }
-            for (Namespace.Declaration declaration : declarationList) {
+            for (NamespaceDeclaration declaration : declarationList) {
                 if (declaration.count > 1) {
                     namespaceWarnings.add("Prefix " + declaration.prefix
                             + " declared multiple times for " + namespace.uri);
@@ -139,11 +139,11 @@ public class NamespaceInformation extends AbstractReportable {
                     prefixUses.put(declaration.prefix, 1);
                 }
             }
-            Collection<Namespace.SchemaLocation> schemaLocationList = namespace.schemaLocations.values();
+            Collection<SchemaLocation> schemaLocationList = namespace.schemaLocations.values();
             if (schemaLocationList.size() > 1) {
                 namespaceWarnings.add("Multiple schema locations used for " + namespace.uri);
             }
-            for (Namespace.SchemaLocation schemaLocation : schemaLocationList) {
+            for (SchemaLocation schemaLocation : schemaLocationList) {
                 if (schemaLocation.count > 1) {
                     namespaceWarnings.add("Schema location "
                             + schemaLocation.location
@@ -225,187 +225,6 @@ public class NamespaceInformation extends AbstractReportable {
     protected void tallySchemaLocation(String uri, String location) {
         getNamespace(uri).tallySchemaLocation(location);
         hasSchemaLocations = true;
-    }
-
-    /**
-     * This class is used to hold information about a <i>namespace
-     * declaration</i> discovered during parsing of an XML instance.
-     * <p>
-     * 
-     * @author rnanders
-     */
-    public class Namespace extends AbstractReportable {
-
-        /** The namespace URI. */
-        protected String uri;
-
-        /** The namespace declarations for this namespace. */
-        protected TreeMap<String, Declaration> declarations = new TreeMap<String, Declaration>();
-
-        /** The schema locations for this namespace. */
-        protected TreeMap<String, SchemaLocation> schemaLocations = new TreeMap<String, SchemaLocation>();
-
-        /**
-         * Instantiates a new namespace object.
-         * 
-         * @param uri
-         *            the uri
-         */
-        protected Namespace(String uri) {
-            this.uri = uri;
-        }
-
-        /**
-         * Gets the namespace URI.
-         * 
-         * @return the namespace URI
-         */
-        @ReportableProperty(order = 1, value = "Namespace URI")
-        public String getURI() {
-            return uri;
-        }
-
-        /**
-         * Gets the namespace declarations.
-         * 
-         * @return the namespace declarations
-         */
-        @ReportableProperty(order = 2, value = "Namespace Declarations")
-        public ArrayList<Declaration> getDeclarations() {
-            return new ArrayList<Declaration>(declarations.values());
-        }
-
-        /**
-         * Gets the schema locations.
-         * 
-         * @return the schema locations
-         */
-        @ReportableProperty(order = 3, value = "Schema Locations")
-        public ArrayList<SchemaLocation> getSchemaLocations() {
-            return new ArrayList<SchemaLocation>(schemaLocations.values());
-        }
-
-        /**
-         * Tally the occurrence of a given prefix declaration.
-         * 
-         * @param prefix
-         *            the namespace prefix
-         */
-        protected void tallyDeclaration(String prefix) {
-            Declaration declaration = declarations.get(prefix);
-            if (declaration == null) {
-                declaration = new Declaration(prefix);
-                declarations.put(prefix, declaration);
-            }
-            declaration.count++;
-        }
-
-        /**
-         * Tally the occurrence of a given schema location.
-         * 
-         * @param location
-         *            the location
-         */
-        protected void tallySchemaLocation(String location) {
-            SchemaLocation schemaLocation = schemaLocations.get(location);
-            if (schemaLocation == null) {
-                schemaLocation = new SchemaLocation(location);
-                schemaLocations.put(location, schemaLocation);
-            }
-            schemaLocation.count++;
-        }
-
-        /**
-         * A nested class to hold information about the declaration for a namespace.
-         */
-        public class Declaration extends AbstractReportable {
-
-            /** The namespace prefix. */
-            protected String prefix;
-
-            /** The number of times this prefix has been declared as bound to the namespace. */
-            protected int count;
-
-            /**
-             * Instantiates a new declaration object.
-             * 
-             * @param prefix
-             *            the prefix
-             */
-            protected Declaration(String prefix) {
-                if (prefix.length() < 1) {
-                    this.prefix = "[default]";
-                }
-                else {
-                    this.prefix = prefix;
-                }
-            }
-
-            /**
-             * Gets the namespace prefix.
-             * 
-             * @return the namespace prefix
-             */
-            @ReportableProperty(order = 1, value = "Namespace Prefix")
-            public String getPrefix() {
-                return prefix;
-            }
-
-            /**
-             * Gets the count of how many times this namespace prefix was
-             * declared.
-             * 
-             * @return the count of namespace prefix declaration.
-             */
-            @ReportableProperty(order = 1, value = "Namespace Prefix Declaration Count")
-            public int getCount() {
-                return count;
-            }
-        }
-
-        /**
-         * A class to hold SchemaLocation information for a namespace.
-         */
-        public class SchemaLocation extends AbstractReportable {
-
-            /** The schema location. */
-            protected String location;
-
-            /** The number of times this schema location has been declared for this namespace. */
-            protected int count;
-
-            /**
-             * Instantiates a new schema location object.
-             * 
-             * @param location
-             *            the location
-             */
-            protected SchemaLocation(String location) {
-                this.location = location;
-            }
-
-            /**
-             * Gets the schema location.
-             * 
-             * @return the schema location
-             */
-            @ReportableProperty(order = 1, value = "Schema Location")
-            public String getLocation() {
-                return location;
-            }
-
-            /**
-             * Gets the count of how many times this schema location was
-             * declared.
-             * 
-             * @return the count of schema location declarations.
-             */
-            @ReportableProperty(order = 1, value = "Schema Location Declaration Count")
-            public int getCount() {
-                return count;
-            }
-        }
-
     }
 
 }

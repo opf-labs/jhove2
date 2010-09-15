@@ -1,17 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:util="http://www.springframework.org/schema/util"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-	   xsi:schemaLocation="http://www.springframework.org/schema/beans 
-           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-           http://www.springframework.org/schema/context
-           http://www.springframework.org/schema/context/spring-context-2.5.xsd
-		   http://www.springframework.org/schema/util 
-		   http://www.springframework.org/schema/util/spring-util-2.0.xsd">
-	
- 	<!-- JSON displayer bean -->
-	<bean id="JSON" class="org.jhove2.module.display.JSONDisplayer"
-	      scope="prototype">
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:util="http://www.springframework.org/schema/util" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+	<!-- JSON displayer bean -->
+	<bean id="JSON" class="org.jhove2.module.display.JSONDisplayer" scope="prototype">
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
@@ -20,12 +10,12 @@
 			</list>
 		</property>
 		<property name="configInfo" ref="ConfigInfo"/>
+		<property name="showDescriptiveProperties" value="true"/>
+		<property name="showIdentifiers" value="false"/>
+		<property name="showRawProperties" value="true"/>
 	</bean>
-	      	
- 	<!-- Text displayer bean -->
-	<bean id="Text" class="org.jhove2.module.display.TextDisplayer"
-	      scope="prototype">
-	    <property name="showIdentifiers" value="false"/>
+	<!-- Text displayer bean -->
+	<bean id="Text" class="org.jhove2.module.display.TextDisplayer" scope="prototype">
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
@@ -34,11 +24,12 @@
 			</list>
 		</property>
 		<property name="configInfo" ref="ConfigInfo"/>
+		<property name="showDescriptiveProperties" value="true"/>
+		<property name="showIdentifiers" value="false"/>
+		<property name="showRawProperties" value="true"/>
 	</bean>
-	      	
- 	<!-- XML displayer bean -->
-	<bean id="XML" class="org.jhove2.module.display.XMLDisplayer"
-	      scope="prototype">
+	<!-- XML displayer bean -->
+	<bean id="XML" class="org.jhove2.module.display.XMLDisplayer" scope="prototype">
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
@@ -48,10 +39,9 @@
 		</property>
 		<property name="configInfo" ref="ConfigInfo"/>
 		<property name="shouldIndent" value="true"/>
+		<property name="showDescriptiveProperties" value="true"/>
+		<property name="showRawProperties" value="true"/>
 	</bean>
-	
 	<!-- Displayer ConfigInfo bean -->
-	<bean id="ConfigInfo" class="org.jhove2.config.spring.SpringConfigInfo"
-		scope="singleton" />
-
-</beans>		   
+	<bean id="ConfigInfo" class="org.jhove2.config.spring.SpringConfigInfo" scope="singleton" />
+</beans>

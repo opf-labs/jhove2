@@ -81,7 +81,6 @@ public class XMLDisplayer
 	public static final String ELEFEATURES = "features";	
 	/** Value element. */
 	public static final String ELEVALUE = "value";
-
 	/** Schema location attribute. */
 	public static final String SCHEMA_LOCATION = ":schemaLocation";
 	/** xmlns attribute. */
@@ -226,7 +225,7 @@ public class XMLDisplayer
 	}
 
 	/**
-	 * Display property.
+	 * Display raw or coded property.
 	 * 
 	 * @param out
 	 *            Print stream
@@ -241,13 +240,14 @@ public class XMLDisplayer
 	 * @param order
 	 *            Ordinal position of this reportable with respect to enclosing
 	 *            {@link org.jhove2.core.reportable.Reportable} or collection
-	 * @param unit Unit of measure (may be null)
+	 * @param unit Unit of measure (optional, may be null)
 	 * @see org.jhove2.module.display.Displayer#displayProperty(java.io.PrintStream,
-	 *      int, java.lang.String, org.jhove2.core.I8R, java.lang.Object, int, java.lang.String)
+	 *      int, java.lang.String, org.jhove2.core.I8R, java.lang.Object, java.lang.Object, int, java.lang.String)
 	 */
 	@Override
 	public void displayProperty(PrintStream out, int level, String name,
-			I8R identifier, Object value, int order, String unit) {
+			                    I8R identifier, Object value, int order,
+			                    String unit) {
 		if (unit == null) {
 			startTag(out, level, ELEFEATURE,
 				     ATTNAME,        name,

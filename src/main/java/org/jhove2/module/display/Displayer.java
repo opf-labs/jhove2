@@ -42,11 +42,11 @@ import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.config.ConfigInfo;
 import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.reportable.Reportable;
 import org.jhove2.module.Module;
-import org.jhove2.config.ConfigInfo;
 
 /**
  * Interface for JHOVE2 displayer modules.
@@ -68,6 +68,12 @@ public interface Displayer
        
 	/** Default Displayer. */
 	public static final String DEFAULT_DISPLAYER_TYPE = "Text";
+	
+	/** Default show descriptive properties flag: show properties. */
+	public static final boolean DEFAULT_SHOW_DESCRIPTIVE_PROPERTIES = true;
+    
+    /** Default show raw properties flag: show properties. */
+    public static final boolean DEFAULT_SHOW_RAW_PROPERTIES = true;
 
     /** Default show identifiers flag: don't show identifiers. */
     public static final boolean DEFAULT_SHOW_IDENTIFIERS = false;
@@ -183,26 +189,6 @@ public interface Displayer
 			                    I8R identifier, int size, int order);
 
 	/**
-	 * Display property with no unit of measure.
-	 * 
-	 * @param out
-	 *            Print stream
-	 * @param level
-	 *            Nesting level
-	 * @param name
-	 *            Property name
-	 * @param identifier
-	 *            Property identifier in the JHOVE2 namespace
-	 * @param value
-	 *            Property value
-	 * @param order
-	 *            Ordinal position of this property with respect to its
-	 *            enclosing {@link org.jhove2.core.reportable.Reportable} or collection
-	 */
-	public void displayProperty(PrintStream out, int level, String name,
-			                    I8R identifier, Object value, int order);
-	
-	/**
 	 * Display property.
 	 * 
 	 * @param out
@@ -217,9 +203,10 @@ public interface Displayer
 	 *            Property value
 	 * @param order
 	 *            Ordinal position of this property with respect to its
-	 *            enclosing {@link org.jhove2.core.reportable.Reportable} or collection
+	 *            enclosing {@link org.jhove2.core.reportable.Reportable}
+	 *            or collection
 	 * @param unit
-	 *            Unit of measure in which the value is expressed
+	 *            Unit of measure (optional, may be null)
 	 */
 	public void displayProperty(PrintStream out, int level, String name,
 			                    I8R identifier, Object value, int order,
@@ -285,9 +272,15 @@ public interface Displayer
 	@ReportableProperty(order = 1, value = "Displayer output file pathname.")
 	public String getFilePathname();
 
+	/** Get show descriptive properties flag.
+	 * @param Show descriptive properties flag: if true, show properties
+	 */
+	@ReportableProperty(order=4, value="Show descriptive identifiers flag; " +
+	        "if true, show descriptive properties")
+	public boolean getShowDescriptiveProperties();
+	
 	/**
 	 * Get show identifiers flag.
-	 * 
 	 * @return Show identifier flag; if true, show identifiers in non-XML
 	 *         display modes
 	 */
@@ -295,13 +288,20 @@ public interface Displayer
 		"if true, show identifiers in non-XML display modes.")
 	public boolean getShowIdentifiers();
 
+    /** Get show raw properties flag.
+     * @param Show raw properties flag: if true, show properties
+     */
+    @ReportableProperty(order=5, value="Show raw identifiers flag; " +
+            "if true, show raw properties")
+    public boolean getShowRawProperties();
+    
     /**
      * Get indentation flag.  If true, displayed output is indented to indicate
      * subsidiarity relationships.
      * 
      * @return Identation flag
      */
-    @ReportableProperty(order = 4, value = "Displayer indentation flag; " +
+    @ReportableProperty(order = 6, value = "Displayer indentation flag; " +
         "if true, output is indented to indicate subsidiarity relationships.")
     public boolean getShouldIndent();
     
@@ -320,6 +320,11 @@ public interface Displayer
 	 * @param filePathname Output file pathname
 	 */
 	public void setFilePathname(String filePathname);
+    
+    /** Set show descriptive properties flag.
+     * @param flag If true, show descriptive properties
+     */
+	public void setShowDescriptiveProperties(boolean flag);
 
 	/**
 	 * Set show identifiers flag.
@@ -328,6 +333,11 @@ public interface Displayer
 	 *            If true, show identifiers in non-XML display modes
 	 */
 	public void setShowIdentifiers(boolean flag);
+    
+    /** Set show raw properties flag.
+     * @param flag If true, show raw properties
+     */
+    public void setShowRawProperties(boolean flag);
 
 	/**
 	 * Set indentation flag.  If true, displayed output is indented to indicate

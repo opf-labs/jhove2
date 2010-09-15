@@ -41,6 +41,7 @@ import java.io.IOException;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.TimerInfo;
+import org.jhove2.core.io.Input;
 import org.jhove2.core.source.AggregateSource;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.Source;
@@ -77,13 +78,14 @@ public class DigesterCommand
 	/**
 	 * If Source is not an aggregate source, and if JHOVE2 framework has been configured
 	 * to calculate digests, calculates message digest
-	 * @param source Source whose digest is to be calculates
-	 * @param jhove2 JHOVE2 framework object
+     * @param jhove2 JHOVE2 framework object
+	 * @param source Source unit whose digest is to be calculates
+	 * @param input  Source input
 	 * @throws JHOVE2Exception
-	 * @see org.jhove2.module.Command#execute(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
+	 * @see org.jhove2.module.Command#execute(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source, org.jhove2.core.io.Input)
 	 */
 	@Override
-	public void execute(JHOVE2 jhove2, Source source) 
+	public void execute(JHOVE2 jhove2, Source source, Input input) 
 		throws JHOVE2Exception
 	{
 		if (!(source instanceof AggregateSource ||
@@ -99,7 +101,7 @@ public class DigesterCommand
 	                    source.addModule(digester);
 	                    
 	                    /* Calculate the digests. */
-						digester.digest(jhove2, source);
+						digester.digest(jhove2, source, input);
 					}
 					finally {
 						timer.setEndTime();

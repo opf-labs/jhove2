@@ -35,11 +35,12 @@
  */
 package org.jhove2.app.util.traverser;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import javax.annotation.Resource;
 
-import org.jhove2.app.util.traverser.ReportableTypeTraverser;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.module.format.sgml.SgmlModule;

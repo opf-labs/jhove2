@@ -35,8 +35,16 @@
  */
 package org.jhove2.core.source;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import javax.annotation.Resource;
 
 import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
@@ -44,12 +52,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import javax.annotation.Resource;
 
 /**
  * @author Sheila Morrissey

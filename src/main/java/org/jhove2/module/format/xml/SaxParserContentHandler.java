@@ -37,12 +37,12 @@
 package org.jhove2.module.format.xml;
 
 import org.xml.sax.Attributes;
-import org.xml.sax.XMLReader;
 import org.xml.sax.ContentHandler;
-import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.Locator;
-import org.xml.sax.ext.Locator2;
 import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.ext.Locator2;
+import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * An instance of this class is registered with the SAX parser to handle events

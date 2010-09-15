@@ -36,17 +36,15 @@
 
 package org.jhove2.module.format;
 
-import java.io.EOFException;
-import java.io.IOException;
 import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.format.Format;
+import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.Module;
-import org.jhove2.module.format.FormatProfile;
 
 /**
  * Interface for JHOVE2 format {@link org.jhove2.module.Module}s that model a
@@ -55,34 +53,19 @@ import org.jhove2.module.format.FormatProfile;
  * @author mstrong, slabrams, smorrissey
  */
 public interface FormatModule
-	extends Module
+	extends Module, Parser
 {
     /**
-     * Invoke the parsing of the source unit and validate all registered profiles.
+     * Invoke the parsing of the {@link org.jhove2.core.source.Source} unit's
+     * {@link org.jhove2.core.io.Input} and validate all registered profiles.
      * @param jhove2 JHOVE2 framework
      * @param source Source to be parsed
+     * @param input  Source input
      * @throws JHOVE2Exception
-     * @see org.jhove2.module.Command#execute(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
+     * @see org.jhove2.module.Command#execute(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source, org.jhove2.core.io.Input)
      */
-    public void invoke(JHOVE2 jhove2, Source source)
+    public void invoke(JHOVE2 jhove2, Source source, Input input)
        throws JHOVE2Exception;
-       
-	/**
-	 * Parse a source unit.
-	 * 
-	 * @param jhove2
-	 *            JHOVE2 framework
-	 * @param source
-	 *            Source unit
-	 * @return Number of bytes consumed
-	 * @throws EOFException
-	 *             If End-of-File is reached reading the source unit
-	 * @throws IOException
-	 *             If an I/O exception is raised reading the source unit
-	 * @throws JHOVE2Exception
-	 */
-	public long parse(JHOVE2 jhove2, Source source)
-		throws EOFException, IOException, JHOVE2Exception;
 	
 	/**
 	 * Get format module format.

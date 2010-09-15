@@ -35,7 +35,11 @@
  */
 package org.jhove2.module.identify;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Set;
 
@@ -46,6 +50,7 @@ import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.format.FormatIdentification;
 import org.jhove2.core.format.FormatIdentification.Confidence;
+import org.jhove2.core.io.Input;
 import org.jhove2.core.source.FileSource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -74,8 +79,6 @@ public class DroidIdentifierTest {
 	private String sampleNoFormatFile;
 	private String sampleNoJhoveIdFile;
 
-
-
 	/**
 	 * Test method for {@link org.jhove2.module.identify.DROIDIdentifier#getPUIDtoJ2ID()}.
 	 */
@@ -96,6 +99,7 @@ public class DroidIdentifierTest {
 	@Test
 	public void testIdentify() {
 		FileSource source = null;
+		Input      input  = null;
 		Set<FormatIdentification> ids = null;
 		String samplesDirPath = null;
 		try {
@@ -107,11 +111,13 @@ public class DroidIdentifierTest {
 		String zipFilePath = samplesDirPath.concat(sampleFile);
 		try {
 			source = new FileSource(zipFilePath);
+			input  = source.getInput(JHOVE2);
 		} catch (Exception e) {
 			fail("Couldn't create source: " + e.getMessage());
 		} 
 		try {
-			ids = dROIDIdentifier.identify(JHOVE2, source);
+		    input.setPosition(0);
+			ids = dROIDIdentifier.identify(JHOVE2, source, input);
 			assertEquals(1, ids.size());
 			for (FormatIdentification fi : ids){
 				assertEquals(Confidence.PositiveSpecific, fi.getConfidence());
@@ -132,7 +138,8 @@ public class DroidIdentifierTest {
 			fail("Couldn't create source: " + e.getMessage());
 		}
 		try {
-			ids = dROIDIdentifier.identify(JHOVE2, source);
+		    input.setPosition(0);
+			ids = dROIDIdentifier.identify(JHOVE2, source, input);
 			assertEquals(0, ids.size());
 			assertNull(dROIDIdentifier.getFileErrorMessage());
 			assertNull(dROIDIdentifier.getFileNotRunMessage());
@@ -150,7 +157,8 @@ public class DroidIdentifierTest {
 			fail("Couldn't create source: " + e.getMessage());
 		}
 		try {
-			ids = dROIDIdentifier.identify(JHOVE2, source);
+		    input.setPosition(0);
+			ids = dROIDIdentifier.identify(JHOVE2, source, input);
 			assertEquals(1, ids.size());
 			for (FormatIdentification fi : ids){
 				assertEquals(Confidence.PositiveSpecific, fi.getConfidence());

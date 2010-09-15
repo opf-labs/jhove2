@@ -78,7 +78,6 @@ extends AbstractApplication
 	/** Caught exception return code. */
 	public static final int EEXCEPTION = -1;
 
-
 	/**
 	 * Instantiate a new <code>JHOVE2CommandLine</code>.
 	 * @throws JHOVE2Exception 
@@ -124,9 +123,9 @@ extends AbstractApplication
 			jhove2.setInvocation(app.getInvocation());
 			jhove2.setInstallation(app.getInstallation());
 
-			/* Create a FileSet source unit out of files and directories
-			 * and URLS specified on the command line,
-			 * or single Source (File, Directory, or URL) if only one specified
+			/* Create a FileSet source unit out of all files, directories, and
+			 * URLS specified on the command line, or a single File, Directory, or
+			 * URL if only one is specified.
 			 */
 			Source source = SourceFactory.getSource(pathNames,
 					jhove2.getInvocation().getTempPrefix(), 
@@ -135,18 +134,25 @@ extends AbstractApplication
 			source.addModule(app);
 			source.addModule(jhove2);
 			source.addModule(app.getDisplayer());
-			/* Characterize the FileSet source unit (and all subsidiary
-			 * source units that it encapsulates.
+			
+			/* Characterize the source unit (and any subsidiary source units
+			 * that it may encapsulate).
 			 */
 			TimerInfo timer = jhove2.getTimerInfo();
 			timer.setStartTime();;
-			
-			jhove2.characterize(source);
-			
+
+            Input input = source.getInput(jhove2);
+            try {
+                jhove2.characterize(source, input);
+            }
+            finally {
+                if (input != null) {
+                    input.close();
+                }
+            }
 			timer.setEndTime();
 
-			/* Display characterization information for the FileSet.
-			 */
+			/* Display characterization information for the source unit. */
 			app.getDisplayer().display(source);
 		}
 		catch (Exception e) {

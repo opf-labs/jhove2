@@ -43,7 +43,6 @@ import java.util.List;
 import java.util.Properties;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.config.ConfigInfo;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
@@ -51,7 +50,9 @@ import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
-import org.jhove2.module.format.Validator.Validity;
+import org.jhove2.core.source.Source;
+import org.jhove2.module.format.Parser;
+import org.jhove2.module.format.Validator;
 import org.jhove2.module.format.utf8.unicode.C0Control;
 import org.jhove2.module.format.utf8.unicode.C1Control;
 import org.jhove2.module.format.utf8.unicode.CodeBlock;
@@ -65,7 +66,11 @@ import org.jhove2.module.format.utf8.unicode.Unicode.EOL;
  */
 public class UTF8Character
 	extends AbstractReportable
+	implements Parser, Validator
 {
+    /** Validation coverage. */
+    public static final Coverage COVERAGE = Coverage.Inclusive;
+    
 	/** Byte Order Mark (BOM). */
 	public static final int BOM = 0xFEFF;
 
@@ -138,8 +143,10 @@ public class UTF8Character
 	 * 
 	 * @param jhove2
 	 *            JHOVE2 framework
+	 * @param source
+	 *            UTF-8 source unit
 	 * @param input
-	 *            Input
+	 *            UTF-8 source input
 	 * @return Number of bytes consumed
 	 * @throws EOFException
 	 *             If End-of-File is reached reading the source unit
@@ -147,9 +154,12 @@ public class UTF8Character
 	 *             If an I/O exception is raised reading the source unit
 	 * @throws JHOVE2Exception
 	 */
-	public long parse(JHOVE2 jhove2, Input input) throws EOFException,
-			IOException, JHOVE2Exception {
+	@Override
+	public long parse(JHOVE2 jhove2, Source source, Input input)
+	    throws EOFException, IOException, JHOVE2Exception
+	{
 		this.isValid = Validity.True;
+		long offset = source.getStartingOffset();
 
 		/* Read the first byte. */
 		long consumed = 0L;
@@ -173,7 +183,8 @@ public class UTF8Character
 		} else if ((0x80 <= b[0] && b[0] <= 0xC1)
 				|| (0xF5 <= b[0] && b[0] <= 0xFF)) {
 			this.isValid = Validity.False;
-			Object[]messageArgs = new Object[]{0, input.getPosition(), b[0]};
+			Object[]messageArgs =
+			    new Object[]{0, input.getPosition()-offset, b[0]};
 			this.invalidByteValueMessages.add(new Message(Severity.ERROR,
 					Context.OBJECT,
 					"org.jhove2.module.format.utf8.UTF8Character.invalidByteValueMessages",
@@ -192,7 +203,7 @@ public class UTF8Character
 			if ((i == 2 && ((this.size == 3 && ((b[0] == 0xE0 && (0x0A > b[i] || b[i] > 0xBF)) || (b[0] == 0xED && (0x80 > b[i] || b[i] > 0x9F)))) || (this.size == 4 && ((b[0] == 0xF0 && (0x90 > b[i] || b[i] > 0xBF)) || (b[0] == 0xF4 && (0x80 > b[i] || b[i] > 0x8F))))))
 					|| (0x80 > b[i] || b[i] > 0xBF)) {
 				this.isValid = Validity.False;
-				Object[]messageArgs = new Object[]{i, input.getPosition(), b[i]};
+				Object[]messageArgs = new Object[]{i, input.getPosition()-offset, b[i]};
 				this.invalidByteValueMessages.add(new Message(Severity.ERROR,
 						Context.OBJECT, 
 						"org.jhove2.module.format.utf8.UTF8Character.invalidByteValueMessages",
@@ -218,16 +229,16 @@ public class UTF8Character
 			this.isBOM = true;
 		}
 
-		this.codeBlock = CodeBlock.getBlock(this.codePoint, getCodeBlockProps(jhove2.getConfigInfo()));
-		this.c0control = C0Control.getControl(this.codePoint, getC0ControlProps(jhove2.getConfigInfo()));
-		this.c1control = C1Control.getControl(this.codePoint, getC1ContolProps(jhove2.getConfigInfo()));
+		this.codeBlock = CodeBlock.getBlock(this.codePoint, jhove2);
+		this.c0control = C0Control.getControl(this.codePoint, jhove2);
+		this.c1control = C1Control.getControl(this.codePoint, jhove2);
 
 		/* Check for code point outside of valid range [Unicode, D76]. */
 		if (this.codePoint < 0x00
 				|| (0xD7FF < this.codePoint && this.codePoint < 0xE000)
 				|| this.codePoint > 0x10FFFF) {
 			this.isValid = Validity.False;
-			Object[] messageArgs = new Object[]{(input.getPosition() - consumed), this.codePoint};
+			Object[] messageArgs = new Object[]{input.getPosition()-consumed-offset, this.codePoint};
 			this.codePointOutOfRangeMessage = new Message(Severity.ERROR,
 					Context.OBJECT, 
 					"org.jhove2.module.format.utf8.UTF8Character.codePointOutOfRangeMessage",
@@ -258,9 +269,14 @@ public class UTF8Character
 	 * 
 	 * @param jhove2
 	 *            JHOVE2 framework
+	 * @param source
+	 *            UTF-8 source unit
+	 * @param input
+	 *            UTF-8 source input
 	 * @return Source unit validity
 	 */
-	public Validity validate(JHOVE2 jhove2) {
+	@Override
+	public Validity validate(JHOVE2 jhove2, Source source, Input input) {
 		return this.isValid;
 	}
 
@@ -340,6 +356,15 @@ public class UTF8Character
 		return this.codePointOutOfRangeMessage;
 	}
 
+    /** Get validation coverage.
+     * @return Validation coverage
+     */
+    @Override
+    public Coverage getCoverage()
+    {
+        return COVERAGE;
+    }
+    
 	/**
 	 * Get invalid byte value message.
 	 * 
@@ -405,42 +430,8 @@ public class UTF8Character
 	 * 
 	 * @return True if a valid ASCII character stream
 	 */
+	@Override
 	public Validity isValid() {
 		return this.isValid;
 	}
-
-	/**
-	 * @return the codeBlockProps
-	 * @throws JHOVE2Exception 
-	 */
-	public static Properties getCodeBlockProps(ConfigInfo config) throws JHOVE2Exception {
-		if (codeBlockProps==null){
-			codeBlockProps = config.getProperties("CodeBlock");
-		}
-		return codeBlockProps;
-	}
-
-
-	/**
-	 * @return the c0ControlProps
-	 */
-	public static Properties getC0ControlProps(ConfigInfo config)  throws JHOVE2Exception {
-		if (c0ControlProps==null){
-			c0ControlProps = config.getProperties("C0Control");
-		}
-		return c0ControlProps;
-	}
-
-
-	/**
-	 * @return the c1ContolProps
-	 */
-	public static Properties getC1ContolProps(ConfigInfo config)  throws JHOVE2Exception {
-		if (c1ContolProps==null){
-			c1ContolProps = config.getProperties("C1Control");
-		}
-		return c1ContolProps;
-	}
-
-
 }

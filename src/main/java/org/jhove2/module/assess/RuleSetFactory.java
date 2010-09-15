@@ -36,6 +36,8 @@
  */
 package org.jhove2.module.assess;
 
+import java.util.List;
+
 import org.jhove2.core.JHOVE2Exception;
 
 /**
@@ -49,16 +51,16 @@ import org.jhove2.core.JHOVE2Exception;
 public interface RuleSetFactory {
 
     /**
-     * Construct a {@link RuleSet} instance containing the {@link Rule} instances
+     * Construct a list of {@link RuleSet} instances containing the {@link Rule} instances
      * to be used for assessment of objects having the specified {@link Class#getName() className}
      * 
      * @param className
      *            The {@link Class#getName() className} (type) of the object for which a corresponding 
      *            RuleSet instance should be returned
-     * @return {@link RuleSet} if one is found for the object type, otherwise null
+     * @return List<{@link RuleSet}> if one is found for the object type, otherwise null
      * @throws JHOVE2Exception
      *
      */
-    public RuleSet getRuleSet(String className) throws JHOVE2Exception;
+    public List<RuleSet> getRuleSetList(String className) throws JHOVE2Exception;
 
 }

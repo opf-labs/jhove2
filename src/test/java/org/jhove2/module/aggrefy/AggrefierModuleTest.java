@@ -35,7 +35,9 @@
  */
 package org.jhove2.module.aggrefy;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -56,9 +58,6 @@ import org.jhove2.core.source.FileSetSource;
 import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
-import org.jhove2.module.aggrefy.AggrefierModule;
-import org.jhove2.module.aggrefy.GlobPathRecognizer;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;

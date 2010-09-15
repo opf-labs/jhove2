@@ -40,6 +40,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 
 /**
@@ -53,7 +54,9 @@ import org.jhove2.core.JHOVE2Exception;
  * @author mstrong, slabrams
  * 
  */
-public class C1Control implements Comparable<C1Control> {
+public class C1Control
+    implements Comparable<C1Control>
+{
 	/** Singleton C1 controls. */
 	protected static Set<C1Control> controls;
 
@@ -75,6 +78,32 @@ public class C1Control implements Comparable<C1Control> {
 		this.codePoint = codePoint;
 		this.mnemonic = mnemonic;
 	}
+	
+	/** Initialize the C1 code points.
+	 * @param jhove2 JHOVE2 framework
+	 * @throws JHOVE2Exception 
+	 */
+	protected static synchronized void init(JHOVE2 jhove2)
+	    throws JHOVE2Exception
+	{
+	    if (controls == null) {
+	        /* Initialize the controls from Java Properties File */
+	        controls = new TreeSet<C1Control>();
+	        Properties props = jhove2.getConfigInfo().getProperties("C1Control");
+	        if (props != null) {
+	            Set<String> set = props.stringPropertyNames();
+	            Iterator<String> iter = set.iterator();
+	            while (iter.hasNext()) {
+	                String mnemonic = iter.next();
+	                String value = props.getProperty(mnemonic);
+
+	                int point = Integer.parseInt(value, 16);
+	                C1Control control = new C1Control(mnemonic, point);
+	                controls.add(control);
+	            }
+	        }
+	    }
+	}
 
 	/**
 	 * Get the C1 control for a code point.
@@ -85,26 +114,10 @@ public class C1Control implements Comparable<C1Control> {
 	 * @return Control, or null if the code point is not a C1 control
 	 * @throws JHOVE2Exception
 	 */
-	public static synchronized C1Control getControl(int codePoint, Properties props)
-			throws JHOVE2Exception {
-		if (controls == null) {
-			/* Initialize the controls from Java Properties File */
-			controls = new TreeSet<C1Control>();
-//			Properties props = SpringConfigInfo.getProperties("C1Control");
-			if (props != null) {
-				Set<String> set = props.stringPropertyNames();
-				Iterator<String> iter = set.iterator();
-				while (iter.hasNext()) {
-					String mnemonic = iter.next();
-					String value = props.getProperty(mnemonic);
-
-					int point = Integer.parseInt(value, 16);
-					C1Control control = new C1Control(mnemonic, point);
-					controls.add(control);
-				}
-			}
-		}
-
+	public static synchronized C1Control getControl(int codePoint, JHOVE2 jhove2)
+	    throws JHOVE2Exception
+	{
+	    init(jhove2);
 		C1Control control = null;
 		Iterator<C1Control> iter = controls.iterator();
 		while (iter.hasNext()) {
@@ -120,10 +133,14 @@ public class C1Control implements Comparable<C1Control> {
 
 	/**
 	 * Get the C1 controls.
-	 * 
+	 * @param jhove2 JHOVE2 framework
 	 * @return C1 controls
+	 * @throws JHOVE2Exception 
 	 */
-	public static Set<C1Control> getControls() {
+	public static Set<C1Control> getControls(JHOVE2 jhove2)
+	    throws JHOVE2Exception
+	{
+	    init(jhove2);
 		return controls;
 	}
 

@@ -36,6 +36,7 @@
 
 package org.jhove2.core.io;
 
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -72,6 +73,9 @@ public abstract class AbstractInput implements Input {
 
 	/** InputStream underlying the inputable. */
 	protected InputStream stream;
+	
+	/** Buffer type. */
+	protected Type bufferType;
 
 	/**
 	 * Current position relative to the beginning of the inputable, as a byte
@@ -109,15 +113,18 @@ public abstract class AbstractInput implements Input {
 	 *             I/O exception instantiating input
 	 */
 	public AbstractInput(File file, ByteOrder order)
-			throws FileNotFoundException, IOException {
-		this.file = file;
-		this.byteOrder = order;
-		this.stream = (InputStream) new FileInputStream(file);
-		this.fileSize = file.length();
-		this.inputablePosition = 0L;
+		throws FileNotFoundException, IOException
+	{
+	    if (!file.isDirectory()) {
+	        this.file = file;
+	        this.byteOrder = order;   
+	        this.stream = (InputStream) new FileInputStream(file);
+	        this.fileSize = file.length();
+	        this.inputablePosition = 0L;
 
-		RandomAccessFile raf = new RandomAccessFile(file, "r");
-		this.channel = raf.getChannel();
+	        RandomAccessFile raf = new RandomAccessFile(file, "r");
+	        this.channel = raf.getChannel();
+	    }
 	}
 
 	/**
@@ -126,9 +133,15 @@ public abstract class AbstractInput implements Input {
 	 * @see org.jhove2.core.io.Input#close()
 	 */
 	@Override
-	public void close() throws IOException {
-		this.stream.close();
-		this.channel.close();
+	public void close()
+	    throws IOException
+	{
+	    if (this.stream != null) {
+	        this.stream.close();
+	    }
+	    if (this.channel != null) {
+	        this.channel.close();
+	    }
 	}
 
 	/**
@@ -149,6 +162,14 @@ public abstract class AbstractInput implements Input {
 	 */
 	public ByteOrder getByteOrder() {
 		return this.byteOrder;
+	}
+	
+	/** Get buffer type.
+	 * @return Buffer type
+	 */
+	@Override
+	public Type getBufferType() {
+	    return this.bufferType;
 	}
 
 	/**
@@ -209,15 +230,22 @@ public abstract class AbstractInput implements Input {
 	 */
 	@Override
 	public byte[] getByteArray() {
-		byte[] buffer;
-		if (this.buffer.hasArray())
-			buffer = this.buffer.array();
-		else {
-			buffer = new byte[this.buffer.limit()]; // capacity()];
-			this.buffer.mark();
-			this.buffer.position(0);
-			this.buffer.get(buffer);
-			this.buffer.reset();
+		byte[] buffer = null;
+		if (this.buffer != null) {
+		    if (this.buffer.hasArray()) {
+		        buffer = this.buffer.array();
+		    }
+		    else {
+		        buffer = new byte[this.buffer.limit()];
+		        /* Instead of using buffer.mark() and reset(), we explicitly
+		         * save the current the position and reset it after getting
+		         * the next buffer.
+		         */
+		        int mark_position = this.buffer.position();
+		        this.buffer.position(0);
+		        this.buffer.get(buffer);
+                this.buffer.position(mark_position);
+		    }
 		}
 
 		return buffer;
@@ -239,14 +267,16 @@ public abstract class AbstractInput implements Input {
 	 * @throws IOException
 	 */
 	protected long getNextBuffer() throws IOException {
-		this.buffer.clear();
-		int n = this.channel.read(this.buffer);
-		this.buffer.flip();
-		this.bufferOffset = this.channel.position() - n;
-		this.bufferSize = n;
-		this.inputablePosition = this.bufferOffset + this.buffer.position();
-
-		return this.bufferSize;
+	    if (this.buffer != null && this.channel != null) {
+	        this.buffer.clear();
+	        int n = this.channel.read(this.buffer);
+	        this.buffer.flip();
+	        this.bufferOffset = this.channel.position() - n;
+	        this.bufferSize = n;
+	        this.inputablePosition = this.bufferOffset + this.buffer.position();
+	        return this.bufferSize;
+	    }
+	    return 0L;
 	}
 
 	/**
@@ -269,7 +299,60 @@ public abstract class AbstractInput implements Input {
 	public long getSize() {
 		return this.fileSize;
 	}
+    
+    /** Get UTF-16BE Unicode character at the current position.  This
+     * implicitly advances the current position by two bytes.
+     * @return Character at the current position
+     * @see org.jhove2.core.io.Input#readChar()
+     */
+	@Override
+    public char readChar()
+	    throws EOFException, IOException
+	{
+	    char ch;
+        int charValue = 0;
+        int remaining = this.buffer.limit() - this.buffer.position();
+        if (remaining < 2) {
+            for (int i = 0; i < remaining; i++) {
+                /*
+                 * LITTLE_ENDIAN - shift byte value then add to accumlative
+                 * value
+                 */
+                if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
+                    int in = (((int) this.buffer.get() & 0xff));
+                    in <<= (8 * i);
+                    charValue += in;
+                }
+                else {
+                    /* BIG_ENDIAN - shift accumulative value then add byte value */
+                    charValue <<= 8;
+                    charValue += (((int) this.buffer.get() & 0xff));
+                }
+            }
+            if (getNextBuffer() == EOF) {
+                throw new EOFException();
+            }
+            for (int i = remaining; i < 2; i++) {
+                if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
+                    int in = (((int) this.buffer.get() & 0xff));
+                    in <<= (8 * i);
+                    charValue += in;
+                }
+                else {
+                    charValue <<= 8;
+                    charValue += (((int) this.buffer.get() & 0xff));
+                }
+            }
+            ch = (char) charValue;
+        }
+        else {
+            ch = this.buffer.getChar();
+        }
+        this.inputablePosition += 2L;
 
+        return ch;
+    }
+    
 	/**
 	 * Get signed byte at the current position. This implicitly advances the
 	 * current position by one byte.
@@ -381,7 +464,7 @@ public abstract class AbstractInput implements Input {
 				}
 			}
 		} else {
-			in = this.buffer.getShort();
+			in = this.buffer.getLong();
 		}
 		this.inputablePosition += 8L;
 
@@ -600,4 +683,11 @@ public abstract class AbstractInput implements Input {
 
 	}
 
+	/** Set buffer type.
+	 * @param type Buffer type
+	 */
+	@Override
+	public void setBufferType(Type type) {
+	    this.bufferType = type;
+	}
 }

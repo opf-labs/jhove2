@@ -1,0 +1,13 @@
+from http://thematicmapping.org/downloads/world_borders.php
+
+Provided by Bjorn Sandvik, thematicmapping.org
+
+If you have any comments about this dataset, please post them on this page.
+
+Use this dataset with care, as several of the borders are disputed.
+
+The original shapefile (world_borders.zip, 3.2 MB) was downloaded 
+from the Mapping Hacks website: http://www.mappinghacks.com/data/
+
+The dataset is available under a Creative Commons Attribution-Share Alike License. 
+If you use this dataset, please provide a link to this website.

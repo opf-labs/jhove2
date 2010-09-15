@@ -49,7 +49,6 @@ import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.I8R.Namespace;
 import org.jhove2.core.format.Format;
 import org.jhove2.core.reportable.Reportable;
-
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;

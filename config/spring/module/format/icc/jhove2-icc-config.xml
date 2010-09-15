@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:util="http://www.springframework.org/schema/util"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans 
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-2.5.xsd
+		   http://www.springframework.org/schema/util 
+		   http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+	
+	<!-- ICC format bean -->
+	<bean id="ICCFormat" class="org.jhove2.core.format.Format" scope="singleton">
+		<constructor-arg type="java.lang.String" value="ICC colour profile"/>
+		<constructor-arg ref="ICCIdentifier"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Type" value="Format"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity" value="Unambiguous"/>
+		<property name="aliasIdentifiers">
+			<set value-type="org.jhove2.core.I8R">
+				<ref bean="ISO15076Identifier"/>
+				<ref bean="PUIDxfmt10002" />
+			</set>
+		</property>
+		<property name="aliasNames">
+			<set>
+				<value>ICC colour profile</value>
+			</set>
+		</property>
+		<property name="version" value="4.2.0.0"/>
+		<property name="specifications">
+			<list value-type="org.jhove2.core.Document">
+				<ref bean="ICC1Specification"/>
+				<ref bean="ISO15076Standard"/>
+			</list>
+		</property>
+	</bean>		
+	
+	<!-- ICC identifier bean -->  
+	<bean id="ICCIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="http://jhove2.org/terms/format/icc"/>
+	</bean>
+	
+	<!-- DROID PUID bean -->
+	<bean id="PUIDxfmt10002" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="x-fmt/10002"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
+	</bean>
+
+	<!-- ICC specification bean -->
+	<bean id="ICC1Specification" class="org.jhove2.core.Document" scope="singleton">
+		<constructor-arg type="java.lang.String" value="Image technology colour management --
+			Architecture, profile format, and data structure"/>
+		<constructor-arg type="org.jhove2.core.Document$Type" value="Specification"/>
+		<constructor-arg type="org.jhove2.core.Document$Intention" value="Authoritative"/>
+		<property name="date" value="2009-05-22"/>
+		<property name="edition" value="Version 4.2.0.0"/>
+		<property name="identifiers">
+			<list value-type="org.jhove2.core.I8R">
+				<ref bean="ICC1Identifier"/>
+			</list>
+		</property>
+		<property name="publisher" value="International Color Consortium"/>
+		<property name="note" value="With errata incorporated, 5/22/2006"/>
+	</bean>	
+	
+	<!-- ICC.1 identifier bean  -->
+	<bean id="ICC1Identifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="ICC.1:2004-10"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="ISO"/>
+	</bean>
+	
+	<!-- ISO 15076 standard bean -->
+	<bean id="ISO15076Standard" class="org.jhove2.core.Document" scope="singleton">
+		<constructor-arg type="java.lang.String" value="Image technology colour management --
+			Architecture, profile format and data structure -- Part 1: Based on ICC.1:2004-10"/>
+		<constructor-arg type="org.jhove2.core.Document$Type" value="Standard"/>
+		<constructor-arg type="org.jhove2.core.Document$Intention" value="Informative"/>
+		<property name="date" value="2005"/>
+		<property name="identifiers">
+			<list value-type="org.jhove2.core.I8R">
+				<ref bean="ISO15076Identifier"/>
+			</list>
+		</property>
+		<property name="publisher" value="ISO"/>
+	</bean>	
+	
+	<!-- ISO 15076 identifier bean  -->
+	<bean id="ISO15076Identifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="ISO 15076-1:2005"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="ISO"/>
+	</bean>
+			
+	<!-- ICC module bean -->
+	<bean id="ICCModule" class="org.jhove2.module.format.icc.ICCModule"
+	      scope="prototype">
+	    <constructor-arg ref="ICCFormat"/>
+	    <property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+			</list>
+		</property>
+			<property name="profiles">
+			<list value-type="org.jhove2.module.format.FormatProfile">
+				<ref bean="NComponentLUTBasedInputProfile"/>
+				<ref bean="ThreeComponentMatrixBasedInputProfile"/>
+				<ref bean="MonochromeInputProfile"/>
+				<ref bean="NComponentLUTBasedDisplayProfile"/>
+				<ref bean="ThreeComponentMatrixBasedDisplayProfile"/>
+				<ref bean="MonochromeDisplayProfile"/>
+				<ref bean="NComponentLUTBasedOutputProfile"/>
+				<ref bean="MonochromeOutputProfile"/>
+				<ref bean="DeviceLinkProfile"/>
+				<ref bean="ColorSpaceConversionProfile"/>
+				<ref bean="AbstractProfile"/>
+				<ref bean="NamedColourProfile"/>
+			</list>
+		</property>
+    </bean>
+	  
+  	<!-- N-component LUT-based input profile bean -->
+	<bean id="NComponentLUTBasedInputProfile" class="org.jhove2.module.format.icc.profile.NComponentLUTBasedInputProfile"
+	      scope="prototype">
+	    <constructor-arg ref="NComponentLUTBasedInputProfileFormat"/>
+	    <property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+			</list>
+		</property>
+	</bean>
+	<!-- N-component LUT-based input profile format bean -->
+	<bean id="NComponentLUTBasedInputProfileFormat" class="org.jhove2.core.format.Format" scope="singleton">
+		<constructor-arg type="java.lang.String" value="N-component LUT-based input profile"/>
+		<constructor-arg ref="NComponentLUTBasedInputProfileIdentifier"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Type" value="Format"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity" value="Unambiguous"/>
+	</bean>		
+	<!-- N-component LUT-based input profile identifier bean -->  
+	<bean id="NComponentLUTBasedInputProfileIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="http://jhove2.org/terms/format/icc/n-component-lut-based-input-profile"/>
+	</bean>
+	  
+  	<!-- Three-component matrix-based input profile bean -->
+	<bean id="ThreeComponentMatrixBasedInputProfile" class="org.jhove2.module.format.icc.profile.ThreeComponentMatrixBasedInputProfile"
+	      scope="prototype">
+	    <constructor-arg ref="ThreeComponentMatrixBasedInputProfileFormat"/>
+	    <property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+			</list>
+		</property>
+	</bean>
+	<!-- Three-component matrix-based input profile format bean -->
+	<bean id="ThreeComponentMatrixBasedInputProfileFormat" class="org.jhove2.core.format.Format" scope="singleton">
+		<constructor-arg type="java.lang.String" value="Three-component matrix-based input profile"/>
+		<constructor-arg ref="ThreeComponentMatrixBasedInputProfileIdentifier"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Type" value="Format"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity" value="Unambiguous"/>
+	</bean>		
+	<!-- Three-component matrix-based input profile identifier bean -->  
+	<bean id="ThreeComponentMatrixBasedInputProfileIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="http://jhove2.org/terms/format/icc/three-component-matrix-based-input-profile"/>
+	</bean>
+		  
+  	<!-- Monochrome input profile bean -->
+	<bean id="MonochromeInputProfile" class="org.jhove2.module.format.icc.profile.MonochromeInputProfile"
+	      scope="prototype">
+	    <constructor-arg ref="MonochromeInputProfileFormat"/>
+	    <property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+			</list>
+		</property>
+	</bean>
+		<!-- Monochrome input profile format bean -->
+	<bean id="MonochromeInputProfileFormat" class="org.jhove2.core.format.Format" scope="singleton">
+		<constructor-arg type="java.lang.String" value="Monochrome input profile"/>
+		<constructor-arg ref="MonochromeInputProfileIdentifier"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Type" value="Format"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity" value="Unambiguous"/>
+	</bean>		
+	<!-- Monochrome input profile identifier bean -->  
+	<bean id="MonochromeInputProfileIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="http://jhove2.org/terms/format/icc/three-component-matrix-based-input-profile"/>
+	</bean>
+		  	  	  
+  	<!-- N-component LUT-based display profile bean -->
+	<bean id="NComponentLUTBasedDisplayProfile" class="org.jhove2.module.format.icc.profile.NComponentLUTBasedDisplayProfile"
+	      scope="prototype">
+	    <constructor-arg ref="NComponentLUTBasedDisplayProfileFormat"/>
+	    <property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+			</list>
+		</property>
+	</bean>
+	<!-- N-component LUT-based display profile format bean -->
+	<bean id="NComponentLUTBasedDisplayProfileFormat" class="org.jhove2.core.format.Format" scope="singleton">
+		<constructor-arg type="java.lang.String" value="N-component LUT-based display profile"/>
+		<constructor-arg ref="NComponentLUTBasedDisplayProfileIdentifier"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Type" value="Format"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity" value="Unambiguous"/>
+	</bean>		
+	<!-- N-component LUT-based display profile identifier bean -->  
+	<bean id="NComponentLUTBasedDisplayProfileIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="http://jhove2.org/terms/format/icc/n-component-lut-based-input-profile"/>
+	</bean>
+	  
+  	<!-- Three-component matrix-based display profile bean -->
+	<bean id="ThreeComponentMatrixBasedDisplayProfile" class="org.jhove2.module.format.icc.profile.ThreeComponentMatrixBasedDisplayProfile"
+	      scope="prototype">
+	    <constructor-arg ref="ThreeComponentMatrixBasedDisplayProfileFormat"/>
+	    <property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+			</list>
+		</property>
+	</bean>
+	<!-- Three-component matrix-based display profile format bean -->
+	<bean id="ThreeComponentMatrixBasedDisplayProfileFormat" class="org.jhove2.core.format.Format" scope="singleton">
+		<constructor-arg type="java.lang.String" value="Three-component matrix-based display profile"/>
+		<constructor-arg ref="ThreeComponentMatrixBasedDisplayProfileIdentifier"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Type" value="Format"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity" value="Unambiguous"/>
+	</bean>		
+	<!-- Three-component matrix-based display profile identifier bean -->  
+	<bean id="ThreeComponentMatrixBasedDisplayProfileIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="http://jhove2.org/terms/format/icc/three-component-matrix-based-input-profile"/>
+	</bean>
+		  
+  	<!-- Monochrome display profile bean -->
+	<bean id="MonochromeDisplayProfile" class="org.jhove2.module.format.icc.profile.MonochromeDisplayProfile"
+	      scope="prototype">
+	    <constructor-arg ref="MonochromeDisplayProfileFormat"/>
+	    <property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+			</list>
+		</property>
+	</bean>
+		<!-- Monochrome display profile format bean -->
+	<bean id="MonochromeDisplayProfileFormat" class="org.jhove2.core.format.Format" scope="singleton">
+		<constructor-arg type="java.lang.String" value="Monochrome display profile"/>
+		<constructor-arg ref="MonochromeDisplayProfileIdentifier"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Type" value="Format"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity" value="Unambiguous"/>
+	</bean>		
+	<!-- Monochrome display profile identifier bean -->  
+	<bean id="MonochromeDisplayProfileIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="http://jhove2.org/terms/format/icc/three-component-matrix-based-input-profile"/>
+	</bean>
+		  
+  	<!-- N-component LUT-based output profile bean -->
+	<bean id="NComponentLUTBasedOutputProfile" class="org.jhove2.module.format.icc.profile.NComponentLUTBasedOutputProfile"
+	      scope="prototype">
+	    <constructor-arg ref="NComponentLUTBasedOutputProfileFormat"/>
+	    <property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+			</list>
+		</property>
+	</bean>
+	<!-- N-component LUT-based output profile format bean -->
+	<bean id="NComponentLUTBasedOutputProfileFormat" class="org.jhove2.core.format.Format" scope="singleton">
+		<constructor-arg type="java.lang.String" value="N-component LUT-based output profile"/>
+		<constructor-arg ref="NComponentLUTBasedOutputProfileIdentifier"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Type" value="Format"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity" value="Unambiguous"/>
+	</bean>		
+	<!-- N-component LUT-based output profile identifier bean -->  
+	<bean id="NComponentLUTBasedOutputProfileIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="http://jhove2.org/terms/format/icc/n-component-lut-based-output-profile"/>
+	</bean>
+	
+  	<!-- Monochrome output profile bean -->
+	<bean id="MonochromeOutputProfile" class="org.jhove2.module.format.icc.profile.MonochromeOutputProfile"
+	      scope="prototype">
+	    <constructor-arg ref="MonochromeOutputProfileFormat"/>
+	    <property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+			</list>
+		</property>
+	</bean>
+		<!-- Monochrome output profile format bean -->
+	<bean id="MonochromeOutputProfileFormat" class="org.jhove2.core.format.Format" scope="singleton">
+		<constructor-arg type="java.lang.String" value="Monochrome output profile"/>
+		<constructor-arg ref="MonochromeOutputProfileIdentifier"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Type" value="Format"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity" value="Unambiguous"/>
+	</bean>		
+	<!-- Monochrome output profile identifier bean -->  
+	<bean id="MonochromeOutputProfileIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="http://jhove2.org/terms/format/icc/three-component-matrix-based-output-profile"/>
+	</bean>
+		  
+  	<!-- DeviceLink profile bean -->
+	<bean id="DeviceLinkProfile" class="org.jhove2.module.format.icc.profile.DeviceLinkProfile"
+	      scope="prototype">
+	    <constructor-arg ref="DeviceLinkProfileFormat"/>
+	    <property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+			</list>
+		</property>
+	</bean>
+	<!-- DeviceLink profile format bean -->
+	<bean id="DeviceLinkProfileFormat" class="org.jhove2.core.format.Format" scope="singleton">
+		<constructor-arg type="java.lang.String" value="DeviceLink profile"/>
+		<constructor-arg ref="DeviceLinkProfileIdentifier"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Type" value="Format"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity" value="Unambiguous"/>
+	</bean>		
+	<!-- DeviceLink profile identifier bean -->  
+	<bean id="DeviceLinkProfileIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="http://jhove2.org/terms/format/icc/devicelink-profile"/>
+	</bean>		  
+		  	  
+  	<!-- ColorSpace conversion profile bean -->
+	<bean id="ColorSpaceConversionProfile" class="org.jhove2.module.format.icc.profile.ColorSpaceConversionProfile"
+	      scope="prototype">
+	    <constructor-arg ref="ColorSpaceConversionProfileFormat"/>
+	    <property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+			</list>
+		</property>
+	</bean>
+	<!-- ColorSpace conversion profile format bean -->
+	<bean id="ColorSpaceConversionProfileFormat" class="org.jhove2.core.format.Format" scope="singleton">
+		<constructor-arg type="java.lang.String" value="ColorSpace conversion profile"/>
+		<constructor-arg ref="ColorSpaceConversionProfileIdentifier"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Type" value="Format"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity" value="Unambiguous"/>
+	</bean>		
+	<!-- ColorSpace conversion profile identifier bean -->  
+	<bean id="ColorSpaceConversionProfileIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="http://jhove2.org/terms/format/icc/colorspace-conversion-profile"/>
+	</bean>
+		  
+  	<!-- Abstract profile bean -->
+	<bean id="AbstractProfile" class="org.jhove2.module.format.icc.profile.AbstractProfile"
+	      scope="prototype">
+	    <constructor-arg ref="AbstractProfileFormat"/>
+	    <property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+			</list>
+		</property>
+	</bean>
+	<!-- Abstract profile format bean -->
+	<bean id="AbstractProfileFormat" class="org.jhove2.core.format.Format" scope="singleton">
+		<constructor-arg type="java.lang.String" value="Abstract profile"/>
+		<constructor-arg ref="AbstractProfileIdentifier"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Type" value="Format"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity" value="Unambiguous"/>
+	</bean>		
+	<!-- Abstract profile identifier bean -->  
+	<bean id="AbstractProfileIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="http://jhove2.org/terms/format/icc/abstract-profile"/>
+	</bean>
+		   	  
+  	<!-- Named colour profile bean -->
+	<bean id="NamedColourProfile" class="org.jhove2.module.format.icc.profile.NamedColourProfile"
+	      scope="prototype">
+	    <constructor-arg ref="NamedColourProfileFormat"/>
+	    <property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+			</list>
+		</property>
+	</bean>
+	<!-- Named colour profile format bean -->
+	<bean id="NamedColourProfileFormat" class="org.jhove2.core.format.Format" scope="singleton">
+		<constructor-arg type="java.lang.String" value="Named colour profile"/>
+		<constructor-arg ref="NamedColourProfileIdentifier"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Type" value="Format"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity" value="Unambiguous"/>
+	</bean>		
+	<!-- Named colour profile identifier bean -->  
+	<bean id="NamedColourProfileIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+	    <constructor-arg type="java.lang.String" value="http://jhove2.org/terms/format/icc/named-colour-profile"/>
+	</bean>
+		  
+	<!-- ICC CMM signatures properties bean --> 
+	<bean id="CMMSignatures" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="cmm-signatures"/>
+	</bean>      
+   			    
+	<!-- ICC technology signatures properties bean --> 
+	<bean id="ColorantEncodins" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="colorant-encodings"/>
+	</bean> 
+	 
+	<!-- ICC data colour spaces properties bean --> 
+	<bean id="ColourSpaces" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="colour-spaces"/>
+	</bean>    
+		
+	<!-- ICC device attributes properties bean --> 
+	<bean id="DeviceAttributes" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="device-attributes"/>
+	</bean> 
+	    			    
+	<!-- ICC parametric curve type function types properties bean --> 
+	<bean id="FunctionTypes" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="function-types"/>
+	</bean> 
+	   		    			    
+	<!-- ICC measurement flares signatures properties bean --> 
+	<bean id="MeasurementFlares" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="measurement-flares"/>
+	</bean> 
+	    	    			    
+	<!-- ICC measurement geometries signatures properties bean --> 
+	<bean id="MeasurementGeometries" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="measurement-geometries"/>
+	</bean> 
+	    	    	    			    
+	<!-- ICC perceptual rendering intent gamuts properties bean --> 
+	<bean id="PerceptualRenderingIntents" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="perceptual-rendering-intents"/>
+	</bean> 
+	
+	<!-- ICC preferred CMM type properties bean -->
+	<bean id="PreferredCMM" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="cmm-signatures"/>
+	</bean>
+
+	<!-- ICC primary platforms properties bean --> 
+	<bean id="PrimaryPlatforms" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="primary-platforms"/>
+	</bean>    
+
+	<!-- ICC profile classes properties bean --> 
+	<bean id="ProfileClasses" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="profile-classes"/>
+	</bean>
+		
+	<!-- ICC profile flags properties bean --> 
+	<bean id="ProfileFlags" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="profile-flags"/>
+	</bean> 
+	    
+	<!-- ICC rendering intents properties bean --> 
+	<bean id="RenderingIntents" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="rendering-intents"/>
+	</bean> 
+		    	    	    	    			    
+	<!-- ICC saturation rendering intent gamuts properties bean --> 
+	<bean id="SaturationRenderingIntents" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="saturation-rendering-intents"/>
+	</bean> 
+			    
+	<!-- ICC standard illuminant signatures properties bean --> 
+	<bean id="StandardIlluminants" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="standard-illuminants"/>
+	</bean> 
+	    	    			    
+	<!-- ICC standard observes signatures properties bean --> 
+	<bean id="StandardObservers" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="standard-observers"/>
+	</bean> 
+	  
+	<!-- ICC tags properties bean --> 
+	<bean id="Tags" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="tags"/>
+	</bean> 
+			    
+	<!-- ICC technology signatures properties bean --> 
+	<bean id="TechnologySignatures" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="technology-signatures"/>
+	</bean> 
+	    
+</beans>

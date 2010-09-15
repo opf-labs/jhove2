@@ -40,6 +40,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.annotation.ReportableProperty.PropertyType;
 import org.jhove2.core.I8R;
 
 /**
@@ -73,6 +74,12 @@ public class ReportablePropertyInfo {
 	 * <code>ref</code> argument.
 	 */
 	protected String reference;
+	
+	/** Property type, as defined by the
+	 * {@link @org.jhove2.annotation.ReportableProperty} annotation
+	 * <code>type</code> argument.
+	 */
+	protected PropertyType type;
 
 	/**
 	 * Instantiate a new <code>ReportablePropertyInfo</code>.
@@ -87,14 +94,19 @@ public class ReportablePropertyInfo {
 	 * @param reference
 	 *            Property reference, as defined by the
 	 *            {@link org.jhove2.annotation.ReportableProperty} annotation
+	 * @param type
+	 *            Property type, as defined by the
+	 *            {@link org.jhove2.annotation.ReportableProperty} annotation
 	 */
 	public ReportablePropertyInfo(I8R identifier, Method method,
-			                      String description, String reference) {
-		this.identifier = identifier;
-		this.method = method;
+			                      String description, String reference,
+			                      PropertyType type) {
+		this.identifier  = identifier;
+		this.method      = method;
 		this.genericType = method.getGenericReturnType();
 		this.description = description;
-		this.reference = reference;
+		this.reference   = reference;
+		this.type        = type;
 	}
 
 	/**
@@ -110,6 +122,16 @@ public class ReportablePropertyInfo {
 		}
 		return this.description;
 	}
+
+    /**
+     * Get property generic scope, as defined by the generic return scope of the
+     * method. For collection types this represents the entire nested scope.
+     * 
+     * @return Property generic scope
+     */
+    public Type getGenericType() {
+        return this.genericType;
+    }
 
 	/**
 	 * Get property identifier in the JHOVE2 namespace.
@@ -129,15 +151,13 @@ public class ReportablePropertyInfo {
 		return this.method;
 	}
 
-	/**
-	 * Get property generic scope, as defined by the generic return scope of the
-	 * method. For collection types this represents the entire nested scope.
-	 * 
-	 * @return Property generic scope
-	 */
-	public Type getGenericType() {
-		return this.genericType;
-	}
+    /**
+     * Get property type.
+     * @return Property type
+     */
+    public PropertyType getPropertyType() {
+        return this.type;
+    }
 
 	/**
 	 * Get property reference, as defined by the

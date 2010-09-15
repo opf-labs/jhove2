@@ -36,17 +36,17 @@
 
 package org.jhove2.app.util;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-import java.lang.reflect.Method;
-import java.lang.reflect.Type;
-import java.lang.reflect.ParameterizedType;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.I8R;
@@ -194,7 +194,7 @@ public class FeatureConfigurationUtil {
 						idMap.put(featureId.getValue(), featureId.getValue());
 						ReportablePropertyInfo prop = new ReportablePropertyInfo(
 								featureId, methods[j], annot.value(), 
-								annot.ref());
+								annot.ref(), annot.type());
 						set.add(prop);
 					}// end if we don't already have this feature
 				}// end if (annot != null)
@@ -233,7 +233,7 @@ public class FeatureConfigurationUtil {
 						idMap.put(featureId.getValue(), featureId.getValue());
 						ReportablePropertyInfo prop = new ReportablePropertyInfo(
 								featureId, methods[j], annot.value(), 
-								annot.ref());
+								annot.ref(), annot.type());
 						set.add(prop);
 					}
 				}

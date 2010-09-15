@@ -47,6 +47,25 @@
 	    <constructor-arg type="java.lang.String" value="x-fmt/263"/>
 	    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
 	</bean>
-	
+							    
+	<!-- Zip local file header general purpose bit flags properties bean --> 
+	<bean id="BitFlags" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="bit-flags"/>
+	</bean> 	   
+		    
+	<!-- Zip local file header version compatibilities properties bean --> 
+	<bean id="Compatibilities" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="compatibilities"/>
+	</bean> 	   
+							    
+	<!-- Zip local file header version compression methods properties bean --> 
+	<bean id="CompressionMethods" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="compression-methods"/>
+	</bean> 	   
+		    
+	<!-- Zip local file header versions properties bean --> 
+	<bean id="Versions" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="versions"/>
+	</bean> 	   
 
 </beans>		   

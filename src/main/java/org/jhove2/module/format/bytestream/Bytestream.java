@@ -42,6 +42,7 @@ import java.io.IOException;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.format.Format;
+import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.BaseFormatModule;
 
@@ -52,7 +53,6 @@ import org.jhove2.module.format.BaseFormatModule;
  */
 public class Bytestream
 	extends BaseFormatModule
-
 {
 	/** Bytestream module version identifier. */
 	public static final String VERSION = "2.0.0";
@@ -83,8 +83,8 @@ public class Bytestream
 	/**
 	 * Parse a bytestream
 	 * 
-	 * @param source bytestream
-	 *            
+	 * @param source Bytestream source unit
+	 * @param input  Bytestream source input
 	 * @return 0
 	 * @throws EOFException
 	 *             If End-of-File is reached reading the source unit
@@ -92,10 +92,10 @@ public class Bytestream
 	 *             If an I/O exception is raised reading the source unit
 	 * @throws JHOVE2Exception
 	 * @see org.jhove2.module.format.Parser#parse(org.jhove2.core.JHOVE2,
-	 *      org.jhove2.core.source.Source)
+	 *      org.jhove2.core.source.Source, org.jhove2.core.io.Input)
 	 */
 	@Override
-	public long parse(JHOVE2 jhove2, Source source)
+	public long parse(JHOVE2 jhove2, Source source, Input input)
 		throws EOFException, IOException, JHOVE2Exception
 	{
 		return 0;

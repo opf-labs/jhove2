@@ -104,22 +104,25 @@ public class InputFactory {
 	    throws FileNotFoundException, IOException
 	{
 		AbstractInput abstractInput = null;
-		if (type.equals(Type.Direct)) {
-			abstractInput = new DirectInput(file, bufferSize, order);
-		}
-		else if (type.equals(Type.NonDirect)) {
-			abstractInput = new NonDirectInput(file, bufferSize, order);
-		}
-		else if (type.equals(Type.Mapped)) {
-			/* Only files smaller than Input.MAX_MAPPED_FILESIZE can utilize 
-			 * MappedByteBuffers 
-			 */
-			if (file.length() < Input.MAX_MAPPED_FILE) {
-				abstractInput = new MappedInput(file, bufferSize, order);
-			}
-			else {
-				abstractInput = new DirectInput(file, bufferSize, order);
-			}
+		if (file != null && file.canRead()) {
+		    if (type.equals(Type.Direct)) {
+		        abstractInput = new DirectInput(file, bufferSize, order);
+		    }
+		    else if (type.equals(Type.NonDirect)) {
+		        abstractInput = new NonDirectInput(file, bufferSize, order);
+		    }
+		    else if (type.equals(Type.Mapped)) {
+		        /* Only files smaller than Input.MAX_MAPPED_FILESIZE can utilize 
+		         * MappedByteBuffers 
+		         */
+		        if (file.length() < Input.MAX_MAPPED_FILE) {
+		            abstractInput = new MappedInput(file, bufferSize, order);
+		        }
+		        else {
+		            abstractInput = new DirectInput(file, bufferSize, order);
+		        }
+		    }
+		    abstractInput.setBufferType(type);
 		}
 
 		return abstractInput;

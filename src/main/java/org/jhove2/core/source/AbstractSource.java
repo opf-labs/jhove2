@@ -56,6 +56,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.jhove2.core.Invocation;
+import org.jhove2.core.JHOVE2;
 import org.jhove2.core.Message;
 import org.jhove2.core.TimerInfo;
 import org.jhove2.core.format.FormatIdentification;
@@ -78,8 +79,7 @@ public abstract class AbstractSource
 {
 	/** Identifiers of generic modules registered with the Source. */
 	protected static Set<String> moduleIDs = new HashSet<String>();
-	
-	
+
 	/** Child source units. */
 	protected List<Source> children;
 
@@ -104,6 +104,9 @@ public abstract class AbstractSource
 	/** Presumptive identifications for the source unit. */
 	protected Set<FormatIdentification> presumptiveFormatIdentifications;
     
+	/** Starting offset, in bytes. */
+	protected long startingOffset;
+	
     /**
      * Timer info  used to track elapsed time for running of this module
      */
@@ -123,6 +126,7 @@ public abstract class AbstractSource
 		this.messages        = new ArrayList<Message>();
 		this.modules         = new ArrayList<Module>();
 		this.presumptiveFormatIdentifications = new TreeSet<FormatIdentification>();
+		this.startingOffset  = 0L;
         this.timerInfo       = new TimerInfo();
 	}
 
@@ -249,7 +253,6 @@ public abstract class AbstractSource
 		WritableByteChannel out = Channels.newChannel(outStream);
 		final ByteBuffer buffer = ByteBuffer.allocateDirect(bufferSize);
 
-
 		while ((in.read(buffer)) > 0) {
 			buffer.flip();
 			out.write(buffer);
@@ -266,6 +269,61 @@ public abstract class AbstractSource
 
 		return tempFile;
 	}
+
+    /**
+     * Create a temporary backing file that is a subset of an input stream.
+     * 
+     * @param tmpPrefix Temporary file prefix
+     * @param tmpSuffix Temporary file suffix
+     * @param  bufferSize Buffer size used during transfer to temporary file 
+     * @param inFile Input file
+     * @param offset Starting offset of the subset
+     * @param size   Size of the subset
+     * @return file Temporary backing file
+     * @throws IOException
+     */
+    protected File createTempFile(String tmpPrefix, String tmpSuffix,
+                                  int bufferSize, File inFile, 
+                                  long offset, long size)
+        throws IOException
+    {
+        /* Position input stream to starting offset. */
+        InputStream inStream = new FileInputStream(inFile);
+        inStream.skip(offset);
+        ReadableByteChannel in = Channels.newChannel(inStream);
+        
+        /* Create temporary file. */
+        File tempFile = File.createTempFile(tmpPrefix, tmpSuffix);
+        OutputStream outStream = new FileOutputStream(tempFile);
+        WritableByteChannel out = Channels.newChannel(outStream);
+        
+        ByteBuffer buffer = ByteBuffer.allocateDirect(bufferSize);
+
+        long consumed = 0;
+        int n = 0;
+        while (consumed < size) {
+            long remaining = size - consumed;
+            if (remaining < bufferSize) {
+                buffer = ByteBuffer.allocateDirect((int) remaining);
+            }
+            if ((n = in.read(buffer)) > 0) {
+                buffer.flip();
+                out.write(buffer);
+                buffer.compact(); /* in case write was incomplete. */
+                consumed += n;
+            }
+        }
+        buffer.flip();
+        while (buffer.hasRemaining()) {
+            out.write(buffer);
+        }
+
+        /* Closing the channel implicitly closes the stream. */
+        in.close();
+        out.close();
+
+        return tempFile;
+    }
 
 	/**
 	 * Delete child source unit.
@@ -321,11 +379,47 @@ public abstract class AbstractSource
 		return this.file;
 	}
 
+    /**
+     * Get little-endian {@link org.jhove2.core.io.Input} for the source unit
+     * with the buffer size and type specified by the 
+     * {@link org.jhove2.core.Invocation}.
+     * Input is returned if it exists.
+     * @param jhove2 JHOVE2 framework
+     * @return Input for the source unit
+     * @throws IOException 
+     * @throws FileNotFoundException 
+     */
+	@Override
+    public Input getInput(JHOVE2 jhove2)
+	    throws FileNotFoundException, IOException
+	{
+        return this.getInput(jhove2, ByteOrder.LITTLE_ENDIAN);
+    }
+
+    /**
+     * Get {@link org.jhove2.core.io.Input} for the source unit with the 
+     * buffer size and type specified by the {@link org.jhove2.core.Invocation}
+     * @param jhove2 JHOVE2 framework
+     * @param order  Byte order
+     * @return Input for the source unit
+     */
+	@Override
+    public Input getInput(JHOVE2 jhove2, ByteOrder order)
+        throws FileNotFoundException, IOException
+    {
+	    Invocation invocation = jhove2.getInvocation();
+	    
+        return this.getInput(invocation.getBufferSize(),
+                             invocation.getBufferType(),
+                             order);
+    }
+    
 	/**
-	 * Get {@link org.jhove2.core.io.Input} for the source unit. Concrete
-	 * classes extending this abstract class must provide an implementation of
-	 * this method if they are are based on parsable input. Classes without
-	 * parsable input (e.g. {@link org.jhove2.core.source.ClumpSource} or
+	 * Create and get little-endian {@link org.jhove2.core.io.Input} for the
+	 * source unit. Concrete classes extending this abstract class must
+	 * provide an implementation of this method if they are are based on
+	 * parsable input. Classes without parsable input
+	 * (e.g. {@link org.jhove2.core.source.ClumpSource} or
 	 * {@link org.jhove2.core.source.DirectorySource} can let this inherited
 	 * method return null.
 	 * 
@@ -343,14 +437,14 @@ public abstract class AbstractSource
 	public Input getInput(int bufferSize, Type bufferType)
 		throws FileNotFoundException, IOException
 	{
-		return getInput(bufferSize, bufferType, ByteOrder.LITTLE_ENDIAN);
+		return this.getInput(bufferSize, bufferType, ByteOrder.LITTLE_ENDIAN);
 	}
 
 	/**
-	 * Get {@link org.jhove2.core.io.Input} for the source unit. Concrete
+	 * Create and get {@link org.jhove2.core.io.Input} for the source unit. Concrete
 	 * classes extending this abstract class must provide an implementation of
 	 * this method if they are are based on parsable input. Classes without
-	 * parsable input (e.g. {@link org.jhove2.core.source.ClumpSource} or
+	 * parsable input (e.g. {@link org.jhove2.core.source.ClumpSr33nource} or
 	 * {@link org.jhove2.core.source.DirectorySource} can let this inherited
 	 * method return null.
 	 * 
@@ -436,7 +530,16 @@ public abstract class AbstractSource
 	public Set<FormatIdentification> getPresumptiveFormats() {
 		return presumptiveFormatIdentifications;
 	}
-
+    
+    /** Get starting offset of the source unit, in bytes.
+     * @return Starting offset of the source unit
+     * Except for {@link ByteStreamSource}s, this will generally be 0.
+     */
+    @Override
+    public long getStartingOffset() {
+        return this.startingOffset;
+    }
+    
 	/**
 	 * Get elapsed time processing the source unit.
 	 * @return Elapsed time

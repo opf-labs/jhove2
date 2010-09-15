@@ -1,0 +1,9 @@
+from: http://www.geotools.org/about.html
+
+GeoTools is proud to be one of the original founding projects 
+for the Open Source Geospatial Foundation (http://osgeo.org/).
+The foundation holds the copyright on the library and is 
+a wonderful source of assistance and community spirit for our project. 
+The GeoTools library is made available under the LGPL license 
+(http://www.gnu.org/licenses/lgpl-2.1.html). 
+The source code is freely available in a public subversion repository.

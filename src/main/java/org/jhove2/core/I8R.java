@@ -85,6 +85,7 @@ public class I8R implements Comparable<I8R> {
 		Charset, /* IANA charset */
 		DDC, /* Dewey Decimal Classification */
 		DOI, /* Digital Object IdentifierModule */
+		EBU,  /* EBU standard. */
 		ECMA, /* ECMA standard */
 		FDD, /* Library of Congress FDD identifier */
 		FIPS, /* FIPS standard */

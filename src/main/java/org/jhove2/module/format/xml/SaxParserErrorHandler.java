@@ -41,10 +41,10 @@ import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.module.format.Validator.Validity;
-import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
+import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * An instance of this class is registered with the SAX parser to handle events
@@ -55,9 +55,10 @@ import org.xml.sax.SAXParseException;
  * @see <a
  *      href="http://www.saxproject.org/apidoc/org/xml/sax/ErrorHandler.html">ErrorHandler javadoc</a>
  */
-public class SaxParserErrorHandler extends DefaultHandler implements
-        ErrorHandler {
-
+public class SaxParserErrorHandler
+    extends DefaultHandler
+    implements ErrorHandler
+{
     /** The XmlModule object that is invoking the parser. */
     private XmlModule xmlModule;
 

@@ -62,19 +62,29 @@ import java.lang.annotation.Target;
 public @interface ReportableProperty {
 	/** Default description and reference value. */
 	public static final String DEFAULT = "Not available.";
+	
+	/**
+	 * Property type: raw or descriptive.  A raw property reports itself
+	 * in the exact form that was found in the source unit; a descriptive
+	 * property reports itself in a more human-readable form.
+	 */
+	public enum PropertyType {Default, Raw, Descriptive}
 
-	/** Property description. */
-	public String value() default DEFAULT;
+    /**
+     * Ordinal position of this property relative to all properties directly
+     * defined in a class.
+     */
+    public int order() default 1;
 
 	/**
 	 * Property reference, a citation to an external source document that
 	 * defines the property.
 	 */
 	public String ref() default DEFAULT;
-
-	/**
-	 * Ordinal position of this property relative to all properties directly
-	 * defined in a class.
-	 */
-	public int order() default 1;
+	
+	/** Property type: raw or descriptive. */
+	public PropertyType type() default PropertyType.Default;
+    
+    /** Property description. */
+    public String value() default DEFAULT;
 }

@@ -39,6 +39,7 @@ package org.jhove2.module.format;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 
 /**
@@ -90,10 +91,13 @@ public interface Validator {
 	 *            JHOVE2 framework
 	 * @param source
 	 *            Source unit
+	 * @param input
+	 *            Source input
 	 * @return Validation status
 	 * @throws JHOVE2Exception 
 	 */
-	public Validity validate(JHOVE2 jhove2, Source source) throws JHOVE2Exception ;
+	public Validity validate(JHOVE2 jhove2, Source source, Input input)
+	    throws JHOVE2Exception ;
 
 	/** Get validation coverage.
 	 * @return Validation coverage

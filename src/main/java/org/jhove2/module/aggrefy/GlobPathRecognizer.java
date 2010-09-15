@@ -38,18 +38,20 @@ package org.jhove2.module.aggrefy;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.HashMap;
-import java.util.regex.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.format.FormatIdentification;
 import org.jhove2.core.format.FormatIdentification.Confidence;
-import org.jhove2.core.source.Source;
 import org.jhove2.core.source.ClumpSource;
+import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractModule;
 
 /**

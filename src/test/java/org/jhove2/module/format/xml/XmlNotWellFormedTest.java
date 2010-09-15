@@ -1,7 +1,6 @@
 package org.jhove2.module.format.xml;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
@@ -37,11 +36,11 @@ public class XmlNotWellFormedTest extends XmlModuleTestBase {
     @Test
     public void testValidationInfo() {
         ValidationResults vr = testXmlModule.getValidationResults();
-        ValidationResults.ValidationMessageList warnings = vr.getParserWarnings();
+        ValidationMessageList warnings = vr.getParserWarnings();
         assertEquals(0, warnings.getValidationMessageCount());
-        ValidationResults.ValidationMessageList errors = vr.getParserErrors();
+        ValidationMessageList errors = vr.getParserErrors();
         assertEquals(0, errors.getValidationMessageCount());
-        ValidationResults.ValidationMessageList fatals = vr.getFatalParserErrors();
+        ValidationMessageList fatals = vr.getFatalParserErrors();
         assertEquals(1, fatals.getValidationMessageCount());
         String msg = fatals.getValidationMessages().get(0).getMessage();
         assertEquals("The attribute type is required in the declaration of attribute \"number\" for element \"root\".", msg);

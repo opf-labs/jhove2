@@ -43,7 +43,6 @@ import java.util.List;
 import org.antlr.runtime.ANTLRFileStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
-
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.util.CopyUtils;
 

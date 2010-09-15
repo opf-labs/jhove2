@@ -36,13 +36,13 @@
 
 package org.jhove2.app.util;
 
-import java.util.HashMap;
-import java.util.Set;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.PrintStream;
 import java.io.FileOutputStream;
-import java.lang.SecurityException;
+import java.io.PrintStream;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.reportable.info.ReportablePropertyInfo;
@@ -64,7 +64,7 @@ public abstract class PropertyFileGenerator {
 	/** Fully-qualified class name for which properties file is to be generated */
 	protected String className;
 	/** Key-Value map to be serialized as property file */
-	protected HashMap<String, String> prop2Value;
+	protected Map<String, String> prop2Value;
 	/** Base name for property file */
 	protected String propertyFileBaseName;
 	/** Base directory for output file.  Intermediate directories corresponding to segments in
@@ -82,7 +82,7 @@ public abstract class PropertyFileGenerator {
 	 */
 	public PropertyFileGenerator() {
 		super();
-		this.prop2Value = new HashMap<String, String>();
+		this.prop2Value = new TreeMap<String, String>();
 	}
 
 	/**
@@ -90,7 +90,7 @@ public abstract class PropertyFileGenerator {
 	 * as for units properties file)
 	 * @return HashMap<String, String> containing actual list of possible property values 
 	 */
-	public abstract HashMap<String, String> createPropertyValues();
+	public abstract Map<String, String> createPropertyValues();
 
 	/**
 	 * Principal method.  Constructs a property file with JHOVE2 identifier as the key,
@@ -232,13 +232,13 @@ public abstract class PropertyFileGenerator {
 	/**
 	 * @return the prop2Value
 	 */
-	public HashMap<String, String> getProp2Value() {
+	public Map<String, String> getProp2Value() {
 		return prop2Value;
 	}
 	/**
 	 * @param prop2Value the prop2Value to set
 	 */
-	public void setProp2Value(HashMap<String, String> prop2Value) {
+	public void setProp2Value(Map<String, String> prop2Value) {
 		this.prop2Value = prop2Value;
 	}
 	/**

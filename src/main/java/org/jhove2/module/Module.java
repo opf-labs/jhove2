@@ -40,8 +40,8 @@ import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.Agent;
-import org.jhove2.core.WrappedProduct;
 import org.jhove2.core.TimerInfo;
+import org.jhove2.core.WrappedProduct;
 import org.jhove2.core.reportable.Reportable;
 
 /**
@@ -125,4 +125,45 @@ public interface Module
 	 */
 	@ReportableProperty(order = 6, value = "External product wrapped by the module.")
 	public WrappedProduct getWrappedProduct();
+
+    /**
+     * Set module developers.
+     * 
+     * @param developers
+     *            Product developers
+     */
+    public void setDevelopers(List<Agent> developers);
+    
+	/** Set module informative note.
+	 * @param note Module informative note
+	 */
+	public void setNote(String note);
+	
+	/** Set module release date.
+	 * @param release Module release date
+	 */
+	public void setReleaseDate(String release);
+	
+	/** Set module rights statement.
+	 * @param rights Module rights statement
+	 */
+	public void setRights(String rights);
+	
+	/** Set module scope.
+	 * @param scope Module scope
+	 */
+	public void setScope(Scope scope);
+	
+	/** Set module version.
+	 * @param version Module version
+	 */
+	public void setVersion(String version);
+	   
+    /**
+     * Set wrapped product.
+     * 
+     * @param product
+     *            Wrapped product
+     */
+    public void setWrappedProduct(WrappedProduct product);
 }

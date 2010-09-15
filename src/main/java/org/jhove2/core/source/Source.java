@@ -46,6 +46,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.JHOVE2;
 import org.jhove2.core.Message;
 import org.jhove2.core.TimerInfo;
 import org.jhove2.core.format.FormatIdentification;
@@ -117,7 +118,7 @@ public interface Source
 	 * 
 	 * @return Child source units
 	 */
-	@ReportableProperty(order = 5, value = "Child source units.")
+	@ReportableProperty(order = 6, value = "Child source units.")
 	public List<Source> getChildSources();
 
 	/**
@@ -134,6 +135,26 @@ public interface Source
 	 */
 	public File getFile();
 
+    /**
+     * Get little-endian {@link org.jhove2.core.io.Input} for the source unit
+     * with the buffer size and type specified by the
+     * {@link org.jhove2.core.Invocation}.
+     * @param jhove2 JHOVE2 framework
+     * @return Input for the source unit
+     */
+    public Input getInput(JHOVE2 jhove2)
+        throws FileNotFoundException, IOException;
+
+    /**
+     * Get {@link org.jhove2.core.io.Input} for the source unit with the 
+     * buffer size and type specified by the {@link org.jhove2.core.Invocation}.
+     * @param jhove2 JHOVE2 framework
+     * @param order  Byte order
+     * @return Input for the source unit
+     */
+    public Input getInput(JHOVE2 jhove2, ByteOrder order)
+        throws FileNotFoundException, IOException;
+    
 	/**
 	 * Get {@link org.jhove2.core.io.Input} for the source unit.
 	 * 
@@ -149,7 +170,7 @@ public interface Source
 		throws FileNotFoundException, IOException;
 
 	/**
-	 * Get {@link org.jhove2.core.io.Input} for the source unit.
+	 * Get little-endian {@link org.jhove2.core.io.Input} for the source unit.
 	 * 
 	 * @param bufferSize
 	 *            Input maximum buffer size
@@ -179,7 +200,7 @@ public interface Source
 	 * 
 	 * @return Modules that processed the source unit
 	 */
-	@ReportableProperty(order = 3, value = "Modules that processed the source unit")
+	@ReportableProperty(order = 4, value = "Modules that processed the source unit")
 	public List<Module> getModules();
 
 	/**
@@ -187,13 +208,13 @@ public interface Source
 	 * 
 	 * @return Number of child source units
 	 */
-	@ReportableProperty(order = 4, value = "Number of child source units.")
+	@ReportableProperty(order = 5, value = "Number of child source units.")
 	public int getNumChildSources();
 	
 	/** Get messages associated with the source unit.
 	 * @return Source unit messages
 	 */
-	@ReportableProperty(order = 2, value = "Source unit messages.")
+	@ReportableProperty(order = 3, value = "Source unit messages.")
 	public List<Message> getMessages();
 
 	/**
@@ -207,8 +228,15 @@ public interface Source
 	 * Get list of presumptive formats for the source unit.
 	 * @return List of presumptive formats
 	 */
-	@ReportableProperty(order = 1, value="Presumptive formats for the source.")
+	@ReportableProperty(order = 2, value="Presumptive formats for the source.")
 	public Set<FormatIdentification> getPresumptiveFormats();
+	
+	/** Get starting offset of the source unit, in bytes.
+	 * @return Starting offset of the source unit
+	 * Except for {@link ByteStreamSource}s, this will generally be 0.
+	 */
+	@ReportableProperty(order=1, value="Starting byte offset of the source unit.")
+	public long getStartingOffset();
 	
 	/**
 	 * Get Map of per-source parameters
@@ -219,7 +247,7 @@ public interface Source
 	 * Get elapsed time processing this source unit.
 	 * @return Elapsed time
 	 */
-	@ReportableProperty(order = 6, value="Timer info for this Source.")
+	@ReportableProperty(order = 7, value="Timer info for this Source.")
 	public TimerInfo getTimerInfo();
 	
 	/**

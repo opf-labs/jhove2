@@ -37,7 +37,6 @@
 
 package org.jhove2.module.format.xml;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -381,7 +380,7 @@ public class SaxParser
                     "org.jhove2.module.format.xml.XmlModule.saxParserMessage",
                     messageArgs, jhove2.getConfigInfo()));
         }
-        catch (FileNotFoundException e) {
+        catch (IOException e) {
             xmlModule.wellFormed = Validity.Undetermined;
             xmlModule.validity = Validity.Undetermined;
             Object[]messageArgs = new Object[]{e.getMessage()};

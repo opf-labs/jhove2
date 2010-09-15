@@ -37,11 +37,13 @@
 
 package org.jhove2.app.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
-import java.lang.reflect.Type;
 
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.reportable.Reportable;

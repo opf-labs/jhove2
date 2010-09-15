@@ -42,7 +42,6 @@ import org.jhove2.core.Installation;
 import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.module.AbstractModule;
-import org.jhove2.module.Module.Scope;
 import org.jhove2.module.display.Displayer;
 
 /**

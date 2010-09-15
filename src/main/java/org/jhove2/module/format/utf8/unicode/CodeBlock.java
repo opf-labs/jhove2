@@ -40,6 +40,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 
 /**
@@ -53,7 +54,9 @@ import org.jhove2.core.JHOVE2Exception;
  * 
  * @author mstrong, slabrams
  */
-public class CodeBlock implements Comparable<CodeBlock> {
+public class CodeBlock
+    implements Comparable<CodeBlock>
+{
 	/** Singleton Unicode code blocks. */
 	protected static Set<CodeBlock> codeBlocks;
 
@@ -82,12 +85,48 @@ public class CodeBlock implements Comparable<CodeBlock> {
 		this.name = name;
 	}
 
+	/** Initialize the code blocks.
+	 * @param jhove2 JHOVE2 framework
+	 * @throws JHOVE2Exception 
+	 */
+	protected static synchronized void init(JHOVE2 jhove2)
+	    throws JHOVE2Exception
+	{
+        if (codeBlocks == null) {
+	        /* Initialize the code blocks from Java Properties. */
+	        codeBlocks = new TreeSet<CodeBlock>();
+	        Properties props = jhove2.getConfigInfo().getProperties("CodeBlock");
+	        if (props != null) {
+	            Set<String> set = props.stringPropertyNames();
+	            Iterator<String> iter = set.iterator();
+	            while (iter.hasNext()) {
+	                String range = iter.next();
+	                String name = props.getProperty(range);
+
+	                int st = range.indexOf('.');
+	                int en = range.indexOf(';');
+	                String start = range.substring(0, st);
+	                String end = range.substring(st + 2, en);
+
+	                st = Integer.parseInt(start, 16);
+	                en = Integer.parseInt(end, 16);
+	                CodeBlock block = new CodeBlock(st, en, name);
+	                codeBlocks.add(block);
+	            }
+	        }
+	    }
+	}
+	
 	/**
 	 * Get the code blocks.
-	 * 
+	 * @param jhove2 JHOVE2 framework
 	 * @return Code blocks
+	 * @throws JHOVE2Exception 
 	 */
-	public static Set<CodeBlock> getCodeBlocks() {
+	public static Set<CodeBlock> getCodeBlocks(JHOVE2 jhove2)
+	    throws JHOVE2Exception
+	{
+	    init(jhove2);
 		return codeBlocks;
 	}
 
@@ -101,30 +140,9 @@ public class CodeBlock implements Comparable<CodeBlock> {
 	 *         blocks
 	 * @throws JHOVE2Exception
 	 */
-	public static synchronized CodeBlock getBlock(int codePoint, Properties props)
+	public static synchronized CodeBlock getBlock(int codePoint, JHOVE2 jhove2)
 			throws JHOVE2Exception {
-		if (codeBlocks == null) {
-			/* Initialize the code blocks from Java Properties. */
-			codeBlocks = new TreeSet<CodeBlock>();
-			if (props != null) {
-				Set<String> set = props.stringPropertyNames();
-				Iterator<String> iter = set.iterator();
-				while (iter.hasNext()) {
-					String range = iter.next();
-					String name = props.getProperty(range);
-
-					int st = range.indexOf('.');
-					int en = range.indexOf(';');
-					String start = range.substring(0, st);
-					String end = range.substring(st + 2, en);
-
-					st = Integer.parseInt(start, 16);
-					en = Integer.parseInt(end, 16);
-					CodeBlock block = new CodeBlock(st, en, name);
-					codeBlocks.add(block);
-				}
-			}
-		}
+	    init(jhove2);
 		CodeBlock block = null;
 		Iterator<CodeBlock> iter = codeBlocks.iterator();
 		while (iter.hasNext()) {
