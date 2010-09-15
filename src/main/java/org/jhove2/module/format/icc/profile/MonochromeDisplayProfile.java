@@ -124,7 +124,7 @@ public Validity validate(JHOVE2 jhove2, Source source, Input input)
                 if (!hasGrayTRCTag) {
                     this.isValid = Validity.False;
                     Object [] args = new Object [] {"GrayTRC (\"kTRC\")"};
-                    Message msg = new Message(Severity.ERROR, Context.OBJECT,
+                    Message msg = new Message(Severity.WARNING, Context.OBJECT,
                             "org.jhove2.module.format.icc.ICCTagTable.MissingRequiredTag",
                             args, jhove2.getConfigInfo());
                     this.missingRequiredTagMessages.add(msg);
