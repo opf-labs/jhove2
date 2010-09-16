@@ -164,7 +164,7 @@ public class DroidIdentifierTest {
 			assertEquals(1, ids.size());
 			for (FormatIdentification fi : ids){
 				assertEquals(Confidence.PositiveSpecific, fi.getConfidence());
-				assertNull(fi.getJHOVE2Identifier());
+				assertNotNull(fi.getJHOVE2Identifier());
 			}
 			assertNull(dROIDIdentifier.getFileErrorMessage());
 			assertNull(dROIDIdentifier.getFileNotRunMessage());

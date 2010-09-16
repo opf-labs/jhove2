@@ -84,7 +84,7 @@ public class NumericCharacterReferenceInformation extends AbstractReportable {
 
     /** NCR Parser error messages. */
     protected ArrayList<Message> ncrParserMessages = new ArrayList<Message>();
-    
+
     /**
      * Get the NCRs found during XML parsing.
      * 
@@ -95,7 +95,7 @@ public class NumericCharacterReferenceInformation extends AbstractReportable {
         return new ArrayList<NumericCharacterReference>(
                 numericCharacterReferenceMap.values());
     }
-    
+
     /**
      * Get NCR Parser messages.
      * 
@@ -151,11 +151,15 @@ public class NumericCharacterReferenceInformation extends AbstractReportable {
      * @throws JHOVE2Exception
      */
     protected void parse(Input input, String encodingFromSAX2, JHOVE2 jhove2)
-            throws IOException, JHOVE2Exception {
-    	/** the encoded numeric character reference found by the pattern matcher */
+            throws IOException, JHOVE2Exception 
+    {
+        ByteBuffer bbuf = input.getBuffer();
+        int position = bbuf.position();
+
+		/** the encoded numeric character reference found by the pattern matcher */
+
         try {
             /* Get a CharSequence object that can be analyzed */
-            ByteBuffer bbuf = input.getBuffer();
             CharBuffer cbuf = Charset.forName(encodingFromSAX2).newDecoder()
                     .decode(bbuf);
             /* Look for numeric character references */
@@ -184,6 +188,9 @@ public class NumericCharacterReferenceInformation extends AbstractReportable {
                     Severity.ERROR, Context.OBJECT,
                     "org.jhove2.module.format.xml.XmlModule.invalidCharacterForEncodingMessage",
                     jhove2.getConfigInfo()));
+        }
+        finally {
+            bbuf.position(position);
         }
     }
 
