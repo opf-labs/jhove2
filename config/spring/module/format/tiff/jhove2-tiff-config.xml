@@ -104,7 +104,7 @@
 	<!-- Tiff identifier bean -->
 	<bean id="TiffIdentifier" class="org.jhove2.core.I8R" scope="singleton">
 		<constructor-arg type="java.lang.String"
-			value="http://jhove2.org/terms/format/Tiff" />
+			value="http://jhove2.org/terms/format/tiff" />
 	</bean>
 	<!-- Tiff PUID aliasIdentifier bean -->
 	<bean id="PUIDxfmt7" class="org.jhove2.core.I8R" scope="singleton">

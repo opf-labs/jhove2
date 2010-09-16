@@ -92,15 +92,17 @@ public class NamedZSTRChunk
         consumed += 4;
         
         long len = this.size - 1L;
-        sb = new StringBuffer((int) len);
-        for (long i=0; i<len; i++) {
-            short b = input.readUnsignedByte();
-            if (b == 0) {
-                break;
+        if (len > 0) {
+            sb = new StringBuffer((int) len);
+            for (long i=0; i<len; i++) {
+                short b = input.readUnsignedByte();
+                if (b == 0) {
+                    break;
+                }
+                sb.append((char) b);
             }
-            sb.append((char) b);
+            this.string = sb.toString();
         }
-        this.string = sb.toString();
         consumed += this.size;
         
         return consumed;

@@ -50,7 +50,7 @@ import org.jhove2.core.io.Input.Type;
  */
 public class InputFactory {
 	/**
-	 * Factory to create an appropriate <code>AbstractInput</code>.
+	 * Factory to create an appropriate big-endian <code>AbstractInput</code>.
 	 * 
 	 * @param file
 	 *            Java {java.io.File} underlying the inputable
@@ -67,7 +67,7 @@ public class InputFactory {
 	public static Input getInput(File file, int bufferSize, Type type)
 		throws FileNotFoundException, IOException
 	{
-		return getInput(file, bufferSize, type, ByteOrder.LITTLE_ENDIAN);
+		return getInput(file, bufferSize, type, ByteOrder.BIG_ENDIAN);
 	}
 
 	/**
@@ -123,6 +123,7 @@ public class InputFactory {
 		        }
 		    }
 		    abstractInput.setBufferType(type);
+		    abstractInput.setByteOrder(order);
 		}
 
 		return abstractInput;

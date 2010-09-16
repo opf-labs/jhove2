@@ -106,7 +106,7 @@ public class NonDirectInputTest {
 			 * abstractInput.close();
 			 */
 			abstractInput = InputFactory.getInput(testFile, bufferSize,
-					Type.NonDirect);
+					Type.NonDirect, ByteOrder.LITTLE_ENDIAN);
 			assertTrue("AbstractInput Scope is NonDirect", abstractInput
 					.getClass().getName().equalsIgnoreCase(
 							NonDirectInput.class.getName()));
@@ -269,6 +269,8 @@ public class NonDirectInputTest {
 	public void testReadShort() {
 		int testValue = 0;
 		try {
+		    abstractInput = InputFactory.getInput(testFile, bufferSize,
+                    Type.NonDirect, ByteOrder.LITTLE_ENDIAN);
 			abstractInput.setPosition(0);
 			testValue = abstractInput.readUnsignedShort();
 			String testStr = Integer.toHexString(testValue);

@@ -155,7 +155,7 @@ public class NComponentLUTBasedOutputProfile
                     if (!hasAToB0Tag) {
                         this.isValid = Validity.False;
                         Object [] args = new Object [] {"A-to-B0 (\"A2B0\")"};
-                        Message msg = new Message(Severity.ERROR, Context.OBJECT,
+                        Message msg = new Message(Severity.WARNING, Context.OBJECT,
                                 "org.jhove2.module.format.icc.ICCTagTable.MissingRequiredTag",
                                 args, jhove2.getConfigInfo());
                         this.missingRequiredTagMessages.add(msg);
@@ -163,7 +163,7 @@ public class NComponentLUTBasedOutputProfile
                     if (!hasAToB1Tag) {
                         this.isValid = Validity.False;
                         Object [] args = new Object [] {"A-to-B1 (\"A2B1\")"};
-                        Message msg = new Message(Severity.ERROR, Context.OBJECT,
+                        Message msg = new Message(Severity.WARNING, Context.OBJECT,
                                 "org.jhove2.module.format.icc.ICCTagTable.MissingRequiredTag",
                                 args, jhove2.getConfigInfo());
                         this.missingRequiredTagMessages.add(msg);
@@ -171,7 +171,7 @@ public class NComponentLUTBasedOutputProfile
                     if (!hasAToB2Tag) {
                         this.isValid = Validity.False;
                         Object [] args = new Object [] {"A-to-B2 (\"A2B2\")"};
-                        Message msg = new Message(Severity.ERROR, Context.OBJECT,
+                        Message msg = new Message(Severity.WARNING, Context.OBJECT,
                                 "org.jhove2.module.format.icc.ICCTagTable.MissingRequiredTag",
                                 args, jhove2.getConfigInfo());
                         this.missingRequiredTagMessages.add(msg);
@@ -179,7 +179,7 @@ public class NComponentLUTBasedOutputProfile
                     if (!hasBToA0Tag) {
                         this.isValid = Validity.False;
                         Object [] args = new Object [] {"B-to-A0 (\"B2A0\")"};
-                        Message msg = new Message(Severity.ERROR, Context.OBJECT,
+                        Message msg = new Message(Severity.WARNING, Context.OBJECT,
                                 "org.jhove2.module.format.icc.ICCTagTable.MissingRequiredTag",
                                 args, jhove2.getConfigInfo());
                         this.missingRequiredTagMessages.add(msg);
@@ -187,7 +187,7 @@ public class NComponentLUTBasedOutputProfile
                     if (!hasBToA1Tag) {
                         this.isValid = Validity.False;
                         Object [] args = new Object [] {"B-to-A1 (\"B2A1\")"};
-                        Message msg = new Message(Severity.ERROR, Context.OBJECT,
+                        Message msg = new Message(Severity.WARNING, Context.OBJECT,
                                 "org.jhove2.module.format.icc.ICCTagTable.MissingRequiredTag",
                                 args, jhove2.getConfigInfo());
                         this.missingRequiredTagMessages.add(msg);
@@ -195,7 +195,7 @@ public class NComponentLUTBasedOutputProfile
                     if (!hasBToA2Tag) {
                         this.isValid = Validity.False;
                         Object [] args = new Object [] {"B-to-A2 (\"B2A2\")"};
-                        Message msg = new Message(Severity.ERROR, Context.OBJECT,
+                        Message msg = new Message(Severity.WARNING, Context.OBJECT,
                                 "org.jhove2.module.format.icc.ICCTagTable.MissingRequiredTag",
                                 args, jhove2.getConfigInfo());
                         this.missingRequiredTagMessages.add(msg);
@@ -203,7 +203,7 @@ public class NComponentLUTBasedOutputProfile
                     if (!hasGamutTag) {
                         this.isValid = Validity.False;
                         Object [] args = new Object [] {"Gamut(\"gamt\")"};
-                        Message msg = new Message(Severity.ERROR, Context.OBJECT,
+                        Message msg = new Message(Severity.WARNING, Context.OBJECT,
                                 "org.jhove2.module.format.icc.ICCTagTable.MissingRequiredTag",
                                 args, jhove2.getConfigInfo());
                         this.missingRequiredTagMessages.add(msg);
@@ -217,7 +217,7 @@ public class NComponentLUTBasedOutputProfile
                         if (!hasColorantTableTag) {
                             this.isValid = Validity.False;
                             Object [] args = new Object [] {"Colorant table(\"clrt\")"};
-                            Message msg = new Message(Severity.ERROR, Context.OBJECT,
+                            Message msg = new Message(Severity.WARNING, Context.OBJECT,
                                 "org.jhove2.module.format.icc.ICCTagTable.MissingRequiredTag",
                                 args, jhove2.getConfigInfo());
                             this.missingRequiredTagMessages.add(msg);
