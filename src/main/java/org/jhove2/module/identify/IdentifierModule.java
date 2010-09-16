@@ -77,6 +77,9 @@ public class IdentifierModule
 	/** File-level identifier module. */
 	protected Identifier fileSourceIdentifier;
 	
+	/** flag to indicate bypass of Identification if Source is pre-identified */
+	protected boolean shouldSkipIdentifyIfPreIdentified;
+	
 	/**
 	 * Instantiate a new <code>IdentifierModule</code>.
 	 */
@@ -107,42 +110,46 @@ public class IdentifierModule
 	{
 		Set<FormatIdentification> presumptiveFormatIDs = 
 			new TreeSet<FormatIdentification>();
-		if (source instanceof ClumpSource) {
-			/* ClumpSources are only created when identified as instances
-			 * of a particular clump format, so should have identifications
-			 * already.
-			 */
-			;
-		}
-		else if (source instanceof DirectorySource ||
-				 source instanceof ZipDirectorySource) {
-			FormatIdentification id =
-				new FormatIdentification(new I8R(I8R.JHOVE2_PREFIX + "/" +
-						                         I8R.JHOVE2_FORMAT_INFIX +
-						                         "/directory"),
-					                     Confidence.PositiveSpecific,
-					                     this.getReportableIdentifier());
-			presumptiveFormatIDs.add(id);
-		}
-		else if (source instanceof FileSetSource) {
-			FormatIdentification id =
-				new FormatIdentification(new I8R(I8R.JHOVE2_PREFIX + "/" +
-						                         I8R.JHOVE2_FORMAT_INFIX +
-						                         "/file-set"),
-					                     Confidence.PositiveSpecific,
-					                     this.getReportableIdentifier());
-			presumptiveFormatIDs.add(id);
-		}
-		else {   /* Identify file source unit. */				
-			TimerInfo timer = fileSourceIdentifier.getTimerInfo();
-			timer.setStartTime();
-			try {
-				Set<FormatIdentification> formats =
-					fileSourceIdentifier.identify(jhove2, source, input);
-				presumptiveFormatIDs.addAll(formats);
+		Set<FormatIdentification> existingIds = source.getPresumptiveFormats();
+		boolean preIdentified = (existingIds != null && existingIds.size()> 0);
+		if (!(preIdentified && this.shouldSkipIdentifyIfPreIdentified)){
+			if (source instanceof ClumpSource) {
+				/* ClumpSources are only created when identified as instances
+				 * of a particular clump format, so should have identifications
+				 * already.
+				 */
+				;
 			}
-			finally {
-				timer.setEndTime();
+			else if (source instanceof DirectorySource ||
+					 source instanceof ZipDirectorySource) {
+				FormatIdentification id =
+					new FormatIdentification(new I8R(I8R.JHOVE2_PREFIX + "/" +
+							                         I8R.JHOVE2_FORMAT_INFIX +
+							                         "/directory"),
+						                     Confidence.PositiveSpecific,
+						                     this.getReportableIdentifier());
+				presumptiveFormatIDs.add(id);
+			}
+			else if (source instanceof FileSetSource) {
+				FormatIdentification id =
+					new FormatIdentification(new I8R(I8R.JHOVE2_PREFIX + "/" +
+							                         I8R.JHOVE2_FORMAT_INFIX +
+							                         "/file-set"),
+						                     Confidence.PositiveSpecific,
+						                     this.getReportableIdentifier());
+				presumptiveFormatIDs.add(id);
+			}
+			else {   /* Identify file source unit. */				
+				TimerInfo timer = fileSourceIdentifier.getTimerInfo();
+				timer.setStartTime();
+				try {
+					Set<FormatIdentification> formats =
+						fileSourceIdentifier.identify(jhove2, source, input);
+					presumptiveFormatIDs.addAll(formats);
+				}
+				finally {
+					timer.setEndTime();
+				}
 			}
 		}
 		return presumptiveFormatIDs;
@@ -164,4 +171,21 @@ public class IdentifierModule
 	public void setFileSourceIdentifier(Identifier fileSourceIdentifier) {
 		this.fileSourceIdentifier = fileSourceIdentifier;
 	}
+
+	/**
+	 * @return the shouldSkipIdentifyIfPreIdentified
+	 */
+	public boolean isShouldSkipIdentifyIfPreIdentified() {
+		return shouldSkipIdentifyIfPreIdentified;
+	}
+
+	/**
+	 * @param shouldSkipIdentifyIfPreIdentified the shouldSkipIdentifyIfPreIdentified to set
+	 */
+	public void setShouldSkipIdentifyIfPreIdentified(
+			boolean shouldSkipIdentifyIfPreIdentified) {
+		this.shouldSkipIdentifyIfPreIdentified = shouldSkipIdentifyIfPreIdentified;
+	}
+
+
 }

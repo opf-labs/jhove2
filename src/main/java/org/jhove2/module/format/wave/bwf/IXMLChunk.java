@@ -82,7 +82,7 @@ public class IXMLChunk
         FormatIdentification id = new FormatIdentification(xml, Confidence.PositiveGeneric);
         child.addPresumptiveFormat(id);
         source.addChildSource(child);
-        jhove2.characterize(child, input, true);      
+        jhove2.characterize(child, input);      
         consumed += this.size;
         
         return consumed;

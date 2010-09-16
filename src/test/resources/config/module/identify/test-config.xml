@@ -20,6 +20,7 @@
 			</list>
 		</property>
 		<property name="fileSourceIdentifier"  ref="testDroidIdentifier"/>
+		<property name="shouldSkipIdentifyIfPreIdentified" value="true"/>
 	</bean>
 	
 		<!-- Identifier command bean -->
