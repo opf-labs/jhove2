@@ -215,8 +215,8 @@ extends AbstractReportable {
     IOException, JHOVE2Exception {
 
         this.isValid = Validity.Undetermined;
-        long offsetInIFD = offset;
-        nextIFD = 0L;
+        long offsetInIFD = this.offset;
+        this.nextIFD = 0L;
 
         try {
             /* Read the first byte. */
@@ -224,7 +224,7 @@ extends AbstractReportable {
             numEntries = input.readUnsignedShort();
             offsetInIFD += 2;
 
-            if (numEntries < 1){
+            if (this.numEntries < 1){
                 this.isValid = Validity.False;
                 Object[]messageArgs = new Object[]{0, input.getPosition(), numEntries};
                 this.zeroIFDEntriesMessage = new Message(Severity.ERROR,
@@ -236,7 +236,7 @@ extends AbstractReportable {
             long length = numEntries * 12;
             /* go to the field that contains the offset to the next IFD - 0 if none */
             offsetInIFD += length;
-            nextIFD = 0L;
+            this.nextIFD = 0L;
         }
         catch (IOException e) {
             throw new JHOVE2Exception("Premature EOF" + offsetInIFD, e);
@@ -246,7 +246,7 @@ extends AbstractReportable {
             /* parse the IFD traversing through the list of Directory Entries (IFDEntry) */
             IFDEntry.resetPrevTag(0);
             
-            for (int i=0; i<numEntries; i++) {
+            for (int i=0; i<this.numEntries; i++) {
                 IFDEntry ifdEntry = new IFDEntry();
                 ifdEntry.parse(jhove2, source, input);
                 Validity validity = ifdEntry.isValid();
@@ -256,10 +256,14 @@ extends AbstractReportable {
                 version = ifdEntry.getVersion();
                 entries.put(ifdEntry.getTag(), ifdEntry);
 
-                /* reset the input position so that the offset is set up correctly since when you read values the
-                 * input position gets changed from where you want to be in the IFD 
+                /* reset the input position to point to the next IFD Entry (after parsing current IFD Entry,
+                 * input position is modified when reading data at location that IFD Entry value offset points to)
+                 * Calculation is:
+                 *  offset (offset start of IFD) + 
+                 *  14 (2 bytes for numofEntries field + 12 bytes for IFD Entry 0) +
+                 *  12 * i (12 bytes for each IFD read in so far) 
                  */
-                input.setPosition(offset + 14 + 12*i);
+                input.setPosition(this.offset + 14 + 12*i);
             }
         }
         catch (IOException e) {

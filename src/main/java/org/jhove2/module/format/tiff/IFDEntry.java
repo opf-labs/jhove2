@@ -277,7 +277,8 @@ implements Comparable<Object> {
             this.count = (int) input.readUnsignedInt();
 
             /* store the offset of the value field in the IFD Entry */
-            this.valueOffset = input.getPosition(); 
+            this.valueOffset = input.getPosition();
+            long saveOffset = this.valueOffset;
             long value = input.readUnsignedInt();
 
             if (calcValueSize(type, count) > 4) {
@@ -334,7 +335,7 @@ implements Comparable<Object> {
              * input position gets changed from where you want to be in the IFD 
              * the offset of the Value field + 4 bytes will get you to the next Tag field
              */
-            input.setPosition(valueOffset + 4);
+           input.setPosition(saveOffset + 4);
 
         }
     }

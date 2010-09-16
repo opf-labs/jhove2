@@ -130,10 +130,12 @@ public class NumericCharacterReferences extends AbstractReportable {
      * @throws JHOVE2Exception
      */
     protected void parse(Input input, String encodingFromSAX2, JHOVE2 jhove2)
-            throws IOException, JHOVE2Exception {
+            throws IOException, JHOVE2Exception 
+    {
+        ByteBuffer bbuf = input.getBuffer();
+        int position = bbuf.position();
         try {
             /* Get a CharSequence object that can be analyzed */
-            ByteBuffer bbuf = input.getBuffer();
             CharBuffer cbuf = Charset.forName(encodingFromSAX2).newDecoder()
                     .decode(bbuf);
             /* Look for numeric character references */
@@ -151,6 +153,9 @@ public class NumericCharacterReferences extends AbstractReportable {
                     Severity.ERROR, Context.OBJECT,
                     "org.jhove2.module.format.xml.XmlModule.invalidCharacterForEncodingMessage",
                     jhove2.getConfigInfo());
+        }
+        finally {
+            bbuf.position(position);
         }
     }
 
