@@ -206,12 +206,12 @@
 						</goals>
 						<configuration>
 							<prefix>%JHOVE2_HOME%\lib</prefix>
- 							<!-- Windows uses \ as file separator and ; as a path separator -->
-							<pathSeparator>;</pathSeparator> 
- 							<fileSeparator>\\</fileSeparator>  
-  							<outputFilterFile>true</outputFilterFile>
-							<outputFile>${project.basedir}/src/main/assembly/classpath_cmd.properties</outputFile> 
- 						</configuration>
+							<!-- Windows uses \ as file separator and ; as a path separator -->
+							<pathSeparator>;</pathSeparator>
+							<fileSeparator>\\</fileSeparator>
+							<outputFilterFile>true</outputFilterFile>
+							<outputFile>${project.basedir}/src/main/assembly/classpath_cmd.properties</outputFile>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
@@ -227,7 +227,8 @@
 							<goal>run</goal>
 						</goals>
 						<configuration>
-							<tasks> <!-- We copy the .sh file with injection -->
+							<tasks>
+								<!-- We copy the .sh file with injection -->
 								<copy todir="${project.basedir}/src/main/scripts" overwrite="true">
 									<fileset dir="src/main/assembly">
 										<filename name="env.sh" />
@@ -256,7 +257,7 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>			     
+			</plugin>
 			<!-- generate the JHOVE2 Command Line jar executable -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -310,7 +311,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			
 		</plugins>
 	</build>
 </project>

@@ -316,7 +316,7 @@ implements Comparable<Object> {
                 I8R identifier = (I8R) i8r.get("ICCIdentifier");
                 FormatIdentification iccPresumptiveFormat = new FormatIdentification(identifier, Confidence.PositiveSpecific); 
                 bss.addPresumptiveFormat(iccPresumptiveFormat);
-                jhove2.characterize(bss, input, true);
+                jhove2.characterize(bss, input);
             }
             /* Parse the XMP tag */
             else if (this.tag == XMP) {
@@ -325,7 +325,7 @@ implements Comparable<Object> {
                 I8R identifier = (I8R) i8r.get("XmlIdentifier");
                 FormatIdentification xmlPresumptiveFormat = new FormatIdentification(identifier, Confidence.PositiveGeneric); 
                 bss.addPresumptiveFormat(xmlPresumptiveFormat);
-                jhove2.characterize(bss, input, true);                
+                jhove2.characterize(bss, input);                
             }
             else {
                 readValues(input);

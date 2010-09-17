@@ -20,7 +20,6 @@
 			</list>
 		</property>
 	</bean>
-
 	<!-- TIFF/IT format bean -->
 	<bean id="TiffItFormat" class="org.jhove2.core.format.Format"
 		scope="singleton">
@@ -36,21 +35,17 @@
 			</set>
 		</property>
 	</bean>
-
 	<!-- TIFF/IT identifier bean -->
 	<bean id="TiffItIdentifier" class="org.jhove2.core.I8R" scope="singleton">
 		<constructor-arg type="java.lang.String"
 			value="http://jhove2.org/terms/format/tiff-it" />
 	</bean>
-
 	<!-- TIFF/IT ISO 646 -->
 	<bean id="TiffItISO646" class="org.jhove2.core.I8R" scope="singleton">
 		<constructor-arg type="java.lang.String" value="ISO/IEC 646:1991" />
 		<constructor-arg type="org.jhove2.core.I8R$Namespace"
 			value="ISO" />
 	</bean>
-
-
 	<!-- TIFF: module bean -->
 	<bean id="TiffModule" class="org.jhove2.module.format.tiff.TiffModule"
 		scope="prototype">
@@ -67,9 +62,6 @@
 			</list>
 		</property>
 	</bean>
-
-
-
 	<!-- Tiff format bean -->
 	<bean id="TiffFormat" class="org.jhove2.core.format.Format" scope="singleton">
 		<constructor-arg type="java.lang.String" value="Tiff" />
@@ -100,7 +92,6 @@
 			</list>
 		</property>
 	</bean>
-
 	<!-- Tiff identifier bean -->
 	<bean id="TiffIdentifier" class="org.jhove2.core.I8R" scope="singleton">
 		<constructor-arg type="java.lang.String"
@@ -136,11 +127,10 @@
 		<constructor-arg type="org.jhove2.core.I8R$Namespace"
 			value="MIME" />
 	</bean>
-
 	<!-- Tiff 4.0 specification bean -->
 	<bean id="Tiff4.0Specification" class="org.jhove2.core.Document"
 		scope="singleton">
-		<constructor-arg type="java.lang.String" value="Tag Image File Format  Rev 4.0" />
+		<constructor-arg type="java.lang.String" value="Tag Image File Format Rev 4.0" />
 		<constructor-arg type="org.jhove2.core.Document$Type"
 			value="Specification" />
 		<constructor-arg type="org.jhove2.core.Document$Intention"
@@ -156,7 +146,6 @@
 		</property>
 		<property name="publisher" value="???" />
 	</bean>
-
 	<!-- Tiff 5.0 specification bean -->
 	<bean id="Tiff5.0Specification" class="org.jhove2.core.Document"
 		scope="singleton">
@@ -177,7 +166,6 @@
 		</property>
 		<property name="publisher" value="???" />
 	</bean>
-
 	<!-- Tiff 6.0 specification bean -->
 	<bean id="Tiff6.0Specification" class="org.jhove2.core.Document"
 		scope="singleton">
@@ -197,7 +185,6 @@
 		</property>
 		<property name="publisher" value="Addison-Wesley" />
 	</bean>
-
 	<!-- Tiff 4.0 specification URL bean -->
 	<bean id="Tiff4.0SpecificationURL" class="org.jhove2.core.I8R"
 		scope="singleton">
@@ -206,7 +193,6 @@
 		<constructor-arg type="org.jhove2.core.I8R$Namespace"
 			value="URL" />
 	</bean>
-
 	<!-- Tiff 5.0 specification URL bean -->
 	<bean id="Tiff5.0SpecificationURL" class="org.jhove2.core.I8R"
 		scope="singleton">
@@ -215,7 +201,6 @@
 		<constructor-arg type="org.jhove2.core.I8R$Namespace"
 			value="URL" />
 	</bean>
-
 	<!-- Tiff 6.0 specification URL bean -->
 	<bean id="Tiff6.0SpecificationURL" class="org.jhove2.core.I8R"
 		scope="singleton">
@@ -224,25 +209,22 @@
 		<constructor-arg type="org.jhove2.core.I8R$Namespace"
 			value="URL" />
 	</bean>
-
-
-	<!-- Tiff Tags properties bean --> 
-   <bean id="TiffTags" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
-  		<property name="propertyFileBaseName" value="tiffTags"/>
-   </bean>      
+	<!-- Tiff Tags properties bean -->
+	<bean id="TiffTags" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="tiffTags"/>
+	</bean>
    
-	<!-- compression description properties bean --> 
-   <bean id="Compression" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
-  		<property name="propertyFileBaseName" value="compression"/>
-   </bean>
-
-	<!-- Orientation description properties bean --> 
-   <bean id="Orientation" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
-  		<property name="propertyFileBaseName" value="orientation"/>
-   </bean>
+	<!-- compression description properties bean -->
+	<bean id="Compression" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="compression"/>
+	</bean>
+	<!-- Orientation description properties bean -->
+	<bean id="Orientation" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="orientation"/>
+	</bean>
    
-	<!-- Photometric description properties bean --> 
-   <bean id="Photometric" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
-  		<property name="propertyFileBaseName" value="photometric"/>
-   </bean>   
-</beans>		   
+	<!-- Photometric description properties bean -->
+	<bean id="Photometric" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="photometric"/>
+	</bean>
+</beans>

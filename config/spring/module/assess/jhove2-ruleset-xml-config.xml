@@ -48,7 +48,9 @@
 		<property name="predicates">
 			<list value-type="java.lang.String">
 				<value>valid.toString() == 'true'</value>
-				<value><![CDATA[(valid.toString() == 'undetermined') && (wellFormed.toString() == 'true')]]></value>
+				<value>
+					<![CDATA[(valid.toString() == 'undetermined') && (wellFormed.toString() == 'true')]]>
+				</value>
 			</list>
 		</property>
 		<property name="enabled" value="true"/>

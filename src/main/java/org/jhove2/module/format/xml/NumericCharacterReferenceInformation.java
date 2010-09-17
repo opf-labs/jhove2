@@ -42,7 +42,6 @@ import java.nio.CharBuffer;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -55,7 +54,6 @@ import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
-import org.jhove2.core.source.Source;
 
 /**
  * A class to hold a sorted set of numeric character references (NCRs) that are
@@ -82,8 +80,8 @@ public class NumericCharacterReferenceInformation extends AbstractReportable {
     TreeMap<Integer, NumericCharacterReference> numericCharacterReferenceMap 
         = new TreeMap<Integer, NumericCharacterReference>();
 
-    /** NCR Parser error messages. */
-    protected ArrayList<Message> ncrParserMessages = new ArrayList<Message>();
+    /** Invalid character for encoding message. */
+    protected Message invalidCharacterForEncodingMessage;
 
     /**
      * Get the NCRs found during XML parsing.
@@ -91,22 +89,10 @@ public class NumericCharacterReferenceInformation extends AbstractReportable {
      * @return the numeric character references
      */
     @ReportableProperty(order = 1, value = "numeric character references found during XML parsing")
-    public ArrayList<NumericCharacterReference> getNumericCharacterReferences() {
+    public ArrayList<NumericCharacterReference> getNumericCharacterReferenceList() {
         return new ArrayList<NumericCharacterReference>(
                 numericCharacterReferenceMap.values());
     }
-
-    /**
-     * Get NCR Parser messages.
-     * 
-     * @return NCR Parser messages
-     */
-    @ReportableProperty(order = 2, value = "NCR Parser Messages.")
-    public List<Message> getNcrParserMessages() {
-        return this.ncrParserMessages;
-    }
-
-
 
     /**
      * Increment the instance count for this numeric character reference.
@@ -115,14 +101,7 @@ public class NumericCharacterReferenceInformation extends AbstractReportable {
      *            the string representation of a character's unicode code point
      */
     public void tally(String code) {
-    	Integer codePoint;
-    	if (code.startsWith("x")) {
-    		// Hexadecimal string
-    		codePoint = Integer.decode(code.replace("x", "0x"));
-    	} else {
-    		// Decimal string
-    		codePoint = Integer.valueOf(code);
-    	}
+        Integer codePoint = Integer.decode(code.replace("x", "0x"));
         NumericCharacterReference reference = numericCharacterReferenceMap
                 .get(codePoint);
         if (reference != null) {
@@ -155,9 +134,6 @@ public class NumericCharacterReferenceInformation extends AbstractReportable {
     {
         ByteBuffer bbuf = input.getBuffer();
         int position = bbuf.position();
-
-		/** the encoded numeric character reference found by the pattern matcher */
-
         try {
             /* Get a CharSequence object that can be analyzed */
             CharBuffer cbuf = Charset.forName(encodingFromSAX2).newDecoder()
@@ -169,25 +145,14 @@ public class NumericCharacterReferenceInformation extends AbstractReportable {
                  * Found one, record the occurrence of the NCR code (pattern
                  * capture group 1)
                  */
-            	String ncr = null;
-            	try {
-                	ncr = ncrMatcher.group(1);
-                    tally(ncr);            		
-            	}
-                catch (NumberFormatException e) {
-                    ncrParserMessages.add(new Message(
-                            Severity.ERROR, Context.OBJECT,
-                            "org.jhove2.module.format.xml.XmlModule.invalidNumericCharacterReference",
-                            new Object[]{"&#" + ncr},
-                            jhove2.getConfigInfo()));
-                }
+                tally(ncrMatcher.group(1));
             }
         }
         catch (CharacterCodingException e) {
-        	ncrParserMessages.add(new Message(
+            this.invalidCharacterForEncodingMessage = new Message(
                     Severity.ERROR, Context.OBJECT,
                     "org.jhove2.module.format.xml.XmlModule.invalidCharacterForEncodingMessage",
-                    jhove2.getConfigInfo()));
+                    jhove2.getConfigInfo());
         }
         finally {
             bbuf.position(position);

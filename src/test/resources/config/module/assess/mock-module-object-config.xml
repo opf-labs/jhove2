@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
-
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 	<bean id="MockModule" class="org.jhove2.module.assess.MockModule">
 		<property name="mpBoolean" value="false"></property>
 		<property name="mpString" value="Module mock string"></property>
@@ -35,8 +32,7 @@
 			</list>
 		</property>
 	</bean>
-	<bean id="MockBaseReportable"
-		class="org.jhove2.module.assess.MockReportable">
+	<bean id="MockBaseReportable" class="org.jhove2.module.assess.MockReportable">
 		<property name="cpString" value="mock string value"></property>
 		<property name="cpBoolean" value="true"></property>
 		<property name="cpLong" value="1234567"></property>
@@ -49,30 +45,19 @@
 			</list>
 		</property>
 	</bean>
-	<bean id="MockReportable0"
-		class="org.jhove2.module.assess.MockReportable"
-		parent="MockBaseReportable">
+	<bean id="MockReportable0" class="org.jhove2.module.assess.MockReportable" parent="MockBaseReportable">
 		<property name="cpEV" value="EV0"></property>
 	</bean>
-	<bean id="MockReportable1"
-		class="org.jhove2.module.assess.MockReportable"
-		parent="MockBaseReportable">
+	<bean id="MockReportable1" class="org.jhove2.module.assess.MockReportable" parent="MockBaseReportable">
 		<property name="cpEV" value="EV1"></property>
 	</bean>
-	<bean id="MockReportable2"
-		class="org.jhove2.module.assess.MockReportable"
-		parent="MockBaseReportable">
+	<bean id="MockReportable2" class="org.jhove2.module.assess.MockReportable" parent="MockBaseReportable">
 		<property name="cpEV" value="EV2"></property>
 	</bean>
-	<bean id="MockReportable3"
-		class="org.jhove2.module.assess.MockReportable"
-		parent="MockBaseReportable">
+	<bean id="MockReportable3" class="org.jhove2.module.assess.MockReportable" parent="MockBaseReportable">
 		<property name="cpEV" value="EV3"></property>
 	</bean>
-	<bean id="MockReportable4"
-		class="org.jhove2.module.assess.MockReportable"
-		parent="MockBaseReportable">
+	<bean id="MockReportable4" class="org.jhove2.module.assess.MockReportable" parent="MockBaseReportable">
 		<property name="cpEV" value="EV4"></property>
 	</bean>
-
 </beans>

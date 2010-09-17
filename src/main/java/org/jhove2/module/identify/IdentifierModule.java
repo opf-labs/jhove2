@@ -77,6 +77,9 @@ public class IdentifierModule
 	/** File-level identifier module. */
 	protected Identifier fileSourceIdentifier;
 	
+	/** flag to indicate bypass of Identification if Source is pre-identified */
+	protected boolean shouldSkipIdentifyIfPreIdentified;
+	
 	/**
 	 * Instantiate a new <code>IdentifierModule</code>.
 	 */
@@ -107,6 +110,9 @@ public class IdentifierModule
 	{
 		Set<FormatIdentification> presumptiveFormatIDs = 
 			new TreeSet<FormatIdentification>();
+		Set<FormatIdentification> existingIds = source.getPresumptiveFormats();
+		boolean preIdentified = (existingIds != null && existingIds.size()> 0);
+		if (!(preIdentified && this.shouldSkipIdentifyIfPreIdentified)){
 		if (source instanceof ClumpSource) {
 			/* ClumpSources are only created when identified as instances
 			 * of a particular clump format, so should have identifications
@@ -145,6 +151,7 @@ public class IdentifierModule
 				timer.setEndTime();
 			}
 		}
+		}
 		return presumptiveFormatIDs;
 	}
 
@@ -164,4 +171,21 @@ public class IdentifierModule
 	public void setFileSourceIdentifier(Identifier fileSourceIdentifier) {
 		this.fileSourceIdentifier = fileSourceIdentifier;
 	}
+
+	/**
+	 * @return the shouldSkipIdentifyIfPreIdentified
+	 */
+	public boolean isShouldSkipIdentifyIfPreIdentified() {
+		return shouldSkipIdentifyIfPreIdentified;
+	}
+
+	/**
+	 * @param shouldSkipIdentifyIfPreIdentified the shouldSkipIdentifyIfPreIdentified to set
+	 */
+	public void setShouldSkipIdentifyIfPreIdentified(
+			boolean shouldSkipIdentifyIfPreIdentified) {
+		this.shouldSkipIdentifyIfPreIdentified = shouldSkipIdentifyIfPreIdentified;
+	}
+
+
 }

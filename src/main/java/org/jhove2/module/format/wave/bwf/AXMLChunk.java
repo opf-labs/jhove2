@@ -83,7 +83,7 @@ public class AXMLChunk
         I8R xml = (I8R) i8r.get("XmlIdentifier");;
         FormatIdentification id = new FormatIdentification(xml, Confidence.PositiveGeneric);
         child.addPresumptiveFormat(id);
-        jhove2.characterize(child, input, true);      
+        jhove2.characterize(child, input);      
         consumed += this.size;
         
         return consumed;
