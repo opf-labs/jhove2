@@ -62,7 +62,7 @@ import org.jhove2.module.format.Validator.Validity;
  *
  */
 public abstract class IFD 
-        extends AbstractReportable {
+extends AbstractReportable {
 
     protected static Properties tiffTagProps;
 
@@ -134,10 +134,6 @@ public abstract class IFD
         Map<Integer, IFDEntry> sortedEntries = new TreeMap<Integer, IFDEntry>(entries);
         List<IFDEntry> sortedList = new ArrayList<IFDEntry>(sortedEntries.values());
         return sortedList;
-    }
-
-    public Map<Integer, IFDEntry> getEntries() {
-        return this.entries;
     }
 
     /**
@@ -220,8 +216,8 @@ public abstract class IFD
     IOException, JHOVE2Exception {
 
         this.isValid = Validity.Undetermined;
-        long offsetInIFD = offset;
-        nextIFD = 0L;
+        long offsetInIFD = this.offset;
+        this.nextIFD = 0L;
 
         try {
             /* Read the first byte. */
@@ -229,7 +225,7 @@ public abstract class IFD
             numEntries = input.readUnsignedShort();
             offsetInIFD += 2;
 
-            if (numEntries < 1){
+            if (this.numEntries < 1){
                 this.isValid = Validity.False;
                 Object[]messageArgs = new Object[]{0, input.getPosition(), numEntries};
                 this.zeroIFDEntriesMessage = new Message(Severity.ERROR,
@@ -241,7 +237,7 @@ public abstract class IFD
             long length = numEntries * 12;
             /* go to the field that contains the offset to the next IFD - 0 if none */
             offsetInIFD += length;
-            nextIFD = 0L;
+            this.nextIFD = 0L;
         }
         catch (IOException e) {
             throw new JHOVE2Exception("Premature EOF" + offsetInIFD, e);
@@ -251,7 +247,7 @@ public abstract class IFD
             /* parse the IFD traversing through the list of Directory Entries (IFDEntry) */
             IFDEntry.resetPrevTag(0);
             
-            for (int i=0; i<numEntries; i++) {
+            for (int i=0; i<this.numEntries; i++) {
                 IFDEntry ifdEntry = new IFDEntry();
                 ifdEntry.parse(jhove2, source, input);
                 Validity validity = ifdEntry.isValid();
@@ -261,10 +257,14 @@ public abstract class IFD
                 version = ifdEntry.getVersion();
                 entries.put(ifdEntry.getTag(), ifdEntry);
 
-                /* reset the input position so that the offset is set up correctly since when you read values the
-                 * input position gets changed from where you want to be in the IFD 
+                /* reset the input position to point to the next IFD Entry (after parsing current IFD Entry,
+                 * input position is modified when reading data at location that IFD Entry value offset points to)
+                 * Calculation is:
+                 *  offset (offset start of IFD) + 
+                 *  14 (2 bytes for numofEntries field + 12 bytes for IFD Entry 0) +
+                 *  12 * i (12 bytes for each IFD read in so far) 
                  */
-                input.setPosition(offset + 14 + 12*i);
+                input.setPosition(this.offset + 14 + 12*i);
             }
         }
         catch (IOException e) {
@@ -290,12 +290,11 @@ public abstract class IFD
 
     /**
      * validate the IFD
-     * @param source 
      * 
      * @return Validity
-     * @throws JHOVE2Exception 
      * @throws IOException 
      * @throws FileNotFoundException 
+     * @throws JHOVE2Exception 
      */
     abstract Validity validate(JHOVE2 jhove2, Source source) throws JHOVE2Exception, FileNotFoundException, IOException;
 

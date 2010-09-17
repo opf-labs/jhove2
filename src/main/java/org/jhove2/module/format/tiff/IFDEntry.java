@@ -264,7 +264,8 @@ implements Comparable<Object> {
             this.count = (int) input.readUnsignedInt();
 
             /* store the offset of the value field in the IFD Entry */
-            this.valueOffset = input.getPosition(); 
+            this.valueOffset = input.getPosition();
+            long saveOffset = this.valueOffset;
             long value = input.readUnsignedInt();
 
             if (calcValueSize(type, count) > 4) {
@@ -295,23 +296,44 @@ implements Comparable<Object> {
                 /* update the valueOffset to contain the value (which is the offset to the value) */
                 this.valueOffset = value;
             }
-            /* Parse the ICCProfile tag */
-            if (this.tag == TiffIFD.ICCPROFILE) {
-                ByteStreamSource bss = new ByteStreamSource(jhove2, source, this.valueOffset, this.count);
-                Map<String, Object> i8r = SpringConfigInfo.getObjectsForType(I8R.class);
-                I8R identifier = (I8R) i8r.get("ICCIdentifier");
-                FormatIdentification iccPresumptiveFormat = new FormatIdentification(identifier, Confidence.PositiveSpecific); 
-                bss.addPresumptiveFormat(iccPresumptiveFormat);
-                jhove2.characterize(bss, input, true);
-            }
-            else {
-                validate(jhove2, input); 
+
+            if (isValidTag(jhove2)) {
+                /* Handle tags which require unique processing of their values */
+                
+                /* Parse the ICCProfile tag */
+                if (this.tag == TiffIFD.ICCPROFILE) {
+                    ByteStreamSource bss = new ByteStreamSource(jhove2, source, this.valueOffset, this.count);
+                    Map<String, Object> i8r = SpringConfigInfo.getObjectsForType(I8R.class);
+                    I8R identifier = (I8R) i8r.get("ICCIdentifier");
+                    FormatIdentification iccPresumptiveFormat = new FormatIdentification(identifier, Confidence.PositiveSpecific); 
+                    bss.addPresumptiveFormat(iccPresumptiveFormat);
+                    jhove2.characterize(bss, input);
+                }
+                /* Parse the XMP tag */
+                else if (this.tag == TiffIFD.XMP) {
+                    ByteStreamSource bss = new ByteStreamSource(jhove2, source, this.valueOffset, this.count);
+                    Map<String, Object> i8r = SpringConfigInfo.getObjectsForType(I8R.class);
+                    I8R identifier = (I8R) i8r.get("XmlIdentifier");
+                    FormatIdentification xmlPresumptiveFormat = new FormatIdentification(identifier, Confidence.PositiveGeneric); 
+                    bss.addPresumptiveFormat(xmlPresumptiveFormat);
+                    jhove2.characterize(bss, input);                
+                }
+                else if (this.tag == TiffIFD.STRIPBYTECOUNTS || this.tag == TiffIFD.STRIPOFFSETS) {
+                    input.setPosition(this.valueOffset);
+                    this.isArray = true;
+                    this.longArrayValue = new LongArray();
+                    this.longArrayValue.setValue(input, count);
+                }
+                else {
+                    readValues(input);
+                    validate(jhove2, input); 
+                }
             }
             /* reset the input position so that the offset is set up correctly since when you read values the
              * input position gets changed from where you want to be in the IFD 
              * the offset of the Value field + 4 bytes will get you to the next Tag field
              */
-            input.setPosition(valueOffset + 4);
+            input.setPosition(saveOffset + 4);
 
         }
     }
@@ -319,20 +341,20 @@ implements Comparable<Object> {
 
     /**
      * 
-     * validates the IFD Entry by checking: 
+     * isValidTag 
      * 
      *  1) if tag is known and defined
      *  2) that the type matches expected type values for that tag definition
      *  3) that count expected matches the count read in
-     *  4) if above are valid, read in the values for that tag
-     *  5) performing any other validations for a particular tag
      *  
      * @param jhove2
+     * @return boolean 
      * @throws JHOVE2Exception
      * @throws IOException 
      */
-    protected void validate(JHOVE2 jhove2, Input input) throws JHOVE2Exception, IOException {
+    protected boolean isValidTag(JHOVE2 jhove2) throws JHOVE2Exception, IOException {
 
+        boolean isValid = true;
         /* retrieve the definition for the tag read in */
         TiffTag tag = TiffTag.getTag(this.tag);
 
@@ -349,11 +371,21 @@ implements Comparable<Object> {
                     Context.OBJECT,
                     "org.jhove2.module.format.tiff.IFDEntry.UnknownTagMessage",
                     messageArgs, jhove2.getConfigInfo()));  
-            return;
-        }       
-
-        readValues(input);
+            isValid = false;
+        }
+        return isValid;
+    }
         
+    /**
+     * 
+     * perform validations and post-processing for specific tags 
+     * 
+     * @param jhove2
+     * @throws JHOVE2Exception
+     * @throws IOException 
+     */
+    protected void validate(JHOVE2 jhove2, Input input) throws JHOVE2Exception, IOException {
+
         /* Validate specific tags and set version when applicable */
 
         if (this.tag == TiffIFD.ARTIST) {
@@ -523,8 +555,13 @@ implements Comparable<Object> {
             return;
         }
 
+        boolean match = false;
         for (String expectedEntry:expectedTypes){
-            if (!expectedEntry.equalsIgnoreCase(typeReadIn)) {
+            if (expectedEntry.equalsIgnoreCase(typeReadIn)) {
+                match = true;
+            }
+        }
+        if (!match) { 
                 this.isValid = Validity.False;
                 Object[]messageArgs = new Object[]{typeReadIn, this.tag, expectedTypes};
                 this.TypeMismatchMessage = (new Message(Severity.ERROR,
@@ -532,8 +569,7 @@ implements Comparable<Object> {
                         "org.jhove2.module.format.tiff.IFDEntry.TypeMismatchMessage",
                         messageArgs, jhove2.getConfigInfo()));
                 throw new JHOVE2Exception("IFDEntry.checkType(): Type Mismatch Exception");
-            }        
-        }
+         }            
     }
 
     /**

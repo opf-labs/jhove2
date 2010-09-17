@@ -119,6 +119,7 @@ extends IFD
     TILEWIDTH = 322,
     TILEOFFSETS = 324,
     XCLIPPATHUNITS = 344,
+    XMP = 700,
     XRESOLUTION = 282,
     YCBCRCOEFFICIENTS = 529,
     YCBCRSUBSAMPLING = 530,
@@ -413,7 +414,7 @@ extends IFD
             this.stripByteCounts = ((LongArray) entry.getValue()).getLongArrayValue();
             hasStripByteCounts = true;
         }
-        if ((entry = entries.get(STRIPBYTECOUNTS)) != null) {
+        if ((entry = entries.get(STRIPOFFSETS)) != null) {
             this.stripOffsets = ((LongArray) entry.getValue()).getLongArrayValue();
             hasStripOffsets = true;
         }
