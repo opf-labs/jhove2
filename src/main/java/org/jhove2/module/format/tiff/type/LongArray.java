@@ -39,6 +39,14 @@ public class LongArray
     public String getValue() {
         return this.toString();
     }
+
+    /**
+     * @return the value
+     */
+    @ReportableProperty(order = 1, value = "Tag LONG Array value")
+    public long[] getLongArrayValue() {
+        return this.valueArray;
+    }
     
     @Override
     public String toString() {

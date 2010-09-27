@@ -48,7 +48,7 @@
 	</bean>
 
 	<!-- TIFF/IT profile bean -->
-	<bean id="TiffItProfile" class="org.jhove2.module.format.tiff.tiffit.TiffItProfile"
+	<bean id="TiffItProfile" class="org.jhove2.module.format.tiff.profile.TiffItProfile"
 		scope="prototype">
 		<constructor-arg ref="TiffItFormat" />
 		<property name="developers">

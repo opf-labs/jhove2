@@ -36,6 +36,7 @@
 package org.jhove2.module.format.tiff;
 
 import java.io.EOFException;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -110,7 +111,7 @@ extends AbstractReportable {
 
 
     /** TIFF version determined by data in IFDEntry */
-    private int version;
+    protected int version;
 
 
     /** Message for Zero IFD Entries */
@@ -126,7 +127,7 @@ extends AbstractReportable {
 
     /**
      * Sort the entries in the HashMap and then return only the IFDEntries
-     * @return
+     * @return List<IFDEntry>
      */
     @ReportableProperty(order = 3, value="IFD entries.")
     public List<IFDEntry> getIFDEntries() {
@@ -134,6 +135,16 @@ extends AbstractReportable {
         List<IFDEntry> sortedList = new ArrayList<IFDEntry>(sortedEntries.values());
         return sortedList;
     }
+    
+    /**
+     * returns the entries
+     * @return Map<Integer, IFDEntry>
+     */
+    public Map<Integer, IFDEntry> getEntries() {
+        return this.entries;
+    }
+
+
 
     /**
      * get the offsetof the next IFD 
@@ -253,8 +264,11 @@ extends AbstractReportable {
                 if (validity != Validity.True) {
                     this.isValid = validity;
                 }
-                version = ifdEntry.getVersion();
-                entries.put(ifdEntry.getTag(), ifdEntry);
+                int version = ifdEntry.getVersion();
+                if (version > this.version) {
+                    this.version = version;
+                }
+                this.entries.put(ifdEntry.getTag(), ifdEntry);
 
                 /* reset the input position to point to the next IFD Entry (after parsing current IFD Entry,
                  * input position is modified when reading data at location that IFD Entry value offset points to)
@@ -291,8 +305,11 @@ extends AbstractReportable {
      * validate the IFD
      * 
      * @return Validity
+     * @throws IOException 
+     * @throws FileNotFoundException 
+     * @throws JHOVE2Exception 
      */
-    abstract Validity validate(JHOVE2 jhove2);
+    abstract Validity validate(JHOVE2 jhove2, Source source) throws JHOVE2Exception, FileNotFoundException, IOException;
 
 
 }
