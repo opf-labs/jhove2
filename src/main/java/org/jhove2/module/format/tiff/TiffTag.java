@@ -186,7 +186,9 @@ public class TiffTag implements Comparable<TiffTag> {
 
                     /* retrieve version */
                     if (values.length >= 5) {
+                        if (isParsableToInt(values[4])) {
                         version = Integer.parseInt(values[4]);
+                        }
                     }
                     tiffTag = new TiffTag(tag, name, type, cardinality, defaultValue, version);
                     tags.add(tiffTag);
