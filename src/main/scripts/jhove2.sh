@@ -8,7 +8,7 @@
 # usage and configuration information, see the JHOVE2 User's Guide at
 # http://jhove2.org.
 
-. env.sh
+. ./env.sh
 
 
 ${JAVA} -cp $CP org.jhove2.app.JHOVE2CommandLine $@
