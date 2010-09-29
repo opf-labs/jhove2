@@ -63,6 +63,7 @@ import org.jhove2.module.format.tiff.type.AsciiArray;
 import org.jhove2.module.format.tiff.type.Byte;
 import org.jhove2.module.format.tiff.type.ByteArray;
 import org.jhove2.module.format.tiff.type.Double;
+import org.jhove2.module.format.tiff.type.DoubleArray;
 import org.jhove2.module.format.tiff.type.FloatObject;
 import org.jhove2.module.format.tiff.type.Long;
 import org.jhove2.module.format.tiff.type.LongArray;
@@ -173,6 +174,8 @@ implements Comparable<Object> {
     protected FloatObject floatValue;
 
     protected Double doubleValue;
+
+    private DoubleArray doubleArrayValue;
 
     protected Rational rationalValue;
 
@@ -732,6 +735,12 @@ implements Comparable<Object> {
                 shortValue = new Short(input.readUnsignedShort());
             else if (type.equals(TiffType.LONG))
                 longValue = new Long(input.readUnsignedInt());
+            else if (type.equals(TiffType.FLOAT)) {
+                floatValue = new FloatObject(input.readFloat());
+            }
+            else if (type.equals(TiffType.DOUBLE)) {
+                doubleValue = new Double(input.readDouble());
+            }
             else if (type.equals(TiffType.RATIONAL)) {
                 long num = input.readUnsignedInt();
                 long denom = input.readUnsignedInt();
@@ -748,9 +757,6 @@ implements Comparable<Object> {
                 long demon = input.readSignedInt();
                 sRationalValue = new Rational(num, demon);
             }
-            /*
-             *(TODO:  FLOAT & DOUBLE
-             */
         }
         else {
             isArray = true;
@@ -770,6 +776,10 @@ implements Comparable<Object> {
             else if (type.equals(TiffType.LONG)) {
                 longArrayValue = new LongArray();
                 longArrayValue.setValue(input, count);
+            }
+            else if (type.equals(TiffType.DOUBLE)) {
+                doubleArrayValue = new DoubleArray();
+                doubleArrayValue.setValue(input, count);
             }
             else if (type.equals(TiffType.RATIONAL)) {
                 long num = input.readUnsignedInt();
