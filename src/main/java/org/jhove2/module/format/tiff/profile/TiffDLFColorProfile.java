@@ -56,7 +56,7 @@ public class TiffDLFColorProfile extends TiffDLFProfile {
 
     /** Profile rights statement. */
     public static final String RIGHTS = "Copyright 2010 by The Regents of the University of California. "
-            + "Available under the terms of the BSD license.";
+        + "Available under the terms of the BSD license.";
 
     /** Profile validation coverage. */
     public static final Coverage COVERAGE = Coverage.Inclusive;
@@ -73,7 +73,7 @@ public class TiffDLFColorProfile extends TiffDLFProfile {
      */
     @Override
     public void validateThisProfile(JHOVE2 jhove2, TiffIFD ifd)
-            throws JHOVE2Exception {
+    throws JHOVE2Exception {
 
         /* Check required values. */
 
@@ -105,14 +105,24 @@ public class TiffDLFColorProfile extends TiffDLFProfile {
         }
 
         int[] bps = ifd.getBitsPerSample();
-        for (int i = 0; i < bps.length; i++) {
-            if (bps[i] != 8) {
-                this.isValid = Validity.False;
-                this.invalidBPSValueMessage = new Message(
-                        Severity.WARNING,
-                        Context.OBJECT,
-                        "org.jhove2.module.format.tiff.profile.TIFFProfile.InvalidBPSValueMessage",
-                        jhove2.getConfigInfo());
+        if (bps == null) {
+            this.isValid = Validity.False;
+            this.invalidBPSValueMessage = new Message(
+                    Severity.WARNING,
+                    Context.OBJECT,
+                    "org.jhove2.module.format.tiff.profile.TIFFProfile.InvalidBPSValueMessage",
+                    jhove2.getConfigInfo());
+        }
+        else {
+            for (int i = 0; i < bps.length; i++) {
+                if (bps[i] != 8) {
+                    this.isValid = Validity.False;
+                    this.invalidBPSValueMessage = new Message(
+                            Severity.WARNING,
+                            Context.OBJECT,
+                            "org.jhove2.module.format.tiff.profile.TIFFProfile.InvalidBPSValueMessage",
+                            jhove2.getConfigInfo());
+                }
             }
         }
 
