@@ -24,4 +24,4 @@ REM JHOVE2_HOME must point to home directory of JHOVE2 install.
 SET JHOVE2_HOME=%~dp0
 
 REM CP must contain a semicolon-separated list of JARs used by JHOVE2.
-SET CP=%JHOVE2_HOME%\lib\@jarName@.jar;@classpath@;%JHOVE2_HOME%\config;%JHOVE2_HOME%\config\droid
+SET CP=%JHOVE2_HOME%\lib\@jarName@.jar;@classpath@;%JHOVE2_HOME%\config\droid;%JHOVE2_HOME%\config
