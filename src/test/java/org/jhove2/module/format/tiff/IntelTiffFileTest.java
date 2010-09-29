@@ -8,6 +8,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.nio.ByteOrder;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -45,23 +46,22 @@ public class IntelTiffFileTest extends TiffModuleTestBase{
         List<IFD> ifdList = testTiffModule.getIFDs();
         for (IFD ifd : ifdList) {
             assertTrue (ifd.getZeroIFDEntriesMessage() == null);        
-         }
+        }
     }
 
     @Test
     public void testIFDEntryParseMessages() {
         List<IFD> ifdList = testTiffModule.getIFDs();
         for (IFD ifd : ifdList) {
-            List<IFDEntry> ifdEntryList = ifd.getIFDEntries();
-            for (IFDEntry ifdEntry : ifdEntryList) {
-                if (ifdEntry.getTag() == 254)
-                    assertTrue("Known tag 254 flagged", ifdEntry.getUnknownTagMessage() == null);
-                if (ifdEntry.getTag() == 34850)
-                    assertTrue("Unknown tag 34850 not flagged", !(ifdEntry.getUnknownTagMessage() == null));
-            }
+            Map<Integer, IFDEntry> ifdEntryList = ifd.getEntries();
+            IFDEntry ifdEntry = null;
+            if ((ifdEntry = ifdEntryList.get(254)) != null)
+                assertTrue("Known tag 254 flagged", ifdEntry.getUnknownTagMessage() == null);
+            if ((ifdEntry = ifdEntryList.get(34850)) == null)
+                assertTrue("Unknown tag 34850 not flagged", ifdEntry == null);
         }
     }
-    
+
     public String getIntelTestFile() {
         return intelTestFile;
     }
