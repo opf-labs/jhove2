@@ -40,5 +40,5 @@ JHOVE2_HOME=`dirname $PRG`
 JHOVE2_HOME=`cd $JHOVE2_HOME && pwd`
 
 # CP must contain a colon-separated list of JARs used by JHOVE2.
-CP=$JHOVE2_HOME/lib/@jarName@.jar:@classpath@
+CP=$JHOVE2_HOME/lib/@jarName@.jar:@classpath@:$JHOVE2_HOME/config:$JHOVE2_HOME/config/droid
 

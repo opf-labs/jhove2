@@ -1,3 +1,4 @@
+#!/bin/sh
 # JHOVE2 -- Next-generation architecture for format-aware characterization.
 # Copyright 2009-2010 by The Regents of the University of California, Ithaka
 # Harbors, Inc., and The Board of Trustees of the Leland Stanford Junior
