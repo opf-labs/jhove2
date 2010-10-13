@@ -168,16 +168,14 @@ public class BaseFormatModule
 			List<FormatProfile> profiles = this.getProfiles();
 			if (profiles.size() > 0) {
 				for (FormatProfile profile : profiles) {
-					if (profile instanceof Validator) {
-					    profile.setFormatModule(this);
+				    profile.setFormatModule(this);
 					    
-						TimerInfo timer = profile.getTimerInfo();
-						timer.setStartTime();
+					TimerInfo timer = profile.getTimerInfo();
+					timer.setStartTime();
 						
-						((Validator) profile).validate(jhove2, source, input);
+					((Validator) profile).validate(jhove2, source, input);
 						
-						timer.setEndTime();
-					}
+					timer.setEndTime();
 				}
 			}
 		}
