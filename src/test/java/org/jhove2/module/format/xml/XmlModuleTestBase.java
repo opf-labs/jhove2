@@ -114,6 +114,7 @@ public class XmlModuleTestBase {
             FileSource fileSource = new FileSource(testFile);
             Input input = fileSource.getInput(JHOVE2);
             testXmlModule.parse(JHOVE2, fileSource, input);
+            testXmlModule.validate(JHOVE2, fileSource, input);
         }
         catch (Exception e) {
             // fail("Exception thrown: " + e.getMessage());
