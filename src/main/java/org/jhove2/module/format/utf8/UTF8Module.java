@@ -70,10 +70,10 @@ public class UTF8Module
 	implements Validator
 {
 	/** UTF-8 module version identifier. */
-	public static final String VERSION = "2.0.0";
+	public static final String VERSION = "2.0.1";
 
 	/** UTF-8 module release date. */
-	public static final String RELEASE = "2010-09-10";
+	public static final String RELEASE = "2010-10-14";
 
 	/** UTF-8 module rights statement. */
 	public static final String RIGHTS =
