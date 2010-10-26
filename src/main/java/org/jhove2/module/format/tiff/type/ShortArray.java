@@ -25,11 +25,17 @@ public class ShortArray
     public ShortArray() {}
     
     /**
-     * @return the value
+     * @return the value stored in the ShortArray reportable object
      */
     @ReportableProperty(order = 1, value = "Tag SHORT Array value")
-    public String getValueArray() {
+    public String getValue() {
         return this.toString();
+    }
+    /**
+     * @return the value Array
+     */
+    public int[] getShortArrayValue() {
+        return valueArray;
     }
     
     public void setValue(Input input, long count) throws IOException {

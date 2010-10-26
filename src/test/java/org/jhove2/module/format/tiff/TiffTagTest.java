@@ -49,7 +49,7 @@ public class TiffTagTest {
                 for (TiffTag tiffTag:tiffTagArray)
                     System.out.println("tiff tag # =" + tiffTag.getTag() 
                             + " Name = " + tiffTag.getName() + " type = " 
-                            + Arrays.toString(tiffTag.getType()) 
+                            + tiffTag.getType() 
                             + " card = " + tiffTag.getCardinality() + " defaultValue = " + tiffTag.getDefValue() 
                             + " version = " + tiffTag.getVersion());
                 

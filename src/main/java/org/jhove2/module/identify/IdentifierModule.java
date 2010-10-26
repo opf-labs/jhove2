@@ -46,6 +46,7 @@ import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.TimerInfo;
 import org.jhove2.core.format.FormatIdentification;
 import org.jhove2.core.format.FormatIdentification.Confidence;
+import org.jhove2.core.io.Input;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.DirectorySource;
 import org.jhove2.core.source.FileSetSource;
@@ -76,6 +77,9 @@ public class IdentifierModule
 	/** File-level identifier module. */
 	protected Identifier fileSourceIdentifier;
 	
+	/** flag to indicate bypass of Identification if Source is pre-identified */
+	protected boolean shouldSkipIdentifyIfPreIdentified;
+	
 	/**
 	 * Instantiate a new <code>IdentifierModule</code>.
 	 */
@@ -90,6 +94,8 @@ public class IdentifierModule
 	 *            JHOVE2 framework
 	 * @param source
 	 *            Source unit
+	 * @param input
+	 *            Source input
 	 * @return Presumptively identified presumptiveFormatIds
 	 * @throws IOException
 	 *             I/O exception encountered identifying the source unit
@@ -98,11 +104,15 @@ public class IdentifierModule
 	 *      org.jhove2.core.source.Source)
 	 */
 	@Override
-	public Set<FormatIdentification> identify(JHOVE2 jhove2, Source source)
+	public Set<FormatIdentification> identify(JHOVE2 jhove2, Source source,
+	                                          Input input)
 		throws IOException, JHOVE2Exception
 	{
 		Set<FormatIdentification> presumptiveFormatIDs = 
 			new TreeSet<FormatIdentification>();
+		Set<FormatIdentification> existingIds = source.getPresumptiveFormats();
+		boolean preIdentified = (existingIds != null && existingIds.size()> 0);
+		if (!(preIdentified && this.shouldSkipIdentifyIfPreIdentified)){
 		if (source instanceof ClumpSource) {
 			/* ClumpSources are only created when identified as instances
 			 * of a particular clump format, so should have identifications
@@ -134,12 +144,13 @@ public class IdentifierModule
 			timer.setStartTime();
 			try {
 				Set<FormatIdentification> formats =
-					fileSourceIdentifier.identify(jhove2, source);
+					fileSourceIdentifier.identify(jhove2, source, input);
 				presumptiveFormatIDs.addAll(formats);
 			}
 			finally {
 				timer.setEndTime();
 			}
+		}
 		}
 		return presumptiveFormatIDs;
 	}
@@ -160,4 +171,21 @@ public class IdentifierModule
 	public void setFileSourceIdentifier(Identifier fileSourceIdentifier) {
 		this.fileSourceIdentifier = fileSourceIdentifier;
 	}
+
+	/**
+	 * @return the shouldSkipIdentifyIfPreIdentified
+	 */
+	public boolean isShouldSkipIdentifyIfPreIdentified() {
+		return shouldSkipIdentifyIfPreIdentified;
+	}
+
+	/**
+	 * @param shouldSkipIdentifyIfPreIdentified the shouldSkipIdentifyIfPreIdentified to set
+	 */
+	public void setShouldSkipIdentifyIfPreIdentified(
+			boolean shouldSkipIdentifyIfPreIdentified) {
+		this.shouldSkipIdentifyIfPreIdentified = shouldSkipIdentifyIfPreIdentified;
+	}
+
+
 }

@@ -6324,6 +6324,19 @@
                 </SubSequence>
             </ByteSequence>
         </InternalSignature>
+        <!-- JHOVE2-specific extension added for ICC color profile, 2010-08-31 -->
+        <InternalSignature ID="10001" Specificity="Specific">
+        	<ByteSequence Reference="BOFoffset" Endianness="Big-endian">
+        		<SubSequence Position="1" SubSeqMinOffset="36" SubSeqMaxOffset="0" MinFragLength="0">
+        			<Sequence>61637370</Sequence>
+                    <DefaultShift>5</DefaultShift>
+                    <Shift Byte="70">1</Shift>
+                    <Shift Byte="73">2</Shift>
+                    <Shift Byte="63">3</Shift>
+                    <Shift Byte="61">4</Shift>
+        		</SubSequence>
+        	</ByteSequence>
+        </InternalSignature>
      </InternalSignatureCollection>
     <FileFormatCollection>
         <FileFormat ID="8" Name="Microsoft Word for  Macintosh Document" Version="3.0" PUID="x-fmt/1">
@@ -8438,8 +8451,8 @@
             <HasPriorityOverFileFormatID>777</HasPriorityOverFileFormatID>
         </FileFormat>
         
-        <!-- JHOVE2-specific extension added for ICC color profile, 2010-08-18 -->
-        <FileFormat ID="100001" Name="ICC Color Profile" Version="4.2.0.0" PUID="x-fmt/100001">
+        <!-- JHOVE2-specific extension added for ICC color profile, 2010-08-31 -->
+        <FileFormat ID="10002" Name="ICC Color Profile" Version="4.2.0.0" PUID="x-fmt/10002">
         	<Extension>icc</Extension>Extension>
         </FileFormat>
     </FileFormatCollection>

@@ -1,7 +1,43 @@
+/**
+ * JHOVE2 - Next-generation architecture for format-aware characterization
+ * <p>
+ * Copyright (c) 2010 by The Regents of the University of California. All rights reserved.
+ * </p>
+ * <p>
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * </p>
+ * <ul>
+ * <li>Redistributions of source code must retain the above copyright notice,
+ * this list of conditions and the following disclaimer.</li>
+ * <li>Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.</li>
+ * <li>Neither the name of the University of California/California Digital
+ * Library, Ithaka Harbors/Portico, or Stanford University, nor the names of its
+ * contributors may be used to endorse or promote products derived from this
+ * software without specific prior written permission.</li>
+ * </ul>
+ * <p>
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ * </p>
+ */
 package org.jhove2.module.format.tiff;
 
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
@@ -36,7 +72,7 @@ public class TiffTag implements Comparable<TiffTag> {
     protected String name;
 
     /** the field type  */
-    protected String[] type;
+    protected List<String> type;
     /**
      * the number of values, count of the indicated Type 
      */
@@ -70,7 +106,7 @@ public class TiffTag implements Comparable<TiffTag> {
     public TiffTag(int tag, String name, String[] type, String cardinality, String defaultValue, int version) {
         this.tag = tag;
         this.name = name;
-        this.type = type;
+        this.type = Arrays.asList(type);
         this.cardinality = cardinality;
         this.defaultValue = defaultValue;
         this.version = version;
@@ -134,7 +170,7 @@ public class TiffTag implements Comparable<TiffTag> {
                     // tag|Name|Type[,Type,...]|Cardinality|Default
                     int tag = Integer.parseInt(key);
                     name = values[0];
-                    type = values[1].split(",");
+                    type = values[1].toUpperCase().split(",");
 
                     /* retrieve cardinality/count/length 
                      * count field is null if the string value it contains is not parseable to int. 
@@ -150,7 +186,9 @@ public class TiffTag implements Comparable<TiffTag> {
 
                     /* retrieve version */
                     if (values.length >= 5) {
+                        if (isParsableToInt(values[4])) {
                         version = Integer.parseInt(values[4]);
+                        }
                     }
                     tiffTag = new TiffTag(tag, name, type, cardinality, defaultValue, version);
                     tags.add(tiffTag);
@@ -188,10 +226,10 @@ public class TiffTag implements Comparable<TiffTag> {
     /**
      *  A tag can have more than one type
      * 
-     *  String[] array
+     *  List<String> array
      * @return
      */
-    public String[] getType() {
+    public List<String> getType() {
         return type;
     }
 
@@ -258,6 +296,36 @@ public class TiffTag implements Comparable<TiffTag> {
         }
 
         return ret;
+    }
+
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + tag;
+        return result;
+    }
+
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        TiffTag other = (TiffTag) obj;
+        if (tag != other.tag)
+            return false;
+        return true;
     }
 
 }

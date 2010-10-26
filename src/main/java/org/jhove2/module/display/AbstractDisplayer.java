@@ -255,12 +255,10 @@ public abstract class AbstractDisplayer
 		for (ReportableSourceInfo source : list) {
 			Set<ReportablePropertyInfo> props = source.getProperties();
 			for (ReportablePropertyInfo prop : props) {
-			    /* Check is descriptive or raw properties should be displayed. */
+			    /* Check if descriptive or raw properties should be displayed. */
 			    PropertyType type = prop.getPropertyType();
-			    if ((type == PropertyType.Descriptive &&
-			         !this.showDescriptiveProperties) ||
-			        (type == PropertyType.Raw &&
-			         !this.showRawProperties)) {
+			    if ((type == PropertyType.Descriptive && !this.showDescriptiveProperties) ||
+			        (type == PropertyType.Raw         && !this.showRawProperties)) {
 			        continue;
 			    }
 				I8R id = prop.getIdentifier();
@@ -283,17 +281,17 @@ public abstract class AbstractDisplayer
 						if (visbility != null) {
 							if (value instanceof Boolean) {
 								boolean b = ((Boolean) value).booleanValue();
-								if ((b && visbility == DisplayVisibility.IfFalse)
-										|| (!b && visbility == DisplayVisibility.IfTrue)) {
+								if (( b && visbility == DisplayVisibility.IfFalse) ||
+								    (!b && visbility == DisplayVisibility.IfTrue)) {
 									continue;
 								}
 							} else if (value instanceof Number) {
 								double d = ((Number) value).doubleValue();
-								if ((d == 0.0 && visbility == DisplayVisibility.IfNonZero)    ||
-								    (d != 0.0 && visbility == DisplayVisibility.IfZero)       ||
-									(d < 0.0 && visbility == DisplayVisibility.IfNonNegative) ||
-									(d > 0.0 && visbility == DisplayVisibility.IfNonPositive) ||
-									(d <= 0.0 && visbility == DisplayVisibility.IfPositive)   ||
+								if ((d == 0.0 && visbility == DisplayVisibility.IfNonZero)     ||
+								    (d != 0.0 && visbility == DisplayVisibility.IfZero)        ||
+									(d <  0.0 && visbility == DisplayVisibility.IfNonNegative) ||
+									(d >  0.0 && visbility == DisplayVisibility.IfNonPositive) ||
+									(d <= 0.0 && visbility == DisplayVisibility.IfPositive)    ||
 									(d >= 0.0 && visbility == DisplayVisibility.IfNegative)) {
 									continue;
 								}
@@ -533,9 +531,15 @@ public abstract class AbstractDisplayer
 			if (props != null) {
 				Set<String> keys = props.stringPropertyNames();
 				for (String key : keys) {
+				    /* Remove any trailing white space from the display directive. */
+                    String prop = props.getProperty(key);
+                    int in = prop.indexOf(' ');
+                    if (in > 1) {
+                        prop = prop.substring(0, in);
+                    }
 					DisplayVisibility value =
-					    DisplayVisibility.valueOf(props.getProperty(key));
-					if (value != null) {
+					    DisplayVisibility.valueOf(prop);
+					if (value != null && value != DisplayVisibility.Always) {
 						visibilities.put(key, value);
 					}
 				}

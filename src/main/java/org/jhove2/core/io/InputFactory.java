@@ -50,7 +50,7 @@ import org.jhove2.core.io.Input.Type;
  */
 public class InputFactory {
 	/**
-	 * Factory to create an appropriate <code>AbstractInput</code>.
+	 * Factory to create an appropriate big-endian <code>AbstractInput</code>.
 	 * 
 	 * @param file
 	 *            Java {java.io.File} underlying the inputable
@@ -67,7 +67,7 @@ public class InputFactory {
 	public static Input getInput(File file, int bufferSize, Type type)
 		throws FileNotFoundException, IOException
 	{
-		return getInput(file, bufferSize, type, ByteOrder.LITTLE_ENDIAN);
+		return getInput(file, bufferSize, type, ByteOrder.BIG_ENDIAN);
 	}
 
 	/**
@@ -104,22 +104,26 @@ public class InputFactory {
 	    throws FileNotFoundException, IOException
 	{
 		AbstractInput abstractInput = null;
-		if (type.equals(Type.Direct)) {
-			abstractInput = new DirectInput(file, bufferSize, order);
-		}
-		else if (type.equals(Type.NonDirect)) {
-			abstractInput = new NonDirectInput(file, bufferSize, order);
-		}
-		else if (type.equals(Type.Mapped)) {
-			/* Only files smaller than Input.MAX_MAPPED_FILESIZE can utilize 
-			 * MappedByteBuffers 
-			 */
-			if (file.length() < Input.MAX_MAPPED_FILE) {
-				abstractInput = new MappedInput(file, bufferSize, order);
-			}
-			else {
-				abstractInput = new DirectInput(file, bufferSize, order);
-			}
+		if (file != null && file.canRead()) {
+		    if (type.equals(Type.Direct)) {
+		        abstractInput = new DirectInput(file, bufferSize, order);
+		    }
+		    else if (type.equals(Type.NonDirect)) {
+		        abstractInput = new NonDirectInput(file, bufferSize, order);
+		    }
+		    else if (type.equals(Type.Mapped)) {
+		        /* Only files smaller than Input.MAX_MAPPED_FILESIZE can utilize 
+		         * MappedByteBuffers 
+		         */
+		        if (file.length() < Input.MAX_MAPPED_FILE) {
+		            abstractInput = new MappedInput(file, bufferSize, order);
+		        }
+		        else {
+		            abstractInput = new DirectInput(file, bufferSize, order);
+		        }
+		    }
+		    abstractInput.setBufferType(type);
+		    abstractInput.setByteOrder(order);
 		}
 
 		return abstractInput;

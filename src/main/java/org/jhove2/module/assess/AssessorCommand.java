@@ -40,6 +40,7 @@ package org.jhove2.module.assess;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.TimerInfo;
+import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractCommand;
 
@@ -78,11 +79,15 @@ public class AssessorCommand extends AbstractCommand {
      * @param jhove2
      *            JHOVE2 framework object
      * @param source
-     *            Source to be identified
+     *            Source unit to be assessed
+     * @param input
+     *            Source input
      * @throws JHOVE2Exception
      */
     @Override
-    public void execute(JHOVE2 jhove2, Source source) throws JHOVE2Exception {
+    public void execute(JHOVE2 jhove2, Source source, Input input)
+        throws JHOVE2Exception
+    {
         try {
             Assessor assessor = this.getAssessorFactory().getAssessor();
             TimerInfo timer = assessor.getTimerInfo();

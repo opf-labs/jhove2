@@ -42,7 +42,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
@@ -60,8 +59,10 @@ import org.jhove2.module.format.Validator;
  * 
  * @author rnanders
  */
-public class XmlModule extends BaseFormatModule implements Validator {
-
+public class XmlModule
+    extends BaseFormatModule
+    implements Validator
+{
     /** Module version identifier. */
     public static final String VERSION = "2.0.0";
 
@@ -78,11 +79,11 @@ public class XmlModule extends BaseFormatModule implements Validator {
     /** The JHOVE2 object passed in by the parse method */
     protected JHOVE2 jhove2; 
     
-    /** The Source object passed in by the parse method */
-    protected  Source source;
-
     /** XML validation status. */
     protected Validity validity;
+    
+    /** Unresolved schema reference in XML document */
+    protected boolean unresolvedSchemaReference;
 
     /**
      * Get module validation coverage.
@@ -101,13 +102,6 @@ public class XmlModule extends BaseFormatModule implements Validator {
      */
     @Override
     public Validity isValid() {
-        if (validity == null) {
-            try {
-                validate(jhove2, source);
-            }
-            catch (JHOVE2Exception e) {
-            }
-        }
         return validity;
     }
 
@@ -115,20 +109,21 @@ public class XmlModule extends BaseFormatModule implements Validator {
      * Validate the XML parse results.
      * 
      * @param jhove2
-     *            the jhove2
+     *            JHOVE2 framework
      * @param source
-     *            the source
-     * 
+     *            XML source unit
+     * @param input XML source input
      * @return the validity
      * 
      * @throws JHOVE2Exception
-     *             the JHOV e2 exception
+     *             the JHOVE2 exception
      */
     @Override
-    public Validity validate(JHOVE2 jhove2, Source source)
-            throws JHOVE2Exception {
+    public Validity validate(JHOVE2 jhove2, Source source, Input input)
+        throws JHOVE2Exception
+    {
         /* See if validity has been previously set to False, e.g. by parse exception trap */
-        if ((validity != null) && (validity == Validity.False)) {
+        if (validity == Validity.False) {
             return validity;
         }            
        /* Check to see if there were SAX parser errors of any sort */
@@ -148,9 +143,9 @@ public class XmlModule extends BaseFormatModule implements Validator {
                     messageArgs, jhove2.getConfigInfo()));
             return (validity = Validity.False);
         }
-        /* See if validity has been previously set to undetermined, e.g. if schema file not found */
-        if ((validity != null) && (validity == Validity.Undetermined)) {
-            return validity;
+        /* Did SAX parser find a referenced schema file that could not be resolved? */
+        if (this.unresolvedSchemaReference) {
+            return (validity = Validity.Undetermined);
         }    
         /* No validation errors found, but make sure schema validation was enabled, if appropriate */
         if (namespaceInformation.hasSchemaLocations) {
@@ -188,6 +183,7 @@ public class XmlModule extends BaseFormatModule implements Validator {
      */
     public XmlModule(Format format) {
         super(VERSION, RELEASE, RIGHTS, format);
+        this.validity = Validity.Undetermined;
     }
     
     public XmlModule(){
@@ -225,7 +221,7 @@ public class XmlModule extends BaseFormatModule implements Validator {
      * Data store for XML numeric character references captured during the
      * parse.
      */
-    protected NumericCharacterReferences numericCharacterReferences = new NumericCharacterReferences();
+    protected NumericCharacterReferenceInformation numericCharacterReferenceInformation = new NumericCharacterReferenceInformation();
 
     /**
      * Data store for XML processing instruction information captured during the
@@ -357,9 +353,9 @@ public class XmlModule extends BaseFormatModule implements Validator {
      * 
      * @return list of XML Numeric Character References
      */
-    @ReportableProperty(order = 9, value = "List of Numeric Character References")
-    public ArrayList<NumericCharacterReference> getNumericCharacterReferences() {
-        return numericCharacterReferences.getNumericCharacterReferenceList();
+    @ReportableProperty(order = 9, value = "Numeric Character Reference Information")
+    public NumericCharacterReferenceInformation getNumericCharacterReferenceInformation() {
+        return numericCharacterReferenceInformation;
     }
 
     /**
@@ -426,56 +422,44 @@ public class XmlModule extends BaseFormatModule implements Validator {
      * Parse a source unit.
      * 
      * @param jhove2
-     *            the jhove2
+     *            JHOVE2 framework
      * @param source
-     *            the source
-     * 
-     * @return the long
+     *            XML source unit
+     * @param input
+     *            XML source input
+     * @return Number of bytes consumed
      * 
      * @throws EOFException
      *             the EOF exception
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      * @throws JHOVE2Exception
-     *             the JHOV e2 exception
+     *             the JHOVE2 exception
      */
     @Override
-    public long parse(JHOVE2 jhove2, Source source) throws 
-            IOException, JHOVE2Exception {
-        Input input = null;
-        try {
-            this.jhove2 = jhove2;
-            this.source = source;
+    public long parse(JHOVE2 jhove2, Source source, Input input)
+        throws IOException, JHOVE2Exception
+    {
+        this.jhove2 = jhove2;
             
-            /* Use SAX2 to get what information is available from that mechanism */
-            saxParser.parse(source, jhove2);
+        /* Use SAX2 to get what information is available from that mechanism */
+        saxParser.parse(source, jhove2);
 
-            /* Get the input object */
-            Invocation config = jhove2.getInvocation();
-            input = source.getInput(config.getBufferSize(), config
-                    .getBufferType());
+        /*
+         * Do a separate parse of the XML Declaration at the start of the
+         * document
+         */
+        input.setPosition(source.getStartingOffset());
+        xmlDeclaration.parse(input);
 
-            /*
-             * Do a separate parse of the XML Declaration at the start of the
-             * document
-             */
-            input.setPosition(0L);
-            xmlDeclaration.parse(input);
-
-            /* Do a separate parse to inventory numeric character references */
-            if (this.ncrParser) {
-                input.setPosition(0L);
-                numericCharacterReferences.parse(input,
-                        xmlDeclaration.encodingFromSAX2, jhove2);
-            }
-            validate(jhove2,source);
-            return 0;
-            
-        } finally {
-            if (input != null) {
-                input.close();
-            }
-        }
+        /* Do a separate parse to inventory numeric character references */
+        if (this.ncrParser) {
+            input.setPosition(source.getStartingOffset());
+            numericCharacterReferenceInformation.parse(input,
+                    xmlDeclaration.encodingFromSAX2, jhove2);
+        }   
+        validate(jhove2, source, input);
+        
+        return 0;
    }
-
 }

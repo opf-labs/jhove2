@@ -42,6 +42,7 @@ import java.util.Set;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.Digest;
 import org.jhove2.core.JHOVE2;
+import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.Module;
 
@@ -50,7 +51,9 @@ import org.jhove2.module.Module;
  * 
  * @author mstrong, slabrams
  */
-public interface Digester extends Module {
+public interface Digester
+    extends Module
+{
 	/**
 	 * Calculate message digests for a source unit.
 	 * 
@@ -58,10 +61,12 @@ public interface Digester extends Module {
 	 *            JHOVE2 framework
 	 * @param source
 	 *            Source unit
+	 * @param input
+	 *            Source input
 	 * @throws IOException
 	 *             I/O exception calculating message digests
 	 */
-	public void digest(JHOVE2 jhove2, Source source) throws IOException;
+	public void digest(JHOVE2 jhove2, Source source, Input input) throws IOException;
 
 	/**
 	 * Get message digests.

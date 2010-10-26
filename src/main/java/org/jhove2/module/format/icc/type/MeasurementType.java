@@ -46,6 +46,8 @@ import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
+import org.jhove2.core.source.Source;
+import org.jhove2.module.format.Parser;
 import org.jhove2.module.format.Validator.Validity;
 
 /** ICC measurement type element, as defined in ICC.1:2004-10, \u00a7 10.12.
@@ -53,7 +55,8 @@ import org.jhove2.module.format.Validator.Validity;
  * @author slabrams
  */
 public class MeasurementType
-        extends AbstractReportable
+    extends AbstractReportable
+    implements Parser
 {
     /** Measurement type signature. */
     public static final String SIGNATURE = "meas";
@@ -106,7 +109,8 @@ public class MeasurementType
     
     /** Parse an ICC measurement tag type.
      * @param jhove2 JHOVE2 framework
-     * @param input  ICC input
+     * @param source ICC source unit
+     * @param input  ICC source input
      * @return Number of bytes consumed
      * @throws EOFException
      *             If End-of-File is reached reading the source unit
@@ -114,13 +118,15 @@ public class MeasurementType
      *             If an I/O exception is raised reading the source unit
      * @throws JHOVE2Exception
      */
-    public long parse(JHOVE2 jhove2, Input input)
+    @Override
+    public long parse(JHOVE2 jhove2, Source source, Input input)
         throws EOFException, IOException, JHOVE2Exception
     {
         long consumed  = 0L;
         int  numErrors = 0;
-        this.isValid = Validity.True;
-  
+        this.isValid   = Validity.True;
+        long start     = source.getStartingOffset();
+        
         /* Tag signature. */
         for (int i=0; i<4; i++) {
             short b = input.readUnsignedByte();
@@ -131,7 +137,7 @@ public class MeasurementType
             numErrors++;
             this.isValid = Validity.False;
             Object [] args =
-                new Object [] {input.getPosition()-4L, SIGNATURE,
+                new Object [] {input.getPosition()-4L-start, SIGNATURE,
                                signature.toString()};
             this.invalidTagTypeMessage = new Message(Severity.ERROR,
                 Context.OBJECT,
@@ -145,7 +151,7 @@ public class MeasurementType
         if (reserved != 0) {
             numErrors++;
             this.isValid = Validity.False;
-            Object [] args = new Object [] {input.getPosition()-4L};
+            Object [] args = new Object [] {input.getPosition()-4L-start};
             this.nonZeroDataInReservedFieldMessage = new Message(Severity.ERROR,
                     Context.OBJECT,
                     "org.jhove2.module.format.icc.ICCTag.NonZeroDataInReservedField",

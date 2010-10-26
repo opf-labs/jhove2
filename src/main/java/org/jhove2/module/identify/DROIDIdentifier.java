@@ -52,6 +52,7 @@ import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.FormatIdentification;
 import org.jhove2.core.format.FormatIdentification.Confidence;
+import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractModule;
 
@@ -148,13 +149,16 @@ public class DROIDIdentifier
 	 *            JHOVE2 framework
 	 * @param source
 	 *            Source unit
+	 * @param input
+	 *            Source input
 	 * @return Set of presumptive format identifications
 	 * @throws IOException
 	 *             I/O exception encountered identifying the source unit
 	 * @throws JHOVE2Exception
 	 */
 	@Override
-	public Set<FormatIdentification> identify(JHOVE2 jhove2, Source source)
+	public Set<FormatIdentification> identify(JHOVE2 jhove2, Source source,
+	                                          Input input)
 		throws IOException, JHOVE2Exception
 	{
 		DROIDWrappedProduct droid = (DROIDWrappedProduct)this.getWrappedProduct();

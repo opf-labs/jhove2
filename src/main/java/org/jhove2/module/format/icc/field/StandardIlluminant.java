@@ -68,17 +68,14 @@ public class StandardIlluminant
         this.value    = value;
         this.illuminant = illuminant;
     }
-
-    /**
-     * Get the illuminant for a standard illuminant value.
-     * 
-     * @param value  Standard illuminant value
+    
+    /** Initialize the standard illuminants.
      * @param jhove2 JHOVE2 framework
-     * @return Standard illuminant, or null if the value is not defined
-     * @throws JHOVE2Exception
+     * @throws JHOVE2Exception 
      */
-    public static synchronized StandardIlluminant getStandardIlluminant(long value, JHOVE2 jhove2)
-            throws JHOVE2Exception {
+    protected static synchronized void init(JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
         if (illuminants == null) {
             /* Initialize the standard illuminants from a Java resource bundle. */
             illuminants = new TreeSet<StandardIlluminant>();
@@ -94,6 +91,20 @@ public class StandardIlluminant
                 }
             }
         }
+    }
+
+    /**
+     * Get the illuminant for a standard illuminant value.
+     * 
+     * @param value  Standard illuminant value
+     * @param jhove2 JHOVE2 framework
+     * @return Standard illuminant, or null if the value is not defined
+     * @throws JHOVE2Exception
+     */
+    public static synchronized StandardIlluminant getStandardIlluminant(long value, JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
+        init(jhove2);
         StandardIlluminant illuminant = null;
         Iterator<StandardIlluminant> iter = illuminants.iterator();
         while (iter.hasNext()) {
@@ -105,6 +116,17 @@ public class StandardIlluminant
         }
 
         return illuminant;
+    }
+    
+    /** Get the standard illuminants.
+     * @param jhove2 JHOVE2 framework
+     * @throws JHOVE2Exception 
+     */
+    public static Set<StandardIlluminant> getStandardIlluminants(JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
+        init(jhove2);
+        return illuminants;
     }
 
     /**

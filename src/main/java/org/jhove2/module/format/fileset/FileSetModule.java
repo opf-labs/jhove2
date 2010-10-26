@@ -46,6 +46,7 @@ import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
+import org.jhove2.core.io.Input;
 import org.jhove2.core.source.FileSetSource;
 import org.jhove2.core.source.FileSystemSource;
 import org.jhove2.core.source.Source;
@@ -78,11 +79,11 @@ public class FileSetModule
 	 *            Pseudo-directory format
 	 */
 	public FileSetModule(Format format) {
-		super(VERSION, RELEASE, RIGHTS, Scope.Generic, format);
+		super(VERSION, RELEASE, RIGHTS, Scope.Specific, format);
 	}
 
 	public FileSetModule(){
-		super(VERSION, RELEASE, RIGHTS, Scope.Generic, null);
+		super(VERSION, RELEASE, RIGHTS, Scope.Specific, null);
 	}
 	/**
 	 * Parse pseudo-directory source unit.
@@ -91,6 +92,8 @@ public class FileSetModule
 	 *            JHOVE2 framework
 	 * @param source
 	 *            Pseudo-directory source unit
+	 * @param input
+	 *            Source input, which will be null
 	 * @return 0
 	 * @throws EOFException
 	 *             If End-of-File is reached reading the source unit
@@ -98,10 +101,10 @@ public class FileSetModule
 	 *             If an I/O exception is raised reading the source unit
 	 * @throws JHOVE2Exception
 	 * @see org.jhove2.module.format.FormatModule#parse(org.jhove2.core.JHOVE2,
-	 *      org.jhove2.core.source.Source)
+	 *      org.jhove2.core.source.Source, org.jhove2.core.io.Input)
 	 */
 	@Override
-	public long parse(JHOVE2 jhove2, Source source)
+	public long parse(JHOVE2 jhove2, Source source, Input input)
 		throws EOFException, IOException, JHOVE2Exception
 	{
 		if (source instanceof FileSetSource) {
@@ -128,7 +131,15 @@ public class FileSetModule
 			            continue;
 			        }
 			    }
-				jhove2.characterize(src);
+			    Input inpt = src.getInput(jhove2);
+			    try {
+			        jhove2.characterize(src, inpt);
+			    }
+			    finally {
+			        if (inpt != null) {
+			            inpt.close();
+			        }
+			    }
 			}
 		}
 		return 0;

@@ -47,6 +47,7 @@ import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
+import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.AbstractFormatProfile;
 import org.jhove2.module.format.Validator;
@@ -60,8 +61,8 @@ import org.jhove2.module.format.icc.ICCTagTable;
  * @author slabrams
  */
 public class DeviceLinkProfile
-        extends AbstractFormatProfile
-        implements Validator
+    extends AbstractFormatProfile
+    implements Validator
 {
     /** Profile version identifier. */
     public static final String VERSION = "2.0.0";
@@ -97,11 +98,12 @@ public class DeviceLinkProfile
     /** Validate the DeviceLink profile.
      * @param jhove2 JHOVE2 framework
      * @param source ICC source unit
-     * @see org.jhove2.module.format.Validator#validate(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
+     * @param input  ICC source input
+     * @see org.jhove2.module.format.Validator#validate(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source, org.jhove2.core.io.Input)
      */
     @Override
-    public Validity validate(JHOVE2 jhove2, Source source)
-            throws JHOVE2Exception
+    public Validity validate(JHOVE2 jhove2, Source source, Input input)
+        throws JHOVE2Exception
     {
         if (this.module != null) {
             ICCHeader   header = ((ICCModule) this.module).getHeader();
@@ -136,7 +138,7 @@ public class DeviceLinkProfile
                     if (!hasAtoB0Tag) {
                         this.isValid = Validity.False;
                         Object [] args = new Object [] {"A-to-B0 (\"A2B0\")"};
-                        Message msg = new Message(Severity.ERROR, Context.OBJECT,
+                        Message msg = new Message(Severity.WARNING, Context.OBJECT,
                             "org.jhove2.module.format.icc.ICCTagTable.MissingRequiredTag",
                             args, jhove2.getConfigInfo());
                         this.missingRequiredTagMessages.add(msg);
@@ -144,30 +146,36 @@ public class DeviceLinkProfile
                     if (!hasProfileSequenceDescriptionTag) {
                         this.isValid = Validity.False;
                         Object [] args = new Object [] {"Profile sequence description (\"pseq\")"};
-                        Message msg = new Message(Severity.ERROR, Context.OBJECT,
+                        Message msg = new Message(Severity.WARNING, Context.OBJECT,
                             "org.jhove2.module.format.icc.ICCTagTable.MissingRequiredTag",
                             args, jhove2.getConfigInfo());
                         this.missingRequiredTagMessages.add(msg);
                     }
-                    /* The colorant table tag and colorant table out tag are
-                     * required only for "xCLR" colour spaces, e.g. "2CLR",
-                     * "3CLR", ..., "FCLR".
+                    /* The colorant table tag is required only for "xCLR"
+                     * colour spaces, e.g. "2CLR", "3CLR", ..., "FCLR".
                      */
                     String colourSpace = header.getColourSpace_raw();
                     int in = colourSpace.indexOf("CLR");
                     if (in == 1) {
-                        if (!hasColorantTableOutTag) {
+                        if (!hasColorantTableTag) {
                             this.isValid = Validity.False;
-                            Object [] args = new Object [] {"Colorant table out (\"clot\")"};
-                            Message msg = new Message(Severity.ERROR, Context.OBJECT,
+                            Object [] args = new Object [] {"Colorant table (\"clrt\")"};
+                            Message msg = new Message(Severity.WARNING, Context.OBJECT,
                                 "org.jhove2.module.format.icc.ICCTagTable.MissingRequiredTag",
                                 args, jhove2.getConfigInfo());
                             this.missingRequiredTagMessages.add(msg);
                         }
-                        if (!hasColorantTableTag) {
+                    }
+                    /* The colorant table out tag is required only for "xCLR"
+                     * colour spaces.
+                     */
+                    String pcs = header.getProfileConnectionSpace_raw();
+                    in = pcs.indexOf("CLR");
+                    if (in == 1) {
+                        if (!hasColorantTableOutTag) {
                             this.isValid = Validity.False;
-                            Object [] args = new Object [] {"Colorant table out (\"clrt\")"};
-                            Message msg = new Message(Severity.ERROR, Context.OBJECT,
+                            Object [] args = new Object [] {"Colorant table out (\"clot\")"};
+                            Message msg = new Message(Severity.WARNING, Context.OBJECT,
                                 "org.jhove2.module.format.icc.ICCTagTable.MissingRequiredTag",
                                 args, jhove2.getConfigInfo());
                             this.missingRequiredTagMessages.add(msg);

@@ -99,19 +99,20 @@ public abstract class AbstractModule
 	public AbstractModule(String version, String release, String rights,
 			              Scope scope)
 	{	
-		super();
+		this();
 		this.version     = version;
 		this.releaseDate = release;
 		this.rights      = rights;
-		this.scope        = scope;
-		
-		this.developers  = new ArrayList<Agent>();		
-		this.timerInfo   = new TimerInfo();
-		this.name        = this.getClass().getSimpleName();
+		this.scope       = scope;
 	}
 
+	/** Instantiate a new <code>AbstractModule</code>. */
 	public AbstractModule(){
 		super();
+	      
+        this.developers  = new ArrayList<Agent>();      
+        this.timerInfo   = new TimerInfo();
+        this.name        = this.getClass().getSimpleName();
 	}
 	/**
 	 * Get module developers.
@@ -170,14 +171,24 @@ public abstract class AbstractModule
 	public String getVersion() {
 		return this.version;
 	}
-
-
+    
+    /**
+     * Get wrapped external product.
+     * 
+     * @return Wrapped external product
+     */
+    @Override
+    public WrappedProduct getWrappedProduct() {
+        return this.wrappedProduct;
+    }
+ 
 	/**
-	 * Add module developers.
+	 * Set module developers.
 	 * 
 	 * @param developers
 	 *            Product developers
 	 */
+    @Override
 	public void setDevelopers(List<Agent> developers) {
 		this.developers = developers;
 	}
@@ -188,30 +199,35 @@ public abstract class AbstractModule
 	 * @param note
 	 *            Product informative note
 	 */
+    @Override
 	public void setNote(String note) {
 		this.note = note;
 	}
-	
-	/**
-	 * Get wrapped external product.
-	 * 
-	 * @return Wrapped external product
-	 */
+    
+    /** Set module release date.
+     * @param release Module release date
+     */
 	@Override
-	public WrappedProduct getWrappedProduct() {
-		return this.wrappedProduct;
-	}
-	
-	/**
-	 * Set wrapped product.
-	 * 
-	 * @param product
-	 *            Wrapped product
-	 */
-	public void setWrappedProduct(WrappedProduct product) {
-		this.wrappedProduct = product;
-	}
-	
+    public void setReleaseDate(String release) {
+        this.releaseDate = release;
+    }
+    
+    /** Set module rights statement.
+     * @param rights Module rights statement
+     */
+	@Override
+    public void setRights(String rights) {
+        this.rights = rights;
+    }
+ 
+    /** Set module scope.
+     * @param scope Module scope
+     */
+	@Override
+    public void setScope(Scope scope) {
+        this.scope = scope;
+    }
+    
 	/** Get module timer information.
 	 * @return Module timer information
 	 */
@@ -219,4 +235,23 @@ public abstract class AbstractModule
 	public TimerInfo getTimerInfo() {
 		return timerInfo;
 	}
+
+    /** Set module version.
+     * @param version Module version
+     */
+	@Override
+    public void setVersion(String version) {
+        this.version = version;
+    }
+    
+    /**
+     * Set wrapped product.
+     * 
+     * @param product
+     *            Wrapped product
+     */
+	@Override
+    public void setWrappedProduct(WrappedProduct product) {
+        this.wrappedProduct = product;
+    }   
 }

@@ -46,6 +46,7 @@ import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
+import org.jhove2.core.source.Source;
 import org.jhove2.module.format.Validator.Validity;
 
 /** ICC ASCII text type, as defined in ICC.1:2004-10, \u00a7 10.20.
@@ -54,7 +55,7 @@ import org.jhove2.module.format.Validator.Validity;
  * @author slabrams
  */
 public class TextType
-        extends AbstractReportable
+    extends AbstractReportable
 {
     /** Text type signature. */
     public static final String SIGNATURE = "text";
@@ -89,7 +90,8 @@ public class TextType
     
     /** Parse an ICC text tag type.
      * @param jhove2 JHOVE2 framework
-     * @param input  ICC input
+     * @param source ICC source unit
+     * @param input  ICC source input
      * @param elementSize Element size
      * @return Number of bytes consumed
      * @throws EOFException
@@ -98,12 +100,13 @@ public class TextType
      *             If an I/O exception is raised reading the source unit
      * @throws JHOVE2Exception
      */
-    public long parse(JHOVE2 jhove2, Input input, long elementSize)
+    public long parse(JHOVE2 jhove2, Source source, Input input, long elementSize)
         throws EOFException, IOException, JHOVE2Exception
     {
         long consumed  = 0L;
         int  numErrors = 0;
-        this.isValid = Validity.True;
+        this.isValid   = Validity.True;
+        long start     = source.getStartingOffset();
   
         /* Tag signature. */
         for (int i=0; i<4; i++) {
@@ -114,7 +117,7 @@ public class TextType
             numErrors++;
             this.isValid = Validity.False;
             Object [] args =
-                new Object [] {input.getPosition()-4L, SIGNATURE,
+                new Object [] {input.getPosition()-4L-start, SIGNATURE,
                                signature.toString()};
             this.invalidTagTypeMessage = new Message(Severity.ERROR,
                 Context.OBJECT,
@@ -128,7 +131,7 @@ public class TextType
         if (reserved != 0) {
             numErrors++;
             this.isValid = Validity.False;
-            Object [] args = new Object [] {input.getPosition()-4L};
+            Object [] args = new Object [] {input.getPosition()-4L-start};
             this.nonZeroDataInReservedFieldMessage = new Message(Severity.ERROR,
                     Context.OBJECT,
                     "org.jhove2.module.format.icc.ICCTag.NonZeroDataInReservedField",
@@ -147,7 +150,7 @@ public class TextType
         if (b != 0) {
             numErrors++;
             this.isValid = Validity.False;
-            Object [] args = new Object [] {input.getPosition()-1L, b};
+            Object [] args = new Object [] {input.getPosition()-1L-start, b};
             this.missingFinalNULByteMessage = new Message(Severity.ERROR,
                     Context.OBJECT,
                     "org.jhove2.module.format.icc.ICCTag.MissingFinalNULByte",

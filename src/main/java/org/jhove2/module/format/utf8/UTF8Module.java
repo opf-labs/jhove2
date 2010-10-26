@@ -42,7 +42,6 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
@@ -151,115 +150,109 @@ public class UTF8Module
 	 *            JHOVE2 framework
 	 * @param source
 	 *            UTF-8 source unit
-	 * @return 0
+	 * @param input
+	 *            UTF-8 source input
+	 * @return Number of bytes consumed
 	 * @throws EOFException
 	 *             If End-of-File is reached reading the source unit
 	 * @throws IOException
 	 *             If an I/O exception is raised reading the source unit
 	 * @throws JHOVE2Exception
 	 * @see org.jhove2.module.format.FormatModule#parse(org.jhove2.core.JHOVE2,
-	 *      org.jhove2.core.source.Source)
+	 *      org.jhove2.core.source.Source, org.jhove2.core.io.Input)
 	 */
 	@Override
-	public long parse(JHOVE2 jhove2, Source source)
+	public long parse(JHOVE2 jhove2, Source source, Input input)
 		throws EOFException, IOException, JHOVE2Exception
 	{
 		long consumed = 0L;
 		this.isValid = Validity.Undetermined;
 		int numErrors = 0;
-		Input input = null;
-		try {
-			Invocation config = jhove2.getInvocation();
-			input = source.getInput(config.getBufferSize(), 
-					                config.getBufferType());
-			long start = 0L;
-			long end = 0L;
-			if (source instanceof FileSource) {
-				end = ((FileSource) source).getSize();
-			} else if (source instanceof ZipFileSource) {
-				end = ((ZipFileSource) source).getSize();
-			}
-			;
-			input.setPosition(start);
 
-			EOL eol = null;
-			long position = start;
-			int prevCodePoint = UTF8Character.UNINITIALIZED;
-			this.isValid = Validity.True;
-			while (end == 0 || position < end) {
-				UTF8Character ch = new UTF8Character();
-				long n = 0L;
-				try {
-					n = ch.parse(jhove2, input);
-				} catch (EOFException e) {
-					this.isValid = Validity.False;
+		long start = source.getStartingOffset();
+		long end = 0L;
+		if (source instanceof FileSource) {
+		    end = ((FileSource) source).getSize();
+		}
+		else if (source instanceof ZipFileSource) {
+		    end = ((ZipFileSource) source).getSize();
+		}
+		input.setPosition(start);
+
+		EOL eol = null;
+		long position = start;
+		int prevCodePoint = UTF8Character.UNINITIALIZED;
+		this.isValid = Validity.True;
+		while (end == 0 || position < end) {
+		    UTF8Character ch = new UTF8Character();
+		    long n = 0L;
+		    try {
+		        n = ch.parse(jhove2, source, input);
+		    } catch (EOFException e) {
+		        this.isValid = Validity.False;
+		        break;
+		    }
+		    consumed += n;
+		    int codePoint = ch.getCodePoint();
+		    this.numCharacters++;
+
+		    Validity isValid = ch.isValid();
+		    if (isValid == Validity.False) {
+		        this.isValid = isValid;
+		        if (jhove2.failFast(++numErrors)) {
+		            this.failFastMessage = new Message(Severity.INFO,
+		                    Context.PROCESS,
+		                    "org.jhove2.module.format.utf8.UTF8Module.failFastMessage", jhove2.getConfigInfo());
 					break;
 				}
-				consumed += n;
-				int codePoint = ch.getCodePoint();
-				this.numCharacters++;
-
-				Validity isValid = ch.isValid();
-				if (isValid == Validity.False) {
-					this.isValid = isValid;
-					if (jhove2.failFast(++numErrors)) {
-						this.failFastMessage = new Message(Severity.INFO,
-								Context.PROCESS,
-								"org.jhove2.module.format.utf8.UTF8Module.failFastMessage", jhove2.getConfigInfo());
-						break;
-					}
-					this.invalidCharacters.add(ch);
-				}
-
-				/* Determine character properties. */
-				eol = UTF8Character.getEOL(prevCodePoint, codePoint);
-				if (eol != null) {
-					this.numLines++;
-					this.eolMarkers.add(eol);
-				}
-				CodeBlock codeBlock = ch.getCodeBlock();
-				if (codeBlock != null) {
-					this.codeBlocks.add(codeBlock);
-				}
-
-				C0Control c0 = ch.getC0Control();
-				if (c0 != null && !c0.getMnemonic().equals("CR")
-						&& !c0.getMnemonic().equals("LF")) {
-					this.c0Characters.add(c0);
-				}
-				C1Control c1 = ch.getC1Control();
-				if (c1 != null) {
-					this.c1Characters.add(c1);
-				}
-				if (position == start && ch.isByteOrderMark()) {
-					Object[] messageParms = new Object[]{position};
-					this.bomMessage = new Message(Severity.INFO,
-							Context.OBJECT,
-							"org.jhove2.module.format.utf8.UTF8Module.bomMessage",
-							messageParms, jhove2.getConfigInfo());
-				}
-				if (ch.isNonCharacter()) {
-					this.numNonCharacters++;
-				}
-				if (ch.isValid() == Validity.False) {
-					this.isValid = Validity.False;
-				}
-
-				prevCodePoint = codePoint;
-				position += n;
+		        this.invalidCharacters.add(ch);
 			}
-			eol = UTF8Character.getEOL(prevCodePoint,
-					UTF8Character.UNINITIALIZED);
-			if (eol != null) {
-				this.numLines++;
-				this.eolMarkers.add(eol);
-			} else if (prevCodePoint != Unicode.LF) {
-				this.numLines++;
+
+		    /* Determine character properties. */
+		    eol = UTF8Character.getEOL(prevCodePoint, codePoint);
+		    if (eol != null) {
+		        this.numLines++;
+		        this.eolMarkers.add(eol);
 			}
-		} finally {
-			if (input != null) {
-				input.close();
+		    CodeBlock codeBlock = ch.getCodeBlock();
+		    if (codeBlock != null) {
+		        this.codeBlocks.add(codeBlock);
 			}
+
+		    C0Control c0 = ch.getC0Control();
+		    if (c0 != null && !c0.getMnemonic().equals("CR")
+		            && !c0.getMnemonic().equals("LF")) {
+				this.c0Characters.add(c0);
+			}
+		    C1Control c1 = ch.getC1Control();
+		    if (c1 != null) {
+		        this.c1Characters.add(c1);
+		    }
+		    if (position == start && ch.isByteOrderMark()) {
+		        Object[] messageParms = new Object[]{position - start};
+		        this.bomMessage = new Message(Severity.INFO,
+		                Context.OBJECT,
+		                "org.jhove2.module.format.utf8.UTF8Module.bomMessage",
+		                messageParms, jhove2.getConfigInfo());
+		    }
+		    if (ch.isNonCharacter()) {
+		        this.numNonCharacters++;
+		    }
+		    if (ch.isValid() == Validity.False) {
+		        this.isValid = Validity.False;
+			}
+
+		    prevCodePoint = codePoint;
+		    position += n;
+		}
+		eol = UTF8Character.getEOL(prevCodePoint,
+		                           UTF8Character.UNINITIALIZED);
+		if (eol != null) {
+		    this.numLines++;
+		    this.eolMarkers.add(eol);
+		}
+		else if (prevCodePoint != Unicode.LF) {
+		    this.numLines++;
 		}
 
 		return consumed;
@@ -272,12 +265,16 @@ public class UTF8Module
 	 *            JHOVE2 framework
 	 * @param source
 	 *            UTF-8 source unit
+	 * @param input
+	 *            UTF-8 source input
 	 * @return UTF-8 validation status
 	 * @see org.jhove2.module.format.Validator#validate(org.jhove2.core.JHOVE2,
-	 *      org.jhove2.core.source.Source)
+	 *      org.jhove2.core.source.Source, org.jhove2.core.io.Input)
 	 */
 	@Override
-	public Validity validate(JHOVE2 jhove2, Source source) throws JHOVE2Exception {
+	public Validity validate(JHOVE2 jhove2, Source source, Input input)
+	    throws JHOVE2Exception
+	{
 		return this.isValid;
 	}
 

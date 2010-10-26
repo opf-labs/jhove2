@@ -24,9 +24,21 @@ extends AbstractReportable {
     public ByteArray() {
     }
 
+    /**
+     * The Byte Array in a reportable format
+     * @return String
+     */
     @ReportableProperty(order = 1, value="Tag BYTE Array value")
     public String getValueArray(){
         return this.toString();
+    }
+
+    /**
+     * The actual byte array
+     * @return short[]
+     */
+    public short[] getByteArray(){
+        return this.valueArray;
     }
     
     public void setValue(Input input, long count) throws IOException {

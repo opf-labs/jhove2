@@ -70,16 +70,14 @@ implements Comparable<ColourSpace>
         this.signature    = signature;
         this.colourSpace = colourSpace;
     }
-
-    /**
-     * Get the data colour space for a signature. 
-     * @param signature Data colour space signature
-     * @param jhove2    JHOVE2 framework
-     * @return Data colour space, or null if the signature is not a colour space signature
-     * @throws JHOVE2Exception
+    
+    /** Initialize the colour spaces.
+     * @param jhove2 JHOVE2 framework
+     * @throws JHOVE2Exception 
      */
-    public static synchronized ColourSpace getColourSpace(String signature, JHOVE2 jhove2)
-            throws JHOVE2Exception {
+    protected static synchronized void init(JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
         if (spaces == null) {
             /* Initialize the data colour spaces from a Java resource bundle. */
             spaces = new TreeSet<ColourSpace>();
@@ -95,6 +93,19 @@ implements Comparable<ColourSpace>
                 }
             }
         }
+    }
+
+    /**
+     * Get the data colour space for a signature. 
+     * @param signature Data colour space signature
+     * @param jhove2    JHOVE2 framework
+     * @return Data colour space, or null if the signature is not a colour space signature
+     * @throws JHOVE2Exception
+     */
+    public static synchronized ColourSpace getColourSpace(String signature, JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
+        init(jhove2);
         ColourSpace colourSpace = null;
         Iterator<ColourSpace> iter = spaces.iterator();
         while (iter.hasNext()) {
@@ -109,9 +120,14 @@ implements Comparable<ColourSpace>
 
     /**
      * Get the data colour spaces.
+     * @param jhove2 JHOVE2 framework
      * @return data colour spaces
+     * @throws JHOVE2Exception 
      */
-    public static Set<ColourSpace> getColourSpacees() {
+    public static Set<ColourSpace> getColourSpaces(JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
+        init(jhove2);
         return spaces;
     }
 

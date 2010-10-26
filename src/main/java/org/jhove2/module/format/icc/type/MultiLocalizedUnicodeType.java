@@ -48,6 +48,8 @@ import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
+import org.jhove2.core.source.Source;
+import org.jhove2.module.format.Parser;
 import org.jhove2.module.format.Validator.Validity;
 
 /** ICC multi-localized Unicode type, as defined in ICC.1:2004-10, \u00a7 10.13.
@@ -55,7 +57,8 @@ import org.jhove2.module.format.Validator.Validity;
  * @author slabrams
  */
 public class MultiLocalizedUnicodeType
-        extends AbstractReportable
+    extends AbstractReportable
+    implements Parser
 {
     /** Recommended name record size, per ICC.1:2004-10, \u00a7 10.13. */
     public static final int RECOMMENDED_NAME_RECORD_SIZE = 12;
@@ -97,7 +100,8 @@ public class MultiLocalizedUnicodeType
     
     /** Parse an ICC multi-localized Unicode tag type.
      * @param jhove2 JHOVE2 framework
-     * @param input  ICC input
+     * @param source ICC source unit
+     * @param input  ICC source input
      * @return Number of bytes consumed
      * @throws EOFException
      *             If End-of-File is reached reading the source unit
@@ -105,13 +109,15 @@ public class MultiLocalizedUnicodeType
      *             If an I/O exception is raised reading the source unit
      * @throws JHOVE2Exception
      */
-    public long parse(JHOVE2 jhove2, Input input)
+    @Override
+    public long parse(JHOVE2 jhove2, Source source, Input input)
         throws EOFException, IOException, JHOVE2Exception
     {
         long consumed  = 0L;
         int  numErrors = 0;
+        this.isValid   = Validity.True;
         long position  = input.getPosition();
-        this.isValid = Validity.True;
+        long start     = source.getStartingOffset();
   
         /* Tag signature. */
         for (int i=0; i<4; i++) {
@@ -122,7 +128,7 @@ public class MultiLocalizedUnicodeType
             numErrors++;
             this.isValid = Validity.False;
             Object [] args =
-                new Object [] {input.getPosition()-4L, SIGNATURE,
+                new Object [] {input.getPosition()-4L-start, SIGNATURE,
                                signature.toString()};
             this.invalidTagTypeMessage = new Message(Severity.ERROR,
                 Context.OBJECT,
@@ -136,7 +142,7 @@ public class MultiLocalizedUnicodeType
         if (reserved != 0) {
             numErrors++;
             this.isValid = Validity.False;
-            Object [] args = new Object [] {input.getPosition()-4L};
+            Object [] args = new Object [] {input.getPosition()-4L-start};
             this.nonZeroDataInReservedFieldMessage = new Message(Severity.ERROR,
                     Context.OBJECT,
                     "org.jhove2.module.format.icc.ICCTag.NonZeroDataInReservedField",
@@ -151,7 +157,7 @@ public class MultiLocalizedUnicodeType
         /* Name record size. */
         this.nameRecordSize = input.readUnsignedInt();
         if (this.nameRecordSize != RECOMMENDED_NAME_RECORD_SIZE) {
-            Object [] args = new Object [] {input.getPosition()-4L, this.nameRecordSize};
+            Object [] args = new Object [] {input.getPosition()-4L-start, this.nameRecordSize};
             this.nameRecordSizeNot12Message = new Message(Severity.WARNING,
                     Context.OBJECT,
                     "org.jhove2.module.format.icc.type.MultiLocalizedUnicodeType.NameRecordSizeNot12",
@@ -161,7 +167,7 @@ public class MultiLocalizedUnicodeType
         
         for (int i=0; i<this.numberOfNames; i++) {
             NameRecord record = new NameRecord();
-            consumed += record.parse(jhove2, input);
+            consumed += record.parse(jhove2, source, input);
             
             long length = record.getLength()/2L; /* Length in bytes, not 16-bit characters. */
             long offset = record.getOffset();

@@ -1,6 +1,38 @@
 /**
- * 
+ * JHOVE2 - Next-generation architecture for format-aware characterization
+ * <p>
+ * Copyright (c) 2010 by The Regents of the University of California. All rights reserved.
+ * </p>
+ * <p>
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * </p>
+ * <ul>
+ * <li>Redistributions of source code must retain the above copyright notice,
+ * this list of conditions and the following disclaimer.</li>
+ * <li>Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.</li>
+ * <li>Neither the name of the University of California/California Digital
+ * Library, Ithaka Harbors/Portico, or Stanford University, nor the names of its
+ * contributors may be used to endorse or promote products derived from this
+ * software without specific prior written permission.</li>
+ * </ul>
+ * <p>
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ * </p>
  */
+
 package org.jhove2.module.format.tiff;
 
 import java.io.EOFException;
@@ -21,6 +53,7 @@ import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.module.format.Validator;
+import org.jhove2.module.format.Validator.Validity;
 
 /**
  * JHOVE2 TIFF module. This module parses a TIFF instance and captures selected
@@ -29,7 +62,9 @@ import org.jhove2.module.format.Validator;
  * @author mstrong
  *
  */
-public class TiffModule extends BaseFormatModule implements Validator 
+public class TiffModule 
+       extends BaseFormatModule 
+       implements Validator 
 {
     /** TIFF module version identifier. */
     public static final String VERSION = "2.0.0";
@@ -89,6 +124,7 @@ public class TiffModule extends BaseFormatModule implements Validator
      */
     public TiffModule(Format format) {
         super(VERSION, RELEASE, RIGHTS, format);
+        this.validity = Validity.Undetermined;
     }
     
     public TiffModule() {
@@ -102,17 +138,19 @@ public class TiffModule extends BaseFormatModule implements Validator
      *            JHOVE2 framework
      * @param source
      *            TIFF source unit
-     * @return 0
+     * @param input
+     *            TIFF source input
+     * @return Number of bytes consumed
      * @throws EOFException
      *             If End-of-File is reached reading the source unit
      * @throws IOException
      *             If an I/O exception is raised reading the source unit
      * @throws JHOVE2Exception
-     * @see org.jhove2.module.format.FormatModule#parse(org.jhove2.core.JHOVE2,
-     *      org.jhove2.core.source.Source)
+     * @see org.jhove2.module.format.Parser#parse(org.jhove2.core.JHOVE2,
+     *      org.jhove2.core.source.Source, org.jhove2.core.io.Input)
      */
     @Override
-    public long parse(JHOVE2 jhove2, Source source)
+    public long parse(JHOVE2 jhove2, Source source, Input input)
     throws EOFException, IOException, JHOVE2Exception
     {
         this.jhove2 = jhove2;
@@ -123,18 +161,12 @@ public class TiffModule extends BaseFormatModule implements Validator
         
         /* initialize the tiff tags */
         TiffTag.getTiffTags(jhove2);
-        TiffType.getTiffTypes(jhove2);
 
         int numErrors = 0;
-        Input input = null;
-        Invocation config = jhove2.getInvocation();
-        input = source.getInput(config.getBufferSize(), 
-                config.getBufferType());
-        long start = 0L;
+        long start  = source.getStartingOffset();
 
+        input.setPosition(start);
         try {
-            input.setPosition(start);
-
             // read the first two bytes to determine the endianess
             byte[] b = new byte[2];
             b[0] = input.readSignedByte();
@@ -178,11 +210,17 @@ public class TiffModule extends BaseFormatModule implements Validator
                 // we got a Big TIFF here
             }
             ifh.setMagicNumber(magic);
-            ifdList = parseIFDs(jhove2, input);  
+            ifdList = parseIFDList(jhove2, source, input);  
 
             /* loop through IfdList and validate each one */
-
-        } catch (EOFException e) {
+            for (IFD ifd:ifdList){
+                if (ifd instanceof TiffIFD) {
+                    ((TiffIFD) ifd).postParse();
+                    ifd.validate(jhove2, source);
+                    }
+                }
+            }
+        catch (EOFException e) {
             this.validity = Validity.False;
             this.prematureEOFMessage.add(new Message(Severity.ERROR,
                     Context.OBJECT,
@@ -191,24 +229,22 @@ public class TiffModule extends BaseFormatModule implements Validator
             throw new JHOVE2Exception("TiffModule.parse(): Premature EOFException", e);
         }
         finally {
-            if (input != null) {
-                input.close();
-            }           
             this.jhove2 = null;
             this.source = null;
         }
-        return 0;
+        
+        return consumed;
     }
 
     /** 
-     * parse the IFD validating that there is at least one offset
+     * parse the IFD(s) validating that there is at least one offset
      * and that it is word-aligned.  Following the offset
      * of the first IFD, parse the linked list of IFDs 
      *  
      * @throws JHOVE2Exception 
      * 
      */
-    private List<IFD> parseIFDs(JHOVE2 jhove2, Input input) 
+    private List<IFD> parseIFDList(JHOVE2 jhove2, Source source, Input input) 
     throws EOFException, IOException, JHOVE2Exception{
         long offset = 0L;
         try {
@@ -243,7 +279,7 @@ public class TiffModule extends BaseFormatModule implements Validator
                         "org.jhove2.module.format.tiff.TIFFModule.ByteOffsetNotWordAlignedMessage",
                         messageArgs, jhove2.getConfigInfo()));   
             }
-            IFD ifd = parseIFDList(nextIfdOffset, list, jhove2, input);
+            IFD ifd = parseIFD(nextIfdOffset, list, jhove2, source, input);
             nextIfdOffset  = ifd.getNextIFD(); 
         }
         return list;
@@ -252,12 +288,12 @@ public class TiffModule extends BaseFormatModule implements Validator
 
 
     /** 
-     * following the offsets, process the list of IFDs in the TIFF file
+     * following the offsets, process the IFD in the list of IFDs in the TIFF file
      * 
      * @param offset 
      * @throws JHOVE2Exception 
      * */
-    private IFD parseIFDList(long ifdOffset, List<IFD> list, JHOVE2 jhove2, Input input) 
+    private IFD parseIFD(long ifdOffset, List<IFD> list, JHOVE2 jhove2, Source source, Input input) 
     throws EOFException, IOException, JHOVE2Exception {
 
         IFD ifd = new TiffIFD();  
@@ -265,7 +301,7 @@ public class TiffModule extends BaseFormatModule implements Validator
         ifd.setOffset(ifdOffset);
 
         /* parse for the appropriate IFD type */
-        ifd.parse(jhove2, input);
+        ifd.parse(jhove2, source, input);
 
         if (ifdList.size () == 0) {
             ifd.setFirst (true);
@@ -277,7 +313,10 @@ public class TiffModule extends BaseFormatModule implements Validator
             ifd.setThumbnail (true);
         }
         list.add(ifd);
-        version = ifd.getVersion();
+        int version = ifd.getVersion();
+        if (version > this.version) {
+            this.version = version;
+        }
 
         // TODO:  parse subIFDs chains here
 
@@ -310,7 +349,9 @@ public class TiffModule extends BaseFormatModule implements Validator
      *      
      */
     @Override
-    public Validity validate(JHOVE2 jhove2, Source source) throws JHOVE2Exception {
+    public Validity validate(JHOVE2 jhove2, Source source, Input input)
+        throws JHOVE2Exception
+    {
         return this.validity;
     }
 
@@ -321,14 +362,7 @@ public class TiffModule extends BaseFormatModule implements Validator
      */
     @Override
     public Validity isValid() {
-        if (validity == null) {
-            try {
-                validate(jhove2, source);
-            }
-            catch (JHOVE2Exception e) {
-            }
-        }
-        return validity;
+        return this.validity;
     }
 
     /**
@@ -337,7 +371,7 @@ public class TiffModule extends BaseFormatModule implements Validator
      */
     @ReportableProperty(order = 1, value="IFH")
     public IFH getIFH() {
-        return ifh;
+        return this.ifh;
     }
 
     /**
@@ -347,7 +381,7 @@ public class TiffModule extends BaseFormatModule implements Validator
      */
     @ReportableProperty(order = 2, value="IFDs.")
     public List<IFD> getIFDs() {
-        return ifdList;
+        return this.ifdList;
     }
 
      /**
@@ -358,6 +392,14 @@ public class TiffModule extends BaseFormatModule implements Validator
     @ReportableProperty(order = 3, value = "Fail fast message.")
     public Message getFailFast() {
         return this.failFastMessage;
+    }
+
+    /**
+     * @return the version
+     */
+    @ReportableProperty(order = 4, value = "TIFF version.")
+    public int getTiffVersion() {
+        return this.version;
     }
 
 }

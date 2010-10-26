@@ -52,7 +52,9 @@ import java.nio.channels.FileChannel;
  * 
  * @author mstrong, slabrams
  */
-public abstract class AbstractInput implements Input {
+public abstract class AbstractInput
+    implements Input
+{
 	/** Buffer to hold data from channel. */
 	protected ByteBuffer buffer;
 
@@ -73,6 +75,9 @@ public abstract class AbstractInput implements Input {
 
 	/** InputStream underlying the inputable. */
 	protected InputStream stream;
+	
+	/** Buffer type. */
+	protected Type bufferType;
 
 	/**
 	 * Current position relative to the beginning of the inputable, as a byte
@@ -84,7 +89,7 @@ public abstract class AbstractInput implements Input {
 	protected long fileSize;
 
 	/**
-	 * Instantiate a new <code>AbstractInput</code>.
+	 * Instantiate a new, big-endian <code>AbstractInput</code>.
 	 * 
 	 * @param file
 	 *            Java {@link java.io.File} underlying the inputable
@@ -93,8 +98,10 @@ public abstract class AbstractInput implements Input {
 	 * @throws IOException
 	 *             I/O exception instantiating input
 	 */
-	public AbstractInput(File file) throws FileNotFoundException, IOException {
-		this(file, ByteOrder.LITTLE_ENDIAN);
+	public AbstractInput(File file)
+	    throws FileNotFoundException, IOException
+	{
+		this(file, ByteOrder.BIG_ENDIAN);
 	}
 
 	/**
@@ -110,15 +117,18 @@ public abstract class AbstractInput implements Input {
 	 *             I/O exception instantiating input
 	 */
 	public AbstractInput(File file, ByteOrder order)
-			throws FileNotFoundException, IOException {
-		this.file = file;
-		this.byteOrder = order;
-		this.stream = (InputStream) new FileInputStream(file);
-		this.fileSize = file.length();
-		this.inputablePosition = 0L;
+		throws FileNotFoundException, IOException
+	{
+	    if (!file.isDirectory()) {
+	        this.file = file;
+	        this.byteOrder = order;   
+	        this.stream = (InputStream) new FileInputStream(file);
+	        this.fileSize = file.length();
+	        this.inputablePosition = 0L;
 
-		RandomAccessFile raf = new RandomAccessFile(file, "r");
-		this.channel = raf.getChannel();
+	        RandomAccessFile raf = new RandomAccessFile(file, "r");
+	        this.channel = raf.getChannel();
+	    }
 	}
 
 	/**
@@ -127,9 +137,15 @@ public abstract class AbstractInput implements Input {
 	 * @see org.jhove2.core.io.Input#close()
 	 */
 	@Override
-	public void close() throws IOException {
-		this.stream.close();
-		this.channel.close();
+	public void close()
+	    throws IOException
+	{
+	    if (this.stream != null) {
+	        this.stream.close();
+	    }
+	    if (this.channel != null) {
+	        this.channel.close();
+	    }
 	}
 
 	/**
@@ -150,6 +166,14 @@ public abstract class AbstractInput implements Input {
 	 */
 	public ByteOrder getByteOrder() {
 		return this.byteOrder;
+	}
+	
+	/** Get buffer type.
+	 * @return Buffer type
+	 */
+	@Override
+	public Type getBufferType() {
+	    return this.bufferType;
 	}
 
 	/**
@@ -210,15 +234,22 @@ public abstract class AbstractInput implements Input {
 	 */
 	@Override
 	public byte[] getByteArray() {
-		byte[] buffer;
-		if (this.buffer.hasArray())
-			buffer = this.buffer.array();
-		else {
-			buffer = new byte[this.buffer.limit()]; // capacity()];
-			this.buffer.mark();
-			this.buffer.position(0);
-			this.buffer.get(buffer);
-			this.buffer.reset();
+		byte[] buffer = null;
+		if (this.buffer != null) {
+		    if (this.buffer.hasArray()) {
+		        buffer = this.buffer.array();
+		    }
+		    else {
+		        buffer = new byte[this.buffer.limit()];
+		        /* Instead of using buffer.mark() and reset(), we explicitly
+		         * save the current the position and reset it after getting
+		         * the next buffer.
+		         */
+		        int mark_position = this.buffer.position();
+		        this.buffer.position(0);
+		        this.buffer.get(buffer);
+                this.buffer.position(mark_position);
+		    }
 		}
 
 		return buffer;
@@ -240,14 +271,16 @@ public abstract class AbstractInput implements Input {
 	 * @throws IOException
 	 */
 	protected long getNextBuffer() throws IOException {
-		this.buffer.clear();
-		int n = this.channel.read(this.buffer);
-		this.buffer.flip();
-		this.bufferOffset = this.channel.position() - n;
-		this.bufferSize = n;
-		this.inputablePosition = this.bufferOffset + this.buffer.position();
-
-		return this.bufferSize;
+	    if (this.buffer != null && this.channel != null) {
+	        this.buffer.clear();
+	        int n = this.channel.read(this.buffer);
+	        this.buffer.flip();
+	        this.bufferOffset = this.channel.position() - n;
+	        this.bufferSize = n;
+	        this.inputablePosition = this.bufferOffset + this.buffer.position();
+	        return this.bufferSize;
+	    }
+	    return 0L;
 	}
 
 	/**
@@ -441,6 +474,110 @@ public abstract class AbstractInput implements Input {
 
 		return in;
 	}
+
+    /**
+     * Get signed double float point at the current position. This implicitly advances
+     * the current position by eight bytes.
+     * 
+     * @return signed double floating point at the current position, or -1 if EOF
+     * @see org.jhove2.core.io.Input#readDouble()
+     */
+    @Override
+    public double readDouble() throws IOException {
+        double in = 0.0F;
+        long longbits = 0;
+        long byteValue = 0;
+        int remaining = this.buffer.limit() - this.buffer.position();
+        if (remaining < 8) {
+            for (int i = 0; i < remaining; i++) {
+                /*
+                 * LITTLE_ENDIAN - shift byte value then add to accumlative
+                 * value
+                 */
+                if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
+                    byteValue = ((long) this.buffer.get() & 0xffL);
+                    byteValue <<= (8 * i);
+                    longbits += byteValue;
+                } else {
+                    /* BIG_ENDIAN - shift accumulative value then add byte value */
+                    longbits <<= 8;
+                    longbits += (((long) this.buffer.get() & 0xffL));
+                }
+            }
+            if (getNextBuffer() == EOF) {
+                return EOF;
+            }
+            for (int i = remaining; i < 8; i++) {
+                if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
+                    byteValue = (((int) this.buffer.get() & 0xff));
+                    byteValue <<= (8 * i);
+                    longbits += byteValue;
+                } else {
+                    longbits <<= 8;
+                    longbits += (((long) this.buffer.get() & 0xffL));
+                }
+            }
+            in = Double.longBitsToDouble(longbits);
+            
+        } else {
+            in = this.buffer.getDouble();
+        }
+        this.inputablePosition += 8L;
+
+        return in;
+    }
+
+    /**
+     * Get signed 32 bit floating point float at the current position. This implicitly advances
+     * the current position by four bytes.
+     * 
+     * @return signed 32 bit floating point float at the current position, or -1 if EOF
+     * @see org.jhove2.core.io.Input#readFloat()
+     */
+    @Override
+    public float readFloat() throws IOException {
+        float in = 0.0F;
+        int intbits = 0;
+        int byteValue = 0;
+        int remaining = this.buffer.limit() - this.buffer.position();
+        if (remaining < 4) {
+            for (int i = 0; i < remaining; i++) {
+                /*
+                 * LITTLE_ENDIAN - shift byte value then add to accumlative
+                 * value
+                 */
+                if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
+                    byteValue = ((int) this.buffer.get() & 0xff);
+                    byteValue <<= (8 * i);
+                    intbits += byteValue;
+                } else {
+                    /* BIG_ENDIAN - shift accumulative value then add byte value */
+                    intbits <<= 8;
+                    intbits += (((long) this.buffer.get() & 0xff));
+                }
+            }
+            if (getNextBuffer() == EOF) {
+                return EOF;
+            }
+            for (int i = remaining; i < 4; i++) {
+                if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
+                    byteValue = (((int) this.buffer.get() & 0xff));
+                    byteValue <<= (8 * i);
+                    intbits += byteValue;
+                } else {
+                    intbits <<= 8;
+                    intbits += (((int) this.buffer.get() & 0xff));
+                }
+            }
+            in = Float.intBitsToFloat(intbits);
+            
+        } else {
+            in = this.buffer.getFloat();
+        }
+        this.inputablePosition += 4L;
+
+        return in;
+    }
 
 	/**
 	 * Get signed short integer at the current position. This implicitly
@@ -654,4 +791,11 @@ public abstract class AbstractInput implements Input {
 
 	}
 
+	/** Set buffer type.
+	 * @param type Buffer type
+	 */
+	@Override
+	public void setBufferType(Type type) {
+	    this.bufferType = type;
+	}
 }

@@ -15,13 +15,18 @@
 	      scope="prototype">
 		<property name="arrayDigesters">
 	    	<list value-type="org.jhove2.module.digest.ArrayDigester">
+	    		<!-- <ref bean="CRC32Digester"/> -->
 	    		<ref bean="CRC32Digester"/>
 	    	</list>
 	    </property>
 		<property name="bufferDigesters">
 			<list value-type="org.jhove2.module.digest.BufferDigester">
+				<!-- <ref bean="MD5Digester"/> -->
 				<ref bean="MD5Digester"/>
 				<ref bean="SHA1Digester"/>
+				<!-- <ref bean="SHA256Digester"/> -->
+				<!-- <ref bean="SHA384Digester"/> -->
+				<!-- <ref bean="SHA512Digester"/> -->
 			</list>
 		</property>
 		<property name="developers">

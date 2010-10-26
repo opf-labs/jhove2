@@ -43,6 +43,7 @@ import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.config.ConfigInfo;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
+import org.jhove2.core.io.Input;
 import org.jhove2.core.source.FileSystemSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceCounter;
@@ -111,17 +112,22 @@ public class JHOVE2
 		this.sourceCounter = new SourceCounter();		
 	}
 
+    
 	/**
-	 * Characterize a {@link org.jhove2.core.source.Source} unit.
+	 * Characterize a {@link org.jhove2.core.source.Source} unit by parsing its
+	 * {@link org.jhove2.core.io.Input}, without performing an identification
+	 * step.
 	 * This method will be used as a call-back by any format module that must
 	 * recursively characterize components of a format instance.
 	 * 
 	 * @param source
 	 *            Source unit
+	 * @param input
+	 *            Source input
 	 * @throws JHOVE2Exception
 	 * @throws IOException
 	 */
-	public void characterize(Source source)
+	public void characterize(Source source, Input input)
 		throws IOException, JHOVE2Exception
 	{
 		TimerInfo timer = source.getTimerInfo();
@@ -157,7 +163,7 @@ public class JHOVE2
 		            TimerInfo time2 = command.getTimerInfo();
 		            time2.resetStartTime();
 		            try {
-		                command.execute(this, source);
+		                command.execute(this, source, input);
 		            }
 		            finally {
 		                time2.setEndTime();
@@ -287,5 +293,4 @@ public class JHOVE2
 	public void setConfigInfo(ConfigInfo configInfo) {
 		this.configInfo = configInfo;
 	}
-
 }

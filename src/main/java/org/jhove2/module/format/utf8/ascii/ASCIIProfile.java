@@ -47,9 +47,9 @@ import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
+import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.AbstractFormatProfile;
-import org.jhove2.module.format.Validator;
 import org.jhove2.module.format.utf8.UTF8Module;
 import org.jhove2.module.format.utf8.unicode.CodeBlock;
 
@@ -60,7 +60,6 @@ import org.jhove2.module.format.utf8.unicode.CodeBlock;
  */
 public class ASCIIProfile
 	extends AbstractFormatProfile
-	implements Validator
 {
 	/** Basic Latin code block. */
 	public static final String BASIC_LATIN = "Basic Latin";
@@ -112,12 +111,16 @@ public class ASCIIProfile
 	 *            JHOVE2 framework
 	 * @param source
 	 *            ASCII source unit
+	 * @param input 
+	 *            ASCII source input
 	 * @return ASCII validation status
 	 * @see org.jhove2.module.format.Validator#validate(org.jhove2.core.JHOVE2,
-	 *      org.jhove2.core.source.Source)
+	 *      org.jhove2.core.source.Source, org.jhove2.core.io.Input)
 	 */
 	@Override
-	public Validity validate(JHOVE2 jhove2, Source source) throws JHOVE2Exception {
+	public Validity validate(JHOVE2 jhove2, Source source, Input input)
+	    throws JHOVE2Exception
+	{
 		if (this.module != null) {
 			this.isValid = Validity.True;
 
@@ -143,7 +146,7 @@ public class ASCIIProfile
 				buffer.append(block);
 			}
 			Object[]messageArgs = new Object[]{buffer.toString()};
-			this.nonBasicLatinMessage = new Message(Severity.ERROR,
+			this.nonBasicLatinMessage = new Message(Severity.WARNING,
 					Context.OBJECT, 
 					"org.jhove2.module.format.utf8.ascii.ASCIIProfile.nonBasicLatinMessage",
 					messageArgs, jhove2.getConfigInfo());

@@ -11,8 +11,7 @@
 	
 	  
   	<!-- ASCII profile bean -->
-	<bean id="ASCIIProfile" class="org.jhove2.module.format.utf8.ascii.ASCIIProfile"
-	      scope="prototype">
+	<bean id="ASCIIProfile" class="org.jhove2.module.format.utf8.ascii.ASCIIProfile" scope="prototype">
 	    <constructor-arg ref="ASCIIFormat"/>
 	    <property name="developers">
 			<list value-type="org.jhove2.core.Agent">
@@ -170,13 +169,13 @@
 	</bean>	
 	<!-- Unicode specification bean -->
 	<bean id="UnicodeSpecification" class="org.jhove2.core.Document" scope="singleton">
-		<constructor-arg type="java.lang.String" value="Unicode 5.0 Standard – Electronic edition"/>
+		<constructor-arg type="java.lang.String" value="Unicode 5.0 Standard Electronic edition"/>
 		<constructor-arg type="org.jhove2.core.Document$Type" value="Specification"/>
 		<constructor-arg type="org.jhove2.core.Document$Intention" value="Authoritative"/>
 		<property name="author" value="Unicode Consortium"/>
 		<property name="date" value="2007"/>
 		<property name="edition" value="Version 5.1.0"/>
-<!--		<property name="identifier" ref="UnicodeSpecificationURI"/>-->
+		<!--		<property name="identifier" ref="UnicodeSpecificationURI"/>-->
 		<property name="identifiers">
 			<list value-type="org.jhove2.core.I8R">
 				<ref bean="UnicodeSpecificationURI"/>
@@ -191,11 +190,11 @@
 	</bean>	
 	<!-- ISO 10646 standard bean -->
 	<bean id="ISO10646Standard" class="org.jhove2.core.Document" scope="singleton">
-		<constructor-arg type="java.lang.String" value="Information technology – Universal Multiple-Octet Coded Character Set (UCS)"/>
+		<constructor-arg type="java.lang.String" value="Information technology Universal Multiple-Octet Coded Character Set (UCS)"/>
 		<constructor-arg type="org.jhove2.core.Document$Type" value="Standard"/>
 		<constructor-arg type="org.jhove2.core.Document$Intention" value="Informative"/>
 		<property name="date" value="2003"/>
-<!--		<property name="identifier" ref="ISO10646"/>-->
+		<!--		<property name="identifier" ref="ISO10646"/>-->
 		<property name="identifiers">
 			<list value-type="org.jhove2.core.I8R">
 				<ref bean="ISO10646"/>
@@ -239,7 +238,7 @@
 	<bean id="UTF8Module" class="org.jhove2.module.format.utf8.UTF8Module"
 	      scope="prototype">
 	    <constructor-arg ref="UTF8Format"/>
-<!--	    <property name="profile" ref="ASCIIProfile"/>-->
+		<!--	    <property name="profile" ref="ASCIIProfile"/>-->
 		<property name="profiles">
 			<list value-type="org.jhove2.module.format.FormatProfile">
 				<ref bean="ASCIIProfile"/>

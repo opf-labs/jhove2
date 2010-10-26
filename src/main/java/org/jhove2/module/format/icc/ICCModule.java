@@ -40,10 +40,8 @@ import java.io.IOException;
 import java.nio.ByteOrder;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.Message;
 import org.jhove2.core.format.Format;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
@@ -55,16 +53,16 @@ import org.jhove2.module.format.Validator;
  * @author slabrams
  */
 public class ICCModule
-        extends BaseFormatModule
-        implements Validator
+    extends BaseFormatModule
+    implements Validator
 {
-    /** Directory module version identifier. */
+    /** ICC module version identifier. */
     public static final String VERSION = "2.0.0";
 
-    /** Directory module release date. */
+    /** ICC module release date. */
     public static final String RELEASE = "2010-09-10";
 
-    /** Directory module rights statement. */
+    /** ICC module rights statement. */
     public static final String RIGHTS =
         "Copyright 2010 by The Regents of the University of California" +
         "Available under the terms of the BSD license.";
@@ -78,18 +76,9 @@ public class ICCModule
     /** ICC validation status. */
     protected Validity isValid;
 
-    /** The JHOVE2 object passed in by the parse method */
-    protected JHOVE2 jhove2; 
-
-    /** The Source object passed in by the parse method */
-    protected  Source source;
-    
     /** Profile tag table. */
     protected ICCTagTable tagTable;
-    
-    /** Premature EOF message. */
-    protected Message prematureEOFMessage;
-    
+ 
     /** Instantiate a new <code>ICCModule</code>
      * 
      * @param format ICC format
@@ -100,6 +89,7 @@ public class ICCModule
         this.isValid = Validity.Undetermined;
     }
     
+
     /** 
      * Parse an ICC source unit.
      * 
@@ -107,6 +97,8 @@ public class ICCModule
      *            JHOVE2 framework
      * @param source
      *            ICC source unit
+     * @param input
+     *            ICC source input
      * @return Number of bytes consumed
      * @throws EOFException
      *             If End-of-File is reached reading the source unit
@@ -114,40 +106,33 @@ public class ICCModule
      *             If an I/O exception is raised reading the source unit
      * @throws JHOVE2Exception
      * @see org.jhove2.module.format.FormatModule#parse(org.jhove2.core.JHOVE2,
-     *      org.jhove2.core.source.Source)
+     *      org.jhove2.core.source.Source, org.jhove2.core.io.Input)
      */
     @Override
-    public long parse(JHOVE2 jhove2, Source source)
+    public long parse(JHOVE2 jhove2, Source source, Input input)
         throws EOFException, IOException, JHOVE2Exception
     {
         long consumed = 0L;
         this.isValid = Validity.True;
-        Input input = null;
-        try {
-            Invocation config = jhove2.getInvocation();
-            input = source.getInput(config.getBufferSize(), 
-                                    config.getBufferType());
-            input.setByteOrder(ByteOrder.BIG_ENDIAN);
+        input.setByteOrder(ByteOrder.BIG_ENDIAN);
+        input.setPosition(source.getStartingOffset());
+        long start = 0L;
+        if ((start = input.getPosition()) == 0) {
             input.setPosition(0L);
-            
-            this.header = new ICCHeader();
-            consumed = header.parse(jhove2, input);
-            Validity validity = header.isValid();
-            if (validity != Validity.True) {
-                this.isValid = validity;
-            }
-                
-            this.tagTable = new ICCTagTable();
-            consumed += tagTable.parse(jhove2, input,header);
-            validity = tagTable.isValid();
-            if (validity != Validity.True) {
-                this.isValid = validity;
-            }
         }
-        finally {
-            if (input != null) {
-                input.close();
-            }
+        this.header = new ICCHeader();
+        this.header.setOffset(start);
+        consumed += this.header.parse(jhove2, source, input);
+        Validity validity = header.isValid();
+        if (validity != Validity.True) {
+            this.isValid = validity;
+        }
+                
+        this.tagTable = new ICCTagTable();
+        consumed += this.tagTable.parse(jhove2, source, input, header);
+        validity = this.tagTable.isValid();
+        if (validity != Validity.True) {
+            this.isValid = validity;
         }
 
         return consumed;
@@ -156,16 +141,16 @@ public class ICCModule
     /** Validate the ICC color profile.
      * @param jhove2 JHOVE2 framework object
      * @param source ICC color profile source unit
-     * @see org.jhove2.module.format.Validator#validate(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
+     * @see org.jhove2.module.format.Validator#validate(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source,
+     * org.jhove2.core.io.Input)
      */
     @Override
-    public Validity validate(JHOVE2 jhove2, Source source)
+    public Validity validate(JHOVE2 jhove2, Source source, Input input)
             throws JHOVE2Exception
     {
-        return this.isValid;
+        return this.isValid();
     }
     
-
     /** Get validation coverage.
      * @return Validation coverage
      * @see org.jhove2.module.format.Validator#getCoverage()
@@ -202,13 +187,6 @@ public class ICCModule
     @Override
     public Validity isValid()
     {
-        if (this.isValid == null) {
-            try {
-                this.validate(jhove2, source);
-            }
-            catch (JHOVE2Exception e) {
-            }
-        }
         return this.isValid;
     }
 }

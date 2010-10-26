@@ -25,34 +25,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath*:**/test-config.xml",
         "classpath*:**/tiff-test-config.xml","classpath*:**/filepaths-config.xml"})
-public class TiffTypeTest {
+        public class TiffTypeTest {
 
     private JHOVE2 JHOVE2;
     private Set<TiffType> TiffTypeSet = null;
     private boolean print = false;
-
-    @Test
-    public void testGettypeProperties() {
-        Properties TiffTypeProps;
-        try {
-            TiffTypeProps = JHOVE2.getConfigInfo().getProperties("TiffTypes");
-            if (TiffTypeProps != null){
-                TiffTypeSet = TiffType.getTiffTypes(JHOVE2);
-            }
-            if (print){
-                TiffType[] TiffTypeArray = (TiffType[]) TiffTypeSet.toArray(new TiffType[TiffTypeSet.size()]);
-                for (TiffType tiffType:TiffTypeArray)
-                    System.out.println("tiff type " + tiffType.getNum() + "=" 
-                            + tiffType.getTypeName()  
-                            + ", Size = " + tiffType.getSize());
-                
-            }
-        }
-        catch (JHOVE2Exception e) {
-            e.printStackTrace();
-            fail("exception");
-        }
-    }
 
     @Test
     public void testGettype() {
@@ -60,23 +37,26 @@ public class TiffTypeTest {
         type = 10; //SRATIONAL type
 
         TiffType tiffType;
-        try {
-            tiffType = TiffType.getType(type);
-            assertTrue ("type " + type + " does not exist", tiffType.getNum() == type);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            fail("exception");
-        }
-        
+        tiffType = TiffType.getType(type);
+        assertTrue ("type " + type + " does not exist", tiffType.num() == type);
+
     }
 
-    public JHOVE2 getJHOVE2() {
-        return JHOVE2;
+    @Test
+    public void testEqualsTiffType() {
+        TiffType tiffType = TiffType.getType(10);  // SRATIONAL Type
+        assertTrue("Type 10 does not equal " + tiffType.SRATIONAL.num(), tiffType.equals(TiffType.SRATIONAL));
+
     }
-    @Resource (name="JHOVE2")
-    public void setJHOVE2(JHOVE2 jHOVE2) {
-        JHOVE2 = jHOVE2;
-    }
+
+
+
+public JHOVE2 getJHOVE2() {
+    return JHOVE2;
+}
+@Resource (name="JHOVE2")
+public void setJHOVE2(JHOVE2 jHOVE2) {
+    JHOVE2 = jHOVE2;
+}
 
 }

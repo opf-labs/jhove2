@@ -105,6 +105,11 @@ public interface Input  {
 	 */
 	public long getBufferOffset();
 
+	/** Get buffer type.
+	 * @return Buffer type
+	 */
+	public Type getBufferType();
+	
 	/**
 	 * Get {@link java.io.File} backing the input.
 	 * 
@@ -233,4 +238,25 @@ public interface Input  {
 	 * @return Input size, in bytes
 	 */
 	public long getSize();
+	
+	/** Set buffer type.
+	 * @param type Buffer type
+	 */
+	public void setBufferType(Type type);
+
+    /**
+     * Get signed double float point at the current position. This implicitly advances
+     * the current position by eight bytes.
+     * 
+     * @return signed double floating point at the current position, or -1 if EOF
+     */
+    double readDouble() throws IOException;
+
+    /**
+     * Get signed 32 bit floating point float at the current position. This implicitly advances
+     * the current position by four bytes.
+     * 
+     * @return signed 32 bit floating point float at the current position, or -1 if EOF
+     */
+    float readFloat() throws IOException;
 }

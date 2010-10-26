@@ -38,6 +38,8 @@ package org.jhove2.app.util;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.reportable.info.ReportablePropertyInfo;
@@ -86,8 +88,8 @@ public class DisplayerPropertyFileGenerator extends PropertyFileGenerator {
 	}
 
 	@Override
-	public  HashMap<String, String> createPropertyValues(){
-		HashMap<String, String> map = new HashMap<String, String>();
+	public  Map<String, String> createPropertyValues(){
+		Map<String, String> map = new TreeMap<String, String>();
 		for (ReportablePropertyInfo info : this.getPropsList()){
 			String value = getDisplayChoices(info);
 			String mapKey = info.getIdentifier().getValue();

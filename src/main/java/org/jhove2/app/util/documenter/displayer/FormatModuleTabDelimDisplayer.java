@@ -99,9 +99,9 @@ public class FormatModuleTabDelimDisplayer implements DocumentationDisplayer {
 	public static final String R2_Id_module = "JHOVE2 module identifier";
 	public static final String R3_Id_module = "JHOVE2 module class";
 
-	public static final String HDR_Prop_class = " [class/interface]";
-	public static final String HDR_Prop_prop = " Property";
-	public static final String HDR_Prop_message = " Message";
+	public static final String HDR_Prop_class = "Class";     /* " [class/interface]"; */
+	public static final String HDR_Prop_prop = "Property";   /* Remove leading SP */
+	public static final String HDR_Prop_message = "Message"; /* Remove leading SP */
 	public static final String R1_Prop="Identifier";
 	public static final String R2_Prop="Type";
 	public static final String R3_Prop="Description";
@@ -322,7 +322,7 @@ public class FormatModuleTabDelimDisplayer implements DocumentationDisplayer {
 			PrintWriter out, List<PropertyDoc> reportablePropertiesInfo)
 	throws JHOVE2Exception{
 		String propNameSuffix;
-		out.println(className.concat(HDR_Prop_class));
+		out.println(HDR_Prop_class + SEP + className); /* out.println(className.concat(HDR_Prop_class)); */
 		StringBuffer sb;
 		for (PropertyDoc prop:reportablePropertiesInfo){
 			if (prop.getId().startsWith(MESSAGE_ID_PREFIX)){
@@ -331,8 +331,9 @@ public class FormatModuleTabDelimDisplayer implements DocumentationDisplayer {
 			else {
 				propNameSuffix = HDR_Prop_prop;
 			}
-			sb = new StringBuffer(prop.getName());
-			sb.append(propNameSuffix);
+			sb = new StringBuffer(propNameSuffix); /* prop.getName()); */
+			sb.append(SEP);                        /* Added */
+			sb.append(prop.getName());             /* propNameSuffix); */
 			out.println(sb.toString());
 			sb = new StringBuffer(R1_Prop);
 			sb.append(SEP);

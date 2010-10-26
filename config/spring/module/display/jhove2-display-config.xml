@@ -10,8 +10,7 @@
 		   http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 	
  	<!-- JSON displayer bean -->
-	<bean id="JSON" class="org.jhove2.module.display.JSONDisplayer"
-	      scope="prototype">
+	<bean id="JSON" class="org.jhove2.module.display.JSONDisplayer" scope="prototype">
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
@@ -26,8 +25,7 @@
 	</bean>
 	      	
  	<!-- Text displayer bean -->
-	<bean id="Text" class="org.jhove2.module.display.TextDisplayer"
-	      scope="prototype">
+	<bean id="Text" class="org.jhove2.module.display.TextDisplayer" scope="prototype">
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
@@ -42,8 +40,7 @@
 	</bean>
 	      	
  	<!-- XML displayer bean -->
-	<bean id="XML" class="org.jhove2.module.display.XMLDisplayer"
-	      scope="prototype">
+	<bean id="XML" class="org.jhove2.module.display.XMLDisplayer" scope="prototype">
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
@@ -58,7 +55,5 @@
 	</bean>
 	
 	<!-- Displayer ConfigInfo bean -->
-	<bean id="ConfigInfo" class="org.jhove2.config.spring.SpringConfigInfo"
-		scope="singleton" />
-
+	<bean id="ConfigInfo" class="org.jhove2.config.spring.SpringConfigInfo" scope="singleton" />
 </beans>		   

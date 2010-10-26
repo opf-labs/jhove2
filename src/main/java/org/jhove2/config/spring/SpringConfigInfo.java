@@ -51,6 +51,7 @@ import org.jhove2.core.format.Format;
 import org.jhove2.core.reportable.Reportable;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.NoSuchMessageException;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
@@ -210,6 +211,10 @@ public class SpringConfigInfo
 		catch (BeansException e) {
 			throw new JHOVE2Exception("Can't retrieve localized message for messageCode " +
 					                  messageCode, e);
+		}
+		catch (NoSuchMessageException e) {
+			throw new JHOVE2Exception("Can't retrieve localized message for messageCode " +
+	                  messageCode, e);
 		}
 		return messageText;
 	}

@@ -46,6 +46,7 @@ import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
+import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.AbstractFormatProfile;
 import org.jhove2.module.format.Validator;
@@ -60,8 +61,8 @@ import org.jhove2.module.format.icc.ICCTagTable;
  * @author slabrams
  */
 public class ThreeComponentMatrixBasedDisplayProfile
-        extends AbstractFormatProfile
-        implements Validator
+    extends AbstractFormatProfile
+    implements Validator
 {
     /** Profile version identifier. */
     public static final String VERSION = "2.0.0";
@@ -98,12 +99,15 @@ public class ThreeComponentMatrixBasedDisplayProfile
     }
 
     /** Validate the profile.
+     * @param jhove2 JHOVE2 framework
+     * @param source ICC source unit
+     * @param input  ICC source input
      * @return Validation status
-     * @see org.jhove2.module.format.Validator#validate(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
+     * @see org.jhove2.module.format.Validator#validate(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source, org.jhove2.core.io.Input)
      */
     @Override
-    public Validity validate(JHOVE2 jhove2, Source source)
-            throws JHOVE2Exception
+    public Validity validate(JHOVE2 jhove2, Source source, Input input)
+        throws JHOVE2Exception
     {
         if (this.module != null) {
             ICCHeader   header = ((ICCModule) this.module).getHeader();
@@ -111,7 +115,7 @@ public class ThreeComponentMatrixBasedDisplayProfile
             if (pcs == null || !pcs.equals("XYZ ")) {
                 this.isValid = Validity.False;
                 Object [] args = new Object [] {pcs};
-                this.pcsNotXYZMessage = new Message(Severity.ERROR,
+                this.pcsNotXYZMessage = new Message(Severity.WARNING,
                         Context.OBJECT,
                         "org.jhove2.module.format.icc.profile.ThreeComponentMatrixBasedInputProfile.PCSNotXYZ",
                         args, jhove2.getConfigInfo());
@@ -157,7 +161,7 @@ public class ThreeComponentMatrixBasedDisplayProfile
                     if (!hasBlueMatrixColumnTag) {
                         this.isValid = Validity.False;
                         Object [] args = new Object [] {"Blue matrix column (\"bXYZ\")"};
-                        Message msg = new Message(Severity.ERROR, Context.OBJECT,
+                        Message msg = new Message(Severity.WARNING, Context.OBJECT,
                                 "org.jhove2.module.format.icc.ICCTagTable.MissingRequiredTag",
                                 args, jhove2.getConfigInfo());
                         this.missingRequiredTagMessages.add(msg);
@@ -165,7 +169,7 @@ public class ThreeComponentMatrixBasedDisplayProfile
                     if (!hasBlueTRCTag) {
                         this.isValid = Validity.False;
                         Object [] args = new Object [] {"Blue TRC (\"bTRC\")"};
-                        Message msg = new Message(Severity.ERROR, Context.OBJECT,
+                        Message msg = new Message(Severity.WARNING, Context.OBJECT,
                                 "org.jhove2.module.format.icc.ICCTagTable.MissingRequiredTag",
                                 args, jhove2.getConfigInfo());
                         this.missingRequiredTagMessages.add(msg);
@@ -173,7 +177,7 @@ public class ThreeComponentMatrixBasedDisplayProfile
                     if (!hasGreenMatrixColumnTag) {
                         this.isValid = Validity.False;
                         Object [] args = new Object [] {"Green matrix column (\"gXYZ\")"};
-                        Message msg = new Message(Severity.ERROR, Context.OBJECT,
+                        Message msg = new Message(Severity.WARNING, Context.OBJECT,
                                 "org.jhove2.module.format.icc.ICCTagTable.MissingRequiredTag",
                                 args, jhove2.getConfigInfo());
                         this.missingRequiredTagMessages.add(msg);
@@ -181,7 +185,7 @@ public class ThreeComponentMatrixBasedDisplayProfile
                     if (!hasGreenTRCTag) {
                         this.isValid = Validity.False;
                         Object [] args = new Object [] {"Green TRC (\"gTRC\")"};
-                        Message msg = new Message(Severity.ERROR, Context.OBJECT,
+                        Message msg = new Message(Severity.WARNING, Context.OBJECT,
                                 "org.jhove2.module.format.icc.ICCTagTable.MissingRequiredTag",
                                 args, jhove2.getConfigInfo());
                         this.missingRequiredTagMessages.add(msg);
@@ -190,7 +194,7 @@ public class ThreeComponentMatrixBasedDisplayProfile
                     if (!hasRedMatrixColumnTag) {
                         this.isValid = Validity.False;
                         Object [] args = new Object [] {"Red matrix column (\"rXYZ\")"};
-                        Message msg = new Message(Severity.ERROR, Context.OBJECT,
+                        Message msg = new Message(Severity.WARNING, Context.OBJECT,
                                 "org.jhove2.module.format.icc.ICCTagTable.MissingRequiredTag",
                                 args, jhove2.getConfigInfo());
                         this.missingRequiredTagMessages.add(msg);
@@ -198,7 +202,7 @@ public class ThreeComponentMatrixBasedDisplayProfile
                     if (!hasRedTRCTag) {
                         this.isValid = Validity.False;
                         Object [] args = new Object [] {"Red TRC (\"rTRC\")"};
-                        Message msg = new Message(Severity.ERROR, Context.OBJECT,
+                        Message msg = new Message(Severity.WARNING, Context.OBJECT,
                                 "org.jhove2.module.format.icc.ICCTagTable.MissingRequiredTag",
                                 args, jhove2.getConfigInfo());
                         this.missingRequiredTagMessages.add(msg);

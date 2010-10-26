@@ -11,14 +11,14 @@
 	
 	<!-- ICC format bean -->
 	<bean id="ICCFormat" class="org.jhove2.core.format.Format" scope="singleton">
-		<constructor-arg type="java.lang.String" value="ICC"/>
+		<constructor-arg type="java.lang.String" value="ICC colour profile"/>
 		<constructor-arg ref="ICCIdentifier"/>
 		<constructor-arg type="org.jhove2.core.format.Format$Type" value="Format"/>
 		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity" value="Unambiguous"/>
 		<property name="aliasIdentifiers">
 			<set value-type="org.jhove2.core.I8R">
 				<ref bean="ISO15076Identifier"/>
-				<ref bean="PUIDxfmt100001" />
+				<ref bean="PUIDxfmt10002" />
 			</set>
 		</property>
 		<property name="aliasNames">
@@ -26,6 +26,7 @@
 				<value>ICC colour profile</value>
 			</set>
 		</property>
+		<property name="version" value="4.2.0.0"/>
 		<property name="specifications">
 			<list value-type="org.jhove2.core.Document">
 				<ref bean="ICC1Specification"/>
@@ -40,8 +41,8 @@
 	</bean>
 	
 	<!-- DROID PUID bean -->
-	<bean id="PUIDxfmt100001" class="org.jhove2.core.I8R" scope="singleton">
-		<constructor-arg type="java.lang.String" value="x-fmt/100001"/>
+	<bean id="PUIDxfmt10002" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="x-fmt/10002"/>
 		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
 	</bean>
 

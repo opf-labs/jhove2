@@ -424,7 +424,6 @@ public class DirectInputTest {
 
 			// test going beyond boundary explicitly with LITTLE_ENDIAN byte
 			// ordering
-			ByteOrder bo = abstractInput.getBuffer().order();
 			abstractInput.setByteOrder(ByteOrder.LITTLE_ENDIAN);
 			abstractInput.setPosition(98);
 			testValue = abstractInput.readUnsignedInt();
@@ -464,7 +463,7 @@ public class DirectInputTest {
 			position = 0;
 			while ((position = abstractInput.getPosition()) < 96)
 				testValue = abstractInput.readUnsignedInt();
-			shortValue = abstractInput.readSignedShort();
+			abstractInput.readSignedShort();
 			position = abstractInput.getPosition();
 			assertTrue("Position not at value 98 as expected", position == 98);
 			testValue = abstractInput.readUnsignedInt();

@@ -46,6 +46,7 @@ import javax.annotation.Resource;
 import org.jhove2.app.util.FeatureConfigurationUtil;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.io.Input;
 import org.jhove2.core.source.FileSource;
 import org.jhove2.module.display.Displayer;
 import org.jhove2.module.display.TextDisplayer;
@@ -69,7 +70,8 @@ public class UTF8ModuleTestBase {
     protected UTF8Module testUtf8Module;
     private JHOVE2 JHOVE2;
     private String utf8DirBasePath;
-    FileSource fileSource;
+    protected FileSource fileSource;
+    protected Input input;
     protected boolean initialized;
 
     public UTF8Module getTestUtf8Module() {
@@ -115,7 +117,8 @@ public class UTF8ModuleTestBase {
         assertTrue(testFile.exists());
         try {
             fileSource = new FileSource(testFile);
-            testUtf8Module.parse(JHOVE2, fileSource);
+            input      = fileSource.getInput(JHOVE2);
+            testUtf8Module.parse(JHOVE2, fileSource, input);
         }
         catch (Exception e) {
             // fail("Exception thrown: " + e.getMessage());
@@ -124,7 +127,8 @@ public class UTF8ModuleTestBase {
 
     public void display() {
         try {
-            JHOVE2.characterize(fileSource);
+            input.setPosition(0);
+            JHOVE2.characterize(fileSource, input);
             Displayer displayer = new TextDisplayer();
             displayer.setConfigInfo(JHOVE2.getConfigInfo());
             displayer.display(fileSource);          

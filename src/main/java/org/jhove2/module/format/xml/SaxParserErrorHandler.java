@@ -55,9 +55,10 @@ import org.xml.sax.helpers.DefaultHandler;
  * @see <a
  *      href="http://www.saxproject.org/apidoc/org/xml/sax/ErrorHandler.html">ErrorHandler javadoc</a>
  */
-public class SaxParserErrorHandler extends DefaultHandler implements
-        ErrorHandler {
-
+public class SaxParserErrorHandler
+    extends DefaultHandler
+    implements ErrorHandler
+{
     /** The XmlModule object that is invoking the parser. */
     private XmlModule xmlModule;
 
@@ -84,7 +85,7 @@ public class SaxParserErrorHandler extends DefaultHandler implements
          * 2) the document could not be read; 
          * 3) the root element of the document is not <xsd:schema>. */
         if (exception.getMessage().contains("schema_reference.4:")) {
-            xmlModule.validity = Validity.Undetermined;
+            xmlModule.unresolvedSchemaReference = true;
             try {
                 Object[]messageArgs = new Object[]{exception.getMessage()};
                 xmlModule.saxParserMessages.add(new Message(Severity.ERROR,

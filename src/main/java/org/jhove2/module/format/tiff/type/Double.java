@@ -19,6 +19,10 @@ public class Double
     public Double() {
     }
     
+    public Double(double value) {
+        this.value = value;
+    }
+    
     /**
      * @return the value
      */

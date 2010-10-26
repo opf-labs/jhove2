@@ -44,7 +44,6 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.jhove2.core.Digest;
-import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
@@ -91,55 +90,45 @@ public class DigesterModule
 	 *            JHOVE2 framework
 	 * @param source
 	 *            Source unit
+	 * @param input
+	 *            Source input
 	 * @see org.jhove2.module.digest.Digester#digest(org.jhove2.core.JHOVE2,
-	 *      org.jhove2.core.source.Source)
+	 *      org.jhove2.core.source.Source, org.jhove2.core.io.Input)
 	 * @throws IOException
 	 *             I/O exception calculating message digests
 	 */
 	@Override
-	public void digest(JHOVE2 jhove2, Source source)
+	public void digest(JHOVE2 jhove2, Source source, Input input)
 		throws IOException
 	{
-		Input input = null;
-		try {
-			Invocation config = jhove2.getInvocation();
-			input = source.getInput(config.getBufferSize(), 
-					                config.getBufferType());
-			if (input != null) {
-				long inputSize = input.getSize();
-				long bufferSize = input.getMaxBufferSize();
-				long ptr = 0L;
-				while (inputSize - ptr > -1L) {
-					input.setPosition(ptr);
-					if (this.arrayDigesters != null
-							&& this.arrayDigesters.size() > 0) {
-						byte[] array = input.getByteArray();
-						Iterator<ArrayDigester> iter = this.arrayDigesters
-						.iterator();
-						while (iter.hasNext()) {
-							ArrayDigester digester = iter.next();
-							digester.update(array);
-						}
-					}
-					if (this.bufferDigesters != null
-							&& this.bufferDigesters.size() > 0) {
-						ByteBuffer buffer = input.getBuffer();
-						Iterator<BufferDigester> iter = this.bufferDigesters
-						.iterator();
-						while (iter.hasNext()) {
-							BufferDigester digester = iter.next();
-							buffer.position(0);
-							digester.update(buffer);
-						}
-					}
-					ptr += bufferSize;
-				}
-			}
-		} finally {
-			if (input != null) {
-				input.close();
-			}
-		}
+	    long inputSize = input.getSize();
+	    long bufferSize = input.getMaxBufferSize();
+	    long ptr = source.getStartingOffset();
+	    while (inputSize - ptr > -1L) {
+	        input.setPosition(ptr);
+	        if (this.arrayDigesters != null &&
+	            this.arrayDigesters.size() > 0) {
+	            byte[] array = input.getByteArray();
+	            Iterator<ArrayDigester> iter =
+	                this.arrayDigesters.iterator();
+	            while (iter.hasNext()) {
+	                ArrayDigester digester = iter.next();
+	                digester.update(array);
+	            }
+	        }
+	        if (this.bufferDigesters != null &&
+	            this.bufferDigesters.size() > 0) {
+	            ByteBuffer buffer = input.getBuffer();
+	            Iterator<BufferDigester> iter =
+	                this.bufferDigesters.iterator();
+	            while (iter.hasNext()) {
+	                BufferDigester digester = iter.next();
+	                buffer.position(0);
+	                digester.update(buffer);
+	            }
+	        }
+	        ptr += bufferSize;
+	    }
 	}
 	
 	/**

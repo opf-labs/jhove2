@@ -67,16 +67,14 @@ public class ColorantEncoding
         this.value = value;
         this.type  = type;
     }
-
-    /**
-     * Get the parameters for na encoding value.
-     * @param value  Encoding value
+    
+    /** Initialize the colorant encodings.
      * @param jhove2 JHOVE2 framework
-     * @return Function parameters, or null if the value is not defined
-     * @throws JHOVE2Exception
+     * @throws JHOVE2Exception 
      */
-    public static synchronized ColorantEncoding getColorantEncoding(int value, JHOVE2 jhove2)
-            throws JHOVE2Exception {
+    protected static synchronized void init(JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
         if (encodings == null) {
             /* Initialize the colorant encodings from a Java resource bundle. */
             encodings = new TreeSet<ColorantEncoding>();
@@ -92,6 +90,19 @@ public class ColorantEncoding
                 }
             }
         }
+    }
+
+    /**
+     * Get the parameters for na encoding value.
+     * @param value  Encoding value
+     * @param jhove2 JHOVE2 framework
+     * @return Function parameters, or null if the value is not defined
+     * @throws JHOVE2Exception
+     */
+    public static synchronized ColorantEncoding getColorantEncoding(int value, JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
+        init(jhove2);
         ColorantEncoding encoding = null;
         Iterator<ColorantEncoding> iter = encodings.iterator();
         while (iter.hasNext()) {
@@ -105,6 +116,18 @@ public class ColorantEncoding
         return encoding;
     }
 
+    /**
+     * Get the colorant encodings.
+     * @param jhove2 JHOVE2 framework
+     * @return Colorant encodings
+     * @throws JHOVE2Exception 
+     */
+    public static Set<ColorantEncoding> getColorantEncodings(JHOVE2 jhove2)
+        throws JHOVE2Exception
+    {
+        init(jhove2);
+        return encodings;
+    }
     /**
      * Get the encoding type.
      * @return Encoding type
