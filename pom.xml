@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.jhove2</groupId>
 	<artifactId>jhove2</artifactId>
-	<version>2.0.0</version>
+	<version>2.0.1</version>
 	<name>JHOVE2</name>
 	<description>JHOVE2: a next-generation architecture for
 		format-aware digital object preservation processing</description>

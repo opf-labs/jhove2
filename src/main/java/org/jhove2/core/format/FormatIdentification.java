@@ -55,32 +55,50 @@ public class FormatIdentification
 {
 	/** Identification confidence levels. */
 	public enum Confidence {
-		Negative        (6),
-		Tentative       (5), 
-		Heuristic       (4), 
-		PositiveGeneric (3),
-		PositiveSpecific(2),
-		Validated       (1);
+          /**
+           * TODO: define.
+           */
+          Negative        (6),
+          /**
+           * TODO: define.
+           */
+          Tentative       (5),
+          /**
+           * TODO: define.
+           */
+          Heuristic       (4),
+          /**
+           * TODO: define.
+           */
+          PositiveGeneric(3),
+          /**
+           * TODO: define.
+           */
+          PositiveSpecific(2),
+          /**
+           * TODO: define.
+           */
+          Validated       (1);
 
-		/** Priority order. */
-		private int order;
-		
-		/**
-		 * Instantiate a new <code>Confidence</code> enum.
-		 * @param order
-		 *            Priority order
-		 */
-		private Confidence(int order) {
-			this.order = order;
-		}
-		
-		/**
-		 * Get priority order.
-		 * @return Priority order
-		 */
-		public int getOrder() {
-			return this.order;
-		}
+          /** Priority order. */
+          private int order;
+
+          /**
+           * Instantiate a new <code>Confidence</code> enum.
+           * @param order
+           *            Priority order
+           */
+          private Confidence(int order) {
+                  this.order = order;
+          }
+
+          /**
+           * Get priority order.
+           * @return Priority order
+           */
+          public int getOrder() {
+                  return this.order;
+          }
 	}
 	/** Format identifier native to the identification process, which may not
 	 *  be in the JHOVE2 namespace.
@@ -191,7 +209,11 @@ public class FormatIdentification
         return this.jhove2Identifier;
     }
     
-	@ReportableProperty(order = 5, value = "Messages returned by identifier.")
+    /**
+     *
+     * @return
+     */
+    @ReportableProperty(order = 5, value = "Messages returned by identifier.")
 	public List<Message> getMessages() {
 		return messages;
 	}

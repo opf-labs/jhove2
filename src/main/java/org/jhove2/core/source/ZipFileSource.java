@@ -51,7 +51,7 @@ import org.jhove2.module.digest.AbstractArrayDigester;
 import org.jhove2.module.digest.CRC32Digester;
 
 /**
- * JHOVE2 Zip file source unit.
+ *  Zip file source unit.
  * 
  * @author mstrong, slabrams
  */

@@ -44,7 +44,7 @@ import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2Exception;
 
 /**
- * JHOVE2 file system directory source unit.
+ * File system directory source unit.
  * 
  * @author mstrong, slabrams
  */
@@ -72,7 +72,6 @@ public class DirectorySource
 	 * @throws IOException
 	 * @throws FileNotFoundException
 	 * @throws JHOVE2Exception 
-	 * @throws JHOVE2Exception 
 	 */
 	public DirectorySource(String pathName)
 	    throws FileNotFoundException, IOException, JHOVE2Exception
@@ -87,7 +86,6 @@ public class DirectorySource
 	 *            Java {@link java.io.File} representing a directory
 	 * @throws IOException
 	 * @throws FileNotFoundException
-	 * @throws JHOVE2Exception 
 	 * @throws JHOVE2Exception 
 	 */
 	public DirectorySource(File file)

@@ -332,11 +332,10 @@ public class I8R implements Comparable<I8R> {
 	}
 	
 	/**
-	 * Determine if Scope is a JHOVE2 Message
+	 * Determine if Type is a JHOVE2 Message
 	 * 
-	 * @param scope
-	 *            Property scope
-	 * @return True if the Scope is a message; otherwise, false
+         * @param type Java Type
+	 * @return True if the Type is a message; otherwise, false
 	 * @throws ClassNotFoundException 
 	 */
 	public static synchronized boolean isMessage(Type type) 
@@ -357,6 +356,11 @@ public class I8R implements Comparable<I8R> {
 		return isMessage;
 	}
 
+        /**
+         *
+         * @return
+         * @throws ClassNotFoundException
+         */
 	protected static String getMessageClassName()
 		throws ClassNotFoundException
 	{

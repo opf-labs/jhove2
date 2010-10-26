@@ -53,7 +53,7 @@ import org.jhove2.core.source.SourceFactory;
 import org.jhove2.module.display.Displayer;
 
 /**
- * JHOVE2 command line application.
+ * Official JHOVE2 command line application.
  * 
  * @author mstrong, slabrams, smorrissey
  */
@@ -93,7 +93,12 @@ extends AbstractApplication
 	}
 
 	/**
-	 * Main entry point for the JHOVE2 command line application.
+	 * Main entry point for the JHOVE2 command line application. Creates a
+         * {@linkplain org.jhove2.core.source.FileSetSource file set source unit}
+         * from the files specified on the command line. This file set is passed to
+         * the {@link JHOVE2} object for characterization; this initiates a search for
+         * all unitary and aggregate source units within the file set; these are characterizaed
+         * in turn.
 	 * 
 	 * @param args Command line arguments
 	 */
@@ -170,17 +175,7 @@ extends AbstractApplication
 	 * processed by the application.  Also save the commandLine string as an
 	 * instance member.
 	 * 
-	 *  -i  Show the unique formal identifiers for all reportable properties in results.
-	 *  -k  Calculate message digests.
-	 *  -b size     I/O buffer size (default=131072)
-	 *  -B scope     I/O buffer type (default=Direct)
-	 *  -d format   Results format (default=Text)
-	 *  -f limit    Fail fast limit (default=0; no limit on the number of reported errors.
-	 *  -t temp     Temporary file directory (default=java.io.tmpdir)
-	 *  -T  		   Save temporary files
-	 *  -o file     Output file (default=standard output unit)
-	 *  -h  Display a help message
-	 *  file ...    One or more files or directories to be characterized.
+	 * For command line options and usage, refer to the <i>JHOVE2 User's Guide</i>.
 	 *   
 	 * @param args
 	 *            Command line arguments

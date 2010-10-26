@@ -45,7 +45,7 @@ import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2Exception;
 
 /**
- * JHOVE2 file system file source unit.
+ * File source unit. Represents physical file on file system.
  * 
  * @author mstrong, slabrams
  */

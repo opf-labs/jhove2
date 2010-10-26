@@ -45,21 +45,27 @@ import org.jhove2.core.WrappedProduct;
 import org.jhove2.core.reportable.Reportable;
 
 /**
- * Interface for JHOVE2 modules. A module is a
- * {@link org.jhove2.core.reportable.Reportable} that perform some process and report their
- * elapsed processing time. A module generally directly performs its process;
- * however, some module implementations may be thin wrappers around 3rd party
- * tools.
+ * Interface for JHOVE2 modules. A module is an object that performs some process and reports
+ * results via {@linkplain Reportable reportable properties}.  Results include elapsed processing
+ * time. The module may perform the process directly or be a thin wrapper around a third-party
+ * tool.
  * 
  * @author mstrong, slabrams, smorrissey
  */
 public interface Module
 	extends Reportable
 {
-	/** Module scope: generic or specific (to a source unit. */
+	/** Module scope */
 	public enum Scope {
-		Generic,
-		Specific
+          /**
+           * Module reports generic information and should only be called once.
+           */
+          Generic,
+          /**
+           * Module reports information specific to a source unit and should be called every time a
+           * matching source unit is characterized.
+           */
+          Specific
 	}
 	
 	/**

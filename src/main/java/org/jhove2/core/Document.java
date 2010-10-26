@@ -43,19 +43,114 @@ import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.reportable.AbstractReportable;
 
 /**
- * A JHOVE2 specification document.
+ * A specification document that is the basis for part of the characterization process.
  * 
  * @author mstrong, slabrams
  */
 public class Document extends AbstractReportable {
 	/** Document intentions. */
 	public enum Intention {
-		Authoritative, Informative, Speculative, Other, Unknown
+          /**
+           * TODO: define.
+           */
+          Authoritative,
+          /**
+           * TODO: define.
+           */
+          Informative,
+          /**
+           * TODO: define.
+           */
+          Speculative,
+          /**
+           * TODO: define.
+           */
+          Other,
+          /**
+           * TODO: define.
+           */
+          Unknown
 	}
 
 	/** Document types. */
 	public enum Type {
-		Article, Codebook, Correspondance, DataDictionary, Dissertation, Manual, Memorandum, Monograph, Note, Paper, Presentation, Recommendation, Report, Specification, Standard, Thesis, WebSite, Other, Unknown
+
+          /**
+           * TODO: define.
+           */
+          Article,
+          /**
+           * TODO: define.
+           */
+          Codebook,
+          /**
+           * TODO: define.
+           */
+          Correspondance,
+          /**
+           * TODO: define.
+           */
+          DataDictionary,
+          /**
+           * TODO: define.
+           */
+          Dissertation,
+          /**
+           * TODO: define.
+           */
+          Manual,
+          /**
+           * TODO: define.
+           */
+          Memorandum,
+          /**
+           * TODO: define.
+           */
+          Monograph,
+          /**
+           * TODO: define.
+           */
+          Note,
+          /**
+           * TODO: define.
+           */
+          Paper,
+          /**
+           * TODO: define.
+           */
+          Presentation,
+          /**
+           * TODO: define.
+           */
+          Recommendation,
+          /**
+           * TODO: define.
+           */
+          Report,
+          /**
+           * TODO: define.
+           */
+          Specification,
+          /**
+           * TODO: define.
+           */
+          Standard,
+          /**
+           * TODO: define.
+           */
+          Thesis,
+          /**
+           * TODO: define.
+           */
+          WebSite,
+          /**
+           * TODO: define.
+           */
+          Other,
+          /**
+           * TODO: define.
+           */
+          Unknown
 	}
 
 	/** Document identifiers. */
@@ -90,9 +185,8 @@ public class Document extends AbstractReportable {
 	 * 
 	 * @param title
 	 *            Document title
-	 * @param scope
-	 *            Document scope
-	 * @param intention
+         * @param type
+         * @param intention
 	 *            Document intention
 	 */
 	public Document(String title, Type type, Intention intention) {

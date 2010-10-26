@@ -51,6 +51,7 @@ import org.jhove2.module.format.tiff.IFD;
 import org.jhove2.module.format.tiff.TiffIFD;
 import org.jhove2.module.format.tiff.TiffModule;
 
+
 /**
  * Abstract class for TiffProfiles
  * 

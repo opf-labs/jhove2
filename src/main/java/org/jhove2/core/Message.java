@@ -41,8 +41,10 @@ import java.util.Locale;
 import org.jhove2.config.ConfigInfo;
 
 /**
- * JHOVE2 message. A message has a severity, a context, and a textual value.
+ * JHOVE2 message. A message has a severity, a context, and a text code.
  * Messages are localized.
+ *
+ * TODO: Document how messages are used.
  * 
  * @author slabrams, smorrissey
  * 
@@ -50,11 +52,30 @@ import org.jhove2.config.ConfigInfo;
 public class Message {
 	/** Message contexts. */
 	public enum Context {
-		PROCESS, OBJECT
+          /**
+           * TODO: define.
+           */
+          PROCESS,
+          /**
+           * TODO: define.
+           */
+          OBJECT
 	}
 	/** Message severities. */
 	public enum Severity {
-		ERROR, WARNING, INFO
+
+          /**
+           * TODO: define.
+           */
+          ERROR,
+          /**
+           * TODO: define.
+           */
+          WARNING,
+          /**
+           * TODO: define.
+           */
+          INFO
 	}
 	/** Message code. */
 	protected String messageCode;
@@ -71,7 +92,10 @@ public class Message {
 	/** Message Locale. */
 	protected Locale locale;
 	
-	protected ConfigInfo configInfo;
+        /**
+         * TODO: explain why a message needs configuration information
+         */
+        protected ConfigInfo configInfo;
 
 	/** Default Locale */
 	private static Locale defaultLocale;
@@ -81,7 +105,7 @@ public class Message {
 		}
 
 	/**
-	 * Instantiate a new Localized <code>Message</code>.
+	 * Instantiate a new localized <code>Message</code>.
 	 * 
 	 * @param severity
 	 *            Message severity
@@ -99,7 +123,7 @@ public class Message {
 	}
 	
 	/**
-	 * Instantiate a new Localized <code>Message</code>.
+	 * Instantiate a new localized <code>Message</code>.
 	 * 
 	 * @param severity
 	 *            Message severity
@@ -121,7 +145,7 @@ public class Message {
 	}
 
 	/**
-	 * Instantiate a new Localized <code>Message</code>.
+	 * Instantiate a new localized <code>Message</code>.
 	 * 
 	 * @param severity
 	 *            Message severity

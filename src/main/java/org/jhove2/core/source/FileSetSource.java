@@ -37,7 +37,8 @@
 package org.jhove2.core.source;
 
 /**
- * A JHOVE2 file set source unit. A file set is a group of unrelated files.
+ * File set source unit. A file set is a set of user-specified files that may or may not be related.
+ * The most common kind of file set is one the one specified on an application command line.
  * 
  * @author mstrong, slabrams
  */
