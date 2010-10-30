@@ -227,7 +227,7 @@
 	<bean id="TiffClassBFormat" class="org.jhove2.core.format.Format"
 		scope="singleton">
 		<constructor-arg type="java.lang.String" value="TiffClassBIdentifier" />
-		<constructor-arg ref="TiffItIdentifier" />
+		<constructor-arg ref="TiffClassBIdentifier" />
 		<constructor-arg type="org.jhove2.core.format.Format$Type"
 			value="Format" />
 		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
@@ -255,7 +255,7 @@
 	<bean id="TiffClassGFormat" class="org.jhove2.core.format.Format"
 		scope="singleton">
 		<constructor-arg type="java.lang.String" value="TiffClassGIdentifier" />
-		<constructor-arg ref="TiffItIdentifier" />
+		<constructor-arg ref="TiffClassGIdentifier" />
 		<constructor-arg type="org.jhove2.core.format.Format$Type"
 			value="Format" />
 		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
@@ -283,7 +283,7 @@
 	<bean id="TiffClassPFormat" class="org.jhove2.core.format.Format"
 		scope="singleton">
 		<constructor-arg type="java.lang.String" value="TiffClassPIdentifier" />
-		<constructor-arg ref="TiffItIdentifier" />
+		<constructor-arg ref="TiffClassPIdentifier" />
 		<constructor-arg type="org.jhove2.core.format.Format$Type"
 			value="Format" />
 		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
@@ -311,7 +311,7 @@
 	<bean id="TiffClassRFormat" class="org.jhove2.core.format.Format"
 		scope="singleton">
 		<constructor-arg type="java.lang.String" value="TiffClassRIdentifier" />
-		<constructor-arg ref="TiffItIdentifier" />
+		<constructor-arg ref="TiffClassRIdentifier" />
 		<constructor-arg type="org.jhove2.core.format.Format$Type"
 			value="Format" />
 		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
@@ -341,7 +341,7 @@
 	<bean id="TiffClassYFormat" class="org.jhove2.core.format.Format"
 		scope="singleton">
 		<constructor-arg type="java.lang.String" value="TiffClassYIdentifier" />
-		<constructor-arg ref="TiffItIdentifier" />
+		<constructor-arg ref="TiffClassYIdentifier" />
 		<constructor-arg type="org.jhove2.core.format.Format$Type"
 			value="Format" />
 		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
