@@ -69,6 +69,15 @@ public class TiffItProfile extends TiffProfile implements Validator {
     /** invalid NewSubfileType message */
     protected Message invalidNewSubfileTypeMessage;
 
+    /** invalid Inkset value message */
+    protected Message invalidInksetValueMessage;
+
+    /** invalid colorSequence tag value message */
+    protected Message invalidColorSequenceMessage;
+
+    /** invalid NumberOfInks value message */
+    protected Message invalidNumberOfInksValueMessage;
+
     /**
      * Instantiate a new <code>TiffItProfile</code>.
      * 
@@ -228,6 +237,29 @@ public class TiffItProfile extends TiffProfile implements Validator {
         return invalidNewSubfileTypeMessage;
     }
 
+    /**
+     * @return the invalidInksetValueMessage
+     */
+    @ReportableProperty(order = 6, value = "Invalid Inkset Value message")
+    public Message getInvalidInksetValueMessage() {
+        return invalidInksetValueMessage;
+    }
+
+    /**
+     * @return the invalidColorSequenceMessage
+     */
+    @ReportableProperty(order = 7, value = "Invalid ColorSequence value message")
+    public Message getInvalidColorSequenceMessage() {
+        return invalidColorSequenceMessage;
+    }
+
+    /**
+     * @return the invalidNumberOfInksValueMessage
+     */
+    @ReportableProperty(order = 8, value = "Invalid NumberOfInks value message")
+    public Message getInvalidNumberOfInksValueMessage() {
+        return invalidNumberOfInksValueMessage;
+    }
     /**
      * Get TIFF-IT validation status.
      * 

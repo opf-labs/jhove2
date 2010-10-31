@@ -34,6 +34,7 @@
  */
 package org.jhove2.module.format.tiff.profile;
 
+import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
@@ -106,6 +107,14 @@ public class TiffGeoTIFFProfile extends TiffProfile {
                     "org.jhove2.module.format.tiff.profile.TIFFGeoTiffProfile.ModelTagsNotDefinedMessage",
                     jhove2.getConfigInfo());
         }
+    }
+
+    /**
+     * @return the modelTagsNotDefinedMessage
+     */
+    @ReportableProperty(order = 1, value = "Model tags not defined message.")
+    public Message getModelTagsNotDefinedMessage() {
+        return modelTagsNotDefinedMessage;
     }
 
 }

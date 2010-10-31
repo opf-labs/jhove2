@@ -43,7 +43,6 @@ public class LongArray
     /**
      * @return the value
      */
-    @ReportableProperty(order = 1, value = "Tag LONG Array value")
     public long[] getLongArrayValue() {
         return this.valueArray;
     }
