@@ -51,10 +51,10 @@ import org.jhove2.module.format.tiff.TiffIFD;
 public class TiffITSDProfile extends TiffItProfile {
 
     /** Profile version identifier. */
-    public static final String VERSION = "2.0.0";
+    public static final String VERSION = "2.0.1";
 
     /** Profile release date. */
-    public static final String RELEASE = "2010-09-10";
+    public static final String RELEASE = "2010-10-20";
 
     /** Profile rights statement. */
     public static final String RIGHTS = "Copyright 2010 by The Regents of the University of California. "
@@ -62,15 +62,6 @@ public class TiffITSDProfile extends TiffItProfile {
 
     /** Profile validation coverage. */
     public static final Coverage COVERAGE = Coverage.Inclusive;
-
-    /** invalid Inkset value message */
-    protected Message InvalidInksetValueMessage;
-
-    /** invalid colorSequence tag value message */
-    protected Message InvalidColorSequenceMessage;
-
-    /** invalid NumberOfInks value message */
-    protected Message InvalidNumberOfInksValueMessage;
 
     public TiffITSDProfile(Format format) {
         super(format);
@@ -171,10 +162,10 @@ public class TiffITSDProfile extends TiffItProfile {
             if (!(colorSequence.equals("CMYK") ||
                     colorSequence.equals("YMCK"))) {
                 this.isValid = Validity.False;
-                this.InvalidColorSequenceMessage = new Message(
+                this.invalidColorSequenceMessage = new Message(
                         Severity.WARNING,
                         Context.OBJECT,
-                        "org.jhove2.module.format.tiff.profile.TIFFITSDProfile.InvalidColorSequenceMessage",
+                        "org.jhove2.module.format.tiff.profile.TIFFITProfile.InvalidColorSequenceMessage",
                         jhove2.getConfigInfo());
             }
         }
@@ -186,22 +177,22 @@ public class TiffITSDProfile extends TiffItProfile {
          */
         if ((entry = ifd.getEntries().get(TiffIFD.INKSET)) != null) {
             int inkset = (Short) entry.getValue();
-            if (colorSequence != null && colorSequence.equals("CMYK")) {
+            if (colorSequence == null || colorSequence.equals("CMYK")) {
                 if ( inkset != 1) {
                     this.isValid = Validity.False;
-                    this.InvalidInksetValueMessage = new Message(
+                    this.invalidInksetValueMessage = new Message(
                             Severity.WARNING,
                             Context.OBJECT,
-                            "org.jhove2.module.format.tiff.profile.TIFFITSDProfile.InvalidInksetValueMessage",
+                            "org.jhove2.module.format.tiff.profile.TIFFITProfile.InvalidInksetValueMessage",
                             jhove2.getConfigInfo());
                 }
             }
             else if (inkset != 2) {
                 this.isValid = Validity.False;
-                this.InvalidInksetValueMessage = new Message(
+                this.invalidInksetValueMessage = new Message(
                         Severity.WARNING,
                         Context.OBJECT,
-                        "org.jhove2.module.format.tiff.profile.TIFFITSDProfile.InvalidInksetValueMessage",
+                        "org.jhove2.module.format.tiff.profile.TIFFITProfile.InvalidInksetValueMessage",
                         jhove2.getConfigInfo());
             }
         }
@@ -212,37 +203,13 @@ public class TiffITSDProfile extends TiffItProfile {
         if ((entry = ifd.getEntries().get(TiffIFD.NUMBEROFINKS)) != null) {
             if ((Short) entry.getValue() != ifd.getSamplesPerPixel()) {
                 this.isValid = Validity.False;
-                this.InvalidNumberOfInksValueMessage = new Message(
+                this.invalidNumberOfInksValueMessage = new Message(
                         Severity.WARNING,
                         Context.OBJECT,
-                        "org.jhove2.module.format.tiff.profile.TIFFITSDProfile.InvalidNumberOfInksValueMessage",
+                        "org.jhove2.module.format.tiff.profile.TIFFITProfile.InvalidNumberOfInksValueMessage",
                         jhove2.getConfigInfo());
             }
         }
-    }
-
-    /**
-     * @return the invalidInksetValueMessage
-     */
-    @ReportableProperty(order = 1, value = "Invalid Inkset Value message")
-    public Message getInvalidInksetValueMessage() {
-        return InvalidInksetValueMessage;
-    }
-
-    /**
-     * @return the invalidColorSequenceMessage
-     */
-    @ReportableProperty(order = 2, value = "Invalid ColorSequence value message")
-    public Message getInvalidColorSequenceMessage() {
-        return InvalidColorSequenceMessage;
-    }
-
-    /**
-     * @return the invalidNumberOfInksValueMessage
-     */
-    @ReportableProperty(order = 3, value = "Invalid NumberOfInks value message")
-    public Message getInvalidNumberOfInksValueMessage() {
-        return InvalidNumberOfInksValueMessage;
     }
 
 

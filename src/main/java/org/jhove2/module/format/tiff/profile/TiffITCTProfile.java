@@ -36,29 +36,33 @@ package org.jhove2.module.format.tiff.profile;
 
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.Message;
+import org.jhove2.core.Message.Context;
+import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
+import org.jhove2.module.format.tiff.IFDEntry;
 import org.jhove2.module.format.tiff.TiffIFD;
 
 /**
  * @author MStrong
  * 
  */
-public class TiffITCTProfile extends TiffProfile {
+public class TiffITCTProfile extends TiffItProfile {
 
     /** Profile version identifier. */
-    public static final String VERSION = "2.0.0";
+    public static final String VERSION = "2.0.1";
 
     /** Profile release date. */
-    public static final String RELEASE = "2010-09-10";
+    public static final String RELEASE = "2010-10-20";
 
     /** Profile rights statement. */
     public static final String RIGHTS = "Copyright 2010 by The Regents of the University of California. "
-            + "Available under the terms of the BSD license.";
+        + "Available under the terms of the BSD license.";
 
     /** Profile validation coverage. */
     public static final Coverage COVERAGE = Coverage.Inclusive;
 
-    public TiffITCTProfile(Format format) {
+   public TiffITCTProfile(Format format) {
         super(format);
     }
 
@@ -70,10 +74,72 @@ public class TiffITCTProfile extends TiffProfile {
      */
     @Override
     public void validateThisProfile(JHOVE2 jhove2, TiffIFD ifd)
-            throws JHOVE2Exception {
+    throws JHOVE2Exception {
         /* Check required tags. */
 
+        /*
+         *        if (niso.getBitsPerSample () == null ||
+        niso.getSamplesPerPixel () == NisoImageMetadata.NULL ||
+            niso.getSamplingFrequencyUnit () == NisoImageMetadata.NULL) {
+         */
         /* Check required values. */
+        if (!isPhotometricInterpretationValid (ifd, 5)) {
+            this.isValid = Validity.False;
+            this.invalidPhotometricInterpretationValueMessage = new Message(
+                    Severity.WARNING,
+                    Context.OBJECT,
+                    "org.jhove2.module.format.tiff.profile.TIFFProfile.InvalidPhotometricInterpretationValueMessage",
+                    jhove2.getConfigInfo());
+        }
+
+        if (!isCompressionValid(ifd, new int [] {1, 4, 8} )) {
+            this.isValid = Validity.False;
+            this.invalidCompressionValueMessage = new Message(
+                    Severity.WARNING,
+                    Context.OBJECT,
+                    "org.jhove2.module.format.tiff.profile.TIFFProfile.InvalidCompressionValueMessage",
+                    jhove2.getConfigInfo());
+        }
+
+        IFDEntry entry = null;
+        String colorSequence = null;
+        if ((entry = ifd.getEntries().get(TiffIFD.COLORSEQUENCE)) != null) {
+            colorSequence = (String) entry.getValue();
+        }
+
+        if ((entry = ifd.getEntries().get(TiffIFD.INKSET)) != null) {
+            int inkset = (Short) entry.getValue();
+            if ( inkset != 1 && inkset != 2) {
+                this.isValid = Validity.False;
+                this.invalidInksetValueMessage = new Message(
+                        Severity.WARNING,
+                        Context.OBJECT,
+                        "org.jhove2.module.format.tiff.profile.TIFFITProfile.InvalidInksetValueMessage",
+                        jhove2.getConfigInfo());
+            }
+            else if (colorSequence == null || colorSequence.equals("CMYK")) {
+                if ( inkset != 1) {
+                    this.isValid = Validity.False;
+                    this.invalidInksetValueMessage = new Message(
+                            Severity.WARNING,
+                            Context.OBJECT,
+                            "org.jhove2.module.format.tiff.profile.TIFFITProfile.InvalidInksetValueMessage",
+                            jhove2.getConfigInfo());
+                }
+            }
+        }
+        
+        if ((entry = ifd.getEntries().get(TiffIFD.NUMBEROFINKS)) != null) {
+            if ((Short) entry.getValue() != ifd.getSamplesPerPixel()) {
+                this.isValid = Validity.False;
+                this.invalidNumberOfInksValueMessage = new Message(
+                        Severity.WARNING,
+                        Context.OBJECT,
+                        "org.jhove2.module.format.tiff.profile.TIFFITProfile.InvalidNumberOfInksValueMessage",
+                        jhove2.getConfigInfo());
+            }
+        }
+
     }
 
 }
