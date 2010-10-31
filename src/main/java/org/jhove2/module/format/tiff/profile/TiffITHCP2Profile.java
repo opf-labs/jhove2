@@ -34,36 +34,45 @@
  */
 package org.jhove2.module.format.tiff.profile;
 
+import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
+import org.jhove2.module.format.Validator.Validity;
 import org.jhove2.module.format.tiff.IFDEntry;
 import org.jhove2.module.format.tiff.TiffIFD;
 import org.jhove2.module.format.tiff.type.AsciiArray;
+import org.jhove2.module.format.tiff.type.Byte;
 
 /**
  * @author MStrong
  * 
  */
-public class TiffITSDProfile extends TiffItProfile {
+public class TiffITHCP2Profile extends TiffItProfile {
 
     /** Profile version identifier. */
-    public static final String VERSION = "2.0.1";
+    public static final String VERSION = "2.0.0";
 
     /** Profile release date. */
-    public static final String RELEASE = "2010-10-20";
+    public static final String RELEASE = "2010-09-10";
 
     /** Profile rights statement. */
     public static final String RIGHTS = "Copyright 2010 by The Regents of the University of California. "
-        + "Available under the terms of the BSD license.";
+            + "Available under the terms of the BSD license.";
 
     /** Profile validation coverage. */
     public static final Coverage COVERAGE = Coverage.Inclusive;
 
-    public TiffITSDProfile(Format format) {
+    /** invalid DotRange message */
+    protected Message invalidDotRangeMessage;
+
+    /** invalid TransparencyIndicator message */
+    protected Message invalidTransparencyIndicatorValueMessage;
+
+    public TiffITHCP2Profile(Format format) {
         super(format);
     }
 
@@ -75,10 +84,46 @@ public class TiffITSDProfile extends TiffItProfile {
      */
     @Override
     public void validateThisProfile(JHOVE2 jhove2, TiffIFD ifd)
-    throws JHOVE2Exception {
+            throws JHOVE2Exception {
 
-        /* Check required values. */
+        /* Check required tags. */        
+        int[] bps = ifd.getBitsPerSample();
+        if (bps == null) {
+            this.isValid = Validity.False;
+            Object[] args = new Object[] { "BitsPerSample" };
+            Message msg = new Message(
+                    Severity.WARNING,
+                    Context.OBJECT,
+                    "org.jhove2.module.format.tiff.profile.TIFFProfile.MissingRequiredTag",
+                    args, jhove2.getConfigInfo());
+            this.missingRequiredTagMessages.add(msg);
+        }
 
+        int spp = ifd.getSamplesPerPixel();
+        if (spp == TiffIFD.NULL) {
+            this.isValid = Validity.False;
+            Object[] args = new Object[] { "SamplesPerPixel" };
+            Message msg = new Message(
+                    Severity.WARNING,
+                    Context.OBJECT,
+                    "org.jhove2.module.format.tiff.profile.TIFFProfile.MissingRequiredTag",
+                    args, jhove2.getConfigInfo());
+            this.missingRequiredTagMessages.add(msg);
+        }
+
+        int pi = ifd.getPhotometricInterpretation();
+        if (pi == TiffIFD.NULL) {
+            this.isValid = Validity.False;
+            Object[] args = new Object[] { "PhotometricInterpretation" };
+            Message msg = new Message(
+                    Severity.WARNING,
+                    Context.OBJECT,
+                    "org.jhove2.module.format.tiff.profile.TIFFProfile.MissingRequiredTag",
+                    args, jhove2.getConfigInfo());
+            this.missingRequiredTagMessages.add(msg);
+        }
+
+        /* Check required values. */        
         if (!isNewSubfileTypeValid(ifd, 0)) {
             this.isValid = Validity.False;
             this.invalidNewSubfileTypeMessage = new Message(
@@ -88,18 +133,29 @@ public class TiffITSDProfile extends TiffItProfile {
                     jhove2.getConfigInfo());
         }
 
-        int[] bps = ifd.getBitsPerSample();
-        if (bps[0] != 1) {
+        // bps must be ( =8... )
+        bps = ifd.getBitsPerSample();
+        if (bps.length < 1) {
             this.isValid = Validity.False;
-            Object[] args = new Object[] { 1 };
+            Object[] args = new Object[] { "(=8...)" };
             this.invalidBPSValueMessage = new Message(
                     Severity.WARNING,
                     Context.OBJECT,
-                    "org.jhove2.module.format.tiff.profile.TIFFITProfile.InvalidBPSValueMessage",
+                    "org.jhove2.module.format.tiff.profile.TIFFITProfile.InvalidBPSElementsMessage",
                     args, jhove2.getConfigInfo());
         }
+        else {
+            if (bps[0] != 8 ) {
+                Object[] args = new Object[] { "(=8...)" };
+                this.invalidBPSValueMessage = new Message(
+                        Severity.WARNING,
+                        Context.OBJECT,
+                        "org.jhove2.module.format.tiff.profile.TIFFITProfile.InvalidBPSElementsMessage",
+                        args, jhove2.getConfigInfo());
+            }
+        }
 
-        if (!isCompressionValid(ifd, new int [] {1, 4, 8} )) {
+        if (!isCompressionValid(ifd, 32897)) {
             this.isValid = Validity.False;
             this.invalidCompressionValueMessage = new Message(
                     Severity.WARNING,
@@ -117,7 +173,7 @@ public class TiffITSDProfile extends TiffItProfile {
                     jhove2.getConfigInfo());
         }
 
-        if (!isOrientationValid(ifd, new int[] {1, 4, 5, 8})) {
+        if (!isOrientationValid(ifd, 1)) {
             this.isValid = Validity.False;
             this.invalidOrientationValueMessage = new Message(
                     Severity.WARNING,
@@ -126,9 +182,9 @@ public class TiffITSDProfile extends TiffItProfile {
                     jhove2.getConfigInfo());
         }
 
-        if (!isSamplesPerPixelValid(ifd, new int[] {1, 4})) {
+        if (!isSamplesPerPixelValid(ifd, 4)) {
             this.isValid = Validity.False;
-            Object[] args = new Object[] { 1 };
+            Object[] args = new Object[] { 4 };
             this.invalidSPPValueMessage = new Message(
                     Severity.WARNING,
                     Context.OBJECT,
@@ -136,7 +192,7 @@ public class TiffITSDProfile extends TiffItProfile {
                     args, jhove2.getConfigInfo());
         }
 
-        if (!isPlanarConfigurationValid(ifd, 2)) {
+        if (!isPlanarConfigurationValid(ifd, 1)) {
             this.isValid = Validity.False;
             this.invalidPlanarConfigurationValueMessage = new Message(
                     Severity.WARNING,
@@ -156,11 +212,9 @@ public class TiffITSDProfile extends TiffItProfile {
 
         IFDEntry entry = null;
         String colorSequence = null;
-
         if ((entry = ifd.getEntries().get(TiffIFD.COLORSEQUENCE)) != null) {
             colorSequence = (String) ((AsciiArray) entry.getValue()).toString();
-            if (!(colorSequence.equals("CMYK") ||
-                    colorSequence.equals("YMCK"))) {
+            if (!colorSequence.equals("CMYK")) {
                 this.isValid = Validity.False;
                 this.invalidColorSequenceMessage = new Message(
                         Severity.WARNING,
@@ -169,7 +223,6 @@ public class TiffITSDProfile extends TiffItProfile {
                         jhove2.getConfigInfo());
             }
         }
-
         /*
          * if inkset tag is used and color sequence tag value is the default value of 'CMYK' 
          * inkset shall have the value of 1
@@ -196,22 +249,107 @@ public class TiffITSDProfile extends TiffItProfile {
                         jhove2.getConfigInfo());
             }
         }
-        
-        /*
-         * If NumberOfInks tag is used, it must have the same value as the value of SamplesPerPixel
-         */
+
         if ((entry = ifd.getEntries().get(TiffIFD.NUMBEROFINKS)) != null) {
-            if ((Short) entry.getValue() != ifd.getSamplesPerPixel()) {
+            if ((Short) entry.getValue() != 4) {
                 this.isValid = Validity.False;
                 this.invalidNumberOfInksValueMessage = new Message(
                         Severity.WARNING,
                         Context.OBJECT,
-                        "org.jhove2.module.format.tiff.profile.TIFFITProfile.InvalidNumberOfInksSPPValueMessage",
+                        "org.jhove2.module.format.tiff.profile.TIFFITProfile.InvalidNumberOfInksValueMessage",
                         jhove2.getConfigInfo());
             }
         }
+        
+        if (!isDotRangeValid(ifd, 0, 255)) {
+            this.isValid = Validity.False;
+            this.invalidDotRangeMessage = new Message(
+                    Severity.WARNING,
+                    Context.OBJECT,
+                    "org.jhove2.module.format.tiff.profile.TIFFITProfile.InvalidDotRangeMessage",
+                    jhove2.getConfigInfo());
+        }
+        
+        if ((entry = ifd.getEntries().get(TiffIFD.TRANSPARENCYINDICATOR)) != null) {
+            short ti = ((Byte) entry.getValue()).getValue();
+            if (!(ti == 0 || ti == 1)) {
+                this.isValid = Validity.False;
+                this.invalidTransparencyIndicatorValueMessage = new Message(
+                        Severity.WARNING,
+                        Context.OBJECT,
+                        "org.jhove2.module.format.tiff.profile.TIFFITProfile.InvalidTransparencyIndicatorValueMessage",
+                        jhove2.getConfigInfo());
+            }
+        }
+
+
+        /* Tags which must NOT be defined */
+        if ((entry = ifd.getEntries().get(TiffIFD.DOCUMENTNAME)) != null) {
+            this.isValid = Validity.False;
+            Object[] args = new Object[] { entry.getName() };
+            this.tagShouldNotBePresentMessage = new Message(
+                    Severity.WARNING,
+                    Context.OBJECT,
+                    "org.jhove2.module.format.tiff.profile.TIFFProfile.tagShouldNotBePresentMessage",
+                    args, jhove2.getConfigInfo());
+        }
+        
+        if ((entry = ifd.getEntries().get(TiffIFD.MODEL)) != null) {
+            this.isValid = Validity.False;
+            Object[] args = new Object[] { entry.getName() };
+            this.tagShouldNotBePresentMessage = new Message(
+                    Severity.WARNING,
+                    Context.OBJECT,
+                    "org.jhove2.module.format.tiff.profile.TIFFProfile.tagShouldNotBePresentMessage",
+                    args, jhove2.getConfigInfo());
+        }
+        
+        if ((entry = ifd.getEntries().get(TiffIFD.PAGENAME)) != null) {
+            this.isValid = Validity.False;
+            Object[] args = new Object[] { entry.getName() };
+            this.tagShouldNotBePresentMessage = new Message(
+                    Severity.WARNING,
+                    Context.OBJECT,
+                    "org.jhove2.module.format.tiff.profile.TIFFProfile.tagShouldNotBePresentMessage",
+                    args, jhove2.getConfigInfo());
+        }
+        
+        if ((entry = ifd.getEntries().get(TiffIFD.HOSTCOMPUTER)) != null) {
+            this.isValid = Validity.False;
+            Object[] args = new Object[] { entry.getName() };
+            this.tagShouldNotBePresentMessage = new Message(
+                    Severity.WARNING,
+                    Context.OBJECT,
+                    "org.jhove2.module.format.tiff.profile.TIFFProfile.tagShouldNotBePresentMessage",
+                    args, jhove2.getConfigInfo());
+        }
+
+        if ((entry = ifd.getEntries().get(TiffIFD.SITE)) != null) {
+            this.isValid = Validity.False;
+            Object[] args = new Object[] { entry.getName() };
+            this.tagShouldNotBePresentMessage = new Message(
+                    Severity.WARNING,
+                    Context.OBJECT,
+                    "org.jhove2.module.format.tiff.profile.TIFFProfile.tagShouldNotBePresentMessage",
+                    args, jhove2.getConfigInfo());
+        }
+        
     }
 
+    /**
+     * @return the invalidDotRangeMessage
+     */
+    @ReportableProperty(order = 1, value = "Invalid DotRange message.")
+    public Message getInvalidDotRangeMessage() {
+        return invalidDotRangeMessage;
+    }
 
+    /**
+     * @return the invalidTransparencyIndicatorValueMessage
+     */
+    @ReportableProperty(order = 2, value = "Invalid Transparency Indicator message")
+    public Message getInvalidTransparencyIndicatorValueMessage() {
+        return invalidTransparencyIndicatorValueMessage;
+    }
 
 }
