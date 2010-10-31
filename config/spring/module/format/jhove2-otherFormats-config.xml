@@ -3433,34 +3433,6 @@
                      value="PUID"/>
   </bean>
 
-  <bean id="FixedWidthValuesTextFileFormat" class="org.jhove2.core.format.Format"
-        scope="singleton">
-    <constructor-arg type="java.lang.String" value="Fixed Width Values Text File"/>
-    <constructor-arg ref="FixedWidthValuesTextFileIdentifier"/>
-    <constructor-arg type="org.jhove2.core.format.Format$Type"
-                     value="Format"/>
-    <constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
-                     value="Unambiguous"/>
-    <property name="aliasIdentifiers">
-      <set value-type="org.jhove2.core.I8R">
-        <ref bean="FixedWidthValuesTextFileIdentifier"/>
-        <ref bean="FixedWidthValuesTextFilePUID1"/>
-      </set>
-    </property>
-  </bean>
-  <!-- FixedWidthValuesTextFile JHOVE2 identifier bean -->
-  <bean id="FixedWidthValuesTextFileIdentifier" class="org.jhove2.core.I8R" scope="singleton">
-    <constructor-arg type="java.lang.String"
-                     value="http://jhove2.org/terms/format/fixed-width-values-text"/>
-  </bean>
-  <!-- FixedWidthValuesTextFile PUID identifier bean -->
-  <bean id="FixedWidthValuesTextFilePUID1" class="org.jhove2.core.I8R" scope="singleton">
-    <constructor-arg type="java.lang.String"
-                     value="x-fmt/110"/>
-    <constructor-arg type="org.jhove2.core.I8R$Namespace"
-                     value="PUID"/>
-  </bean>
-
   <bean id="FlexibleImageTransportSystemFormat" class="org.jhove2.core.format.Format"
         scope="singleton">
     <constructor-arg type="java.lang.String" value="Flexible Image Transport System"/>
@@ -4977,34 +4949,6 @@
   <bean id="MacintoshPICTImagePUID1" class="org.jhove2.core.I8R" scope="singleton">
     <constructor-arg type="java.lang.String"
                      value="x-fmt/80"/>
-    <constructor-arg type="org.jhove2.core.I8R$Namespace"
-                     value="PUID"/>
-  </bean>
-
-  <bean id="MacintoshTextFileFormat" class="org.jhove2.core.format.Format"
-        scope="singleton">
-    <constructor-arg type="java.lang.String" value="Macintosh Text File"/>
-    <constructor-arg ref="MacintoshTextFileIdentifier"/>
-    <constructor-arg type="org.jhove2.core.format.Format$Type"
-                     value="Format"/>
-    <constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
-                     value="Unambiguous"/>
-    <property name="aliasIdentifiers">
-      <set value-type="org.jhove2.core.I8R">
-        <ref bean="MacintoshTextFileIdentifier"/>
-        <ref bean="MacintoshTextFilePUID1"/>
-      </set>
-    </property>
-  </bean>
-  <!-- MacintoshTextFile JHOVE2 identifier bean -->
-  <bean id="MacintoshTextFileIdentifier" class="org.jhove2.core.I8R" scope="singleton">
-    <constructor-arg type="java.lang.String"
-                     value="http://jhove2.org/terms/format/macintosh-text"/>
-  </bean>
-  <!-- MacintoshTextFile PUID identifier bean -->
-  <bean id="MacintoshTextFilePUID1" class="org.jhove2.core.I8R" scope="singleton">
-    <constructor-arg type="java.lang.String"
-                     value="x-fmt/14"/>
     <constructor-arg type="org.jhove2.core.I8R$Namespace"
                      value="PUID"/>
   </bean>
@@ -6921,62 +6865,6 @@
   <bean id="MSDOSExecutablePUID1" class="org.jhove2.core.I8R" scope="singleton">
     <constructor-arg type="java.lang.String"
                      value="x-fmt/409"/>
-    <constructor-arg type="org.jhove2.core.I8R$Namespace"
-                     value="PUID"/>
-  </bean>
-
-  <bean id="MSDOSTextFileFormat" class="org.jhove2.core.format.Format"
-        scope="singleton">
-    <constructor-arg type="java.lang.String" value="MS-DOS Text File"/>
-    <constructor-arg ref="MSDOSTextFileIdentifier"/>
-    <constructor-arg type="org.jhove2.core.format.Format$Type"
-                     value="Format"/>
-    <constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
-                     value="Unambiguous"/>
-    <property name="aliasIdentifiers">
-      <set value-type="org.jhove2.core.I8R">
-        <ref bean="MSDOSTextFileIdentifier"/>
-        <ref bean="MSDOSTextFilePUID1"/>
-      </set>
-    </property>
-  </bean>
-  <!-- MSDOSTextFile JHOVE2 identifier bean -->
-  <bean id="MSDOSTextFileIdentifier" class="org.jhove2.core.I8R" scope="singleton">
-    <constructor-arg type="java.lang.String"
-                     value="http://jhove2.org/terms/format/ms-dos-text"/>
-  </bean>
-  <!-- MSDOSTextFile PUID identifier bean -->
-  <bean id="MSDOSTextFilePUID1" class="org.jhove2.core.I8R" scope="singleton">
-    <constructor-arg type="java.lang.String"
-                     value="x-fmt/15"/>
-    <constructor-arg type="org.jhove2.core.I8R$Namespace"
-                     value="PUID"/>
-  </bean>
-
-  <bean id="MSDOSTextFilewithlinebreaksFormat" class="org.jhove2.core.format.Format"
-        scope="singleton">
-    <constructor-arg type="java.lang.String" value="MS-DOS Text File with line breaks"/>
-    <constructor-arg ref="MSDOSTextFilewithlinebreaksIdentifier"/>
-    <constructor-arg type="org.jhove2.core.format.Format$Type"
-                     value="Format"/>
-    <constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
-                     value="Unambiguous"/>
-    <property name="aliasIdentifiers">
-      <set value-type="org.jhove2.core.I8R">
-        <ref bean="MSDOSTextFilewithlinebreaksIdentifier"/>
-        <ref bean="MSDOSTextFilewithlinebreaksPUID1"/>
-      </set>
-    </property>
-  </bean>
-  <!-- MSDOSTextFilewithlinebreaks JHOVE2 identifier bean -->
-  <bean id="MSDOSTextFilewithlinebreaksIdentifier" class="org.jhove2.core.I8R" scope="singleton">
-    <constructor-arg type="java.lang.String"
-                     value="http://jhove2.org/terms/format/ms-dos-text-with-line-breaks"/>
-  </bean>
-  <!-- MSDOSTextFilewithlinebreaks PUID identifier bean -->
-  <bean id="MSDOSTextFilewithlinebreaksPUID1" class="org.jhove2.core.I8R" scope="singleton">
-    <constructor-arg type="java.lang.String"
-                     value="x-fmt/130"/>
     <constructor-arg type="org.jhove2.core.I8R$Namespace"
                      value="PUID"/>
   </bean>
@@ -9473,34 +9361,6 @@
                      value="PUID"/>
   </bean>
 
-  <bean id="TabDelimitedTextFileFormat" class="org.jhove2.core.format.Format"
-        scope="singleton">
-    <constructor-arg type="java.lang.String" value="Tab-Delimited Text File"/>
-    <constructor-arg ref="TabDelimitedTextFileIdentifier"/>
-    <constructor-arg type="org.jhove2.core.format.Format$Type"
-                     value="Format"/>
-    <constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
-                     value="Unambiguous"/>
-    <property name="aliasIdentifiers">
-      <set value-type="org.jhove2.core.I8R">
-        <ref bean="TabDelimitedTextFileIdentifier"/>
-        <ref bean="TabDelimitedTextFilePUID1"/>
-      </set>
-    </property>
-  </bean>
-  <!-- TabDelimitedTextFile JHOVE2 identifier bean -->
-  <bean id="TabDelimitedTextFileIdentifier" class="org.jhove2.core.I8R" scope="singleton">
-    <constructor-arg type="java.lang.String"
-                     value="http://jhove2.org/terms/format/tab-delimited-text"/>
-  </bean>
-  <!-- TabDelimitedTextFile PUID identifier bean -->
-  <bean id="TabDelimitedTextFilePUID1" class="org.jhove2.core.I8R" scope="singleton">
-    <constructor-arg type="java.lang.String"
-                     value="x-fmt/13"/>
-    <constructor-arg type="org.jhove2.core.I8R$Namespace"
-                     value="PUID"/>
-  </bean>
-
   <bean id="TapeArchiveFormatFormat" class="org.jhove2.core.format.Format"
         scope="singleton">
     <constructor-arg type="java.lang.String" value="Tape Archive Format"/>
@@ -9617,34 +9477,6 @@
   <bean id="TurboDebuggerKeystrokeRecordingFilePUID1" class="org.jhove2.core.I8R" scope="singleton">
     <constructor-arg type="java.lang.String"
                      value="x-fmt/199"/>
-    <constructor-arg type="org.jhove2.core.I8R$Namespace"
-                     value="PUID"/>
-  </bean>
-
-  <bean id="UnicodeTextFileFormat" class="org.jhove2.core.format.Format"
-        scope="singleton">
-    <constructor-arg type="java.lang.String" value="Unicode Text File"/>
-    <constructor-arg ref="UnicodeTextFileIdentifier"/>
-    <constructor-arg type="org.jhove2.core.format.Format$Type"
-                     value="Format"/>
-    <constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
-                     value="Unambiguous"/>
-    <property name="aliasIdentifiers">
-      <set value-type="org.jhove2.core.I8R">
-        <ref bean="UnicodeTextFileIdentifier"/>
-        <ref bean="UnicodeTextFilePUID1"/>
-      </set>
-    </property>
-  </bean>
-  <!-- UnicodeTextFile JHOVE2 identifier bean -->
-  <bean id="UnicodeTextFileIdentifier" class="org.jhove2.core.I8R" scope="singleton">
-    <constructor-arg type="java.lang.String"
-                     value="http://jhove2.org/terms/format/unicode"/>
-  </bean>
-  <!-- UnicodeTextFile PUID identifier bean -->
-  <bean id="UnicodeTextFilePUID1" class="org.jhove2.core.I8R" scope="singleton">
-    <constructor-arg type="java.lang.String"
-                     value="x-fmt/16"/>
     <constructor-arg type="org.jhove2.core.I8R$Namespace"
                      value="PUID"/>
   </bean>

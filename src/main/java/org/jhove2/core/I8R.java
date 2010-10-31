@@ -39,6 +39,8 @@ package org.jhove2.core;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 
+import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.reportable.AbstractReportable;
 import org.jhove2.core.reportable.Reportable;
 
 /**
@@ -48,7 +50,10 @@ import org.jhove2.core.reportable.Reportable;
  * 
  * @author mstrong, slabrams, smorrissey
  */
-public class I8R implements Comparable<I8R> {
+public class I8R
+    extends AbstractReportable
+    implements Comparable<I8R>
+{
 	/** JHOVE2 namespace identifier prefix. */
 	public static final String JHOVE2_PREFIX = "http://jhove2.org/terms";
 
@@ -150,7 +155,8 @@ public class I8R implements Comparable<I8R> {
 	 *            IdentifierModule namespace
 	 */
 	public I8R(String value, Namespace namespace) {
-		this.value = value;
+	    super();
+		this.value     = value;
 		this.namespace = namespace;
 	}
 
@@ -159,6 +165,7 @@ public class I8R implements Comparable<I8R> {
 	 * 
 	 * @return IdentifierModule namespace
 	 */
+	@ReportableProperty(order=1, value="Identifier namespace.")
 	public Namespace getNamespace() {
 		return this.namespace;
 	}
@@ -168,6 +175,7 @@ public class I8R implements Comparable<I8R> {
 	 * 
 	 * @return IdentifierModule value
 	 */
+	@ReportableProperty(order=1, value="Identifier value.")
 	public String getValue() {
 		return this.value;
 	}
@@ -218,29 +226,35 @@ public class I8R implements Comparable<I8R> {
 		else return ret;
 	}
 	
+	/** Determine equality between I8Rs.
+	 * @param obj I8R whose equality is being tested
+	 * @return True, if the two I8Rs are equal
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
 	@Override
 	public boolean equals(Object obj){
-		if (obj == null){
-			return false;
-		}
-		if (this == obj){
-			return true;
-		}
-		if (!(obj instanceof I8R)){
-			return false;
-		}
-		I8R id = (I8R)obj;
-		int ret = this.namespace.toString().compareToIgnoreCase(
-				id.getNamespace().toString());
-		if (ret != 0){
-			return false;
-		}
-		ret = this.value.compareToIgnoreCase(id.getValue());
-		boolean equals = (ret==0);
-		return equals;
+	    if (this.compareTo((I8R) obj) == 0) {
+	        return true;
+	    }
+	    return false;
 	}
 	
-	/**
+	/** Get hash code for the I8R.
+	 * @return Hash code for the I8R
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result
+                + ((namespace == null) ? 0 : namespace.hashCode());
+        result = prime * result + ((value == null) ? 0 : value.hashCode());
+        return result;
+    }
+
+    /**
 	 * Get the singular form of a plural property name.
 	 * 
 	 * @param name

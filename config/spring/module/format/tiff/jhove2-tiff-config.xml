@@ -115,7 +115,7 @@
 	</bean>
 	<!-- Tiff MIME aliasIdentifier bean -->
 	<bean id="TiffMIMEType" class="org.jhove2.core.I8R" scope="singleton">
-		<constructor-arg type="java.lang.String" value="image/Tiff" />
+		<constructor-arg type="java.lang.String" value="image/tiff" />
 		<constructor-arg type="org.jhove2.core.I8R$Namespace"
 			value="MIME" />
 	</bean>

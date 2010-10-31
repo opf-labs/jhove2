@@ -70,10 +70,10 @@ public class UTF8Module
 	implements Validator
 {
 	/** UTF-8 module version identifier. */
-	public static final String VERSION = "2.0.0";
+	public static final String VERSION = "2.0.1";
 
 	/** UTF-8 module release date. */
-	public static final String RELEASE = "2010-09-10";
+	public static final String RELEASE = "2010-10-14";
 
 	/** UTF-8 module rights statement. */
 	public static final String RIGHTS =
@@ -193,56 +193,59 @@ public class UTF8Module
 		        break;
 		    }
 		    consumed += n;
-		    int codePoint = ch.getCodePoint();
-		    this.numCharacters++;
+            if (position == start && ch.isByteOrderMark()) {
+                Object[] messageParms = new Object[]{position - start};
+                this.bomMessage = new Message(Severity.INFO,
+                        Context.OBJECT,
+                        "org.jhove2.module.format.utf8.UTF8Module.bomMessage",
+                        messageParms, jhove2.getConfigInfo());
+            }
+            else {
+                this.numCharacters++;
+                int codePoint = ch.getCodePoint();
 
-		    Validity isValid = ch.isValid();
-		    if (isValid == Validity.False) {
-		        this.isValid = isValid;
-		        if (jhove2.failFast(++numErrors)) {
-		            this.failFastMessage = new Message(Severity.INFO,
+                Validity isValid = ch.isValid();
+                if (isValid == Validity.False) {
+                    this.isValid = isValid;
+                    if (jhove2.failFast(++numErrors)) {
+                        this.failFastMessage = new Message(Severity.INFO,
 		                    Context.PROCESS,
-		                    "org.jhove2.module.format.utf8.UTF8Module.failFastMessage", jhove2.getConfigInfo());
-					break;
-				}
-		        this.invalidCharacters.add(ch);
-			}
+		                    "org.jhove2.module.format.utf8.UTF8Module.failFastMessage",
+		                    jhove2.getConfigInfo());
+                        break;
+                    }
+                    this.invalidCharacters.add(ch);
+                }
 
-		    /* Determine character properties. */
-		    eol = UTF8Character.getEOL(prevCodePoint, codePoint);
-		    if (eol != null) {
-		        this.numLines++;
-		        this.eolMarkers.add(eol);
-			}
-		    CodeBlock codeBlock = ch.getCodeBlock();
-		    if (codeBlock != null) {
-		        this.codeBlocks.add(codeBlock);
-			}
+                /* Determine character properties. */
+                eol = UTF8Character.getEOL(prevCodePoint, codePoint);
+                if (eol != null) {
+                    this.numLines++;
+                    this.eolMarkers.add(eol);
+                }
+                CodeBlock codeBlock = ch.getCodeBlock();
+                if (codeBlock != null) {
+                    this.codeBlocks.add(codeBlock);
+                }
 
-		    C0Control c0 = ch.getC0Control();
-		    if (c0 != null && !c0.getMnemonic().equals("CR")
-		            && !c0.getMnemonic().equals("LF")) {
-				this.c0Characters.add(c0);
-			}
-		    C1Control c1 = ch.getC1Control();
-		    if (c1 != null) {
-		        this.c1Characters.add(c1);
-		    }
-		    if (position == start && ch.isByteOrderMark()) {
-		        Object[] messageParms = new Object[]{position - start};
-		        this.bomMessage = new Message(Severity.INFO,
-		                Context.OBJECT,
-		                "org.jhove2.module.format.utf8.UTF8Module.bomMessage",
-		                messageParms, jhove2.getConfigInfo());
-		    }
-		    if (ch.isNonCharacter()) {
-		        this.numNonCharacters++;
-		    }
-		    if (ch.isValid() == Validity.False) {
-		        this.isValid = Validity.False;
-			}
+                C0Control c0 = ch.getC0Control();
+                if (c0 != null && !c0.getMnemonic().equals("CR")
+                               && !c0.getMnemonic().equals("LF")) {
+                    this.c0Characters.add(c0);
+                }
+                C1Control c1 = ch.getC1Control();
+                if (c1 != null) {
+                    this.c1Characters.add(c1);
+                }
+                if (ch.isNonCharacter()) {
+                    this.numNonCharacters++;
+                }
+                if (ch.isValid() == Validity.False) {
+                    this.isValid = Validity.False;
+                }
 
-		    prevCodePoint = codePoint;
+                prevCodePoint = codePoint;
+            }
 		    position += n;
 		}
 		eol = UTF8Character.getEOL(prevCodePoint,
