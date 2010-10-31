@@ -36,20 +36,24 @@ package org.jhove2.module.format.tiff.profile;
 
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.Message;
+import org.jhove2.core.Message.Context;
+import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
+import org.jhove2.module.format.tiff.IFDEntry;
 import org.jhove2.module.format.tiff.TiffIFD;
 
 /**
  * @author MStrong
  * 
  */
-public class TiffITFPProfile extends TiffProfile {
+public class TiffITFPProfile extends TiffItProfile {
 
     /** Profile version identifier. */
-    public static final String VERSION = "2.0.0";
+    public static final String VERSION = "2.0.1";
 
     /** Profile release date. */
-    public static final String RELEASE = "2010-09-10";
+    public static final String RELEASE = "2010-10-20";
 
     /** Profile rights statement. */
     public static final String RIGHTS = "Copyright 2010 by The Regents of the University of California. "
@@ -71,9 +75,56 @@ public class TiffITFPProfile extends TiffProfile {
     @Override
     public void validateThisProfile(JHOVE2 jhove2, TiffIFD ifd)
             throws JHOVE2Exception {
+        
         /* Check required tags. */
+        IFDEntry entry = null;
+        if ((entry = ifd.getEntries().get(TiffIFD.IMAGEDESCRIPTION)) == null) {
+            Object[] args = new Object[] { "ImageDescription" };
+            Message msg = new Message(
+                    Severity.WARNING,
+                    Context.OBJECT,
+                    "org.jhove2.module.format.tiff.profile.TIFFProfile.MissingRequiredTag",
+                    args, jhove2.getConfigInfo());
+            this.missingRequiredTagMessages.add(msg);
+        }
 
-        /* Check required values. */
+        /* Check required values. */    
+        long newSubfileType = ifd.getNewSubfileType();
+        if ((newSubfileType & 8) == 0) {
+            this.isValid = Validity.False;
+            this.invalidNewSubfileTypeMessage = new Message(
+                    Severity.WARNING,
+                    Context.OBJECT,
+                    "org.jhove2.module.format.tiff.profile.TIFFITProfile.InvalidNewSubfileTypeMessage",
+                    jhove2.getConfigInfo());
+        }
+
+        if (!isOrientationValid(ifd, new int [] {1, 4, 5, 8})) {
+            this.isValid = Validity.False;
+            this.invalidOrientationValueMessage = new Message(
+                    Severity.WARNING,
+                    Context.OBJECT,
+                    "org.jhove2.module.format.tiff.profile.TIFFProfile.InvalidOrientationValueMessage",
+                    jhove2.getConfigInfo());
+        }
+
+        if (!isPlanarConfigurationValid(ifd, 1)) {
+            this.isValid = Validity.False;
+            Object[] args = new Object[] { 1 };
+            this.invalidPlanarConfigurationValueMessage = new Message(
+                    Severity.WARNING,
+                    Context.OBJECT,
+                    "org.jhove2.module.format.tiff.profile.TIFFITProfile.InvalidPlanarConfigurationValueMessage",
+                    args, jhove2.getConfigInfo());
+        }
+
+        if (!isResolutionUnitValid(ifd, new int[] {2, 3})) {
+            this.isValid = Validity.False;
+            this.invalidResolutionUnitValueMessage = new Message(
+                    Severity.WARNING,
+                    Context.OBJECT,
+                    "org.jhove2.module.format.tiff.profile.TIFFProfile.InvalidResolutionUnitValueMessage",
+                    jhove2.getConfigInfo());
+        }
     }
-
 }

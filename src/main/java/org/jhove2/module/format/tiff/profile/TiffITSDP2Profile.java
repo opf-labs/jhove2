@@ -184,7 +184,7 @@ public class TiffITSDP2Profile extends TiffItProfile {
             this.invalidOrientationValueMessage = new Message(
                     Severity.WARNING,
                     Context.OBJECT,
-                    "org.jhove2.module.format.tiff.profile.TIFFProfile.invalidOrientationValueMessage",
+                    "org.jhove2.module.format.tiff.profile.TIFFProfile.InvalidOrientationValueMessage",
                     jhove2.getConfigInfo());
         }
 

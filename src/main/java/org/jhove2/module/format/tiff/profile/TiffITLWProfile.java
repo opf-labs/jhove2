@@ -119,9 +119,8 @@ public class TiffITLWProfile extends TiffItProfile {
         }
 
         IFDEntry entry = null;
-        if ((entry = ifd.getEntries().get(TiffIFD.COLORTABLE)) != null) {
-            Object[] args = new Object[] { entry.getName() };
-            this.isValid = Validity.False;
+        if ((entry = ifd.getEntries().get(TiffIFD.COLORTABLE)) == null) {
+            Object[] args = new Object[] { "ColorTable" };
             Message msg = new Message(
                     Severity.WARNING,
                     Context.OBJECT,
@@ -163,7 +162,7 @@ public class TiffITLWProfile extends TiffItProfile {
             this.invalidOrientationValueMessage = new Message(
                     Severity.WARNING,
                     Context.OBJECT,
-                    "org.jhove2.module.format.tiff.profile.TIFFProfile.invalidOrientationValueMessage",
+                    "org.jhove2.module.format.tiff.profile.TIFFProfile.InvalidOrientationValueMessage",
                     jhove2.getConfigInfo());
         }
 
