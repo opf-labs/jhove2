@@ -117,23 +117,25 @@ public class TiffITCTProfile extends TiffItProfile {
         /* Check required values. */
         // bps must be { =8..., =16,... }
         bps = ifd.getBitsPerSample();
-        if (bps.length < 1) {
-            this.isValid = Validity.False;
-            Object[] args = new Object[] { "{ =8..., =16,... }" };
-            this.invalidBPSValueMessage = new Message(
-                    Severity.WARNING,
-                    Context.OBJECT,
-                    "org.jhove2.module.format.tiff.profile.TIFFITProfile.InvalidBPSElementsMessage",
-                    args, jhove2.getConfigInfo());
-        }
-        else {
-            if (bps[0] != 8 || bps [0] != 16) {
+        if (bps != null) {
+            if (bps.length < 1) {
+                this.isValid = Validity.False;
                 Object[] args = new Object[] { "{ =8..., =16,... }" };
                 this.invalidBPSValueMessage = new Message(
                         Severity.WARNING,
                         Context.OBJECT,
                         "org.jhove2.module.format.tiff.profile.TIFFITProfile.InvalidBPSElementsMessage",
                         args, jhove2.getConfigInfo());
+            }
+            else {
+                if (bps[0] != 8 || bps [0] != 16) {
+                    Object[] args = new Object[] { "{ =8..., =16,... }" };
+                    this.invalidBPSValueMessage = new Message(
+                            Severity.WARNING,
+                            Context.OBJECT,
+                            "org.jhove2.module.format.tiff.profile.TIFFITProfile.InvalidBPSElementsMessage",
+                            args, jhove2.getConfigInfo());
+                }
             }
         }
 

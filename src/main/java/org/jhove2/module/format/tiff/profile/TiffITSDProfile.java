@@ -84,19 +84,21 @@ public class TiffITSDProfile extends TiffItProfile {
             this.invalidNewSubfileTypeMessage = new Message(
                     Severity.WARNING,
                     Context.OBJECT,
-                    "org.jhove2.module.format.tiff.profile.TIFFProfile.invalidNewSubfileTypeMessage",
+                    "org.jhove2.module.format.tiff.profile.TIFFITProfile.InvalidNewSubfileTypeMessage",
                     jhove2.getConfigInfo());
         }
 
         int[] bps = ifd.getBitsPerSample();
-        if (bps[0] != 1) {
-            this.isValid = Validity.False;
-            Object[] args = new Object[] { 1 };
-            this.invalidBPSValueMessage = new Message(
-                    Severity.WARNING,
-                    Context.OBJECT,
-                    "org.jhove2.module.format.tiff.profile.TIFFITProfile.InvalidBPSValueMessage",
-                    args, jhove2.getConfigInfo());
+        if (bps != null) {
+            if (bps[0] != 1) {
+                this.isValid = Validity.False;
+                Object[] args = new Object[] { 1 };
+                this.invalidBPSValueMessage = new Message(
+                        Severity.WARNING,
+                        Context.OBJECT,
+                        "org.jhove2.module.format.tiff.profile.TIFFITProfile.InvalidBPSValueMessage",
+                        args, jhove2.getConfigInfo());
+            }
         }
 
         if (!isCompressionValid(ifd, new int [] {1, 4, 8} )) {
@@ -196,7 +198,7 @@ public class TiffITSDProfile extends TiffItProfile {
                         jhove2.getConfigInfo());
             }
         }
-        
+
         /*
          * If NumberOfInks tag is used, it must have the same value as the value of SamplesPerPixel
          */
