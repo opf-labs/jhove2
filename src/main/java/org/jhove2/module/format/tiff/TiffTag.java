@@ -34,8 +34,10 @@
  */
 package org.jhove2.module.format.tiff;
 
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
@@ -70,7 +72,7 @@ public class TiffTag implements Comparable<TiffTag> {
     protected String name;
 
     /** the field type  */
-    protected String[] type;
+    protected List<String> type;
     /**
      * the number of values, count of the indicated Type 
      */
@@ -104,7 +106,7 @@ public class TiffTag implements Comparable<TiffTag> {
     public TiffTag(int tag, String name, String[] type, String cardinality, String defaultValue, int version) {
         this.tag = tag;
         this.name = name;
-        this.type = type;
+        this.type = Arrays.asList(type);
         this.cardinality = cardinality;
         this.defaultValue = defaultValue;
         this.version = version;
@@ -168,7 +170,7 @@ public class TiffTag implements Comparable<TiffTag> {
                     // tag|Name|Type[,Type,...]|Cardinality|Default
                     int tag = Integer.parseInt(key);
                     name = values[0];
-                    type = values[1].split(",");
+                    type = values[1].toUpperCase().split(",");
 
                     /* retrieve cardinality/count/length 
                      * count field is null if the string value it contains is not parseable to int. 
@@ -184,7 +186,9 @@ public class TiffTag implements Comparable<TiffTag> {
 
                     /* retrieve version */
                     if (values.length >= 5) {
+                        if (isParsableToInt(values[4])) {
                         version = Integer.parseInt(values[4]);
+                        }
                     }
                     tiffTag = new TiffTag(tag, name, type, cardinality, defaultValue, version);
                     tags.add(tiffTag);
@@ -222,10 +226,10 @@ public class TiffTag implements Comparable<TiffTag> {
     /**
      *  A tag can have more than one type
      * 
-     *  String[] array
+     *  List<String> array
      * @return
      */
-    public String[] getType() {
+    public List<String> getType() {
         return type;
     }
 

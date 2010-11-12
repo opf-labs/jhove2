@@ -134,6 +134,7 @@ public class DroidIdentifierTest {
 		String badFilePath = samplesDirPath.concat(sampleBadFile);
 		try {
 			source = new FileSource(badFilePath);
+			input  = source.getInput(JHOVE2);
 		} catch (Exception e) {
 			fail("Couldn't create source: " + e.getMessage());
 		}
@@ -153,6 +154,7 @@ public class DroidIdentifierTest {
 		String noJhoveFormatFilePath = samplesDirPath.concat(sampleNoJhoveIdFile);
 		try {
 			source = new FileSource(noJhoveFormatFilePath);
+			input  = source.getInput(JHOVE2);
 		} catch (Exception e) {
 			fail("Couldn't create source: " + e.getMessage());
 		}
@@ -162,7 +164,7 @@ public class DroidIdentifierTest {
 			assertEquals(1, ids.size());
 			for (FormatIdentification fi : ids){
 				assertEquals(Confidence.PositiveSpecific, fi.getConfidence());
-				assertNull(fi.getJHOVE2Identifier());
+				assertNotNull(fi.getJHOVE2Identifier());
 			}
 			assertNull(dROIDIdentifier.getFileErrorMessage());
 			assertNull(dROIDIdentifier.getFileNotRunMessage());

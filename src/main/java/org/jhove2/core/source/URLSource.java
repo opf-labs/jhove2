@@ -148,8 +148,9 @@ public class URLSource
 		return super.equals(obj);
 	}
 	
-	/** Compare the URL.
-	 * @return -1, 0, or 1 if the URL is less than, equals to, or greater than
+	/** Compare to another source unit.
+         * @param source
+         * @return -1, 0, or 1 if the URL is less than, equals to, or greater than
 	 * the compared URL
 	 */
 	@Override

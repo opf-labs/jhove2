@@ -81,6 +81,9 @@ public class XmlModule
     
     /** XML validation status. */
     protected Validity validity;
+    
+    /** Unresolved schema reference in XML document */
+    protected boolean unresolvedSchemaReference;
 
     /**
      * Get module validation coverage.
@@ -140,9 +143,9 @@ public class XmlModule
                     messageArgs, jhove2.getConfigInfo()));
             return (validity = Validity.False);
         }
-        /* See if validity has been previously set to undetermined, e.g. if schema file not found */
-        if ((validity != null) && (validity == Validity.Undetermined)) {
-            return validity;
+        /* Did SAX parser find a referenced schema file that could not be resolved? */
+        if (this.unresolvedSchemaReference) {
+            return (validity = Validity.Undetermined);
         }    
         /* No validation errors found, but make sure schema validation was enabled, if appropriate */
         if (namespaceInformation.hasSchemaLocations) {
@@ -218,7 +221,7 @@ public class XmlModule
      * Data store for XML numeric character references captured during the
      * parse.
      */
-    protected NumericCharacterReferences numericCharacterReferences = new NumericCharacterReferences();
+    protected NumericCharacterReferenceInformation numericCharacterReferenceInformation = new NumericCharacterReferenceInformation();
 
     /**
      * Data store for XML processing instruction information captured during the
@@ -350,9 +353,9 @@ public class XmlModule
      * 
      * @return list of XML Numeric Character References
      */
-    @ReportableProperty(order = 9, value = "List of Numeric Character References")
-    public ArrayList<NumericCharacterReference> getNumericCharacterReferences() {
-        return numericCharacterReferences.getNumericCharacterReferenceList();
+    @ReportableProperty(order = 9, value = "Numeric Character Reference Information")
+    public NumericCharacterReferenceInformation getNumericCharacterReferenceInformation() {
+        return numericCharacterReferenceInformation;
     }
 
     /**
@@ -451,11 +454,10 @@ public class XmlModule
 
         /* Do a separate parse to inventory numeric character references */
         if (this.ncrParser) {
-            input.setPosition(0L);
-            numericCharacterReferences.parse(input,
+            input.setPosition(source.getStartingOffset());
+            numericCharacterReferenceInformation.parse(input,
                     xmlDeclaration.encodingFromSAX2, jhove2);
         }   
-        validate(jhove2, source, input);
         
         return 0;
    }

@@ -39,6 +39,13 @@ public class LongArray
     public String getValue() {
         return this.toString();
     }
+
+    /**
+     * @return the value
+     */
+    public long[] getLongArrayValue() {
+        return this.valueArray;
+    }
     
     @Override
     public String toString() {

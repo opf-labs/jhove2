@@ -1,6 +1,8 @@
 package org.jhove2.module.assess;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
@@ -65,5 +67,16 @@ public class RuleTest {
     public void testGetAlternative() {
         assertEquals(alternative, rule.getAlternative());
     }
+    
+    @Test
+    public void testContainsAssignmentOperator(){
+    	assertTrue(AssessmentResult.containsAssignmentOperator("x = y"));
+    	assertTrue(AssessmentResult.containsAssignmentOperator("x=y"));
+    	assertFalse(AssessmentResult.containsAssignmentOperator("x==y"));
+    	assertFalse(AssessmentResult.containsAssignmentOperator("x!=y"));
+    	assertFalse(AssessmentResult.containsAssignmentOperator("x<=y"));
+    	assertFalse(AssessmentResult.containsAssignmentOperator("x>=y"));
+    }
+    
 
 }

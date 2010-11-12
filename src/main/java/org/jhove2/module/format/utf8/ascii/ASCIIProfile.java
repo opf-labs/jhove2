@@ -121,23 +121,21 @@ public class ASCIIProfile
 	public Validity validate(JHOVE2 jhove2, Source source, Input input)
 	    throws JHOVE2Exception
 	{
-		if (this.module != null) {
-			this.isValid = Validity.True;
+		this.isValid = Validity.True;
 
-			Set<CodeBlock> blocks = ((UTF8Module) this.module).getCodeBlocks();
-			Iterator<CodeBlock> iter = blocks.iterator();
-			while (iter.hasNext()) {
-				CodeBlock block = iter.next();
-				String name = block.getName();
-				if (!name.equals(BASIC_LATIN)) {
-					this.isValid = Validity.False;
-					this.nonBasicLatinCodeBlocks.add(block);
-				}
+		Set<CodeBlock> blocks = ((UTF8Module) this.module).getCodeBlocks();
+		Iterator<CodeBlock> iter = blocks.iterator();
+		while (iter.hasNext()) {
+			CodeBlock block = iter.next();
+			String name = block.getName();
+			if (!name.equals(BASIC_LATIN)) {
+				this.isValid = Validity.False;
+				this.nonBasicLatinCodeBlocks.add(block);
 			}
 		}
 		if (this.nonBasicLatinCodeBlocks.size() > 0) {
 			StringBuffer buffer = new StringBuffer();
-			Iterator<CodeBlock> iter = this.nonBasicLatinCodeBlocks.iterator();
+			iter = this.nonBasicLatinCodeBlocks.iterator();
 			for (int i = 0; iter.hasNext(); i++) {
 				CodeBlock block = iter.next();
 				if (i > 0) {
@@ -146,7 +144,7 @@ public class ASCIIProfile
 				buffer.append(block);
 			}
 			Object[]messageArgs = new Object[]{buffer.toString()};
-			this.nonBasicLatinMessage = new Message(Severity.ERROR,
+			this.nonBasicLatinMessage = new Message(Severity.WARNING,
 					Context.OBJECT, 
 					"org.jhove2.module.format.utf8.ascii.ASCIIProfile.nonBasicLatinMessage",
 					messageArgs, jhove2.getConfigInfo());

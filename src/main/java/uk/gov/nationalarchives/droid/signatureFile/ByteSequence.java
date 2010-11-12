@@ -48,12 +48,12 @@
  */
 package uk.gov.nationalarchives.droid.signatureFile;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import uk.gov.nationalarchives.droid.MessageDisplay;
 import uk.gov.nationalarchives.droid.binFileReader.ByteReader;
 import uk.gov.nationalarchives.droid.xmlReader.SimpleElement;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * holds details of a byte sequence

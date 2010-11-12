@@ -52,7 +52,9 @@ import java.nio.channels.FileChannel;
  * 
  * @author mstrong, slabrams
  */
-public abstract class AbstractInput implements Input {
+public abstract class AbstractInput
+    implements Input
+{
 	/** Buffer to hold data from channel. */
 	protected ByteBuffer buffer;
 
@@ -87,7 +89,7 @@ public abstract class AbstractInput implements Input {
 	protected long fileSize;
 
 	/**
-	 * Instantiate a new <code>AbstractInput</code>.
+	 * Instantiate a new, big-endian <code>AbstractInput</code>.
 	 * 
 	 * @param file
 	 *            Java {@link java.io.File} underlying the inputable
@@ -96,8 +98,10 @@ public abstract class AbstractInput implements Input {
 	 * @throws IOException
 	 *             I/O exception instantiating input
 	 */
-	public AbstractInput(File file) throws FileNotFoundException, IOException {
-		this(file, ByteOrder.LITTLE_ENDIAN);
+	public AbstractInput(File file)
+	    throws FileNotFoundException, IOException
+	{
+		this(file, ByteOrder.BIG_ENDIAN);
 	}
 
 	/**
@@ -470,6 +474,110 @@ public abstract class AbstractInput implements Input {
 
 		return in;
 	}
+
+    /**
+     * Get signed double float point at the current position. This implicitly advances
+     * the current position by eight bytes.
+     * 
+     * @return signed double floating point at the current position, or -1 if EOF
+     * @see org.jhove2.core.io.Input#readDouble()
+     */
+    @Override
+    public double readDouble() throws IOException {
+        double in = 0.0F;
+        long longbits = 0;
+        long byteValue = 0;
+        int remaining = this.buffer.limit() - this.buffer.position();
+        if (remaining < 8) {
+            for (int i = 0; i < remaining; i++) {
+                /*
+                 * LITTLE_ENDIAN - shift byte value then add to accumlative
+                 * value
+                 */
+                if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
+                    byteValue = ((long) this.buffer.get() & 0xffL);
+                    byteValue <<= (8 * i);
+                    longbits += byteValue;
+                } else {
+                    /* BIG_ENDIAN - shift accumulative value then add byte value */
+                    longbits <<= 8;
+                    longbits += (((long) this.buffer.get() & 0xffL));
+                }
+            }
+            if (getNextBuffer() == EOF) {
+                return EOF;
+            }
+            for (int i = remaining; i < 8; i++) {
+                if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
+                    byteValue = (((int) this.buffer.get() & 0xff));
+                    byteValue <<= (8 * i);
+                    longbits += byteValue;
+                } else {
+                    longbits <<= 8;
+                    longbits += (((long) this.buffer.get() & 0xffL));
+                }
+            }
+            in = Double.longBitsToDouble(longbits);
+            
+        } else {
+            in = this.buffer.getDouble();
+        }
+        this.inputablePosition += 8L;
+
+        return in;
+    }
+
+    /**
+     * Get signed 32 bit floating point float at the current position. This implicitly advances
+     * the current position by four bytes.
+     * 
+     * @return signed 32 bit floating point float at the current position, or -1 if EOF
+     * @see org.jhove2.core.io.Input#readFloat()
+     */
+    @Override
+    public float readFloat() throws IOException {
+        float in = 0.0F;
+        int intbits = 0;
+        int byteValue = 0;
+        int remaining = this.buffer.limit() - this.buffer.position();
+        if (remaining < 4) {
+            for (int i = 0; i < remaining; i++) {
+                /*
+                 * LITTLE_ENDIAN - shift byte value then add to accumlative
+                 * value
+                 */
+                if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
+                    byteValue = ((int) this.buffer.get() & 0xff);
+                    byteValue <<= (8 * i);
+                    intbits += byteValue;
+                } else {
+                    /* BIG_ENDIAN - shift accumulative value then add byte value */
+                    intbits <<= 8;
+                    intbits += (((long) this.buffer.get() & 0xff));
+                }
+            }
+            if (getNextBuffer() == EOF) {
+                return EOF;
+            }
+            for (int i = remaining; i < 4; i++) {
+                if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
+                    byteValue = (((int) this.buffer.get() & 0xff));
+                    byteValue <<= (8 * i);
+                    intbits += byteValue;
+                } else {
+                    intbits <<= 8;
+                    intbits += (((int) this.buffer.get() & 0xff));
+                }
+            }
+            in = Float.intBitsToFloat(intbits);
+            
+        } else {
+            in = this.buffer.getFloat();
+        }
+        this.inputablePosition += 4L;
+
+        return in;
+    }
 
 	/**
 	 * Get signed short integer at the current position. This implicitly

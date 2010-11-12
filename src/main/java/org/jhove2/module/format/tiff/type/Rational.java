@@ -84,4 +84,22 @@ extends AbstractReportable {
         Long.toString (this.denominator);
     }
 
+    /**
+     *  Converts to a floating-point value (numerator/denominator).
+     *  May throw an ArithmeticException.
+     **/
+    public double toDouble ()
+    {
+    return ((double) numerator / (double) denominator);
+    }
+
+    /**
+     *  Converts to a long value (numerator/denominator).
+     *  May throw an ArithmeticException.
+     **/
+    public long toLong ()
+    {
+    return (long) ((double) numerator / (double) denominator);
+    }
+
 }

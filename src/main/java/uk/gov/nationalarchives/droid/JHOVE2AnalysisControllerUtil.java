@@ -51,7 +51,6 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
-import uk.gov.nationalarchives.droid.JHOVE2IAnalysisController;
 import uk.gov.nationalarchives.droid.signatureFile.FFSignatureFile;
 import uk.gov.nationalarchives.droid.xmlReader.SAXModelBuilder;
 

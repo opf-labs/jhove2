@@ -32,6 +32,13 @@ public class SShortArray
         return this.toString();
     }
     
+    /**
+     * @return the value
+     */
+    public short[] getValue() {
+        return this.valueArray;
+    }
+    
     public void setValue(Input input, long count) throws IOException {
         valueArray = new short [(int) count];
         for (int i=0; i<count; i++) {

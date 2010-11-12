@@ -100,6 +100,10 @@ public class MappedInputTest {
 
         try {
             Source source = SourceFactory.getSource(testFile);
+            /* Buffers are always created big-endian, not native-endian, so this test
+             * isn't operative.
+             */
+            /*
             abstractInput = (MappedInput) source.getInput(bufferSize, Type.Mapped);
             out.printf("Native ByteOrder is %s \n", nativeOrder);
             out.printf("AbstractInput buffer order is %s\n",  abstractInput.getBuffer().order());
@@ -107,7 +111,7 @@ public class MappedInputTest {
             " matches with native ByteOrder" + nativeOrder;
             assertTrue(assertString, abstractInput.getBuffer().order() != nativeOrder);
             abstractInput.close();
-            
+            */
             abstractInput = (MappedInput) InputFactory.getInput(testFile, bufferSize,
                     Type.Mapped);
             assertTrue("AbstractInput Scope is MemoryMapped", abstractInput.getClass()

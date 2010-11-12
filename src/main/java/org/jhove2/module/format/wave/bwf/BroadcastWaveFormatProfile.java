@@ -164,7 +164,7 @@ public class BroadcastWaveFormatProfile
                 
                 if (!hasBextChunk) {
                     this.isValid = Validity.False;
-                    this.missingRequiredBextChunkMessage = new Message(Severity.ERROR,
+                    this.missingRequiredBextChunkMessage = new Message(Severity.WARNING,
                             Context.OBJECT,
                             "org.jhove2.module.format.wave.bwf.BroadcastWaveFormatProfile.missingRequiredBextChunk",
                             jhove2.getConfigInfo());
@@ -172,7 +172,7 @@ public class BroadcastWaveFormatProfile
                 if (formatCategory == FormatChunk.WAVE_FORMAT_MPEG &&
                     !hasMPEG1Chunk) {
                     this.isValid = Validity.False;
-                    this.missingRequiredMPEG1ChunkMessage = new Message(Severity.ERROR,
+                    this.missingRequiredMPEG1ChunkMessage = new Message(Severity.WARNING,
                             Context.OBJECT,
                             "org.jhove2.module.format.wave.bwf.BroadcastWaveFormatProfile.missingRequiredMPEG1Chunk",
                             jhove2.getConfigInfo());

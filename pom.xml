@@ -1,10 +1,12 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.jhove2</groupId>
 	<artifactId>jhove2</artifactId>
 	<version>2.0.0</version>
 	<name>JHOVE2</name>
-	<description>JHOVE2: a next-generation architecture for format-aware digital object preservation processing</description>
+	<description>JHOVE2: a next-generation architecture for
+		format-aware digital object preservation processing</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<geotools.version>2.6.5</geotools.version>
@@ -82,7 +84,7 @@
 		<dependency>
 			<groupId>org.mvel</groupId>
 			<artifactId>mvel2</artifactId>
-			<version>2.0.17</version>
+			<version>2.0.18</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
@@ -114,9 +116,9 @@
 		</repository>
 		<!-- for app assembler -->
 		<repository>
-			<id>Codehaus Snapshots</id>
-			<name>codehaus.org</name>
-			<url>http://snapshots.repository.codehaus.org/</url>
+			<id>Codehaus</id>
+			<name>Codehaus Repository</name>
+			<url>http://repository.codehaus.org/</url>
 		</repository>
 		<repository>
 			<id>osgeo</id>
@@ -232,7 +234,8 @@
 										<filename name="env.sh" />
 									</fileset>
 									<filterset>
-										<filtersfile file="${project.basedir}/src/main/assembly/classpath_sh.properties" />
+										<filtersfile
+											file="${project.basedir}/src/main/assembly/classpath_sh.properties" />
 										<filter token="jarName" value="${project.build.finalName}" />
 									</filterset>
 								</copy>

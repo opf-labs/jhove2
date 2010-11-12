@@ -38,8 +38,8 @@ package org.jhove2.core.source;
 
 import org.jhove2.annotation.ReportableProperty;
 
-/** Interface for {@link org.jhove2.core.source.Source} units that are file
- * systems entities, that is, files or directories.
+/** Interface for {@linkplain org.jhove2.core.source.Source source units} that are file
+ *  system entities, that is, files or directories.
  * 
  * @author slabrams
  */

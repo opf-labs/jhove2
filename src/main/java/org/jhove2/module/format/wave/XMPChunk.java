@@ -60,7 +60,6 @@ public class XMPChunk
         I8R xml = (I8R) i8r.get("XmlIdentifier");;
         FormatIdentification id = new FormatIdentification(xml, Confidence.PositiveGeneric);
         child.addPresumptiveFormat(id);
-        source.addChildSource(child);
         jhove2.characterize(child, input);      
         consumed += this.size;
         

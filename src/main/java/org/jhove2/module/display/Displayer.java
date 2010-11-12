@@ -49,7 +49,7 @@ import org.jhove2.core.reportable.Reportable;
 import org.jhove2.module.Module;
 
 /**
- * Interface for JHOVE2 displayer modules.
+ * Interface for displayer modules, which are responsible for formatting application output.
  * 
  * @author mstrong, slabrams, smorrissey
  */

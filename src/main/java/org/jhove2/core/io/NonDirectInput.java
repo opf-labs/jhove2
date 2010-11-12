@@ -47,12 +47,14 @@ import java.nio.ByteOrder;
  * 
  * @author mstrong, slabrams
  */
-public class NonDirectInput extends AbstractInput {
+public class NonDirectInput
+    extends AbstractInput
+{
 	/** Maximum buffer size, in bytes. */
 	protected int maxBufferSize;
 
 	/**
-	 * Instantiate a new <code>NonDirectInput</code> object.
+	 * Instantiate a new, big-endian <code>NonDirectInput</code> object.
 	 * 
 	 * @param file
 	 *            Java {@link java.io.File} underlying the inputable
@@ -65,7 +67,7 @@ public class NonDirectInput extends AbstractInput {
 	 */
 	public NonDirectInput(File file, int maxBufferSize)
 			throws FileNotFoundException, IOException {
-		this(file, maxBufferSize, ByteOrder.LITTLE_ENDIAN);
+		this(file, maxBufferSize, ByteOrder.BIG_ENDIAN);
 	}
 
 	/**
@@ -83,7 +85,8 @@ public class NonDirectInput extends AbstractInput {
 	 *             I/O exception instantiating input
 	 */
 	public NonDirectInput(File file, int maxBufferSize, ByteOrder order)
-			throws FileNotFoundException, IOException {
+		throws FileNotFoundException, IOException
+	{
 		super(file, order);
 
 		/* Allocate direct buffer and initialize it. */

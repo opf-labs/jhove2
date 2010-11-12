@@ -43,16 +43,14 @@ import org.jhove2.core.source.Source;
 
 /**
  * Command invoked by JHOVE2 application framework to characterize some aspect
- * of a {@link org.jhove2.core.source.Source}, for example, identifier,
- * format feature extraction/validation/profile validation, aggregate detection
- * and characterization, assessment, message digest calculation.
+ * of a {@linkplain Source source unit}.
  * 
  * These commands should be thought of as essentially stateless (except for the
  * metadata members common to all {@link org.jhove2.module.Module}s that
  * describe the Module itself).
  * 
  * The JHOVE2 framework is configured by plugging a sequence of Command
- * objects into the JHOVE2.commands List field.
+ * objects into the JHOVE2.commands property.
  * 
  * @author smorrissey, slabrams
  */

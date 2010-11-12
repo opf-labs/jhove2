@@ -1,15 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:util="http://www.springframework.org/schema/util" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
-	<!-- UTF-8 module bean -->
-	<bean id="UTF8Module" class="org.jhove2.module.format.utf8.UTF8Module" scope="prototype">
-		<constructor-arg ref="UTF8Format"/>
-		<property name="developers">
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:util="http://www.springframework.org/schema/util"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans 
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-2.5.xsd
+		   http://www.springframework.org/schema/util 
+		   http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+	
+		<!-- UTF-8 module bean -->
+	<bean id="UTF8Module" class="org.jhove2.module.format.utf8.UTF8Module"
+	      scope="prototype">
+	    <constructor-arg ref="UTF8Format"/>
+	     <property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
 			</list>
 		</property>
 	</bean>
-	<!-- UTF-8 format bean -->
+	
+		<!-- UTF-8 format bean -->
 	<bean id="UTF8Format" class="org.jhove2.core.format.Format" scope="singleton">
 		<constructor-arg type="java.lang.String" value="UTF-8"/>
 		<constructor-arg ref="UTF8Identifier"/>
@@ -22,18 +34,22 @@
 			</set>
 		</property>
 	</bean>
-	<!-- UTF-8 identifier bean -->
+	
+	
+		<!-- UTF-8 identifier bean -->  
 	<bean id="UTF8Identifier" class="org.jhove2.core.I8R" scope="singleton">
 		<constructor-arg type="java.lang.String" value="http://jhove2.org/terms/format/utf-8"/>
 	</bean>
-	<!-- C0 Control properties bean -->
-	<bean id="C0Control" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
-		<property name="propertyFileBaseName" value="C0Control"/>
-	</bean>
-	<bean id="C1Control" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
-		<property name="propertyFileBaseName" value="C1Control"/>
-	</bean>
-	<bean id="CodeBlock" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
-		<property name="propertyFileBaseName" value="CodeBlock"/>
-	</bean>
+		
+	<!-- C0 Control properties bean -->		
+	   <bean id="C0Control" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+  		<property name="propertyFileBaseName" value="C0Control"/>
+   </bean>      
+	   <bean id="C1Control" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+  		<property name="propertyFileBaseName" value="C1Control"/>
+   </bean>      
+	   <bean id="CodeBlock" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+  		<property name="propertyFileBaseName" value="CodeBlock"/>
+   </bean>      
+ 
 </beans>

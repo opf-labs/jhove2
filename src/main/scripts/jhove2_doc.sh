@@ -13,6 +13,6 @@
 # See env.sh for environment variable settings.
 
 
-. env.sh 
+. ./env.sh 
 
 ${JAVA} -cp $CP org.jhove2.app.util.JHOVE2Doc $@

@@ -80,13 +80,15 @@
 
 package uk.gov.nationalarchives.droid;
 
-import org.jdom.Namespace;
-import uk.gov.nationalarchives.droid.xmlReader.SimpleElement;
-
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
-import org.apache.commons.logging.*;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.jdom.Namespace;
+
+import uk.gov.nationalarchives.droid.xmlReader.SimpleElement;
 
 /**
  * Class to hold configuration data for the uk.

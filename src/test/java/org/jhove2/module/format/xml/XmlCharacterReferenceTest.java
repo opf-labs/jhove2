@@ -126,7 +126,7 @@ public class XmlCharacterReferenceTest  extends XmlModuleTestBase {
      */   
     @Test
     public void testNumericCharacterReferences() {
-        TreeMap<Integer, NumericCharacterReference> ncrMap = testXmlModule.numericCharacterReferences.numericCharacterReferenceMap;
+        TreeMap<Integer, NumericCharacterReference> ncrMap = testXmlModule.numericCharacterReferenceInformation.numericCharacterReferenceMap;
         assertEquals(6, ncrMap.size());
         assertEquals(3, ncrMap.get(0x0009).getCount().intValue());
         assertEquals(1, ncrMap.get(0x000A).getCount().intValue());

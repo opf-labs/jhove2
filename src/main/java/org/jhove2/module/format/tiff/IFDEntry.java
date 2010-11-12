@@ -63,6 +63,7 @@ import org.jhove2.module.format.tiff.type.AsciiArray;
 import org.jhove2.module.format.tiff.type.Byte;
 import org.jhove2.module.format.tiff.type.ByteArray;
 import org.jhove2.module.format.tiff.type.Double;
+import org.jhove2.module.format.tiff.type.DoubleArray;
 import org.jhove2.module.format.tiff.type.FloatObject;
 import org.jhove2.module.format.tiff.type.Long;
 import org.jhove2.module.format.tiff.type.LongArray;
@@ -81,34 +82,15 @@ import org.jhove2.module.format.tiff.type.desc.Compression;
 /** TIFF IFD entry.
  * 
  * @author mstrong
+ *
  */
 public class IFDEntry 
 extends AbstractReportable
 implements Comparable<Object> {
 
-    private static final int 
-    DATETIME = 306,
-    COMPRESSION = 259,
-    CELLLENGTH = 265,
-    ORIENTATION = 274,
-    PHOTMETRIC_INTERPRETATION = 262,
-    TILEWIDTH = 322,
-    TILELENGTH = 323,
-    TILEOFFSETS = 324,
-    TILEBYTECOUNTS = 325,
-    XMP = 700,
-    ICCProfile = 34675;
-
-
-    private static final int ARTIST = 315;
-
-
-    private static final int COLORMAP = 320;
-
 
     /** The number of values, Count of the indicated Type */
     protected long count;
-
 
     /** compression in descriptive form */
     protected String compression_d;
@@ -193,6 +175,8 @@ implements Comparable<Object> {
 
     protected Double doubleValue;
 
+    private DoubleArray doubleArrayValue;
+
     protected Rational rationalValue;
 
     protected RationalArray rationalArrayValue;
@@ -209,13 +193,18 @@ implements Comparable<Object> {
 
     protected SShortArray sShortArrayValue;
 
+    /** invalid date/time value message */
     private Message invalidDateTimeMessage;
 
+    /** invalid date time format message */
     private Message invalidDateTimeFormatMessage;
 
-    private Message TileWidthNotMultipleOf16Message;
+    /** invalid tilewidth not multiple of 16 message */
+    private Message tileWidthNotMultipleof16Message;
 
-    private Message TileLengthNotMultipleOf16Message;
+    /** invalid tile length not multiple of 16 message */
+    private Message tileLengthNotMultipleof16Message;
+
 
     @ReportableProperty(order=5, value = "Entry value/offset.")
     public long getValueOffset() {
@@ -225,6 +214,7 @@ implements Comparable<Object> {
     public int getVersion() {
         return version;
     }
+
 
     /** no arg constructor */
     public IFDEntry() {
@@ -238,6 +228,7 @@ implements Comparable<Object> {
         this.count = count;
         this.valueOffset = valueOffset;
     }
+
 
     /**
      * parse the IFD Entry 
@@ -277,7 +268,8 @@ implements Comparable<Object> {
             this.count = (int) input.readUnsignedInt();
 
             /* store the offset of the value field in the IFD Entry */
-            this.valueOffset = input.getPosition(); 
+            this.valueOffset = input.getPosition();
+            long saveOffset = this.valueOffset;
             long value = input.readUnsignedInt();
 
             if (calcValueSize(type, count) > 4) {
@@ -308,33 +300,44 @@ implements Comparable<Object> {
                 /* update the valueOffset to contain the value (which is the offset to the value) */
                 this.valueOffset = value;
             }
-            /* Parse the ICCProfile tag */
-            if (this.tag == ICCProfile) {
-                ByteStreamSource bss = new ByteStreamSource(jhove2, source, this.valueOffset, this.count);
-                Map<String, Object> i8r = SpringConfigInfo.getObjectsForType(I8R.class);
-                I8R identifier = (I8R) i8r.get("ICCIdentifier");
-                FormatIdentification iccPresumptiveFormat = new FormatIdentification(identifier, Confidence.PositiveSpecific); 
-                bss.addPresumptiveFormat(iccPresumptiveFormat);
-                jhove2.characterize(bss, input);
-            }
-            /* Parse the XMP tag */
-            else if (this.tag == XMP) {
-                ByteStreamSource bss = new ByteStreamSource(jhove2, source, this.valueOffset, this.count);
-                Map<String, Object> i8r = SpringConfigInfo.getObjectsForType(I8R.class);
-                I8R identifier = (I8R) i8r.get("XmlIdentifier");
-                FormatIdentification xmlPresumptiveFormat = new FormatIdentification(identifier, Confidence.PositiveGeneric); 
-                bss.addPresumptiveFormat(xmlPresumptiveFormat);
-                jhove2.characterize(bss, input);                
-            }
-            else {
-                readValues(input);
-                validate(jhove2, input); 
+
+            if (isValidTag(jhove2)) {
+                /* Handle tags which require unique processing of their values */
+
+                /* Parse the ICCProfile tag */
+                if (this.tag == TiffIFD.ICCPROFILE) {
+                    ByteStreamSource bss = new ByteStreamSource(jhove2, source, this.valueOffset, this.count);
+                    Map<String, Object> i8r = SpringConfigInfo.getObjectsForType(I8R.class);
+                    I8R identifier = (I8R) i8r.get("ICCIdentifier");
+                    FormatIdentification iccPresumptiveFormat = new FormatIdentification(identifier, Confidence.PositiveSpecific); 
+                    bss.addPresumptiveFormat(iccPresumptiveFormat);
+                    jhove2.characterize(bss, input);
+                }
+                /* Parse the XMP tag */
+                else if (this.tag == TiffIFD.XMP) {
+                    ByteStreamSource bss = new ByteStreamSource(jhove2, source, this.valueOffset, this.count);
+                    Map<String, Object> i8r = SpringConfigInfo.getObjectsForType(I8R.class);
+                    I8R identifier = (I8R) i8r.get("XmlIdentifier");
+                    FormatIdentification xmlPresumptiveFormat = new FormatIdentification(identifier, Confidence.PositiveGeneric); 
+                    bss.addPresumptiveFormat(xmlPresumptiveFormat);
+                    jhove2.characterize(bss, input);                
+                }
+                else if (this.tag == TiffIFD.STRIPBYTECOUNTS || this.tag == TiffIFD.STRIPOFFSETS) {
+                    input.setPosition(this.valueOffset);
+                    this.isArray = true;
+                    this.longArrayValue = new LongArray();
+                    this.longArrayValue.setValue(input, count);
+                }
+                else {
+                    readValues(input);
+                    validate(jhove2, input); 
+                }
             }
             /* reset the input position so that the offset is set up correctly since when you read values the
              * input position gets changed from where you want to be in the IFD 
              * the offset of the Value field + 4 bytes will get you to the next Tag field
              */
-            input.setPosition(valueOffset + 4);
+            input.setPosition(saveOffset + 4);
 
         }
     }
@@ -342,19 +345,20 @@ implements Comparable<Object> {
 
     /**
      * 
-     * validates the IFD Entry by checking: 
+     * isValidTag 
      * 
      *  1) if tag is known and defined
      *  2) that the type matches expected type values for that tag definition
      *  3) that count expected matches the count read in
-     *  4) performing any other validations for a particular tag
      *  
      * @param jhove2
+     * @return boolean 
      * @throws JHOVE2Exception
      * @throws IOException 
      */
-    protected void validate(JHOVE2 jhove2, Input input) throws JHOVE2Exception, IOException {
+    protected boolean isValidTag(JHOVE2 jhove2) throws JHOVE2Exception, IOException {
 
+        boolean isValid = true;
         /* retrieve the definition for the tag read in */
         TiffTag tag = TiffTag.getTag(this.tag);
 
@@ -371,22 +375,35 @@ implements Comparable<Object> {
                     Context.OBJECT,
                     "org.jhove2.module.format.tiff.IFDEntry.UnknownTagMessage",
                     messageArgs, jhove2.getConfigInfo()));  
-            return;
-        }       
+            isValid = false;
+        }
+        return isValid;
+    }
+
+    /**
+     * 
+     * perform validations and post-processing for specific tags 
+     * 
+     * @param jhove2
+     * @throws JHOVE2Exception
+     * @throws IOException 
+     */
+    protected void validate(JHOVE2 jhove2, Input input) throws JHOVE2Exception, IOException {
 
         /* Validate specific tags and set version when applicable */
 
-        if (this.tag == ARTIST) {
+        /* version 5 tags */
+        if (this.tag == TiffIFD.ARTIST) {
             if (version < 5) {
                 version = 5;
             }
         }
-        else if (this.tag == COLORMAP) {
+        else if (this.tag == TiffIFD.COLORMAP) {
             if (version < 5) {
                 version = 5;
             }
         }
-        else if (this.tag == COMPRESSION) {
+        else if (this.tag == TiffIFD.COMPRESSION) {
             // get the scheme to determine version
             int scheme = ((Short) this.getValue()).getValue();
             if (scheme == 5 && version < 5) {
@@ -404,7 +421,10 @@ implements Comparable<Object> {
         }
 
         /* validate Date format is YYYY:MM:DD HH:MM:SS */
-        else if (this.tag == DATETIME) {
+        else if (this.tag == TiffIFD.DATETIME) {
+            if (version < 5) {
+                version = 5;
+            }
             SimpleDateFormat date = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss");
             String dateTime = (String)((AsciiArray) this.getValue()).toString();
             try {
@@ -431,9 +451,149 @@ implements Comparable<Object> {
                         "org.jhove2.module.format.tiff.TIFFIFD.invalidDateTimeMessage",
                         messageArgs, jhove2.getConfigInfo());
             }
+        }        
+        else if (this.tag == TiffIFD.HOSTCOMPUTER) {
+            if (version < 5) {
+                version = 5;
+            }
         }
-        /* Validate TILEWIDTH */
-        else if (this.tag == TILEWIDTH ) {
+        else if (this.tag == TiffIFD.NEWSUBFILETYPE) {
+            if (version < 5) {
+                version = 5;
+            }
+        }
+        else if (this.tag == TiffIFD.PREDICTOR) {
+            if (version < 5) {
+                version = 5;
+            }
+        }
+        else if (this.tag == TiffIFD.PRIMARY_CHROMATACITIES){
+            if (version < 5) {
+                version = 5;
+            }
+        }
+        else if (this.tag == TiffIFD.SOFTWARE) {
+            if (version < 5) {
+                version = 5;
+            }
+        }        
+        else if (this.tag == TiffIFD.WHITEPOINT) {
+            if (version < 5) {
+                version = 5;
+            }
+        }
+
+        /* version 6 tags */
+        else if (this.tag == TiffIFD.COPYRIGHT) {
+            if (version < 6)
+                version = 6;
+        }
+        else if (this.tag == TiffIFD.DOTRANGE) {
+            if (version < 6)
+                version = 6;
+        }
+        else if (this.tag == TiffIFD.EXTRASAMPLES) {
+            if (version < 6)
+                version = 6;
+        }
+        else if (this.tag == TiffIFD.HALFTONEHINTS) {
+            if (version < 6)
+                version = 6;
+        }
+        else if (this.tag == TiffIFD.INKNAMES) {
+            if (version < 6)
+                version = 6;
+        }
+        else if (this.tag == TiffIFD.INKSET) {
+            if (version < 6)
+                version = 6;
+        }
+        else if (this.tag == TiffIFD.JPEGACTABLES) {
+            if (version < 6)
+                version = 6;
+        }
+        else if (this.tag == TiffIFD.JPEGDCTABLES) {
+            if (version < 6)
+                version = 6;
+        }
+        else if (this.tag == TiffIFD.JPEGINTERCHANGEFORMAT) {
+            if (version < 6)
+                version = 6;
+        }
+        else if (this.tag == TiffIFD.JPEGINTERCHANGEFORMATLENGTH) {
+            if (version < 6)
+                version = 6;
+        }
+        else if (this.tag == TiffIFD.JPEGLOSSLESSPREDICTORS) {
+            if (version < 6)
+                version = 6;
+        }
+        else if (this.tag == TiffIFD.JPEGPOINTTRANSFORMS) {
+            if (version < 6)
+                version = 6;
+        }
+        else if (this.tag == TiffIFD.JPEGPROC) {
+            if (version < 6)
+                version = 6;
+        }
+        else if (this.tag == TiffIFD.JPEG_RESTART_INTERVAL) {
+            if (version < 6)
+                version = 6;
+        }
+        else if (this.tag == TiffIFD.JPEG_QTABLES) {
+            if (version < 6)
+                version = 6;
+        }
+        else if (this.tag == TiffIFD.NUMBEROFINKS) {
+            if (version < 6)
+                version = 6;
+        }
+        else if (this.tag == TiffIFD.PHOTMETRIC_INTERPRETATION) {
+            int photometricInterpretation = ((Short) this.getValue()).getValue();
+            if (photometricInterpretation == 5 ||  //(CMYK)
+                photometricInterpretation == 6 ||  //(YCbCr)
+                photometricInterpretation == 8) {  //(CIE L*a*b*)
+                if (version < 6)
+                    version = 6;
+            }   
+        }
+        else if (this.tag == TiffIFD.REFERENCEBLACKWHITE) {
+            if (version < 6)
+                version = 6;
+        }
+        else if (this.tag == TiffIFD.SAMPLEFORMAT) {
+            if (version < 6)
+                version = 6;
+        }
+        else if (this.tag == TiffIFD.SMINSAMPLEVALUE) {
+            if (version < 6)
+                version = 6;
+        }
+        else if (this.tag == TiffIFD.SMAXSAMPLEVALUE) {
+            if (version < 6)
+                version = 6;
+        }
+        else if (this.tag == TiffIFD.TARGETPRINTER) {
+            if (version < 6)
+                version = 6;
+        }
+        /* Validate TILELENGTH  value is integral multiple of 16  */
+        else if (this.tag == TiffIFD.TILELENGTH ) {
+            if (version < 6) 
+                version = 6;
+            long tileLength = ((Long) this.getValue()).getValue();
+            if (tileLength%16 > 0) {
+                this.isValid = Validity.False;
+                Object[]messageArgs = new Object[]{this.tag, valueOffset};
+                this.tileLengthNotMultipleof16Message = (new Message(Severity.WARNING,
+                        Context.OBJECT,
+                        "org.jhove2.module.format.tiff.IFDEntry.tileLengthNotMultipleof16Message",
+                        messageArgs, jhove2.getConfigInfo()));  
+                return;
+            }
+        }
+        /* Validate TILEWIDTH value is integral multiple of 16  */
+        else if (this.tag == TiffIFD.TILEWIDTH ) {
             if (version < 6) 
                 version = 6;
             long tileWidth = ((Long) this.getValue()).getValue();
@@ -441,41 +601,36 @@ implements Comparable<Object> {
             if (tileWidth%16 > 0) {
                 this.isValid = Validity.False;
                 Object[]messageArgs = new Object[]{this.tag, valueOffset};
-                this.TileWidthNotMultipleOf16Message = (new Message(Severity.WARNING,
+                this.tileWidthNotMultipleof16Message = (new Message(Severity.WARNING,
                         Context.OBJECT,
-                        "org.jhove2.module.format.tiff.IFDEntry.TileWidthNotMultipleOf16Message",
+                        "org.jhove2.module.format.tiff.IFDEntry.tileWidthNotMultipleof16Message",
                         messageArgs, jhove2.getConfigInfo()));  
             }
-
         }
-
-        /* Validate TILELENGTH */
-        if (this.tag == TILELENGTH ) {
-            if (version < 6) 
-                version = 6;
-            long tileLength = ((Long) this.getValue()).getValue();
-            if (tileLength%16 > 0) {
-                this.isValid = Validity.False;
-                Object[]messageArgs = new Object[]{this.tag, valueOffset};
-                this.TileLengthNotMultipleOf16Message = (new Message(Severity.WARNING,
-                        Context.OBJECT,
-                        "org.jhove2.module.format.tiff.IFDEntry.TileLengthNotMultipleOf16Message",
-                        messageArgs, jhove2.getConfigInfo()));  
-                return;
-            }
-        }
-
-        /* Set version for TILEOFFSETS */
-        if (this.tag == TILEOFFSETS ) {
+        else if (this.tag == TiffIFD.TILEBYTECOUNTS ) {
             if (version < 6) 
                 version = 6;
         }
-        /* Set version for TILEBYTECOUNTS */
-        if (this.tag == TILEBYTECOUNTS ) {
+        else if (this.tag == TiffIFD.TILEOFFSETS ) {
             if (version < 6) 
                 version = 6;
         }
-
+        else if (this.tag == TiffIFD.TRANSFERRANGE) {
+            if (version < 6)
+                version = 6;
+        }
+        else if (this.tag == TiffIFD.YCBCRCOEFFICIENTS) {
+            if (version < 6)
+                version = 6;
+        }
+        else if (this.tag == TiffIFD.YCBCRPOSITIONING) {
+            if (version < 6)
+                version = 6;
+        }
+        else if (this.tag == TiffIFD.YCBCRSUBSAMPLING) {
+            if (version < 6)
+                version = 6;
+        }
 
     }
 
@@ -508,11 +663,11 @@ implements Comparable<Object> {
      * For unsigned integers, readers accept BYTE, SHORT, LONG or IFD types
      * 
      * @param jhove2 - JHOVE2 framework
-     * @param expected - the list of expected types defined for this tag
+     * @param list - the list of expected types defined for this tag
      * @param string - the type read in 
      * @throws JHOVE2Exception
      */
-    private void checkType(JHOVE2 jhove2, TiffType type, String[] expected) throws JHOVE2Exception {
+    private void checkType(JHOVE2 jhove2, TiffType type, List<String> expectedTypes) throws JHOVE2Exception {
 
         int typeNum = type.num();
         String typeReadIn = type.name();
@@ -521,26 +676,39 @@ implements Comparable<Object> {
             version = 6;
         }
 
+        boolean typeAccepted = false;
         if ((type.equals(TiffType.BYTE) || (type.equals(TiffType.SHORT)) ||
                 (type.equals(TiffType.LONG)) || (type.equals(TiffType.IFD)))) {
-            //        if (typeReadIn.equalsIgnoreCase("BYTE") || typeReadIn.equalsIgnoreCase("SHORT") ||
-            //                typeReadIn.equalsIgnoreCase("LONG") || typeReadIn.equalsIgnoreCase("IFD")) {
-            for (String expectedEntry:expected){
+            for (String expectedEntry:expectedTypes){
                 if (expectedEntry.equalsIgnoreCase("BYTE") || expectedEntry.equalsIgnoreCase("SHORT") || 
                         expectedEntry.equalsIgnoreCase("LONG") || expectedEntry.equalsIgnoreCase("IFD"))             
-                    return;  // type is valid
+                    typeAccepted = true;  // type is valid
             }
         }
-        for (String expectedEntry:expected){
-            if (!expectedEntry.equalsIgnoreCase(typeReadIn)) {
-                this.isValid = Validity.False;
-                Object[]messageArgs = new Object[]{typeReadIn, this.tag, Arrays.toString(expected)};
-                this.TypeMismatchMessage = (new Message(Severity.ERROR,
-                        Context.OBJECT,
-                        "org.jhove2.module.format.tiff.IFDEntry.TypeMismatchMessage",
-                        messageArgs, jhove2.getConfigInfo()));               
-            }        
+
+        // assign LONG type to tag if it can be SHORT or LONG
+        if (typeAccepted) {
+            if (expectedTypes.contains("SHORT") && expectedTypes.contains("LONG")) {
+                this.tiffType = TiffType.LONG;
+            }
+            return;
         }
+
+        boolean match = false;
+        for (String expectedEntry:expectedTypes){
+            if (expectedEntry.equalsIgnoreCase(typeReadIn)) {
+                match = true;
+            }
+        }
+        if (!match) { 
+            this.isValid = Validity.False;
+            Object[]messageArgs = new Object[]{typeReadIn, this.tag, expectedTypes};
+            this.TypeMismatchMessage = (new Message(Severity.ERROR,
+                    Context.OBJECT,
+                    "org.jhove2.module.format.tiff.IFDEntry.TypeMismatchMessage",
+                    messageArgs, jhove2.getConfigInfo()));
+            throw new JHOVE2Exception("IFDEntry.checkType(): Type Mismatch Exception");
+        }            
     }
 
     /**
@@ -567,6 +735,12 @@ implements Comparable<Object> {
                 shortValue = new Short(input.readUnsignedShort());
             else if (type.equals(TiffType.LONG))
                 longValue = new Long(input.readUnsignedInt());
+            else if (type.equals(TiffType.FLOAT)) {
+                floatValue = new FloatObject(input.readFloat());
+            }
+            else if (type.equals(TiffType.DOUBLE)) {
+                doubleValue = new Double(input.readDouble());
+            }
             else if (type.equals(TiffType.RATIONAL)) {
                 long num = input.readUnsignedInt();
                 long denom = input.readUnsignedInt();
@@ -583,9 +757,6 @@ implements Comparable<Object> {
                 long demon = input.readSignedInt();
                 sRationalValue = new Rational(num, demon);
             }
-            /*
-             *(TODO:  FLOAT & DOUBLE
-             */
         }
         else {
             isArray = true;
@@ -605,6 +776,10 @@ implements Comparable<Object> {
             else if (type.equals(TiffType.LONG)) {
                 longArrayValue = new LongArray();
                 longArrayValue.setValue(input, count);
+            }
+            else if (type.equals(TiffType.DOUBLE)) {
+                doubleArrayValue = new DoubleArray();
+                doubleArrayValue.setValue(input, count);
             }
             else if (type.equals(TiffType.RATIONAL)) {
                 long num = input.readUnsignedInt();
@@ -823,7 +998,23 @@ implements Comparable<Object> {
      */
     @ReportableProperty(order=15, value="Invalid Date Time Format Message.")
     public Message getInvalidDateTimeFormatMessage() {
-        return invalidDateTimeFormatMessage;
+        return this.invalidDateTimeFormatMessage;
+    }
+
+    /**
+     * @return the tileWidthNotMultipleOf16Message
+     */
+    @ReportableProperty(order = 16, value = "TileWidth not multiple of 16 message.")
+    public Message getTileWidthNotMultipleOf16Message() {
+        return this.tileWidthNotMultipleof16Message;
+    }
+
+    /**
+     * @return the tileLengthNotMultipleOf16Message
+     */
+    @ReportableProperty(order = 17, value = "TileLength not multiple of 16 message.")
+    public Message getTileLengthNotMultipleOf16Message() {
+        return this.tileLengthNotMultipleof16Message;
     }
 
     @ReportableProperty(order=3, value="Compression Scheme in descriptive form.",

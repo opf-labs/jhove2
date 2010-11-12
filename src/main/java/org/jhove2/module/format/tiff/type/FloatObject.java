@@ -18,6 +18,10 @@ public class FloatObject
     /**  no-arg constructor for Float object */
     public FloatObject() {    
     }
+
+    public FloatObject(float value) {
+        this.value = value;
+    }
     
     @ReportableProperty(order = 1, value = "Tag FLOAT value")
     public float getValue() {

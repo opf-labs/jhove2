@@ -10,7 +10,7 @@
 			</list>
 		</property>
 		<property name="commands">
-			<list value-type="org.jhove2.core.JHOVE2Command">
+			<list value-type="org.jhove2.module.Command">
 				<ref bean="IdentifierCommand"/>
 				<ref bean="DispatcherCommand"/>
 				<ref bean="DigesterCommand"/>

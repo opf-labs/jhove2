@@ -127,7 +127,7 @@ public class ColorSpaceConversionProfile
                     if (!hasAtoB0Tag) {
                         this.isValid = Validity.False;
                         Object [] args = new Object [] {"A-to-B0 (\"A2B0\")"};
-                        Message msg = new Message(Severity.ERROR, Context.OBJECT,
+                        Message msg = new Message(Severity.WARNING, Context.OBJECT,
                             "org.jhove2.module.format.icc.ICCTagTable.MissingRequiredTag",
                             args, jhove2.getConfigInfo());
                         this.missingRequiredTagMessages.add(msg);
@@ -135,7 +135,7 @@ public class ColorSpaceConversionProfile
                     if (!hasBtoA0Tag) {
                         this.isValid = Validity.False;
                         Object [] args = new Object [] {"B-to-A0 (\"B2A0\")"};
-                        Message msg = new Message(Severity.ERROR, Context.OBJECT,
+                        Message msg = new Message(Severity.WARNING, Context.OBJECT,
                             "org.jhove2.module.format.icc.ICCTagTable.MissingRequiredTag",
                             args, jhove2.getConfigInfo());
                         this.missingRequiredTagMessages.add(msg);
