@@ -49,6 +49,9 @@ import org.jhove2.core.source.Source;
 public class LISTChunk
     extends GenericChunk
 {
+    /** Chunk factory. */
+    protected ChunkFactory chunkFactory;
+    
     /** List type. */
     protected String listType;
     
@@ -100,7 +103,7 @@ public class LISTChunk
                 sb.append((char) b);
             }
             consumed += 4;
-            Chunk chunk = ChunkFactory.getChunk(sb.toString(), jhove2);
+            Chunk chunk = this.chunkFactory.getChunk(sb.toString());
             consumed += chunk.parse(jhove2, source, input);
             this.chunks.add(chunk);
             
@@ -111,11 +114,25 @@ public class LISTChunk
         return consumed;
     }
     
+    /** Get chunk factory.
+     * @return Chunk factory
+     */
+    public ChunkFactory getChunkFactory() {
+        return this.chunkFactory;
+    }
+    
     /** Get the list type.
      * @return List type
      */
     @ReportableProperty(order=1, value="List type.")
     public String getListType() {
         return this.listType;
+    }
+    
+    /** Set chunk factory.
+     * @param factory Chunk factory
+     */
+    public void setChunkFactory(ChunkFactory factory) {
+        this.chunkFactory = factory;
     }
 }

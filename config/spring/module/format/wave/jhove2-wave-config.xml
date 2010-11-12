@@ -67,6 +67,7 @@
 				<ref bean="BroadcastWaveFormatProfile"/>
 			</list>
 		</property>
+		<property name="chunkFactory" ref="ChunkFactory"/>
     </bean>
 	  
   	<!-- Broadcast Wave Format profile bean -->
@@ -152,5 +153,116 @@
 	<bean id="PeakPoints" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
 		<property name="propertyFileBaseName" value="peak-points"/>
 	</bean> 
-	 
+
+	<!-- WAVE _PMX chunk bean -->
+	<bean id="XMPChunk" class="org.jhove2.module.format.wave.XMPChunk"
+	      scope="prototype">
+	    <property name="identifier" value="_PMX"/>
+	</bean>
+
+	<!-- Broadcast Wave Format axml chunk bean -->
+	<bean id="AXMLChunk" class="org.jhove2.module.format.wave.bwf.AXMLChunk"
+	      scope="prototype">
+	    <property name="identifier" value="axml"/>
+	</bean>
+
+	<!-- Broadcast Wave Format bext chunk bean -->
+	<bean id="BroadcastAudioExtensionChunk"
+	      class="org.jhove2.module.format.wave.bwf.BroadcastAudioExtensionChunk"
+	      scope="prototype">
+	    <property name="identifier" value="bext"/>
+	</bean>
+
+	<!-- WAVE cue chunk bean -->
+	<!-- NOTE: the trailing space in the identifier value -->
+	<bean id="CuePointsChunk" class="org.jhove2.module.format.wave.CuePointsChunk"
+	      scope="prototype">
+	    <property name="identifier" value="cue "/>
+	</bean>
+
+	<!-- WAVE fact chunk bean -->
+	<bean id="FactChunk" class="org.jhove2.module.format.wave.FactChunk"
+	      scope="prototype">
+	    <property name="identifier" value="fact"/>
+	</bean>
+
+	<!-- WAVE file chunk bean -->
+	<bean id="FileChunk" class="org.jhove2.module.format.wave.FileChunk"
+	      scope="prototype">
+	    <property name="identifier" value="file"/>
+	</bean>
+
+	<!-- WAVE fmt chunk bean -->
+	<!-- NOTE: the trailing space in the identifier value -->
+	<bean id="FormatChunk" class="org.jhove2.module.format.wave.FormatChunk"
+	      scope="prototype">
+	    <property name="identifier" value="fmt "/>
+	</bean>
+
+	<!-- WAVE inst chunk bean -->
+	<bean id="InstrumentChunk" class="org.jhove2.module.format.wave.InstrumentChunk"
+	      scope="prototype">
+	    <property name="identifier" value="inst"/>
+	</bean>
+
+	<!-- Broadcast Wave format iXML chunk bean -->
+	<bean id="IXMLChunk" class="org.jhove2.module.format.wave.bwf.IXMLChunk"
+	      scope="prototype">
+	    <property name="identifier" value="iXML"/>
+	</bean>
+
+	<!-- WAVE labl chunk bean -->
+	<bean id="LabelChunk" class="org.jhove2.module.format.wave.NamedZSTRChunk"
+	      scope="prototype">
+	    <property name="identifier" value="labl"/>
+	</bean>
+
+	<!-- Broadcast Wave format levl chunk bean -->
+	<bean id="PeakEnvelopeChunk" class="org.jhove2.module.format.wave.bwf.PeakEnvelopeChunk"
+	      scope="prototype">
+	    <property name="identifier" value="link"/>
+	</bean>
+
+	<!-- Broadcast Wave format link chunk bean -->
+	<bean id="LinkChunk" class="org.jhove2.module.format.wave.bwf.LinkChunk"
+	      scope="prototype">
+	    <property name="identifier" value="link"/>
+	</bean>
+
+	<!-- WAVE ltxt chunk bean -->
+	<bean id="LTXTChunk" class="org.jhove2.module.format.wave.TextWithDataLengthChunk"
+	      scope="prototype">
+	    <property name="identifier" value="ltxt"/>
+	</bean>
+
+	<!-- Broadcast Wave Format MPEG chunk bean -->
+	<bean id="MPEGChunk" class="org.jhove2.module.format.wave.bwf.MPEGChunk"
+	      scope="prototype">
+	    <property name="identifier" value="mext"/>
+	</bean>
+
+	<!-- WAVE note chunk bean -->
+	<bean id="NoteChunk" class="org.jhove2.module.format.wave.NamedZSTRChunk"
+	      scope="prototype">
+	    <property name="identifier" value="note"/>
+	</bean>
+	
+	<!-- WAVE plst chunk bean -->
+	<bean id="PlayListChunk" class="org.jhove2.module.format.wave.PlayListChunk"
+	      scope="prototype">
+	    <property name="identifier" value="plst"/>
+	</bean>
+
+	<!-- Broadcast Wave Format qlty chunk bean -->
+	<bean id="QualityChunk" class="org.jhove2.module.format.wave.bwf.QualityChunk"
+	      scope="prototype">
+	    <property name="identifier" value="qlty"/>
+	</bean>
+
+	<!-- WAVE slnt chunk bean -->
+	<bean id="SilenceChunk" class="org.jhove2.module.format.wave.SilenceChunk"
+	      scope="prototype">
+	    <property name="identifier" value="slnt"/>
+	</bean>
+	
 </beans>
