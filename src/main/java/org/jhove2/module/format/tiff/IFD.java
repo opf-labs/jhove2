@@ -52,6 +52,7 @@ import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
+import org.jhove2.core.format.Format;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
 import org.jhove2.core.source.Source;
@@ -222,9 +223,10 @@ extends AbstractReportable {
      *             If an I/O exception is raised reading the source unit
      * @throws JHOVE2Exception
      */
-    public void parse(JHOVE2 jhove2, Source source, Input input) throws EOFException,
-    IOException, JHOVE2Exception {
-
+    public void parse(JHOVE2 jhove2, Source source, Input input,
+                      Map<Integer, Format> tagToFormatMap)
+        throws EOFException, IOException, JHOVE2Exception
+    {
         this.isValid = Validity.Undetermined;
         long offsetInIFD = this.offset;
         this.nextIFD = 0L;
@@ -259,7 +261,7 @@ extends AbstractReportable {
             
             for (int i=0; i<this.numEntries; i++) {
                 IFDEntry ifdEntry = new IFDEntry();
-                ifdEntry.parse(jhove2, source, input);
+                ifdEntry.parse(jhove2, source, input, tagToFormatMap);
                 Validity validity = ifdEntry.isValid();
                 if (validity != Validity.True) {
                     this.isValid = validity;

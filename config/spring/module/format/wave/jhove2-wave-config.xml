@@ -157,12 +157,14 @@
 	<!-- WAVE _PMX chunk bean -->
 	<bean id="XMPChunk" class="org.jhove2.module.format.wave.XMPChunk"
 	      scope="prototype">
+	    <constructor-arg ref="XmlFormat"/>
 	    <property name="identifier" value="_PMX"/>
 	</bean>
 
 	<!-- Broadcast Wave Format axml chunk bean -->
 	<bean id="AXMLChunk" class="org.jhove2.module.format.wave.bwf.AXMLChunk"
 	      scope="prototype">
+	    <constructor-arg ref="XmlFormat"/>
 	    <property name="identifier" value="axml"/>
 	</bean>
 
@@ -208,6 +210,7 @@
 	<!-- Broadcast Wave format iXML chunk bean -->
 	<bean id="IXMLChunk" class="org.jhove2.module.format.wave.bwf.IXMLChunk"
 	      scope="prototype">
+	    <constructor-arg ref="XmlFormat"/>
 	    <property name="identifier" value="iXML"/>
 	</bean>
 

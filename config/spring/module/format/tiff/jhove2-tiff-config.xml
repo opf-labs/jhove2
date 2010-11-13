@@ -57,6 +57,12 @@
 				<ref bean="CDLAgent" />
 			</list>
 		</property>
+		<property name="tagToFormatMap">
+		    <map>
+		        <entry key="34675" value-ref="ICCFormat"/>
+		        <entry key="700"   value-ref="XmlFormat"/>
+		    </map>
+		</property>
 	</bean>
 
 

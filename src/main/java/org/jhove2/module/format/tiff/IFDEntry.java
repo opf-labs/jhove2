@@ -38,19 +38,18 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.annotation.ReportableProperty.PropertyType;
-import org.jhove2.config.spring.SpringConfigInfo;
 import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
+import org.jhove2.core.format.Format;
 import org.jhove2.core.format.FormatIdentification;
 import org.jhove2.core.format.FormatIdentification.Confidence;
 import org.jhove2.core.io.Input;
@@ -234,7 +233,10 @@ implements Comparable<Object> {
      * parse the IFD Entry 
      * @throws IOException, JHOVE2Exception 
      */
-    public void parse(JHOVE2 jhove2, Source source, Input input) throws IOException, JHOVE2Exception{
+    public void parse(JHOVE2 jhove2, Source source, Input input,
+                      Map<Integer, Format> tagToFormatMap)
+        throws IOException, JHOVE2Exception
+    {
         this.isValid = Validity.True;
         this.tag = input.readUnsignedShort();
         if (tag > prevTag)
@@ -304,23 +306,15 @@ implements Comparable<Object> {
             if (isValidTag(jhove2)) {
                 /* Handle tags which require unique processing of their values */
 
-                /* Parse the ICCProfile tag */
-                if (this.tag == TiffIFD.ICCPROFILE) {
+                /* Parse the ICCProfile or XMP tag */
+                if (this.tag == TiffIFD.ICCPROFILE ||
+                    this.tag == TiffIFD.XMP) {
                     ByteStreamSource bss = new ByteStreamSource(jhove2, source, this.valueOffset, this.count);
-                    Map<String, Object> i8r = SpringConfigInfo.getObjectsForType(I8R.class);
-                    I8R identifier = (I8R) i8r.get("ICCIdentifier");
-                    FormatIdentification iccPresumptiveFormat = new FormatIdentification(identifier, Confidence.PositiveSpecific); 
-                    bss.addPresumptiveFormat(iccPresumptiveFormat);
+                    Format format = tagToFormatMap.get(this.tag);
+                    I8R identifier = format.getIdentifier();
+                    FormatIdentification presumptiveFormat = new FormatIdentification(identifier, Confidence.PositiveSpecific); 
+                    bss.addPresumptiveFormat(presumptiveFormat);
                     jhove2.characterize(bss, input);
-                }
-                /* Parse the XMP tag */
-                else if (this.tag == TiffIFD.XMP) {
-                    ByteStreamSource bss = new ByteStreamSource(jhove2, source, this.valueOffset, this.count);
-                    Map<String, Object> i8r = SpringConfigInfo.getObjectsForType(I8R.class);
-                    I8R identifier = (I8R) i8r.get("XmlIdentifier");
-                    FormatIdentification xmlPresumptiveFormat = new FormatIdentification(identifier, Confidence.PositiveGeneric); 
-                    bss.addPresumptiveFormat(xmlPresumptiveFormat);
-                    jhove2.characterize(bss, input);                
                 }
                 else if (this.tag == TiffIFD.STRIPBYTECOUNTS || this.tag == TiffIFD.STRIPOFFSETS) {
                     input.setPosition(this.valueOffset);
