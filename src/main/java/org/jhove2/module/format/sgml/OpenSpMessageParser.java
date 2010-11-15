@@ -42,6 +42,9 @@ import org.antlr.runtime.ANTLRFileStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.Message;
+import org.jhove2.core.Message.Context;
+import org.jhove2.core.Message.Severity;
 import org.jhove2.util.CopyUtils;
 
 /**
@@ -67,30 +70,51 @@ public class OpenSpMessageParser {
 	/**
 	 * Invokes ANTLR-generated grammar class to parse OpenSP-generated .err file
 	 * @param messageFilePath path to OpenSP-generated .err file
+	 * @param sgm SGML module with Source object to which Messages may be added as required
 	 * @return SgmlParseMessagesParser with extracted message info
 	 * @throws JHOVE2Exception
+	 * @throws IOException 
+	 * @throws RecognitionException 
 	 */
-	public SgmlParseMessagesParser parseMessageFile(String messageFilePath)
-	throws JHOVE2Exception {
+	public SgmlParseMessagesParser parseMessageFile(String messageFilePath, SgmlModule sgm)
+	throws JHOVE2Exception, IOException, RecognitionException {
 		SgmlParseMessagesLexer lex = null;
 		SgmlParseMessagesParser parser = null;
 		try {
 			lex = new SgmlParseMessagesLexer(new ANTLRFileStream(messageFilePath, "UTF8"));
 		} catch (IOException e) {
-			throw new JHOVE2Exception(
-					"IO Exception thrown creating SgmlParseMessages lexer for file path " 
-					+ messageFilePath,
-					e);
+			String eMessage = e.getLocalizedMessage();
+			if (eMessage==null){
+				eMessage = "";
+			}
+			Object[]messageArgs = new Object[]{messageFilePath, eMessage};
+			Message message = new Message(
+					Severity.ERROR,
+					Context.PROCESS,
+					"org.jhove2.module.format.sgml.OpenSpMessageParser.IOExceptionForOpenSpMessageLexer",
+					messageArgs,
+					sgm.jhove2.getConfigInfo());
+			sgm.source.addMessage(message);
+			throw e;
 		}
 		CommonTokenStream tokens = new CommonTokenStream(lex);
 		parser = new SgmlParseMessagesParser(tokens);
 		try {
 			parser.errMessages();
 		} catch (RecognitionException e) {
-			throw new JHOVE2Exception(
-					"RecognitionException Exception thrown parsing file at file path " 
-					+ messageFilePath,
-					e);
+			String eMessage = e.getLocalizedMessage();
+			if (eMessage==null){
+				eMessage = "";
+			}
+			Object[]messageArgs = new Object[]{messageFilePath, eMessage};
+			Message message = new Message(
+					Severity.ERROR,
+					Context.PROCESS,
+					"org.jhove2.module.format.sgml.OpenSpMessageParser.RecognitionExceptionForOpenSpMessageLexer",
+					messageArgs,
+					sgm.jhove2.getConfigInfo());
+			sgm.source.addMessage(message);
+			throw e;
 		}
 		return parser;
 	}

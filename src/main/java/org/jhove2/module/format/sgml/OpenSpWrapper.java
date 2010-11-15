@@ -40,6 +40,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.antlr.runtime.RecognitionException;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
@@ -47,6 +48,7 @@ import org.jhove2.core.Message.Severity;
 import org.jhove2.util.externalprocess.ExternalProcessHandler;
 import org.jhove2.util.externalprocess.ExternalProcessUtils;
 import org.jhove2.util.externalprocess.FilepathFilter;
+import org.jhove2.util.externalprocess.NoSuchShellEnvException;
 
 /**
  * Wrapper around OpenSP SGML parser and onsgmlNorm utility. 
@@ -73,7 +75,7 @@ public class OpenSpWrapper implements SgmlParser {
 	public static final String NORM_SUFFIX = ".norm";
 	/** suffix to be used for std err redirect for shell invocation */
 	public static final String TEMP_STD_ERR = ".std.err";
-	
+
 	/** Handler that will invoke external process to run ongsml utilities */
 	protected ExternalProcessHandler processHandler;
 	/** filters to be applied to filepaths to enable processing by ExternalProcessHandler on different operating systems*/
@@ -106,31 +108,46 @@ public class OpenSpWrapper implements SgmlParser {
 			this.parseSgmlFile(sgm, ESIS_SUFFIX, this.onsgmlsPath, esisCommandParms);
 		String esisFilePath = onsgmlOutputs[0];
 		String esisErrFilePath = onsgmlOutputs[1];
-		
+
 		if (esisFilePath != null && esisErrFilePath != null){
-			// parse the ESIS output file from onsgmls to extract features of SGML file
-			EsisParser esisFileParser = new EsisParser();
-			/** ANTLR-generated ESIS file (output from ongmls) parser*/
-			ESISCommandsParser esisParser = null;
-			if (sgm.getDocumentProperties()==null){
-				sgm.setDocumentProperties(new SgmlDocumentProperties());
-			}
-			esisParser = 
-				esisFileParser.parseEsisFile(esisFilePath);
-			if (esisParser != null){
+			do {
+				// parse the ESIS output file from onsgmls to extract features of SGML file
+				EsisParser esisFileParser = new EsisParser();
+				/** ANTLR-generated ESIS file (output from ongmls) parser*/
+				ESISCommandsParser esisParser = null;
+				if (sgm.getDocumentProperties()==null){
+					sgm.setDocumentProperties(new SgmlDocumentProperties());
+				}
+				try {
+					esisParser = 
+						esisFileParser.parseEsisFile(esisFilePath, sgm);
+				} catch (IOException e) {
+					continue; // message already attached to source
+				} catch (RecognitionException e) {
+					continue; // message already attached to source
+				}
+				if (esisParser == null){
+					continue;					
+				}
 				if (props==null){
 					props = new SgmlDocumentProperties();
 				}
 				esisFileParser.extractDocProperties(esisParser, props);
-			}
-			if (props.getSgmlParserConfigSettings()==null){
-				props.setSgmlParserConfigSettings(new ArrayList<String>());
-			}
-			props.getSgmlParserConfigSettings().add("OpenSp onsgmls Options:  ".concat(esisCommandParms));
-			OpenSpMessageParser messageParser = new OpenSpMessageParser();
-			SgmlParseMessagesParser errParser = null;
-			errParser = messageParser.parseMessageFile(esisErrFilePath);
-			messageParser.extractDocProperties(errParser, props);
+				if (props.getSgmlParserConfigSettings()==null){
+					props.setSgmlParserConfigSettings(new ArrayList<String>());
+				}
+				props.getSgmlParserConfigSettings().add("OpenSp onsgmls Options:  ".concat(esisCommandParms));
+				OpenSpMessageParser messageParser = new OpenSpMessageParser();
+				SgmlParseMessagesParser errParser = null;
+				try {
+					errParser = messageParser.parseMessageFile(esisErrFilePath, sgm);
+				} catch (IOException e) {
+					continue; // message already attached to source
+				} catch (RecognitionException e) {
+					continue; // message already attached to source
+				}
+				messageParser.extractDocProperties(errParser, props);
+			} while (false);
 		}	
 		return props;
 	}
@@ -152,20 +169,28 @@ public class OpenSpWrapper implements SgmlParser {
 		String normOutPath = normOutputs[0];
 		String normErrPath =normOutputs[1];
 		if (normOutPath != null && normErrPath != null){
-			DoctypeParser doctypeParser = new DoctypeParser();
-			DoctypeFinderParser doctypeFinderParser = null;
-			doctypeFinderParser = 
-				doctypeParser.parseNormFile(normOutPath);	
-			if (doctypeFinderParser != null){
-				if (props==null){
-					props = new SgmlDocumentProperties();
+			do {
+				DoctypeParser doctypeParser = new DoctypeParser();
+				DoctypeFinderParser doctypeFinderParser = null;
+				try {
+					doctypeFinderParser = 
+						doctypeParser.parseNormFile(normOutPath, null);
+				} catch (IOException e) {
+					continue; // message already attached to source
+				} catch (RecognitionException e) {
+					continue; // message already attached to source
+				}	
+				if (doctypeFinderParser != null){
+					if (props==null){
+						props = new SgmlDocumentProperties();
+					}
+					doctypeParser.extractDocProperties(doctypeFinderParser, props);
 				}
-				doctypeParser.extractDocProperties(doctypeFinderParser, props);
-			}
-			if (props.getSgmlParserConfigSettings()==null){
-				props.setSgmlParserConfigSettings(new ArrayList<String>());
-			}
-			props.getSgmlParserConfigSettings().add("OpenSp sgmlnorm Options:  ".concat(normOptions));
+				if (props.getSgmlParserConfigSettings()==null){
+					props.setSgmlParserConfigSettings(new ArrayList<String>());
+				}
+				props.getSgmlParserConfigSettings().add("OpenSp sgmlnorm Options:  ".concat(normOptions));
+			}while (false);
 		}
 		return;		
 	}
@@ -187,10 +212,12 @@ public class OpenSpWrapper implements SgmlParser {
 	 * @param commandParms string containing parameters for OpenSp command
 	 * @return String[] containing path to .out and .err files  Paths will be null if ExternalProcessor resulted in error
 	 * @throws JHOVE2Exception
+	 * @throws IOException 
+	 * @throws NoSuchShellEnvException 
 	 */
 	protected String[] parseSgmlFile(SgmlModule sgm, String tempFileSuffix, 
-			String openSpCommand, String commandParms)
-	throws JHOVE2Exception {
+			String openSpCommand, String commandParms) 
+	throws JHOVE2Exception{
 		String parseOutputFilePath = null;
 		String parseErrFilePath = null;
 		String standardErrFilePath = null;
@@ -198,107 +225,188 @@ public class OpenSpWrapper implements SgmlParser {
 		File tempErrFile = null;
 		File tempStdErrFile = null;
 		String sgmFilePath = null;
+		String [] onsgmlOutputs = {null, null};
 		File sgmFile = sgm.source.getFile();
-		try {
-			sgmFilePath = sgmFile.getCanonicalPath();
-			if (this.filepathFilter != null){
-				sgmFilePath = this.filepathFilter.filter( sgmFilePath);
-			}
-		} catch (IOException e) {
-			throw new JHOVE2Exception(
-					"IO Exception thrown attempting to determine canonical path for SGML source",
-					e);
-		}
-		if (sgmFilePath.contains(" ")){
-			sgmFilePath = spaceEscapeChar.concat(sgmFilePath).concat(spaceEscapeChar);
-		}
-		// create path names for the 2 output (output and err messages)
-		// files generated by OpenSp
-		try {
-			tempOutFile = File.createTempFile(
-					sgm.jhove2.getInvocation().getTempPrefix(),
-					sgm.jhove2.getInvocation().getTempSuffix().concat(tempFileSuffix), 
-					new File(sgm.jhove2.getInvocation().getTempDirectory()));
-		} catch (IOException e) {
-			throw new JHOVE2Exception(
-					"IOException attemtping to create temporary OpenSp output file",
-					e);
-		}
-		if (sgm.jhove2.getInvocation().getDeleteTempFiles()){
-			tempOutFile.deleteOnExit();
-		}
-		parseOutputFilePath = tempOutFile.getPath();
-		if (this.filepathFilter != null){
-			parseOutputFilePath = this.filepathFilter.filter(parseOutputFilePath);
-		}
-		try {
-			tempErrFile = File.createTempFile(
-					sgm.jhove2.getInvocation().getTempPrefix(),
-					sgm.jhove2.getInvocation().getTempSuffix().concat(tempFileSuffix).concat(".err"), 
-					new File(sgm.jhove2.getInvocation().getTempDirectory()));
-		} catch (IOException e) {
-			throw new JHOVE2Exception(
-					"IOException attemtping to create temporary OpenSp error file",
-					e);
-		}
-		if (sgm.jhove2.getInvocation().getDeleteTempFiles()){
-			tempErrFile.deleteOnExit();
-		}
-		parseErrFilePath = tempErrFile.getPath();
-		if (this.filepathFilter != null){
-			parseErrFilePath = this.filepathFilter.filter(parseErrFilePath);
-		}
-		try{
-			tempStdErrFile = File.createTempFile(
-					sgm.jhove2.getInvocation().getTempPrefix(),
-					sgm.jhove2.getInvocation().getTempSuffix().concat(tempFileSuffix).concat(TEMP_STD_ERR), 
-					new File(sgm.jhove2.getInvocation().getTempDirectory()));
-		} catch (IOException e) {
-			throw new JHOVE2Exception(
-					"IOException attemtping to create temporary standard error file",
-					e);
-		}
-		if (sgm.jhove2.getInvocation().getDeleteTempFiles()){
-			tempStdErrFile.deleteOnExit();
-		}
-		standardErrFilePath = tempStdErrFile.getPath();
-		if (this.filepathFilter != null){
-			standardErrFilePath = this.filepathFilter.filter(standardErrFilePath);
-		}		
-		StringBuffer sbCommand = new StringBuffer(openSpCommand);
-		sbCommand.append(" ");
-		sbCommand.append(commandParms);
-		sbCommand.append(" ");
-		sbCommand.append(OpenSpOptions.ERRFILEOPT);
-		sbCommand.append(parseErrFilePath);
-		sbCommand.append(" ");
-		sbCommand.append(sgmFilePath);
-		sbCommand.append(" > ");
-		sbCommand.append(parseOutputFilePath);
-		sbCommand.append(" 2>");
-		sbCommand.append(standardErrFilePath);
-		String command = sbCommand.toString();
-		this.getProcessHandler().executeCommand(command);
-		// check for process error messages
-		if (tempStdErrFile.exists() && tempStdErrFile.length()>0){
-			String standardErrText = null;
+		do {
 			try {
-				standardErrText = ExternalProcessUtils.fileContentsToString(tempStdErrFile);
+				sgmFilePath = sgmFile.getCanonicalPath();
+				if (this.filepathFilter != null){
+					sgmFilePath = this.filepathFilter.filter( sgmFilePath);
+				}
 			} catch (IOException e) {
-				standardErrText = "Text not recoverable from standard err file: " + e.getMessage();
+				String eMessage = e.getLocalizedMessage();
+				if (eMessage==null){
+					eMessage = "";
+				}
+				Object[]messageArgs = new Object[]{sgmFilePath, eMessage};
+				Message message = new Message(
+						Severity.ERROR,
+						Context.PROCESS,
+						"org.jhove2.module.format.sgml.OpenSpWrapper.IOExceptionForSGMLSourcePath",
+						messageArgs,
+						sgm.jhove2.getConfigInfo());
+				sgm.source.addMessage(message);
+				continue;
 			}
-			Object[]messageArgs = new Object[]{command, standardErrText};
+			if (sgmFilePath.contains(" ")){
+				sgmFilePath = spaceEscapeChar.concat(sgmFilePath).concat(spaceEscapeChar);
+			}
+			// create path names for the 2 output (output and err messages)
+			// files generated by OpenSp
+			try {
+				tempOutFile = File.createTempFile(
+						sgm.jhove2.getInvocation().getTempPrefix(),
+						sgm.jhove2.getInvocation().getTempSuffix().concat(tempFileSuffix), 
+						new File(sgm.jhove2.getInvocation().getTempDirectory()));
+			} catch (IOException e) {;
+			String eMessage = e.getLocalizedMessage();
+			if (eMessage==null){
+				eMessage = "";
+			}
+			Object[]messageArgs = new Object[]{eMessage};
 			Message message = new Message(
-					Severity.ERROR, 
+					Severity.ERROR,
 					Context.PROCESS,
-					"org.jhove2.module.format.sgml.OpenSpWrapper.externalProcessErrMessage",
+					"org.jhove2.module.format.sgml.OpenSpWrapper.IOExceptionForSGMLTempOutFile",
 					messageArgs,
 					sgm.jhove2.getConfigInfo());
 			sgm.source.addMessage(message);
-			parseOutputFilePath = null;
-			parseErrFilePath = null;
-		}
-		return new String[]{parseOutputFilePath, parseErrFilePath};
+			continue;				
+			}
+			if (sgm.jhove2.getInvocation().getDeleteTempFiles()){
+				tempOutFile.deleteOnExit();
+			}
+			parseOutputFilePath = tempOutFile.getPath();
+			if (this.filepathFilter != null){
+				parseOutputFilePath = this.filepathFilter.filter(parseOutputFilePath);
+			}
+			try {
+				tempErrFile = File.createTempFile(
+						sgm.jhove2.getInvocation().getTempPrefix(),
+						sgm.jhove2.getInvocation().getTempSuffix().concat(tempFileSuffix).concat(".err"), 
+						new File(sgm.jhove2.getInvocation().getTempDirectory()));
+			} catch (IOException e) {
+				String eMessage = e.getLocalizedMessage();
+				if (eMessage==null){
+					eMessage = "";
+				}
+				Object[]messageArgs = new Object[]{eMessage};
+				Message message = new Message(
+						Severity.ERROR,
+						Context.PROCESS,
+						"org.jhove2.module.format.sgml.OpenSpWrapper.IOExceptionForSGMLTempErrFile",
+						messageArgs,
+						sgm.jhove2.getConfigInfo());
+				sgm.source.addMessage(message);
+				continue;
+			}
+			if (sgm.jhove2.getInvocation().getDeleteTempFiles()){
+				tempErrFile.deleteOnExit();
+			}
+			parseErrFilePath = tempErrFile.getPath();
+			if (this.filepathFilter != null){
+				parseErrFilePath = this.filepathFilter.filter(parseErrFilePath);
+			}
+			try{
+				tempStdErrFile = File.createTempFile(
+						sgm.jhove2.getInvocation().getTempPrefix(),
+						sgm.jhove2.getInvocation().getTempSuffix().concat(tempFileSuffix).concat(TEMP_STD_ERR), 
+						new File(sgm.jhove2.getInvocation().getTempDirectory()));
+			} catch (IOException e) {
+				String eMessage = e.getLocalizedMessage();
+				if (eMessage==null){
+					eMessage = "";
+				}
+				Object[]messageArgs = new Object[]{eMessage};
+				Message message = new Message(
+						Severity.ERROR,
+						Context.PROCESS,
+						"org.jhove2.module.format.sgml.OpenSpWrapper.IOExceptionForSGMLStdErrFile2",
+						messageArgs,
+						sgm.jhove2.getConfigInfo());
+				sgm.source.addMessage(message);
+				continue;
+			}
+			if (sgm.jhove2.getInvocation().getDeleteTempFiles()){
+				tempStdErrFile.deleteOnExit();
+			}
+			standardErrFilePath = tempStdErrFile.getPath();
+			if (this.filepathFilter != null){
+				standardErrFilePath = this.filepathFilter.filter(standardErrFilePath);
+			}		
+			StringBuffer sbCommand = new StringBuffer(openSpCommand);
+			sbCommand.append(" ");
+			sbCommand.append(commandParms);
+			sbCommand.append(" ");
+			sbCommand.append(OpenSpOptions.ERRFILEOPT);
+			sbCommand.append(parseErrFilePath);
+			sbCommand.append(" ");
+			sbCommand.append(sgmFilePath);
+			sbCommand.append(" > ");
+			sbCommand.append(parseOutputFilePath);
+			sbCommand.append(" 2>");
+			sbCommand.append(standardErrFilePath);
+			String command = sbCommand.toString();
+			try {
+				this.getProcessHandler().executeCommand(command);
+			} catch (NoSuchShellEnvException en) {
+				Object[]messageArgs = new Object[]{en.getMessage()};
+				Message message = new Message(
+						Severity.ERROR,
+						Context.PROCESS,
+						"org.jhove2.module.format.sgml.OpenSpWrapper.externalProcessNoSuchShellCommand",
+						messageArgs,
+						sgm.jhove2.getConfigInfo());
+				sgm.source.addMessage(message);
+				continue;
+			} catch (JHOVE2Exception je){
+				String eType = je.getCause().getClass().getCanonicalName();
+				String eMessage = je.getCause().getLocalizedMessage();
+				Object[]messageArgs = new Object[]{command, eType, eMessage};
+				Message message = new Message(
+						Severity.ERROR,
+						Context.PROCESS,
+						"org.jhove2.module.format.sgml.OpenSpWrapper.externalProcessException",
+						messageArgs,
+						sgm.jhove2.getConfigInfo());
+				sgm.source.addMessage(message);
+				continue;
+			}
+			// check for process error messages (OpenSp produces .err file of length > 0)
+			if (tempStdErrFile.exists() && tempStdErrFile.length()>0){
+				String standardErrText = null;
+				Message message = null;
+				Object[]messageArgs = null;
+				try {
+					standardErrText = ExternalProcessUtils.fileContentsToString(tempStdErrFile);
+					messageArgs = new Object[]{command, standardErrText};
+					message = new Message(
+							Severity.ERROR, 
+							Context.PROCESS,
+							"org.jhove2.module.format.sgml.OpenSpWrapper.externalProcessErrMessage",
+							messageArgs,
+							sgm.jhove2.getConfigInfo());
+				} catch (IOException e) {
+					String eMessage = e.getLocalizedMessage();
+					if (eMessage==null){
+						eMessage = "";
+					}
+					String eType = e.getClass().getCanonicalName();
+					messageArgs = new Object[]{command, eType, eMessage};
+					message = new Message(
+							Severity.ERROR, 
+							Context.PROCESS,
+							"org.jhove2.module.format.sgml.OpenSpWrapper.externalProcessErrMessageException",
+							messageArgs,
+							sgm.jhove2.getConfigInfo());
+				}			
+				sgm.source.addMessage(message);
+				parseOutputFilePath = null;
+				parseErrFilePath = null;
+			}
+			onsgmlOutputs = new String[]{parseOutputFilePath, parseErrFilePath};
+		} while (false);
+		return onsgmlOutputs;
 	}
 
 	/**

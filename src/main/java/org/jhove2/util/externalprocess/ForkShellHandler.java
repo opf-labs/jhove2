@@ -36,6 +36,7 @@
  */
 package org.jhove2.util.externalprocess;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import org.jhove2.core.JHOVE2Exception;
@@ -63,15 +64,22 @@ public class ForkShellHandler implements ExternalProcessHandler {
 	protected boolean shouldSyncAfterExcecution;
 
 	/**
-	 * This function is invoked whenever a child process need to be created using Java Runtime API 
+	 * This method is invoked whenever a child process need to be created using Java Runtime API 
 	 * The input command should be a valid shell command with/without directing the standard output/error
 	 * into filesystem as this function returns only success/failure status of execution. Output/Error should
 	 * be retrieved from the filesystem directly.
+	 * @param command String containing command to be invoked
+	 * @throws JHOVE2Exception
+	 * @throws NoSuchShellEnvException 
 	 * 
 	 */
-	public void executeCommand(String command) throws JHOVE2Exception {
-		
+	@Override
+	public void executeCommand(String command) throws JHOVE2Exception, NoSuchShellEnvException {
+		if (!this.shellEnvExists()){
+			throw new NoSuchShellEnvException(this.shellEnv);
+		}
 		try {
+			
 			StringBuffer sbCommand = new StringBuffer();
 			if (shouldQuoteCommand){
 				sbCommand.append('"');
@@ -99,9 +107,22 @@ public class ForkShellHandler implements ExternalProcessHandler {
 	        Process openProcess = currentRuntime.exec(cmdArray);
 	        openProcess.waitFor();   
 		} catch (Exception exception) {
-			throw new JHOVE2Exception("Exception thrown executing command " + command,
+			throw new JHOVE2Exception("ForkShellHandler.executeCommand(" + command + ")", 
 					exception);
 		}
+	}
+
+	/**
+	 * Checks to see if shell file exists and can be executed
+	 * @return true if shell file exists and can be executed, else false
+	 */
+	protected boolean shellEnvExists() {
+		boolean shellExists = false;
+		File shellFile = new File(shellEnv);
+		if (shellFile.exists() && shellFile.canExecute()){
+			shellExists = true;
+		}
+		return shellExists;
 	}
 
 	/**

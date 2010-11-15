@@ -63,7 +63,7 @@ public class OpenSpMessageParserTest {
 	}
 
 	/**
-	 * Test method for {@link org.jhove2.module.format.sgml.OpenSpMessageParser#parseMessageFile(java.lang.String)}.
+	 * Test method for {@link org.jhove2.module.format.sgml.OpenSpMessageParser#parseMessageFile(java.lang.String, SgmlModule)}.
 	 */
 	@Test
 	public void testParseMessageFile() {

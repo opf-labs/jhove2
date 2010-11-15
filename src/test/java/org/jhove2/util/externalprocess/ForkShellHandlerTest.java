@@ -121,6 +121,9 @@ public class ForkShellHandlerTest {
 		} catch (JHOVE2Exception e) {
 			e.printStackTrace();
 			fail("Shell Handler threw exception");
+		} catch (NoSuchShellEnvException e) {
+			e.printStackTrace();
+			fail("Shell Handler threw NoSuchShellEnvException");
 		}
 		assertTrue(tempFile.exists());
 		long lngth = tempFile.length();
@@ -158,6 +161,9 @@ public class ForkShellHandlerTest {
 			command = COMMANDBASE + wtempFilePath ;
 			try {
 				windowsShellHandler.executeCommand(command);
+			} catch (NoSuchShellEnvException e) {
+				e.printStackTrace();
+				fail("Shell Handler threw NoSuchShellEnvException");
 			} catch (JHOVE2Exception e) {
 				e.printStackTrace();
 				fail("Shell Handler threw exception");

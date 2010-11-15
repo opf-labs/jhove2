@@ -42,6 +42,7 @@ import java.io.IOException;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.Message;
 import org.jhove2.core.format.Format;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
@@ -87,6 +88,9 @@ public class SgmlModule
 
 	/** Container for SGML document properties extracted by parser */
 	protected SgmlDocumentProperties documentProperties;
+	
+	/** Error message indicating command shell to invoke external parser is invalid */
+	protected Message invalidCommandShellMessage;
 
 	/**
 	 * Instantiates a new <code>SgmlModule</code> instance.
@@ -217,6 +221,21 @@ public class SgmlModule
 	 */
 	public void setDocumentProperties(SgmlDocumentProperties documentProperties) {
 		this.documentProperties = documentProperties;
+	}
+
+	/**
+	 * @return the invalidCommandShellMessage
+	 */
+	@ReportableProperty(order = 27, value = "Invalid Command Shell configuration Error Message")
+	public Message getInvalidCommandShellMessage() {
+		return invalidCommandShellMessage;
+	}
+
+	/**
+	 * @param invalidCommandShellMessage the invalidCommandShellMessage to set
+	 */
+	public void setInvalidCommandShellMessage(Message invalidCommandShellMessage) {
+		this.invalidCommandShellMessage = invalidCommandShellMessage;
 	}
 
 }

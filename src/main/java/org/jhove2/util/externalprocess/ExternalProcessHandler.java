@@ -51,6 +51,11 @@ public interface ExternalProcessHandler {
 	/** Command to synchronize the stdout, stderr streams of the child process  as part of a unix command*/
 	public static String SYNC_COMMAND_WITH_DELIMITER = ";sync";
 
-	
-	public void executeCommand(String command) throws JHOVE2Exception ;
+	/**
+	 * Invokes external process to run a command
+	 * @param command String containing command to be invoked
+	 * @throws JHOVE2Exception
+	 * @throws NoSuchShellEnvException
+	 */
+	public void executeCommand(String command) throws JHOVE2Exception, NoSuchShellEnvException ;
 }

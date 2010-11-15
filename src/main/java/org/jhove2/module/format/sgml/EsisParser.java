@@ -44,6 +44,9 @@ import org.antlr.runtime.ANTLRFileStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.Message;
+import org.jhove2.core.Message.Context;
+import org.jhove2.core.Message.Severity;
 import org.jhove2.util.CopyUtils;
 
 /**
@@ -65,28 +68,51 @@ public class EsisParser {
 	 * feature information about the SGML file, which will be accessed
 	 * by the SgmlModule class to report properties about the file
 	 * @param esisPath String containing path to onsmls ESIS output
+	 * @param sgm SGML module with Source object to which Messages can be attached if necessary
 	 * @return parser object with information about the SGML instance.
 	 * @throws JHOVE2Exception
+	 * @throws IOException 
+	 * @throws RecognitionException 
 	 */
-	public ESISCommandsParser parseEsisFile(String esisPath)
-	throws JHOVE2Exception {
+	public ESISCommandsParser parseEsisFile(String esisPath, SgmlModule sgm)
+	throws JHOVE2Exception, IOException, RecognitionException {
 		ESISCommandsLexer lex = null;
 		ESISCommandsParser parser = null;
 		try {
 			lex = new ESISCommandsLexer(new ANTLRFileStream(esisPath, "UTF8"));
 		} catch (IOException e) {
-			throw new JHOVE2Exception(
-					"IO Exception thrown creating ESIS lexer for file path " + esisPath,
-					e);
+			String eMessage = e.getLocalizedMessage();
+			if (eMessage==null){
+				eMessage = "";
+			}
+			Object[]messageArgs = new Object[]{esisPath, eMessage};
+			Message message = new Message(
+					Severity.ERROR,
+					Context.PROCESS,
+					"org.jhove2.module.format.sgml.EsisParser.IOExceptionForEsisLexer",
+					messageArgs,
+					sgm.jhove2.getConfigInfo());
+			sgm.source.addMessage(message);
+			throw e;
 		}
 		CommonTokenStream tokens = new CommonTokenStream(lex);
 		parser = new ESISCommandsParser(tokens);
 		try {
 			parser.esis();
 		} catch (RecognitionException e) {
-			throw new JHOVE2Exception(
-					"RecognitionException Exception thrown parsing file at file path " + esisPath,
-					e);
+			String eMessage = e.getLocalizedMessage();
+			if (eMessage==null){
+				eMessage = "";
+			}
+			Object[]messageArgs = new Object[]{esisPath, eMessage};
+			Message message = new Message(
+					Severity.ERROR,
+					Context.PROCESS,
+					"org.jhove2.module.format.sgml.EsisParser.RecognitionExceptionForEsisLexer",
+					messageArgs,
+					sgm.jhove2.getConfigInfo());
+			sgm.source.addMessage(message);
+			throw e;
 		}
 		return parser;		
 	}

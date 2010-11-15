@@ -92,7 +92,7 @@ public class EsisParserTest {
 	}
 
 	/**
-	 * Test method for {@link org.jhove2.module.format.sgml.EsisParser#parseEsisFile(java.lang.String)}.
+	 * Test method for {@link org.jhove2.module.format.sgml.EsisParser#parseEsisFile(java.lang.String, SgmlModule)}.
 	 */
 	@Test
 	public void testParseEsisFile(){
