@@ -37,6 +37,7 @@
 package org.jhove2.module.aggrefy;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -105,7 +106,7 @@ public class AggrefierModule
 		for (Recognizer recognizer:this.getRecognizers()) {	
 			TimerInfo info = recognizer.getTimerInfo();
 			info.setStartTime();
-			clumpSources.addAll((Collection<? extends ClumpSource>) recognizer.identify(jhove2, source));
+			clumpSources.addAll((Collection<? extends ClumpSource>) recognizer.recognize(jhove2, source));
 			info.setEndTime();
 		}	
 		return clumpSources;

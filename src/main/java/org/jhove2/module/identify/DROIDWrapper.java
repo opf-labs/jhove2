@@ -42,14 +42,14 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.WrappedProduct;
 import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.URLSource;
 
+
+import uk.gov.nationalarchives.droid.JHOVE2AnalysisControllerUtil;
 import uk.gov.nationalarchives.droid.ConfigFile;
 import uk.gov.nationalarchives.droid.IdentificationFile;
-import uk.gov.nationalarchives.droid.JHOVE2AnalysisControllerUtil;
 import uk.gov.nationalarchives.droid.JHOVE2IAnalysisController;
 import uk.gov.nationalarchives.droid.binFileReader.ByteReader;
 import uk.gov.nationalarchives.droid.signatureFile.FFSignatureFile;
@@ -62,69 +62,27 @@ import uk.gov.nationalarchives.droid.signatureFile.FFSignatureFile;
  *  
  *  @author smorrissey
  */
-public class DROIDWrappedProduct
-	extends WrappedProduct
+public class DROIDWrapper
 {
-	public static final String NAME = "Jhove2Droid";
-	
-	/** Framework version identifier. */
-	public static final String VERSION = "2.0.0";
-
-	/** Framework release date. */
-	public static final String RELEASE = "2010-09-10";
-
-	/** Framework rights statement. */
-	public static final String RIGHTS = "Copyright 2010 by The Regents of the University of California, "
-		+ "Ithaka Harbors, Inc., and The Board of Trustees of the Leland "
-		+ "Stanford Junior University. "
-		+ "Available under the terms of the BSD license."
-		+ " Please see DROID-LICENSE.txt file for UK National Archives rights statement for DROID,"
-		+ " DROID is also available under the terms of the BSD license";
-	
     protected DROIDAnalysisController analysisControl = null;
       
     /**
      * No-args constructor. 
      *
-     * @throws Exception
      */
-    public DROIDWrappedProduct()
-    	throws Exception
+    public DROIDWrapper()
     {
-    	this(NAME, VERSION, RELEASE, RIGHTS);
+    	super();
+    	this.analysisControl = new DROIDAnalysisController();
     }
     
     /**
-     * Constructor
-     * @param name Name of this wrapped product
-     * @throws Exception
-     */
-    public DROIDWrappedProduct(String name)
-    	throws Exception
-    {
-    	this(name, VERSION, RELEASE, RIGHTS);
-    }   
-    
-    /**
-     * Cosntructor
-     * @param name Name of this wrapped product
-     * @param version Version  of this wrapped product
-     * @param date Release date of this wrapped product
-     * @param rights Rights statement of this wrapped product
-     */
-    public DROIDWrappedProduct(String name, String version, String date,
-    		                   String rights) {
-    	super(name, version, date, rights);
-    	analysisControl = new DROIDAnalysisController();
-    }
-    
-    /**
-     * Convenience constructor added by JHOVE2
+     * Constructor 
      * @param configFilePath String containing path to local copy of DROID config file
      * @param sigFilePath String containing path to local copy of DROID signature file
      * @throws Exception
      */
-    public DROIDWrappedProduct(String configFilePath, String sigFilePath)
+    public DROIDWrapper(String configFilePath, String sigFilePath)
     	throws Exception
     {
     	this();
@@ -132,19 +90,7 @@ public class DROIDWrappedProduct
     	this.setSigFile((parseSignatureFile(this.getConfigFile(), sigFilePath)));
     }
 
-    /**
-     * Cosntructor
-     * @param configFile Parsed ConfigFile object
-     * @param sigFile  Parsed Signature file object
-     * @throws Exception
-     */
-    public DROIDWrappedProduct(ConfigFile configFile, FFSignatureFile sigFile)
-    	throws Exception
-    {
-    	this();
-    	this.setConfigFile(configFile);
-    	this.setSigFile(sigFile);
-    }
+
 
     /**
      * Parses DROID configuration file

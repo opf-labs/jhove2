@@ -229,7 +229,7 @@ public class GlobPathRecognizerTest{
 	}
 
 	/**
-	 * Test method for {@link org.jhove2.module.aggrefy.GlobPathRecognizer#identify(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)}.
+	 * Test method for {@link org.jhove2.module.aggrefy.GlobPathRecognizer#recognize(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)}.
 	 */
 	@Test
 	public void testIdentify() {
@@ -248,7 +248,7 @@ public class GlobPathRecognizerTest{
 				fsSource.addChildSource(fs);
 			}
 			Set<ClumpSource> sources = 
-				strictShapeFileRecognizer.identify(JHOVE2, fsSource);
+				strictShapeFileRecognizer.recognize(JHOVE2, fsSource);
 			assertEquals(strictKeyCountMap.size(), sources.size());
 			for (ClumpSource cSource:sources){
 				Set<FormatIdentification> fiSet = cSource.getPresumptiveFormats();
@@ -258,7 +258,7 @@ public class GlobPathRecognizerTest{
 					assertEquals(fi.getConfidence(),GlobPathRecognizer.GLOB_PATH_CONFIDENCE);
 				}
 			}
-			sources = relaxedShapeFileRecognizer.identify(JHOVE2, fsSource);
+			sources = relaxedShapeFileRecognizer.recognize(JHOVE2, fsSource);
 
 			assertEquals(relaxedKeyCountMap.size(), sources.size());
 			for (Source cSource:sources){

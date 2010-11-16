@@ -75,7 +75,7 @@ public class IdentifierModule
 		+ "Available under the terms of the BSD license.";
 	
 	/** File-level identifier module. */
-	protected Identifier fileSourceIdentifier;
+	protected SourceIdentifier sourceIdentifier;
 	
 	/** flag to indicate bypass of Identification if Source is pre-identified */
 	protected boolean shouldSkipIdentifyIfPreIdentified;
@@ -140,11 +140,11 @@ public class IdentifierModule
 			presumptiveFormatIDs.add(id);
 		}
 		else {   /* Identify file source unit. */				
-			TimerInfo timer = fileSourceIdentifier.getTimerInfo();
+			TimerInfo timer = sourceIdentifier.getTimerInfo();
 			timer.setStartTime();
 			try {
 				Set<FormatIdentification> formats =
-					fileSourceIdentifier.identify(jhove2, source, input);
+					sourceIdentifier.identify(jhove2, source, input);
 				presumptiveFormatIDs.addAll(formats);
 			}
 			finally {
@@ -160,16 +160,16 @@ public class IdentifierModule
 	 * @return File source identifier module
 	 */
 	@Override
-	public Identifier getFileSourceIdentifier() {
-		return fileSourceIdentifier;
+	public SourceIdentifier getSourceIdentifier() {
+		return sourceIdentifier;
 	}
 
 	/**
 	 * Set file source identifier module.
-	 * @param fileSourceIdentifier File source identifier module
+	 * @param sourceIdentifier File source identifier module
 	 */
-	public void setFileSourceIdentifier(Identifier fileSourceIdentifier) {
-		this.fileSourceIdentifier = fileSourceIdentifier;
+	public void setSourceIdentifier(SourceIdentifier fileSourceIdentifier) {
+		this.sourceIdentifier = fileSourceIdentifier;
 	}
 
 	/**

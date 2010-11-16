@@ -94,7 +94,7 @@ public class DroidIdentifierTest {
 	}
 
 	/**
-	 * Test method for {@link org.jhove2.module.identify.DROIDIdentifier#identify(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)}.
+	 * Test method for {@link org.jhove2.module.identify.DROIDIdentifier#identify(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source, Input)}.
 	 */
 	@Test
 	public void testIdentify() {
@@ -117,7 +117,7 @@ public class DroidIdentifierTest {
 		} 
 		try {
 		    input.setPosition(0);
-			ids = dROIDIdentifier.identify(JHOVE2, source, input);
+			ids = dROIDIdentifier.identify(JHOVE2, source, null);
 			assertEquals(1, ids.size());
 			for (FormatIdentification fi : ids){
 				assertEquals(Confidence.PositiveSpecific, fi.getConfidence());
@@ -140,7 +140,7 @@ public class DroidIdentifierTest {
 		}
 		try {
 		    input.setPosition(0);
-			ids = dROIDIdentifier.identify(JHOVE2, source, input);
+			ids = dROIDIdentifier.identify(JHOVE2, source, null);
 			assertEquals(0, ids.size());
 			assertNull(dROIDIdentifier.getFileErrorMessage());
 			assertNull(dROIDIdentifier.getFileNotRunMessage());
@@ -160,7 +160,7 @@ public class DroidIdentifierTest {
 		}
 		try {
 		    input.setPosition(0);
-			ids = dROIDIdentifier.identify(JHOVE2, source, input);
+			ids = dROIDIdentifier.identify(JHOVE2, source, null);
 			assertEquals(1, ids.size());
 			for (FormatIdentification fi : ids){
 				assertEquals(Confidence.PositiveSpecific, fi.getConfidence());

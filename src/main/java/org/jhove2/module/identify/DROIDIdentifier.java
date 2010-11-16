@@ -56,12 +56,12 @@ import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractModule;
 
-import uk.gov.nationalarchives.droid.ConfigFile;
-import uk.gov.nationalarchives.droid.FileFormatHit;
-import uk.gov.nationalarchives.droid.IdentificationFile;
 import uk.gov.nationalarchives.droid.JHOVE2IAnalysisController;
-import uk.gov.nationalarchives.droid.signatureFile.FFSignatureFile;
+import uk.gov.nationalarchives.droid.IdentificationFile;
+import uk.gov.nationalarchives.droid.FileFormatHit;
 import uk.gov.nationalarchives.droid.signatureFile.FileFormat;
+import uk.gov.nationalarchives.droid.ConfigFile;
+import uk.gov.nationalarchives.droid.signatureFile.FFSignatureFile;
 
 /**
  * Identifier that wraps the DROID identifier tool
@@ -75,7 +75,7 @@ import uk.gov.nationalarchives.droid.signatureFile.FileFormat;
  */
 public class DROIDIdentifier
 	extends AbstractModule
-	implements Identifier
+	implements SourceIdentifier
 {
 	/** Framework version identifier. */
 	public static final String VERSION = "2.0.0";
@@ -128,16 +128,19 @@ public class DROIDIdentifier
 	public DROIDIdentifier()
 		throws JHOVE2Exception
 	{
-		super(VERSION, RELEASE, RIGHTS, Scope.Generic);
+		this(null, null);
 	}
 	
+	
 	/**Instantiate a new <code>DROIDIdentifier</code> module that wraps DROID.
+	 * @param configFileName path to DROID configuration file
+	 * @param sigFileName path to DROID signature file
 	 * @throws JHOVE2Exception 
 	 */
 	public DROIDIdentifier(String configFileName, String sigFileName)
 		throws JHOVE2Exception
 	{
-		this();
+		super(VERSION, RELEASE, RIGHTS, Scope.Generic);
 		this.setConfigFileName(configFileName);
 		this.setSigFileName(sigFileName);
 	}
@@ -149,19 +152,18 @@ public class DROIDIdentifier
 	 *            JHOVE2 framework
 	 * @param source
 	 *            Source unit
-	 * @param input
-	 *            Source input
 	 * @return Set of presumptive format identifications
 	 * @throws IOException
 	 *             I/O exception encountered identifying the source unit
 	 * @throws JHOVE2Exception
 	 */
+	
+
 	@Override
-	public Set<FormatIdentification> identify(JHOVE2 jhove2, Source source,
-	                                          Input input)
+	public Set<FormatIdentification> identify(JHOVE2 jhove2, Source source, Input input)
 		throws IOException, JHOVE2Exception
 	{
-		DROIDWrappedProduct droid = (DROIDWrappedProduct)this.getWrappedProduct();
+		DROIDWrapper droid = new DROIDWrapper();
 		Set<FormatIdentification> presumptiveFormatIds =
 			new TreeSet<FormatIdentification>();
 		try {
@@ -251,7 +253,7 @@ public class DROIDIdentifier
 		throws Exception
 	{
 		if (cachedConfigFile == null) {
-			cachedConfigFile = DROIDWrappedProduct.parseConfigFile(configFilePath);
+			cachedConfigFile = DROIDWrapper.parseConfigFile(configFilePath);
 		}
 		return cachedConfigFile;
 	}
@@ -269,7 +271,7 @@ public class DROIDIdentifier
 		throws Exception
 	{
 		if (cachedSigFile == null) {
-			cachedSigFile = DROIDWrappedProduct.parseSignatureFile(configFile,
+			cachedSigFile = DROIDWrapper.parseSignatureFile(configFile,
 					                                               sigFilePath);
 		}
 		return cachedSigFile;
@@ -325,15 +327,6 @@ public class DROIDIdentifier
         return this.fileErrorMessage;
     }
     
-    /**
-     * Get file source identifier module.
-     * @return File source identifier module
-     */
-    @Override
-    public Identifier getFileSourceIdentifier() {
-        return this;
-    }
-
     /**
      * Map from DROID confidence levels to JHOVE2 confidence levels
      * @param ffh File format hit containing DROID confidence level

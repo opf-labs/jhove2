@@ -176,7 +176,7 @@ public class GlobPathRecognizer
 	 * @see org.jhove2.module.aggrefy.Aggrefier#identify(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)
 	 */
 	@Override
-	public Set<ClumpSource> identify(JHOVE2 jhove2, Source source)
+	public Set<ClumpSource> recognize(JHOVE2 jhove2, Source source)
 		throws IOException, JHOVE2Exception {
 		Set<ClumpSource> clumpSources = 
 			new TreeSet<ClumpSource>();

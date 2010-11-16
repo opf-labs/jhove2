@@ -66,6 +66,6 @@ public interface Recognizer
 	 *             I/O exception encountered identifying the source unit
 	 * @throws JHOVE2Exception
 	 */
-	public Set<ClumpSource> identify(JHOVE2 jhove2, Source source)
+	public Set<ClumpSource> recognize(JHOVE2 jhove2, Source source)
 			throws IOException, JHOVE2Exception;
 }

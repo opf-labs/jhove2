@@ -97,7 +97,7 @@ public class IdentifierCommand
 			try {
 	            /* Register all identifying modules. */
 				source.addModule(identifier);
-				source.addModule(identifier.getFileSourceIdentifier());
+				source.addModule(identifier.getSourceIdentifier());
 	            
 	            /* Identify the format. */
 				Set<FormatIdentification> formats =

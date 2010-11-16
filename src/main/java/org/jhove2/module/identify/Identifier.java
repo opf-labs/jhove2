@@ -49,7 +49,7 @@ import org.jhove2.module.Module;
 /**
  * Interface for JHOVE2 identifier modules.
  * 
- * @author mstrong, slabrams
+ * @author mstrong, slabrams, smmorrissey
  */
 public interface Identifier
 	extends Module
@@ -75,5 +75,12 @@ public interface Identifier
 	 * Get file source identifier module.
 	 * @return File source identifier module
 	 */
-	public Identifier getFileSourceIdentifier();
+	public SourceIdentifier getSourceIdentifier() throws JHOVE2Exception;
+	/**
+	 * Set file source identifier module
+	 * @param sourceIdentifier
+	 * @return SourceIdentifier attached to Identifer
+	 */
+	public void setSourceIdentifier(SourceIdentifier fileSourceIdentifier);
+
 }

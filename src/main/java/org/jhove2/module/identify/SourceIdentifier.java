@@ -34,51 +34,41 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.module.aggrefy;
+package org.jhove2.module.identify;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Set;
 
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.source.ClumpSource;
+import org.jhove2.core.format.FormatIdentification;
+import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.Module;
 
 
-
 /**
- * Interface for JHOVE2 aggregate identifier modules, capable of
- * detecting instances of Clump formats
+ * Interface for source identifier used by identifier module.
  * 
- * @author smmorrissey
+ * @author smorrissey
  */
-public interface Aggrefier
+public interface SourceIdentifier
 	extends Module
 {
 	/**
-	 * Detect presumptive instances of a clump format in a source unit, and identify.
+	 * Presumptively identify the format of a source unit.
 	 * 
 	 * @param jhove2
 	 *            JHOVE2 framework
 	 * @param source
 	 *            Source unit
-	 * @return Presumptively identified presumptiveFormatIds
+	 * @param input Input backing source, if not null
+	 * @return Set of presumptive format identifications
 	 * @throws IOException
 	 *             I/O exception encountered identifying the source unit
 	 * @throws JHOVE2Exception
 	 */
-	public Set<ClumpSource> identify(JHOVE2 jhove2, Source source)
+	public Set<FormatIdentification> identify(JHOVE2 jhove2, Source source, Input input)
 			throws IOException, JHOVE2Exception;
-	/** Get aggregate Recognizers.
-	 * @return Aggregate recognizers
-	 */
-	public List<Recognizer> getRecognizers();
-	/**
-	 * Set aggregate Recognizers
-	 * @param recognizers Recognizers for Aggrefier
-	 */
-	public void setRecognizers(List<Recognizer> recognizers);
 
 }
