@@ -40,7 +40,10 @@ import java.io.IOException;
 
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.Message;
 import org.jhove2.core.TimerInfo;
+import org.jhove2.core.Message.Context;
+import org.jhove2.core.Message.Severity;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.AggregateSource;
 import org.jhove2.core.source.ClumpSource;
@@ -108,7 +111,19 @@ public class DigesterCommand
 					}
 				}
 				catch (IOException e) {
-					throw new JHOVE2Exception("I/O Exception on digest", e);
+					String eMessage = e.getLocalizedMessage();
+					if (eMessage==null){
+						eMessage = "";
+					}
+					String eType = e.getClass().getCanonicalName();
+					Object[]messageArgs = new Object[]{eType,eMessage};
+					Message message = new Message(
+							Severity.ERROR,
+							Context.PROCESS,
+							"org.jhove2.module.digest.DigesterCommand.IOException",
+							messageArgs,
+							jhove2.getConfigInfo());
+					source.addMessage(message);
 				}
 			}
 		}

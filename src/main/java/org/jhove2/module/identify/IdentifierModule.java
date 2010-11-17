@@ -59,8 +59,8 @@ import org.jhove2.module.AbstractModule;
  * @author mstrong, slabrams, smorrissey
  */
 public class IdentifierModule
-	extends AbstractModule 
-	implements Identifier
+extends AbstractModule 
+implements Identifier
 {
 	/** Identification module version identifier. */
 	public static final String VERSION = "2.0.0";
@@ -73,13 +73,13 @@ public class IdentifierModule
 		+ "Ithaka Harbors, Inc., and The Board of Trustees of the Leland "
 		+ "Stanford Junior University. "
 		+ "Available under the terms of the BSD license.";
-	
+
 	/** File-level identifier module. */
 	protected SourceIdentifier sourceIdentifier;
-	
+
 	/** flag to indicate bypass of Identification if Source is pre-identified */
 	protected boolean shouldSkipIdentifyIfPreIdentified;
-	
+
 	/**
 	 * Instantiate a new <code>IdentifierModule</code>.
 	 */
@@ -105,55 +105,55 @@ public class IdentifierModule
 	 */
 	@Override
 	public Set<FormatIdentification> identify(JHOVE2 jhove2, Source source,
-	                                          Input input)
-		throws IOException, JHOVE2Exception
-	{
+			Input input)
+			throws IOException, JHOVE2Exception
+			{
 		Set<FormatIdentification> presumptiveFormatIDs = 
 			new TreeSet<FormatIdentification>();
 		Set<FormatIdentification> existingIds = source.getPresumptiveFormats();
 		boolean preIdentified = (existingIds != null && existingIds.size()> 0);
 		if (!(preIdentified && this.shouldSkipIdentifyIfPreIdentified)){
-		if (source instanceof ClumpSource) {
-			/* ClumpSources are only created when identified as instances
-			 * of a particular clump format, so should have identifications
-			 * already.
-			 */
-			;
-		}
-		else if (source instanceof DirectorySource ||
-				 source instanceof ZipDirectorySource) {
-			FormatIdentification id =
-				new FormatIdentification(new I8R(I8R.JHOVE2_PREFIX + "/" +
-						                         I8R.JHOVE2_FORMAT_INFIX +
-						                         "/directory"),
-					                     Confidence.PositiveSpecific,
-					                     this.getReportableIdentifier());
-			presumptiveFormatIDs.add(id);
-		}
-		else if (source instanceof FileSetSource) {
-			FormatIdentification id =
-				new FormatIdentification(new I8R(I8R.JHOVE2_PREFIX + "/" +
-						                         I8R.JHOVE2_FORMAT_INFIX +
-						                         "/file-set"),
-					                     Confidence.PositiveSpecific,
-					                     this.getReportableIdentifier());
-			presumptiveFormatIDs.add(id);
-		}
-		else {   /* Identify file source unit. */				
-			TimerInfo timer = sourceIdentifier.getTimerInfo();
-			timer.setStartTime();
-			try {
-				Set<FormatIdentification> formats =
-					sourceIdentifier.identify(jhove2, source, input);
-				presumptiveFormatIDs.addAll(formats);
+			if (source instanceof ClumpSource) {
+				/* ClumpSources are only created when identified as instances
+				 * of a particular clump format, so should have identifications
+				 * already.
+				 */
+				;
 			}
-			finally {
-				timer.setEndTime();
+			else if (source instanceof DirectorySource ||
+					source instanceof ZipDirectorySource) {
+				FormatIdentification id =
+					new FormatIdentification(new I8R(I8R.JHOVE2_PREFIX + "/" +
+							I8R.JHOVE2_FORMAT_INFIX +
+					"/directory"),
+					Confidence.PositiveSpecific,
+					this.getReportableIdentifier());
+				presumptiveFormatIDs.add(id);
 			}
-		}
+			else if (source instanceof FileSetSource) {
+				FormatIdentification id =
+					new FormatIdentification(new I8R(I8R.JHOVE2_PREFIX + "/" +
+							I8R.JHOVE2_FORMAT_INFIX +
+					"/file-set"),
+					Confidence.PositiveSpecific,
+					this.getReportableIdentifier());
+				presumptiveFormatIDs.add(id);
+			}
+			else {   /* Identify file source unit. */				
+				TimerInfo timer = sourceIdentifier.getTimerInfo();
+				timer.setStartTime();
+				try {
+					Set<FormatIdentification> formats =
+						sourceIdentifier.identify(jhove2, source, input);
+					presumptiveFormatIDs.addAll(formats);
+				}
+				finally {
+					timer.setEndTime();
+				}
+			}
 		}
 		return presumptiveFormatIDs;
-	}
+			}
 
 	/**
 	 * Get file source identifier module.
