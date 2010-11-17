@@ -249,7 +249,7 @@ extends AbstractReportable {
             offsetInIFD += length;
             this.nextIFD = 0L;
         }
-        catch (IOException e) {
+        catch (EOFException e) {
             throw new JHOVE2Exception("Premature EOF" + offsetInIFD, e);
         }
 

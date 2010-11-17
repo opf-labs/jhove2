@@ -8,7 +8,10 @@ import org.jhove2.core.reportable.AbstractReportable;
 
 /**
  * Store the Tiff LONG type,
- * 32-bit (4-byte) unsigned integer
+ * 32-bit (4-byte) unsigned integer.
+ * Also stores SHORT type values which can be either
+ * of type LONG or SHORT
+ * 
  * @author mstrong
  *
  */
@@ -23,6 +26,7 @@ extends AbstractReportable {
     public Long (long value) {
         this.value = value;
     }
+
     @ReportableProperty(order = 1, value="Tag Long value")
     public long getValue(){
         return value;
