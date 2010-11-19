@@ -86,7 +86,7 @@ public class AssessmentResultSetTest0 {
             assertEquals(Validity.Undetermined,resultSet.getBooleanResult());
             assertTrue(Validity.Undetermined.toString().equals(resultSet.getNarrativeResult()));
         }
-        catch (JHOVE2Exception e) {
+        catch (Exception e) {
             fail(e.getMessage());
             // e.printStackTrace();
         }
