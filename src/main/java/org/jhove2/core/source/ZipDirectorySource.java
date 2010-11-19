@@ -130,6 +130,9 @@ public class ZipDirectorySource
 		return this.path;
 	}
 	
+	/** Determine equality with another Zip Directory source.
+	 * @param obj Zip Directory source to be compared
+	 */
 	@Override
 	public boolean equals(Object obj){
 		boolean equals = false;		
@@ -184,7 +187,23 @@ public class ZipDirectorySource
 		return super.equals(obj);
 	}
 	
-	@Override
+	/** Generate unique hash code for the Zip Directory source.
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + ((comment == null) ? 0 : comment.hashCode());
+        result = prime * result
+                + ((lastModified == null) ? 0 : lastModified.hashCode());
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ((path == null) ? 0 : path.hashCode());
+        return result;
+    }
+
+    @Override
 	public int compareTo(Source source){
 		int comp = 0;
 		if (source==null){

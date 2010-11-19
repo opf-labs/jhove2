@@ -257,7 +257,26 @@ public class ZipFileSource
 		return super.equals(obj);
 	}
 	
-	/** Comparison.
+	/** Generate a unique hash code for the Zip File source.
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + ((comment == null) ? 0 : comment.hashCode());
+        result = prime * result + (int) (crc ^ (crc >>> 32));
+        result = prime * result + ((crc32 == null) ? 0 : crc32.hashCode());
+        result = prime * result
+                + ((lastModified == null) ? 0 : lastModified.hashCode());
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ((path == null) ? 0 : path.hashCode());
+        result = prime * result + (int) (size ^ (size >>> 32));
+        return result;
+    }
+    
+    /** Comparison.
 	 * @param source Source unit to be compared
 	 * @return Return -1, 0, 1 if the compared source unit collates less than,
 	 *         equal to, or greater than the underlying source unit

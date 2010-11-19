@@ -148,7 +148,20 @@ public class URLSource
 		return super.equals(obj);
 	}
 	
-	/** Compare to another source unit.
+	/** Generate a unique hash code for the URL source.
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ((url == null) ? 0 : url.hashCode());
+        return result;
+    }
+    
+    /** Compare to another source unit.
          * @param source
          * @return -1, 0, or 1 if the URL is less than, equals to, or greater than
 	 * the compared URL

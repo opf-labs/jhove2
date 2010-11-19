@@ -68,7 +68,7 @@ public class Format extends AbstractReportable implements Comparable<Format> {
 	/** Format alias names. */
 	protected Set<String> aliasNames;
 
-	/** Format ambiguity. */
+    /** Format ambiguity. */
 	protected Ambiguity ambiguity;
 
 	/** Format caveats. */
@@ -279,7 +279,11 @@ public class Format extends AbstractReportable implements Comparable<Format> {
 		this.version = version;
 	}
 
-	@Override
+	/** Determine equality with another format.
+	 * @param obj Format to compared
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	//@Override
 	public boolean equals(Object obj){
 		if (obj==null){
 			return false;
@@ -293,6 +297,10 @@ public class Format extends AbstractReportable implements Comparable<Format> {
 		Format fObjt = (Format)obj;
 		return this.getIdentifier().equals(fObjt.getIdentifier());
 	}
+
+	/** Compare with another format.
+	 * @param format Format to be compared
+	 */
 	@Override
 	public int compareTo(Format format) {
 		if (format==null){
@@ -303,4 +311,17 @@ public class Format extends AbstractReportable implements Comparable<Format> {
 		}
 		return this.getIdentifier().compareTo(format.getIdentifier());
 	}
+
+    /** Generate a unique hash code for the format.
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result
+                + ((identifier == null) ? 0 : identifier.hashCode());
+        return result;
+    }
 }
