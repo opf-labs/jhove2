@@ -109,6 +109,7 @@ public class UnitsPropertyFileGenerator extends PropertyFileGenerator {
 		UnitsPropertyFileGenerator dpg = new UnitsPropertyFileGenerator();
 		dpg.setClassName(args[0]);
 		dpg.setBaseOutputDirectory(args[1]);
+		dpg.setIncludeAncestors(false);
 		try{
 			dpg.createPropertyFile();
 			System.out.println("Succesfully created unit property file for class " + dpg.getClassName());
