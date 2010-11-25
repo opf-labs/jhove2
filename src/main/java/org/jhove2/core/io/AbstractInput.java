@@ -36,6 +36,7 @@
 
 package org.jhove2.core.io;
 
+import java.io.BufferedInputStream;
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
@@ -87,6 +88,9 @@ public abstract class AbstractInput
 
 	/** Size, in bytes. */
 	protected long fileSize;
+	
+	/** Buffer size, in bytes. */
+	protected int maxBufferSize;
 
 	/**
 	 * Instantiate a new, big-endian <code>AbstractInput</code>.
@@ -98,10 +102,10 @@ public abstract class AbstractInput
 	 * @throws IOException
 	 *             I/O exception instantiating input
 	 */
-	public AbstractInput(File file)
+	public AbstractInput(File file, int maxBufferSize)
 	    throws FileNotFoundException, IOException
 	{
-		this(file, ByteOrder.BIG_ENDIAN);
+		this(file, maxBufferSize, ByteOrder.BIG_ENDIAN);
 	}
 
 	/**
@@ -116,13 +120,15 @@ public abstract class AbstractInput
 	 * @throws IOException
 	 *             I/O exception instantiating input
 	 */
-	public AbstractInput(File file, ByteOrder order)
+	public AbstractInput(File file, int maxBufferSize, ByteOrder order)
 		throws FileNotFoundException, IOException
 	{
 	    if (!file.isDirectory()) {
 	        this.file = file;
 	        this.byteOrder = order;   
-	        this.stream = (InputStream) new FileInputStream(file);
+	        this.maxBufferSize = maxBufferSize;
+	        this.stream = new BufferedInputStream(new FileInputStream(file),
+	                                              this.maxBufferSize);
 	        this.fileSize = file.length();
 	        this.inputablePosition = 0L;
 
@@ -262,7 +268,9 @@ public abstract class AbstractInput
 	 * @see org.jhove2.core.io.Input#getMaxBufferSize()
 	 */
 	@Override
-	public abstract int getMaxBufferSize();
+	public int getMaxBufferSize() {
+	    return this.maxBufferSize;
+	}
 
 	/**
 	 * Get the next buffer's worth of data from the channel.

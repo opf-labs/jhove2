@@ -36,12 +36,18 @@
 
 package org.jhove2.core;
 
+import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.reportable.AbstractReportable;
+
 /**
- * A JHOVE2 message digest.
+ * Message digest algorithm and value.
  * 
  * @author mstrong, slabrams
  */
-public class Digest implements Comparable<Digest> {
+public class Digest
+    extends AbstractReportable
+    implements Comparable<Digest>
+{
 	/** Message digest algorithm. */
 	protected String algorithm;
 
@@ -57,6 +63,7 @@ public class Digest implements Comparable<Digest> {
 	 *            Message digest algorithm
 	 */
 	public Digest(String value, String algorithm) {
+	    super();
 		this.value = value;
 		this.algorithm = algorithm;
 	}
@@ -66,6 +73,7 @@ public class Digest implements Comparable<Digest> {
 	 * 
 	 * @return Message digest algorithm
 	 */
+	@ReportableProperty(order=1, value="Message digest algorithm.")
 	public String getAlgorithm() {
 		return this.algorithm;
 	}
@@ -75,6 +83,7 @@ public class Digest implements Comparable<Digest> {
 	 * 
 	 * @return Message digest value, hex encoded
 	 */
+	@ReportableProperty(order=2, value="Message digest value.")
 	public String getValue() {
 		return this.value;
 	}

@@ -112,6 +112,7 @@ public class DisplayerPropertyFileGenerator extends PropertyFileGenerator {
 		DisplayerPropertyFileGenerator dpg = new DisplayerPropertyFileGenerator();
 		dpg.setClassName(args[0]);
 		dpg.setBaseOutputDirectory(args[1]);
+		dpg.setIncludeAncestors(false);
 		try{
 			dpg.createPropertyFile();
 			System.out.println("Succesfully created displayer property file for class " + dpg.getClassName());

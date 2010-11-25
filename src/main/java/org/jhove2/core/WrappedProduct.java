@@ -40,8 +40,7 @@ import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.reportable.AbstractReportable;
 
 /**
- * JHOVE2 product, an independently distributable and configurable
- * {@link org.jhove2.core.reportable.Reportable}.
+ * {@link org.jhove2.core.reportable.Reportable} wrapper for third-party product.
  * 
  * @author mstrong, slabrams, smorrissey
  */

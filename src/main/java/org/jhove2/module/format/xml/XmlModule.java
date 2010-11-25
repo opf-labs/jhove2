@@ -458,7 +458,6 @@ public class XmlModule
             numericCharacterReferenceInformation.parse(input,
                     xmlDeclaration.encodingFromSAX2, jhove2);
         }   
-        validate(jhove2, source, input);
         
         return 0;
    }

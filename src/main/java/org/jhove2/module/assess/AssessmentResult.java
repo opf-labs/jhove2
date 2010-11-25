@@ -41,8 +41,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.*;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.reportable.AbstractReportable;
 import org.jhove2.module.format.Validator.Validity;
 import org.mvel2.MVEL;
@@ -54,8 +56,16 @@ import org.mvel2.MVEL;
  * stored in a parent {@link AssessmentResultSet} object.
  */
 public class AssessmentResult extends AbstractReportable {
+	
+	/** regex pattern used to test for presence of single equals sign in rule predicates */
+	private static Pattern assignmentOperator;
+	/** find isolated equals sign (not a part of ==, !=, <=, >=) */
+	static {
+		assignmentOperator = Pattern.compile("[^=!<>]=[^=]");
+	}
+	
 
-     /** A reference to the rule evaluated to produce these results */
+    /** A reference to the rule evaluated to produce these results */
     protected Rule rule;
 
     /** The boolean result of the rule's evaluation of the object. */
@@ -66,8 +76,7 @@ public class AssessmentResult extends AbstractReportable {
 
     /** Documentation of the predicate expressions and the boolean evaluations of those expressions. */
     protected Map<String, Boolean> predicateEvaluations;
-    
-    
+      
     /** Assessment Messages. */
     protected List<String> assessmentMessages = new ArrayList<String>();
 
@@ -197,13 +206,33 @@ public class AssessmentResult extends AbstractReportable {
     public List<String> getAssessmentMessages() {
         return this.assessmentMessages;
     }
+    
+    /**
+     * Test for the presence of syntax that would modify the assessed object's data
+     * @param predicate the predicate to be tested
+     * @return true or false
+     */
+    protected static boolean containsAssignmentOperator(String predicate) {
+    	Matcher m = assignmentOperator.matcher(predicate);
+    	return (m.find());
+    }
 
+    /**
+     * For the {@link org.jhove2.module.assess.Rule Rule} associated with this ResultSet, 
+     * evaluate the rule against the {@link #assessedObject}. 
+     * The outcome includes a boolean evaluation of the Rule's conditional
+     * expression, and a textual statement based on the true or false value of
+     * the evaluation.
+     * @param assessedObject Object (Source or Module) to be assessed
+     */
     protected void fireRule(Object assessedObject) {
         /* Evaluate each of the Rule's predicates */
         for (String predicate : rule.getPredicates()) {
             Boolean predicateTruth;
             predicateTruth = false;
             try {
+            	if (containsAssignmentOperator(predicate))
+            		throw new Exception("Predicate contains assigment operator: " + predicate);
                 predicateTruth = MVEL.evalToBoolean(predicate, assessedObject);
             } catch (Exception e) {
                 predicateTruth = null;

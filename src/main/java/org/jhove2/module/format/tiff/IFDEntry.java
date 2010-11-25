@@ -43,13 +43,13 @@ import java.util.Map;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.annotation.ReportableProperty.PropertyType;
-import org.jhove2.config.spring.SpringConfigInfo;
 import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
+import org.jhove2.core.format.Format;
 import org.jhove2.core.format.FormatIdentification;
 import org.jhove2.core.format.FormatIdentification.Confidence;
 import org.jhove2.core.io.Input;
@@ -109,7 +109,7 @@ implements Comparable<Object> {
     /** the previous tag read */
     public static int prevTag;
 
-    /* the field type */
+    /** the field type */
     protected int type;
 
     /** the enumerated field type */
@@ -119,8 +119,7 @@ implements Comparable<Object> {
      *  used to read the value into the proper value type object */
     protected long savedValueOffset;
 
-    /** Contains the value instead of pointing to the value iff the value is 4 or less bytes.  
-     * Otherwise it is the offset of value */
+    /** Contains the value iff the value is 4 or less bytes.  Otherwise is offset to value */
     protected long valueOffset;
 
     /** TIFF Version - some field types define the TIFF version */
@@ -215,6 +214,7 @@ implements Comparable<Object> {
     /** invalid tile length not multiple of 16 message */
     private Message tileLengthNotMultipleof16Message;
 
+
     @ReportableProperty(order=6, value = "Entry value/offset.")
     public long getValueOffset() {
         return valueOffset;
@@ -243,7 +243,9 @@ implements Comparable<Object> {
      * parse the IFD Entry 
      * @throws IOException, JHOVE2Exception 
      */
-    public void parse(JHOVE2 jhove2, Source source, Input input) throws IOException, JHOVE2Exception
+    public void parse(JHOVE2 jhove2, Source source, Input input,
+                      Map<Integer, Format> tagToFormatMap)  
+        throws IOException, JHOVE2Exception
     {
         this.isValid = Validity.True;
         this.tag = input.readUnsignedShort();
@@ -277,15 +279,8 @@ implements Comparable<Object> {
 
             this.count = (int) input.readUnsignedInt();
 
-            /* store the offset of the value field in the IFD Entry */
-            /*
-            this.valueOffset = input.getPosition();
-            long saveOffset = this.valueOffset;
-            long value = input.readUnsignedInt();
-            */
-
             this.savedValueOffset = input.getPosition();        // save the offset of the ValueOffset field 
-            this.valueOffset = input.readUnsignedInt();    // read in the value stored in the ValueOffset field
+            this.valueOffset = input.readUnsignedInt();         // read in the value stored in the ValueOffset field
             long value = this.valueOffset;
             
             if (calcValueSize(this.type, this.count) > 4) {
@@ -301,52 +296,33 @@ implements Comparable<Object> {
                             "org.jhove2.module.format.tiff.IFD.ValueOffsetReferenceLocationFileMessage",
                             messageArgs, jhove2.getConfigInfo()));  
                     return;
-                    // throw new JHOVE2Exception ("Value offset is not within the file");
                 }
 
-                /* test that the offset is word aligned */
+                /* test offset is word aligned */
                 if ((value & 1) != 0){
                     this.isValid = Validity.False;
                     Object[]messageArgs = new Object[]{value};
                     this.ByteOffsetNotWordAlignedMessage = (new Message(Severity.ERROR,
                             Context.OBJECT,
                             "org.jhove2.module.format.tiff.IFD.ValueByteOffsetNotWordAlignedMessage",
-                            messageArgs, jhove2.getConfigInfo()));
+                            messageArgs, jhove2.getConfigInfo()));               
                     return;
-                    //throw new JHOVE2Exception ("Value byte offset is not word aligned");
                 }
-                /* update the valueOffset to contain the value (which is the offset to the value) */
-                this.savedValueOffset = this.valueOffset;// = value;
             }
-
 
             if (isValidTag(jhove2)) {
                 /* Handle tags which require unique processing of their values */
 
-                /* Parse the ICCProfile tag */
-                if (this.tag == TiffIFD.ICCPROFILE) {
+                /* Parse the ICCProfile or XMP tag */
+                if (this.tag == TiffIFD.ICCPROFILE ||
+                    this.tag == TiffIFD.XMP) {
                     ByteStreamSource bss = new ByteStreamSource(jhove2, source, this.valueOffset, this.count);
-                    Map<String, Object> i8r = SpringConfigInfo.getObjectsForType(I8R.class);
-                    I8R identifier = (I8R) i8r.get("ICCIdentifier");
-                    FormatIdentification iccPresumptiveFormat = new FormatIdentification(identifier, Confidence.PositiveSpecific); 
-                    bss.addPresumptiveFormat(iccPresumptiveFormat);
+                    Format format = tagToFormatMap.get(this.tag);
+                    I8R identifier = format.getIdentifier();
+                    FormatIdentification presumptiveFormat = new FormatIdentification(identifier, Confidence.PositiveSpecific); 
+                    bss.addPresumptiveFormat(presumptiveFormat);
                     jhove2.characterize(bss, input);
                 }
-                /* Parse the XMP tag */
-                else if (this.tag == TiffIFD.XMP) {
-                    ByteStreamSource bss = new ByteStreamSource(jhove2, source, this.valueOffset, this.count);
-                    Map<String, Object> i8r = SpringConfigInfo.getObjectsForType(I8R.class);
-                    I8R identifier = (I8R) i8r.get("XmlIdentifier");
-                    FormatIdentification xmlPresumptiveFormat = new FormatIdentification(identifier, Confidence.PositiveGeneric); 
-                    bss.addPresumptiveFormat(xmlPresumptiveFormat);
-                    jhove2.characterize(bss, input);                
-                }/*
-                else if (this.tag == TiffIFD.STRIPBYTECOUNTS || this.tag == TiffIFD.STRIPOFFSETS) {
-                    input.setPosition(this.savedValueOffset);
-                    this.isArray = true;
-                    this.longArrayValue = new LongArray();
-                    this.longArrayValue.setValue(input, count);
-                }*/
                 else {
                     readValues(input);
                     validate(jhove2, input); 
@@ -356,7 +332,7 @@ implements Comparable<Object> {
              * input position gets changed from where you want to be in the IFD 
              * the offset of the Value field + 4 bytes will get you to the next Tag field
              */
-            input.setPosition(savedValueOffset + 4);
+            input.setPosition(this.savedValueOffset + 4);
 
         }
     }
@@ -570,8 +546,8 @@ implements Comparable<Object> {
         else if (this.tag == TiffIFD.PHOTMETRIC_INTERPRETATION) {
             int photometricInterpretation = ((Short) this.getValue()).getValue();
             if (photometricInterpretation == 5 ||  //(CMYK)
-                    photometricInterpretation == 6 ||  //(YCbCr)
-                    photometricInterpretation == 8) {  //(CIE L*a*b*)
+                photometricInterpretation == 6 ||  //(YCbCr)
+                photometricInterpretation == 8) {  //(CIE L*a*b*)
                 if (version < 6)
                     version = 6;
             }   
@@ -717,7 +693,6 @@ implements Comparable<Object> {
             return;
         }
 
-
         boolean match = false;
         for (String expectedEntry:expectedTypes){
             if (expectedEntry.equalsIgnoreCase(typeReadIn)) {
@@ -731,7 +706,6 @@ implements Comparable<Object> {
                     Context.OBJECT,
                     "org.jhove2.module.format.tiff.IFDEntry.TypeMismatchMessage",
                     messageArgs, jhove2.getConfigInfo()));
-            //throw new JHOVE2Exception("IFDEntry.checkType(): Type Mismatch Exception");
         }            
     }
 
@@ -746,7 +720,7 @@ implements Comparable<Object> {
      * Each value can be of a different type which is stored in a different
      * object.  Based on the tag's type and if the value is an array or not,
      * it will be stored in the appropriate object.  
-     * 
+     *   
      * @param input
      * @throws IOException
      */
@@ -972,11 +946,12 @@ implements Comparable<Object> {
      * The field type of the value for this tag
      * @return TiffType
      */
-   @ReportableProperty(order=4, value="Tag type.")
+    @ReportableProperty(order=4, value="Tag type.")
     public TiffType getTiffType(){
         return this.tiffType;
     }
-    
+
+
     /**
      * The value read from the type field for this tag
      * @return long

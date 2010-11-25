@@ -3,7 +3,6 @@
  */
 package org.jhove2.module.format.tiff;
 
-
 import static org.junit.Assert.assertTrue;
 
 import java.nio.ByteOrder;
@@ -19,6 +18,7 @@ import org.junit.Test;
  * @author mstrong
  *
  */
+
 public class IntelTiffFileTest extends TiffModuleTestBase{
 
     private String intelTestFile;

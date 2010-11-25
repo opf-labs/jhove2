@@ -63,7 +63,7 @@ import org.jhove2.core.reportable.info.ReportablePropertyInfo;
 public class ReportableInstanceTraverser {
 	public static final String USAGE = 
 		"USAGE:  java -cp CLASSPATH " + ReportableInstanceTraverser.class.getName() 
-		+ " fully-qualified-class-name output-dir-path {optional boolean should-recurse(default true)}";
+		+ " fully-qualified-class-name output-file-path {optional boolean should-recurse(default true)}";
 	/** Error return code for erroneous command line invocation */
 	public static final int EUSAGE = 1;
 	/** Error return code if any exception is thrown while executing program */

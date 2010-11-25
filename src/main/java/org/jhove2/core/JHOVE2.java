@@ -51,7 +51,8 @@ import org.jhove2.module.AbstractModule;
 import org.jhove2.module.Command;
 
 /**
- * The JHOVE2 core processing framework.
+ * Singleton object that drives the characterization process. Widely referred to throughout the
+ * framework.
  * 
  * @author mstrong, slabrams, smorrissey
  */
@@ -73,7 +74,8 @@ public class JHOVE2
 	/** Counter to track number and scope of sources processed by framework */
 	protected SourceCounter sourceCounter;
 
-	/** List of commands to be executed in sequence in order to characterize Source */
+	/** List of characterization commands. Executed in List order for each source unit
+         *  characterized. */
 	protected List<Command> commands;
 
 	/** Invocation settings for framework.  If not configured, default values will be used */

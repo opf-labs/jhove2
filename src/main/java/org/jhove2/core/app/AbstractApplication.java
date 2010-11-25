@@ -45,7 +45,7 @@ import org.jhove2.module.AbstractModule;
 import org.jhove2.module.display.Displayer;
 
 /**
- * Abstract JHOVE2 application .
+ * Abstract application based on the JHOVE2 framework .
  * 
  * @author mstrong, slabrams, smorrissey
  */

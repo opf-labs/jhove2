@@ -87,7 +87,7 @@ public class TimerInfo
 	}
 	
 	/** Reset the start time of the elapsed duration.
-	 * return Restart time, in milliseconds
+	 *  @return Restart time, in milliseconds
 	 */
 	public long resetStartTime() {
 	    if (this.startTime == Duration.UNINITIALIZED) {

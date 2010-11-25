@@ -51,8 +51,7 @@ public interface Validator {
 	/** Validation coverage. */
 	public enum Coverage {
 		Inclusive,
-		Selective,
-		None
+		Selective
 	}
 	
 	/** Validity values. */

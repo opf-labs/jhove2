@@ -130,7 +130,7 @@ public class BroadcastWaveFormatProfile
         if (this.isValid == Validity.False) {
             this.baselineWAVEFormatIsInvalidMessage = new Message(Severity.ERROR,
                     Context.OBJECT,
-                    "org.jhove2.module.format.wave.bwf.baselineWAVEForamtIsInvalid",
+                    "org.jhove2.module.format.wave.bwf.BroadcastWaveFormatProfile.baselineWAVEFormatIsInvalid",
                     jhove2.getConfigInfo());
         }
         

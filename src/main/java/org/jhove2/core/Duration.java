@@ -37,7 +37,7 @@
 package org.jhove2.core;
 
 /**
- * A JHOVE2 duration.
+ * Represents the time used to complete a task.
  * 
  * @author mstrong, slabrams
  */

@@ -40,6 +40,8 @@ import java.io.IOException;
 import java.nio.ByteOrder;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2;
@@ -114,6 +116,9 @@ public class TiffModule
     /** The Source object passed in by the parse method */
     protected  Source source;
 
+    /** Map from tags to formats for the content of the tags. */
+    public Map<Integer, Format> tagToFormatMap;
+    
     /**
      * Instantiate a new <code>TIFFModule</code>.
      * 
@@ -123,6 +128,8 @@ public class TiffModule
     public TiffModule(Format format) {
         super(VERSION, RELEASE, RIGHTS, format);
         this.validity = Validity.Undetermined;
+        
+        this.tagToFormatMap = new ConcurrentHashMap<Integer, Format>();
     }
     
     public TiffModule() {
@@ -301,7 +308,7 @@ public class TiffModule
         ifd.setOffset(ifdOffset);
 
         /* parse for the appropriate IFD type */
-        ifd.parse(jhove2, source, input);
+        ifd.parse(jhove2, source, input, this.tagToFormatMap);
 
         if (ifdList.size () == 0) {
             ifd.setFirst (true);
@@ -402,4 +409,10 @@ public class TiffModule
         return this.version;
     }
 
+    /** Set the tag-to-format map.
+     * @param map Tag-to-format map
+     */
+    public void setTagToFormatMap(Map<Integer, Format> map) {
+        this.tagToFormatMap = map;
+    }
 }

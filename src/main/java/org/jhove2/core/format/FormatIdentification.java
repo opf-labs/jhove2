@@ -55,32 +55,50 @@ public class FormatIdentification
 {
 	/** Identification confidence levels. */
 	public enum Confidence {
-		Negative        (6),
-		Tentative       (5), 
-		Heuristic       (4), 
-		PositiveGeneric (3),
-		PositiveSpecific(2),
-		Validated       (1);
+          /**
+           * TODO: define.
+           */
+          Negative        (6),
+          /**
+           * TODO: define.
+           */
+          Tentative       (5),
+          /**
+           * TODO: define.
+           */
+          Heuristic       (4),
+          /**
+           * TODO: define.
+           */
+          PositiveGeneric(3),
+          /**
+           * TODO: define.
+           */
+          PositiveSpecific(2),
+          /**
+           * TODO: define.
+           */
+          Validated       (1);
 
-		/** Priority order. */
-		private int order;
-		
-		/**
-		 * Instantiate a new <code>Confidence</code> enum.
-		 * @param order
-		 *            Priority order
-		 */
-		private Confidence(int order) {
-			this.order = order;
-		}
-		
-		/**
-		 * Get priority order.
-		 * @return Priority order
-		 */
-		public int getOrder() {
-			return this.order;
-		}
+          /** Priority order. */
+          private int order;
+
+          /**
+           * Instantiate a new <code>Confidence</code> enum.
+           * @param order
+           *            Priority order
+           */
+          private Confidence(int order) {
+                  this.order = order;
+          }
+
+          /**
+           * Get priority order.
+           * @return Priority order
+           */
+          public int getOrder() {
+                  return this.order;
+          }
 	}
 	/** Format identifier native to the identification process, which may not
 	 *  be in the JHOVE2 namespace.
@@ -191,7 +209,11 @@ public class FormatIdentification
         return this.jhove2Identifier;
     }
     
-	@ReportableProperty(order = 5, value = "Messages returned by identifier.")
+    /**
+     *
+     * @return
+     */
+    @ReportableProperty(order = 5, value = "Messages returned by identifier.")
 	public List<Message> getMessages() {
 		return messages;
 	}
@@ -296,6 +318,9 @@ public class FormatIdentification
 		}
 	}
 	
+	/** Determine equality with another format identification.
+	 * @param obj Format identification to be compared
+	 */
 	@Override
 	public boolean equals (Object obj){
 		if (obj == null) {
@@ -339,4 +364,26 @@ public class FormatIdentification
 		equals = this.getConfidence().getOrder()== fiObj.getConfidence().getOrder();
 		return equals;
 	}
-}
+
+    /** Generate a unique has code for the format identification.
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result
+                + ((confidence == null) ? 0 : confidence.hashCode());
+        result = prime * result
+                + ((identifier == null) ? 0 : identifier.hashCode());
+        result = prime
+                * result
+                + ((identifierProduct == null) ? 0 : identifierProduct
+                        .hashCode());
+        result = prime
+                * result
+                + ((jhove2Identifier == null) ? 0 : jhove2Identifier.hashCode());
+        return result;
+    }
+ }

@@ -34,43 +34,19 @@
 
 package org.jhove2.module.format.riff;
 
-import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.module.format.riff.field.ChunkClass;
 
 /** RIFF chunk factory.
  * 
  * @author slabrams
  */
-public class ChunkFactory
+public interface ChunkFactory
 {
     /** Get a new chunk based on its identifier.
      * @param identifier Chunk identifier
-     * @param jhove2     JHOVE2 framework
      * @return New chunk
      * @throws JHOVE2Exception 
      */
-    public static GenericChunk getChunk(String identifier, JHOVE2 jhove2)
-        throws JHOVE2Exception
-    {
-        GenericChunk genericChunk = null;
-        
-        ChunkClass cls = ChunkClass.getChunkClass(identifier, jhove2);
-        if (cls != null) {
-            String name = cls.getName();
-            try {
-                Class<?> c = Class.forName(name);
-                genericChunk = (GenericChunk) c.newInstance();
-            }
-            catch (Exception e) {
-                cls = null;
-            }
-        }
-        if (cls == null) {
-            genericChunk = new GenericChunk();
-        }
-        genericChunk.setIdentifier(identifier);
-        
-        return genericChunk;
-    }
-}
+    public Chunk getChunk(String identifier)
+        throws JHOVE2Exception;
+ }
