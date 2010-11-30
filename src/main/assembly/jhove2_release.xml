@@ -12,6 +12,7 @@
 			<includes>
 				<include>*.cmd</include>
 				<include>*.sh</include>
+				<include>transforms/*.xsl</include>
 			</includes>
 			<outputDirectory>/</outputDirectory>
 			<fileMode>0755</fileMode>
