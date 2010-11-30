@@ -49,6 +49,7 @@ import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractModule;
 
+// TODO: Auto-generated Javadoc
 /**
  * JHOVE2 aggregate identifier module.
  * Identifies presumptive instances of Clump formats (e.g. ShapeFiles) in

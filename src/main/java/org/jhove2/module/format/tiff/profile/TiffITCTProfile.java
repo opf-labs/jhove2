@@ -117,6 +117,7 @@ public class TiffITCTProfile extends TiffItProfile {
         /* Check required values. */
         // bps must be { =8..., =16,... }
         bps = ifd.getBitsPerSample();
+        if (bps != null) {
         if (bps.length < 1) {
             this.isValid = Validity.False;
             Object[] args = new Object[] { "{ =8..., =16,... }" };
@@ -134,6 +135,7 @@ public class TiffITCTProfile extends TiffItProfile {
                         Context.OBJECT,
                         "org.jhove2.module.format.tiff.profile.TIFFITProfile.InvalidBPSElementsMessage",
                         args, jhove2.getConfigInfo());
+                }
             }
         }
 

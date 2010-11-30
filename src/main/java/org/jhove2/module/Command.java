@@ -45,9 +45,8 @@ import org.jhove2.core.source.Source;
  * Command invoked by JHOVE2 application framework to characterize some aspect
  * of a {@linkplain Source source unit}.
  * 
- * These commands should be thought of as essentially stateless (except for the
- * metadata members common to all {@link org.jhove2.module.Module}s that
- * describe the Module itself).
+ * Commands are, for most purposes, stateless. The exception is the  (except for the
+ * metadata members common to all {@link Module}s that describe the Module itself).
  * 
  * The JHOVE2 framework is configured by plugging a sequence of Command
  * objects into the JHOVE2.commands property.
@@ -61,7 +60,7 @@ public interface Command
 	 * Execute a JHOVE2 command on a {@link org.jhove2.core.source.Source} unit and its
 	 * {@link org.jhove2.core.io.Input}.
 	 * @param jhove2 JHOVE2 application framework for configuration information and callback
-     * @param source Source unit on which command is to be executed
+         * @param source Source unit on which command is to be executed
 	 * @throws JHOVE2Exception
 	 */
 	public void execute(JHOVE2 jhove2, Source source, Input input)

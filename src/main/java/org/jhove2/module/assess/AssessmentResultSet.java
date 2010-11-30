@@ -198,7 +198,7 @@ public class AssessmentResultSet extends AbstractReportable {
      * @param assessedObject Object (Source or Module) to be assessed
      * @throws JHOVE2Exception
      */
-    public void fireAllRules(Object assessedObject) throws JHOVE2Exception {
+    public void fireAllRules(Object assessedObject)  {
         /* Evaluate each Rule */
         for (AssessmentResult result : getAssessmentResults()) {
             result.fireRule(assessedObject);

@@ -45,7 +45,8 @@ import org.jhove2.core.io.InputFactory;
 import org.jhove2.core.io.Input.Type;
 
 /**
- * JHOVE2 URL source unit.
+ * URL source unit. Represents source unit, possibly remote, that is designated by a URL using any
+ * of the following schemes: http, https, ftp, file, and jar. Redirection is not supported.
  * 
  * @author mstrong, slabrams
  */
@@ -62,11 +63,10 @@ public class URLSource
 	/**
 	 * Instantiate a new <code>URLSource</code>.
 	 * 
-     * @param String temporary file prefix
-     * @param String temporary file suffix
-     * @param int buffer size 
+         * @param tmpPrefix
+         * @param tmpSuffix
+         * @param bufferSize
 	 * @param url
-	 *            URL
 	 * @throws IOException
 	 */
 
@@ -148,6 +148,19 @@ public class URLSource
 		return super.equals(obj);
 	}
 	
+	/** Generate a unique hash code for the URL source.
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ((url == null) ? 0 : url.hashCode());
+        return result;
+    }
+    
 	/** Compare to another source unit.
          * @param source
          * @return -1, 0, or 1 if the URL is less than, equals to, or greater than

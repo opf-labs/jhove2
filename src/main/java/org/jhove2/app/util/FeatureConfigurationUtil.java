@@ -158,14 +158,29 @@ public class FeatureConfigurationUtil {
 		}
 		return propsList;
 	}
+
 	/**
  	 * Get set of all {@link org.jhove2.core.reportable.info.ReportablePropertyInfo} for a class if it is a
-	 * {@link org.jhove2.core.reportable.Reportable} class
-	 * @param Class for which we want properties
+	 * {@link org.jhove2.core.reportable.Reportable} class.  This legacy method assumes you want to retrieve
+	 * ReportableProperties inherited from interfaces and super-classes
+	 * @param className Name of class for which we want properties
 	 * @return set of all {@link org.jhove2.core.reportable.info.ReportablePropertyInfo} for that class
 	 * @throws JHOVE2Exception if class does not implement {@link org.jhove2.core.reportable.Reportable}
 	 */
 	public static Set<ReportablePropertyInfo> getProperitiesAsReportablePropertyInfoSet (String className)
+	throws JHOVE2Exception {
+		return getProperitiesAsReportablePropertyInfoSet(className, true);
+	}
+
+	/**
+ 	 * Get set of all {@link org.jhove2.core.reportable.info.ReportablePropertyInfo} for a class if it is a
+	 * {@link org.jhove2.core.reportable.Reportable} class
+	 * @param className Name of class for which we want properties
+	 * @param includeAncestors Specifies whether to include properties inherited from interfaces and super-classes 
+	 * @return set of all {@link org.jhove2.core.reportable.info.ReportablePropertyInfo} for that class
+	 * @throws JHOVE2Exception if class does not implement {@link org.jhove2.core.reportable.Reportable}
+	 */
+	public static Set<ReportablePropertyInfo> getProperitiesAsReportablePropertyInfoSet (String className, boolean includeAncestors)
 	throws JHOVE2Exception {
 		Class<? extends Reportable> cl = null;
 		ReportablePropertyComparator comparator = new ReportablePropertyComparator();
@@ -199,8 +214,10 @@ public class FeatureConfigurationUtil {
 					}// end if we don't already have this feature
 				}// end if (annot != null)
 			}// end for
-			checkInterfaces(cl.getInterfaces(), idMap, comparator, set);
-		} while ((cl = (Class<? extends Reportable>) cl.getSuperclass()) != null);
+			if (includeAncestors) {
+				checkInterfaces(cl.getInterfaces(), idMap, comparator, set);
+			}
+		} while (includeAncestors && ((cl = (Class<? extends Reportable>) cl.getSuperclass()) != null));
 
 		return set;
 	}

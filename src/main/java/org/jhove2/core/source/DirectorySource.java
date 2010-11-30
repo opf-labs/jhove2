@@ -87,7 +87,6 @@ public class DirectorySource
 	 * @throws IOException
 	 * @throws FileNotFoundException
 	 * @throws JHOVE2Exception 
-	 * @throws JHOVE2Exception 
 	 */
 	public DirectorySource(File file)
 	    throws FileNotFoundException, IOException, JHOVE2Exception

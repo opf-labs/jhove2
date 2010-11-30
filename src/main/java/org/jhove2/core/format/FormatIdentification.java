@@ -318,6 +318,9 @@ public class FormatIdentification
 		}
 	}
 	
+	/** Determine equality with another format identification.
+	 * @param obj Format identification to be compared
+	 */
 	@Override
 	public boolean equals (Object obj){
 		if (obj == null) {
@@ -361,4 +364,26 @@ public class FormatIdentification
 		equals = this.getConfidence().getOrder()== fiObj.getConfidence().getOrder();
 		return equals;
 	}
-}
+
+    /** Generate a unique has code for the format identification.
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result
+                + ((confidence == null) ? 0 : confidence.hashCode());
+        result = prime * result
+                + ((identifier == null) ? 0 : identifier.hashCode());
+        result = prime
+                * result
+                + ((identifierProduct == null) ? 0 : identifierProduct
+                        .hashCode());
+        result = prime
+                * result
+                + ((jhove2Identifier == null) ? 0 : jhove2Identifier.hashCode());
+        return result;
+    }
+ }

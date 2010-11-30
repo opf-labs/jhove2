@@ -9,6 +9,14 @@ import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
 
 
+/**
+ * AsciiArray - object to store and array of ASCII Strings.
+ * Each ASCII string is NUL (binary zero) terminated.
+ * A single String is stored as a single element String[] array.
+ * 
+ * @author MStrong
+ *
+ */
 public class AsciiArray 
 extends AbstractReportable {
     public String[] value;
@@ -20,6 +28,9 @@ extends AbstractReportable {
     }
 
 
+    /**
+     * Tag ASCII Array value 
+     * @returns String representation of the String[] */
     @ReportableProperty(order = 1, value="Tag ASCII Array value")
     public String getValue(){
         return this.toString();
@@ -29,6 +40,13 @@ extends AbstractReportable {
         return value;
     }
 
+    /**
+     * read in the NUL terminated ASCII values
+     * 
+     * @param input
+     * @param count
+     * @throws IOException
+     */
     public void setValue(Input input, long count) throws IOException {
         List<String> list = new LinkedList <String>();
         byte[] buf = new byte[(int) count];

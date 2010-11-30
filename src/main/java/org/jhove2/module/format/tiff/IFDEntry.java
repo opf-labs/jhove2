@@ -38,19 +38,18 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.annotation.ReportableProperty.PropertyType;
-import org.jhove2.config.spring.SpringConfigInfo;
 import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
+import org.jhove2.core.format.Format;
 import org.jhove2.core.format.FormatIdentification;
 import org.jhove2.core.format.FormatIdentification.Confidence;
 import org.jhove2.core.io.Input;
@@ -111,7 +110,14 @@ implements Comparable<Object> {
     public static int prevTag;
 
     /** the field type */
+    protected int type;
+
+    /** the enumerated field type */
     protected TiffType tiffType;
+
+    /** contains either offset of the valueOffset field or the value stored in the Valueoffset field
+     *  used to read the value into the proper value type object */
+    protected long savedValueOffset;
 
     /** Contains the value iff the value is 4 or less bytes.  Otherwise is offset to value */
     protected long valueOffset;
@@ -193,6 +199,9 @@ implements Comparable<Object> {
 
     protected SShortArray sShortArrayValue;
 
+    /* Tiff Tag definition */
+    protected TiffTag tagDefinition;
+
     /** invalid date/time value message */
     private Message invalidDateTimeMessage;
 
@@ -206,7 +215,7 @@ implements Comparable<Object> {
     private Message tileLengthNotMultipleof16Message;
 
 
-    @ReportableProperty(order=5, value = "Entry value/offset.")
+    @ReportableProperty(order=6, value = "Entry value/offset.")
     public long getValueOffset() {
         return valueOffset;
     }
@@ -234,7 +243,10 @@ implements Comparable<Object> {
      * parse the IFD Entry 
      * @throws IOException, JHOVE2Exception 
      */
-    public void parse(JHOVE2 jhove2, Source source, Input input) throws IOException, JHOVE2Exception{
+    public void parse(JHOVE2 jhove2, Source source, Input input,
+                      Map<Integer, Format> tagToFormatMap)  
+        throws IOException, JHOVE2Exception
+    {
         this.isValid = Validity.True;
         this.tag = input.readUnsignedShort();
         if (tag > prevTag)
@@ -248,7 +260,7 @@ implements Comparable<Object> {
                     messageArgs, jhove2.getConfigInfo()));
         }               
 
-        int type = input.readUnsignedShort();
+        this.type = input.readUnsignedShort();
         this.tiffType = TiffType.getType(type);
 
         /* Skip over tags with unknown type; those outside of defined range. */
@@ -261,18 +273,17 @@ implements Comparable<Object> {
         }
         else {
             /* set the version */
-            if (type <= TiffType.SBYTE.num() && type <= TiffType.IFD.num()) {
+            if (this.type <= TiffType.SBYTE.num() && this.type <= TiffType.IFD.num()) {
                 this.version = 6;
             }
 
             this.count = (int) input.readUnsignedInt();
 
-            /* store the offset of the value field in the IFD Entry */
-            this.valueOffset = input.getPosition();
-            long saveOffset = this.valueOffset;
-            long value = input.readUnsignedInt();
+            this.savedValueOffset = input.getPosition();        // save the offset of the ValueOffset field 
+            this.valueOffset = input.readUnsignedInt();         // read in the value stored in the ValueOffset field
+            long value = this.valueOffset;
 
-            if (calcValueSize(type, count) > 4) {
+            if (calcValueSize(this.type, this.count) > 4) {
                 /* the value read is the offset to the value */
                 long size = input.getSize();
 
@@ -284,49 +295,33 @@ implements Comparable<Object> {
                             Context.OBJECT,
                             "org.jhove2.module.format.tiff.IFD.ValueOffsetReferenceLocationFileMessage",
                             messageArgs, jhove2.getConfigInfo()));  
-                    throw new JHOVE2Exception ("Value offset is not within the file");
+                    return;
                 }
 
                 /* test offset is word aligned */
                 if ((value & 1) != 0){
                     this.isValid = Validity.False;
-                    Object[]messageArgs = new Object[]{0, input.getPosition(), valueOffset};
+                    Object[]messageArgs = new Object[]{value};
                     this.ByteOffsetNotWordAlignedMessage = (new Message(Severity.ERROR,
                             Context.OBJECT,
                             "org.jhove2.module.format.tiff.IFD.ValueByteOffsetNotWordAlignedMessage",
                             messageArgs, jhove2.getConfigInfo()));               
-                    throw new JHOVE2Exception ("Value byte offset is not word aligned");
+                    return;
                 }
-                /* update the valueOffset to contain the value (which is the offset to the value) */
-                this.valueOffset = value;
             }
 
             if (isValidTag(jhove2)) {
                 /* Handle tags which require unique processing of their values */
 
-                /* Parse the ICCProfile tag */
-                if (this.tag == TiffIFD.ICCPROFILE) {
+                /* Parse the ICCProfile or XMP tag */
+                if (this.tag == TiffIFD.ICCPROFILE ||
+                    this.tag == TiffIFD.XMP) {
                     ByteStreamSource bss = new ByteStreamSource(jhove2, source, this.valueOffset, this.count);
-                    Map<String, Object> i8r = SpringConfigInfo.getObjectsForType(I8R.class);
-                    I8R identifier = (I8R) i8r.get("ICCIdentifier");
-                    FormatIdentification iccPresumptiveFormat = new FormatIdentification(identifier, Confidence.PositiveSpecific); 
-                    bss.addPresumptiveFormat(iccPresumptiveFormat);
-                    jhove2.characterize(bss, input);
-                }
-                /* Parse the XMP tag */
-                else if (this.tag == TiffIFD.XMP) {
-                    ByteStreamSource bss = new ByteStreamSource(jhove2, source, this.valueOffset, this.count);
-                    Map<String, Object> i8r = SpringConfigInfo.getObjectsForType(I8R.class);
-                    I8R identifier = (I8R) i8r.get("XmlIdentifier");
-                    FormatIdentification xmlPresumptiveFormat = new FormatIdentification(identifier, Confidence.PositiveGeneric); 
-                    bss.addPresumptiveFormat(xmlPresumptiveFormat);
+                    Format format = tagToFormatMap.get(this.tag);
+                    I8R identifier = format.getIdentifier();
+                    FormatIdentification presumptiveFormat = new FormatIdentification(identifier, Confidence.PositiveSpecific); 
+                    bss.addPresumptiveFormat(presumptiveFormat);
                     jhove2.characterize(bss, input);                
-                }
-                else if (this.tag == TiffIFD.STRIPBYTECOUNTS || this.tag == TiffIFD.STRIPOFFSETS) {
-                    input.setPosition(this.valueOffset);
-                    this.isArray = true;
-                    this.longArrayValue = new LongArray();
-                    this.longArrayValue.setValue(input, count);
                 }
                 else {
                     readValues(input);
@@ -337,7 +332,7 @@ implements Comparable<Object> {
              * input position gets changed from where you want to be in the IFD 
              * the offset of the Value field + 4 bytes will get you to the next Tag field
              */
-            input.setPosition(saveOffset + 4);
+            input.setPosition(this.savedValueOffset + 4);
 
         }
     }
@@ -360,17 +355,17 @@ implements Comparable<Object> {
 
         boolean isValid = true;
         /* retrieve the definition for the tag read in */
-        TiffTag tag = TiffTag.getTag(this.tag);
+        this.tagDefinition = TiffTag.getTag(this.tag);
 
         /* validate that the type and count read in matches what is expected for this tag */
-        if (tag != null) {
-            this.name = tag.getName();
-            checkType(jhove2, this.tiffType, tag.getType());
-            checkCount(jhove2, this.count, tag.getCardinality());
+        if (this.tagDefinition != null) {
+            this.name = this.tagDefinition.getName();
+            checkType(jhove2, this.tiffType, this.tagDefinition.getType());
+            checkCount(jhove2, this.count, this.tagDefinition.getCardinality());
         }
         else {
             this.isValid = Validity.False;
-            Object[]messageArgs = new Object[]{this.tag, valueOffset};
+            Object[]messageArgs = new Object[]{this.tag, this.valueOffset};
             this.UnknownTagMessage = (new Message(Severity.WARNING,
                     Context.OBJECT,
                     "org.jhove2.module.format.tiff.IFDEntry.UnknownTagMessage",
@@ -435,7 +430,7 @@ implements Comparable<Object> {
                 Object[]messageArgs = new Object[]{dateTime};
                 this.invalidDateTimeFormatMessage = new Message(Severity.ERROR,
                         Context.OBJECT,
-                        "org.jhove2.module.format.tiff.TIFFIFD.invalidDateTimeFormatMessage",
+                        "org.jhove2.module.format.tiff.IFDEntry.invalidDateTimeFormatMessage",
                         messageArgs, jhove2.getConfigInfo());
             }
             /* check that date is a valid date/time */
@@ -448,7 +443,7 @@ implements Comparable<Object> {
                 Object[]messageArgs = new Object[]{dateTime};
                 this.invalidDateTimeMessage = new Message(Severity.ERROR,
                         Context.OBJECT,
-                        "org.jhove2.module.format.tiff.TIFFIFD.invalidDateTimeMessage",
+                        "org.jhove2.module.format.tiff.IFDEntry.invalidDateTimeFormatMessage",
                         messageArgs, jhove2.getConfigInfo());
             }
         }        
@@ -584,7 +579,7 @@ implements Comparable<Object> {
             long tileLength = ((Long) this.getValue()).getValue();
             if (tileLength%16 > 0) {
                 this.isValid = Validity.False;
-                Object[]messageArgs = new Object[]{this.tag, valueOffset};
+                Object[]messageArgs = new Object[]{this.tag, this.valueOffset};
                 this.tileLengthNotMultipleof16Message = (new Message(Severity.WARNING,
                         Context.OBJECT,
                         "org.jhove2.module.format.tiff.IFDEntry.tileLengthNotMultipleof16Message",
@@ -600,7 +595,7 @@ implements Comparable<Object> {
 
             if (tileWidth%16 > 0) {
                 this.isValid = Validity.False;
-                Object[]messageArgs = new Object[]{this.tag, valueOffset};
+                Object[]messageArgs = new Object[]{this.tag, this.valueOffset};
                 this.tileWidthNotMultipleof16Message = (new Message(Severity.WARNING,
                         Context.OBJECT,
                         "org.jhove2.module.format.tiff.IFDEntry.tileWidthNotMultipleof16Message",
@@ -677,6 +672,8 @@ implements Comparable<Object> {
         }
 
         boolean typeAccepted = false;
+        /* Readers are supposed to accept BYTE, SHORT or LONG for any
+         * unsigned integer field. */
         if ((type.equals(TiffType.BYTE) || (type.equals(TiffType.SHORT)) ||
                 (type.equals(TiffType.LONG)) || (type.equals(TiffType.IFD)))) {
             for (String expectedEntry:expectedTypes){
@@ -688,9 +685,11 @@ implements Comparable<Object> {
 
         // assign LONG type to tag if it can be SHORT or LONG
         if (typeAccepted) {
+            /*
             if (expectedTypes.contains("SHORT") && expectedTypes.contains("LONG")) {
                 this.tiffType = TiffType.LONG;
             }
+             */
             return;
         }
 
@@ -707,22 +706,37 @@ implements Comparable<Object> {
                     Context.OBJECT,
                     "org.jhove2.module.format.tiff.IFDEntry.TypeMismatchMessage",
                     messageArgs, jhove2.getConfigInfo()));
-            throw new JHOVE2Exception("IFDEntry.checkType(): Type Mismatch Exception");
         }            
     }
 
     /**
-     * read in value based on type
+     * read the value based on type
+     * If the size of the value is greater than 4 bytes
+     * read the value directly from the valueOffset field (pointed
+     * to by the savedValueOffset).
+     * Else read the value from where the valueOffset points to.
+     * 
+     * 
+     * Each value can be of a different type which is stored in a different
+     * object.  Based on the tag's type and if the value is an array or not,
+     * it will be stored in the appropriate object.  
      *   
      * @param input
-     * @param entry
      * @throws IOException
      */
     public void readValues(Input input) throws IOException {
 
-        input.setPosition(valueOffset);
         TiffType type = this.tiffType;
 
+        /* if the value is stored in the field, read it from the field
+         * otherwise use the valueOffset to go to where the value is
+         */
+        if (calcValueSize(this.type, this.count) > 4) 
+            input.setPosition(this.valueOffset);            
+
+        else
+            input.setPosition(this.savedValueOffset);            
+        
         if (count <= 1 ) {
             /* store a single value */
             if (type.equals(TiffType.BYTE) || type.equals(TiffType.UNDEFINED)) 
@@ -731,8 +745,12 @@ implements Comparable<Object> {
                 asciiValue = new Ascii();
                 asciiValue.setValue(input, count );
             }
-            else if (type.equals(TiffType.SHORT))
+            else if (type.equals(TiffType.SHORT)) {
                 shortValue = new Short(input.readUnsignedShort());
+                // store in Long type if it can be SHORT or LONG 
+                if (this.tagDefinition.getType().contains("LONG")) 
+                    longValue = new Long (shortValue.getValue());
+            }
             else if (type.equals(TiffType.LONG))
                 longValue = new Long(input.readUnsignedInt());
             else if (type.equals(TiffType.FLOAT)) {
@@ -772,6 +790,10 @@ implements Comparable<Object> {
             else if (type.equals(TiffType.SHORT)) {
                 shortArrayValue = new ShortArray();
                 shortArrayValue.setValue(input, count);
+                // store in Long type if it can be SHORT or LONG 
+                if (this.tagDefinition.getType().contains("LONG")) {
+                    longArrayValue = new LongArray (shortArrayValue.getShortArrayValue());
+                }
             }
             else if (type.equals(TiffType.LONG)) {
                 longArrayValue = new LongArray();
@@ -807,6 +829,63 @@ implements Comparable<Object> {
         }
     }
 
+    /**
+     * getValue - returns the Type Object based on its' TiffType
+     * 
+     * @return Object containing the value
+     */
+    @ReportableProperty(order=7, value = "Tiff Tag Value.")
+    public Object getValue(){
+        TiffType type = this.tiffType;
+        if (isArray) {
+            if (type.equals(TiffType.BYTE) || (type.equals(TiffType.UNDEFINED)))
+                return byteArrayValue;
+            else if (type.equals(TiffType.ASCII))
+                return asciiArrayValue;
+            else if (type.equals(TiffType.SHORT)) {
+                // if value can be LONG or SHORT return the value stored in Long 
+                if (this.tagDefinition.getType().contains("LONG")) 
+                    return longArrayValue;
+                else
+                    return shortArrayValue;
+            }
+            else if (type.equals(TiffType.LONG))
+                return longArrayValue;
+            else if (type.equals(TiffType.RATIONAL))
+                return rationalArrayValue;
+            else if (type.equals(TiffType.SSHORT))
+                return sShortArrayValue;
+            else if (type.equals(TiffType.SLONG))
+                return sLongArrayValue;
+            else if (type.equals(TiffType.SRATIONAL))
+                return sRationalArrayValue;
+        }
+        else  {
+            if (type.equals(TiffType.BYTE) || (type.equals(TiffType.UNDEFINED)))
+                return byteValue;
+            else if (type.equals(TiffType.ASCII))
+                return asciiValue;
+            else if (type.equals(TiffType.SHORT)) {
+                // if value can be LONG or SHORT return the value stored in Long 
+                if (this.tagDefinition.getType().contains("LONG")) 
+                    return longValue;
+                else
+                    return shortValue;
+            }
+            else if (type.equals(TiffType.LONG))
+                return longValue;
+            else if (type.equals(TiffType.RATIONAL))
+                return rationalValue;
+            else if (type.equals(TiffType.SBYTE))
+                return sByteValue;
+            else if (type.equals(TiffType.SLONG))
+                return sLongValue;
+            else if (type.equals(TiffType.SRATIONAL))
+                return sRationalValue;
+        }
+        return null;
+    }
+
 
     /**
      * Calculate how many bytes a given number of fields of a given
@@ -831,7 +910,7 @@ implements Comparable<Object> {
      * The cardinality (number of values) for this TIFF tag  
      * @return long
      */
-    @ReportableProperty (order=4, value="Entry number of values.")
+    @ReportableProperty (order=5, value="Entry cardinality, number of values.")
     public long getCount(){
         return count;
     }
@@ -858,7 +937,7 @@ implements Comparable<Object> {
      * Get the unknown tag message
      * @return the unknownTagMessage
      */
-    @ReportableProperty(order=3, value = "unknown tag message.")
+    @ReportableProperty(order=9, value = "unknown tag message.")
     public Message getUnknownTagMessage() {
         return UnknownTagMessage;
     }
@@ -868,55 +947,18 @@ implements Comparable<Object> {
      * @return TiffType
      */
     @ReportableProperty(order=4, value="Tag type.")
-    public TiffType getType(){
+    public TiffType getTiffType(){
         return this.tiffType;
     }
 
 
     /**
-     * @return the value
+     * The value read from the type field for this tag
+     * @return long
      */
-    @ReportableProperty(order=5, value = "Tiff Tag Value.")
-    public Object getValue(){
-        TiffType type = this.tiffType;
-        if (isArray) {
-            if (type.equals(TiffType.BYTE) || (type.equals(TiffType.UNDEFINED)))
-                return byteArrayValue;
-            else if (type.equals(TiffType.ASCII))
-                return asciiArrayValue;
-            else if (type.equals(TiffType.SHORT))
-                return shortArrayValue;
-            else if (type.equals(TiffType.LONG))
-                return longArrayValue;
-            else if (type.equals(TiffType.RATIONAL))
-                return rationalArrayValue;
-            else if (type.equals(TiffType.SSHORT))
-                return sShortArrayValue;
-            else if (type.equals(TiffType.SLONG))
-                return sLongArrayValue;
-            else if (type.equals(TiffType.SRATIONAL))
-                return sRationalArrayValue;
-        }
-        else  {
-            if (type.equals(TiffType.BYTE) || (type.equals(TiffType.UNDEFINED)))
-                return byteValue;
-            else if (type.equals(TiffType.ASCII))
-                return asciiValue;
-            else if (type.equals(TiffType.SHORT))
-                return shortValue;
-            else if (type.equals(TiffType.LONG))
-                return longValue;
-            else if (type.equals(TiffType.RATIONAL))
-                return rationalValue;
-            else if (type.equals(TiffType.SBYTE))
-                return sByteValue;
-            else if (type.equals(TiffType.SLONG))
-                return sLongValue;
-            else if (type.equals(TiffType.SRATIONAL))
-                return sRationalValue;
-        }
-
-        return null;
+    @ReportableProperty(order=3, value="Tag type.")
+    public long getType(){
+        return this.type;
     }
 
 
@@ -926,7 +968,7 @@ implements Comparable<Object> {
      * 
      * @return the tagSortOrderErrorMessage
      */
-    @ReportableProperty(order=6, value = "tag sort order error message.")
+    @ReportableProperty(order=7, value = "tag sort order error message.")
     public Message getTagSortOrderErrorMessage() {
         return TagSortOrderErrorMessage;
     }
@@ -936,7 +978,7 @@ implements Comparable<Object> {
      * 
      * @return the unknownTypeMessage
      */
-    @ReportableProperty(order=7, value = "unknown type message.")
+    @ReportableProperty(order=8, value = "unknown type message.")
     public List<Message> getUnknownTypeMessage() {
         return unknownTypeMessages;
     }
@@ -945,7 +987,7 @@ implements Comparable<Object> {
      * 
      * @return the byteOffsetNotWordAlignedMessage
      */
-    @ReportableProperty(order=8, value = "Byte offset not word aligned message.")
+    @ReportableProperty(order=9, value = "Byte offset not word aligned message.")
     public Message getByteOffsetNotWordAlignedMessage() {
         return ByteOffsetNotWordAlignedMessage;
     }
@@ -955,7 +997,7 @@ implements Comparable<Object> {
      * 
      * @return the valueOffsetReferenceLocationFileMessage
      */
-    @ReportableProperty(order=9, value = "value offset reference location file message.")
+    @ReportableProperty(order=10, value = "value offset reference location file message.")
     public Message getValueOffsetReferenceLocationFileMessage() {
         return ValueOffsetReferenceLocationFileMessage;
     }
@@ -964,7 +1006,7 @@ implements Comparable<Object> {
     /**
      * @return the typeMismatchMessage
      */
-    @ReportableProperty(order=10, value="type mismatch message.")
+    @ReportableProperty(order=11, value="type mismatch message.")
     public Message getTypeMismatchMessage() {
         return TypeMismatchMessage;
     }
@@ -1017,7 +1059,7 @@ implements Comparable<Object> {
         return this.tileLengthNotMultipleof16Message;
     }
 
-    @ReportableProperty(order=3, value="Compression Scheme in descriptive form.",
+    @ReportableProperty(order=7, value="Compression Scheme in descriptive form.",
             type=PropertyType.Descriptive)
             public String getCompression_descriptive() {
         return this.compression_d;
@@ -1026,7 +1068,7 @@ implements Comparable<Object> {
     /** Get IFDEntry validity.
      * @return IFDEntry validity
      */
-    @ReportableProperty(order=16, value="IFDEntry validity.")
+    @ReportableProperty(order=18, value="IFDEntry validity.")
     public Validity isValid() {
         return isValid;
     }

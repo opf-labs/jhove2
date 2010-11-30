@@ -76,7 +76,9 @@ public abstract class PropertyFileGenerator {
 	/** A set of all {@link org.jhove2.core.reportable.info.ReportablePropertyInfo} descriptors of a
 	 * {@link org.jhove2.core.reportable.Reportable} class */
 	protected Set<ReportablePropertyInfo> propsList;
-
+	/** Specifies whether to include properties inherited from interfaces and super-classes */
+	protected boolean includeAncestors;
+	
 	/**
 	 * Constructor
 	 */
@@ -101,7 +103,7 @@ public abstract class PropertyFileGenerator {
 		PrintStream printer = null;
 		// get the list of features for the class
 		this.setPropsList(FeatureConfigurationUtil.
-				getProperitiesAsReportablePropertyInfoSet(this.getClassName()));
+				getProperitiesAsReportablePropertyInfoSet(this.getClassName(),getIncludeAncestors()));
 		// create the property values for each feature
 		this.setProp2Value(this.createPropertyValues());
 		// construct the full path name for properties files
@@ -291,6 +293,20 @@ public abstract class PropertyFileGenerator {
 	 */
 	public void setPropsList(Set<ReportablePropertyInfo> propsList) {
 		this.propsList = propsList;
+	}
+
+	/**
+	 * @return boolean Specifying whether to include properties inherited from interfaces and super-classes
+	 */
+	public boolean getIncludeAncestors() {
+		return includeAncestors;
+	}
+
+	/**
+	 * @param includeAncestors Specifies whether to include properties inherited from interfaces and super-classes
+	 */
+	public void setIncludeAncestors(boolean includeAncestors) {
+		this.includeAncestors = includeAncestors;
 	}
 
 }

@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:util="http://www.springframework.org/schema/util" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-2.5.xsd
+		   http://www.springframework.org/schema/util 
+		   http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
 	<!-- TIFF: module bean -->
-	<bean id="TiffModule" class="org.jhove2.module.format.tiff.TiffModule" scope="prototype">
+	<bean id="TiffModule" class="org.jhove2.module.format.tiff.TiffModule"
+		scope="prototype">
 		<constructor-arg ref="TiffFormat" />
 		<!--		<property name="profile" ref="TiffItProfile" />-->
 		<property name="profiles">
@@ -19,8 +29,10 @@
 	<bean id="TiffFormat" class="org.jhove2.core.format.Format" scope="singleton">
 		<constructor-arg type="java.lang.String" value="Tiff" />
 		<constructor-arg ref="TiffIdentifier" />
-		<constructor-arg type="org.jhove2.core.format.Format$Type" value="Family" />
-		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity" value="Unambiguous" />
+		<constructor-arg type="org.jhove2.core.format.Format$Type"
+			value="Family" />
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
+			value="Unambiguous" />
 		<property name="aliasNames">
 			<set>
 				<value>Tagged Image File Format</value>
@@ -29,10 +41,12 @@
 	</bean>
 	<!-- TIFF/IT identifier bean -->
 	<bean id="TiffItIdentifier" class="org.jhove2.core.I8R" scope="singleton">
-		<constructor-arg type="java.lang.String" value="http://jhove2.org/terms/format/tiff-it" />
+		<constructor-arg type="java.lang.String"
+			value="http://jhove2.org/terms/format/tiff-it" />
 	</bean>
 	<!-- TIFF/IT profile bean -->
-	<bean id="TiffItProfile" class="org.jhove2.module.format.tiff.profile.TiffItProfile" scope="prototype">
+	<bean id="TiffItProfile" class="org.jhove2.module.format.tiff.profile.TiffItProfile"
+		scope="prototype">
 		<constructor-arg ref="TiffItFormat" />
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
@@ -41,11 +55,14 @@
 		</property>
 	</bean>
 	<!-- TIFF/IT format bean -->
-	<bean id="TiffItFormat" class="org.jhove2.core.format.Format" scope="singleton">
+	<bean id="TiffItFormat" class="org.jhove2.core.format.Format"
+		scope="singleton">
 		<constructor-arg type="java.lang.String" value="TiffIt" />
 		<constructor-arg ref="TiffItIdentifier" />
-		<constructor-arg type="org.jhove2.core.format.Format$Type" value="Format" />
-		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity" value="Unambiguous" />
+		<constructor-arg type="org.jhove2.core.format.Format$Type"
+			value="Format" />
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
+			value="Unambiguous" />
 		<property name="aliasIdentifiers">
 			<set value-type="org.jhove2.core.I8R">
 				<ref bean="TiffItISO646" />
@@ -55,16 +72,19 @@
 	<!-- TIFF/IT ISO 646 -->
 	<bean id="TiffItISO646" class="org.jhove2.core.I8R" scope="singleton">
 		<constructor-arg type="java.lang.String" value="ISO/IEC 646:1991" />
-		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="ISO" />
+		<constructor-arg type="org.jhove2.core.I8R$Namespace"
+			value="ISO" />
 	</bean>
 	<!-- Tiff identifier bean -->
 	<bean id="TiffIdentifier" class="org.jhove2.core.I8R" scope="singleton">
-		<constructor-arg type="java.lang.String" value="http://jhove2.org/terms/format/Tiff" />
+		<constructor-arg type="java.lang.String"
+			value="http://jhove2.org/terms/format/Tiff" />
 	</bean>
 	<!-- Tiff Tags properties bean -->
 	<bean id="TiffTags" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
 		<property name="propertyFileBaseName" value="tiffTags"/>
 	</bean>
+   
 	<!-- Tiff Types properties bean -->
 	<bean id="TiffTypes" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
 		<property name="propertyFileBaseName" value="tiffTypes"/>

@@ -55,6 +55,9 @@ import org.jhove2.module.format.riff.field.FormType;
 public class RIFFChunk
     extends GenericChunk
 {   
+    /** Chunk factory. */
+    protected ChunkFactory chunkFactory;
+    
     /** RIFF chunk form type in raw form. */
     protected String formType;
     
@@ -126,7 +129,7 @@ public class RIFFChunk
                 sb.append((char) b);
             }
             consumed += 4;
-            Chunk chunk = ChunkFactory.getChunk(sb.toString(), jhove2);
+            Chunk chunk = this.chunkFactory.getChunk(sb.toString());
             consumed += chunk.parse(jhove2, source, input);
             this.chunks.add(chunk);
             
@@ -136,7 +139,14 @@ public class RIFFChunk
 
         return consumed;
     }
-      
+    
+    /** Get chunk factory.
+     * @return Chunk factory
+     */
+    public ChunkFactory getChunkFactory() {
+        return this.chunkFactory;
+    }
+    
     /** Get RIFF chunk form type in descriptive form.
      * @return RIFF chunk form type
      */
@@ -161,5 +171,12 @@ public class RIFFChunk
     @ReportableProperty(order=11, value="Invalid RIFF chunk form type message.")
     public Message getInvalidFormTypeMessage() {
         return this.invalidFormTypeMessage;
+    }
+    
+    /** Set chunk factory.
+     * @param factory Chunk factory
+     */
+    public void setChunkFactory(ChunkFactory factory) {
+        this.chunkFactory = factory;
     }
 }
