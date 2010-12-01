@@ -119,7 +119,8 @@ implements Comparable<Object> {
      *  used to read the value into the proper value type object */
     protected long savedValueOffset;
 
-    /** Contains the value iff the value is 4 or less bytes.  Otherwise is offset to value */
+    /** Contains the value iff the value is 4 or less bytes.  Otherwise is offset to value 
+     * Otherwise it is the offset of value */
     protected long valueOffset;
 
     /** TIFF Version - some field types define the TIFF version */
@@ -214,7 +215,6 @@ implements Comparable<Object> {
     /** invalid tile length not multiple of 16 message */
     private Message tileLengthNotMultipleof16Message;
 
-
     @ReportableProperty(order=6, value = "Entry value/offset.")
     public long getValueOffset() {
         return valueOffset;
@@ -280,9 +280,9 @@ implements Comparable<Object> {
             this.count = (int) input.readUnsignedInt();
 
             this.savedValueOffset = input.getPosition();        // save the offset of the ValueOffset field 
-            this.valueOffset = input.readUnsignedInt();         // read in the value stored in the ValueOffset field
+            this.valueOffset = input.readUnsignedInt();    // read in the value stored in the ValueOffset field
             long value = this.valueOffset;
-
+            
             if (calcValueSize(this.type, this.count) > 4) {
                 /* the value read is the offset to the value */
                 long size = input.getSize();
@@ -305,10 +305,11 @@ implements Comparable<Object> {
                     this.ByteOffsetNotWordAlignedMessage = (new Message(Severity.ERROR,
                             Context.OBJECT,
                             "org.jhove2.module.format.tiff.IFD.ValueByteOffsetNotWordAlignedMessage",
-                            messageArgs, jhove2.getConfigInfo()));               
+                            messageArgs, jhove2.getConfigInfo()));
                     return;
                 }
             }
+
 
             if (isValidTag(jhove2)) {
                 /* Handle tags which require unique processing of their values */
@@ -321,7 +322,7 @@ implements Comparable<Object> {
                     I8R identifier = format.getIdentifier();
                     FormatIdentification presumptiveFormat = new FormatIdentification(identifier, Confidence.PositiveSpecific); 
                     bss.addPresumptiveFormat(presumptiveFormat);
-                    jhove2.characterize(bss, input);                
+                    jhove2.characterize(bss, input);
                 }
                 else {
                     readValues(input);
@@ -546,8 +547,8 @@ implements Comparable<Object> {
         else if (this.tag == TiffIFD.PHOTMETRIC_INTERPRETATION) {
             int photometricInterpretation = ((Short) this.getValue()).getValue();
             if (photometricInterpretation == 5 ||  //(CMYK)
-                photometricInterpretation == 6 ||  //(YCbCr)
-                photometricInterpretation == 8) {  //(CIE L*a*b*)
+                    photometricInterpretation == 6 ||  //(YCbCr)
+                    photometricInterpretation == 8) {  //(CIE L*a*b*)
                 if (version < 6)
                     version = 6;
             }   
@@ -693,6 +694,7 @@ implements Comparable<Object> {
             return;
         }
 
+
         boolean match = false;
         for (String expectedEntry:expectedTypes){
             if (expectedEntry.equalsIgnoreCase(typeReadIn)) {
@@ -720,7 +722,7 @@ implements Comparable<Object> {
      * Each value can be of a different type which is stored in a different
      * object.  Based on the tag's type and if the value is an array or not,
      * it will be stored in the appropriate object.  
-     *   
+     * 
      * @param input
      * @throws IOException
      */
@@ -946,12 +948,11 @@ implements Comparable<Object> {
      * The field type of the value for this tag
      * @return TiffType
      */
-    @ReportableProperty(order=4, value="Tag type.")
+   @ReportableProperty(order=4, value="Tag type.")
     public TiffType getTiffType(){
         return this.tiffType;
     }
-
-
+    
     /**
      * The value read from the type field for this tag
      * @return long

@@ -275,7 +275,7 @@
 							<Sealed>true</Sealed>
 						</manifestEntries>
 					</archive>
-					<forceCreation>true</forceCreation>
+ 					<forceCreation>true</forceCreation>
 					<finalName>${project.build.finalName}</finalName>
 				</configuration>
 			</plugin>
