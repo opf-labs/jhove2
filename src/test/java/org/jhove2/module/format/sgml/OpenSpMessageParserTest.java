@@ -215,7 +215,7 @@ public class OpenSpMessageParserTest {
         g = new SgmlParseMessagesParser(tokens);
         try {
         	g.errMessages();
-        	assertEquals(89,g.eLevelMessageCount);  
+        	assertEquals(88,g.eLevelMessageCount);  
         	assertEquals(4,g.wLevelMessageCount);  
         	assertEquals(0,g.iLevelMessageCount);  
         	assertEquals(0,g.qLevelMessageCount);  

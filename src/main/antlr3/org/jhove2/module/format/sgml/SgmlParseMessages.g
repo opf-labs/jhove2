@@ -71,109 +71,208 @@ List<String> openSpMessages = new ArrayList<String>();
         String hdr = getErrorHeader(e);
         String msg = getErrorMessage(e, tokenNames);
         sgmlMessagesParseErrors.add(OpenSpMessageParser.OSPMESSAGEERR + hdr + " " + msg);
-    }
-    public List<String> getSgmlMessagesParseErrors() {
+
+ }
+ public List<String> getSgmlMessagesParseErrors() {
         return sgmlMessagesParseErrors;
+ }
+ public boolean isMessageCode (String messageLevel){
+    boolean isCode = false;
+    if (messageLevel != null){
+        if ((messageLevel.equals("E")) ||
+            (messageLevel.equals("W")) || 
+            (messageLevel.equals("I")) ||
+            (messageLevel.equals("Q")) ||
+            (messageLevel.equals("X"))
+           ){
+              isCode = true;
+           }    
     }
+    return isCode;
+ }
 }
 
+errMessages : (errMessage)* EOF;
 
-errMessages : errMessage* EOF;
+errMessage :  (codedMessage|inLine) RETURN? NEWLINE;
 
-errMessage :  (codedMessage|uncodedMessage) NEWLINE
-  {
-    totMessageCount++;
-  };
+/**
+COLON is used as a delimiter, but is also part of paths and of message text
 
-codedMessage : 
-  cmdPath COLON (sgmlFilepath COLON lineNumber COLON posNumber COLON)? somenumber DOT messageCode COLON messageLevel COLON messagetext 
-  {
-    String messageStr = 
-        OpenSpMessageParser.createCodedMessageString($sgmlFilepath.text,
-                $lineNumber.text, $posNumber.text, 
-                 $messagetext.text, $messageLevel.text, $messageCode.text);
-    openSpMessages.add(messageStr);
+C:
+/usr/bin/onsgmls:
+C:                                                          3
+/sgmlModule/examples/dir01/aipspacebeforedocytpe1_1.sgm:    4
+17:                                                         5
+73:                                                         6
+1844095592.338:                                             7
+W:                                                          8
+cannot generate system identifier for general entity "uml"  9
+
+
+C:
+/usr/bin/onsgmls:
+/sgmlModule/examples/dir01/aipspacebeforedocytpe1_1.sgm:    3
+17:                                                         4
+73:                                                         5
+1844095592.338:                                             6
+W:                                                          7
+cannot generate system identifier for general entity "uml"  8
+
+
+
+/usr/bin/onsgmls:
+C:                                                          2
+/sgmlModule/examples/dir01/aipspacebeforedocytpe1_1.sgm:    3
+17:                                                         4
+73:                                                         5
+1844095592.338:                                             6
+W:                                                          7
+cannot generate system identifier for general entity "uml"  8
+
+
+/usr/bin/onsgmls:
+/sgmlModule/examples/dir01/aipspacebeforedocytpe1_1.sgm:    2
+17:                                                         3
+73:                                                         4
+1844095592.338:                                             5
+W:                                                          6
+cannot generate system identifier for general entity "uml"  7
+
+
+/usr/bin/onsgmls:
+/cygdrive/c/svn_repository/portico-docs/data/RequiredFiles/requiredFiles/Elsevier_Full_Length_Article_DTD_4.3.1/art431.dtd:  2
+827:                                                        3
+231:                                                        4
+relevant clauses:                                           5
+ISO 8879:                                                   6
+1986 11.2.4p11                                              7
+
+/usr/bin/onsgmls:
+/cygdrive/c/svn_repository/portico-docs/data/RequiredFiles/requiredFiles/Elsevier_Full_Length_Article_DTD_4.3.1/art431.dtd:
+827:
+231:
+relevant clauses:
+ISO 8879
+:1986 11.2.4p11
+
+/usr/bin/sgmlnorm:
+/sgmlModule/examples/dir/aipspacebeforedocytpe1_1.02.sgm:
+17:
+73:
+open elements:
+ARTICLE FRONT[1] AUTHGRP[1] AUTHOR[1] SURNAME[1] (#PCDATA[1])
+
+
+/usr/bin/sgmlnorm:
+C:
+/sgmlModule/examples/dir/aipspacebeforedocytpe1_1.02.sgm:
+17:
+72:
+entity was defined here
+
+*/
+
+codedMessage : tok1 COLON tok2 COLON tok3 COLON tok4 COLON tok5 (COLON tok6 (COLON tok7 (COLON tok8 (COLON tok9)?)?)?)?
+{
+  
+  String messageText=null;
+  String messageLevel=null;;
+  String messageCode=null;;
+  String posNumber=null;;
+  String lineNumber=null;;
+  String sgmlFilePath=null;;
  
-    String level = $messageLevel.text;
-
-    if (level.equals("E")){
+  if ($tok9.text!=null){
+    messageText = $tok9.text;
+    messageLevel = $tok8.text;
+    messageCode = $tok7.text;
+    posNumber = $tok6.text;
+    lineNumber = $tok5.text;
+    sgmlFilePath = $tok3.text.concat(":").concat($tok4.text);
+  }
+  else if ($tok8.text!=null){
+    messageText = $tok8.text;
+    messageLevel = $tok7.text;
+    messageCode = $tok6.text;
+    posNumber = $tok5.text;
+    lineNumber = $tok4.text;
+    sgmlFilePath = $tok2.text.concat(":").concat($tok3.text);
+  }
+  else if ($tok7.text!=null){
+    messageText = $tok7.text;
+    messageLevel = $tok6.text;
+    messageCode = $tok5.text;
+    posNumber = $tok4.text;
+    lineNumber = $tok3.text;
+    sgmlFilePath = $tok2.text;
+  }
+   else if ($tok6.text!=null){
+    messageText = "";
+    messageLevel = $tok6.text;
+    messageCode = $tok5.text;
+    posNumber = $tok4.text;
+    lineNumber = $tok3.text;
+    sgmlFilePath = $tok2.text;
+  }
+  else {
+    messageText = "";
+    messageLevel = "";
+    messageCode = $tok5.text;
+    posNumber = $tok4.text;
+    lineNumber = $tok3.text;
+    sgmlFilePath = $tok2.text;
+  } 
+                       
+  if (isMessageCode(messageLevel)){   
+  
+      String messageStr = 
+         OpenSpMessageParser.createCodedMessageString(sgmlFilePath,
+                 lineNumber, posNumber, 
+                  messageText, messageLevel, messageCode);
+      openSpMessages.add(messageStr);
+ 
+    if (messageLevel.equals("E")){
          eLevelMessageCount++;
     }
-    else if (level.equals("W")){
+    else if (messageLevel.equals("W")){
          wLevelMessageCount++;
     }
-    else if (level.equals("I")){
+    else if (messageLevel.equals("I")){
          iLevelMessageCount++;
     }
-    else if (level.equals("Q")){
+    else if (messageLevel.equals("Q")){
          qLevelMessageCount++;
     }
-    else if (level.equals("X")){
+    else if (messageLevel.equals("X")){
          xLevelMessageCount++;
     }
-  };
+  } 
+  else {
+     messageText = messageCode.concat(messageLevel).concat(messageText);
+          String messageStr = 
+         OpenSpMessageParser.createMessageString(sgmlFilePath,
+                 lineNumber, posNumber, 
+                  messageText);
+        openSpMessages.add(messageStr);
+  }
+  totMessageCount++;
+};
+tok1 : (STUFF|SPACE)+;
+tok2 : (STUFF|SPACE)+;
+tok3 : (STUFF|SPACE)+;
+tok4 : (STUFF|SPACE)+;
+tok5 : (STUFF|SPACE)+;
+tok6 : (STUFF|SPACE)+;
+tok7 : (STUFF|SPACE)+;
+tok8 : (STUFF|SPACE)+;
+tok9 : (STUFF|SPACE)+;
 
-uncodedMessage : cmdPath COLON sgmlFilepath COLON lineNumber COLON posNumber COLON messagetext 
-{
- 
-       String messageStr = 
-        OpenSpMessageParser.createMessageString($sgmlFilepath.text,
-                $lineNumber.text, $posNumber.text, 
-                 $messagetext.text);
-       openSpMessages.add(messageStr);
+inLine : 'In ' (STUFF|SPACE|COLON)+;
 
-  } ;
-
-cmdPath :  unixPath | winpath ;
-
-sgmlFilepath : unixPath | winpath ;
-
-unixPath : (SLASH (~(SLASH|NEWLINE|COLON|EOF))*)+;
-
-winpath : drive ((SLASH |BCKSLASH) (~(SLASH|BCKSLASH|NEWLINE|COLON|EOF))*)+ ;
-
-drive : (MESSAGELEVEL|OTHERALPHA) COLON;
-
-lineNumber : DIGIT+;
-
-posNumber : DIGIT+;
-
-somenumber : DIGIT+;
-
-messageCode : DIGIT+;
-
-messageLevel : MESSAGELEVEL;
-
-messagetext : SPACE (COLON|DOT|SLASH|BCKSLASH|MESSAGELEVEL|DIGIT|OTHERALPHA|OTHERCHAR|SPACE)*;
-
-
-NEWLINE       :    '\r'? '\n';  // x0D   x0A
-SPACE         :    ' ';         // x20
-COLON         :    ':';         //003A
-DOT           :    '.';         //U+002E
-SLASH         :    '/';         //U+002F
-BCKSLASH      :    '\\';        //U+005C
-MESSAGELEVEL  :    MESSAGELEVELS;
-DIGIT         :    DIGITS;
-OTHERALPHA    :    OTHERALPHAS;
-OTHERCHAR     :    U2|U3|U4|U5|U6;
-
-fragment
-MESSAGELEVELS : 'E'|'W'|'I'|'Q'|'X';
-fragment
-DIGITS        : '0'..'9';
-fragment
-OTHERALPHAS   : 'a'..'z'|'A'..'D'|'F'..'H'|'J'..'P'|'R'..'V'|'Y'|'Z';
-
-
-fragment
-U2 : '\u0021'..'\u002D';
-fragment
-U3 : '\u003B'..'\u0040';
-fragment
-U4:  '\u005B';
-fragment
-U5:  '\u005D'..'\u0060';
-fragment
-U6 : '\u007B'..'\uFFFF' ;
+COLON : ':';
+SPACE:  ' ';           //32  x20  
+STUFF : ~('\n'|'\r'|' '|':');
+RETURN :  '\r';
+NEWLINE:   '\n';  //13  x0D  10  x0A
 
