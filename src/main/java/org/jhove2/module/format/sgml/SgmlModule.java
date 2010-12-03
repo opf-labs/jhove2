@@ -43,6 +43,8 @@ import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
+import org.jhove2.core.Message.Context;
+import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
@@ -146,12 +148,24 @@ public class SgmlModule
 	    throws JHOVE2Exception
 	{
 		if (this.getDocumentProperties() != null){
-			if (this.getDocumentProperties().isSgmlValid()){
-				this.validity = Validity.True;
-		    }
-		    else {
-			    this.validity = Validity.False;
-		    }
+			if (this.getDocumentProperties().getParseErrors() != null &&
+				    this.getDocumentProperties().getParseErrors().size() > 0){
+					this.validity = Validity.Undetermined;
+					Message message = new Message(
+							Severity.ERROR,
+							Context.PROCESS,
+							"org.jhove2.module.format.sgml.SgmlModule.OpenSpParseErrorsDetected",							
+							jhove2.getConfigInfo());
+					source.addMessage(message);
+				}
+			else {
+				if (this.getDocumentProperties().isSgmlValid()){
+					this.validity = Validity.True;
+			    }
+			    else {
+				    this.validity = Validity.False;
+			    }	
+			}			
 		}
 		return this.validity;
 	}

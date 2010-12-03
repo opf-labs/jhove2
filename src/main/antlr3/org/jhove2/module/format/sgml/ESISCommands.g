@@ -203,7 +203,7 @@ elementAttributeCommand :  ACMD aName  SPACE attrType afterElemAttrType? CR? NEW
 };
 aName : (STUFF+);  
 attrType : (STUFF+);
-afterElemAttrType : (SPACE (sdataEntity|STUFF|SPACE)+ );
+afterElemAttrType : (SPACE (sdataEntity|STUFF|SPACE)* );
 
 /**
 Dename name val 
@@ -364,7 +364,7 @@ extEntname : (STUFF+);
 ssysid 
 This command applies to the next E, S, T or N command and specifies the associated system identifier. 
 */
-sysidCommand : LSCMD sysId=((STUFF|SPACE)+) CR? NEWLINE? 
+sysidCommand : LSCMD sysId=((STUFF|SPACE)*) CR? NEWLINE? 
           {
            sysidsCount++; 
            if ($sysId.text != null)
@@ -403,7 +403,6 @@ startSubDocCommand : LEFTBRACE subDocEntname=((STUFF|SPACE)+) CR? NEWLINE?
           {
            subDocCommandCount++;
            subDocCommandNames.add($subDocEntname.text);
-           System.out.println("$subDocEntname=" + $subDocEntname.text);
           };
           
 /**

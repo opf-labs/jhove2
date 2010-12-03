@@ -11,9 +11,9 @@
         <property name="wrappedProduct" ref="OpenSgml"/>
         <!--  Comment out unused sgmlParser property, depending on which OS/exe configuration you employ -->
         <!-- if using OpenJade unix exe on Unix or via Cygwin on Windows -->
-		<!--    <property name="sgmlParser" ref="OpenSpWrapper"/> -->
+		<property name="sgmlParser" ref="OpenSpWrapper"/>
         <!-- if using OpenJade Windows dll and executable -->
-        <property name="sgmlParser" ref="OpenSpWrapperForWindowsExe"/>    
+        <!--    <property name="sgmlParser" ref="OpenSpWrapperForWindowsExe"/>  -->   
         <property name="shouldFindDoctype" value="true"/>
 	</bean>
 	<!-- OpenSpWrapper bean wraps invocations to OpenSP executables (UNIX or Cygwin on Windows -->
@@ -32,7 +32,7 @@
 		<!--  Edit any paths as appropriate for your installation -->
 	<bean id="OpenSpWrapperForWindowsExe" class="org.jhove2.module.format.sgml.OpenSpWrapper" scope="prototype">
         <property name="processHandler" ref="WindowsExternalProcessHandler"/>
-        <!-- property name="onsgmlsPath" value="C:\PROGRA~1\OpenSp\onsgmls.exe"/ -->
+        <!--<property name="onsgmlsPath" value="C:\PROGRA~1\OpenSp\onsgmls.exe"/ -->
         <!-- property name="sgmlnormPath" value="C:\PROGRA~1\OpenSp\osgmlnorm.exe"/ -->
         <property name="onsgmlsPath" value="C:\cygwin\bin\onsgmls.exe"/>
         <property name="sgmlnormPath" value="C:\cygwin\bin\osgmlnorm.exe"/>        
@@ -46,8 +46,8 @@
 	</bean>
 		<!--  SGML catalog file path bean: unix  or Cywgin on Windows; edit as appropriate for your installation-->
 	<bean id="WindowsSgmlCatalogPath" class="java.lang.String">
-	    <!-- constructor-arg type="java.lang.String" value="C:\PROGRA~1\OpenSp\catalog"/  -->
-	    <constructor-arg type="java.lang.String" value="C:\cygwin\usr\share\sgml\OpenSP\catalog"/>	    
+	    <constructor-arg type="java.lang.String" value="C:\PROGRA~1\OpenSp\catalog"/>
+	    <!-- <constructor-arg type="java.lang.String" value="C:\cygwin\usr\share\sgml\OpenSP\catalog"/>	   -->   
 	</bean>
 	<!-- Bean containing options settings for OpenSp ongsmls executable: Unix or Cygwin on Windows-->
    <bean id="OnsgmlsOptions" class="org.jhove2.module.format.sgml.OnsgmlsOptions" scope="singleton"> 
