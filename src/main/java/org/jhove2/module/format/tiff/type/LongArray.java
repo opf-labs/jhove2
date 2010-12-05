@@ -25,6 +25,17 @@ public class LongArray
     public LongArray() {
     }
 
+    /** instantiate a LongArray object using a int Array 
+     * @param int[] 
+     */ 
+    public LongArray(int[] shortArrayValue) {
+        int count = shortArrayValue.length;
+        valueArray = new long [count];
+        for (int i=0; i<count; i++) {
+            valueArray[i] = shortArrayValue[i];
+        }
+    }
+
     public void setValue(Input input, long count) throws IOException {
         valueArray = new long [(int) count];
         for (int i=0; i<count; i++) {

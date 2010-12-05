@@ -55,16 +55,40 @@ public class ReportableDoc implements Comparable<Object> {
 		}
 		return retcode;
 	}
-	@Override
-	public boolean equals(Object o){
-		boolean isEqual = false;
-		if (o instanceof ReportableDoc){
-			ReportableDoc p = (ReportableDoc)o;
-			isEqual = id.equals(p.id);
-		}
-		return isEqual;
-	}
-	/**
+	/** Generate a unique hash code for the reportable.
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+    /** Determine equality with another reportable.
+     * @param obj Reportable to be compared
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (!(obj instanceof ReportableDoc))
+            return false;
+        ReportableDoc other = (ReportableDoc) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        }
+        else if (!id.equals(other.id))
+            return false;
+        return true;
+    }
+    /**
 	 * @return the name
 	 */
 	public String getName() {

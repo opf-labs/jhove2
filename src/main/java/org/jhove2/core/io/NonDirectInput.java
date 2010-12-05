@@ -50,9 +50,6 @@ import java.nio.ByteOrder;
 public class NonDirectInput
     extends AbstractInput
 {
-	/** Maximum buffer size, in bytes. */
-	protected int maxBufferSize;
-
 	/**
 	 * Instantiate a new, big-endian <code>NonDirectInput</code> object.
 	 * 
@@ -87,22 +84,10 @@ public class NonDirectInput
 	public NonDirectInput(File file, int maxBufferSize, ByteOrder order)
 		throws FileNotFoundException, IOException
 	{
-		super(file, order);
+		super(file, maxBufferSize, order);
 
 		/* Allocate direct buffer and initialize it. */
-		this.maxBufferSize = maxBufferSize;
 		this.buffer = ByteBuffer.allocate(this.maxBufferSize).order(order);
 		getNextBuffer();
-	}
-
-	/**
-	 * Get maximum buffer size, in bytes.
-	 * 
-	 * @return Maximum buffer size, in bytes
-	 * @see org.jhove2.core.io.Input#getMaxBufferSize()
-	 */
-	@Override
-	public int getMaxBufferSize() {
-		return this.maxBufferSize;
 	}
 }

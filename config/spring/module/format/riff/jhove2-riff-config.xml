@@ -8,12 +8,175 @@
            http://www.springframework.org/schema/context/spring-context-2.5.xsd
 		   http://www.springframework.org/schema/util 
 		   http://www.springframework.org/schema/util/spring-util-2.0.xsd">
-				 			    
-	<!-- RIFF chunk classes properties bean --> 
-	<bean id="ChunkClasses" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
-		<property name="propertyFileBaseName" value="chunk-classes"/>
-	</bean> 
-	     
+
+	<!-- RIFF IARL chunk bean -->
+	<bean id="IARLChunk" class="org.jhove2.module.format.riff.ZSTRChunk"
+	      scope="prototype">
+	    <property name="identifier" value="IARL"/>
+	</bean>
+
+	<!-- RIFF IART chunk bean -->
+	<bean id="IARTChunk" class="org.jhove2.module.format.riff.ZSTRChunk"
+	      scope="prototype">
+	    <property name="identifier" value="IART"/>
+	</bean>
+
+	<!-- RIFF ICMS chunk bean -->
+	<bean id="ICMSChunk" class="org.jhove2.module.format.riff.ZSTRChunk"
+	      scope="prototype">
+	    <property name="identifier" value="ICMS"/>
+	</bean>
+
+	<!-- RIFF ICMT chunk bean -->
+	<bean id="ICMTChunk" class="org.jhove2.module.format.riff.ZSTRChunk"
+	      scope="prototype">
+	    <property name="identifier" value="ICMT"/>
+	</bean>
+
+	<!-- RIFF ICOP chunk bean -->
+	<bean id="ICOPChunk" class="org.jhove2.module.format.riff.ZSTRChunk"
+	      scope="prototype">
+	    <property name="identifier" value="ICOP"/>
+	</bean>
+
+	<!-- RIFF ICRD chunk bean -->
+	<bean id="ICRDChunk" class="org.jhove2.module.format.riff.ZSTRChunk"
+	      scope="prototype">
+	    <property name="identifier" value="ICRD"/>
+	</bean>
+	
+	<!-- RIFF ICRP chunk bean -->
+	<bean id="ICRPChunk" class="org.jhove2.module.format.riff.ZSTRChunk"
+	      scope="prototype">
+	    <property name="identifier" value="ICRP"/>
+	</bean>
+
+	<!-- RIFF IDIM chunk bean -->
+	<bean id="IDIMChunk" class="org.jhove2.module.format.riff.ZSTRChunk"
+	      scope="prototype">
+	    <property name="identifier" value="IDIM"/>
+	</bean>
+
+	<!-- RIFF IDPI chunk bean -->
+	<bean id="IDPIChunk" class="org.jhove2.module.format.riff.ZSTRChunk"
+	      scope="prototype">
+	    <property name="identifier" value="IDPI"/>
+	</bean>
+
+	<!-- RIFF IENG chunk bean -->
+	<bean id="IENGChunk" class="org.jhove2.module.format.riff.ZSTRChunk"
+	      scope="prototype">
+	    <property name="identifier" value="IENG"/>
+	</bean>
+
+	<!-- RIFF IGNR chunk bean -->
+	<bean id="IGNRChunk" class="org.jhove2.module.format.riff.ZSTRChunk"
+	      scope="prototype">
+	    <property name="identifier" value="IGNR"/>
+	</bean>
+
+	<!-- RIFF IKEY chunk bean -->
+	<bean id="IKEYChunk" class="org.jhove2.module.format.riff.ZSTRChunk"
+	      scope="prototype">
+	    <property name="identifier" value="IKEY"/>
+	</bean>
+
+	<!-- RIFF ILGT chunk bean -->
+	<bean id="ILGTChunk" class="org.jhove2.module.format.riff.ZSTRChunk"
+	      scope="prototype">
+	    <property name="identifier" value="ILGT"/>
+	</bean>
+
+	<!-- RIFF IMED chunk bean -->
+	<bean id="IMEDChunk" class="org.jhove2.module.format.riff.ZSTRChunk"
+	      scope="prototype">
+	    <property name="identifier" value="IMED"/>
+	</bean>
+
+	<!-- RIFF INAM chunk bean -->
+	<bean id="INAMChunk" class="org.jhove2.module.format.riff.ZSTRChunk"
+	      scope="prototype">
+	    <property name="identifier" value="INAM"/>
+	</bean>
+
+	<!-- RIFF IPLT chunk bean -->
+	<bean id="IPLTChunk" class="org.jhove2.module.format.riff.ZSTRChunk"
+	      scope="prototype">
+	    <property name="identifier" value="IPLT"/>
+	</bean>
+
+	<!-- RIFF IPRD chunk bean -->
+	<bean id="IPRDChunk" class="org.jhove2.module.format.riff.ZSTRChunk"
+	      scope="prototype">
+	    <property name="identifier" value="IPRD"/>
+	</bean>
+
+	<!-- RIFF ISBJ chunk bean -->
+	<bean id="ISBJChunk" class="org.jhove2.module.format.riff.ZSTRChunk"
+	      scope="prototype">
+	    <property name="identifier" value="ISBJ"/>
+	</bean>
+
+	<!-- RIFF ISFT chunk bean -->
+	<bean id="ISFTChunk" class="org.jhove2.module.format.riff.ZSTRChunk"
+	      scope="prototype">
+	    <property name="identifier" value="ISFT"/>
+	</bean>
+
+	<!-- RIFF ISHP chunk bean -->
+	<bean id="ISHPChunk" class="org.jhove2.module.format.riff.ZSTRChunk"
+	      scope="prototype">
+	    <property name="identifier" value="ISHP"/>
+	</bean>
+
+	<!-- RIFF ISRC chunk bean -->
+	<bean id="ISRCChunk" class="org.jhove2.module.format.riff.ZSTRChunk"
+	      scope="prototype">
+	    <property name="identifier" value="ISRC"/>
+	</bean>
+
+	<!-- RIFF ISRF chunk bean -->
+	<bean id="ISRFChunk" class="org.jhove2.module.format.riff.ZSTRChunk"
+	      scope="prototype">
+	    <property name="identifier" value="ISRF"/>
+	</bean>
+
+	<!-- RIFF ITCH chunk bean -->
+	<bean id="ITCHChunk" class="org.jhove2.module.format.riff.ZSTRChunk"
+	      scope="prototype">
+	    <property name="identifier" value="ITCH"/>
+	</bean>
+	
+	<!-- RIFF LIST chunk bean -->
+	<bean id="LISTChunk" class="org.jhove2.module.format.riff.LISTChunk"
+	      scope="prototype">
+	    <property name="identifier" value="LIST"/>
+	    <property name="chunkFactory" ref="ChunkFactory"/>
+	</bean>
+					 	
+	<!-- RIFF chunk bean -->
+	<bean id="RIFFChunk" class="org.jhove2.module.format.riff.RIFFChunk"
+	      scope="prototype">
+	    <property name="identifier" value="RIFF"/>
+	    <property name="chunkFactory" ref="ChunkFactory"/>
+	</bean>
+						 	
+	<!-- RIFF ZSTR chunk bean -->
+	<bean id="ZSTRChunk" class="org.jhove2.module.format.riff.ZSTRChunk"
+	      scope="prototype">
+	    <property name="identifier" value="ZSTR"/>
+	</bean>
+							 	
+	<!-- RIFF generic chunk bean -->
+	<bean id="GenericChunk" class="org.jhove2.module.format.riff.GenericChunk"
+	      scope="prototype">
+	    <property name="identifier" value="_J2_"/>
+	</bean>
+	
+	<!-- Spring chunk factory bean -->
+	<bean id="ChunkFactory" class="org.jhove2.config.spring.SpringChunkFactory"
+	      scope="singleton"/>
+ 
 	<!-- RIFF chunk form type properties bean --> 
 	<bean id="FormTypes" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
 		<property name="propertyFileBaseName" value="form-types"/>

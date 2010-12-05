@@ -47,8 +47,8 @@ import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.Validator.Validity;
-import org.jhove2.module.format.tiff.type.Long;
 import org.jhove2.module.format.tiff.type.Byte;
+import org.jhove2.module.format.tiff.type.Long;
 import org.jhove2.module.format.tiff.type.LongArray;
 import org.jhove2.module.format.tiff.type.Rational;
 import org.jhove2.module.format.tiff.type.Short;
@@ -439,11 +439,11 @@ extends IFD
          */
 
         if ((entry = entries.get(STRIPBYTECOUNTS)) != null) {
-            this.stripByteCounts = ((LongArray) entry.getValue()).getLongArrayValue();
+            this.stripByteCounts = getStripValue(entry);
             hasStripByteCounts = true;
         }
         if ((entry = entries.get(STRIPOFFSETS)) != null) {
-            this.stripOffsets = ((LongArray) entry.getValue()).getLongArrayValue();
+            this.stripOffsets = getStripValue(entry);
             hasStripOffsets = true;
         }
 
@@ -768,6 +768,22 @@ extends IFD
         if (this.isValid != Validity.False)
             this.isValid = Validity.True;
         return isValid;
+    }
+
+
+    /* determine if the field is either a single value or
+     * an array and read it appropriately
+     */
+    private long[] getStripValue(IFDEntry entry) {
+        long[] field = null;
+        if (entry.count == 1) {
+            field = new long[1];
+            field[0] = ((Long) entry.getValue()).getValue();
+        }
+        else {
+            field = ((LongArray) entry.getValue()).getLongArrayValue();
+        }
+        return field;
     }
 
 

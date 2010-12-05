@@ -53,9 +53,6 @@ import java.nio.channels.FileChannel;
 public class MappedInput
     extends AbstractInput
 {
-	/** Maximum buffer size, in bytes. */
-	protected int maxBufferSize;
-
 	/**
 	 * Instantiate a new, big-endian <code>MappedInput</code> object.
 	 * 
@@ -91,13 +88,14 @@ public class MappedInput
 	public MappedInput(File file, int maxBufferSize, ByteOrder order)
 		throws FileNotFoundException, IOException
 	{
-		super(file, order);
+		super(file, maxBufferSize, order);
 
 		/* Allocate memory mapped buffer and initialize it.
-		*  The buffersize will always be size of file channel size 
+		*  The buffer size will always be size of file channel size.
+		*  Note that this overrides the buffer size used in the superclass
+		*  when creating a buffered input stream from this Input.
 		*/
-		maxBufferSize = (int) this.channel.size();
-		this.maxBufferSize = maxBufferSize;
+		this.maxBufferSize = (int) this.channel.size();
 		this.buffer = (MappedByteBuffer) buffer;
 		/*
 		 * TODO: fix Access Denied problem java.io.IOException: Access is denied
@@ -108,23 +106,12 @@ public class MappedInput
 
 		try {
 			this.buffer = this.channel.map(FileChannel.MapMode.READ_ONLY, 0,
-					maxBufferSize);
+					                       this.maxBufferSize);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		this.inputablePosition = this.inputablePosition + bufferSize;
 		this.bufferOffset = this.channel.position() - buffer.capacity();
 		this.bufferSize = buffer.capacity();
-	}
-
-	/**
-	 * Get maximum buffer size, in bytes.
-	 * 
-	 * @return Maximum buffer size, in bytes
-	 * @see org.jhove2.core.io.Input#getMaxBufferSize()
-	 */
-	@Override
-	public int getMaxBufferSize() {
-		return this.bufferSize;
 	}
 }

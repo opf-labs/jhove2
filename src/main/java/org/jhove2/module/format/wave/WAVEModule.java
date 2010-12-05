@@ -76,6 +76,9 @@ public class WAVEModule
     /** Module validation coverage. */
     public static final Coverage COVERAGE = Coverage.Inclusive;
   
+    /** Chunk factory. */
+    protected ChunkFactory chunkFactory;
+    
     /** WAVE chunks. */
     protected List<Chunk> chunks;
     
@@ -136,7 +139,7 @@ public class WAVEModule
             short b = input.readUnsignedByte();
             sb.append((char) b);
         }
-        Chunk chunk = ChunkFactory.getChunk(sb.toString(), jhove2);
+        Chunk chunk = this.chunkFactory.getChunk(sb.toString());
         consumed += chunk.parse(jhove2, source, input);
         this.chunks.add(chunk);
 
@@ -222,6 +225,13 @@ public class WAVEModule
         }
         return this.isValid();
     }
+    
+    /** Get chunk factory.
+     * @return Chunk factory
+     */
+    public ChunkFactory getChunkFactory() {
+        return this.chunkFactory;
+    }
 
     /** Get chunks.
      * @return Chunks
@@ -281,5 +291,12 @@ public class WAVEModule
     public Validity isValid()
     {
         return this.isValid;
+    }
+    
+    /** Set chunk factory.
+     * @param factory Chunk factory
+     */
+    public void setChunkFactory(ChunkFactory factory) {
+        this.chunkFactory = factory;
     }
 }

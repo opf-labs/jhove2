@@ -36,11 +36,10 @@ package org.jhove2.module.format.wave.bwf;
 
 import java.io.EOFException;
 import java.io.IOException;
-import java.util.Map;
-import org.jhove2.config.spring.SpringConfigInfo;
 import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.format.Format;
 import org.jhove2.core.format.FormatIdentification;
 import org.jhove2.core.format.FormatIdentification.Confidence;
 import org.jhove2.core.io.Input;
@@ -55,10 +54,17 @@ import org.jhove2.module.format.riff.GenericChunk;
 public class AXMLChunk
     extends GenericChunk
 {
-    /** Instantiate a new <code>AXMLChunk</code>. */
-    public AXMLChunk()
+    /** XML format. */
+    protected Format xmlFormat;
+    
+    /** Instantiate a new <code>AXMLChunk</code>.
+     * @param xml XML format
+     */
+    public AXMLChunk(Format xml)
     {
         super();
+        
+        this.xmlFormat = xml;
     }
     
     /** Parse an AXML chunk.
@@ -79,13 +85,19 @@ public class AXMLChunk
         /* The chunk contents are in XML; invoke the XML module. */
         ByteStreamSource child =
             new ByteStreamSource(jhove2, source, input.getPosition(), this.size);
-        Map<String, Object> i8r = SpringConfigInfo.getObjectsForType(I8R.class);
-        I8R xml = (I8R) i8r.get("XmlIdentifier");;
+        I8R xml = xmlFormat.getIdentifier();
         FormatIdentification id = new FormatIdentification(xml, Confidence.PositiveGeneric);
         child.addPresumptiveFormat(id);
         jhove2.characterize(child, input);      
         consumed += this.size;
         
         return consumed;
+    }
+    
+    /** Get XML format.
+     * @return XML format
+     */
+    public Format getXMLFormat() {
+        return this.xmlFormat;
     }
 }

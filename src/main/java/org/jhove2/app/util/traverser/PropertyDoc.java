@@ -61,16 +61,41 @@ public class PropertyDoc implements Comparable<Object>{
 		}
 		return retcode;
 	}
-	@Override
-	public boolean equals(Object o){
-		boolean isEqual = false;
-		if (o instanceof PropertyDoc){
-			PropertyDoc p = (PropertyDoc)o;
-			isEqual = dottedName.equals(p.dottedName);
-		}
-		return isEqual;	
-	}
-	/**
+	/** Generate a unique hash code for the property.
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result
+                + ((dottedName == null) ? 0 : dottedName.hashCode());
+        return result;
+    }
+    /** Determine equality with another property.
+     * @param obj Property to be compared.
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (!(obj instanceof PropertyDoc))
+            return false;
+        PropertyDoc other = (PropertyDoc) obj;
+        if (dottedName == null) {
+            if (other.dottedName != null)
+                return false;
+        }
+        else if (!dottedName.equals(other.dottedName))
+            return false;
+        return true;
+    }
+    /**
 	 * @return the name
 	 */
 	public String getName() {

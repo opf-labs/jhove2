@@ -99,34 +99,6 @@ public class ShapefileModule
 	}
 
 	/**
-	 * Instantiates a new shapefile module.
-	 *
-	 * @param version the version
-	 * @param release the release
-	 * @param rights the rights
-	 * @param format the format
-	 */
-	public ShapefileModule(String version, String release, String rights,
-			Format format) {
-		super(version, release, rights, format);
-	}
-
-	/**
-	 * Instantiates a new shapefile module.
-	 *
-	 * @param version the version
-	 * @param release the release
-	 * @param rights the rights
-	 * @param scope the scope
-	 * @param format the format
-	 */
-	public ShapefileModule(String version, String release, String rights,
-			Scope scope, Format format) {
-		super(version, release, rights, scope, format);
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
 	 * Instantiate a new <code>ShapefileModule</code>.
 	 * 
 	 * @param format
