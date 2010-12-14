@@ -174,7 +174,7 @@ public class OpenSpWrapper implements SgmlParser {
 				DoctypeFinderParser doctypeFinderParser = null;
 				try {
 					doctypeFinderParser = 
-						doctypeParser.parseNormFile(normOutPath, null);
+						doctypeParser.parseNormFile(normOutPath, sgm);
 				} catch (IOException e) {
 					continue; // message already attached to source
 				} catch (RecognitionException e) {
