@@ -393,7 +393,7 @@ public abstract class AbstractSource
     public Input getInput(JHOVE2 jhove2)
 	    throws FileNotFoundException, IOException
 	{
-        return this.getInput(jhove2, ByteOrder.LITTLE_ENDIAN);
+        return this.getInput(jhove2, ByteOrder.BIG_ENDIAN);
     }
 
     /**
