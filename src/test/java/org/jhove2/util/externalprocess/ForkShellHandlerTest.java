@@ -221,7 +221,7 @@ public class ForkShellHandlerTest {
 	/**
 	 * @param shellHandler the shellHandler to set
 	 */
-	@Resource
+	@Resource(name="epshellHandler")
 	public void setShellHandler(ForkShellHandler shellHandler) {
 		this.shellHandler = shellHandler;
 	}
@@ -266,7 +266,7 @@ public class ForkShellHandlerTest {
 	/**
 	 * @param windowsShellHandler the windowsShellHandler to set
 	 */
-	@Resource
+	@Resource(name="epwindowsShellHandler")
 	public void setWindowsShellHandler(ForkShellHandler windowsShellHandler) {
 		this.windowsShellHandler = windowsShellHandler;
 	}
