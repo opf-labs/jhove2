@@ -53,11 +53,15 @@ import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.module.format.Validator;
 import org.jhove2.module.format.riff.Chunk;
 import org.jhove2.module.format.riff.ChunkFactory;
+import org.jhove2.persist.FormatModuleAccessor;
+
+import com.sleepycat.persist.model.Persistent;
 
 /** WAVE (waveform audio file format) module.
  * 
  * @author slabrams
  */
+@Persistent
 public class WAVEModule
     extends BaseFormatModule
     implements Validator
@@ -99,13 +103,19 @@ public class WAVEModule
 
     /** Instantiate a new <code>WAVEModule</code>.
      * @param format WAVE format
+     * @param formatModuleAccessor peristence manager
      */
-    public WAVEModule(Format format)
+    public WAVEModule(Format format, FormatModuleAccessor formatModuleAccessor)
     {
-        super(VERSION, RELEASE, RIGHTS, format);
+        super(VERSION, RELEASE, RIGHTS, format, formatModuleAccessor);
         
         this.chunks  = new ArrayList<Chunk>();
         this.isValid = Validity.Undetermined;
+    }
+    
+    @SuppressWarnings("unused")
+	private WAVEModule(){
+    	this(null, null);
     }
     
     /** 

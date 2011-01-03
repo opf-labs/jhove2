@@ -11,9 +11,10 @@
 		   
 
 
-		<!-- BaseFormat module bean -->
+		<!-- Dispatcher Command-->
 	<bean id="FeatureExtractorCommand" class="org.jhove2.module.format.DispatcherCommand"
 	      scope="prototype">
+	     <constructor-arg ref="BaseModuleAccessor"/>
 	    <property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>

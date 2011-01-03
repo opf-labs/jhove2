@@ -64,6 +64,9 @@ import org.xml.sax.SAXNotSupportedException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
+import com.sleepycat.persist.model.NotPersistent;
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * This class provides an wrapper for methods used to create and initialize the
  * SAX2 parser used to characterize an XML instance.
@@ -74,16 +77,19 @@ import org.xml.sax.helpers.XMLReaderFactory;
  * @see <a href="https://jaxp.dev.java.net/">Sun's JAXP website</a> <br />
  * @see <a href="http://xerces.apache.org/xerces2-j/">Xerces2 Java Parser</a>
  */
+@Persistent
 public class SaxParser
     extends AbstractReportable
 {
     /** The XmlModule object that is invoking the parser. */
+	@NotPersistent
     protected XmlModule xmlModule;
 
     /**
      * The XMLReader object (the actual parser) created and initialized in this
      * class.
      */
+    @NotPersistent
     protected XMLReader xmlReader;
 
     /** The explicit class name of the SAX driver being used. */
@@ -99,17 +105,27 @@ public class SaxParser
      * The set of SAX properties (such as event handlers) that have been
      * registered with the parser.
      */
+    @NotPersistent
     protected Map<String, Object> properties = new HashMap<String, Object>();
     
+    /**
+     * "String-ified" version of SAX properties registered with parser
+     */
+    protected List<String> saxProperties;
+     
     /** If true, use XML Catalog files and external entity lookup */
     protected boolean useXmlCatalog;
     
     /**  The object that does entity resolution. */
+    @NotPersistent
     XMLCatalogResolver resolver;
 
     /** An ordered array list of absolute URIs for the catalog files to be used by the external entity resolver */
     protected String[] xmlCatalogList;
 
+    public SaxParser(){
+    	super();
+    }
     /**
      * The name of the SAX driver class to be used for parsing can optionally be
      * set in the Spring config file that instantiates this class.
@@ -166,18 +182,9 @@ public class SaxParser
      */
     @ReportableProperty(order = 3, value = "SAX Parser Property Settings")
     public List<String> getSaxProperties() {
-        ArrayList<String> list = new ArrayList<String>();
-        for (Entry<String, Object> entry : properties.entrySet()) {
-            if (entry.getValue() instanceof String) {
-                list.add(entry.getKey() + " = " + entry.getValue().toString());
-            }
-            else {
-                list.add(entry.getKey() + " = "
-                        + entry.getValue().getClass().getName());
-            }
-        }
-        return list;
+        return this.saxProperties;
     }
+    
 
     /** If set true, use XML Catalog files and external entity lookup */
     public void setUseXmlCatalog(boolean useXmlCatalog) {
@@ -226,14 +233,29 @@ public class SaxParser
             createXmlReader();
             specifyXmlReaderFeatures();
             specifyXmlReaderHandlers();
-            specifyXmlReaderHandlers2();
-            specifyXmlCatalog();
-            specifyXmlReaderProperties();
+            specifyXmlReaderHandlers2(); // updates properties
+            specifyXmlCatalog();         // updates properties
+            specifyXmlReaderProperties();// updates properties
+            // now update the "String" version of properties list that is returned as Reportable object
+            ArrayList<String> list = new ArrayList<String>();
+            for (Entry<String, Object> entry : properties.entrySet()) {
+                if (entry.getValue() instanceof String) {
+                    list.add(entry.getKey() + " = " + entry.getValue().toString());
+                }
+                else {
+                    list.add(entry.getKey() + " = "
+                            + entry.getValue().getClass().getName());
+                }
+            }
+            this.setSaxProperties(list);
         }
         return xmlReader;
     }
 
-    /**
+    protected void setSaxProperties(ArrayList<String> list) {
+		this.saxProperties = list;
+	}
+	/**
      * Creates the SAX2 XMLReader object.
      * 
      * @throws JHOVE2Exception

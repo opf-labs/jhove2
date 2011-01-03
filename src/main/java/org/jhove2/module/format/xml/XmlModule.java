@@ -52,6 +52,10 @@ import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.module.format.Validator;
+import org.jhove2.persist.FormatModuleAccessor;
+
+import com.sleepycat.persist.model.NotPersistent;
+import com.sleepycat.persist.model.Persistent;
 
 /**
  * JHOVE2 XML module. This module parses and XML instance and captures selected
@@ -59,6 +63,7 @@ import org.jhove2.module.format.Validator;
  * 
  * @author rnanders
  */
+@Persistent
 public class XmlModule
     extends BaseFormatModule
     implements Validator
@@ -77,6 +82,7 @@ public class XmlModule
     public static final Coverage COVERAGE = Coverage.Inclusive;
     
     /** The JHOVE2 object passed in by the parse method */
+    @NotPersistent
     protected JHOVE2 jhove2; 
     
     /** XML validation status. */
@@ -180,14 +186,18 @@ public class XmlModule
      * 
      * @param format
      *            the Format object
+     * @param formatModuleAccessor 
+     *       FormatModuleAccessor to manage access to Format Profiles
      */
-    public XmlModule(Format format) {
-        super(VERSION, RELEASE, RIGHTS, format);
-        this.validity = Validity.Undetermined;
+    public XmlModule(Format format, 
+    		FormatModuleAccessor formatModuleAccessor) {
+        super(VERSION, RELEASE, RIGHTS, format, formatModuleAccessor);
+		this.validity = Validity.Undetermined;
     }
     
-    public XmlModule(){
-    	this(null);
+    @SuppressWarnings("unused")
+	private XmlModule(){
+    	this(null, null);
     }
 
     /** The instance of a SAX2 XMLReader class used to parse XML instances. */

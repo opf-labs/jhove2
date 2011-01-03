@@ -54,12 +54,16 @@ import org.jhove2.module.format.icc.ICCHeader;
 import org.jhove2.module.format.icc.ICCModule;
 import org.jhove2.module.format.icc.ICCTag;
 import org.jhove2.module.format.icc.ICCTagTable;
+import org.jhove2.persist.FormatProfileAccessor;
+
+import com.sleepycat.persist.model.Persistent;
 
 /** ICC N-component LUT-based output profile, as defined in ICC.1:2004-10,
  * \u00a7 8.5.2.
  * 
  * @author slabrams
  */
+@Persistent
 public class NComponentLUTBasedOutputProfile
     extends AbstractFormatProfile
     implements Validator
@@ -86,13 +90,19 @@ public class NComponentLUTBasedOutputProfile
     
     /** Instantiate a new <code>NComponentLUTBasedOutputProfile</code>
      * @param format Profile format
+     * @param formatProfileAccessor persistence manager 
      */
-    public NComponentLUTBasedOutputProfile(Format format)
+    public NComponentLUTBasedOutputProfile(Format format, FormatProfileAccessor formatProfileAccessor)
     {
-        super(VERSION, RELEASE, RIGHTS, format);
+        super(VERSION, RELEASE, RIGHTS, format, formatProfileAccessor);
         
         this.isValid = Validity.Undetermined;
         this.missingRequiredTagMessages = new ArrayList<Message>();
+    }
+    
+    @SuppressWarnings("unused")
+    private NComponentLUTBasedOutputProfile(){
+    	this(null,null);
     }
 
     /** Validate the profile.
@@ -106,9 +116,9 @@ public class NComponentLUTBasedOutputProfile
     public Validity validate(JHOVE2 jhove2, Source source, Input input)
         throws JHOVE2Exception
     {
-        if (this.module != null) {
-            ICCHeader   header = ((ICCModule) this.module).getHeader();
-            ICCTagTable table  = ((ICCModule) this.module).getTagTable();
+        if (this.getFormatModule() != null) {
+            ICCHeader   header = ((ICCModule) this.getFormatModule()).getHeader();
+            ICCTagTable table  = ((ICCModule) this.getFormatModule()).getTagTable();
             if (table != null) {
                 if (table.hasCommonRequirements()) {
                     this.isValid = Validity.True;

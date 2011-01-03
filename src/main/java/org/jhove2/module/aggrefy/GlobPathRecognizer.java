@@ -35,6 +35,9 @@
  */
 package org.jhove2.module.aggrefy;
 
+import static com.sleepycat.persist.model.DeleteAction.NULLIFY;
+import static com.sleepycat.persist.model.Relationship.MANY_TO_ONE;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
@@ -53,6 +56,10 @@ import org.jhove2.core.format.FormatIdentification.Confidence;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractModule;
+import org.jhove2.persist.ModuleAccessor;
+
+import com.sleepycat.persist.model.Persistent;
+import com.sleepycat.persist.model.SecondaryKey;
 
 /**
  * Aggregate identifier that uses filepath globbing to detect instances of Clump Formats
@@ -60,6 +67,7 @@ import org.jhove2.module.AbstractModule;
  * 
  * @author smorrissey
  */
+@Persistent
 public class GlobPathRecognizer
 extends AbstractModule
 implements Recognizer
@@ -78,6 +86,11 @@ implements Recognizer
 
 	/** Aggrgate identifier confidence. */
 	public static final Confidence GLOB_PATH_CONFIDENCE = Confidence.Tentative;
+	
+	/** foreign key linking GlobPathRecognizer to parent Aggrefier module */
+	@SecondaryKey(relate=MANY_TO_ONE, relatedEntity=AbstractModule.class,
+			onRelatedEntityDelete=NULLIFY)
+	protected Long parentAggrefierId;
 
 	/** Format which this recognizer can detect*/
 	protected I8R format;
@@ -123,14 +136,23 @@ implements Recognizer
 	protected Pattern mayHavePattern;
 
 	/**
-	 * Instantiate a new <code>FilePathGlobbingRecognizer</code>.
+	 * Instantiate a new <code>GlobPathRecognizer</code>.
 	 */
 	public GlobPathRecognizer() {
-		super(VERSION, RELEASE, RIGHTS, Scope.Generic);
+		this(null);
 	}
-
+	
 	/**
-	 * Instantiate a new <code>FilePathGlobbingRecognizer</code>.
+	 * Instantiate a new <code>GlobPathRecognizer</code>.
+	 * @param ModuleAccessor to manage persistence
+	 */
+	public GlobPathRecognizer(ModuleAccessor moduleAccessor) {
+		super(VERSION, RELEASE, RIGHTS, Scope.Generic, moduleAccessor);
+	}
+	
+	/**
+	 * Instantiate a new <code>GlobPathRecognizer</code>.
+	 * @param moduleAccessor manages persistence
 	 * @param format Format which this class can recognize
 	 * @param fileGroupingExpr  String containing regular expression to group candidate files
 	 * @param mustHaveExpr String containing regular expression to identify required candidate files
@@ -150,14 +172,15 @@ implements Recognizer
 	 *                           files which match the grouping expression, but do not match either 
 	 *                           mustHaveExpr or mayHaveExpr 
 	 */
-	public GlobPathRecognizer(I8R format, String fileGroupingExpr,
+	public GlobPathRecognizer(ModuleAccessor moduleAccessor,
+			I8R format, String fileGroupingExpr,
 			String mustHaveExpr, String mayHaveExpr, 
 			int fileGroupingCaptureGroupIndex,
 			int mustHaveCaptureGroupIndex, 
 			int mayHaveCaptureGroupIndex, 
 			int minMustHavesToIdentify, 
 			boolean includeUnmatchedFromGroup) {
-		this();
+		this(moduleAccessor);
 		this.format = format;
 		this.fileGroupingExpr = fileGroupingExpr;
 		this.mustHaveExpr = mustHaveExpr;
@@ -185,7 +208,7 @@ implements Recognizer
 		this.compilePatterns();
 		Collection<GlobPathMatchInfoGroup> sourceGroups = this.groupSources(source);
 		for (GlobPathMatchInfoGroup sourceGroup:sourceGroups){
-			ClumpSource clumpSource = this.recognizeGroupedSource(sourceGroup);
+			ClumpSource clumpSource = this.recognizeGroupedSource(sourceGroup, jhove2);
 			if (clumpSource != null){
 				clumpSources.add(clumpSource);
 			}
@@ -285,22 +308,29 @@ implements Recognizer
 
 	/**
 	 * Inspects candidate group to determine if it comprises instance of Format
+	 * @param jhove2 framework configured with SourceFactory
 	 * @return FormatIdentification for this group if it comprises instance of a Format;
 	 *         otherwise returns null;
+	 * @throws JHOVE2Exception
 	 */
-	protected ClumpSource recognizeGroupedSource(GlobPathMatchInfoGroup fileGroup)
-	{
+	protected ClumpSource recognizeGroupedSource(GlobPathMatchInfoGroup fileGroup, JHOVE2 jhove2)
+	throws JHOVE2Exception {
 		FormatIdentification fi = null;
 		ClumpSource clumpSource = null;
 		if (fileGroup.getMustHaveCount() >= this.minMustHavesToIdentify){
 			fi = new FormatIdentification(this.format, GLOB_PATH_CONFIDENCE, 
 					this.getReportableIdentifier());
-			clumpSource = new ClumpSource();
-			clumpSource.addPresumptiveFormat(fi);
+			if (jhove2.getSourceFactory()==null){
+				throw new JHOVE2Exception("JHOVE2 SourceFactory is null");
+			}
+			clumpSource = jhove2.getSourceFactory().getClumpSource();
+			clumpSource = (ClumpSource) clumpSource.addPresumptiveFormat(fi);
 			for (GlobPathMatchInfo sourceInfo:fileGroup.getSourceMatchInfoList()){
 				if ((sourceInfo.isMustHave() || sourceInfo.isMayHave()) ||
 						(this.includeUnmatchedFromGroup)) {
-					clumpSource.addChildSource(sourceInfo.getSource());
+					Source sourceInfoSource = sourceInfo.getSource(); 
+					sourceInfoSource=clumpSource.addChildSource(sourceInfoSource);
+					sourceInfo.setSource(sourceInfoSource);
 				}	
 			}
 		}
@@ -506,5 +536,15 @@ implements Recognizer
 	 */
 	public void setFileGroupingCaptureGroupIndex(int fileGroupingCaptureGroupIndex) {
 		this.fileGroupingCaptureGroupIndex = fileGroupingCaptureGroupIndex;
+	}
+
+	@Override
+	public Long getParentAggrefierId() {
+		return parentAggrefierId;
+	}
+
+	@Override
+	public void setParentAggrefierId(Long parentAggrefierId) {
+		this.parentAggrefierId = parentAggrefierId;
 	}
 }

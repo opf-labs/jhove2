@@ -78,11 +78,14 @@ import org.jhove2.module.format.tiff.type.Short;
 import org.jhove2.module.format.tiff.type.ShortArray;
 import org.jhove2.module.format.tiff.type.desc.Compression;
 
+import com.sleepycat.persist.model.Persistent;
+
 /** TIFF IFD entry.
  * 
  * @author mstrong
  *
  */
+@Persistent
 public class IFDEntry 
 extends AbstractReportable
 implements Comparable<Object> {
@@ -317,7 +320,8 @@ implements Comparable<Object> {
                 /* Parse the ICCProfile or XMP tag */
                 if (this.tag == TiffIFD.ICCPROFILE ||
                     this.tag == TiffIFD.XMP) {
-                    ByteStreamSource bss = new ByteStreamSource(jhove2, source, this.valueOffset, this.count);
+                    ByteStreamSource bss = jhove2.getSourceFactory().getByteStreamSource(
+                    	jhove2, source, this.valueOffset, this.count);
                     Format format = tagToFormatMap.get(this.tag);
                     I8R identifier = format.getIdentifier();
                     FormatIdentification presumptiveFormat = new FormatIdentification(identifier, Confidence.PositiveSpecific); 

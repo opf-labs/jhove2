@@ -35,7 +35,7 @@
  */
 
 package org.jhove2.core.source;
-
+import com.sleepycat.persist.model.*;
 /**
  * Clump source unit. A clump is an aggregation of file source units that
  * collectively form an identifiable source unit.
@@ -45,11 +45,12 @@ package org.jhove2.core.source;
  * 
  * @author mstrong, slabrams
  */
+@Persistent
 public class ClumpSource extends AbstractSource {
 	/**
 	 * Instantiate a new <code>ClumpSource</code>.
 	 */
-	public ClumpSource() {
+	protected ClumpSource() {
 		super();
 	}
 }

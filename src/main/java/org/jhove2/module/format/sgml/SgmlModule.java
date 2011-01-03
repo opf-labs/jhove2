@@ -50,6 +50,10 @@ import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.module.format.Validator;
+import org.jhove2.persist.FormatModuleAccessor;
+
+import com.sleepycat.persist.model.NotPersistent;
+import com.sleepycat.persist.model.Persistent;
 
 /**
  * JHOVE2 SGML module.  This module will parse and validate an SGML document instance,
@@ -57,6 +61,7 @@ import org.jhove2.module.format.Validator;
  *  
  * @author smorrissey
  */
+@Persistent
 public class SgmlModule
     extends BaseFormatModule
     implements Validator
@@ -76,20 +81,27 @@ public class SgmlModule
 	/** SGML validation status. */
 	protected Validity validity;
 
-	/** The JHOVE2 object passed in by the parse method */
-	protected JHOVE2 jhove2; 
-
-	/** The Source object passed in by the parse method */
-	protected  Source source;
-
 	/** parser directive -- should sgmlnorm be run in order to extract doctype statement; default is false */
 	protected boolean shouldFindDoctype;
 
 	/** Parser engine for parsing SGML files and extracting significant properties */
+	@NotPersistent
 	protected SgmlParser sgmlParser;
 
 	/** Container for SGML document properties extracted by parser */
 	protected SgmlDocumentProperties documentProperties;
+
+	/**
+	 * Instantiates a new SgmlModule instance.
+	 * 
+	 * @param format
+	 *            the Format object
+	 */
+	public SgmlModule(Format format, 
+			FormatModuleAccessor formatModuleAccessor) {
+		super(VERSION, RELEASE, RIGHTS, format, formatModuleAccessor);
+		this.validity = Validity.Undetermined;
+	}
 	
 	/** Error message indicating command shell to invoke external parser is invalid */
 	protected Message invalidCommandShellMessage;
@@ -101,13 +113,12 @@ public class SgmlModule
 	 *            the Format object
 	 */
 	public SgmlModule(Format format) {
-		super(VERSION, RELEASE, RIGHTS, format);
-        this.validity = Validity.Undetermined;
+		this(format, null);
 	}
 	
 	/** Instantiate a new <code>SgmlModule</code>. */
 	public SgmlModule() {
-	    this(null);
+		this(null, null);
 	}
 
 	/** Parse the format.
@@ -120,16 +131,12 @@ public class SgmlModule
 	public long parse(JHOVE2 jhove2, Source source, Input input)
 	    throws EOFException, IOException, JHOVE2Exception
 	{
-		this.jhove2 = jhove2;
-		this.source = source;
-		this.documentProperties = sgmlParser.parseFile(this);
+		this.documentProperties = sgmlParser.parseFile(this, jhove2, source);
 		if (this.documentProperties != null){
 			if (this.isShouldFindDoctype()){
-				sgmlParser.determineDoctype(this);
+				sgmlParser.determineDoctype(this, jhove2, source);
 			}    
 		}
-		this.jhove2 = null;
-		this.source = null;
 		this.sgmlParser.cleanUp();
 		this.sgmlParser = null;
 		return 0;
@@ -156,7 +163,7 @@ public class SgmlModule
 							Context.PROCESS,
 							"org.jhove2.module.format.sgml.SgmlModule.OpenSpParseErrorsDetected",							
 							jhove2.getConfigInfo());
-					source.addMessage(message);
+					source=source.addMessage(message);
 				}
 			else {
 				if (this.getDocumentProperties().isSgmlValid()){
@@ -213,13 +220,6 @@ public class SgmlModule
 	 */
 	public void setShouldFindDoctype(boolean findDoctype) {
 		this.shouldFindDoctype = findDoctype;
-	}
-
-	/**
-	 * @return the source
-	 */
-	public Source getSource() {
-		return source;
 	}
 
 	/**

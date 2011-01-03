@@ -41,7 +41,6 @@ import java.io.IOException;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
-import org.jhove2.core.TimerInfo;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.io.Input;
@@ -49,12 +48,16 @@ import org.jhove2.core.source.AggregateSource;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractCommand;
+import org.jhove2.persist.ModuleAccessor;
+
+import com.sleepycat.persist.model.Persistent;
 
 /**
  * Command to invoke message digesting on non-aggregate Sources
  * 
  * @author smorrissey
  */
+@Persistent
 public class DigesterCommand
 	extends AbstractCommand
 {
@@ -75,7 +78,13 @@ public class DigesterCommand
 	/** Instantiate a new <code>DigesterCommand</code>.
 	 */
 	public DigesterCommand(){
-		super(VERSION, RELEASE, RIGHTS, Scope.Generic);
+		this(null);
+	}
+	
+	/** Instantiate a new <code>DigesterCommand</code>.
+	 */
+	public DigesterCommand(ModuleAccessor moduleAccessor){
+		super(VERSION, RELEASE, RIGHTS, Scope.Generic, moduleAccessor);
 	}
 
 	/**
@@ -97,17 +106,16 @@ public class DigesterCommand
 				try {	
 					Digester digester = 
 						this.getDigesterFactory().getDigester();
-					TimerInfo timer = digester.getTimerInfo();
-					timer.setStartTime();
+					digester = (Digester) digester.getModuleAccessor().startTimerInfo(digester);
 					try {
 					    /* Register the digesting module. */
-	                    source.addModule(digester);
+						digester=(Digester) source.addModule(digester);
 	                    
 	                    /* Calculate the digests. */
 						digester.digest(jhove2, source, input);
 					}
 					finally {
-						timer.setEndTime();
+						digester = (Digester) digester.getModuleAccessor().endTimerInfo(digester);
 					}
 				}
 				catch (IOException e) {
@@ -123,7 +131,7 @@ public class DigesterCommand
 							"org.jhove2.module.digest.DigesterCommand.IOException",
 							messageArgs,
 							jhove2.getConfigInfo());
-					source.addMessage(message);
+					source=source.addMessage(message);
 				}
 			}
 		}

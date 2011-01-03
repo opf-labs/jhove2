@@ -40,6 +40,8 @@ package org.jhove2.module.format.xml;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.reportable.AbstractReportable;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * This class is used to hold information about a <i>notation declaration</i>
  * discovered during parsing of an XML instance.
@@ -66,6 +68,7 @@ import org.jhove2.core.reportable.AbstractReportable;
  * @see <a href="http://www.w3.org/TR/REC-xml/#Notations">Extensible Markup
  * Language (XML) 1.0 -- Notation Declarations</a>
  */
+@Persistent
 public class Notation extends AbstractReportable {
 
     /** The notation name. */
@@ -76,6 +79,10 @@ public class Notation extends AbstractReportable {
 
     /** The system identifier. */
     protected String systemId;
+    
+    protected Notation(){
+    	super();
+    }
 
     /**
      * Gets the notation name.

@@ -50,11 +50,14 @@ import org.jhove2.module.format.Parser;
 import org.jhove2.module.format.Validator.Validity;
 import org.jhove2.module.format.icc.field.FunctionType;
 
+import com.sleepycat.persist.model.Persistent;
+
 /** iCC parametric curve type element, as defined in
  * ICC.1:2004-10, \u00a7 10.15.
  * 
  * @author slabrams
  */
+@Persistent
 public class ParametricCurveType
     extends AbstractReportable
     implements Parser

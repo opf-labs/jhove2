@@ -50,9 +50,7 @@ import javax.annotation.Resource;
 import org.jhove2.app.util.FeatureConfigurationUtil;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
-import org.jhove2.core.source.SourceFactory;
 import org.jhove2.module.format.Validator.Validity;
 import org.junit.Before;
 import org.junit.Test;
@@ -98,7 +96,6 @@ public class OpenSpWrapperWindowsExeTest {
 		if (os.toLowerCase().startsWith("win")){
 			isWindows = true;
 		}
-		wtestSgmlModule.jhove2 = JHOVE2;
 		sp = (OpenSpWrapper) wtestSgmlModule.sgmlParser;
 		try {
 			sgmlDirPath = 
@@ -119,11 +116,10 @@ public class OpenSpWrapperWindowsExeTest {
 		}
 		sp.getOnsgmlsOptions().setCatalogPath(catalogPath);
 		sp.getSgmlnormOptions().setCatalogPath(catalogPath);
-		wtestSgmlModule.source = null;
 	}
 
 	/**
-	 * Test method for {@link org.jhove2.module.format.sgml.OpenSpWrapper#parseFile(org.jhove2.module.format.sgml.SgmlModule)}.
+	 * Test method for {@link org.jhove2.module.format.sgml.OpenSpWrapper#parseFile(org.jhove2.module.format.sgml.SgmlModule, JHOVE2, Source)}.
 	 */
 	@Test
 	public void testParseFile() {
@@ -139,21 +135,19 @@ public class OpenSpWrapperWindowsExeTest {
 			File fGoodFile = new File(goodFilePath);
 			goodFilePath = fGoodFile.getPath();
 			try {
-				inputSource = SourceFactory.getSource(goodFilePath);
+				inputSource = JHOVE2.getSourceFactory().getSource(goodFilePath);
 			}catch (Exception e){
 				e.printStackTrace();
 				fail("Failed to create source for input file");
 			}
-			wtestSgmlModule.source = inputSource;
 			try {
-				wtestSgmlModule.setDocumentProperties(sp.parseFile(wtestSgmlModule));
+				wtestSgmlModule.setDocumentProperties(sp.parseFile(wtestSgmlModule, JHOVE2, inputSource));
 			} catch (JHOVE2Exception e) {
 				e.printStackTrace();
 				fail("unable to get esis parser");
 			}
 			assertTrue(wtestSgmlModule.getDocumentProperties().isSgmlValid());
 
-			wtestSgmlModule.source = null;
 			wtestSgmlModule.setDocumentProperties(null);
 			String badFilePath = sgmlDirBasePath.concat(invalidSgmlFile);
 			try {
@@ -166,14 +160,13 @@ public class OpenSpWrapperWindowsExeTest {
 			File fBadFile = new File(badFilePath);
 			badFilePath = fBadFile.getPath();
 			try {
-				inputSource = SourceFactory.getSource(badFilePath);
+				inputSource = JHOVE2.getSourceFactory().getSource(badFilePath);
 			}catch (Exception e){
 				e.printStackTrace();
 				fail("Failed to create source for input file");
 			}
-			wtestSgmlModule.source = inputSource;
 			try {
-				wtestSgmlModule.setDocumentProperties(sp.parseFile(wtestSgmlModule));
+				wtestSgmlModule.setDocumentProperties(sp.parseFile(wtestSgmlModule, JHOVE2, inputSource));
 			} catch (JHOVE2Exception e) {
 				e.printStackTrace();
 				fail("unable to get esis parser");
@@ -190,22 +183,20 @@ public class OpenSpWrapperWindowsExeTest {
 			}
 			// now alter path to opensp; should cause error message and null sgml properties,
 			// even with good sgml file
-			wtestSgmlModule.source = null;
 			wtestSgmlModule.setDocumentProperties(null);
 			fGoodFile = new File(goodFilePath);
 			goodFilePath = fGoodFile.getPath();
 			try {
-				inputSource = SourceFactory.getSource(goodFilePath);
+				inputSource = JHOVE2.getSourceFactory().getSource(goodFilePath);
 			}catch (Exception e){
 				e.printStackTrace();
 				fail("Failed to create source for input file");
 			}
-			wtestSgmlModule.source = inputSource;
 			String oldPath = sp.getOnsgmlsPath();
 			sp.setOnsgmlsPath("/invalid/path/ongmls");
-			int oldMessageLength = wtestSgmlModule.source.getMessages().size();
+			int oldMessageLength = inputSource.getMessages().size();
 			try {
-				wtestSgmlModule.setDocumentProperties(sp.parseFile(wtestSgmlModule));
+				wtestSgmlModule.setDocumentProperties(sp.parseFile(wtestSgmlModule, JHOVE2, inputSource));
 			} catch (JHOVE2Exception e) {
 				e.printStackTrace();
 				fail("unable to get esis parser");
@@ -213,13 +204,12 @@ public class OpenSpWrapperWindowsExeTest {
 			sp.setOnsgmlsPath(oldPath);
 			assertNull(wtestSgmlModule.getDocumentProperties());
 			try {
-			    Input input = wtestSgmlModule.source.getInput(JHOVE2);
-				assertEquals(Validity.Undetermined, wtestSgmlModule.validate(JHOVE2, wtestSgmlModule.source, input));
-			} catch (Exception e) {
+				assertEquals(Validity.Undetermined, wtestSgmlModule.validate(JHOVE2, inputSource, null));
+			} catch (JHOVE2Exception e) {
 				fail("sgml module Validate method threw exception " + e.getMessage());
 				e.printStackTrace();
 			}
-			assertEquals(oldMessageLength+1, wtestSgmlModule.source.getMessages().size());
+			assertEquals(oldMessageLength+1, inputSource.getMessages().size());
 		}
 	}
 
@@ -239,16 +229,15 @@ public class OpenSpWrapperWindowsExeTest {
 			File fGoodFile = new File(goodFilePath);
 			goodFilePath = fGoodFile.getPath();
 			try {
-				inputSource = SourceFactory.getSource(goodFilePath);
+				inputSource = JHOVE2.getSourceFactory().getSource(goodFilePath);
 			}catch (Exception e){
 				e.printStackTrace();
 				fail("Failed to create source for input file");
 			}
-			wtestSgmlModule.source = inputSource;
 			String[] outputFiles = null;
 			try {
 				outputFiles = sp.parseSgmlFile(
-						wtestSgmlModule,OpenSpWrapper.ESIS_SUFFIX,sp.onsgmlsPath,sp.getOnsgmlsOptions().getOptionString());
+						JHOVE2,inputSource,OpenSpWrapper.ESIS_SUFFIX,sp.onsgmlsPath, sp.getOnsgmlsOptions().getOptionString());
 			} catch (JHOVE2Exception e) {
 				e.printStackTrace();
 				fail("Failed to parse sgml file");
@@ -282,15 +271,14 @@ public class OpenSpWrapperWindowsExeTest {
 			File fGoodFile = new File(goodFilePath);
 			goodFilePath = fGoodFile.getPath();
 			try {
-				inputSource = SourceFactory.getSource(goodFilePath);
+				inputSource = JHOVE2.getSourceFactory().getSource(goodFilePath);
 			}catch (Exception e){
 				e.printStackTrace();
 				fail("Failed to create source for input file");
 			}
-			wtestSgmlModule.source = inputSource;
 			wtestSgmlModule.setDocumentProperties(new SgmlDocumentProperties());
 			try {
-				sp.determineDoctype(wtestSgmlModule);
+				sp.determineDoctype(wtestSgmlModule, JHOVE2, inputSource);
 			} catch (JHOVE2Exception e) {
 				e.printStackTrace();
 				fail("Failed to run createDoctype method");

@@ -46,10 +46,13 @@ import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
 import org.jhove2.module.format.Validator.Validity;
 
+import com.sleepycat.persist.model.Persistent;
+
 /** Zip data descriptor.
  * 
  * @author slabrams
  */
+@Persistent
 public class ZipDataDescriptor
         extends AbstractReportable
 {    

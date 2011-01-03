@@ -75,10 +75,13 @@ import org.jhove2.module.format.icc.type.TextType;
 import org.jhove2.module.format.icc.type.ViewingConditionsType;
 import org.jhove2.module.format.icc.type.XYZType;
 
+import com.sleepycat.persist.model.Persistent;
+
 /** ICC tag.  See ICC.1:2004-10, \u00a7 7.3.1.
  * 
  * @author slabrams
  */
+@Persistent
 public class ICCTag
     extends AbstractReportable
 {

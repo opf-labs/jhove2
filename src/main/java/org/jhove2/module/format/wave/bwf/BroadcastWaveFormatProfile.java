@@ -50,11 +50,15 @@ import org.jhove2.module.format.Validator;
 import org.jhove2.module.format.riff.Chunk;
 import org.jhove2.module.format.wave.FormatChunk;
 import org.jhove2.module.format.wave.WAVEModule;
+import org.jhove2.persist.FormatProfileAccessor;
+
+import com.sleepycat.persist.model.Persistent;
 
 /** Broadcase Wave Format (BWF) profile.
  * 
  * @author slabrams
  */
+@Persistent
 public class BroadcastWaveFormatProfile
     extends AbstractFormatProfile
     implements Validator
@@ -87,12 +91,18 @@ public class BroadcastWaveFormatProfile
 
     /** Instantiate a new <code>BroadcastWaveProfile</code>
      * @param format Broadcast Wave Format.
+     * @param formatProfileAccessor persistence manager
      */
-    public BroadcastWaveFormatProfile(Format format)
+    public BroadcastWaveFormatProfile(Format format,FormatProfileAccessor formatProfileAccessor)
     {
-        super(VERSION, RELEASE, RIGHTS, format);
+        super(VERSION, RELEASE, RIGHTS, format, formatProfileAccessor);
         
         this.isValid = Validity.Undetermined;
+    }
+    
+    @SuppressWarnings("unused")
+	private BroadcastWaveFormatProfile(){
+    	this(null,null);
     }
 
     /** Get profile coverage.
@@ -126,7 +136,7 @@ public class BroadcastWaveFormatProfile
         throws JHOVE2Exception
     { 
         /* Base WAVE must be valid. */
-        this.isValid = ((WAVEModule) this.module).isValid();
+        this.isValid = ((WAVEModule) this.getFormatModule()).isValid();
         if (this.isValid == Validity.False) {
             this.baselineWAVEFormatIsInvalidMessage = new Message(Severity.ERROR,
                     Context.OBJECT,
@@ -135,7 +145,7 @@ public class BroadcastWaveFormatProfile
         }
         
         /* Broadcast audio extension chunk is required. */
-        List<Chunk> chs = ((WAVEModule) this.module).getChunks();
+        List<Chunk> chs = ((WAVEModule) this.getFormatModule()).getChunks();
         Iterator<Chunk> it = chs.iterator();
         while (it.hasNext()) {
             Chunk ch = it.next();

@@ -40,6 +40,8 @@ import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.module.digest.Digester;
 import org.jhove2.module.digest.DigesterFactory;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * Spring-based implementation of Factory class for {@link org.jhove2.module.digest.Digestser} 
  * objects
@@ -47,9 +49,14 @@ import org.jhove2.module.digest.DigesterFactory;
  * @author smorrissey
  *
  */
+@Persistent
 public class SpringDigesterFactory
     implements DigesterFactory
 {
+	
+	public SpringDigesterFactory(){
+		super();
+	}
 	/** Instantiate a new digester module.
 	 * @see org.jhove2.module.digest.DigesterFactory#getDigester()
 	 */

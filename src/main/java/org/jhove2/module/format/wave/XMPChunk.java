@@ -17,10 +17,13 @@ import org.jhove2.core.source.ByteStreamSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.riff.GenericChunk;
 
+import com.sleepycat.persist.model.Persistent;
+
 /** WAVE format Extensible Metadata Platform (XMP) chunk.
  * 
  * @author slabrams
  */
+@Persistent
 public class XMPChunk
     extends GenericChunk
 {
@@ -31,9 +34,13 @@ public class XMPChunk
      * @param xml XML format
      */
     public XMPChunk(Format xml) {
-        super();
+        this();
         
         this.xmlFormat = xml;
+    }
+    
+    private XMPChunk(){
+    	super();
     }
     
     /** 
@@ -60,8 +67,8 @@ public class XMPChunk
         long consumed = super.parse(jhove2, source, input);
         
         /* The chunk contents are in XML; invoke the XML module. */
-        ByteStreamSource child =
-            new ByteStreamSource(jhove2, source, input.getPosition(), this.size);
+        ByteStreamSource child = jhove2.getSourceFactory().getByteStreamSource(
+            jhove2, source, input.getPosition(), this.size);
         I8R xml = xmlFormat.getIdentifier();
         FormatIdentification id = new FormatIdentification(xml, Confidence.PositiveGeneric);
         child.addPresumptiveFormat(id);

@@ -3,9 +3,12 @@ package org.jhove2.module.format.xml;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.reportable.AbstractReportable;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * A nested class to hold information about the declaration for a namespace.
  */
+@Persistent
 public class NamespaceDeclaration extends AbstractReportable {
 
     /** The namespace prefix. */
@@ -21,12 +24,17 @@ public class NamespaceDeclaration extends AbstractReportable {
      *            the prefix
      */
     protected NamespaceDeclaration(String prefix) {
+    	this();
         if (prefix.length() < 1) {
             this.prefix = "[default]";
         }
         else {
             this.prefix = prefix;
         }
+    }
+    
+    protected NamespaceDeclaration(){
+    	super();
     }
 
     /**

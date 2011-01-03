@@ -43,12 +43,16 @@ import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.module.AbstractModule;
 import org.jhove2.module.display.Displayer;
+import org.jhove2.persist.ApplicationModuleAccessor;
+
+import com.sleepycat.persist.model.Persistent;
 
 /**
  * Abstract application based on the JHOVE2 framework .
  * 
  * @author mstrong, slabrams, smorrissey
  */
+@Persistent
 public abstract class AbstractApplication
 	extends AbstractModule
 	implements Application
@@ -59,9 +63,6 @@ public abstract class AbstractApplication
 	/** Application invocation date/timestamp. */
 	protected Date dateTime;
 	
-	/** Application displayer */
-	protected Displayer displayer;
-
 	/** Application installation properties.  */
 	protected Installation installation;
 
@@ -79,38 +80,33 @@ public abstract class AbstractApplication
 	 *            Application rights statement
 	 * @param scope
 	 *            Application scope: generic or specific
-	 * @throws JHOVE2Exception 
+	 * @param applicationModuleAccessor persistence access manager
+	 * @throws JHOVE2Exception if Displayer cannot be initialized
 	 */
 	public AbstractApplication(String version, String release, String rights,
-			                   Scope scope)
-		throws JHOVE2Exception
+			                   Scope scope, ApplicationModuleAccessor applicationModuleAccessor)
+    throws JHOVE2Exception
 	{
-		super(version, release, rights, scope);
+		super(version, release, rights, scope, applicationModuleAccessor);
 
 		/* Default application installation and invocation properties. */
 		this.setInstallation(Installation.getInstance());
-		this.setInvocation  (new Invocation());
-		
-		/* Initialize the default displayer. */
-		try {
-			this.displayer = 
-				(Displayer) (Class.forName(Displayer.DEFAULT_DISPLAYER_CLASS).newInstance());
-		}
-		catch (Exception ex){
-			throw new JHOVE2Exception("Unable to instantiate default displayer", ex);
-		}		
+		this.setInvocation  (new Invocation());	
 		this.scope = Scope.Generic;
 	}
 	
+	public AbstractApplication(ApplicationModuleAccessor applicationModuleAccessor)
+	 throws JHOVE2Exception 
+	{
+		this(null, null, null, Scope.Generic, applicationModuleAccessor);
+	}
 	/**
      * Instantiate a new <code>AbstractApplication</code>.
 	 */
-	public AbstractApplication () {
-		super();
-		/* Default application installation and invocation properties. */
-		this.setInstallation(Installation.getInstance());
-		this.setInvocation  (new Invocation());
-		this.scope = Scope.Generic;
+	public AbstractApplication () 
+	 throws JHOVE2Exception
+	{
+		this(null);
 	}
 
 	/** Get application {@link org.jhove2.core.Invocation} properties.
@@ -153,10 +149,14 @@ public abstract class AbstractApplication
 
 	/** Get application displayer.
 	 * @return Application displayer
+	 * @throws JHOVE2Exception 
 	 */
 	@Override
-	public Displayer getDisplayer() {
-		return this.displayer;
+	public Displayer getDisplayer() 
+	throws JHOVE2Exception {
+		ApplicationModuleAccessor ama = 
+			(ApplicationModuleAccessor)this.getModuleAccessor();
+		return ama.getDisplayer(this);
 	}
 
 	/** Set application command line.
@@ -175,10 +175,14 @@ public abstract class AbstractApplication
 
 	/** Set application displayer.
 	 * @param displayer Application displayer
+	 * @throws JHOVE2Exception 
 	 */
 	@Override
-	public void setDisplayer(Displayer displayer) {
-		this.displayer = displayer;
+	public Displayer setDisplayer(Displayer displayer) 
+	throws JHOVE2Exception {
+		ApplicationModuleAccessor ama = 
+			(ApplicationModuleAccessor)this.getModuleAccessor();
+		return ama.setDisplayer(this, displayer);
 	}
 
 

@@ -1,19 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:util="http://www.springframework.org/schema/util"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-	   xsi:schemaLocation="http://www.springframework.org/schema/beans 
-           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-           http://www.springframework.org/schema/context
-           http://www.springframework.org/schema/context/spring-context-2.5.xsd
-		   http://www.springframework.org/schema/util 
-		   http://www.springframework.org/schema/util/spring-util-2.0.xsd">
-  
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:util="http://www.springframework.org/schema/util" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 	<!-- TIFF: module bean -->
-	<bean id="TestTiffModule" class="org.jhove2.module.format.tiff.TiffModule"
-		scope="prototype">
+	<bean id="TestTiffModule" class="org.jhove2.module.format.tiff.TiffModule" scope="prototype">
 		<constructor-arg ref="TiffFormat" />
-<!--		<property name="profile" ref="TiffItProfile" />-->
+		<constructor-arg ref="FormatModuleAccessor"/>
 		<property name="profiles">
 			<list value-type="org.jhove2.module.format.FormatProfile">
 				<ref bean="TiffItProfile"/>
@@ -25,37 +15,28 @@
 			</list>
 		</property>
 	</bean>
-		<!-- Tiff format bean -->
+	<!-- Tiff format bean -->
 	<bean id="TiffFormat" class="org.jhove2.core.format.Format" scope="singleton">
 		<constructor-arg type="java.lang.String" value="Tiff" />
 		<constructor-arg ref="TiffIdentifier" />
-		<constructor-arg type="org.jhove2.core.format.Format$Type"
-			value="Family" />
-		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
-			value="Unambiguous" />
+		<constructor-arg type="org.jhove2.core.format.Format$Type" value="Family" />
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity" value="Unambiguous" />
 		<property name="aliasNames">
 			<set>
 				<value>Tagged Image File Format</value>
 			</set>
 		</property>
 	</bean>
-
 	<!-- Tiff identifier bean -->
 	<bean id="TiffIdentifier" class="org.jhove2.core.I8R" scope="singleton">
-		<constructor-arg type="java.lang.String"
-			value="http://jhove2.org/terms/format/Tiff" />
+		<constructor-arg type="java.lang.String" value="http://jhove2.org/terms/format/Tiff" />
 	</bean>
-
-	
-	
-  <!-- Little endian test file -->
-    <bean id="intelTestFile" class="java.lang.String">
-    	<constructor-arg type="java.lang.String" value="Intel_Mateo_6mos.TIF"/>
+	<!-- Little endian test file -->
+	<bean id="intelTestFile" class="java.lang.String">
+		<constructor-arg type="java.lang.String" value="Intel_Mateo_6mos.TIF"/>
 	</bean>
-
 	<!-- Big endian tet file  -->
-    <bean id="MACTestFile" class="java.lang.String">
-    	<constructor-arg type="java.lang.String" value="MAC_generated.tiff"/>
+	<bean id="MACTestFile" class="java.lang.String">
+		<constructor-arg type="java.lang.String" value="MAC_generated.tiff"/>
 	</bean>
-	
 </beans>

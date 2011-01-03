@@ -54,11 +54,15 @@ import org.jhove2.module.format.Validator;
 import org.jhove2.module.format.icc.ICCModule;
 import org.jhove2.module.format.icc.ICCTag;
 import org.jhove2.module.format.icc.ICCTagTable;
+import org.jhove2.persist.FormatProfileAccessor;
+
+import com.sleepycat.persist.model.Persistent;
 
 /** ICC abstract profile, as defined in ICC.1:2004-10, \u00a7 8.8.
  * 
  * @author slabrams
  */
+@Persistent
 public class AbstractProfile
     extends AbstractFormatProfile
     implements Validator
@@ -85,12 +89,17 @@ public class AbstractProfile
     
     /** Instantiate a new <code>AbstractProfile</code>.
      * @param format Profile format 
+     * @param formatProfileAccessor persistence manager
      */
-    public AbstractProfile(Format format) {
-        super(VERSION, RELEASE, RIGHTS, format);
-        
+    public AbstractProfile(Format format, FormatProfileAccessor formatProfileAccessor) {
+        super(VERSION, RELEASE, RIGHTS, format,formatProfileAccessor);        
         this.isValid = Validity.Undetermined;
         this.missingRequiredTagMessages = new ArrayList<Message>();
+    }
+    
+    @SuppressWarnings("unused")
+	private AbstractProfile(){
+    	this(null, null);
     }
 
     /** Validate the abstract profile.
@@ -103,8 +112,8 @@ public class AbstractProfile
     public Validity validate(JHOVE2 jhove2, Source source, Input input)
         throws JHOVE2Exception
     {
-        if (this.module != null) {
-            ICCTagTable table = ((ICCModule) this.module).getTagTable();
+        if (this.getFormatModule() != null) {
+            ICCTagTable table = ((ICCModule) this.getFormatModule()).getTagTable();
             if (table != null) {
                 if (table.hasCommonRequirements()) {
                     this.isValid = Validity.True;

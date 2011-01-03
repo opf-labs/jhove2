@@ -51,11 +51,14 @@ import org.jhove2.core.source.Source;
 import org.jhove2.module.format.Parser;
 import org.jhove2.module.format.Validator.Validity;
 
+import com.sleepycat.persist.model.Persistent;
+
 /** ICC named color 2 type element, as defined in ICC.1:2004-10, 
  * \u00a7 10.14.
  * 
  * @author slabrams
  */
+@Persistent
 public class NamedColor2Type
     extends AbstractReportable
     implements Parser

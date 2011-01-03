@@ -8,6 +8,9 @@ import java.io.IOException;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
+
+import com.sleepycat.persist.model.Persistent;
+
 import java.lang.Long;
 
 
@@ -17,6 +20,7 @@ import java.lang.Long;
  * @author mstrong
  *
  */
+@Persistent
 public class Rational 
 extends AbstractReportable {
 

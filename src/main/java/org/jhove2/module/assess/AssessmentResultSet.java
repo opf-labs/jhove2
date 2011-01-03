@@ -44,6 +44,8 @@ import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.reportable.AbstractReportable;
 import org.jhove2.module.format.Validator.Validity;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * An AssessmentResultSet
  * contains references to the object being assessed and the RuleSet being
@@ -51,15 +53,9 @@ import org.jhove2.module.format.Validator.Validity;
  * RuleSet and stores the the assessment outcome for that Rule in a list of
  * {@link org.jhove2.module.assess.AssessmentResult AssessmentResult} objects.
  */
+@Persistent
 public class AssessmentResultSet extends AbstractReportable {
 
-//    /**
-//     * A reference to the object instance being assessed. This object could be a
-//     * characterization module, such as a
-//     * {@link org.jhove2.module.format.FormatModule FormatModule} or a
-//     * {@link org.jhove2.core.source.Source Source} item.
-//     */
-//    protected Object assessedObject;
 
     /** The Set of {@link org.jhove2.module.assess.Rule Rule}(s) to be applied against the {@link #assessedObject}. */
     protected RuleSet ruleSet;
@@ -75,25 +71,6 @@ public class AssessmentResultSet extends AbstractReportable {
     protected List<AssessmentResult> assessmentResults;
     
 
-
-//    /**
-//     * Gets the {@link #assessedObject}.
-//     *
-//     * @return  assessedObject
-//     */
-//    public Object getAssessedObject() {
-//        return assessedObject;
-//    }
-
-//    /**
-//     * Stores a {@link #assessedObject} reference to the object being evaluated
-//     *
-//     * @param assessedObject
-//     *            the object to set
-//     */
-//    public void setAssessedObject(Object assessedObject) {
-//        this.assessedObject = assessedObject;
-//    }
 
     public AssessmentResultSet(){};
 

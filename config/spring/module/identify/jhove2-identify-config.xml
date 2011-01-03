@@ -1,17 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:util="http://www.springframework.org/schema/util"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-	   xsi:schemaLocation="http://www.springframework.org/schema/beans 
-           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-           http://www.springframework.org/schema/context
-           http://www.springframework.org/schema/context/spring-context-2.5.xsd
-		   http://www.springframework.org/schema/util 
-		   http://www.springframework.org/schema/util/spring-util-2.0.xsd">
-	
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:util="http://www.springframework.org/schema/util" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 	<!-- Identifier module bean -->
-	<bean id="IdentifierModule" class="org.jhove2.module.identify.IdentifierModule"
-	      scope="prototype">
+	<bean id="IdentifierModule" class="org.jhove2.module.identify.IdentifierModule" scope="prototype">
+		<constructor-arg ref="IdentifierAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
@@ -22,10 +13,9 @@
 		<property name="sourceIdentifier" ref="DROIDIdentifier"/>
 		<property name="shouldSkipIdentifyIfPreIdentified" value="true"/>
 	</bean>
-	      
 	<!-- DROID identifier bean -->
-	<bean id="DROIDIdentifier" class="org.jhove2.module.identify.DROIDIdentifier"
-	      scope="prototype">
+	<bean id="DROIDIdentifier" class="org.jhove2.module.identify.DROIDIdentifier" scope="prototype">
+		<constructor-arg ref="BaseModuleAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
@@ -37,21 +27,16 @@
 		<property name="sigFileName" value="DROID_SignatureFile_V20.xml"/>
 		<property name="wrappedProduct" ref="DROIDWrappedProduct"/>
 	</bean>
-	
-	
-   <!-- DROID Wrapped Product bean -->
-   <bean id="DROIDWrappedProduct" class="org.jhove2.core.WrappedProduct" scope="singleton" >
-      	<property name="name" value="DROID"/>
-      	<property name="version" value="4.0.0"/>
-      	<property name="releaseDate" value="2009-07-23"/>
-      	<property name="rightsStatement" value="BSD license"/>    
-   		<property name="authority" value="The National Archives, Digital Preservation Department  http://www.nationalarchives.gov.uk/"/>
-   		<property name="environments" value="Unix Windows Macintosh"/>
-   		<property name="languages" value="JAVA"/>  		
-   		<property name="note" value="The DROID Signature and Configuration files in the JHOVE2 distribution have been edited to, among other things, detect additional signatures for formats"/>
-	    <property name="openSource" value="true"/>
+	<!-- DROID Wrapped Product bean -->
+	<bean id="DROIDWrappedProduct" class="org.jhove2.core.WrappedProduct" scope="singleton" >
+		<property name="name" value="DROID"/>
+		<property name="version" value="4.0.0"/>
+		<property name="releaseDate" value="2009-07-23"/>
+		<property name="rightsStatement" value="BSD license"/>
+		<property name="authority" value="The National Archives, Digital Preservation Department http://www.nationalarchives.gov.uk/"/>
+		<property name="environments" value="Unix Windows Macintosh"/>
+		<property name="languages" value="JAVA"/>
+		<property name="note" value="The DROID Signature and Configuration files in the JHOVE2 distribution have been edited to, among other things, detect additional signatures for formats"/>
+		<property name="openSource" value="true"/>
 	</bean>
-	
-          
-	            
-</beans>		   
+</beans>

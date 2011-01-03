@@ -40,16 +40,21 @@ import java.util.zip.Adler32;
 
 import org.jhove2.core.Digest;
 
+import com.sleepycat.persist.model.NotPersistent;
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * JHOVE2 Adler-32 message digester.
  * 
  * @author mstrong, slabrams
  */
+@Persistent
 public class Adler32Digester extends AbstractArrayDigester {
 	/** Algorothm name. */
 	public static final String ALGORITHM = "Adler-32";
 
 	/** Alder-32 digester. */
+	@NotPersistent
 	protected Adler32 digester;
 
 	/**

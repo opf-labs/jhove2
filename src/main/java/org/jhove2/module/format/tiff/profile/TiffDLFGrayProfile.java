@@ -41,11 +41,15 @@ import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
 import org.jhove2.module.format.tiff.TiffIFD;
+import org.jhove2.persist.FormatProfileAccessor;
+
+import com.sleepycat.persist.model.Persistent;
 
 /**
  * @author MStrong
  * 
  */
+@Persistent
 public class TiffDLFGrayProfile extends TiffDLFProfile {
 
     /** Profile version identifier. */
@@ -61,8 +65,18 @@ public class TiffDLFGrayProfile extends TiffDLFProfile {
     /** Profile validation coverage. */
     public static final Coverage COVERAGE = Coverage.Inclusive;
 
-    public TiffDLFGrayProfile(Format format) {
-        super(format);
+    /**
+     * 
+     * @param format
+     * @param formatProfileAccessor
+     */
+    public TiffDLFGrayProfile(Format format, FormatProfileAccessor formatProfileAccessor) {
+        super(format, formatProfileAccessor);
+    }
+    
+    @SuppressWarnings("unused")
+	private TiffDLFGrayProfile(){
+    	this(null,null);
     }
 
     /*

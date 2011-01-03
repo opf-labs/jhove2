@@ -52,6 +52,7 @@ import javax.annotation.Resource;
 import org.jhove2.app.util.FeatureConfigurationUtil;
 import org.jhove2.core.JHOVE2Exception;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -61,6 +62,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @author smorrissey
  *
  */
+@Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath*:**/test-config.xml", 
 "classpath*:**/filepaths-config.xml"})

@@ -42,6 +42,8 @@ import java.util.SortedSet;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.reportable.AbstractReportable;
 
+import com.sleepycat.persist.model.Persistent;
+
 
 /**
  * Thin container for SGML document properties extracted by parser engine
@@ -49,6 +51,7 @@ import org.jhove2.core.reportable.AbstractReportable;
  * @author smorrissey
  *
  */
+@Persistent
 public class SgmlDocumentProperties extends AbstractReportable {
     protected boolean isSgmlValid; // is this a conforming SGML file; indicated by presence of "C" command at end of file    
     protected boolean foundDoctype;
@@ -114,7 +117,12 @@ public class SgmlDocumentProperties extends AbstractReportable {
     protected List<String> sgmlParserConfigSettings;
     protected List<String> parseErrors;
 
-    
+    /**
+     * Constructor
+     */
+    public SgmlDocumentProperties(){
+    	super();
+    }
 	/**
 	 * @return boolean indicating if DOCTYPE statement was determines
 	 */

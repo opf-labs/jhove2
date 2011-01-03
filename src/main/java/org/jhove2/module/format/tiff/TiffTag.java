@@ -45,6 +45,8 @@ import java.util.TreeSet;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * Tiff Tags. Tags are initialized from a properties file in the
  * form:
@@ -60,6 +62,7 @@ import org.jhove2.core.JHOVE2Exception;
  * 
  * @author mstrong
  */
+@Persistent
 public class TiffTag implements Comparable<TiffTag> {
 
     /** Singleton TIFF Tag. */
@@ -112,6 +115,8 @@ public class TiffTag implements Comparable<TiffTag> {
         this.version = version;
     }
 
+    @SuppressWarnings("unused")
+	private TiffTag(){}
 
     /**
      * 

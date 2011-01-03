@@ -44,11 +44,15 @@ import org.jhove2.core.format.Format;
 import org.jhove2.module.format.tiff.IFDEntry;
 import org.jhove2.module.format.tiff.TiffIFD;
 import org.jhove2.module.format.tiff.type.AsciiArray;
+import org.jhove2.persist.FormatProfileAccessor;
+
+import com.sleepycat.persist.model.Persistent;
 
 /**
  * @author MStrong
  * 
  */
+@Persistent
 public class TiffITLWP2Profile extends TiffItProfile {
 
     /** Profile version identifier. */
@@ -67,8 +71,13 @@ public class TiffITLWP2Profile extends TiffItProfile {
     /** invalid BitsPerExtendedRunLength message */
     protected Message invalidBitsPerExtendedRunLengthMessage;
 
-    public TiffITLWP2Profile(Format format) {
-        super(format);
+    public TiffITLWP2Profile(Format format, FormatProfileAccessor formatProfileAccessor) {
+       super(format, formatProfileAccessor);
+    }
+    
+    @SuppressWarnings("unused")
+	private TiffITLWP2Profile(){
+    	this(null,null);
     }
 
     /*

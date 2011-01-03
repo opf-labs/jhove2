@@ -38,12 +38,15 @@ package org.jhove2.module.digest;
 
 import org.jhove2.core.reportable.AbstractReportable;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * Abstract JHOVE2 algorithm-specific message digester that operates on a byte
  * array.
  * 
  * @author mstrong, slabrams
  */
+@Persistent
 public abstract class AbstractArrayDigester extends AbstractReportable implements ArrayDigester {
 	/** Message digest algorithm. */
 	protected String algorithm;
@@ -59,6 +62,7 @@ public abstract class AbstractArrayDigester extends AbstractReportable implement
 	 *            Message digest algorithm
 	 */
 	public AbstractArrayDigester(String algorithm) {
+		this();
 		this.algorithm = algorithm;
 	}
 

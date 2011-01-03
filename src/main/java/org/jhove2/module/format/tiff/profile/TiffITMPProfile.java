@@ -45,11 +45,15 @@ import org.jhove2.module.format.tiff.IFDEntry;
 import org.jhove2.module.format.tiff.TiffIFD;
 import org.jhove2.module.format.tiff.type.AsciiArray;
 import org.jhove2.module.format.tiff.type.Short;
+import org.jhove2.persist.FormatProfileAccessor;
+
+import com.sleepycat.persist.model.Persistent;
 
 /**
  * @author MStrong
  * 
  */
+@Persistent
 public class TiffITMPProfile extends TiffItProfile {
 
     /** Profile version identifier. */
@@ -68,8 +72,13 @@ public class TiffITMPProfile extends TiffItProfile {
     /** invalid RasterPadding message */
     protected Message invalidRasterPaddingValueMessage;
 
-    public TiffITMPProfile(Format format) {
-        super(format);
+    public TiffITMPProfile(Format format, FormatProfileAccessor formatProfileAccessor) {
+       super(format, formatProfileAccessor);
+    }
+    
+    @SuppressWarnings("unused")
+	private TiffITMPProfile(){
+    	this(null,null);
     }
 
     /*

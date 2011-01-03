@@ -54,12 +54,16 @@ import org.jhove2.module.format.icc.ICCHeader;
 import org.jhove2.module.format.icc.ICCModule;
 import org.jhove2.module.format.icc.ICCTag;
 import org.jhove2.module.format.icc.ICCTagTable;
+import org.jhove2.persist.FormatProfileAccessor;
+
+import com.sleepycat.persist.model.Persistent;
 
 /** ICC three component matrix-based display profile, as defined in
  * ICC.1:2004-10, \u00a7 8.4.3.
  * 
  * @author slabrams
  */
+@Persistent
 public class ThreeComponentMatrixBasedDisplayProfile
     extends AbstractFormatProfile
     implements Validator
@@ -89,15 +93,21 @@ public class ThreeComponentMatrixBasedDisplayProfile
     
     /** Instantiate a new <code>ThreeComponentMatrixBasedDisplayProfile</code>
      * @param format Profile format
+     * @param formatProfileAccessor persistence manager
      */
-    public ThreeComponentMatrixBasedDisplayProfile(Format format)
+    public ThreeComponentMatrixBasedDisplayProfile(Format format, FormatProfileAccessor formatProfileAccessor)
     {
-        super(VERSION, RELEASE, RIGHTS, format);
+        super(VERSION, RELEASE, RIGHTS, format, formatProfileAccessor);
         
         this.isValid = Validity.Undetermined;
         this.missingRequiredTagMessages = new ArrayList<Message>();
     }
 
+    @SuppressWarnings("unused")
+    private ThreeComponentMatrixBasedDisplayProfile(){
+    	this(null,null);
+    }
+    
     /** Validate the profile.
      * @param jhove2 JHOVE2 framework
      * @param source ICC source unit
@@ -109,8 +119,8 @@ public class ThreeComponentMatrixBasedDisplayProfile
     public Validity validate(JHOVE2 jhove2, Source source, Input input)
         throws JHOVE2Exception
     {
-        if (this.module != null) {
-            ICCHeader   header = ((ICCModule) this.module).getHeader();
+        if (this.getFormatModule() != null) {
+            ICCHeader   header = ((ICCModule) this.getFormatModule()).getHeader();
             String pcs = header.getProfileConnectionSpace_raw();
             if (pcs == null || !pcs.equals("XYZ ")) {
                 this.isValid = Validity.False;
@@ -121,7 +131,7 @@ public class ThreeComponentMatrixBasedDisplayProfile
                         args, jhove2.getConfigInfo());
             }
             
-            ICCTagTable table = ((ICCModule) this.module).getTagTable();
+            ICCTagTable table = ((ICCModule) this.getFormatModule()).getTagTable();
             if (table != null) {
                 if (table.hasCommonRequirements()) {
                     this.isValid = Validity.True;

@@ -41,10 +41,12 @@ import java.util.ArrayList;
 import org.antlr.runtime.ANTLRFileStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
+import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
+import org.jhove2.core.source.Source;
 import org.jhove2.util.CopyUtils;
 
 /**
@@ -70,13 +72,14 @@ public class OpenSpMessageParser {
 	/**
 	 * Invokes ANTLR-generated grammar class to parse OpenSP-generated .err file
 	 * @param messageFilePath path to OpenSP-generated .err file
-	 * @param sgm SGML module with Source object to which Messages may be added as required
+	 * @param JHOVE2 jhove2 object with ConfigInfo
+	 * @param Source object to which messages may be attached
 	 * @return SgmlParseMessagesParser with extracted message info
 	 * @throws JHOVE2Exception
 	 * @throws IOException 
 	 * @throws RecognitionException 
 	 */
-	public SgmlParseMessagesParser parseMessageFile(String messageFilePath, SgmlModule sgm)
+	public SgmlParseMessagesParser parseMessageFile(String messageFilePath,  JHOVE2 jhove2, Source source)
 	throws JHOVE2Exception, IOException, RecognitionException {
 		SgmlParseMessagesLexer lex = null;
 		SgmlParseMessagesParser parser = null;
@@ -93,8 +96,8 @@ public class OpenSpMessageParser {
 					Context.PROCESS,
 					"org.jhove2.module.format.sgml.OpenSpMessageParser.IOExceptionForOpenSpMessageLexer",
 					messageArgs,
-					sgm.jhove2.getConfigInfo());
-			sgm.source.addMessage(message);
+					jhove2.getConfigInfo());
+			source=source.addMessage(message);
 			throw e;
 		}
 		CommonTokenStream tokens = new CommonTokenStream(lex);
@@ -112,8 +115,8 @@ public class OpenSpMessageParser {
 					Context.PROCESS,
 					"org.jhove2.module.format.sgml.OpenSpMessageParser.RecognitionExceptionForOpenSpMessageLexer",
 					messageArgs,
-					sgm.jhove2.getConfigInfo());
-			sgm.source.addMessage(message);
+					jhove2.getConfigInfo());
+			source=source.addMessage(message);
 			throw e;
 		}
 		return parser;

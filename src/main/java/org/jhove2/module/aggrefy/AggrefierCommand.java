@@ -42,7 +42,6 @@ import java.util.Set;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
-import org.jhove2.core.TimerInfo;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.io.Input;
@@ -50,6 +49,9 @@ import org.jhove2.core.source.AggregateSource;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractCommand;
+import org.jhove2.persist.ModuleAccessor;
+
+import com.sleepycat.persist.model.Persistent;
 
 /**
  * Command to execute identifier on AggregateSource objects, to detect any
@@ -57,6 +59,7 @@ import org.jhove2.module.AbstractCommand;
  * 
  * @author smorrissey
  */
+@Persistent
 public class AggrefierCommand
 	extends AbstractCommand
 {
@@ -77,7 +80,15 @@ public class AggrefierCommand
 	/** Instantiate a new <code>AggrefierCommand</code>.
 	 */
 	public AggrefierCommand(){
-		super(VERSION, RELEASE, RIGHTS, Scope.Generic);
+		this(null);
+	}
+	
+	/**
+	 * Instantiate a new <code>AggrefierCommand</code>.
+	 * @param moduleAccessor Persistence manager
+	 */
+	public AggrefierCommand(ModuleAccessor moduleAccessor){
+		super(VERSION, RELEASE, RIGHTS, Scope.Generic, moduleAccessor);
 	}
 
 	/**
@@ -99,14 +110,13 @@ public class AggrefierCommand
 			try {
 				Aggrefier aggrefier = 
 					this.getAggrefierFactory().getAggrefier();
-				TimerInfo timer = aggrefier.getTimerInfo();
-				timer.setStartTime();
+				aggrefier = (Aggrefier) aggrefier.getModuleAccessor().startTimerInfo(aggrefier);
 				try {
 	                /* Register the aggrefying modules. */
-					source.addModule(aggrefier);
+					aggrefier=(Aggrefier) source.addModule(aggrefier);
 	                List<Recognizer> recognizers = aggrefier.getRecognizers();
 	                for (Recognizer recognizer : recognizers) {
-	                	source.addModule(recognizer);
+	                	recognizer=(Recognizer) source.addModule(recognizer);
 	                }
 	                
 	                /* Identify the aggregate. */
@@ -117,12 +127,12 @@ public class AggrefierCommand
 							/* Make clump child of source, and remove clump's
 							 * children as direct children of source.
 							 */
-							source.addChildSource(clumpSource);				
+							clumpSource = (ClumpSource) source.addChildSource(clumpSource);				
 							for (Source src:clumpSource.getChildSources()){
-								source.deleteChildSource(src);					
+								src=source.deleteChildSource(src);					
 							}
 							/* Characterize the ClumpSource. */
-							jhove2.characterize(clumpSource, null);
+							clumpSource = (ClumpSource) jhove2.characterize(clumpSource,null);
 						}
 						/* Determine if the addition of clump sources at this level
 						 * results new possible clump sources.
@@ -136,7 +146,7 @@ public class AggrefierCommand
 					} while (clumpSources.size()>0);
 				}
 				finally {
-					timer.setEndTime();
+					aggrefier = (Aggrefier) aggrefier.getModuleAccessor().endTimerInfo(aggrefier);
 				}
 			}
 			catch (IOException e) {
@@ -152,7 +162,7 @@ public class AggrefierCommand
 						"org.jhove2.module.aggrefy.AggrefierCommand.IOException",
 						messageArgs,
 						jhove2.getConfigInfo());
-				source.addMessage(message);
+				source=source.addMessage(message);
 			}
 		}	
 		return;

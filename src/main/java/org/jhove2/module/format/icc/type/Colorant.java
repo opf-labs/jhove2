@@ -34,10 +34,13 @@
 
 package org.jhove2.module.format.icc.type;
 
+import com.sleepycat.persist.model.Persistent;
+
 /** ICC colorant, as defined in ICC.1:2004-10, \u00a7 10.4.
  * 
  * @author slabrams
  */
+@Persistent
 public class Colorant
 {
     /** Colorant name. */
@@ -46,11 +49,15 @@ public class Colorant
     /** Colorant Profile Connection Space (PCS) value. */
     protected PCSNumber pcs;
     
+    private Colorant(){
+    	super();
+    }
     /** Instantiate a new <code>Colorant</code>.
      * @param name Colorant name
      * @param pcs  Colorant Profile Connection Space (PCS) value.
      */
     public Colorant(String name, PCSNumber pcs) {
+    	this();
         this.name = name;
         this.pcs  = pcs;
     }

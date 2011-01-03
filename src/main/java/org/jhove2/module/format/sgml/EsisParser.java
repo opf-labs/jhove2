@@ -43,10 +43,12 @@ import java.util.List;
 import org.antlr.runtime.ANTLRFileStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
+import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
+import org.jhove2.core.source.Source;
 import org.jhove2.util.CopyUtils;
 
 /**
@@ -68,13 +70,14 @@ public class EsisParser {
 	 * feature information about the SGML file, which will be accessed
 	 * by the SgmlModule class to report properties about the file
 	 * @param esisPath String containing path to onsmls ESIS output
-	 * @param sgm SGML module with Source object to which Messages can be attached if necessary
+	 * @param JHOVE2 jhove2 object with ConfigInfo
+	 * @param Source object to which messages may be attached
 	 * @return parser object with information about the SGML instance.
 	 * @throws JHOVE2Exception
 	 * @throws IOException 
 	 * @throws RecognitionException 
 	 */
-	public ESISCommandsParser parseEsisFile(String esisPath, SgmlModule sgm)
+	public ESISCommandsParser parseEsisFile(String esisPath, JHOVE2 jhove2, Source source)
 	throws JHOVE2Exception, IOException, RecognitionException {
 		ESISCommandsLexer lex = null;
 		ESISCommandsParser parser = null;
@@ -91,8 +94,8 @@ public class EsisParser {
 					Context.PROCESS,
 					"org.jhove2.module.format.sgml.EsisParser.IOExceptionForEsisLexer",
 					messageArgs,
-					sgm.jhove2.getConfigInfo());
-			sgm.source.addMessage(message);
+					jhove2.getConfigInfo());
+			source=source.addMessage(message);
 			throw e;
 		}
 		CommonTokenStream tokens = new CommonTokenStream(lex);
@@ -110,8 +113,8 @@ public class EsisParser {
 					Context.PROCESS,
 					"org.jhove2.module.format.sgml.EsisParser.RecognitionExceptionForEsisLexer",
 					messageArgs,
-					sgm.jhove2.getConfigInfo());
-			sgm.source.addMessage(message);
+					jhove2.getConfigInfo());
+			source=source.addMessage(message);
 			throw e;
 		}
 		return parser;		

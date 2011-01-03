@@ -1,20 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:util="http://www.springframework.org/schema/util"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-	   xsi:schemaLocation="http://www.springframework.org/schema/beans 
-           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-           http://www.springframework.org/schema/context
-           http://www.springframework.org/schema/context/spring-context-2.5.xsd
-		   http://www.springframework.org/schema/util 
-		   http://www.springframework.org/schema/util/spring-util-2.0.xsd">
-	
-			     	
-
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:util="http://www.springframework.org/schema/util" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 	<!-- Zip module bean -->
-	<bean id="ZipModule" class="org.jhove2.module.format.zip.ZipModule"
-	      scope="prototype">
-	    <constructor-arg ref="ZipFormat"/>
+	<bean id="ZipModule" class="org.jhove2.module.format.zip.ZipModule" scope="prototype">
+		<constructor-arg ref="ZipFormat"/>
+		<constructor-arg ref="FormatModuleAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
@@ -23,7 +12,6 @@
 			</list>
 		</property>
 	</bean>
-      
 	<!-- Zip format bean -->
 	<bean id="ZipFormat" class="org.jhove2.core.format.Format" scope="singleton">
 		<constructor-arg type="java.lang.String" value="Zip"/>
@@ -36,36 +24,29 @@
 			</set>
 		</property>
 	</bean>
-		
-	<!-- Zip identifier bean -->  
+	<!-- Zip identifier bean -->
 	<bean id="ZipIdentifier" class="org.jhove2.core.I8R" scope="singleton">
 		<constructor-arg type="java.lang.String" value="http://jhove2.org/terms/format/zip"/>
 	</bean>
-	
 	<!-- PUID x-fmt/263 aliasIdentifier bean -->
 	<bean id="PUIDxfmt263" class="org.jhove2.core.I8R" scope="singleton">
-	    <constructor-arg type="java.lang.String" value="x-fmt/263"/>
-	    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
+		<constructor-arg type="java.lang.String" value="x-fmt/263"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
 	</bean>
-							    
-	<!-- Zip local file header general purpose bit flags properties bean --> 
+	<!-- Zip local file header general purpose bit flags properties bean -->
 	<bean id="BitFlags" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
 		<property name="propertyFileBaseName" value="bit-flags"/>
-	</bean> 	   
-		    
-	<!-- Zip local file header version compatibilities properties bean --> 
+	</bean>
+	<!-- Zip local file header version compatibilities properties bean -->
 	<bean id="Compatibilities" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
 		<property name="propertyFileBaseName" value="compatibilities"/>
-	</bean> 	   
-							    
-	<!-- Zip local file header version compression methods properties bean --> 
+	</bean>
+	<!-- Zip local file header version compression methods properties bean -->
 	<bean id="CompressionMethods" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
 		<property name="propertyFileBaseName" value="compression-methods"/>
-	</bean> 	   
-		    
-	<!-- Zip local file header versions properties bean --> 
+	</bean>
+	<!-- Zip local file header versions properties bean -->
 	<bean id="Versions" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
 		<property name="propertyFileBaseName" value="versions"/>
-	</bean> 	   
-
-</beans>		   
+	</bean>
+</beans>

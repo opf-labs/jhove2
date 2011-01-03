@@ -38,9 +38,12 @@ package org.jhove2.module.assess;
 
 import java.util.List;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * A container for a set of rules that are associated with a particular type of object .
  */
+@Persistent
 public class RuleSet {
 
     /** The name of the RuleSet. (Should be unique) */

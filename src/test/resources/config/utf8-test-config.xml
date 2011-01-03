@@ -14,6 +14,7 @@
 	<bean id="TestUtf8Module" class="org.jhove2.module.format.utf8.UTF8Module"
 	      scope="prototype">
 	    <constructor-arg ref="UTF8Format"/>
+	    <constructor-arg ref="FormatModuleAccessor"/>
 	     <property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>

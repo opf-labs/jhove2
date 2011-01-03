@@ -38,12 +38,14 @@ package org.jhove2.core;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.reportable.AbstractReportable;
+import com.sleepycat.persist.model.Persistent;
 
 /**
  * Message digest algorithm and value.
  * 
  * @author mstrong, slabrams
  */
+@Persistent
 public class Digest
     extends AbstractReportable
     implements Comparable<Digest>
@@ -66,6 +68,10 @@ public class Digest
 	    super();
 		this.value = value;
 		this.algorithm = algorithm;
+	}
+	
+	public Digest(){
+		this(null, null);
 	}
 
 	/**

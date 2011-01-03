@@ -49,14 +49,19 @@ import org.jhove2.core.app.AbstractApplication;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.io.Input.Type;
 import org.jhove2.core.source.Source;
-import org.jhove2.core.source.SourceFactory;
 import org.jhove2.module.display.Displayer;
+import org.jhove2.persist.ApplicationModuleAccessor;
+import org.jhove2.persist.PersistenceManager;
+import org.jhove2.persist.PersistenceManagerUtil;
+
+import com.sleepycat.persist.model.Persistent;
 
 /**
  * Official JHOVE2 command line application.
  * 
  * @author mstrong, slabrams, smorrissey
  */
+@Persistent
 public class JHOVE2CommandLine
 extends AbstractApplication
 {
@@ -78,6 +83,7 @@ extends AbstractApplication
 	/** Caught exception return code. */
 	public static final int EEXCEPTION = -1;
 
+	protected String persistenceMgrFactoryName;
 	/**
 	 * Instantiate a new <code>JHOVE2CommandLine</code>.
 	 * @throws JHOVE2Exception 
@@ -89,7 +95,22 @@ extends AbstractApplication
 		 * JHOVE2 default settings, and the JHOVE2 default displayer with
 		 * default displayer settings.
 		 */
-		super(VERSION, RELEASE, RIGHTS, Scope.Generic);
+		this(null);
+	}
+	
+	/**
+	 * Instantiate a new <code>JHOVE2CommandLine</code>.
+	 * @param ApplicationModuleAccessor
+	 * @throws JHOVE2Exception 
+	 */
+	public JHOVE2CommandLine(ApplicationModuleAccessor applicationModuleAccessor)
+	throws JHOVE2Exception
+	{
+		/* Super constructor creates {@link org.jhove2.core.AppConfigInfo} with
+		 * JHOVE2 default settings, and the JHOVE2 default displayer with
+		 * default displayer settings.
+		 */
+		super(VERSION, RELEASE, RIGHTS, Scope.Generic, applicationModuleAccessor);
 	}
 
 	/**
@@ -97,19 +118,34 @@ extends AbstractApplication
          * {@linkplain org.jhove2.core.source.FileSetSource file set source unit}
          * from the files specified on the command line. This file set is passed to
          * the {@link JHOVE2} object for characterization; this initiates a search for
-         * all unitary and aggregate source units within the file set; these are characterizaed
+         * all unitary and aggregate source units within the file set; these are characterized
          * in turn.
 	 * 
 	 * @param args Command line arguments
 	 */
 	public static void main(String[] args)
 	{	
+		PersistenceManager persistenceManager = null;
 		try {
 			SpringConfigInfo factory = new SpringConfigInfo();
-
+			// Create PersistenceManagerFactory; will be used by ApplicationModuleAccessor to
+			// manage persistence
+			PersistenceManagerUtil.createPersistenceManagerFactory(factory);
+			persistenceManager = PersistenceManagerUtil.getPersistenceManagerFactory().getInstance();
+			persistenceManager.initialize();
+			
 			/* Create and initialize the JHOVE2 command-line application. */
 
-			JHOVE2CommandLine app = new JHOVE2CommandLine();
+			/* Create and initialize the JHOVE2 command-line application. */
+			JHOVE2CommandLine app = SpringConfigInfo.getReportable(JHOVE2CommandLine.class, 
+					"JHOVE2CommandLine");
+			// make sure there is a default displayer
+			Displayer displayer = app.getDisplayer();
+			if (displayer==null) {
+				Class defaultDisplayerClass = Class.forName(Displayer.DEFAULT_DISPLAYER_CLASS);
+				displayer = SpringConfigInfo.getReportable(defaultDisplayerClass, "Text");
+				displayer = app.setDisplayer(displayer);
+			}
 			app.getDisplayer().setConfigInfo(factory);
 			app.setDateTime(new Date());
 
@@ -117,8 +153,10 @@ extends AbstractApplication
 			 * Spring-wired) settings in {@link org.jhove2.core.AppConfigInfo}
 			 * with any command line options.
 			 */
-			List<String> pathNames = app.parse(args); 
-
+			List<String> pathNames = app.parse(args); 	
+			app = (JHOVE2CommandLine) app.getModuleAccessor().persistModule(app);
+			
+			
 			/* Create and initialize the JHOVE2 framework and register it with
 			 * the application.
 			 */		
@@ -132,38 +170,52 @@ extends AbstractApplication
 			 * URLS specified on the command line, or a single File, Directory, or
 			 * URL if only one is specified.
 			 */
-			Source source = SourceFactory.getSource(pathNames,
+			Source source = jhove2.getSourceFactory().getSource(pathNames,
 					jhove2.getInvocation().getTempPrefix(), 
 					jhove2.getInvocation().getTempSuffix(), 
 					jhove2.getInvocation().getBufferSize());
-			source.addModule(app);
-			source.addModule(jhove2);
-			source.addModule(app.getDisplayer());
+			app=(JHOVE2CommandLine) source.addModule(app);
+			jhove2=(JHOVE2) source.addModule(jhove2);
+			displayer = app.getDisplayer(); // displayer might have been updated by parse method;
+			displayer.setConfigInfo(factory);
+			displayer = (Displayer) source.addModule(displayer);
+			displayer = app.setDisplayer(displayer );	// this will persist the updated Displayer linked to app				 				
+			  
+			/* Characterize the FileSet source unit (and all subsidiary
+			 * source units that it encapsulates.
+			 */			
+			jhove2 = (JHOVE2) jhove2.getModuleAccessor().startTimerInfo(jhove2);
+			Input input = source.getInput(jhove2);
+	            try {
+	            	source=jhove2.characterize(source, input);
+	            }
+	            finally {
+	                if (input != null) {
+	                    input.close();
+	                }
+	            }			
+			jhove2 = (JHOVE2) jhove2.getModuleAccessor().endTimerInfo(jhove2);
 			
-			/* Characterize the source unit (and any subsidiary source units
-			 * that it may encapsulate).
+			/* Display characterization information for the FileSet.
 			 */
-			TimerInfo timer = jhove2.getTimerInfo();
-			timer.setStartTime();;
-
-            Input input = source.getInput(jhove2);
-            try {
-                jhove2.characterize(source, input);
-            }
-            finally {
-                if (input != null) {
-                    input.close();
-                }
-            }
-			timer.setEndTime();
-
-			/* Display characterization information for the source unit. */
 			app.getDisplayer().display(source);
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace(System.err);
 			System.exit(EEXCEPTION);
+		}
+		finally{
+			if (persistenceManager != null){
+				try{
+					persistenceManager.close();
+				}
+				catch (JHOVE2Exception je){
+					System.err.println(je.getMessage());
+					je.printStackTrace(System.err);
+					System.exit(EEXCEPTION);
+				}
+			}
 		}
 	}
 
@@ -275,8 +327,9 @@ extends AbstractApplication
 							displayerType);
 				}
 				else {
-					setDisplayer((Displayer)SpringConfigInfo.getReportable(Displayer.class,
-							displayerType));
+					Displayer displayer = (Displayer)SpringConfigInfo.getReportable(Displayer.class,
+							displayerType);
+					displayer = this.setDisplayer(displayer);
 				}
 			}
 
@@ -309,15 +362,16 @@ extends AbstractApplication
 		}
 		/* Displayer will have been set either to Default displayer by constructor,
 		 * or to some other displayer by the handling of the displayerType0 option above */
+		Displayer displayer = this.getDisplayer();
 		if ((Boolean)parser.getOptionValue(showIdentifiersO) != null) {
 			showIdentifiers = true;
-			this.getDisplayer().setShowIdentifiers(showIdentifiers);
+			displayer.setShowIdentifiers(showIdentifiers);
 		}  
 		if ((tempDirectory = (String)parser.getOptionValue(tempDirectoryO)) != null) {
 			config.setTempDirectory(tempDirectory);
 		}
 		if ((filePathname = (String)parser.getOptionValue(filePathnameO)) != null) {
-			this.getDisplayer().setFilePathname(filePathname);
+			displayer.setFilePathname(filePathname);
 		}
 		if ((Boolean)parser.getOptionValue(deleteTempFilesO) != null) {
 			config.setDeleteTempFiles(false);
@@ -326,7 +380,7 @@ extends AbstractApplication
 			parser.getUsage();
 			System.exit(0);
 		}
-
+		displayer = this.setDisplayer(displayer);
 		/* process remaining arguments 	
 		 */
 		 for ( int i = 0; i < otherArgs.length; ++i ) {
@@ -344,5 +398,19 @@ extends AbstractApplication
 		 }
 
 		 return pathNames;
+	}
+
+	/**
+	 * @return the persistenceMgrFactoryName
+	 */
+	public String getPersistenceMgrFactoryName() {
+		return persistenceMgrFactoryName;
+	}
+
+	/**
+	 * @param persistenceMgrFactoryName the persistenceMgrFactoryName to set
+	 */
+	public void setPersistenceMgrFactoryName(String persistenceMgrFactoryName) {
+		this.persistenceMgrFactoryName = persistenceMgrFactoryName;
 	}
 }

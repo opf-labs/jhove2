@@ -55,6 +55,8 @@ import org.jhove2.core.Message.Severity;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * A class to hold a sorted set of numeric character references (NCRs) that are
  * used to represent Unicode characters, and the counts of how many times each
@@ -63,6 +65,7 @@ import org.jhove2.core.reportable.AbstractReportable;
  * @see http://www.w3.org/International/questions/qa-escapes
  * @see http://unicode.org/standard/principles.html#Assigning_Codes
  */
+@Persistent
 public class NumericCharacterReferenceInformation extends AbstractReportable {
 
     /**
@@ -82,6 +85,10 @@ public class NumericCharacterReferenceInformation extends AbstractReportable {
 
     /** Invalid character for encoding message. */
     protected Message invalidCharacterForEncodingMessage;
+    
+    protected NumericCharacterReferenceInformation(){
+    	super();
+    }
 
     /**
      * Get the NCRs found during XML parsing.

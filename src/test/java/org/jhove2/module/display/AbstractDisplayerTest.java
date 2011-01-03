@@ -46,7 +46,9 @@ import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.Reportable;
 import org.jhove2.core.source.Source;
-import org.jhove2.core.source.SourceFactory;
+import org.jhove2.persist.PersistenceManager;
+import org.jhove2.persist.PersistenceManagerUtil;
+import org.jhove2.persist.inmemory.InMemoryBaseModuleAccessor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -79,13 +81,19 @@ public class AbstractDisplayerTest {
 		} catch (JHOVE2Exception e1) {
 			fail("Could not create base directory");
 		}
+		PersistenceManager persistenceManager = null;
 		try {
+            PersistenceManagerUtil.createPersistenceManagerFactory(JHOVE2.getConfigInfo());
+			persistenceManager = PersistenceManagerUtil.getPersistenceManagerFactory().getInstance();
+			persistenceManager.initialize();
 			String filePath = utf8DirPath.concat(testFile01);
-			Source source = SourceFactory.getSource(filePath);
+			Source source = JHOVE2.getSourceFactory().getSource(filePath);
+			
 			Input  input  = source.getInput(JHOVE2);
-			JHOVE2.characterize(source, input);
+			source = JHOVE2.characterize(source, input);
 			Displayer displayer = SpringConfigInfo.getReportable(Displayer.class,
 					Displayer.DEFAULT_DISPLAYER_TYPE);
+			displayer.setModuleAccessor(new InMemoryBaseModuleAccessor());
 			displayer.setConfigInfo(JHOVE2.getConfigInfo());
 			displayer.display(source);			
 		}

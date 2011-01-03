@@ -40,12 +40,14 @@ package org.jhove2.module.format.xml;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.reportable.AbstractReportable;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
 * This class is used to hold information about the <i>root element</i>
 * discovered during parsing of an XML instance.
 * @author rnanders
 */
-
+@Persistent
 public class RootElement extends AbstractReportable {
 
     /** The processing instruction target. */
@@ -54,6 +56,9 @@ public class RootElement extends AbstractReportable {
     /** The processing instruction data. */
     protected String namespace;
 
+    protected RootElement(){
+    	super();
+    }
     /**
      * Gets the root element name.
      * 

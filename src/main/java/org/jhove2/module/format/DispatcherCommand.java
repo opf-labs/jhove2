@@ -51,6 +51,10 @@ import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractCommand;
 import org.jhove2.module.Module;
+import org.jhove2.persist.FormatModuleAccessor;
+import org.jhove2.persist.ModuleAccessor;
+
+import com.sleepycat.persist.model.Persistent;
 
 /**
  * Module that inspects the presumptive format identifications attached to a
@@ -59,6 +63,7 @@ import org.jhove2.module.Module;
  * 
  * @author smorrissey, rnanders
  */
+@Persistent
 public class DispatcherCommand
     extends AbstractCommand
 {
@@ -77,12 +82,21 @@ public class DispatcherCommand
     protected FormatFactory formatFactory;
     
     protected FormatModuleFactory formatModuleFactory;
+    
+    protected FormatModuleAccessor baseFormatModuleAccessor;
 
     /**
      * Instantiate a new <code>DispatcherCommand</code>.
      */
     public DispatcherCommand() {
-        super(VERSION, RELEASE, RIGHTS, Scope.Generic);
+        this(null);
+    }
+    
+    /**
+     * Instantiate a new <code>DispatcherCommand</code>.
+     */
+    public DispatcherCommand(ModuleAccessor moduleAccessor) {
+        super(VERSION, RELEASE, RIGHTS, Scope.Generic, moduleAccessor);
     }
 
     /**
@@ -136,6 +150,7 @@ public class DispatcherCommand
             	.getFormatModule(id);
             if (module == null) {
                 BaseFormatModule bFormatModule = new BaseFormatModule();
+                bFormatModule.setModuleAccessor(this.getBaseFormatModuleAccessor());
                 String[] parms = new String[] { id.getValue() };
                 bFormatModule.setModuleNotFoundMessage(new Message(
                 	Severity.ERROR,
@@ -143,10 +158,11 @@ public class DispatcherCommand
                 	"org.jhove2.module.format.DispatcherCommand.moduleNotFoundMessage",
                 	(Object[]) parms, jhove2.getConfigInfo()));
                 bFormatModule.setFormat(format);
-                source.addModule(bFormatModule);
+                bFormatModule=(BaseFormatModule) source.addModule(bFormatModule);
             }
             else if (!(module instanceof FormatModule)) {
                 BaseFormatModule bFormatModule = new BaseFormatModule();
+                bFormatModule.setModuleAccessor(this.getBaseFormatModuleAccessor());
                 String[] parms = new String[] { id.getValue() };
                 bFormatModule.setModuleNotFormatModuleMessage(new Message(
                 	Severity.ERROR,
@@ -154,7 +170,7 @@ public class DispatcherCommand
                 	"org.jhove2.module.format.DispatcherCommand.moduleNotFormatModuleMessage",
                 	(Object[]) parms, jhove2.getConfigInfo()));
                 bFormatModule.setFormat(format);
-                source.addModule(bFormatModule);
+                bFormatModule=(BaseFormatModule) source.addModule(bFormatModule);
             }
             else {
                 FormatModule formatModule = (FormatModule) module;
@@ -164,7 +180,10 @@ public class DispatcherCommand
                 if (!visitedModules.contains(formatModule
                         .getReportableIdentifier())) {
                     visitedModules.add(formatModule.getReportableIdentifier());
+                    formatModule = (FormatModule) formatModule.getModuleAccessor().startTimerInfo(formatModule);
+                    formatModule = (FormatModule) source.addModule(formatModule);
                     formatModule.invoke(jhove2, source, input);
+                    formatModule = (FormatModule) formatModule.getModuleAccessor().endTimerInfo(formatModule);
                 }
             }
         }
@@ -196,5 +215,20 @@ public class DispatcherCommand
 	 */
 	public void setFormatModuleFactory(FormatModuleFactory formatModuleFactory) {
 		this.formatModuleFactory = formatModuleFactory;
+	}
+
+	/**
+	 * @return the baseFormatModuleAccessor
+	 */
+	public FormatModuleAccessor getBaseFormatModuleAccessor() {
+		return baseFormatModuleAccessor;
+	}
+
+	/**
+	 * @param baseFormatModuleAccessor the baseFormatModuleAccessor to set
+	 */
+	public void setBaseFormatModuleAccessor(
+			FormatModuleAccessor baseFormatModuleAccessor) {
+		this.baseFormatModuleAccessor = baseFormatModuleAccessor;
 	}
 }

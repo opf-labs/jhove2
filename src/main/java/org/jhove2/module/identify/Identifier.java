@@ -74,13 +74,15 @@ public interface Identifier
 	/**
 	 * Get file source identifier module.
 	 * @return File source identifier module
+	 * @throws JHOVE2Exception
 	 */
 	public SourceIdentifier getSourceIdentifier() throws JHOVE2Exception;
 	/**
 	 * Set file source identifier module
 	 * @param sourceIdentifier
 	 * @return SourceIdentifier attached to Identifer
+	 * @throws JHOVE2Exception
 	 */
-	public void setSourceIdentifier(SourceIdentifier fileSourceIdentifier);
+	public SourceIdentifier setSourceIdentifier(SourceIdentifier fileSourceIdentifier) throws JHOVE2Exception;
 
 }

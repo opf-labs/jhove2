@@ -46,6 +46,7 @@ import javax.annotation.Resource;
 
 import org.jhove2.app.util.FeatureConfigurationUtil;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.persist.inmemory.InMemorySourceFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -77,7 +78,8 @@ public class FileSourceTest {
 		}
 		String filePath = utf8DirPath.concat(testFile01);
 		try {
-			Source source = SourceFactory.getSource(filePath);
+			SourceFactory factory = new InMemorySourceFactory();
+			Source source = factory.getSource(filePath);
 			InputStream inputStream = source.getInputStream();
 			long fileSize = source.getFile().length();
 			long inputStreamCount = 0L;

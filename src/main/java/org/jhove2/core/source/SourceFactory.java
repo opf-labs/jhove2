@@ -33,31 +33,26 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.jhove2.core.source;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import org.jhove2.core.Invocation;
+import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.persist.SourceAccessor;
 
 /**
- * Factory for JHOVE2 file and directory source units.
- * 
- * @author mstrong, slabrams, smorrissey
+ * @author smorrissey
+ *
  */
-public class SourceFactory
-{
+public interface SourceFactory {
+
 	/**
 	 * Get source unit from a file system path name.
 	 * 
@@ -70,12 +65,9 @@ public class SourceFactory
 	 *             I/O exception instantiating source
 	 * @throws JHOVE2Exception 
 	 */
-	public static synchronized Source getSource(String pathName)
-		throws FileNotFoundException, IOException, JHOVE2Exception
-	{
-		return getSource(new File(pathName));
-	}
-
+	public Source getSource(String pathName)
+	throws FileNotFoundException, IOException, JHOVE2Exception;
+	
 	/**
 	 * Get source unit from a Java {@link java.io.File}.
 	 * 
@@ -88,15 +80,8 @@ public class SourceFactory
 	 *             I/O exception instantiating source
 	 * @throws JHOVE2Exception 
 	 */
-	public static synchronized Source getSource(File file)
-		throws FileNotFoundException, IOException, JHOVE2Exception
-	{
-		if (file.isDirectory()) {
-			return new DirectorySource(file);
-		}
-
-		return new FileSource(file);
-	}
+	public Source getSource(File file)
+		throws FileNotFoundException, IOException, JHOVE2Exception;
 
 	/**
 	 * Get source unit from a URL by creating a local temporary file.
@@ -112,14 +97,11 @@ public class SourceFactory
 	 * @return Source unit
 	 * @throws IOException
 	 *             I/O exception instantiating source
+	 * @throws JHOVE2Exception 
 	 */
-	public static synchronized Source getSource(String tmpPrefix,
-			                                    String tmpSuffix,
+	public Source getSource(String tmpPrefix,String tmpSuffix,
 			                                    int bufferSize, URL url)
-		throws IOException
-	{
-		return new URLSource(tmpSuffix, tmpSuffix, bufferSize, url);
-	}
+	throws IOException, JHOVE2Exception;
 
 	/**
 	 * Get source unit from a Zip file entry by creating a temporary file.
@@ -137,20 +119,13 @@ public class SourceFactory
 	 * @return Source unit
 	 * @throws IOException
 	 *             I/O exception instantiating source
+	 * @throws JHOVE2Exception 
 	 */
-	public static synchronized Source getSource(String tmpPrefix,
+	public Source getSource(String tmpPrefix,
 			                                    String tmpSuffix,
 			                                    int bufferSize, ZipFile zip,
 			                                    ZipEntry entry)
-		throws IOException
-	{
-		InputStream stream = zip.getInputStream(entry);
-		if (entry.isDirectory()) {
-			return new ZipDirectorySource(stream, entry);
-		}
-
-		return new ZipFileSource(tmpSuffix, tmpSuffix, bufferSize, stream, entry);
-	}	
+		throws IOException, JHOVE2Exception;
 
 	/**
 	 * Get source unit from sequence of file system objects (files and
@@ -164,18 +139,8 @@ public class SourceFactory
 	 * @throws IOException
 	 * @throws JHOVE2Exception
 	 */
-	public static synchronized Source getSource(String pathName, String... pathNames)
-	throws IOException, JHOVE2Exception {
-		List<String> list = new ArrayList<String>();
-		list.add(pathName);
-		if (pathNames != null && pathNames.length > 0) {
-			for (int i = 0; i < pathNames.length; i++) {
-				list.add(pathNames[i]);
-			}
-		}
-		return SourceFactory.getSource(list);
-	}
-
+	public Source getSource(String pathName, String... pathNames)
+	throws IOException, JHOVE2Exception ;
 	/**
 	 * Make Source from list of file system objects (files and directories) and URLS
 	 * 
@@ -185,15 +150,8 @@ public class SourceFactory
 	 * @throws IOException
 	 * @throws JHOVE2Exception
 	 */
-	public static synchronized Source getSource(List<String> pathNames)
-		throws FileNotFoundException, IOException, JHOVE2Exception
-	{
-		return SourceFactory.getSource(
-				pathNames, 
-				Invocation.DEFAULT_TEMP_PREFIX,
-				Invocation.DEFAULT_TEMP_SUFFIX,
-				Invocation.DEFAULT_BUFFER_SIZE);
-	}
+	public Source getSource(List<String> pathNames)
+		throws FileNotFoundException, IOException, JHOVE2Exception;
 	
 	/**
 	 * Make Source from list of file system objects (files and directories) and URLS
@@ -211,38 +169,38 @@ public class SourceFactory
 	 * @throws IOException
 	 * @throws JHOVE2Exception
 	 */
-	public static synchronized Source getSource(List<String> pathNames, String tmpPrefix,
+	public Source getSource(List<String> pathNames, String tmpPrefix,
             String tmpSuffix,
             int bufferSize)
-		throws FileNotFoundException, IOException, JHOVE2Exception
-	{
-		Source source = null;		
-		if (pathNames.size() == 1) {
-			String pathName = pathNames.get(0);
-			try{
-				URL url = new URL(pathName);
-				source = SourceFactory.getSource(tmpPrefix, tmpSuffix, bufferSize, url);
-			}
-			catch (MalformedURLException m){
-				source = SourceFactory.getSource(pathName);
-			}			
-		}
-		else {
-			source = new FileSetSource();
-			Iterator<String> iter = pathNames.iterator();
-			while (iter.hasNext()) {
-				String pathName = iter.next();
-				Source src = null;
-				try{
-					URL url = new URL(pathName);
-					src = SourceFactory.getSource(tmpPrefix, tmpSuffix, bufferSize, url);
-				}
-				catch (MalformedURLException m){
-					src = SourceFactory.getSource(pathName);
-				}
-				((FileSetSource) source).addChildSource(src);
-			}
-		}
-		return source;
-	}
+		throws FileNotFoundException, IOException, JHOVE2Exception;
+	
+	/**
+	 * Utility method to create new empty ClumpSource
+	 * @return ClumpSource
+	 * @throws JHOVE2Exception
+	 */
+	public ClumpSource getClumpSource() throws JHOVE2Exception;
+	
+	/**
+	 * Utility method to create empty FileSetSource
+	 * @return FileSetSource
+	 * @throws JHOVE2Exception 
+	 */
+	public FileSetSource getFileSetSource() throws JHOVE2Exception;
+
+	/**
+	 * Create SourceAccessor for this SourceFactory type
+	 * This will be different, for example, for each persistence model 
+	 * @param Source for which accessor is to be created
+	 * @return SourceAccessor
+	 */
+	public SourceAccessor createSourceAccessor(Source source);
+	
+	/**
+	 * Utility method to create ByteStreamSource
+	 * @return ByteStreamSource
+	 * @throws JHOVE2Exception
+	 */
+	public ByteStreamSource getByteStreamSource(JHOVE2 jhove2, Source parent, long offset, long size) 
+	throws IOException, JHOVE2Exception;
 }

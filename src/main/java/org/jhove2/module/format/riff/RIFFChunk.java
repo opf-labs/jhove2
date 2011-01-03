@@ -48,10 +48,13 @@ import org.jhove2.core.source.Source;
 import org.jhove2.module.format.Validator.Validity;
 import org.jhove2.module.format.riff.field.FormType;
 
+import com.sleepycat.persist.model.Persistent;
+
 /** RIFF chunk.
  * 
  * @author slabrams
  */
+@Persistent
 public class RIFFChunk
     extends GenericChunk
 {   

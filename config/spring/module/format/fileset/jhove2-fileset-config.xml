@@ -25,6 +25,7 @@
 	<bean id="FileSetModule" class="org.jhove2.module.format.fileset.FileSetModule"
 	      scope="prototype">
 	    <constructor-arg ref="FileSetFormat"/>
+	    <constructor-arg ref="FormatModuleAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>

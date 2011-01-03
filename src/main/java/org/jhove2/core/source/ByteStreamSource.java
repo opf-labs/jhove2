@@ -45,12 +45,16 @@ import java.io.InputStream;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
+import org.jhove2.core.JHOVE2Exception;
+
+import com.sleepycat.persist.model.Persistent;
 
 /** JHOVE2 byte stream source.  A byte stream source is always a child of
  * some other source unit.
  * 
  * @author mstrong, slabrams
  */
+@Persistent
 public class ByteStreamSource
     extends AbstractSource
 {
@@ -65,9 +69,7 @@ public class ByteStreamSource
      */
     protected File backingFile;
      
-    /** Parent source. */
-    protected Source parent;
-    
+   
     /** Size of the byte stream, in bytes. */
     protected long size;
     
@@ -76,6 +78,13 @@ public class ByteStreamSource
     
     /** Temporary file suffix. */
     protected String tempSuffix;
+    
+    @SuppressWarnings("unused")
+	private ByteStreamSource()
+    	throws IOException, JHOVE2Exception
+    {
+    	this(null, null, 0, 0, null);
+    }
    
     /** Instantiate a new <code>ByteStreamSource</code>.  The new byte stream
      * is automatically added as a child reportable of its parent source unit.
@@ -84,13 +93,12 @@ public class ByteStreamSource
      * @param offset Starting offset relative to parent
      * @param size   Size of the byte stream
      * @throws IOException 
+     * @throws JHOVE2Exception 
      */
-    public ByteStreamSource(JHOVE2 jhove2, Source parent, long offset, long size)
-        throws IOException
+    protected ByteStreamSource(JHOVE2 jhove2, Source parent, long offset, long size,SourceFactory sourceFactory)
+        throws IOException, JHOVE2Exception
     {
         super();
-        
-        this.parent         = parent;
         this.file           = parent.getFile();
         this.startingOffset = offset;
         this.endingOffset   = offset + size;
@@ -105,6 +113,8 @@ public class ByteStreamSource
         this.bufferSize = invocation.getBufferSize();
         
         /* Make this byte stream a child of its parent. */
+        this.setSourceAccessor(sourceFactory.createSourceAccessor(this));
+        // will update parentSourceId and sourceId fields automatically
         parent.addChildSource(this);
      }
   

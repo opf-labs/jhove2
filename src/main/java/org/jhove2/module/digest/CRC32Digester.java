@@ -40,16 +40,21 @@ import java.util.zip.CRC32;
 
 import org.jhove2.core.Digest;
 
+import com.sleepycat.persist.model.NotPersistent;
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * JHOVE2 CRC-32 message digester.
  * 
  * @author mstrong, slabrams
  */
+@Persistent
 public class CRC32Digester extends AbstractArrayDigester {
 	/** Algorithm name. */
 	public static final String ALGORITHM = "CRC32";
 
 	/** CRC-32 digester. */
+	@NotPersistent
 	protected CRC32 digester;
 
 	/**

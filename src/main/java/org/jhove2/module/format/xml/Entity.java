@@ -40,6 +40,8 @@ package org.jhove2.module.format.xml;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.reportable.AbstractReportable;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * This class is used to hold information about an <i>entity declaration</i>
  * discovered during parsing of an XML instance.
@@ -85,6 +87,7 @@ import org.jhove2.core.reportable.AbstractReportable;
  * @see <a href="http://www.w3.org/TR/REC-xml/#sec-physical-struct">Extensible
  * Markup Language (XML) 1.0 -- Physical Structures</a>
  */
+@Persistent
 public class Entity extends AbstractReportable {
 
     /** An enumeration of entity types. */
@@ -110,6 +113,9 @@ public class Entity extends AbstractReportable {
     /** An optional reference to a notation (for external unparsed entities). */
     protected String notationName;
 
+    protected Entity(){
+    	super();
+    }
     /**
      * Gets the entity name.
      * 

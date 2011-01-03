@@ -36,15 +36,24 @@
 
 package org.jhove2.module.format;
 
+import static com.sleepycat.persist.model.DeleteAction.NULLIFY;
+import static com.sleepycat.persist.model.Relationship.MANY_TO_ONE;
+
+import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.format.Format;
 import org.jhove2.module.AbstractModule;
+import org.jhove2.persist.FormatProfileAccessor;
+
+import com.sleepycat.persist.model.Persistent;
+import com.sleepycat.persist.model.SecondaryKey;
 
 /**
  * Abstract JHOVE2 format profile, which is {@link org.jhove2.module.Module}
  * that models a specific format in a format family.
  * 
- * @author mstrong, slabrams
+ * @author mstrong, slabrams, smorrissey
  */
+@Persistent
 public abstract class AbstractFormatProfile
 	extends AbstractModule
 	implements FormatProfile
@@ -59,7 +68,10 @@ public abstract class AbstractFormatProfile
 	protected Validity isValid;
 
 	/** Format profile format module. */
-	protected FormatModule module;
+	@SecondaryKey(relate=MANY_TO_ONE, relatedEntity=AbstractModule.class,
+			onRelatedEntityDelete=NULLIFY)
+	protected Long formatModuleId;
+	
 
 	/**
 	 * Instantiate a new <code>AbstractFormatProfile</code>.
@@ -72,19 +84,36 @@ public abstract class AbstractFormatProfile
 	 *            Format profile rights statement
 	 * @param format
 	 *            Format profile format
+	 * @param formatProfileAccessor 
+	 * 			 Format profile persistence manager
 	 */
 	public AbstractFormatProfile(String version, String release, String rights,
-			                     Format format)
-	{
-		super(version, release, rights, Scope.Specific);
-		this.format  = format;
-		this.isValid = Validity.Undetermined;
-	}
-	
-	public AbstractFormatProfile(){
-		super();
-		this.scope   = Scope.Specific;
+			                     Format format, FormatProfileAccessor formatProfileAccessor) 
+   {
+		super(version, release, rights, Scope.Specific, formatProfileAccessor);
+		this.format   = format;
         this.isValid = Validity.Undetermined;
+		this.moduleAccessor = formatProfileAccessor;
+	}
+
+	/**
+	 *  Instantiate a new <code>AbstractFormatProfile</code>.
+	 * @param format 
+	 *            Format profile format
+	 * @param formatProfileAccessor 
+	 * 			 Format profile persistence manager
+	 */
+	private AbstractFormatProfile(Format format, 
+			FormatProfileAccessor formatProfileAccessor){
+		this(null, null, null, format, formatProfileAccessor);
+	}
+
+	/**
+	  Instantiate a new <code>AbstractFormatProfile</code>.
+	 */
+	@SuppressWarnings("unused")
+	private AbstractFormatProfile(){
+		this(null, null);
 	}
 
     /** Get validation coverage.
@@ -139,7 +168,33 @@ public abstract class AbstractFormatProfile
 	 * @see org.jhove2.module.format.FormatProfile#setFormatModule(org.jhove2.module.format.FormatModule)
 	 */
 	@Override
-	public void setFormatModule(FormatModule module) {
-		this.module = module;
+	public FormatProfile setFormatModule(FormatModule formatModule)
+			throws JHOVE2Exception {
+		if (this.getModuleAccessor()==null){
+			throw new JHOVE2Exception(" FormatModuleAccessor is null");
+		}
+		FormatProfileAccessor fpa = 
+			(FormatProfileAccessor)this.getModuleAccessor();
+		return fpa.setFormatModule(this, formatModule);	
+	}
+
+	@Override
+	public FormatModule getFormatModule()  throws JHOVE2Exception{
+		if (this.getModuleAccessor()==null){
+			throw new JHOVE2Exception(" FormatModuleAccessor is null");
+		}
+		FormatProfileAccessor fpa = 
+			(FormatProfileAccessor)this.getModuleAccessor();
+		return fpa.getFormatModule(this);
+	}
+
+	@Override
+	public Long getFormatModuleId() {
+		return formatModuleId;
+	}
+
+	@Override
+	public void setFormatModuleId(Long formatModuleId) {
+		this.formatModuleId = formatModuleId;
 	}
 }

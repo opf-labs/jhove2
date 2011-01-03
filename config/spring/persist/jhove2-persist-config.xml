@@ -1,0 +1,62 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:util="http://www.springframework.org/schema/util"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans 
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-2.5.xsd
+		   http://www.springframework.org/schema/util 
+		   http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+		   	
+    <bean id="InMemoryPersistenceManager" class="org.jhove2.persist.inmemory.InMemoryPersistenceManager"
+	     scope="singleton"/>
+	     
+	<!--  Beans for in-memory persistence -->
+	
+<!--	<bean id="SourceFactory"             class="org.jhove2.persist.inmemory.InMemorySourceFactory" scope="prototype"/>-->
+<!--	<bean id="ApplicationModuleAccessor" class="org.jhove2.persist.inmemory.InMemoryApplicationModuleAccessor"/>-->
+<!--	<bean id="FrameworkAccessor"         class="org.jhove2.persist.inmemory.InMemoryFrameworkAccessor" scope="prototype"/>-->
+<!--	<bean id="FormatModuleAccessor"      class="org.jhove2.persist.inmemory.InMemoryFormatModuleAccessor" scope="prototype"/>-->
+<!--	<bean id="FormatProfileAccessor"     class="org.jhove2.persist.inmemory.InMemoryFormatProfileAccessor" scope="prototype"/>-->
+<!--	<bean id="AggrefierAccessor"         class="org.jhove2.persist.inmemory.InMemoryAggrefierAccessor" scope="prototype"/>-->
+<!--	<bean id="IdentifierAccessor"        class="org.jhove2.persist.inmemory.InMemoryIdentifierAccessor" scope="prototype"/>-->
+<!--	<bean id="BaseModuleAccessor"        class="org.jhove2.persist.inmemory.InMemoryBaseModuleAccessor" scope="prototype"/>-->
+	
+	
+	
+	
+			
+	<!--  Beans for BerkeleyDB persistence -->
+	
+	<bean id="SourceFactory"             class="org.jhove2.persist.berkeleydpl.BerkeleyDbSourceFactory" scope="prototype"/>
+	<bean id="ApplicationModuleAccessor" class="org.jhove2.persist.berkeleydpl.BerkeleyDbApplicationModuleAccessor"/>
+	<bean id="FrameworkAccessor"         class="org.jhove2.persist.berkeleydpl.BerkeleyDbFrameworkAccessor" scope="prototype"/>
+	<bean id="FormatModuleAccessor"      class="org.jhove2.persist.berkeleydpl.BerkeleyDbFormatModuleAccessor" scope="prototype"/>
+	<bean id="FormatProfileAccessor"     class="org.jhove2.persist.berkeleydpl.BerkeleyDbFormatProfileAccessor" scope="prototype"/>
+	<bean id="AggrefierAccessor"         class="org.jhove2.persist.berkeleydpl.BerkeleyDbAggrefierAccessor" scope="prototype"/>
+	<bean id="IdentifierAccessor"        class="org.jhove2.persist.berkeleydpl.BerkeleyDbIdentifierAccessor" scope="prototype"/>
+	<bean id="BaseModuleAccessor"        class="org.jhove2.persist.berkeleydpl.BerkeleyDbBaseModuleAccessor" scope="prototype"/>
+	
+
+	<bean id="BerkeleyDbPersistenceManager" class="org.jhove2.persist.berkeleydpl.BerkeleyDbPersistenceManager"
+	     scope="singleton">
+	     <property name="envHome" value="C:\dbd\tmp"/>
+	     <property name="entityStoreName" value="JHOVE2_Entity_Store"/>
+	     <property name="storeConfig" ref="StoreConfig"/>
+	     <property name="envConfig" ref="EnvironmentConfig"/>
+	</bean>
+	
+	<bean id="EnvironmentConfig" class="com.sleepycat.je.EnvironmentConfig"
+          scope="singleton">
+	         <property name="allowCreate" value="true"/>
+	         <property name="readOnly" value="false"/>
+	         <property name="transactional" value="false"/>
+	</bean>
+	
+	<bean id="StoreConfig" class="com.sleepycat.persist.StoreConfig"
+	      scope="singleton">
+	      <property name="allowCreate" value="true"/>
+	      <property name="deferredWrite" value="false"/>
+	      <property name="temporary" value="true"/><!-- True may not be specified if the EntityStore is transactional -->	      
+	</bean>		   
+</beans>

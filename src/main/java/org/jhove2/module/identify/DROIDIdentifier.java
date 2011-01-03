@@ -54,7 +54,11 @@ import org.jhove2.core.format.FormatIdentification;
 import org.jhove2.core.format.FormatIdentification.Confidence;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
-import org.jhove2.module.AbstractModule;
+import org.jhove2.persist.ModuleAccessor;
+
+import com.sleepycat.persist.model.NotPersistent;
+import com.sleepycat.persist.model.Persistent;
+
 
 import uk.gov.nationalarchives.droid.JHOVE2IAnalysisController;
 import uk.gov.nationalarchives.droid.IdentificationFile;
@@ -73,8 +77,9 @@ import uk.gov.nationalarchives.droid.signatureFile.FFSignatureFile;
  * 
  * @author smorrissey
  */
+@Persistent
 public class DROIDIdentifier
-	extends AbstractModule
+	extends AbstractFileSourceIdentifier
 	implements SourceIdentifier
 {
 	/** Framework version identifier. */
@@ -114,12 +119,15 @@ public class DROIDIdentifier
 	private String signatureFileName = null;
 	
 	/** map from DROID PUIDs to JHOVE2 format ids */
+	@NotPersistent
 	private static ConcurrentMap<String, String> puidToJhoveId;
 
 	/** static member to cache parsed droid config file */
+	@NotPersistent
 	private static ConfigFile cachedConfigFile = null;
 
 	/** static member to cache parsed droid signature file */
+	@NotPersistent
 	private static FFSignatureFile cachedSigFile = null;
 
 	/**Instantiate a new <code>DROIDIdentifier</code> module that wraps DROID.
@@ -128,19 +136,30 @@ public class DROIDIdentifier
 	public DROIDIdentifier()
 		throws JHOVE2Exception
 	{
-		this(null, null);
+		this(null);
 	}
 	
+	/**Instantiate a new <code>DROIDIdentifier</code> module that wraps DROID.
+	 * @param moduleAccessor persistence manager
+	 * @throws JHOVE2Exception 
+	 */
+	public DROIDIdentifier(ModuleAccessor moduleAccessor)
+		throws JHOVE2Exception
+	{
+		this(null, null, moduleAccessor);
+	}
 	
 	/**Instantiate a new <code>DROIDIdentifier</code> module that wraps DROID.
 	 * @param configFileName path to DROID configuration file
 	 * @param sigFileName path to DROID signature file
+	 * @param moduleAccessor persistence manager
 	 * @throws JHOVE2Exception 
 	 */
-	public DROIDIdentifier(String configFileName, String sigFileName)
+	public DROIDIdentifier(String configFileName, String sigFileName, 
+			ModuleAccessor moduleAccessor)
 		throws JHOVE2Exception
 	{
-		super(VERSION, RELEASE, RIGHTS, Scope.Generic);
+		super(VERSION, RELEASE, RIGHTS, Scope.Generic, moduleAccessor);
 		this.setConfigFileName(configFileName);
 		this.setSigFileName(sigFileName);
 	}

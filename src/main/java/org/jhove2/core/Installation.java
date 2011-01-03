@@ -41,11 +41,14 @@ import java.util.Properties;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.reportable.AbstractReportable;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * JHOVE2 application installation properties.
  * 
  * @author mstrong, slabrams, smorrissey
  */
+@Persistent
 public class Installation
 	extends AbstractReportable
 {

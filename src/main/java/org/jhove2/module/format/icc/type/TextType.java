@@ -49,11 +49,14 @@ import org.jhove2.core.reportable.AbstractReportable;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.Validator.Validity;
 
+import com.sleepycat.persist.model.Persistent;
+
 /** ICC ASCII text type, as defined in ICC.1:2004-10, \u00a7 10.20.
  * This class also supports the older "desc" description type.
  * 
  * @author slabrams
  */
+@Persistent
 public class TextType
     extends AbstractReportable
 {

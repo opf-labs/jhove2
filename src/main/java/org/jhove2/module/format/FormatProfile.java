@@ -37,6 +37,7 @@
 package org.jhove2.module.format;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.format.Format;
 import org.jhove2.module.Module;
 
@@ -45,7 +46,7 @@ import org.jhove2.module.Module;
  * {@link org.jhove2.module.Module}s that model a specific format in a format
  * family.
  * 
- * @author mstrong, slabrams
+ * @author mstrong, slabrams, smorrissey
  */
 public interface FormatProfile
 	extends Module, Validator
@@ -56,17 +57,36 @@ public interface FormatProfile
 	 */
 	@ReportableProperty("Format profile format.")
 	public Format getFormat();
-	
 	/** Set format profile format.
 	 * @param format Format profile format
 	 */
 	public void setFormat(Format format);
+	/**
+	 * Set Format Module to which Profile belongs
+	 * @param formatModule Format Module to which Profile belongs
+	 * @return FormatModule
+	 * @throws JHOVE2Exception
+	 */
+	public FormatProfile setFormatModule(FormatModule formatModule) 
+    throws JHOVE2Exception;
 
 	/**
-	 * Set format profile format module.
-	 * 
-	 * @param module
-	 *            Format module
+	 * Get FormatModule of which this is a profile
+	 * @return FormatModule 
+	 * @throws JHOVE2Exception
 	 */
-	public void setFormatModule(FormatModule module);
+	public FormatModule getFormatModule() throws JHOVE2Exception;
+	
+	/**
+	 * @return the formatModuleId
+	 */
+	public Long getFormatModuleId();
+	
+
+
+	/**
+	 * @param formatModuleId the formatModuleId to set
+	 */
+	public void setFormatModuleId(Long formatModuleId);
+
 }

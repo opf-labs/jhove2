@@ -46,10 +46,13 @@ import org.jhove2.core.source.ByteStreamSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.riff.GenericChunk;
 
+import com.sleepycat.persist.model.Persistent;
+
 /** Broadcast Wave Format (BWF) iXML chunk.
  * 
  * @author slabrams
  */
+@Persistent
 public class IXMLChunk
         extends GenericChunk
 {
@@ -60,9 +63,13 @@ public class IXMLChunk
      * @param xml XML format 
      */
     protected IXMLChunk(Format xml) {
-        super();
+        this();
         
         this.xmlFormat = xml;
+    }
+    
+    private IXMLChunk(){
+    	super();
     }
     
     /** Parse an iXML chunk.
@@ -81,12 +88,12 @@ public class IXMLChunk
         long consumed = super.parse(jhove2, source, input);
         
         /* The chunk contents are in XML; invoke the XML module. */
-        ByteStreamSource child =
-            new ByteStreamSource(jhove2, source, input.getPosition(), this.size);
+        ByteStreamSource child =jhove2.getSourceFactory().getByteStreamSource
+        	(jhove2, source, input.getPosition(), this.size);
         I8R xml = xmlFormat.getIdentifier();
         FormatIdentification id = new FormatIdentification(xml, Confidence.PositiveGeneric);
-        child.addPresumptiveFormat(id);
-        source.addChildSource(child);
+        child=(ByteStreamSource) child.addPresumptiveFormat(id);
+        child=(ByteStreamSource) source.addChildSource(child);
         jhove2.characterize(child, input);      
         consumed += this.size;
         

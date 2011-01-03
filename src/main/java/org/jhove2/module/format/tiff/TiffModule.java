@@ -54,6 +54,9 @@ import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.module.format.Validator;
+import org.jhove2.persist.FormatModuleAccessor;
+
+import com.sleepycat.persist.model.Persistent;
 
 /**
  * JHOVE2 TIFF module. This module parses a TIFF instance and captures selected
@@ -62,6 +65,7 @@ import org.jhove2.module.format.Validator;
  * @author mstrong
  *
  */
+@Persistent
 public class TiffModule 
        extends BaseFormatModule 
        implements Validator 
@@ -117,23 +121,26 @@ public class TiffModule
     protected  Source source;
 
     /** Map from tags to formats for the content of the tags. */
-    public Map<Integer, Format> tagToFormatMap;
+    public static Map<Integer, Format> tagToFormatMap;
     
     /**
      * Instantiate a new <code>TIFFModule</code>.
      * 
      * @param format
      *            TIFF format
+     * @param formatModuleAccessor 
+     *       FormatModuleAccessor to manage access to Format Profiles
      */
-    public TiffModule(Format format) {
-        super(VERSION, RELEASE, RIGHTS, format);
-        this.validity = Validity.Undetermined;
+    public TiffModule(Format format, 
+    		FormatModuleAccessor formatModuleAccessor) {
+        super(VERSION, RELEASE, RIGHTS, format, formatModuleAccessor);
+		this.validity = Validity.Undetermined;
         
-        this.tagToFormatMap = new ConcurrentHashMap<Integer, Format>();
+        tagToFormatMap = new ConcurrentHashMap<Integer, Format>();
     }
     
     public TiffModule() {
-        this(null);
+        this(null, null);
     }
 
     /**
@@ -158,9 +165,6 @@ public class TiffModule
     public long parse(JHOVE2 jhove2, Source source, Input input)
     throws EOFException, IOException, JHOVE2Exception
     {
-        this.jhove2 = jhove2;
-        this.source = source;
-
         long consumed = 0L;
         this.validity = Validity.Undetermined;
         
@@ -413,6 +417,6 @@ public class TiffModule
      * @param map Tag-to-format map
      */
     public void setTagToFormatMap(Map<Integer, Format> map) {
-        this.tagToFormatMap = map;
+        tagToFormatMap = map;
     }
 }

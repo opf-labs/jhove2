@@ -43,11 +43,15 @@ import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
 import org.jhove2.module.format.tiff.TiffIFD;
 import org.jhove2.module.format.tiff.type.Rational;
+import org.jhove2.persist.FormatProfileAccessor;
+
+import com.sleepycat.persist.model.Persistent;
 
 /**
  * @author MStrong
  * 
  */
+@Persistent
 public class TiffDLFProfile extends TiffProfile {
 
     /** Profile version identifier. */
@@ -65,9 +69,19 @@ public class TiffDLFProfile extends TiffProfile {
 
     /** minimum resolution value invalid message */
     protected Message minimumResolutionValueInvalidMessage;
-
-    public TiffDLFProfile(Format format) {
-        super(format);
+    
+    /**
+     * 
+     * @param format
+     * @param formatProfileAccessor
+     */
+    public TiffDLFProfile(Format format, FormatProfileAccessor formatProfileAccessor) {
+        super(format, formatProfileAccessor);
+    }
+    
+    @SuppressWarnings("unused")
+	private TiffDLFProfile(){
+    	this(null,null);
     }
 
     /*

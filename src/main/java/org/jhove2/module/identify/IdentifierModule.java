@@ -43,7 +43,6 @@ import java.util.TreeSet;
 import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.TimerInfo;
 import org.jhove2.core.format.FormatIdentification;
 import org.jhove2.core.format.FormatIdentification.Confidence;
 import org.jhove2.core.io.Input;
@@ -53,11 +52,15 @@ import org.jhove2.core.source.FileSetSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.ZipDirectorySource;
 import org.jhove2.module.AbstractModule;
+import org.jhove2.persist.IdentifierAccessor;
+
+import com.sleepycat.persist.model.Persistent;
 
 /**
  * JHOVE2 identifier module for non-Clump sources
  * @author mstrong, slabrams, smorrissey
  */
+@Persistent
 public class IdentifierModule
 extends AbstractModule 
 implements Identifier
@@ -74,8 +77,8 @@ implements Identifier
 		+ "Stanford Junior University. "
 		+ "Available under the terms of the BSD license.";
 
-	/** File-level identifier module. */
-	protected SourceIdentifier sourceIdentifier;
+//	/** File-level identifier module. */
+//	protected SourceIdentifier sourceIdentifier;
 
 	/** flag to indicate bypass of Identification if Source is pre-identified */
 	protected boolean shouldSkipIdentifyIfPreIdentified;
@@ -84,9 +87,16 @@ implements Identifier
 	 * Instantiate a new <code>IdentifierModule</code>.
 	 */
 	public IdentifierModule() {
-		super(VERSION, RELEASE, RIGHTS, Scope.Generic);
+		this(null);
 	}
 
+	/**
+	 * Instantiate a new <code>IdentifierModule</code>.
+	 * @param identifierAccessor IdentifierAccessor
+	 */
+	public IdentifierModule(IdentifierAccessor identifierAccessor) {
+		super(VERSION, RELEASE, RIGHTS, Scope.Generic, identifierAccessor);
+	}
 	/**
 	 * Presumptively identify the format of a source unit.
 	 * 
@@ -139,37 +149,47 @@ implements Identifier
 					this.getReportableIdentifier());
 				presumptiveFormatIDs.add(id);
 			}
-			else {   /* Identify file source unit. */				
-				TimerInfo timer = sourceIdentifier.getTimerInfo();
-				timer.setStartTime();
+			else {   /* Identify file source unit. */	
+				SourceIdentifier sourceIdentifier = this.getSourceIdentifier();
+				sourceIdentifier = (SourceIdentifier) sourceIdentifier.getModuleAccessor().startTimerInfo(sourceIdentifier);
 				try {
 					Set<FormatIdentification> formats =
 						sourceIdentifier.identify(jhove2, source, input);
 					presumptiveFormatIDs.addAll(formats);
 				}
 				finally {
-					timer.setEndTime();
+					sourceIdentifier = (SourceIdentifier) sourceIdentifier.getModuleAccessor().endTimerInfo(sourceIdentifier);
 				}
 			}
 		}
 		return presumptiveFormatIDs;
-			}
+	}
 
 	/**
 	 * Get file source identifier module.
 	 * @return File source identifier module
 	 */
 	@Override
-	public SourceIdentifier getSourceIdentifier() {
-		return sourceIdentifier;
+	public SourceIdentifier getSourceIdentifier()  
+	throws JHOVE2Exception{
+		if (this.getModuleAccessor()==null){
+			throw new JHOVE2Exception("IdentifierAccessor is null");
+		}
+		IdentifierAccessor ia = (IdentifierAccessor) this.getModuleAccessor();
+		return ia.getFileSourceIdentifier(this);
 	}
 
 	/**
 	 * Set file source identifier module.
 	 * @param sourceIdentifier File source identifier module
 	 */
-	public void setSourceIdentifier(SourceIdentifier fileSourceIdentifier) {
-		this.sourceIdentifier = fileSourceIdentifier;
+	public SourceIdentifier setSourceIdentifier(SourceIdentifier fileSourceIdentifier)  
+	throws JHOVE2Exception{
+		if (this.getModuleAccessor()==null){
+			throw new JHOVE2Exception("IdentifierAccessor is null");
+		}
+		IdentifierAccessor ia = (IdentifierAccessor) this.getModuleAccessor();
+		return ia.setFileSourceIdentifier(this, fileSourceIdentifier);
 	}
 
 	/**

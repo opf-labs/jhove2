@@ -13,7 +13,7 @@
 	<bean id="TiffModule" class="org.jhove2.module.format.tiff.TiffModule"
 		scope="prototype">
 		<constructor-arg ref="TiffFormat" />
-		<!--		<property name="profile" ref="TiffItProfile" />-->
+		<constructor-arg ref="FormatModuleAccessor"/>
 		<property name="profiles">
 			<list value-type="org.jhove2.module.format.FormatProfile">
 				<ref bean="TiffItProfile" />
@@ -48,6 +48,7 @@
 	<bean id="TiffItProfile" class="org.jhove2.module.format.tiff.profile.TiffItProfile"
 		scope="prototype">
 		<constructor-arg ref="TiffItFormat" />
+		<constructor-arg ref="FormatProfileAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent" />

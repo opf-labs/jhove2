@@ -50,6 +50,7 @@ import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.io.Input.Type;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
+import org.jhove2.persist.inmemory.InMemorySourceFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -97,7 +98,8 @@ public class NonDirectInputTest {
 	public void testGetInput() throws JHOVE2Exception {
 
 		try {
-			Source source = SourceFactory.getSource(testFile);
+			SourceFactory factory = new InMemorySourceFactory();
+			Source source = factory.getSource(testFile);
 			/*
 			 * abstractInput = source.getInput(bufferSize, Scope.NonDirect,
 			 * ByteOrder.LITTLE_ENDIAN);

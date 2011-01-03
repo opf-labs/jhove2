@@ -54,12 +54,16 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.NoSuchMessageException;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.sleepycat.persist.model.NotPersistent;
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * Implementation of ConfigInfo using Spring.
  * Uses static instance of org.springframework.context.ApplicationContext to create and configure Reportable objects
  * 
  * @author mstrong, slabrams, smorrissey, rnanders
  */
+@Persistent
 public class SpringConfigInfo
     implements ConfigInfo
 {
@@ -67,8 +71,13 @@ public class SpringConfigInfo
 	public static final String CLASSPATH = "classpath*:**/*-config.xml";
 
 	/** Spring application context. */
+	@NotPersistent
 	protected static ApplicationContext context;
 
+	public SpringConfigInfo(){
+		super();
+	}
+	
 	@Override
 	public <R extends Reportable> R getReportable(Class<? super R> cl)
 	    throws JHOVE2Exception
@@ -262,7 +271,7 @@ public class SpringConfigInfo
 	 * @return Spring ApplicationContext instance
 	 * @throws BeansException
 	 */
-	protected static synchronized ApplicationContext getContext()
+	public static synchronized ApplicationContext getContext()
 	    throws BeansException
 	{
 		if (context == null) {

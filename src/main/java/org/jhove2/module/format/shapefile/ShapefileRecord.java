@@ -39,12 +39,15 @@ package org.jhove2.module.format.shapefile;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.reportable.AbstractReportable;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * This class holds feature information extracted from record structures in the main
  * shapefile
  * 
  * @author rnanders
  */
+@Persistent
 public class ShapefileRecord extends AbstractReportable {
     
     /** The record offset. */
@@ -65,9 +68,12 @@ public class ShapefileRecord extends AbstractReportable {
     /** The minimum Y bounding box coordinate. */
     public double minY;
     
-    /** The maximum Y bounding box coordinat. */
+    /** The maximum Y bounding box coordinate. */
     public double maxY;
 
+    public ShapefileRecord(){
+    	super();
+    }
 
     /**
      * Gets the record offset.

@@ -281,6 +281,7 @@ public interface Displayer
 	
 	/**
 	 * Get show identifiers flag.
+	 * 
 	 * @return Show identifier flag; if true, show identifiers in non-XML
 	 *         display modes
 	 */
@@ -345,6 +346,13 @@ public interface Displayer
 	 * @param shouldIndent Indentation flag
 	 */
 	public void setShouldIndent(boolean shouldIndent);
-	
+	/**
+	 * @return the parentAppId
+	 */
+	public Long getParentAppId();
+	/**
+	 * @param parentAppId the parentAppId to set
+	 */
+	public void setParentAppId(Long parentAppId);
 	
 }

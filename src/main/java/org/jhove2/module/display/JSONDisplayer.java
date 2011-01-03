@@ -39,12 +39,16 @@ package org.jhove2.module.display;
 import java.io.PrintStream;
 
 import org.jhove2.core.I8R;
+import org.jhove2.persist.ModuleAccessor;
+
+import com.sleepycat.persist.model.Persistent;
 
 /**
  * JSON displayer. The JSON format is defined by RFC 4627.
  * 
  * @author mstrong, slabrams, smorrissey
  */
+@Persistent
 public class JSONDisplayer
 	extends AbstractDisplayer
 {
@@ -64,7 +68,16 @@ public class JSONDisplayer
 	 * Instantiate a new <code>JSON</code> displayer.
 	 */
 	public JSONDisplayer() {
-		super(VERSION, RELEASE, RIGHTS);
+		this(null);
+	}
+	
+	/**
+	 * Instantiate a new <code>JSON</code> displayer.
+     * @param moduleAccessor 
+	 * 		      Displayer persistence manager
+	 */
+	public JSONDisplayer(ModuleAccessor moduleAccessor) {
+		super(VERSION, RELEASE, RIGHTS, moduleAccessor);
 		this.setShouldIndent(true);
 	}
 

@@ -38,11 +38,14 @@ package org.jhove2.module.digest;
 
 import java.security.NoSuchAlgorithmException;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * JHOVE2 MD2 message digester. The MD2 algorithm is defined by RFC 1319.
  * 
  * @author mstrong, slabrams
  */
+@Persistent
 public class MD2Digester extends AbstractBufferDigester {
 	/** Algorithm name. */
 	public static final String ALGORITHM = "MD2";

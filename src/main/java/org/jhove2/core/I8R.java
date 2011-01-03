@@ -43,6 +43,8 @@ import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.reportable.AbstractReportable;
 import org.jhove2.core.reportable.Reportable;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * A JHOVE2 identifier. Note that this class is named "I8R", not
  * "IdentifierModule" to avoid confusion between "identifier" as a label and
@@ -50,6 +52,7 @@ import org.jhove2.core.reportable.Reportable;
  * 
  * @author mstrong, slabrams, smorrissey
  */
+@Persistent
 public class I8R
     extends AbstractReportable
     implements Comparable<I8R>
@@ -127,8 +130,6 @@ public class I8R
 		UTI, /* Apple Uniform Scope IdentifierModule */
 		Other
 	}
-	/** Class object for a JHOVE2 Message */
-	protected static Class<?> messageClass = null;
 	
 	/** IdentifierModule namespace. */
 	protected Namespace namespace;
@@ -136,6 +137,10 @@ public class I8R
 	/** IdentifierModule value. */
 	protected String value;
 
+	@SuppressWarnings("unused")
+	private I8R (){
+		this(null, Namespace.JHOVE2);
+	}
 	/**
 	 * Instantiate a <code>I8R</code> identifier in the JHOVE2 namespace.
 	 * 

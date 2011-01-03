@@ -27,6 +27,7 @@
 	<bean id="DirectoryModule" class="org.jhove2.module.format.directory.DirectoryModule"
 	      scope="prototype">
 	    <constructor-arg ref="DirectoryFormat"/>
+	    <constructor-arg ref="FormatModuleAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>

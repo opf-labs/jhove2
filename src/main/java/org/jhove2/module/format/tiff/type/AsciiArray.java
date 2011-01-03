@@ -8,6 +8,8 @@ import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
 
+import com.sleepycat.persist.model.Persistent;
+
 
 /**
  * AsciiArray - object to store and array of ASCII Strings.
@@ -17,6 +19,7 @@ import org.jhove2.core.reportable.AbstractReportable;
  * @author MStrong
  *
  */
+@Persistent
 public class AsciiArray 
 extends AbstractReportable {
     public String[] value;

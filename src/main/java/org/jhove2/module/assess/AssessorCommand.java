@@ -39,10 +39,12 @@ package org.jhove2.module.assess;
 
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.TimerInfo;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractCommand;
+import org.jhove2.persist.ModuleAccessor;
+
+import com.sleepycat.persist.model.Persistent;
 
 /**
  * Implements the {@link org.jhove2.module.Command Command} interface
@@ -50,6 +52,7 @@ import org.jhove2.module.AbstractCommand;
  * by creating and running a module that implements the {@link Assessor} interface
  * @author rnanders
  */
+@Persistent
 public class AssessorCommand extends AbstractCommand {
     /** AssessorCommand module version identifier. */
     public static final String VERSION = "2.0.0";
@@ -67,7 +70,11 @@ public class AssessorCommand extends AbstractCommand {
      * Instantiate a new {@link AssessorCommand} instance.
      */
     public AssessorCommand() {
-        super(VERSION, RELEASE, RIGHTS, Scope.Generic);
+        this(null);
+    }
+    
+    public AssessorCommand(ModuleAccessor moduleAccessor){
+    	super(VERSION, RELEASE, RIGHTS, Scope.Generic, moduleAccessor);
     }
 
     /** The factory instance used to create an assessment module that implements the {@link Assessor} interface */
@@ -90,16 +97,15 @@ public class AssessorCommand extends AbstractCommand {
     {
         try {
             Assessor assessor = this.getAssessorFactory().getAssessor();
-            TimerInfo timer = assessor.getTimerInfo();
-            timer.setStartTime();
+            assessor = (Assessor) assessor.getModuleAccessor().startTimerInfo(assessor);
             try {
                 /* Register the assessment module with the source. */
-                source.addModule(assessor);
+                assessor = (Assessor) source.addModule(assessor);     	
                 /* Assess the reportable properties. */
                 assessor.assess(jhove2, source);
             }
             finally {
-                timer.setEndTime();
+                assessor = (Assessor) assessor.getModuleAccessor().endTimerInfo(assessor);
             }
         }
         catch (Exception e) {

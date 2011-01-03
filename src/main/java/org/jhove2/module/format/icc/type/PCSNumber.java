@@ -34,10 +34,13 @@
 
 package org.jhove2.module.format.icc.type;
 
+import com.sleepycat.persist.model.Persistent;
+
 /** Profile Connection Space (PCS) values.
  * 
  * @author slabrams
  */
+@Persistent
 public class PCSNumber
 {
     /** PCS X value. */
@@ -49,12 +52,16 @@ public class PCSNumber
     /** PCS Z value. */
     protected int z;
     
+    private PCSNumber(){
+    	super();
+    }
     /** Instantiate a new <code>PCSNumber</code>.
      * @param x PCS X value
      * @param y PCS Y value
      * @param z PCS Z value
      */
     public PCSNumber(int x, int y, int z) {
+    	this();
         this.x = x;
         this.y = y;
         this.z = z;

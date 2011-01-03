@@ -50,11 +50,14 @@ import org.jhove2.core.reportable.AbstractReportable;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.Validator.Validity;
 
+import com.sleepycat.persist.model.Persistent;
+
 /** ICC signed 32-bit fixed point number array type element,
  * as defined in ICC.1:2004-10, \u00a7 10.18.
  * 
  * @author slabrams
  */
+@Persistent
 public class S15Fixed16ArrayType
     extends AbstractReportable
 {

@@ -42,7 +42,6 @@ import javax.annotation.Resource;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
-import org.jhove2.core.source.SourceFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -70,9 +69,9 @@ public class JSONDisplayerTest {
 	public void testDisplay() {
 		try {
 			String filePath = utf8DirBasePath.concat(testFile01);
-			Source source = SourceFactory.getSource(filePath);
+			Source source = JHOVE2.getSourceFactory().getSource(filePath);
 			Input  input  = source.getInput(JHOVE2);
-			JHOVE2.characterize(source, input);
+			source = JHOVE2.characterize(source, input);
 			Displayer displayer = new JSONDisplayer();
 			displayer.setShowIdentifiers(true);
 			displayer.setConfigInfo(JHOVE2.getConfigInfo());

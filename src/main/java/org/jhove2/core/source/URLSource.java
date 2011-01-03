@@ -44,12 +44,15 @@ import org.jhove2.core.io.Input;
 import org.jhove2.core.io.InputFactory;
 import org.jhove2.core.io.Input.Type;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * URL source unit. Represents source unit, possibly remote, that is designated by a URL using any
  * of the following schemes: http, https, ftp, file, and jar. Redirection is not supported.
  * 
  * @author mstrong, slabrams
  */
+@Persistent
 public class URLSource
     extends AbstractSource
     implements NamedSource
@@ -60,17 +63,21 @@ public class URLSource
 	/** URL backing the source unit. */
 	protected URL url;
 
+	protected URLSource(){
+		super();
+	}
 	/**
 	 * Instantiate a new <code>URLSource</code>.
 	 * 
-         * @param tmpPrefix
-         * @param tmpSuffix
-         * @param bufferSize
+     * @param String temporary file prefix
+     * @param String temporary file suffix
+     * @param int buffer size 
 	 * @param url
+	 *            URL
 	 * @throws IOException
 	 */
 
-	public URLSource(String tmpPrefix, String tmpSuffix,
+	protected URLSource(String tmpPrefix, String tmpSuffix,
 			int bufferSize, URL url) throws IOException {
 		super(tmpPrefix, tmpSuffix, bufferSize, url.openStream());
 		

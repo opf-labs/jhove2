@@ -35,15 +35,9 @@
 
 package org.jhove2.module.format.tiff;
 
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.Properties;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
-import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.JHOVE2;
-import org.jhove2.core.JHOVE2Exception;
+
+import com.sleepycat.persist.model.Persistent;
 
 
 /**
@@ -54,7 +48,7 @@ import org.jhove2.core.JHOVE2Exception;
  * @author mstrong
  *
  */
-
+@Persistent
 public enum TiffType {
     BYTE       (1, 1),
     ASCII      (2, 1),

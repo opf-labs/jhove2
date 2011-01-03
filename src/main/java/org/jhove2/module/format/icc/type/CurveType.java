@@ -51,10 +51,13 @@ import org.jhove2.core.source.Source;
 import org.jhove2.module.format.Parser;
 import org.jhove2.module.format.Validator.Validity;
 
+import com.sleepycat.persist.model.Persistent;
+
 /** ICC curve type element, as defined in ICC.12004-10, \u00a7 10.5.
  * 
  * @author slabrams
  */
+@Persistent
 public class CurveType
     extends AbstractReportable
     implements Parser

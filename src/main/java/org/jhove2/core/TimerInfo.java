@@ -39,12 +39,15 @@ package org.jhove2.core;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.reportable.AbstractReportable;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * Timing information for {@link org.jhove2.core.reportable.Reportable}s that report their elapsed
  * processing times.
  * 
  * @author mstrong, slabrams, smorrissey
  */
+@Persistent
 public class TimerInfo
 	extends AbstractReportable
 {

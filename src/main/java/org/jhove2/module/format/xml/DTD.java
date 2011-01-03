@@ -39,6 +39,8 @@ package org.jhove2.module.format.xml;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.reportable.AbstractReportable;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * This class is used to hold information about a <i>document scope declaration</i>
  * discovered during parsing of an XML instance.
@@ -52,6 +54,7 @@ import org.jhove2.core.reportable.AbstractReportable;
  * </p>
  * @author rnanders 
  */
+@Persistent
 public class DTD extends AbstractReportable {
 	
 	/** The document scope name. */
@@ -63,6 +66,9 @@ public class DTD extends AbstractReportable {
 	/** The declared system identifier for the external DTD subset, or null if none was declared. */
 	protected String systemID;
 	
+	protected DTD(){
+		super();
+	}
 	/**
 	 * Gets the document scope name.
 	 * 

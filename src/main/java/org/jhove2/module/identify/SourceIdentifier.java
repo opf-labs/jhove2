@@ -71,4 +71,14 @@ public interface SourceIdentifier
 	public Set<FormatIdentification> identify(JHOVE2 jhove2, Source source, Input input)
 			throws IOException, JHOVE2Exception;
 
+	/**
+	 * Get parent identifier module.
+	 * @return File source identifier module
+	 */
+	public Long getParentIdentifierId();
+	/**
+	 * Set parent identifier module
+	 * @param fileSourceIdentifier
+	 */
+	public void setParentIdentifierId(Long id);
 }

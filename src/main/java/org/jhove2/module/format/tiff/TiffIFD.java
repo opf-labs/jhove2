@@ -54,10 +54,14 @@ import org.jhove2.module.format.tiff.type.Rational;
 import org.jhove2.module.format.tiff.type.Short;
 import org.jhove2.module.format.tiff.type.ShortArray;
 
+
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * @author mstrong
  *
  */
+@Persistent
 public class TiffIFD 
 extends IFD 
 {    

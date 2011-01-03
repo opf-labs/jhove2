@@ -58,10 +58,13 @@ import org.jhove2.core.reportable.AbstractReportable;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.Validator.Validity;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * @author mstrong
  *
  */
+@Persistent
 public abstract class IFD 
 extends AbstractReportable {
 

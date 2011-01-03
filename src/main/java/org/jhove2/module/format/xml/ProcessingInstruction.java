@@ -40,6 +40,8 @@ package org.jhove2.module.format.xml;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.reportable.AbstractReportable;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * This class is used to hold information about a <i>processing instruction</i>
  * discovered during parsing of an XML instance.
@@ -55,6 +57,7 @@ import org.jhove2.core.reportable.AbstractReportable;
  * @author rnanders
  * @see <a href="http://www.w3.org/TR/REC-xml/#sec-pi">Extensible Markup Language (XML) 1.0 -- Processing Instructions</a>
  */
+@Persistent
 public class ProcessingInstruction extends AbstractReportable {
 
     /** The processing instruction target. */
@@ -62,6 +65,10 @@ public class ProcessingInstruction extends AbstractReportable {
 
     /** The processing instruction data. */
     protected String data;
+    
+    protected ProcessingInstruction(){
+    	super();
+    }
 
     /**
      * Gets the processing instruction target.

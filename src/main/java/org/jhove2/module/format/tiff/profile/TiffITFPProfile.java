@@ -42,11 +42,15 @@ import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
 import org.jhove2.module.format.tiff.IFDEntry;
 import org.jhove2.module.format.tiff.TiffIFD;
+import org.jhove2.persist.FormatProfileAccessor;
+
+import com.sleepycat.persist.model.Persistent;
 
 /**
  * @author MStrong
  * 
  */
+@Persistent
 public class TiffITFPProfile extends TiffItProfile {
 
     /** Profile version identifier. */
@@ -62,8 +66,13 @@ public class TiffITFPProfile extends TiffItProfile {
     /** Profile validation coverage. */
     public static final Coverage COVERAGE = Coverage.Inclusive;
 
-    public TiffITFPProfile(Format format) {
-        super(format);
+    public TiffITFPProfile(Format format, FormatProfileAccessor formatProfileAccessor) {
+       super(format, formatProfileAccessor);
+    }
+    
+    @SuppressWarnings("unused")
+	private TiffITFPProfile(){
+    	this(null,null);
     }
 
     /*

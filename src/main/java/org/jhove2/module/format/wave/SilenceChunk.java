@@ -43,10 +43,13 @@ import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.riff.GenericChunk;
 
+import com.sleepycat.persist.model.Persistent;
+
 /** WAVE format silence chunk.
  * 
  * @author slabrams
  */
+@Persistent
 public class SilenceChunk
     extends GenericChunk
 {
