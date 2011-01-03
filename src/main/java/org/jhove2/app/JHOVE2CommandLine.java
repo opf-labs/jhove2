@@ -143,7 +143,7 @@ extends AbstractApplication
 			Displayer displayer = app.getDisplayer();
 			if (displayer==null) {
 				Class defaultDisplayerClass = Class.forName(Displayer.DEFAULT_DISPLAYER_CLASS);
-				displayer = SpringConfigInfo.getReportable(defaultDisplayerClass, "Text");
+				displayer = (Displayer)SpringConfigInfo.getReportable(defaultDisplayerClass, "Text");
 				displayer = app.setDisplayer(displayer);
 			}
 			app.getDisplayer().setConfigInfo(factory);

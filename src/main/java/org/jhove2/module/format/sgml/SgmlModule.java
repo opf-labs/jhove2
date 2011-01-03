@@ -90,6 +90,9 @@ public class SgmlModule
 
 	/** Container for SGML document properties extracted by parser */
 	protected SgmlDocumentProperties documentProperties;
+	
+	/** Error message indicating command shell to invoke external parser is invalid */
+	protected Message invalidCommandShellMessage;
 
 	/**
 	 * Instantiates a new SgmlModule instance.
@@ -102,19 +105,7 @@ public class SgmlModule
 		super(VERSION, RELEASE, RIGHTS, format, formatModuleAccessor);
 		this.validity = Validity.Undetermined;
 	}
-	
-	/** Error message indicating command shell to invoke external parser is invalid */
-	protected Message invalidCommandShellMessage;
 
-	/**
-	 * Instantiates a new <code>SgmlModule</code> instance.
-	 * 
-	 * @param format
-	 *            the Format object
-	 */
-	public SgmlModule(Format format) {
-		this(format, null);
-	}
 	
 	/** Instantiate a new <code>SgmlModule</code>. */
 	public SgmlModule() {

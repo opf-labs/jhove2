@@ -904,4 +904,11 @@ public abstract class AbstractSource
 	public void setParentSourceId(Long parentSourceId) {
 		this.parentSourceId = parentSourceId;
 	}
+
+	/**
+	 * @return the moduleIDs
+	 */
+	public static Set<String> getModuleIDs() {
+		return moduleIDs;
+	}
 }

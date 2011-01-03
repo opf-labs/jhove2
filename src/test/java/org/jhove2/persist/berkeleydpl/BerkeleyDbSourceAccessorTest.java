@@ -23,6 +23,7 @@ import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.FormatIdentification;
 import org.jhove2.core.format.FormatIdentification.Confidence;
+import org.jhove2.core.source.AbstractSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.Module;
 import org.jhove2.module.digest.DigesterModule;
@@ -48,13 +49,13 @@ public class BerkeleyDbSourceAccessorTest {
 
 	static String persistenceMgrClassName = "org.jhove2.config.spring.SpringBerkeleyDbPersistenceManagerFactory";
 	static PersistenceManager persistenceManager = null;
-	
+
 	BerkeleyDbSourceFactory sourceFactory;
 	Source source;
 	protected String sgmlDirBasePath;
 	protected String sgmlDirPath;
 	protected String tempDirBasePath;
-	
+
 	/**
 	 * @throws java.lang.Exception
 	 */
@@ -100,7 +101,7 @@ public class BerkeleyDbSourceAccessorTest {
 		File fsgml = new File(sgmlDirPath);
 		sgmlDirPath = fsgml.getPath();
 	}
-	
+
 
 	/**
 	 * Test method for {@link org.jhove2.persist.berkeleydpl.BerkeleyDbSourceAccessor#addModule(org.jhove2.core.source.Source, org.jhove2.module.Module)}.
@@ -132,23 +133,27 @@ public class BerkeleyDbSourceAccessorTest {
 		assertNull(module1.getParentSourceId());
 		assertNull(module2.getModuleId());
 		assertNull(module2.getParentSourceId());
+
 		try {
 			module1 = source.addModule(module1);
 			assertNotNull(module1.getModuleId());
 			moduleId = module1.getModuleId().longValue();
 			assertTrue(0L < moduleId);
 			assertEquals(source.getSourceId(), module1.getParentSourceId());
-			module2 = source.addModule(module2);
-			assertEquals(sourceId, module2.getModuleId().longValue());
-			assertEquals(source.getSourceId(), module2.getParentSourceId());
-			assertEquals(2, source.getNumModules());
-			List<Module> childModules = source.getModules();
-			assertEquals(2, childModules.size());
-			for (Module module :childModules){
-				assertEquals(source.getSourceId(), module.getParentSourceId());
-			}		
-			source = source.getSourceAccessor().retrieveSource(source.getSourceId());
-			assertEquals(sourceId, source.getSourceId().longValue());
+			String module2Id = module2.getReportableIdentifier().toString();
+			if (!AbstractSource.getModuleIDs().contains(module2Id)){
+				module2 = source.addModule(module2);
+				assertEquals(sourceId, module2.getModuleId().longValue());
+				assertEquals(source.getSourceId(), module2.getParentSourceId());
+				assertEquals(2, source.getNumModules());
+				List<Module> childModules = source.getModules();
+				assertEquals(2, childModules.size());
+				for (Module module :childModules){
+					assertEquals(source.getSourceId(), module.getParentSourceId());
+				}		
+				source = source.getSourceAccessor().retrieveSource(source.getSourceId());
+				assertEquals(sourceId, source.getSourceId().longValue());
+			}
 		} catch (JHOVE2Exception e) {
 			e.printStackTrace();
 			fail(e.getMessage());
@@ -166,46 +171,46 @@ public class BerkeleyDbSourceAccessorTest {
 			source = source.getSourceAccessor().persistSource(source);
 			assertNotNull(source.getSourceId());
 			source = source.getSourceAccessor().retrieveSource(source.getSourceId());	
-			
+
 			int childSourceCount = source.getNumChildSources();
-			
+
 			Source source02 = sourceFactory.getSource(tempDirBasePath);
 			assertNotNull(source02.getSourceId());
 			assertNull(source02.getParentSourceId());
-			
+
 			source02 = source.addChildSource(source02);
 			assertEquals(source.getSourceId(), source.getSourceId());
 			assertEquals(source.getSourceId(), source02.getParentSourceId());
-			
+
 			source02 = source.deleteChildSource(source02);
 			assertNull(source02.getParentSourceId());
 			assertEquals(source.getSourceId(), source.getSourceId());
-			
+
 			source02 = source.addChildSource(source02);
 			assertEquals(source.getSourceId(), source.getSourceId());
 			assertEquals(source.getSourceId(), source02.getParentSourceId());
-			
+
 			Source source03 = sourceFactory.getSource(tempDirBasePath);
 			assertNotNull(source03.getSourceId());
 			assertNull(source03.getParentSourceId());
 			source03 = source.addChildSource(source03);	
 			assertEquals(source.getSourceId(), source03.getParentSourceId());
 			assertEquals(source.getSourceId(), source02.getParentSourceId());
-			
+
 			assertEquals(childSourceCount + 2, source.getNumChildSources());
 			for (Source cSource:source.getChildSources()){
 				assertEquals(source.getSourceId(), cSource.getParentSourceId());
 			}
-			
+
 			source03 = source.deleteChildSource(source03);
 			assertNull(source03.getParentSourceId());
 			assertEquals(childSourceCount + 1, source.getNumChildSources());
-			
+
 			source02 = source.deleteChildSource(source02);
 			assertNull(source02.getParentSourceId());
 			assertEquals(childSourceCount, source.getNumChildSources());
-			
-			
+
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail(e.getMessage());
@@ -226,7 +231,7 @@ public class BerkeleyDbSourceAccessorTest {
 			Thread.sleep(500);
 			source = source.endTimer();
 			assertTrue(500L >= source.getTimerInfo().getElapsedTime().getDuration());
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail(e.getMessage());
@@ -241,7 +246,7 @@ public class BerkeleyDbSourceAccessorTest {
 		Message message01 = null;
 		Message message02 = null;
 		ConfigInfo configInfo = new SpringConfigInfo();
-		
+
 		try {
 			source = sourceFactory.getSource(tempDirBasePath);
 			assertEquals(0, source.getMessages().size());
@@ -308,7 +313,7 @@ public class BerkeleyDbSourceAccessorTest {
 	}
 
 
-	
+
 	/**
 	 * @return the sgmlDirBasePath
 	 */
