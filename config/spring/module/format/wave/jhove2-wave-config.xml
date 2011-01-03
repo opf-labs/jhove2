@@ -93,7 +93,7 @@
 		<constructor-arg type="java.lang.String" value="EBU Tech 3285"/>
 		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="EBU"/>
 	</bean>
-	<!-- EBU R85â€“1997 identifier bean -->
+	<!-- EBU R85 identifier bean -->
 	<bean id="EBUR85Identifier" class="org.jhove2.core.I8R" scope="singleton">
 		<constructor-arg type="java.lang.String" value="EBU Technical Recommendation R85-1997"/>
 		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="EBU"/>
