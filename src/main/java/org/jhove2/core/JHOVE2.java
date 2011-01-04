@@ -36,6 +36,7 @@
 
 package org.jhove2.core;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -45,6 +46,7 @@ import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.FileSystemSource;
+import org.jhove2.core.source.NamedSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceCounter;
 import org.jhove2.core.source.SourceFactory;
@@ -202,7 +204,11 @@ public class JHOVE2
         	throw e;
         }
         catch (Exception e1){
-        	throw new JHOVE2Exception ("Exception characterizing source", e1);
+        	String sourceName = "";
+        	if (source instanceof NamedSource){
+        		sourceName = ((NamedSource)source).getSourceName();
+        	}
+        	throw new JHOVE2Exception ("Exception characterizing source " + sourceName, e1);
         }
        
         finally {
