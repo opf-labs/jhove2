@@ -38,7 +38,7 @@ package org.jhove2.module.format.sgml;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -180,7 +180,7 @@ public class OpenSpWrapperTest {
 		}
 		// now alter path to opensp; should cause error message and null sgml properties,
 		// even with good sgml file
-;
+
 		testSgmlModule.setDocumentProperties(null);
 		fGoodFile = new File(goodFilePath);
 		goodFilePath = fGoodFile.getPath();
@@ -193,7 +193,7 @@ public class OpenSpWrapperTest {
 
 		String oldPath = sp.getOnsgmlsPath();
 		sp.setOnsgmlsPath("/invalid/path/ongmls");
-		int oldMessageLength = inputSource.getMessages().size();
+		int oldMessageLength = testSgmlModule.getSgmlParserErrorMessages().size();
 		try {
 			testSgmlModule.setDocumentProperties(sp.parseFile(testSgmlModule, JHOVE2, inputSource));
 		} catch (JHOVE2Exception e) {
@@ -201,14 +201,14 @@ public class OpenSpWrapperTest {
 			fail("unable to get esis parser");
 		}
 		sp.setOnsgmlsPath(oldPath);
-		assertNull(testSgmlModule.getDocumentProperties());
+		assertNotNull(testSgmlModule.getDocumentProperties());
 		try {
 			assertEquals(Validity.Undetermined, testSgmlModule.validate(JHOVE2, inputSource, null));
 		} catch (JHOVE2Exception e) {
 			fail("sgml module Validate method threw exception " + e.getMessage());
 			e.printStackTrace();
 		}
-		assertEquals(oldMessageLength+1, inputSource.getMessages().size());
+		assertEquals(oldMessageLength+1, testSgmlModule.getSgmlParserErrorMessages().size());
 	}
 
 	/**
@@ -235,7 +235,7 @@ public class OpenSpWrapperTest {
 		String[] outputFiles = null;
 		try {
 			outputFiles = sp.parseSgmlFile(
-					JHOVE2,inputSource,OpenSpWrapper.ESIS_SUFFIX,sp.onsgmlsPath, sp.getOnsgmlsOptions().getOptionString());
+					JHOVE2,inputSource,sp.ESIS_SUFFIX,sp.onsgmlsPath, sp.getOnsgmlsOptions().getOptionString(), testSgmlModule);
 		} catch (JHOVE2Exception e) {
 			e.printStackTrace();
 			fail("Failed to parse sgml file");

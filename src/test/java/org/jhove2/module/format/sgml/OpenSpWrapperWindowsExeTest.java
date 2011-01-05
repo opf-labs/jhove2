@@ -38,7 +38,7 @@ package org.jhove2.module.format.sgml;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -194,7 +194,7 @@ public class OpenSpWrapperWindowsExeTest {
 			}
 			String oldPath = sp.getOnsgmlsPath();
 			sp.setOnsgmlsPath("/invalid/path/ongmls");
-			int oldMessageLength = inputSource.getMessages().size();
+			int oldMessageLength = wtestSgmlModule.getSgmlParserErrorMessages().size();
 			try {
 				wtestSgmlModule.setDocumentProperties(sp.parseFile(wtestSgmlModule, JHOVE2, inputSource));
 			} catch (JHOVE2Exception e) {
@@ -202,14 +202,14 @@ public class OpenSpWrapperWindowsExeTest {
 				fail("unable to get esis parser");
 			}
 			sp.setOnsgmlsPath(oldPath);
-			assertNull(wtestSgmlModule.getDocumentProperties());
+			assertNotNull(wtestSgmlModule.getDocumentProperties());
 			try {
 				assertEquals(Validity.Undetermined, wtestSgmlModule.validate(JHOVE2, inputSource, null));
 			} catch (JHOVE2Exception e) {
 				fail("sgml module Validate method threw exception " + e.getMessage());
 				e.printStackTrace();
 			}
-			assertEquals(oldMessageLength+1, inputSource.getMessages().size());
+			assertEquals(oldMessageLength+1, wtestSgmlModule.getSgmlParserErrorMessages().size());
 		}
 	}
 
@@ -237,7 +237,7 @@ public class OpenSpWrapperWindowsExeTest {
 			String[] outputFiles = null;
 			try {
 				outputFiles = sp.parseSgmlFile(
-						JHOVE2,inputSource,OpenSpWrapper.ESIS_SUFFIX,sp.onsgmlsPath, sp.getOnsgmlsOptions().getOptionString());
+						JHOVE2,inputSource,sp.ESIS_SUFFIX,sp.onsgmlsPath, sp.getOnsgmlsOptions().getOptionString(), wtestSgmlModule);
 			} catch (JHOVE2Exception e) {
 				e.printStackTrace();
 				fail("Failed to parse sgml file");

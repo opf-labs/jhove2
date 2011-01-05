@@ -72,6 +72,7 @@ public class OpenSpMessageParser {
 	/**
 	 * Invokes ANTLR-generated grammar class to parse OpenSP-generated .err file
 	 * @param messageFilePath path to OpenSP-generated .err file
+	 * @param sgm SgmlModule to which messages can be attached
 	 * @param JHOVE2 jhove2 object with ConfigInfo
 	 * @param Source object to which messages may be attached
 	 * @return SgmlParseMessagesParser with extracted message info
@@ -79,7 +80,7 @@ public class OpenSpMessageParser {
 	 * @throws IOException 
 	 * @throws RecognitionException 
 	 */
-	public SgmlParseMessagesParser parseMessageFile(String messageFilePath,  JHOVE2 jhove2, Source source)
+	public SgmlParseMessagesParser parseMessageFile(String messageFilePath, JHOVE2 jhove2, Source source, SgmlModule sgm)
 	throws JHOVE2Exception, IOException, RecognitionException {
 		SgmlParseMessagesLexer lex = null;
 		SgmlParseMessagesParser parser = null;
@@ -97,7 +98,7 @@ public class OpenSpMessageParser {
 					"org.jhove2.module.format.sgml.OpenSpMessageParser.IOExceptionForOpenSpMessageLexer",
 					messageArgs,
 					jhove2.getConfigInfo());
-			source=source.addMessage(message);
+			sgm.getSgmlParserErrorMessages().add(message);
 			throw e;
 		}
 		CommonTokenStream tokens = new CommonTokenStream(lex);
@@ -116,7 +117,7 @@ public class OpenSpMessageParser {
 					"org.jhove2.module.format.sgml.OpenSpMessageParser.RecognitionExceptionForOpenSpMessageLexer",
 					messageArgs,
 					jhove2.getConfigInfo());
-			source=source.addMessage(message);
+			sgm.getSgmlParserErrorMessages().add(message);
 			throw e;
 		}
 		return parser;

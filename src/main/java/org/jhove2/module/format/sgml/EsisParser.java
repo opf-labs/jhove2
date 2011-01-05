@@ -70,6 +70,7 @@ public class EsisParser {
 	 * feature information about the SGML file, which will be accessed
 	 * by the SgmlModule class to report properties about the file
 	 * @param esisPath String containing path to onsmls ESIS output
+	 * @param sgm SgmlModule to which messages may be attached
 	 * @param JHOVE2 jhove2 object with ConfigInfo
 	 * @param Source object to which messages may be attached
 	 * @return parser object with information about the SGML instance.
@@ -77,7 +78,7 @@ public class EsisParser {
 	 * @throws IOException 
 	 * @throws RecognitionException 
 	 */
-	public ESISCommandsParser parseEsisFile(String esisPath, JHOVE2 jhove2, Source source)
+	public ESISCommandsParser parseEsisFile(String esisPath, JHOVE2 jhove2, Source source, SgmlModule sgm)
 	throws JHOVE2Exception, IOException, RecognitionException {
 		ESISCommandsLexer lex = null;
 		ESISCommandsParser parser = null;
@@ -95,7 +96,7 @@ public class EsisParser {
 					"org.jhove2.module.format.sgml.EsisParser.IOExceptionForEsisLexer",
 					messageArgs,
 					jhove2.getConfigInfo());
-			source=source.addMessage(message);
+			sgm.getSgmlParserErrorMessages().add(message);
 			throw e;
 		}
 		CommonTokenStream tokens = new CommonTokenStream(lex);
@@ -114,7 +115,7 @@ public class EsisParser {
 					"org.jhove2.module.format.sgml.EsisParser.RecognitionExceptionForEsisLexer",
 					messageArgs,
 					jhove2.getConfigInfo());
-			source=source.addMessage(message);
+			sgm.getSgmlParserErrorMessages().add(message);
 			throw e;
 		}
 		return parser;		
