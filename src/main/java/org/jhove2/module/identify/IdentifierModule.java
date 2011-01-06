@@ -77,8 +77,6 @@ implements Identifier
 		+ "Stanford Junior University. "
 		+ "Available under the terms of the BSD license.";
 
-//	/** File-level identifier module. */
-//	protected SourceIdentifier sourceIdentifier;
 
 	/** flag to indicate bypass of Identification if Source is pre-identified */
 	protected boolean shouldSkipIdentifyIfPreIdentified;
@@ -195,6 +193,7 @@ implements Identifier
 	/**
 	 * @return the shouldSkipIdentifyIfPreIdentified
 	 */
+	@Override
 	public boolean isShouldSkipIdentifyIfPreIdentified() {
 		return shouldSkipIdentifyIfPreIdentified;
 	}
@@ -202,6 +201,7 @@ implements Identifier
 	/**
 	 * @param shouldSkipIdentifyIfPreIdentified the shouldSkipIdentifyIfPreIdentified to set
 	 */
+	@Override
 	public void setShouldSkipIdentifyIfPreIdentified(
 			boolean shouldSkipIdentifyIfPreIdentified) {
 		this.shouldSkipIdentifyIfPreIdentified = shouldSkipIdentifyIfPreIdentified;

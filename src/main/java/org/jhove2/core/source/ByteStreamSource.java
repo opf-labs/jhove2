@@ -83,7 +83,7 @@ public class ByteStreamSource
 	private ByteStreamSource()
     	throws IOException, JHOVE2Exception
     {
-    	this(null, null, 0, 0, null);
+    	super();
     }
    
     /** Instantiate a new <code>ByteStreamSource</code>.  The new byte stream

@@ -70,8 +70,8 @@ public class Digest
 		this.algorithm = algorithm;
 	}
 	
-	public Digest(){
-		this(null, null);
+	private Digest(){
+		super();;
 	}
 
 	/**

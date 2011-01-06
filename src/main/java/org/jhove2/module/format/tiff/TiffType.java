@@ -37,8 +37,6 @@ package org.jhove2.module.format.tiff;
 
 
 
-import com.sleepycat.persist.model.Persistent;
-
 
 /**
  * TiffType
@@ -48,7 +46,7 @@ import com.sleepycat.persist.model.Persistent;
  * @author mstrong
  *
  */
-@Persistent
+
 public enum TiffType {
     BYTE       (1, 1),
     ASCII      (2, 1),

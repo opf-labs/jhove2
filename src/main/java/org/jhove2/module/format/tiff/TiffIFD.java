@@ -615,7 +615,7 @@ extends IFD
                 }
                 /* If PhotometricInterpretation = 4, then SamplesPerPixel = 1 and BitsPerSample = 1 */
                 if ((entry = this.entries.get(BITSPERSAMPLE)) != null) {
-                    this.bitsPerSample = ((ShortArray) entry.getValue()).getShortArrayValue();
+                    this.bitsPerSample = getShortValue(entry); 
                     if (photometricInterpretation == 4) {
                         if (samplesPerPixel < 1 || bitsPerSample[0] != 1) {
                             this.isValid = Validity.False;
@@ -790,7 +790,20 @@ extends IFD
         return field;
     }
 
-
+    /* determine if the field is either a single value or
+     * an array and read it appropriately
+     */
+    private int[] getShortValue(IFDEntry entry) {
+        int[] field = null;
+        if (entry.count == 1) {
+            field = new int[1];
+            field[0] = ((Short) entry.getValue()).getValue();
+        }
+        else {
+            field = ((ShortArray) entry.getValue()).getShortArrayValue();
+        }
+        return field;
+    }
     /**
      * @return the compression
      */
@@ -1329,6 +1342,7 @@ extends IFD
     public boolean hasRowsPerStrip() {
         return this.hasRowsPerStrip;
     }
+
 
 
 }

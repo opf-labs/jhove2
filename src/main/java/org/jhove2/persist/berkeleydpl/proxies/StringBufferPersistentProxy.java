@@ -54,13 +54,18 @@ public class StringBufferPersistentProxy implements PersistentProxy<StringBuffer
 
 	@Override
 	public StringBuffer convertProxy() {
-		StringBuffer sb = new StringBuffer(string);
+		StringBuffer sb = null;
+		if (string != null){
+			sb = new StringBuffer(string);
+		}
 		return sb;
 	}
 
 	@Override
 	public void initializeProxy(StringBuffer arg0) {
-		string = arg0.toString();
+		if (arg0 != null){
+			string = arg0.toString();
+		}
 	}
 
 }

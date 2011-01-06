@@ -55,12 +55,18 @@ public class FilePersistentProxy implements PersistentProxy<File> {
 
 	@Override
 	public File convertProxy() {
-		return new File(filePath);
+		File file = null;
+		if (filePath != null){
+			file = new File(filePath);
+		}
+		return file;
 	}
 
 	@Override
 	public void initializeProxy(File object) {
-		filePath = object.getAbsolutePath();
+		if (object != null){
+			filePath = object.getAbsolutePath();
+		}
 	}
 
 }

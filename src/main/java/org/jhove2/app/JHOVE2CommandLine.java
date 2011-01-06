@@ -44,7 +44,6 @@ import org.jhove2.config.spring.SpringConfigInfo;
 import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.TimerInfo;
 import org.jhove2.core.app.AbstractApplication;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.io.Input.Type;

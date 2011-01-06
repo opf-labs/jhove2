@@ -59,18 +59,22 @@ public class ByteOrderPersistentProxy implements PersistentProxy<ByteOrder> {
 	@Override
 	public ByteOrder convertProxy() {
 		ByteOrder byteOrder = null;
-		if (byteOrderString.toUpperCase().equals(BIG_ENDIAN)){
-			byteOrder = ByteOrder.BIG_ENDIAN;
-		}
-		else {
-			byteOrder = ByteOrder.LITTLE_ENDIAN;
+		if (byteOrderString != null){
+			if (byteOrderString.toUpperCase().equals(BIG_ENDIAN)){
+				byteOrder = ByteOrder.BIG_ENDIAN;
+			}
+			else {
+				byteOrder = ByteOrder.LITTLE_ENDIAN;
+			}
 		}
 		return byteOrder;
 	}
 
 	@Override
 	public void initializeProxy(ByteOrder byteOrder) {
-		byteOrderString = byteOrder.toString();
+		if (byteOrder != null){
+			byteOrderString = byteOrder.toString();
+		}
 	}
 
 }

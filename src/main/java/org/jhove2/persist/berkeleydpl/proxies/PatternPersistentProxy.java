@@ -55,13 +55,18 @@ public class PatternPersistentProxy implements PersistentProxy<Pattern> {
 
 	@Override
 	public Pattern convertProxy() {
-		Pattern newPattern = Pattern.compile(regexString);
+		Pattern newPattern = null;
+		if (regexString != null){
+			newPattern = Pattern.compile(regexString);
+		}
 		return newPattern;
 	}
 
 	@Override
 	public void initializeProxy(Pattern pattern) {
-		regexString = pattern.pattern();
+		if (pattern != null){
+			regexString = pattern.pattern();
+		}
 	}
 
 }

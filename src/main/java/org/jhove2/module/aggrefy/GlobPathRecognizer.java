@@ -48,6 +48,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
+import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
@@ -375,6 +376,7 @@ implements Recognizer
 	 * Get identifier for  Format which this recognizer can detect
 	 * @return Format which this recognizer can detect
 	 */
+	 @ReportableProperty(order = 2, value = "I8R for Format which this recognizer can detect")
 	public I8R getFormatIdentifier() {
 		return format;
 	}
@@ -391,6 +393,7 @@ implements Recognizer
 	 * Get String containing regular expression to group candidate files
 	 * @return String containing regular expression to group candidate files
 	 */
+	 @ReportableProperty(order = 2, value = "String containing regular expression to group candidate files")
 	public String getFileGroupingExpr() {
 		return fileGroupingExpr;
 	}
@@ -407,6 +410,8 @@ implements Recognizer
 	 * Get String containing regular expression to identify required candidate files
 	 * @return Regular expression to identify required candidate files
 	 */
+	@ReportableProperty(order = 2, 
+			 value = "String containing regular expression to identify required candidate files")
 	public String getMustHaveExpr() {
 		return mustHaveExpr;
 	}
@@ -423,6 +428,8 @@ implements Recognizer
 	 * Gets String containing regular expression to identify optional candidate files
 	 * @return Regular expression to identify optional candidate files
 	 */
+	 @ReportableProperty(order = 2, 
+			 value = "String containing regular expression to identify optional candidate files")
 	public String getMayHaveExpr() {
 		return mayHaveExpr;
 	}
@@ -442,6 +449,7 @@ implements Recognizer
 	 * 
 	 * @return minMustHavesToIdentify
 	 */
+	@ReportableProperty(order = 2, value="Minimum number of files that must match the mustHaveExp")
 	public int getMinMustHavesToIdentify() {
 		return minMustHavesToIdentify;
 	}
@@ -464,6 +472,8 @@ implements Recognizer
 	 *  
 	 * @return boolean
 	 */
+	@ReportableProperty(order = 2, 
+			value="Indicates whether or not to include any files which match the grouping expression but do not match either must mustHaveExpr or mayHaveExpr")
 	public boolean isIncludeUnmatchedFromGroup() {
 		return includeUnmatchedFromGroup;
 	}
@@ -485,6 +495,8 @@ implements Recognizer
 	 *  
 	 * @return mustHaveCaptureGroupIndex
 	 */
+	@ReportableProperty(order = 2, 
+			value = "Capture group index in fileGroupingToken for the part of the file path which we will be comparing for must-have files")
 	public int getMustHaveCaptureGroupIndex() {
 		return mustHaveCaptureGroupIndex;
 	}
@@ -504,6 +516,8 @@ implements Recognizer
 	 *  
 	 * @return mayHaveCaptureGroupIndex
 	 */
+	@ReportableProperty(order = 2, 
+			value="capture group index in fileGroupingToken which captures the part of the file path which we will be comparing for may-have files")
 	public int getMayHaveCaptureGroupIndex() {
 		return mayHaveCaptureGroupIndex;
 	}
@@ -524,6 +538,8 @@ implements Recognizer
 	 *  
 	 * @return fileGroupingCaptureGroupIndex
 	 */
+	 @ReportableProperty(order = 2, 
+			 value = "Capture group index in fileGroupingToken which captures the part of the file path which indicates related files")
 	public int getFileGroupingCaptureGroupIndex() {
 		return fileGroupingCaptureGroupIndex;
 	}

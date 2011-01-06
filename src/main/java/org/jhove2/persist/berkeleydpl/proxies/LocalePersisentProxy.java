@@ -49,22 +49,28 @@ import com.sleepycat.persist.model.PersistentProxy;
 @Persistent(proxyFor=Locale.class)
 public class LocalePersisentProxy implements PersistentProxy<Locale> {
 
-    String language;
-    String country;
-    String variant;
+	String language;
+	String country;
+	String variant;
 
 	private LocalePersisentProxy() {}
 
 	@Override
 	public Locale convertProxy() {
-		return new Locale(language, country, variant);
+		Locale locale = null;
+		if (language!=null && country!=null && variant!=null){
+			locale = new Locale(language, country, variant);
+		}
+		return locale;
 	}
 
 	@Override
 	public void initializeProxy(Locale object) {
-		language = object.getLanguage();
-        country = object.getCountry();
-        variant = object.getVariant();
+		if (object != null){
+			language = object.getLanguage();
+			country = object.getCountry();
+			variant = object.getVariant();
+		}
 
 	}
 

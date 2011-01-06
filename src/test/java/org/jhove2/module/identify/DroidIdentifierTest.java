@@ -125,9 +125,7 @@ public class DroidIdentifierTest {
 				assertEquals(zipJhoveId, fi.getJHOVE2Identifier().getValue());
 				assertEquals(0, fi.getMessages().size());
 			}
-			assertNull(testDroidIdentifier.getFileErrorMessage());
-			assertNull(testDroidIdentifier.getFileNotIdentifiedMessage());
-			assertNull(testDroidIdentifier.getFileNotRunMessage());
+			assertEquals(0,source.getMessages().size());
 		} catch (Exception e) {
 			fail("Couldn't identify: zip " + e.getMessage());
 		} 
@@ -142,15 +140,10 @@ public class DroidIdentifierTest {
 		    input.setPosition(0);
 			ids = testDroidIdentifier.identify(JHOVE2, source, null);
 			assertEquals(0, ids.size());
-			assertNull(testDroidIdentifier.getFileErrorMessage());
-			assertNull(testDroidIdentifier.getFileNotRunMessage());
-			assertNotNull(testDroidIdentifier.getFileNotIdentifiedMessage());
+			assertEquals(1,source.getMessages().size());
 		} catch (Exception e) {
 			fail("Couldn't identify: bad file " + e.getMessage());
 		} 
-		testDroidIdentifier.setFileNotIdentifiedMessage(null);
-		testDroidIdentifier.setFileErrorMessage(null);
-		testDroidIdentifier.setFileNotRunMessage(null);
 		String noJhoveFormatFilePath = samplesDirPath.concat(sampleNoJhoveIdFile);
 		try {
 			source = (FileSource)JHOVE2.getSourceFactory().getSource(noJhoveFormatFilePath);
@@ -166,9 +159,7 @@ public class DroidIdentifierTest {
 				assertEquals(Confidence.PositiveSpecific, fi.getConfidence());
 				assertNotNull(fi.getJHOVE2Identifier());
 			}
-			assertNull(testDroidIdentifier.getFileErrorMessage());
-			assertNull(testDroidIdentifier.getFileNotRunMessage());
-			assertNull(testDroidIdentifier.getFileNotIdentifiedMessage());
+			assertEquals(0, source.getMessages().size());
 		} catch (Exception e) {
 			fail("Couldn't identify: bad file " + e.getMessage());
 		} 
