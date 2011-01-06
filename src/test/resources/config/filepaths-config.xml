@@ -8,31 +8,40 @@
            http://www.springframework.org/schema/context/spring-context-2.5.xsd
 		   http://www.springframework.org/schema/util 
 		   http://www.springframework.org/schema/util/spring-util-2.0.xsd">
-
-	      
-	<bean id="shapeDirBasePath" class="java.lang.String" >
-	        <constructor-arg type="java.lang.String" 
-	        value="examples/shapefiles/"/>
-	</bean>
-
-	<bean id="quickenDirBasePath" class="java.lang.String" >
-		 <constructor-arg type="java.lang.String" 
-	        value="examples/quicken/"/>
-	</bean>
-	
-	<bean id="emptyDirBasePath" class="java.lang.String" >
-		<constructor-arg type="java.lang.String" 
-	        value="examples/"/>
-	</bean>
 	
 	<bean id="droidDirBasePath" class="java.lang.String" >
 		<constructor-arg type="java.lang.String" 
 	        value="examples/droid/"/>
 	</bean>
 	
-	<bean id="utf8DirBasePath" class="java.lang.String" >
+	<bean id="emptyDirBasePath" class="java.lang.String" >
 		<constructor-arg type="java.lang.String" 
-	        value="examples/utf8/"/>
+	        value="examples/"/>
+	</bean>
+
+	<bean id="iccDirBasePath" class="java.lang.String" >
+		 <constructor-arg type="java.lang.String" 
+	        value="examples/icc/"/>
+	</bean>
+
+	<bean id="quickenDirBasePath" class="java.lang.String" >
+		 <constructor-arg type="java.lang.String" 
+	        value="examples/quicken/"/>
+	</bean>
+
+	<bean id="sgmlDirBasePath" class="java.lang.String" >
+		<constructor-arg type="java.lang.String" 
+	        value="examples/sgml/"/>
+	</bean>
+
+	<bean id="shapeDirBasePath" class="java.lang.String" >
+	        <constructor-arg type="java.lang.String" 
+	        value="examples/shapefiles/"/>
+	</bean>
+		
+	<bean id="tempDirBasePath" class="java.lang.String" >
+		<constructor-arg type="java.lang.String" 
+	        value="examples/temp/"/>
 	</bean>
 	
 	<bean id="tiffDirBasePath" class="java.lang.String" >
@@ -40,19 +49,14 @@
 	        value="examples/tiff/"/>
 	</bean>
 	
+	<bean id="utf8DirBasePath" class="java.lang.String" >
+		<constructor-arg type="java.lang.String" 
+	        value="examples/utf8/"/>
+	</bean>
+	
 	<bean id="xmlDirBasePath" class="java.lang.String" >
 		<constructor-arg type="java.lang.String" 
 	        value="examples/xml/"/>
 	</bean>
 	
-	<bean id="sgmlDirBasePath" class="java.lang.String" >
-		<constructor-arg type="java.lang.String" 
-	        value="examples/sgml/"/>
-	</bean>
-	
-	<bean id="tempDirBasePath" class="java.lang.String" >
-		<constructor-arg type="java.lang.String" 
-	        value="examples/temp/"/>
-	</bean>
-
 </beans>
