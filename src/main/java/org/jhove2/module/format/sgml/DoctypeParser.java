@@ -126,11 +126,24 @@ public class DoctypeParser {
 			}
 			props.getParseErrors().addAll(
 					CopyUtils.copyAndClearList(doctypeFinderParser.getDoctypeFinderParseErrors()));
+			doctypeFinderParser.setDoctypeFinderParseErrors(null);
 		}
 		props.setFoundDoctype(doctypeFinderParser.foundDoctype);
-		props.setPublicIdentifier(doctypeFinderParser.pubid);
+		String strPubid = null;
+		if (doctypeFinderParser.pubid != null){
+			strPubid = new String(doctypeFinderParser.pubid);
+			doctypeFinderParser.pubid = null;
+		}
+		props.setPublicIdentifier(strPubid);
+				
 		props.setFoundPubid(doctypeFinderParser.foundPubid);
-		props.setSystemIdentifier(doctypeFinderParser.systemId);
+		
+		String strSysId = null;
+		if (doctypeFinderParser.systemId != null){
+			strSysId = new String(doctypeFinderParser.systemId);
+			doctypeFinderParser.systemId = null;
+		}
+		props.setSystemIdentifier(strSysId);			
 		props.setFoundSysid(doctypeFinderParser.foundSysid);
 		return;
 	}

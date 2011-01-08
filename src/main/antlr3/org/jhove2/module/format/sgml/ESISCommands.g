@@ -123,6 +123,10 @@ List<String> appInfos = new ArrayList<String>();
     public List<String> getEsisParseErrors() {
         return esisParseErrors;
     }
+    
+    public void setEsisParseErrors(List<String> list){
+      esisParseErrors = null;
+    }
 }
 
 @lexer::members{
@@ -199,7 +203,7 @@ The next element to start has an attribute name with value val which takes one o
 elementAttributeCommand :  ACMD aName  SPACE attrType afterElemAttrType? CR? NEWLINE?
 {
          elementAttributeCount++;
-         EsisParser.updateMapCounter(elemAttributeType2Count,$attrType.text);
+ //        EsisParser.updateMapCounter(elemAttributeType2Count,$attrType.text);
 };
 aName : (STUFF+);  
 attrType : (STUFF+);
@@ -213,8 +217,8 @@ they apply, but before any & or A commands that reference the entity.
 */
 dataAttributeCommand : DCMD extDataEntname SPACE attrname SPACE attrType afterElemAttrType? CR? NEWLINE?
         {dataAttrCount++; 
-         EsisParser.updateMapList(extEntName2dataAttrNames,$extDataEntname.text, $attrname.text);
-         EsisParser.updateMapCounter(dataAttributeType2Count,$attrType.text);
+  //       EsisParser.updateMapList(extEntName2dataAttrNames,$extDataEntname.text, $attrname.text);
+  //       EsisParser.updateMapCounter(dataAttributeType2Count,$attrType.text);
         };
 extDataEntname : (STUFF+);
 attrname : (STUFF+);
@@ -226,7 +230,7 @@ which takes the same form as with the A command.
 */
 linkAttributeCommand : LACMD linkType SPACE attrname SPACE stuffPlus afterElemAttrType? CR? NEWLINE?
         {linkAttrCount++; 
-         EsisParser.updateMapCounter(linkAttributeType2Count,$linkType.text);
+ //        EsisParser.updateMapCounter(linkAttributeType2Count,$linkType.text);
         };
 linkType : (STUFF+);
 stuffPlus : (STUFF+);
@@ -241,7 +245,7 @@ startElementCommand : LEFTPAREN elementName CR? NEWLINE?
      rootElementName = $elementName.text;
   }
   elementCount++;
-  elementNames.add($elementName.text);
+ // elementNames.add($elementName.text);
 };
 elementName : (STUFF+);
 
@@ -276,7 +280,7 @@ A processing instruction with data pi.
 */
 piCommand :PI commandText CR? NEWLINE?
         {piCount++;
-         progInstructions.add($commandText.text);
+ //        progInstructions.add($commandText.text);
         };
 
 /**
@@ -290,7 +294,7 @@ in an E command or in an A command for an attribute with a declared value of NOT
 */
 notationDefCommand : NCMD commandText CR? NEWLINE? 
           {notatDefCount++; 
-           notatNames.add($commandText.text);
+ //          notatNames.add($commandText.text);
           };
 
 /**
@@ -309,7 +313,7 @@ Eename typ nname
 */
 externalDataEntityDefCommand : ECMD extDataEntDefname SPACE STUFF+ afterElemAttrType? CR? NEWLINE?
           {extDataEntCount++;
-           extDataEntNames.add($extDataEntDefname.text);
+  //         extDataEntNames.add($extDataEntDefname.text);
           };          
 extDataEntDefname : (STUFF+);
 
@@ -324,9 +328,9 @@ an A command for an attribute whose declared value is ENTITY or ENTITIES
 
 internalDataEntityDefCommand : ICMD iename SPACE ietype afterElemAttrType? CR? NEWLINE?
              {intDataEntCount++; 
-              intEnt2Value.put($iename.text, $afterElemAttrType.text);
-              intEnt2Type.put($iename.text, $ietype.text);
-              EsisParser.updateMapCounter(intEntType2Count, $ietype.text);
+  //            intEnt2Value.put($iename.text, $afterElemAttrType.text);
+  //            intEnt2Type.put($iename.text, $ietype.text);
+   //           EsisParser.updateMapCounter(intEntType2Count, $ietype.text);
              };
 iename : STUFF+;
 ietype :(STUFF+);
@@ -343,7 +347,7 @@ A command for an attribute whose declared value is ENTITY or ENTITIES.
 */
 subDocEntityDefCommand :  SCMD subDocEntDefName CR? NEWLINE?
          {subDocEntityDefCount++;
-          subDocEntDefNames.add($subDocEntDefName.text);
+  //        subDocEntDefNames.add($subDocEntDefName.text);
          };
 subDocEntDefName : (STUFF+);
 /**
@@ -356,7 +360,7 @@ This command will be output only if the -oentity option is specified.
 */
 externalTextEntityDefCommand : TCMD extEntname CR? NEWLINE?  
           {extTextEntCount++;
-           extTextEntNames.add($extEntname.text);
+  //         extTextEntNames.add($extEntname.text);
           };
 extEntname : (STUFF+);
 
@@ -367,8 +371,8 @@ This command applies to the next E, S, T or N command and specifies the associat
 sysidCommand : LSCMD sysId=((STUFF|SPACE)*) CR? NEWLINE? 
           {
            sysidsCount++; 
-           if ($sysId.text != null)
-              extEntSysidNames.add($sysId.text);       
+ //          if ($sysId.text != null)
+  //            extEntSysidNames.add($sysId.text);       
           };
 
 /**
@@ -377,7 +381,7 @@ This command applies to the next E, S, T or N command and specifies the associat
 */
 publicIdCommand : PCMD publicId  CR? NEWLINE?
           {publicIdCount++; 
-           pubIds.add($publicId.text);          
+ //          pubIds.add($publicId.text);          
           };
 publicId :   (STUFF|SPACE)+ ;    
    
@@ -389,9 +393,9 @@ and other information about the entity or notation.
 */
 fileSysIdCommand : FCMD fsysId CR? NEWLINE? 
            {fileNamesCount++; 
-            if ($fsysId.text != null){
-              extEntFileNames.add($fsysId.text);
-            }         
+  //          if ($fsysId.text != null){
+   //           extEntFileNames.add($fsysId.text);
+   //         }         
            };
 fsysId : (STUFF|SPACE)+ ; 
 
@@ -402,7 +406,7 @@ The start of the SGML subdocument entity ename; ename will have been defined usi
 startSubDocCommand : LEFTBRACE subDocEntname=((STUFF|SPACE)+) CR? NEWLINE?
           {
            subDocCommandCount++;
-           subDocCommandNames.add($subDocEntname.text);
+  //         subDocCommandNames.add($subDocEntname.text);
           };
           
 /**
@@ -427,7 +431,7 @@ APPINFO NONE was specified. A # command will occur at most once, and may be prec
 */
 appInfoCommand : POUND appInfoText=((STUFF|SPACE)+) CR? NEWLINE?
         {appInfoCount++;
-         appInfos.add($appInfoText.text);
+  //       appInfos.add($appInfoText.text);
         };
         
 /**

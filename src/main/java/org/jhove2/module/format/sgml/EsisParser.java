@@ -133,9 +133,11 @@ public class EsisParser {
 			}
 			props.getParseErrors().addAll(
 					CopyUtils.copyAndClearList(esisParser.getEsisParseErrors()));
+			esisParser.setEsisParseErrors(null);
 		}		
 		props.setAppInfoCount(esisParser.appInfoCount);
 		props.setAppInfos(CopyUtils.copyAndClearList(esisParser.appInfos));
+		esisParser.appInfos=null;
 		props.setCommentsCount(esisParser.commentsCount);
 		props.setDataAttrCount(esisParser.dataAttrCount);
 		props.setDataAttributeType2Count(CopyUtils.copyAndClearIntMap(esisParser.dataAttributeType2Count));
@@ -167,9 +169,16 @@ public class EsisParser {
 		props.setOmitCommandCount(esisParser.omitCommandCount);
 		props.setProcessingInstructionsCount(esisParser.piCount);
 		props.setProcessingInstructions(CopyUtils.copyAndClearList(esisParser.progInstructions));
+		esisParser.progInstructions = null;
 		props.setPubIds(CopyUtils.copyAndClearSet(esisParser.pubIds));
 		props.setPublicIdCount(esisParser.publicIdCount);
-		props.setRootElementName(esisParser.rootElementName);
+		String strName = null;
+		if (esisParser.rootElementName != null){
+			strName = new String(esisParser.rootElementName);
+			esisParser.rootElementName = null;	
+		}
+		props.setRootElementName(strName);
+			
 		props.setsDataCount(esisParser.sDataCount);
 		props.setSdataNames(CopyUtils.copyAndClearSet(esisParser.sdataNames));
 		props.setSubDocCommandCount(esisParser.subDocCommandCount);

@@ -135,6 +135,7 @@ public class OpenSpMessageParser {
 			}
 			props.getParseErrors().addAll(
 					CopyUtils.copyAndClearList(errParser.getSgmlMessagesParseErrors()));
+			errParser.setSgmlMessagesParseErrors(null);
 		}
 		props.setErrorLevelMessageCount(errParser.eLevelMessageCount);
 		props.setWarningLevelMessageCount(errParser.wLevelMessageCount);
@@ -143,6 +144,7 @@ public class OpenSpMessageParser {
 		props.setXrefLevelMessageCount(errParser.xLevelMessageCount);
 		props.setTotMessageCount(errParser.totMessageCount);
 		props.setSgmlParserMessages(CopyUtils.copyAndClearList(errParser.openSpMessages));
+		errParser.openSpMessages = null;
 	}
 	
 	/**

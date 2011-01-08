@@ -76,6 +76,9 @@ List<String> openSpMessages = new ArrayList<String>();
  public List<String> getSgmlMessagesParseErrors() {
         return sgmlMessagesParseErrors;
  }
+ public void setSgmlMessagesParseErrors(List<String> list){
+       sgmlMessagesParseErrors = list;
+ }
  public boolean isMessageCode (String messageLevel){
     boolean isCode = false;
     if (messageLevel != null){
