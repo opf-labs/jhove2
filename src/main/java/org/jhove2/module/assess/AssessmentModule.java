@@ -168,8 +168,10 @@ public class AssessmentModule extends AbstractModule implements Assessor {
         List<Module> modules = source.getModules();
         for (Module module : modules) {
             assessObject(module);
+            this.getModuleAccessor().persistModule(this);
         }
         assessObject(source);
+        this.getModuleAccessor().persistModule(this);
 	}
 
     /**

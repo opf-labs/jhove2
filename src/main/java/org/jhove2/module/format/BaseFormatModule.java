@@ -162,9 +162,11 @@ public class BaseFormatModule
         source.addModule(this);
 		try {
 			this.parse(jhove2, source, input);
+			this.getModuleAccessor().persistModule(this);
 			if (this instanceof Validator) {
 				((Validator) this).validate(jhove2, source, input);
-			}
+				this.getModuleAccessor().persistModule(this);
+			}			
 			else {
 			    this.moduleDoesNotImplementValidatorInterfaceMessage =
 			        new Message(Severity.INFO, Context.PROCESS,
@@ -178,7 +180,8 @@ public class BaseFormatModule
 					profile.setFormatModule(this); // check this
 					if (profile instanceof Validator) {	
 						profile = (FormatProfile) profile.getModuleAccessor().startTimerInfo(profile);
-						((Validator) profile).validate(jhove2, source, input);						
+						((Validator) profile).validate(jhove2, source, input);	
+						// endTimerInfo will persist profile
 						profile = (FormatProfile) profile.getModuleAccessor().endTimerInfo(profile);
 					}
 				}

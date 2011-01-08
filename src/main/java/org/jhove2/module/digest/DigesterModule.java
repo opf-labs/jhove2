@@ -44,7 +44,6 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.jhove2.core.Digest;
-import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.io.Input;
