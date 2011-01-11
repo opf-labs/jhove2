@@ -17,6 +17,14 @@
         <property name="sgmlParser" ref="testOpenSpWrapper"/>     
 	</bean>
 	
+    <bean id="testSgmlModule02" class="org.jhove2.module.format.sgml.SgmlModule"
+	      scope="prototype">
+	    <constructor-arg ref="testSgmlFormat"/>
+	    <constructor-arg ref="FormatModuleAccessor"/>
+        <property name="wrappedProduct" ref="testOpenSgml"/>
+        <property name="sgmlParser" ref="testOpenSpWrapper"/>     
+	</bean>
+	
 	<bean id="wtestSgmlModule" class="org.jhove2.module.format.sgml.SgmlModule"
 	      scope="prototype">
 	    <constructor-arg ref="testSgmlFormat"/>
@@ -25,8 +33,17 @@
         <property name="sgmlParser" ref="wtestOpenSpWrapper"/>     
 	</bean>
 	
+	<bean id="wtestSgmlModule02" class="org.jhove2.module.format.sgml.SgmlModule"
+	      scope="prototype">
+	    <constructor-arg ref="testSgmlFormat"/>
+	    <constructor-arg ref="FormatModuleAccessor"/>
+        <property name="wrappedProduct" ref="testOpenSgml"/>
+        <property name="sgmlParser" ref="wtestOpenSpWrapper"/>     
+	</bean>
+	
 	<!-- OpenSp wrapper bean using Unix shell -->
-	<bean id="testOpenSpWrapper" class="org.jhove2.module.format.sgml.OpenSpWrapper">
+	<bean id="testOpenSpWrapper" class="org.jhove2.module.format.sgml.OpenSpWrapper"
+	      scope="prototype">
         <property name="processHandler" ref="testExternalProcessHandler"/>
         <property name="onsgmlsPath" value="/usr/bin/onsgmls"/>
         <property name="filepathFilter" ref="testOpenSpFilepathFilter"/>
@@ -34,10 +51,17 @@
         <property name="onsgmlsOptions" ref="TestOnsgmlsOptions"/>
         <property name="sgmlnormOptions" ref="TestSgmlNormOptions"/>
         <property name="spaceEscapeChar" value="'"/>
+<!--        <property name="esisFileParser" ref="AntlrEsisParser"/>-->
+        <property name="esisFileParser" ref="DirectEsisParser"/>
+<!--        <property name="messageParser"  ref="AntlrMessageParser"/>-->
+        <property name="messageParser"  ref="DirectMessageParser"/>
+<!--        <property name="doctypeParser" ref="AntlrDoctypeParser"/>-->
+        <property name="doctypeParser" ref="DirectDoctypeParser"/>
 	</bean>
 	
 	<!-- OpenSp wrapper bean using Windows exe -->
-	<bean id="wtestOpenSpWrapper" class="org.jhove2.module.format.sgml.OpenSpWrapper">
+	<bean id="wtestOpenSpWrapper" class="org.jhove2.module.format.sgml.OpenSpWrapper"
+	      scope="prototype">
         <property name="processHandler" ref="wtestExternalProcessHandler"/>
         <!--  property name="onsgmlsPath" value="C:\PROGRA~1\OpenSp\onsgmls.exe"/ -->
         <!--  property name="sgmlnormPath" value="C:\PROGRA~1\OpenSp\osgmlnorm.exe"/ -->
@@ -46,8 +70,27 @@
         <property name="onsgmlsOptions" ref="wTestOnsgmlsOptions"/>
         <property name="sgmlnormOptions" ref="wTestSgmlNormOptions"/>
         <property name="spaceEscapeChar" value='"'/>
+<!--        <property name="esisFileParser" ref="AntlrEsisParser"/>-->
+        <property name="esisFileParser" ref="DirectEsisParser"/>
+<!--        <property name="messageParser"  ref="AntlrMessageParser"/>-->
+        <property name="messageParser"  ref="DirectMessageParser"/>
+<!--        <property name="doctypeParser" ref="AntlrDoctypeParser"/>-->
+        <property name="doctypeParser" ref="DirectDoctypeParser"/>
 	</bean>
    
+    <bean id="DirectEsisParser" class="org.jhove2.module.format.sgml.EsisFileParser"
+	      scope="prototype"/>
+    <bean id="DirectMessageParser" class="org.jhove2.module.format.sgml.ErrFileParser"
+		  scope="prototype"/>	
+	<bean id="DirectDoctypeParser" class="org.jhove2.module.format.sgml.SgmlNormFileParser" 
+		  scope="prototype"/>
+		  
+   <bean id="AntlrEsisParser" class="org.jhove2.module.format.sgml.EsisParser"
+	      scope="prototype"/>
+   <bean id="AntlrMessageParser" class="org.jhove2.module.format.sgml.OpenSpMessageParser"
+	      scope="prototype"/>
+   <bean id="AntlrDoctypeParser" class="org.jhove2.module.format.sgml.DoctypeParser"
+	      scope="prototype"/>
 	
 	<!-- Bean containing options settings for OpenSp ongsmls executable (unix) -->
    <bean id="TestOnsgmlsOptions" class="org.jhove2.module.format.sgml.OnsgmlsOptions" scope="singleton"> 

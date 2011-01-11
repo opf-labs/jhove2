@@ -35,40 +35,44 @@
  */
 package org.jhove2.module.format.sgml;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.annotation.Resource;
 
-import org.antlr.runtime.ANTLRFileStream;
-import org.antlr.runtime.CommonTokenStream;
-import org.antlr.runtime.RecognitionException;
 import org.jhove2.app.util.FeatureConfigurationUtil;
+import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.source.Source;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+/**
+ * @author smorrissey
+ *
+ */
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath*:**/test-config.xml", 
 		"classpath*:**/filepaths-config.xml"})
+public class SgmlNormFileParserTest {
 
-public class DoctypeFinderParserTest {
-
-	protected String sgmlDirBasePath;
+	protected String normOutNoDoctype;
 	protected String normOutPubid;
 	protected String normOutSysid;
-	protected String normOutNoDoctype;
 	protected String normOutZero;
-	
+	protected String sgmlDirBasePath;
 	protected String samplesDirPath;
-	
+	protected JHOVE2 JHOVE2;
+	protected SgmlModule testSgmlModule;
+	/**
+	 * @throws java.lang.Exception
+	 */
 	@Before
 	public void setUp() throws Exception {
 		try {
@@ -79,57 +83,43 @@ public class DoctypeFinderParserTest {
 		}
 	}
 
+	/**
+	 * Test method for {@link org.jhove2.module.format.sgml.SgmlNormFileParser#parseNormFile(java.lang.String, org.jhove2.core.JHOVE2, org.jhove2.core.source.Source, org.jhove2.module.format.sgml.SgmlModule)}.
+	 */
 	@Test
-	public void testNormdoc() {
-		DoctypeFinderLexer lex = null;
-    	CommonTokenStream tokens = null;
-    	DoctypeFinderParser g = null;
-    	String normOutPubidPath = samplesDirPath.concat(normOutPubid);
-    	try {
-			lex = new DoctypeFinderLexer(new ANTLRFileStream(
-					normOutPubidPath, 
-						"UTF8"));
-		} catch (IOException e) {
-			e.printStackTrace();
-			fail("Could not create lexer");
-		}
-		tokens = new CommonTokenStream(lex);
-        g = new DoctypeFinderParser(tokens);
-        try {
-			g.normdoc();
-			assertTrue(g.foundDoctype);
-			assertTrue(g.foundPubid);
-			assertFalse(g.foundSysid);
-			assertEquals(g.pubid, "\"-//ISO 99999:9999//DTD dtd0300//EN\"");
-		} catch (RecognitionException e) {
+	public void testParseNormFile() {
+		OpenSpWrapper sp = (OpenSpWrapper) testSgmlModule.getSgmlParser();
+		SgmlNormFileParser parser = new SgmlNormFileParser();
+		sp.setDoctypeParser(parser);
+		Source inputSource = null;
+		String normOutPubidPath = samplesDirPath.concat(normOutPubid);
+		 try {
+			 inputSource = JHOVE2.getSourceFactory().getSource(normOutPubidPath);
+		 } catch (FileNotFoundException e) {
+			 e.printStackTrace();
+			 fail(e.getMessage());
+		 } catch (IOException e) {
+			 e.printStackTrace();
+			 fail(e.getMessage());
+		 } catch (JHOVE2Exception e) {
+			 e.printStackTrace();
+			 fail(e.getMessage());
+		 }
+		 try {
+			parser.parseNormFile(normOutPubidPath, JHOVE2, inputSource, testSgmlModule);
+			SgmlDocumentProperties props = testSgmlModule.getDocumentProperties();
+			assertTrue(props.foundDoctype);
+			assertTrue(props.foundPubid);
+			assertFalse(props.foundSysid);
+			assertEquals(props.pubid, "-//ISO 99999:9999//DTD dtd0300//EN");
+		} catch (JHOVE2Exception e) {
 			e.printStackTrace();
 			fail(e.getMessage());
-			
+		} catch (IOException e) {
+			e.printStackTrace();
+			fail(e.getMessage());
 		}
 	}
-
-	/**
-	 * @return the sgmlDirBasePath
-	 */
-	public String getSgmlDirBasePath() {
-		return sgmlDirBasePath;
-	}
-
-	/**
-	 * @param sgmlDirBasePath the sgmlDirBasePath to set
-	 */
-	@Resource
-	public void setSgmlDirBasePath(String sgmlDirBasePath) {
-		this.sgmlDirBasePath = sgmlDirBasePath;
-	}
-
-	/**
-	 * @return the normOutNoDoctype
-	 */
-	public String getNormOutNoDoctype() {
-		return normOutNoDoctype;
-	}
-
 	/**
 	 * @param normOutNoDoctype the normOutNoDoctype to set
 	 */
@@ -137,14 +127,7 @@ public class DoctypeFinderParserTest {
 	public void setNormOutNoDoctype(String normOutNoDoctype) {
 		this.normOutNoDoctype = normOutNoDoctype;
 	}
-
-	/**
-	 * @return the normOutPubid
-	 */
-	public String getNormOutPubid() {
-		return normOutPubid;
-	}
-
+	
 	/**
 	 * @param normOutPubid the normOutPubid to set
 	 */
@@ -152,14 +135,7 @@ public class DoctypeFinderParserTest {
 	public void setNormOutPubid(String normOutPubid) {
 		this.normOutPubid = normOutPubid;
 	}
-
-	/**
-	 * @return the normOutSysid
-	 */
-	public String getNormOutSysid() {
-		return normOutSysid;
-	}
-
+	
 	/**
 	 * @param normOutSysid the normOutSysid to set
 	 */
@@ -169,18 +145,33 @@ public class DoctypeFinderParserTest {
 	}
 
 	/**
-	 * @return the normOutZero
-	 */
-	public String getNormOutZero() {
-		return normOutZero;
-	}
-
-	/**
 	 * @param normOutZero the normOutZero to set
 	 */
 	@Resource
 	public void setNormOutZero(String normOutZero) {
 		this.normOutZero = normOutZero;
 	}
-
+	
+	/**
+	 * @param sgmlDirBasePath the sgmlDirBasePath to set
+	 */
+	@Resource
+	public void setSgmlDirBasePath(String sgmlDirBasePath) {
+		this.sgmlDirBasePath = sgmlDirBasePath;
+	}
+	
+	 /**
+	  * @param jHOVE2 the jHOVE2 to set
+	  */
+	 @Resource
+	 public void setJHOVE2(JHOVE2 jHOVE2) {
+		 JHOVE2 = jHOVE2;
+	 }
+	 /**
+	  * @param testSgmlModule the testSgmlModule to set
+	  */
+	 @Resource
+	 public void setTestSgmlModule(SgmlModule testSgmlModule) {
+		 this.testSgmlModule = testSgmlModule;
+	 }
 }

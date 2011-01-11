@@ -40,6 +40,7 @@ import java.util.List;
 import org.jhove2.util.externalprocess.FilepathFilter;
 
 /**
+ * Class for setting options for OpenSp sgmlnorm utility
  * @author smorrissey
  *
  */

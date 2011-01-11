@@ -51,6 +51,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import org.jhove2.module.format.sgml.EsisParser;
+import org.jhove2.module.format.sgml.OnsgmlsOutputParser;
 }
 
 @lexer::header{
@@ -118,7 +119,7 @@ List<String> appInfos = new ArrayList<String>();
                                         RecognitionException e) {
         String hdr = getErrorHeader(e);
         String msg = getErrorMessage(e, tokenNames);
-        esisParseErrors.add(EsisParser.ESISERR + hdr + " " + msg);
+        esisParseErrors.add(OnsgmlsOutputParser.ESISERR + hdr + " " + msg);
     }
     public List<String> getEsisParseErrors() {
         return esisParseErrors;

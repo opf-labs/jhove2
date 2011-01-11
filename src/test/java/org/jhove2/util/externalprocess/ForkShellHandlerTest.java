@@ -96,7 +96,6 @@ public class ForkShellHandlerTest {
 		}
 		tempFile = File.createTempFile("ForkShellHandlerTest", ".txt", 
 				new File(tempDirPath));
-		tempFile.deleteOnExit();
 		tempFilePath = tempFile.getAbsolutePath();
 		if (filter != null){
 			tempFilePath = filter.filter(tempFilePath);
@@ -109,7 +108,6 @@ public class ForkShellHandlerTest {
 		}
 		wtempFile = File.createTempFile("ForkShellHandlerTest", ".txt", 
 				new File(wtempDirPath));
-		wtempFile.deleteOnExit();
 		wtempFilePath = wtempFile.getAbsolutePath();
 	}
 

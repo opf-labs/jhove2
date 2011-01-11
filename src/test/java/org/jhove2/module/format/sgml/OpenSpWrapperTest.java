@@ -75,6 +75,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class OpenSpWrapperTest {
 	protected JHOVE2 JHOVE2;
 	protected SgmlModule testSgmlModule;
+	protected SgmlModule testSgmlModule02;
 	protected String catalogFile;
 	protected String validSgmlFile;
 	protected String sgmlDirBasePath;
@@ -142,9 +143,34 @@ public class OpenSpWrapperTest {
 			fail("unable to get esis parser");
 		}
 		assertTrue(testSgmlModule.getDocumentProperties().isSgmlValid());
-		
+	}
 
-		testSgmlModule.setDocumentProperties(null);
+	/**
+	 * Test method for {@link org.jhove2.module.format.sgml.OpenSpWrapper#parseFile(org.jhove2.module.format.sgml.SgmlModule, JHOVE2, Source)}.
+	 */
+	@Test
+	public void testParseFile02() {
+		sp = (OpenSpWrapper) testSgmlModule02.sgmlParser;
+		try {
+			sgmlDirPath = 
+				FeatureConfigurationUtil.getFilePathFromClasspath(sgmlDirBasePath, "temp dir");
+		} catch (JHOVE2Exception e1) {
+			fail("Could not create base directory");
+		}
+		File fsgml = new File(sgmlDirPath);
+		sgmlDirPath = fsgml.getPath();
+		if (sp.filepathFilter != null){
+			sgmlDirPath = sp.filepathFilter.filter(sgmlDirPath);
+		}
+		catalogPath = sgmlDirPath.concat(catalogFile);
+		File cFile = new File (catalogPath);
+		catalogPath = cFile.getAbsolutePath();
+		if (sp.filepathFilter != null){
+			catalogPath = sp.filepathFilter.filter(catalogPath);
+		}
+		sp.getOnsgmlsOptions().setCatalogPath(catalogPath);
+		sp.getSgmlnormOptions().setCatalogPath(catalogPath);
+		testSgmlModule02.setDocumentProperties(null);
 		String badFilePath = sgmlDirBasePath.concat(invalidSgmlFile);
 		try {
 			badFilePath = 
@@ -163,14 +189,22 @@ public class OpenSpWrapperTest {
 		}
 
 		try {
-			testSgmlModule.setDocumentProperties(sp.parseFile(testSgmlModule, JHOVE2, inputSource));
+			testSgmlModule02.setDocumentProperties(sp.parseFile(testSgmlModule02, JHOVE2, inputSource));
 		} catch (JHOVE2Exception e) {
 			e.printStackTrace();
 			fail("unable to get esis parser");
 		}
-		assertFalse(testSgmlModule.getDocumentProperties().isSgmlValid());
+		assertFalse(testSgmlModule02.getDocumentProperties().isSgmlValid());	
+	}
+
+	/**
+	 * Test method for {@link org.jhove2.module.format.sgml.OpenSpWrapper#parseFile(org.jhove2.module.format.sgml.SgmlModule, JHOVE2, Source)}.
+	 */
+	@Test
+	public void testParseFile03() {
 		
-		goodFilePath = sgmlDirBasePath.concat(validSgmlFile);
+		String goodFilePath = sgmlDirBasePath.concat(validSgmlFile);
+		File fGoodFile = new File(goodFilePath);
 		try {
 			goodFilePath = 
 				FeatureConfigurationUtil.getFilePathFromClasspath(goodFilePath, 
@@ -186,11 +220,11 @@ public class OpenSpWrapperTest {
 		goodFilePath = fGoodFile.getPath();
 		try {
 			inputSource = JHOVE2.getSourceFactory().getSource(goodFilePath);
-		}catch (Exception e){
+		}
+		catch (Exception e){
 			e.printStackTrace();
 			fail("Failed to create source for input file");
-		}
-
+		}	
 		String oldPath = sp.getOnsgmlsPath();
 		sp.setOnsgmlsPath("/invalid/path/ongmls");
 		int oldMessageLength = testSgmlModule.getSgmlParserErrorMessages().size();
@@ -211,6 +245,7 @@ public class OpenSpWrapperTest {
 		assertEquals(oldMessageLength+1, testSgmlModule.getSgmlParserErrorMessages().size());
 	}
 
+	
 	/**
 	 * Test method for {@link org.jhove2.module.format.sgml.OpenSpWrapper#parseSgmlFile(org.jhove2.module.format.sgml.SgmlModule)}.
 	 */
@@ -371,6 +406,14 @@ public class OpenSpWrapperTest {
 	@Resource
 	public void setInvalidSgmlFile(String invalidSgmlFile) {
 		this.invalidSgmlFile = invalidSgmlFile;
+	}
+
+	/**
+	 * @param testSgmlModule02 the testSgmlModule02 to set
+	 */
+	@Resource(name="testSgmlModule02")
+	public void setTestSgmlModule02(SgmlModule testSgmlModule02) {
+		this.testSgmlModule02 = testSgmlModule02;
 	}
 
 }

@@ -46,6 +46,7 @@ import java.util.List;
 import java.util.LinkedList;
 
 import org.jhove2.module.format.sgml.OpenSpMessageParser;
+import org.jhove2.module.format.sgml.AbstractOpenSpMessageParser;
 }
 
 @lexer::header{
@@ -79,20 +80,20 @@ List<String> openSpMessages = new ArrayList<String>();
  public void setSgmlMessagesParseErrors(List<String> list){
        sgmlMessagesParseErrors = list;
  }
- public boolean isMessageCode (String messageLevel){
-    boolean isCode = false;
-    if (messageLevel != null){
-        if ((messageLevel.equals("E")) ||
-            (messageLevel.equals("W")) || 
-            (messageLevel.equals("I")) ||
-            (messageLevel.equals("Q")) ||
-            (messageLevel.equals("X"))
-           ){
-              isCode = true;
-           }    
-    }
-    return isCode;
- }
+// public boolean isMessageCode (String messageLevel){
+ //   boolean isCode = false;
+ //   if (messageLevel != null){
+ //       if ((messageLevel.equals("E")) ||
+ //           (messageLevel.equals("W")) || 
+ //           (messageLevel.equals("I")) ||
+ //           (messageLevel.equals("Q")) ||
+ //           (messageLevel.equals("X"))
+ //          ){
+ //             isCode = true;
+   //        }    
+  //  }
+  //  return isCode;
+ //}
 }
 
 errMessages : (errMessage)* EOF;
@@ -227,10 +228,10 @@ codedMessage : tok1 COLON tok2 COLON tok3 COLON tok4 COLON tok5 (COLON tok6 (COL
     sgmlFilePath = $tok2.text;
   } 
                        
-  if (isMessageCode(messageLevel)){   
+  if (AbstractOpenSpMessageParser.isMessageCode(messageLevel)){   
   
       String messageStr = 
-         OpenSpMessageParser.createCodedMessageString(sgmlFilePath,
+         AbstractOpenSpMessageParser.createCodedMessageString(sgmlFilePath,
                  lineNumber, posNumber, 
                   messageText, messageLevel, messageCode);
       openSpMessages.add(messageStr);
@@ -254,7 +255,7 @@ codedMessage : tok1 COLON tok2 COLON tok3 COLON tok4 COLON tok5 (COLON tok6 (COL
   else {
      messageText = messageCode.concat(messageLevel).concat(messageText);
           String messageStr = 
-         OpenSpMessageParser.createMessageString(sgmlFilePath,
+         AbstractOpenSpMessageParser.createMessageString(sgmlFilePath,
                  lineNumber, posNumber, 
                   messageText);
         openSpMessages.add(messageStr);

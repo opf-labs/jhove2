@@ -230,7 +230,7 @@ public class BerkeleyDbSourceAccessorTest {
 			source = source.startTimer();
 			Thread.sleep(500);
 			source = source.endTimer();
-			assertTrue(500L >= source.getTimerInfo().getElapsedTime().getDuration());
+			assertTrue(400L <= source.getTimerInfo().getElapsedTime().getDuration());
 
 		} catch (Exception e) {
 			e.printStackTrace();

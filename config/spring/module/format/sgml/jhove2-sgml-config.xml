@@ -27,6 +27,12 @@
 		<property name="onsgmlsOptions" ref="OnsgmlsOptions"/>
 		<property name="sgmlnormOptions" ref="SgmlNormOptions"/>
 		<property name="spaceEscapeChar" value="'"/>
+<!--		<property name="esisFileParser" ref="AntlrEsisParser"/>-->
+		<property name="esisFileParser" ref="DirectEsisParser"/>
+<!--		<property name="messageParser"  ref="AntlrMessageParser"/>-->
+		<property name="messageParser"  ref="DirectMessageParser"/>
+<!--		<property name="doctypeParser" ref="AntlrDoctypeParser"/>-->
+		<property name="doctypeParser" ref="DirectDoctypeParser"/>
 	</bean>
 	<!-- OpenSpWrapper bean wraps invocations to OpenSP executables (Windows dll and exe -->
 	<!--  assumes Windows exe and dll are in c:\Program Files\OpenSp\ -->
@@ -42,7 +48,28 @@
 		<property name="onsgmlsOptions" ref="WindowsOnsgmlsOptions"/>
 		<property name="sgmlnormOptions" ref="WindowsSgmlNormOptions"/>
 		<property name="spaceEscapeChar" value='"'/>
+<!--		<property name="esisFileParser" ref="AntlrEsisParser"/>-->
+		<property name="esisFileParser" ref="DirectEsisParser"/>
+<!--		<property name="messageParser"  ref="AntlrMessageParser"/>-->
+		<property name="messageParser"  ref="DirectMessageParser"/>
+<!--		<property name="doctypeParser" ref="AntlrDoctypeParser"/>-->
+		<property name="doctypeParser" ref="DirectDoctypeParser"/>
 	</bean>
+	
+	<bean id="DirectEsisParser" class="org.jhove2.module.format.sgml.EsisFileParser"
+	      scope="prototype"/>
+	<bean id="DirectMessageParser" class="org.jhove2.module.format.sgml.ErrFileParser"
+		  scope="prototype"/>
+	<bean id="DirectDoctypeParser" class="org.jhove2.module.format.sgml.SgmlNormFileParser" 
+		  scope="prototype"/>
+	
+	<bean id="AntlrEsisParser" class="org.jhove2.module.format.sgml.EsisParser"
+	      scope="prototype"/>
+	<bean id="AntlrMessageParser" class="org.jhove2.module.format.sgml.OpenSpMessageParser"
+	      scope="prototype"/>
+	<bean id="AntlrDoctypeParser" class="org.jhove2.module.format.sgml.DoctypeParser"
+	      scope="prototype"/>
+	
 	<!--  SGML catalog file path bean: unix  or Cygwin on Windows; edit as appropriate for your installation-->
 	<bean id="SgmlCatalogPath" class="java.lang.String">
 		<constructor-arg type="java.lang.String" value="/usr/local/etc/sgml/catalog"/>

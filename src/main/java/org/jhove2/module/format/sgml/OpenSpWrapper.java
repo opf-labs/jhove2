@@ -39,8 +39,8 @@ package org.jhove2.module.format.sgml;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
-import org.antlr.runtime.RecognitionException;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
@@ -48,6 +48,7 @@ import org.jhove2.core.Message.Severity;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.JHOVE2;
 
+import org.jhove2.util.CopyUtils;
 import org.jhove2.util.externalprocess.ExternalProcessHandler;
 import org.jhove2.util.externalprocess.ExternalProcessUtils;
 import org.jhove2.util.externalprocess.FilepathFilter;
@@ -95,6 +96,14 @@ public class OpenSpWrapper implements SgmlParser {
 	protected SgmlNormOptions sgmlnormOptions;
 	/** quote character to use in command string around source file path if it contains space(s)*/
 	protected String spaceEscapeChar;
+	/** ESIS file parser */
+	protected OnsgmlsOutputParser esisFileParser;
+	/** ERR (Message) file parser*/
+	protected OpenSpErrMessageParser messageParser;
+	/** OpenSP norm output file parser */
+	protected SgmlNormParser doctypeParser;
+	/** list of paths to any temporary files created by OpenSp to be deleted if JHOVE2 configured to delete temporary files */
+	protected List<String> tempFilePaths = new ArrayList<String>();
 
 	/**
 	 * Invokes onsmgls processor to parse and validate the SGML
@@ -109,17 +118,12 @@ public class OpenSpWrapper implements SgmlParser {
 	@Override
 	public SgmlDocumentProperties parseFile(SgmlModule sgm, JHOVE2 jhove2, Source source)
 	throws JHOVE2Exception {	
-		SgmlDocumentProperties props = new SgmlDocumentProperties();
+		SgmlDocumentProperties props;
 		String esisCommandParms = this.getOnsgmlsOptions().getOptionString();
-		/** JHOVE2 wrapper around ANTLR-generated ESIS file parser */
-		EsisParser esisFileParser = null;
-		/** ANTLR-generated ESIS file (output from ongmls) parser*/
-		ESISCommandsParser esisParser = null;
-		/** JHOVE2 wrapper around ANTLR-generated ERR (Message) file parser */
-		OpenSpMessageParser messageParser = null;
-		/** ANTRL-generated message parser*/
-		SgmlParseMessagesParser errParser = null;
-
+		if (sgm.getDocumentProperties()==null){
+			sgm.setDocumentProperties(new SgmlDocumentProperties());
+		}
+		props = sgm.getDocumentProperties();
 		if (props.getSgmlParserConfigSettings()==null){
 			props.setSgmlParserConfigSettings(new ArrayList<String>());
 		}
@@ -144,19 +148,12 @@ public class OpenSpWrapper implements SgmlParser {
 					sgm.getSgmlParserWarningMessages().add(message);
 				}
 				else {
-					try {
-						esisFileParser = new EsisParser();
-						esisParser = 
+					try { 
+						props = 
 							esisFileParser.parseEsisFile(esisFilePath, jhove2, source, sgm);
 					} catch (IOException e) {
 						continue; // message already attached to module
-					} catch (RecognitionException e) {
-						continue; // message already attached to module
-					}
-					if (esisParser == null){
-						continue;					
-					}
-					esisFileParser.extractDocProperties(esisParser, props);				
+					} 								
 				}
 
 				/** now parse the Message (.err) file created by OpenSP */
@@ -172,22 +169,14 @@ public class OpenSpWrapper implements SgmlParser {
 					sgm.getSgmlParserWarningMessages().add(message);
 				}
 				else {
-					messageParser = new OpenSpMessageParser();
 					try {
-						errParser = messageParser.parseMessageFile(esisErrFilePath, jhove2, source, sgm);
+						messageParser.parseMessageFile(esisErrFilePath, jhove2, source, sgm);
 					} catch (IOException e) {
 						continue; // message already attached to module
-					} catch (RecognitionException e) {
-						continue; // message already attached to module
-					}
-					messageParser.extractDocProperties(errParser, props);
+					} 					
 				}
 			} while (false);
 		}	
-		esisFileParser = null;
-		esisParser = null;
-		messageParser = null;
-		errParser = null;
 		return props;
 	}
 
@@ -202,9 +191,7 @@ public class OpenSpWrapper implements SgmlParser {
 	 */
 	@Override
 	public void determineDoctype(SgmlModule sgm, JHOVE2 jhove2, Source source)
-	throws JHOVE2Exception {
-		DoctypeParser doctypeParser = null;
-		DoctypeFinderParser doctypeFinderParser = null;
+	throws JHOVE2Exception {;
 		SgmlDocumentProperties props = sgm.getDocumentProperties();
 		if (props==null){
 			props = new SgmlDocumentProperties();
@@ -234,23 +221,14 @@ public class OpenSpWrapper implements SgmlParser {
 					sgm.getSgmlParserWarningMessages().add(message);
 				}
 				else {
-					doctypeParser = new DoctypeParser();
 					try {
-						doctypeFinderParser = 
 							doctypeParser.parseNormFile(normOutPath, jhove2, source, sgm);
 					} catch (IOException e) {
 						continue; // message already attached to module
-					} catch (RecognitionException e) {
-						continue; // message already attached to module
-					}	
-					if (doctypeFinderParser != null){
-						doctypeParser.extractDocProperties(doctypeFinderParser, props);
-					}	
+					} 						
 				}
 			}while (false);
 		}
-		doctypeParser = null;
-		doctypeFinderParser = null;
 		return;			
 	}
 
@@ -264,6 +242,22 @@ public class OpenSpWrapper implements SgmlParser {
 		this.setFilepathFilter(null);
 		this.setOnsgmlsPath(null);
 		this.setSgmlnormPath(null);
+		this.setEsisFileParser(null);
+		this.setMessageParser(null);
+		this.setDoctypeParser(null);
+		if (this.tempFilePaths != null){
+			for (String tempFilePath:this.tempFilePaths){
+				File tempFile = new File(tempFilePath);
+				if (tempFile.exists() && (tempFile.isFile())){
+					tempFile.delete();
+				}
+			}
+			for (int i=0; i<this.tempFilePaths.size(); i++){
+				String oldString = this.tempFilePaths.set(i, null);
+				oldString = null;
+			}
+			this.tempFilePaths = null;
+		}
 	}
 	/**
 	 * Apply an OpenSp utility (onsmgls, sgmlnorm) to the SGML file
@@ -337,8 +331,12 @@ public class OpenSpWrapper implements SgmlParser {
 			continue;				
 			}
 			if (jhove2.getInvocation().getDeleteTempFiles()){
-				tempOutFile.deleteOnExit();
+				try {
+					this.tempFilePaths.add(tempOutFile.getCanonicalPath());
+				}
+				catch (IOException e){}
 			}
+			
 			parseOutputFilePath = tempOutFile.getPath();
 			if (this.filepathFilter != null){
 				parseOutputFilePath = this.filepathFilter.filter(parseOutputFilePath);
@@ -364,7 +362,10 @@ public class OpenSpWrapper implements SgmlParser {
 				continue;
 			}
 			if (jhove2.getInvocation().getDeleteTempFiles()){
-				tempErrFile.deleteOnExit();
+				try {
+					this.tempFilePaths.add(tempOutFile.getCanonicalPath());
+				}
+				catch (IOException e){}
 			}
 			parseErrFilePath = tempErrFile.getPath();
 			if (this.filepathFilter != null){
@@ -391,7 +392,10 @@ public class OpenSpWrapper implements SgmlParser {
 				continue;
 			}
 			if (jhove2.getInvocation().getDeleteTempFiles()){
-				tempStdErrFile.deleteOnExit();
+				try {
+					this.tempFilePaths.add(tempOutFile.getCanonicalPath());
+				}
+				catch (IOException e){}
 			}
 			standardErrFilePath = tempStdErrFile.getPath();
 			if (this.filepathFilter != null){
@@ -562,6 +566,48 @@ public class OpenSpWrapper implements SgmlParser {
 	 */
 	public void setSpaceEscapeChar(String spaceEscapeChar) {
 		this.spaceEscapeChar = spaceEscapeChar;
+	}
+
+	/**
+	 * @return the esisFileParser
+	 */
+	public OnsgmlsOutputParser getEsisFileParser() {
+		return esisFileParser;
+	}
+
+	/**
+	 * @param esisFileParser the esisFileParser to set
+	 */
+	public void setEsisFileParser(OnsgmlsOutputParser esisFileParser) {
+		this.esisFileParser = esisFileParser;
+	}
+
+	/**
+	 * @return the messageParser
+	 */
+	public OpenSpErrMessageParser getMessageParser() {
+		return messageParser;
+	}
+
+	/**
+	 * @param messageParser the messageParser to set
+	 */
+	public void setMessageParser(OpenSpErrMessageParser messageParser) {
+		this.messageParser = messageParser;
+	}
+
+	/**
+	 * @return the doctypeParser
+	 */
+	public SgmlNormParser getDoctypeParser() {
+		return doctypeParser;
+	}
+
+	/**
+	 * @param doctypeParser the doctypeParser to set
+	 */
+	public void setDoctypeParser(SgmlNormParser doctypeParser) {
+		this.doctypeParser = doctypeParser;
 	}
 
 }

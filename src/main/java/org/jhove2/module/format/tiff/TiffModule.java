@@ -312,7 +312,7 @@ public class TiffModule
         ifd.setOffset(ifdOffset);
 
         /* parse for the appropriate IFD type */
-        ifd.parse(jhove2, source, input, this.tagToFormatMap);
+        ifd.parse(jhove2, source, input, tagToFormatMap);
 
         if (ifdList.size () == 0) {
             ifd.setFirst (true);
