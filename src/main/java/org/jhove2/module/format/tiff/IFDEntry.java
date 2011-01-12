@@ -39,7 +39,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.annotation.ReportableProperty.PropertyType;
@@ -244,10 +243,11 @@ implements Comparable<Object> {
 
     /**
      * parse the IFD Entry 
+     * @param tiff2FormatMapper Factory to map tiff id to Format
      * @throws IOException, JHOVE2Exception 
      */
-    public void parse(JHOVE2 jhove2, Source source, Input input,
-                      Map<Integer, Format> tagToFormatMap)  
+    public void parse(JHOVE2 jhove2, Source source, Input input, 
+    		Tiff2FormatMapFactory tiff2FormatMapper)  
         throws IOException, JHOVE2Exception
     {
         this.isValid = Validity.True;
@@ -322,7 +322,7 @@ implements Comparable<Object> {
                     this.tag == TiffIFD.XMP) {
                     ByteStreamSource bss = jhove2.getSourceFactory().getByteStreamSource(
                     	jhove2, source, this.valueOffset, this.count);
-                    Format format = tagToFormatMap.get(this.tag);
+                    Format format = tiff2FormatMapper.getFormat(this.tag);
                     I8R identifier = format.getIdentifier();
                     FormatIdentification presumptiveFormat = new FormatIdentification(identifier, Confidence.PositiveSpecific); 
                     bss.addPresumptiveFormat(presumptiveFormat);

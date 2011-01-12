@@ -46,13 +46,21 @@
 				<ref bean="CDLAgent" />
 			</list>
 		</property>
-		<property name="tagToFormatMap">
+	    <property name="tiff2FormatMapFactory" ref="TiffMapFactory"/>
+	</bean>
+	
+	<bean name="TiffMapFactory" class="org.jhove2.config.spring.SpringTiff2FormatMapFactory"
+		scope="prototype"/>
+		
+	<bean name="TiffTagToFormatMap" class="java.util.concurrent.ConcurrentHashMap" scope="singleton">
+	<constructor-arg>
 			<map>
 				<entry key="34675" value-ref="ICCFormat"/>
 				<entry key="700" value-ref="XmlFormat"/>
 			</map>
-		</property>
+	</constructor-arg>
 	</bean>
+	
 	<!-- Tiff format bean -->
 	<bean id="TiffFormat" class="org.jhove2.core.format.Format" scope="singleton">
 		<constructor-arg type="java.lang.String" value="Tiff" />

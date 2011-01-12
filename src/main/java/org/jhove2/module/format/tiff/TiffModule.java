@@ -40,8 +40,6 @@ import java.io.IOException;
 import java.nio.ByteOrder;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2;
@@ -120,8 +118,8 @@ public class TiffModule
     /** The Source object passed in by the parse method */
     protected  Source source;
 
-    /** Map from tags to formats for the content of the tags. */
-    public static Map<Integer, Format> tagToFormatMap;
+    /** Factory for mapper from tiff id to Format */
+    protected Tiff2FormatMapFactory tiff2FormatMapFactory;
     
     /**
      * Instantiate a new <code>TIFFModule</code>.
@@ -134,9 +132,7 @@ public class TiffModule
     public TiffModule(Format format, 
     		FormatModuleAccessor formatModuleAccessor) {
         super(VERSION, RELEASE, RIGHTS, format, formatModuleAccessor);
-		this.validity = Validity.Undetermined;
-        
-        tagToFormatMap = new ConcurrentHashMap<Integer, Format>();
+		this.validity = Validity.Undetermined;;
     }
     
     public TiffModule() {
@@ -312,7 +308,7 @@ public class TiffModule
         ifd.setOffset(ifdOffset);
 
         /* parse for the appropriate IFD type */
-        ifd.parse(jhove2, source, input, tagToFormatMap);
+        ifd.parse(jhove2, source, input, this.getTiff2FormatMapFactory());
 
         if (ifdList.size () == 0) {
             ifd.setFirst (true);
@@ -413,10 +409,18 @@ public class TiffModule
         return this.version;
     }
 
-    /** Set the tag-to-format map.
-     * @param map Tag-to-format map
-     */
-    public void setTagToFormatMap(Map<Integer, Format> map) {
-        tagToFormatMap = map;
-    }
+
+	/**
+	 * @return the tiff2FormatMapFactory
+	 */
+	public Tiff2FormatMapFactory getTiff2FormatMapFactory() {
+		return tiff2FormatMapFactory;
+	}
+
+	/**
+	 * @param tiff2FormatMapFactory the tiff2FormatMapFactory to set
+	 */
+	public void setTiff2FormatMapFactory(Tiff2FormatMapFactory tiff2FormatMapFactory) {
+		this.tiff2FormatMapFactory = tiff2FormatMapFactory;
+	}
 }
