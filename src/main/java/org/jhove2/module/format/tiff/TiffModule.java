@@ -270,7 +270,7 @@ public class TiffModule
 
         }
         catch (IOException e) {
-            throw new JHOVE2Exception ("TiffModule.parseIFDs(): IOException reading offset to first IFD",e);
+            throw new IOException ("TiffModule.parseIFDs(): IOException reading offset to first IFD",e);
         }
 
         /* Parse the list of IFDs */                  
