@@ -68,7 +68,7 @@ public class AXMLChunk
         this();
         
         this.xmlFormat = xml;
-    }
+     }
     
 	private AXMLChunk(){
 		super();

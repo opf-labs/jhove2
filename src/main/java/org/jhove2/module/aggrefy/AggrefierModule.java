@@ -52,6 +52,7 @@ import org.jhove2.persist.AggrefierAccessor;
 
 import com.sleepycat.persist.model.Persistent;
 
+// TODO: Auto-generated Javadoc
 /**
  * JHOVE2 aggregate identifier module.
  * Identifies presumptive instances of Clump formats (e.g. ShapeFiles) in

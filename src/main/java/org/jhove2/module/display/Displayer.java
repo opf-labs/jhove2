@@ -58,7 +58,7 @@ public interface Displayer
 {	
 	/** ISO 8601 date/time format. */
 	public static final SimpleDateFormat ISO8601 = new SimpleDateFormat(
-			"yyyy-MM-dd'T'hh:mm:ssZ");
+			"yyyy-MM-dd'T'HH:mm:ssZ");
    
     /** Default UTF-8 output character set. */
     public static final String DEFAULT_CHARACTER_ENCODING = "UTF-8";

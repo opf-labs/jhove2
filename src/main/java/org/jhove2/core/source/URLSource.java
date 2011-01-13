@@ -69,11 +69,10 @@ public class URLSource
 	/**
 	 * Instantiate a new <code>URLSource</code>.
 	 * 
-     * @param String temporary file prefix
-     * @param String temporary file suffix
-     * @param int buffer size 
+         * @param tmpPrefix
+         * @param tmpSuffix
+         * @param bufferSize
 	 * @param url
-	 *            URL
 	 * @throws IOException
 	 */
 

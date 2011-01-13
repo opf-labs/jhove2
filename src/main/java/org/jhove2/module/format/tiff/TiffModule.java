@@ -134,8 +134,8 @@ public class TiffModule
     public TiffModule(Format format, 
     		FormatModuleAccessor formatModuleAccessor) {
         super(VERSION, RELEASE, RIGHTS, format, formatModuleAccessor);
-		this.validity = Validity.Undetermined;
-        
+        this.validity = Validity.Undetermined;
+
         tagToFormatMap = new ConcurrentHashMap<Integer, Format>();
     }
     

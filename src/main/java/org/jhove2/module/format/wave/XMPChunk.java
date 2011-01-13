@@ -29,7 +29,7 @@ public class XMPChunk
 {
     /** XML format. */
     protected Format xmlFormat;
-    
+     
     /** Instantiate a new <code>XMPChunk</code>.
      * @param xml XML format
      */
