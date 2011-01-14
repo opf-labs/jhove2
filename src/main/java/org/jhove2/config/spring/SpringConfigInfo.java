@@ -68,7 +68,7 @@ public class SpringConfigInfo
     implements ConfigInfo
 {
 	/** Spring configuration classpath. */
-	public static final String CLASSPATH = "classpath*:**/*-config.xml";
+	public static final String CLASSPATH = "classpath*:**/jhove2-*-config.xml";
 
 	/** Spring application context. */
 	@NotPersistent

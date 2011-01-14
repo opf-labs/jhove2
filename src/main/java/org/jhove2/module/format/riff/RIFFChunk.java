@@ -121,7 +121,7 @@ public class RIFFChunk
                     args, jhove2.getConfigInfo());
         }
         consumed += 4;
-        
+
         /* Child chunks. */
         long pos = input.getPosition();
         long max = this.getNextChunkOffset();
@@ -139,7 +139,7 @@ public class RIFFChunk
             pos = chunk.getNextChunkOffset();
             input.setPosition(pos);
         }
-
+ 
         return consumed;
     }
     

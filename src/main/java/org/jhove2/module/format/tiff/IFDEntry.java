@@ -283,9 +283,9 @@ implements Comparable<Object> {
             this.count = (int) input.readUnsignedInt();
 
             this.savedValueOffset = input.getPosition();        // save the offset of the ValueOffset field 
-            this.valueOffset = input.readUnsignedInt();    // read in the value stored in the ValueOffset field
+            this.valueOffset = input.readUnsignedInt();         // read in the value stored in the ValueOffset field
             long value = this.valueOffset;
-            
+
             if (calcValueSize(this.type, this.count) > 4) {
                 /* the value read is the offset to the value */
                 long size = input.getSize();
@@ -308,7 +308,7 @@ implements Comparable<Object> {
                     this.ByteOffsetNotWordAlignedMessage = (new Message(Severity.ERROR,
                             Context.OBJECT,
                             "org.jhove2.module.format.tiff.IFD.ValueByteOffsetNotWordAlignedMessage",
-                            messageArgs, jhove2.getConfigInfo()));
+                            messageArgs, jhove2.getConfigInfo()));               
                     return;
                 }
             }
@@ -318,7 +318,7 @@ implements Comparable<Object> {
                 /* Handle tags which require unique processing of their values */
 
                 /* Parse the ICCProfile or XMP tag */
-                if (this.tag == TiffIFD.ICCPROFILE ||
+                 if (this.tag == TiffIFD.ICCPROFILE ||
                     this.tag == TiffIFD.XMP) {
                     ByteStreamSource bss = jhove2.getSourceFactory().getByteStreamSource(
                     	jhove2, source, this.valueOffset, this.count);
@@ -326,7 +326,7 @@ implements Comparable<Object> {
                     I8R identifier = format.getIdentifier();
                     FormatIdentification presumptiveFormat = new FormatIdentification(identifier, Confidence.PositiveSpecific); 
                     bss.addPresumptiveFormat(presumptiveFormat);
-                    jhove2.characterize(bss, input);
+                    jhove2.characterize(bss, input);                
                 }
                 else {
                     readValues(input);
@@ -726,7 +726,7 @@ implements Comparable<Object> {
      * Each value can be of a different type which is stored in a different
      * object.  Based on the tag's type and if the value is an array or not,
      * it will be stored in the appropriate object.  
-     * 
+     *   
      * @param input
      * @throws IOException
      */
@@ -952,7 +952,7 @@ implements Comparable<Object> {
      * The field type of the value for this tag
      * @return TiffType
      */
-   @ReportableProperty(order=4, value="Tag type.")
+    @ReportableProperty(order=4, value="Tag type.")
     public TiffType getTiffType(){
         return this.tiffType;
     }

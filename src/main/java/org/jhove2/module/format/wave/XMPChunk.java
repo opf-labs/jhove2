@@ -29,7 +29,7 @@ public class XMPChunk
 {
     /** XML format. */
     protected Format xmlFormat;
-    
+     
     /** Instantiate a new <code>XMPChunk</code>.
      * @param xml XML format
      */
@@ -72,7 +72,7 @@ public class XMPChunk
         I8R xml = xmlFormat.getIdentifier();
         FormatIdentification id = new FormatIdentification(xml, Confidence.PositiveGeneric);
         child.addPresumptiveFormat(id);
-        jhove2.characterize(child, input);      
+        jhove2.characterize(child, input);
         consumed += this.size;
         
         return consumed;
