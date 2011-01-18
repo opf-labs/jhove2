@@ -37,7 +37,6 @@
 
 package org.jhove2.module.assess;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -144,12 +143,10 @@ public class AssessmentModule extends AbstractModule implements Assessor {
 	 *            The JHOVE2 framework
 	 * @param source
 	 *            The Source unit to be assessed
-	 * @throws IOException
 	 * @throws JHOVE2Exception
 	 */
 	@Override
-	public void assess(JHOVE2 jhove2, Source source) throws IOException,
-	JHOVE2Exception {
+	public void assess(JHOVE2 jhove2, Source source) throws JHOVE2Exception {
 		/* Assess the source unit. */
 		// TODO is Timer syntax OK?
 		TimerInfo timer = this.getTimerInfo();

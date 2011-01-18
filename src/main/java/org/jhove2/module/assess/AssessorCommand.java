@@ -88,22 +88,17 @@ public class AssessorCommand extends AbstractCommand {
     public void execute(JHOVE2 jhove2, Source source, Input input)
         throws JHOVE2Exception
     {
+        Assessor assessor = this.getAssessorFactory().getAssessor();
+        TimerInfo timer = assessor.getTimerInfo();
+        timer.setStartTime();
         try {
-            Assessor assessor = this.getAssessorFactory().getAssessor();
-            TimerInfo timer = assessor.getTimerInfo();
-            timer.setStartTime();
-            try {
-                /* Register the assessment module with the source. */
-                source.addModule(assessor);
-                /* Assess the reportable properties. */
-                assessor.assess(jhove2, source);
-            }
-            finally {
-                timer.setEndTime();
-            }
+            /* Register the assessment module with the source. */
+            source.addModule(assessor);
+            /* Assess the reportable properties. */
+            assessor.assess(jhove2, source);
         }
-        catch (Exception e) {
-            throw new JHOVE2Exception("failed to execute assessor", e);
+        finally {
+            timer.setEndTime();
         }
         return;
     }

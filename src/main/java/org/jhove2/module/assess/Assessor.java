@@ -37,8 +37,6 @@
 
 package org.jhove2.module.assess;
 
-import java.io.IOException;
-
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.source.Source;
@@ -59,10 +57,8 @@ public interface Assessor extends Module {
      *            JHOVE2 framework
      * @param source
      *            Source unit
-     * @throws IOException
      * @throws JHOVE2Exception
      */
-    public void assess(JHOVE2 jhove2, Source source) throws IOException,
-            JHOVE2Exception;
+    public void assess(JHOVE2 jhove2, Source source) throws JHOVE2Exception;
 
 }
