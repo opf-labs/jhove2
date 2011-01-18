@@ -402,9 +402,59 @@ public class TiffModule
     }
 
     /**
+     * Get Invalid Field Message.
+     * 
+     * @return InvalidFieldMessage
+     */
+    @ReportableProperty(order = 4, value = "Invalid Field Message.")
+    public List<Message> getInvalidFieldMessage() {
+        return invalidFieldMessage;
+    }
+
+    /**
+     * Get Invalid First Two Bytes Message.
+     * 
+     * @return InvalidFirstTwoBytesMessage
+     */
+    @ReportableProperty(order = 5, value = "Invalid First Two Bytes Message.")
+    public List<Message> getInvalidFirstTwoBytesMessage() {
+        return invalidFirstTwoBytesMessage;
+    }
+
+    /**
+     * Get Premature EOF Message.
+     * 
+     * @return PrematureEOFMessage
+     */
+    @ReportableProperty(order = 6, value = "Premature EOF Message.")
+    public List<Message> getPrematureEOFMessage() {
+        return prematureEOFMessage;
+    }
+
+    /**
+     * Get Invalid Magic Number Message.
+     * 
+     * @return InvalidMagicNumberMessage
+     */
+    @ReportableProperty(order = 7, value = "Invalid Magic Number Message.")
+    public List<Message> getInvalidMagicNumberMessage() {
+        return invalidMagicNumberMessage;
+    }
+
+    /**
+     * Get Byte Offset Not Word Aligned Message.
+     * 
+     * @return ByteOffsetNotWordAlignedMessage
+     */
+    @ReportableProperty(order = 8, value = "Byte Offset Not Word Aligned Message.")
+    public List<Message> getByteOffsetNotWordAlignedMessage() {
+        return byteOffsetNotWordAlignedMessage;
+    }
+
+    /**
      * @return the version
      */
-    @ReportableProperty(order = 4, value = "TIFF version.")
+    @ReportableProperty(order = 9, value = "TIFF version.")
     public int getTiffVersion() {
         return this.version;
     }
