@@ -42,13 +42,15 @@ import java.util.Set;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
-import org.jhove2.core.TimerInfo;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.FormatIdentification;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractCommand;
+import org.jhove2.persist.ModuleAccessor;
+
+import com.sleepycat.persist.model.Persistent;
 
 /**
  * {@link org.jhove2.module.Command} to perform identifier on
@@ -58,6 +60,7 @@ import org.jhove2.module.AbstractCommand;
  * 
  * @author smorrissey
  */
+@Persistent
 public class IdentifierCommand
 	extends AbstractCommand
 {
@@ -76,9 +79,15 @@ public class IdentifierCommand
 	/** Instantiate a new <code>IdentifierCommand</code>.
 	 */
 	public IdentifierCommand(){
-		super(VERSION, RELEASE, RIGHTS, Scope.Generic);
+		this(null);
 	}
 
+	/** Instantiate a new <code>IdentifierCommand</code>.
+	 */
+	public IdentifierCommand(ModuleAccessor moduleAccessor){
+		super(VERSION, RELEASE, RIGHTS, Scope.Generic, moduleAccessor);
+	}
+	
 	protected IdentifierFactory identifierFactory;
 	/**
 	 * Identify the presumptive formats of the source unit.
@@ -96,20 +105,19 @@ public class IdentifierCommand
 		try {		
 			Identifier identifier =
 				this.getIdentifierFactory().getIdentifier();
-			TimerInfo timer = identifier.getTimerInfo();
-			timer.setStartTime();
+			identifier = (Identifier) identifier.getModuleAccessor().startTimerInfo(identifier);
 			try {
 	            /* Register all identifying modules. */
-				source.addModule(identifier);
-				source.addModule(identifier.getSourceIdentifier());
-	            
+				identifier=(Identifier) source.addModule(identifier);
+				identifier.setSourceIdentifier(
+						(SourceIdentifier) source.addModule(identifier.getSourceIdentifier()));
 	            /* Identify the format. */
 				Set<FormatIdentification> formats =
 				    identifier.identify(jhove2, source, input);
-				source.addPresumptiveFormats(formats);
+				source = source.addPresumptiveFormats(formats);// persists source
 			}
 			finally {
-				timer.setEndTime();
+				identifier = (Identifier) identifier.getModuleAccessor().endTimerInfo(identifier);
 			}
 		}
 		catch (IOException e){
@@ -125,7 +133,7 @@ public class IdentifierCommand
 					"org.jhove2.module.identify.IdentifierCommand.IOException",
 					messageArgs,
 					jhove2.getConfigInfo());
-			source.addMessage(message);
+			source=source.addMessage(message);
 		}	
         return;
 	}

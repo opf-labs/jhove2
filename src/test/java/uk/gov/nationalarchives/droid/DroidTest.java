@@ -44,6 +44,7 @@ import org.jhove2.app.util.FeatureConfigurationUtil;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.source.SourceFactory;
 import org.jhove2.module.identify.DROIDWrapper;
+import org.jhove2.persist.inmemory.InMemorySourceFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -106,8 +107,9 @@ public class DroidTest {
 		try {		
 			String configFilePath = FeatureConfigurationUtil.getFilePathFromClasspath(configFileName, "Droid config file");
 			String sigFilePath = FeatureConfigurationUtil.getFilePathFromClasspath(sigFileName, "Droid signature file");
-			droid = new DROIDWrapper(configFilePath, sigFilePath);			
-			IdentificationFile idf = droid.identify(SourceFactory.getSource(sampleFilePath));
+			droid = new DROIDWrapper(configFilePath, sigFilePath);	
+			SourceFactory sourceFactory = new InMemorySourceFactory();
+			IdentificationFile idf = droid.identify(sourceFactory.getSource(sampleFilePath));
 			assertEquals(JHOVE2IAnalysisController.FILE_CLASSIFICATION_POSITIVE,
 					idf.getClassification());
 			assertEquals(1,idf.getNumHits());

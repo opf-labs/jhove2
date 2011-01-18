@@ -50,6 +50,7 @@ import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.io.Input.Type;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
+import org.jhove2.persist.inmemory.InMemorySourceFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -98,8 +99,9 @@ public class DirectInputTest {
 	public void testGetInput() throws JHOVE2Exception {
 
 		try {
-			Source source = SourceFactory.getSource(testFile);
-			abstractInput = source.getInput(bufferSize, Type.Direct);// ,
+			SourceFactory factory = new InMemorySourceFactory();
+			Source source = factory.getSource(testFile);
+			abstractInput = source.getInput(bufferSize, Type.Direct, ByteOrder.LITTLE_ENDIAN);// ,
 																		// ByteOrder.LITTLE_ENDIAN);
 			assertTrue("AbstractInput Scope is Direct with LITTLE_ENDIAN",
 					abstractInput.getBuffer().order() == ByteOrder.LITTLE_ENDIAN);

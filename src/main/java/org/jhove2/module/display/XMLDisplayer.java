@@ -39,12 +39,16 @@ package org.jhove2.module.display;
 import java.io.PrintStream;
 
 import org.jhove2.core.I8R;
+import org.jhove2.persist.ModuleAccessor;
+
+import com.sleepycat.persist.model.Persistent;
 
 /**
  * JHOVE2 XML displayer.
  * 
  * @author mstrong, slabrams, smorrissey
  */
+@Persistent
 public class XMLDisplayer
 	extends AbstractDisplayer
 {
@@ -109,7 +113,16 @@ public class XMLDisplayer
 	 * Instantiate a new <code>XMLDisplayer</code>.
 	 */
 	public XMLDisplayer() {
-		super(VERSION, RELEASE, RIGHTS);
+		this(null);
+	}
+	
+	/**
+	 * Instantiate a new <code>XMLDisplayer</code>.
+     * @param moduleAccessor 
+	 * 		     Displayer persistence manager 
+	 */
+	public XMLDisplayer(ModuleAccessor moduleAccessor) {
+		super(VERSION, RELEASE, RIGHTS, moduleAccessor);
 		this.setShouldIndent(false);
 		this.prefix = JHOVE2_PREFIX;
 		this.uri = JHOVE2_URI;

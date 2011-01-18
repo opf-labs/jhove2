@@ -98,11 +98,11 @@ public class GlobPathRecognizerTest{
 			fail("Could not create base directory");
 		}
 		try {			
-			FileSetSource fsSource = new FileSetSource();
+			FileSetSource fsSource = JHOVE2.getSourceFactory().getFileSetSource();
 			for (String fileName:this.getTestFileList()){
 				String testFilePath = samplesDirPath.concat(fileName);
-				FileSource fs = new FileSource(new File(testFilePath));
-				fsSource.addChildSource(fs);
+				FileSource fs = (FileSource)JHOVE2.getSourceFactory().getSource(new File(testFilePath));
+				fs=(FileSource) fsSource.addChildSource(fs);
 			}
 			strictShapeFileRecognizer.compilePatterns();
 			Collection <GlobPathMatchInfoGroup> gInfoGroupStrict = 
@@ -139,7 +139,7 @@ public class GlobPathRecognizerTest{
 	}
 
 	/**
-	 * Test method for {@link org.jhove2.module.aggrefy.GlobPathRecognizer#recognizeGroupedSource(org.jhove2.module.aggrefy.GlobPathMatchInfoGroup)}.
+	 * Test method for {@link org.jhove2.module.aggrefy.GlobPathRecognizer#recognizeGroupedSource(org.jhove2.module.aggrefy.GlobPathMatchInfoGroup, JHOVE2)}.
 	 */
 	@Test
 	public void testRecognizeGroupedSource() {
@@ -151,11 +151,11 @@ public class GlobPathRecognizerTest{
 			fail("Could not create base directory");
 		}
 		try{
-			FileSetSource fsSource = new FileSetSource();
+			FileSetSource fsSource = JHOVE2.getSourceFactory().getFileSetSource();
 			for (String fileName:this.getTestFileList()){
 				String testFilePath = samplesDirPath.concat(fileName);
-				FileSource fs = new FileSource(new File(testFilePath));
-				fsSource.addChildSource(fs);
+				FileSource fs = (FileSource)JHOVE2.getSourceFactory().getSource(new File(testFilePath));
+				fs=(FileSource) fsSource.addChildSource(fs);
 			}
 			ArrayList<String> fullFailKeys = new ArrayList<String>();
 			for (String failKey:failStrictKeys){
@@ -174,13 +174,13 @@ public class GlobPathRecognizerTest{
 				strictShapeFileRecognizer.groupSources(fsSource);
 			for (GlobPathMatchInfoGroup infoGroup:gInfoGroupStrict){
 				Source clumpSource = 
-					strictShapeFileRecognizer.recognizeGroupedSource(infoGroup);
+					strictShapeFileRecognizer.recognizeGroupedSource(infoGroup, JHOVE2);
 				if (clumpSource==null){
 					assertTrue(fullFailKeys.contains(infoGroup.groupKey));
 				}
 				else {
 					assertEquals(fullKeyCountMap.get(infoGroup.groupKey).intValue(),
-							clumpSource.getChildSources().size());
+							clumpSource.getNumChildSources());
 					for (FormatIdentification fi: clumpSource.getPresumptiveFormats()){				
 						assertFalse(fullFailKeys.contains(infoGroup.groupKey));
 						assertEquals(strictShapeFileRecognizer.getFormatIdentifier(),
@@ -207,13 +207,13 @@ public class GlobPathRecognizerTest{
 				relaxedShapeFileRecognizer.groupSources(fsSource);
 			for (GlobPathMatchInfoGroup infoGroup:gInfoGroupStrict){
 				Source clumpSource = 
-					relaxedShapeFileRecognizer.recognizeGroupedSource(infoGroup);
+					relaxedShapeFileRecognizer.recognizeGroupedSource(infoGroup, JHOVE2);
 				if (clumpSource==null){
 					assertTrue(fullFailKeys.contains(infoGroup.groupKey));
 				}
 				else {
 					assertEquals(fullKeyCountMap.get(infoGroup.groupKey).intValue(),
-							clumpSource.getChildSources().size());
+							clumpSource.getNumChildSources());
 					for (FormatIdentification fi : clumpSource.getPresumptiveFormats()){
 						assertFalse(fullFailKeys.contains(infoGroup.groupKey));
 						assertEquals(relaxedShapeFileRecognizer.getFormatIdentifier(),
@@ -241,11 +241,11 @@ public class GlobPathRecognizerTest{
 			fail("Could not create base directory");
 		}
 		try {
-			FileSetSource fsSource = new FileSetSource();
+			FileSetSource fsSource = JHOVE2.getSourceFactory().getFileSetSource();
 			for (String fileName:this.getTestFileList()){
 				String testFilePath = samplesDirPath.concat(fileName);
-				FileSource fs = new FileSource(new File(testFilePath));
-				fsSource.addChildSource(fs);
+				FileSource fs = (FileSource)JHOVE2.getSourceFactory().getSource(new File(testFilePath));
+				fs=(FileSource) fsSource.addChildSource(fs);
 			}
 			Set<ClumpSource> sources = 
 				strictShapeFileRecognizer.recognize(JHOVE2, fsSource);

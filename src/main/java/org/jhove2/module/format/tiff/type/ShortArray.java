@@ -9,6 +9,8 @@ import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * Stores an array of TIFF SHORT types
  * @see org.jhove2.module.format.tiff.type.Short
@@ -16,6 +18,7 @@ import org.jhove2.core.reportable.AbstractReportable;
  * @author mstrong
  *
  */
+@Persistent
 public class ShortArray
     extends AbstractReportable {  
     

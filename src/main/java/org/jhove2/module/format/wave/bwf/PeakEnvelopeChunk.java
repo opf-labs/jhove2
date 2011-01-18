@@ -51,10 +51,13 @@ import org.jhove2.module.format.Validator.Validity;
 import org.jhove2.module.format.riff.GenericChunk;
 import org.jhove2.module.format.wave.bwf.field.PeakFormat;
 
+import com.sleepycat.persist.model.Persistent;
+
 /** Broadcast Wave Format (BWF) peak envelope chunk.
  * 
  * @author slabrams
  */
+@Persistent
 public class PeakEnvelopeChunk
     extends GenericChunk
 {

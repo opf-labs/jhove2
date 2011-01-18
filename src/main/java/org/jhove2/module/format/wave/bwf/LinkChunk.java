@@ -48,10 +48,13 @@ import org.jhove2.core.source.ByteStreamSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.riff.GenericChunk;
 
+import com.sleepycat.persist.model.Persistent;
+
 /** Broadcast Wave Format (BWF) link chunk.
  * 
  * @author slabrams
  */
+@Persistent
 public class LinkChunk
     extends GenericChunk
 {
@@ -76,13 +79,13 @@ public class LinkChunk
         long consumed = super.parse(jhove2, source, input);
         
         /* The chunk contents are in XML; invoke the XML module. */
-        ByteStreamSource child =
-            new ByteStreamSource(jhove2, source, input.getPosition(), this.size);
+        ByteStreamSource child = jhove2.getSourceFactory().getByteStreamSource(
+            jhove2, source, input.getPosition(), this.size);
         Map<String, Object> i8r = SpringConfigInfo.getObjectsForType(I8R.class);
         I8R xml = (I8R) i8r.get("XmlIdentifier");;
         FormatIdentification id = new FormatIdentification(xml, Confidence.PositiveGeneric);
-        child.addPresumptiveFormat(id);
-        source.addChildSource(child);
+        child=(ByteStreamSource) child.addPresumptiveFormat(id);
+        child=(ByteStreamSource) source.addChildSource(child);
         jhove2.characterize(child, input);      
         consumed += this.size;
         

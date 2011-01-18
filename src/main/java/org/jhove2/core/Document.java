@@ -42,11 +42,14 @@ import java.util.List;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.reportable.AbstractReportable;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * A specification document that is the basis for part of the characterization process.
  * 
  * @author mstrong, slabrams
  */
+@Persistent
 public class Document extends AbstractReportable {
 	/** Document intentions. */
 	public enum Intention {
@@ -190,13 +193,17 @@ public class Document extends AbstractReportable {
 	 *            Document intention
 	 */
 	public Document(String title, Type type, Intention intention) {
-		super();
+		this();
 
 		this.title = title;
 		this.type = type;
 		this.intention = intention;
 
 		this.identifiers = new ArrayList<I8R>();
+	}
+	
+	private Document(){
+		super();
 	}
 
 	/**

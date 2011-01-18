@@ -43,10 +43,13 @@ import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.riff.GenericChunk;
 
+import com.sleepycat.persist.model.Persistent;
+
 /** Broadcast Wave Format (BWF) quality chunk.
  * 
  * @author slabrams
  */
+@Persistent
 public class QualityChunk
     extends GenericChunk
 {

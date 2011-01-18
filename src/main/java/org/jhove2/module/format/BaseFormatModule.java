@@ -38,20 +38,21 @@ package org.jhove2.module.format;
 
 import java.io.EOFException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
-import org.jhove2.core.TimerInfo;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractModule;
+import org.jhove2.persist.FormatModuleAccessor;
+
+import com.sleepycat.persist.model.Persistent;
 
 /**
  * Base JHOVE2 format module.
@@ -61,6 +62,7 @@ import org.jhove2.module.AbstractModule;
  * 
  * @author mstrong, slabrams, smorrissey
  */
+@Persistent
 public class BaseFormatModule
 	extends AbstractModule
 	implements FormatModule
@@ -79,9 +81,6 @@ public class BaseFormatModule
 
 	/** Format module format. */
 	protected Format format;
-
-	/** Format module format profiles. */
-	protected List<FormatProfile> profiles;
 	
 	/** Module not found Error Message
 	 * Created when no map exists from format name to format module */
@@ -99,7 +98,14 @@ public class BaseFormatModule
 	 * Instantiate a new <code>BaseFormatModule</code>.
 	 */
 	public BaseFormatModule(){
-		this(VERSION, RELEASE, RIGHTS, null);
+		this(null, null);
+	}
+	
+	/**
+	 * Instantiate a new <code>BaseFormatModule</code>.
+	 */
+	public BaseFormatModule(Format format, FormatModuleAccessor formatModuleAccessor){
+		this(VERSION, RELEASE, RIGHTS, format, formatModuleAccessor);
 	}
 
 	/**
@@ -112,10 +118,11 @@ public class BaseFormatModule
 	 *            Format module rights statement
 	 * @param format
 	 *            Format module format
+	 * @param formatModuleAccessor FormatModuleAccessor to manage access to Format Profiles
 	 */
 	public BaseFormatModule(String version, String release, String rights,
-			                Format format) {
-		this(version, release, rights, Scope.Specific, format);
+			                Format format, FormatModuleAccessor formatModuleAccessor) {
+		this(version, release, rights, Scope.Specific, format, formatModuleAccessor);
 	}
 	
 	/**
@@ -130,13 +137,13 @@ public class BaseFormatModule
 	 *            Format scope: generic or specific (to a source unit)
 	 * @param format
 	 *            Format module format
-	 */
+	 * @param formatModuleAccessor FormatModuleAccessor to manange access to Format Profiles
+	 */	
 	public BaseFormatModule(String version, String release, String rights,
-			                Scope scope, Format format)
+			                Scope scope, Format format, FormatModuleAccessor formatModuleAccessor)
 	{
-		super(version, release, rights, scope);
+		super(version, release, rights, scope, formatModuleAccessor);
 		this.format   = format;
-		this.profiles = new ArrayList<FormatProfile>();
 	}
 
 	/**
@@ -152,42 +159,41 @@ public class BaseFormatModule
 	public void invoke(JHOVE2 jhove2, Source source, Input input)
 	   throws JHOVE2Exception
 	{
-        this.timerInfo.setStartTime();
         source.addModule(this);
 		try {
 			this.parse(jhove2, source, input);
+			this.getModuleAccessor().persistModule(this);
 			if (this instanceof Validator) {
 				((Validator) this).validate(jhove2, source, input);
-			}
+				this.getModuleAccessor().persistModule(this);
+			}			
 			else {
 			    this.moduleDoesNotImplementValidatorInterfaceMessage =
 			        new Message(Severity.INFO, Context.PROCESS,
 			                "org.jhove2.module.format.BaseFormatModule.moduleDoesNotImplementValidatorInterface",
 			                jhove2.getConfigInfo());
 			}
+			// changes to module will be persisted by DispatcherCommand
 			List<FormatProfile> profiles = this.getProfiles();
 			if (profiles.size() > 0) {
 				for (FormatProfile profile : profiles) {
-				    profile.setFormatModule(this);
-					    
-					TimerInfo timer = profile.getTimerInfo();
-					timer.setStartTime();
-						
-					((Validator) profile).validate(jhove2, source, input);
-						
-					timer.setEndTime();
+					profile.setFormatModule(this); // check this
+					if (profile instanceof Validator) {	
+						profile = (FormatProfile) profile.getModuleAccessor().startTimerInfo(profile);
+						((Validator) profile).validate(jhove2, source, input);	
+						// endTimerInfo will persist profile
+						profile = (FormatProfile) profile.getModuleAccessor().endTimerInfo(profile);
+					}
 				}
 			}
 		}
 		catch (EOFException e) {
-			this.addExceptionMessageToSource(jhove2, source, e);
+			source = this.addExceptionMessageToSource(jhove2, source, e);
 		}
 		catch (IOException e) {
-			this.addExceptionMessageToSource(jhove2, source, e);
+			source = this.addExceptionMessageToSource(jhove2, source, e);
 		}
-		finally {
-		    this.timerInfo.setEndTime();
-		}
+		return;
 	}
 
     /** Parse the formatted {@link org.jhove2.core.source.Source} unit's
@@ -202,21 +208,20 @@ public class BaseFormatModule
     {
         return 0;
     }
-    	
-	protected void addExceptionMessageToSource(JHOVE2 jhove2, Source source, Exception e)
-	    throws JHOVE2Exception
-	{
+    		
+	protected Source addExceptionMessageToSource(JHOVE2 jhove2, Source source, Exception e)
+	throws JHOVE2Exception {
 		String exceptionType = e.getClass().getSimpleName();
 		String eMessage = e.getLocalizedMessage();
 		if (eMessage == null) {
 			eMessage = "";
 		}
 		String[] messageText = {exceptionType, eMessage};
-		source.addMessage(new Message(Severity.ERROR,
+		source = source.addMessage(new Message(Severity.ERROR,
                 Context.PROCESS,
                 "org.jhove2.module.format.BaseFormatModule.IOExceptionOnParseMessage",
                 messageText, jhove2.getConfigInfo()));
-		
+		return source;
 	}
 	
 	/**
@@ -240,22 +245,32 @@ public class BaseFormatModule
 	/**
 	 * Get format module format profiles.
 	 * @return Format module format profiles
+	 * @throws JHOVE2Exception 
 	 * @see org.jhove2.module.format.FormatModule#getProfiles()
 	 */
 	@Override
-	public List<FormatProfile> getProfiles() {
-		return this.profiles;
+	public List<FormatProfile> getProfiles() throws JHOVE2Exception {
+		if (this.getModuleAccessor()== null){
+			throw new JHOVE2Exception("FormatModuleAccessor is null");
+		}
+		FormatModuleAccessor fma = (FormatModuleAccessor)this.getModuleAccessor();
+		return fma.getProfiles(this);
 	}
 
 	/**
 	 * Set format module format profile. 
 	 * @param profiles
 	 *            List of FormatProfiles
+	 * @throws JHOVE2Exception 
 	 * @see org.jhove2.module.format.FormatModule#setProfiles(List)
 	 */
 	@Override
-	public void setProfiles(List<FormatProfile> profiles) {
-		this.profiles = profiles;
+	public List<FormatProfile> setProfiles(List<FormatProfile> profiles) throws JHOVE2Exception {
+		if (this.getModuleAccessor()== null){
+			throw new JHOVE2Exception("FormatModuleAccessor is null");
+		}
+		FormatModuleAccessor fma = (FormatModuleAccessor)this.getModuleAccessor();
+		return fma.setProfiles(this, profiles);
 	}
 
 	/** Get module does not implement the {@link org.jhove2.module.format.Validator} interface message

@@ -44,11 +44,15 @@ import org.jhove2.core.format.Format;
 import org.jhove2.module.format.tiff.IFDEntry;
 import org.jhove2.module.format.tiff.TiffIFD;
 import org.jhove2.module.format.tiff.type.Short;
+import org.jhove2.persist.FormatProfileAccessor;
+
+import com.sleepycat.persist.model.Persistent;
 
 /**
  * @author MStrong
  * 
  */
+@Persistent
 public class TiffEPProfile extends TiffProfile {
 
     /** Profile version identifier. */
@@ -78,9 +82,19 @@ public class TiffEPProfile extends TiffProfile {
 
     /** invalid newSubFileType tag value message */
     private Message invalidNewSubfileTypeMessage;
-
-    public TiffEPProfile(Format format) {
-        super(format);
+    
+    /**
+     * 
+     * @param format
+     * @param formatProfileAccessor
+     */
+    public TiffEPProfile(Format format, FormatProfileAccessor formatProfileAccessor) {
+        super(format, formatProfileAccessor);
+    }
+    
+    @SuppressWarnings("unused")
+	private TiffEPProfile(){
+    	this (null,null);
     }
 
     /*

@@ -47,6 +47,8 @@ import java.util.regex.Pattern;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.reportable.AbstractReportable;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * <p>
  * The XML namespace mechanism provide a simple method for qualifying element
@@ -78,6 +80,7 @@ import org.jhove2.core.reportable.AbstractReportable;
  * @see <a href="http://www.w3.org/TR/xml-names">Namespaces in XML 1.0</a>
  * @see <a href="http://www.w3.org/TR/xmlschema-0/#schemaLocation">schemaLocation</a>
  */
+@Persistent
 public class NamespaceInformation extends AbstractReportable {
 
     /** The regex pattern for a namespace URI and namespace location value pair. */
@@ -92,6 +95,9 @@ public class NamespaceInformation extends AbstractReportable {
     /** Flag to test if schemaLocations were specified */
     protected boolean hasSchemaLocations;
     
+    protected NamespaceInformation(){
+    	super();
+    }
     /**
      * Gets the count of unique namespaces.
      * 

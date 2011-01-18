@@ -41,12 +41,16 @@ import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.reportable.AbstractReportable;
 import org.xml.sax.SAXParseException;
 
+import com.sleepycat.persist.model.Persistent;
+
+
 /**
  * A data structure to hold warning and error messages captured during XML
  * validation.
  * 
  * @author rnanders
  */
+@Persistent
 public class ValidationResults extends AbstractReportable {
 
     /** Warnings found during XML parsing. */
@@ -57,6 +61,10 @@ public class ValidationResults extends AbstractReportable {
 
     /** Fatal errors found during XML parsing. */
     protected ValidationMessageList fatalParserErrors = new ValidationMessageList();
+    
+    protected ValidationResults(){
+    	super();
+    }
 
     /**
      * Get the warnings found during XML parsing.

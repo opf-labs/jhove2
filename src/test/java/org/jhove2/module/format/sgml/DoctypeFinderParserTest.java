@@ -58,7 +58,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath*:**/test-config.xml", 
 		"classpath*:**/filepaths-config.xml"})
-		
+
 public class DoctypeFinderParserTest {
 
 	protected String sgmlDirBasePath;

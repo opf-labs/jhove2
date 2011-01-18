@@ -65,4 +65,14 @@ public interface Command
 	 */
 	public void execute(JHOVE2 jhove2, Source source, Input input)
 	   throws JHOVE2Exception;
+	
+	/**
+	 * @return the jhove2ModuleId
+	 */
+	public Long getJhove2ModuleId();
+
+	/**
+	 * @param jhove2ModuleId the jhove2ModuleId to set
+	 */
+	public void setJhove2ModuleId(Long jhove2ModuleId);
 }

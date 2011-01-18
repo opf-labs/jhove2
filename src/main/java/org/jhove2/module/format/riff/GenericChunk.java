@@ -45,10 +45,13 @@ import org.jhove2.core.reportable.AbstractReportable;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.Validator.Validity;
 
+import com.sleepycat.persist.model.Persistent;
+
 /** Resource Interchange File Format (RIFF) chunk.
  * 
  * @author slabrams
  */
+@Persistent
 public class GenericChunk
     extends AbstractReportable
     implements Chunk

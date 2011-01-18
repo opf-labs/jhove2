@@ -51,10 +51,13 @@ import org.jhove2.core.reportable.AbstractReportable;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.Validator.Validity;
 
+import com.sleepycat.persist.model.Persistent;
+
 /** ICC tag table.  See ICC.1:2004-10, \u00a7 7.3.
  * 
  * @author slabrams
  */
+@Persistent
 public class ICCTagTable
     extends AbstractReportable
 {

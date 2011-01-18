@@ -43,11 +43,15 @@ import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
 import org.jhove2.module.format.tiff.IFDEntry;
 import org.jhove2.module.format.tiff.TiffIFD;
+import org.jhove2.persist.FormatProfileAccessor;
+
+import com.sleepycat.persist.model.Persistent;
 
 /**
  * @author MStrong
  * 
  */
+@Persistent
 public class TiffITCTP1Profile extends TiffItProfile {
 
     /** Profile version identifier. */
@@ -66,8 +70,18 @@ public class TiffITCTP1Profile extends TiffItProfile {
     /** Invalid DotRange message */
     protected Message invalidDotRangeMessage;
 
-   public TiffITCTP1Profile(Format format) {
-        super(format);
+    /**
+     * 
+     * @param format
+     * @param formatProfileAccessor
+     */
+    public TiffITCTP1Profile(Format format, FormatProfileAccessor formatProfileAccessor) {
+       super(format, formatProfileAccessor);
+    }
+    
+    @SuppressWarnings("unused")
+	private TiffITCTP1Profile(){
+    	this(null,null);
     }
 
     /*

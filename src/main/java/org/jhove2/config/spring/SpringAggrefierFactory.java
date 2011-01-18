@@ -40,6 +40,8 @@ import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.module.aggrefy.Aggrefier;
 import org.jhove2.module.aggrefy.AggrefierFactory;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * Spring-based implementation of Factory class for {@link org.jhove2.module.aggrefy.Aggrefier} 
  * objects
@@ -47,9 +49,14 @@ import org.jhove2.module.aggrefy.AggrefierFactory;
  * @author smorrissey
  *
  */
+@Persistent
 public class SpringAggrefierFactory
-    implements AggrefierFactory
-{
+    implements AggrefierFactory {
+    
+    public SpringAggrefierFactory(){
+		super();
+    }
+
 	/** Instantiate a new aggrefier module.
 	 * @see org.jhove2.module.aggrefy.AggrefierFactory#makeAggrefier()
 	 */

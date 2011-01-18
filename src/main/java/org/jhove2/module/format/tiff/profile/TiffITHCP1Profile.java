@@ -41,15 +41,18 @@ import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
-import org.jhove2.module.format.Validator.Validity;
 import org.jhove2.module.format.tiff.IFDEntry;
 import org.jhove2.module.format.tiff.TiffIFD;
 import org.jhove2.module.format.tiff.type.Byte;
+import org.jhove2.persist.FormatProfileAccessor;
+
+import com.sleepycat.persist.model.Persistent;
 
 /**
  * @author MStrong
  * 
  */
+@Persistent
 public class TiffITHCP1Profile extends TiffItProfile {
 
     /** Profile version identifier. */
@@ -71,8 +74,13 @@ public class TiffITHCP1Profile extends TiffItProfile {
     /** invalid TransparencyIndicator message */
     protected Message invalidTransparencyIndicatorValueMessage;
 
-    public TiffITHCP1Profile(Format format) {
-        super(format);
+    public TiffITHCP1Profile(Format format, FormatProfileAccessor formatProfileAccessor) {
+       super(format, formatProfileAccessor);
+    }
+    
+    @SuppressWarnings("unused")
+	private TiffITHCP1Profile(){
+    	this(null,null);
     }
 
     /*

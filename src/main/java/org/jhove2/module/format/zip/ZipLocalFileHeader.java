@@ -60,10 +60,13 @@ import org.jhove2.module.format.zip.field.Compatibility;
 import org.jhove2.module.format.zip.field.CompressionMethod;
 import org.jhove2.module.format.zip.field.Version;
 
+import com.sleepycat.persist.model.Persistent;
+
 /** Zip local file header.
  * 
  * @author slabrams
  */
+@Persistent
 public class ZipLocalFileHeader
         extends AbstractReportable
 {

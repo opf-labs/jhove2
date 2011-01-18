@@ -14,7 +14,7 @@
 	<bean id="TiffModule" class="org.jhove2.module.format.tiff.TiffModule"
 		scope="prototype">
 		<constructor-arg ref="TiffFormat" />
-		<!--		<property name="profile" ref="TiffItProfile" />-->
+		<constructor-arg ref="FormatModuleAccessor"/>
 		<property name="profiles">
 			<list value-type="org.jhove2.module.format.FormatProfile">
 				<ref bean="TiffClassBProfile" />
@@ -57,13 +57,21 @@
 				<ref bean="CDLAgent" />
 			</list>
 		</property>
-		<property name="tagToFormatMap">
+	    <property name="tiff2FormatMapFactory" ref="TiffMapFactory"/>
+	</bean>
+	
+	<bean name="TiffMapFactory" class="org.jhove2.config.spring.SpringTiff2FormatMapFactory"
+		scope="prototype"/>
+		
+	<bean name="TiffTagToFormatMap" class="java.util.concurrent.ConcurrentHashMap" scope="singleton">
+	<constructor-arg>
 		    <map>
 		        <entry key="34675" value-ref="ICCFormat"/>
 		        <entry key="700"   value-ref="XmlFormat"/>
 		    </map>
-		</property>
+	</constructor-arg>
 	</bean>
+	
 	<!-- Tiff format bean -->
 	<bean id="TiffFormat" class="org.jhove2.core.format.Format" scope="singleton">
 		<constructor-arg type="java.lang.String" value="Tiff" />
@@ -217,6 +225,7 @@
 	<bean id="TiffClassBProfile" class="org.jhove2.module.format.tiff.profile.TiffClassBProfile"
 		scope="prototype">
 		<constructor-arg ref="TiffClassBFormat" />
+		<constructor-arg ref="FormatProfileAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent" />
@@ -242,6 +251,7 @@
 	<bean id="TiffClassGProfile" class="org.jhove2.module.format.tiff.profile.TiffClassGProfile"
 		scope="prototype">
 		<constructor-arg ref="TiffClassGFormat" />
+		<constructor-arg ref="FormatProfileAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent" />
@@ -267,6 +277,7 @@
 	<bean id="TiffClassPProfile" class="org.jhove2.module.format.tiff.profile.TiffClassPProfile"
 		scope="prototype">
 		<constructor-arg ref="TiffClassPFormat" />
+		<constructor-arg ref="FormatProfileAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent" />
@@ -292,6 +303,7 @@
 	<bean id="TiffClassRProfile" class="org.jhove2.module.format.tiff.profile.TiffClassRProfile"
 		scope="prototype">
 		<constructor-arg ref="TiffClassRFormat" />
+		<constructor-arg ref="FormatProfileAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent" />
@@ -318,6 +330,7 @@
 	<bean id="TiffClassYProfile" class="org.jhove2.module.format.tiff.profile.TiffClassYProfile"
 		scope="prototype">
 		<constructor-arg ref="TiffClassYFormat" />
+		<constructor-arg ref="FormatProfileAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent" />
@@ -344,6 +357,7 @@
 	<bean id="TiffItProfile" class="org.jhove2.module.format.tiff.profile.TiffItProfile"
 		scope="prototype">
 		<constructor-arg ref="TiffItFormat" />
+		<constructor-arg ref="FormatProfileAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent" />
@@ -380,6 +394,7 @@
 	<bean id="TiffITBLProfile" class="org.jhove2.module.format.tiff.profile.TiffITBLProfile"
 		scope="prototype">
 		<constructor-arg ref="TiffITBLFormat" />
+		<constructor-arg ref="FormatProfileAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent" />
@@ -410,6 +425,7 @@
 	<bean id="TiffITBPProfile" class="org.jhove2.module.format.tiff.profile.TiffITBPProfile"
 		scope="prototype">
 		<constructor-arg ref="TiffItBPFormat" />
+		<constructor-arg ref="FormatProfileAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent" />
@@ -440,6 +456,7 @@
 	<bean id="TiffITBPP1Profile" class="org.jhove2.module.format.tiff.profile.TiffITBPP1Profile"
 		scope="prototype">
 		<constructor-arg ref="TiffItBPP1Format" />
+		<constructor-arg ref="FormatProfileAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent" />
@@ -470,6 +487,7 @@
 	<bean id="TiffITBPP2Profile" class="org.jhove2.module.format.tiff.profile.TiffITBPP2Profile"
 		scope="prototype">
 		<constructor-arg ref="TiffItBPP2Format" />
+		<constructor-arg ref="FormatProfileAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent" />
@@ -500,6 +518,7 @@
 	<bean id="TiffITCTProfile" class="org.jhove2.module.format.tiff.profile.TiffITCTProfile"
 		scope="prototype">
 		<constructor-arg ref="TiffITCTFormat" />
+		<constructor-arg ref="FormatProfileAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent" />
@@ -530,6 +549,7 @@
 	<bean id="TiffITCTP1Profile" class="org.jhove2.module.format.tiff.profile.TiffITCTP1Profile"
 		scope="prototype">
 		<constructor-arg ref="TiffItCTP1Format" />
+		<constructor-arg ref="FormatProfileAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent" />
@@ -560,6 +580,7 @@
 	<bean id="TiffITCTP2Profile" class="org.jhove2.module.format.tiff.profile.TiffITCTP2Profile"
 		scope="prototype">
 		<constructor-arg ref="TiffItCTP2Format" />
+		<constructor-arg ref="FormatProfileAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent" />
@@ -590,6 +611,7 @@
 	<bean id="TiffITFPProfile" class="org.jhove2.module.format.tiff.profile.TiffITFPProfile"
 		scope="prototype">
 		<constructor-arg ref="TiffITFPFormat" />
+		<constructor-arg ref="FormatProfileAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent" />
@@ -620,6 +642,7 @@
 	<bean id="TiffITFPP1Profile" class="org.jhove2.module.format.tiff.profile.TiffITFPP1Profile"
 		scope="prototype">
 		<constructor-arg ref="TiffItFPP1Format" />
+		<constructor-arg ref="FormatProfileAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent" />
@@ -650,6 +673,7 @@
 	<bean id="TiffITFPP2Profile" class="org.jhove2.module.format.tiff.profile.TiffITFPP2Profile"
 		scope="prototype">
 		<constructor-arg ref="TiffItFPP2Format" />
+		<constructor-arg ref="FormatProfileAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent" />
@@ -680,6 +704,7 @@
 	<bean id="TiffITHCProfile" class="org.jhove2.module.format.tiff.profile.TiffITHCProfile"
 		scope="prototype">
 		<constructor-arg ref="TiffITHCFormat" />
+		<constructor-arg ref="FormatProfileAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent" />
@@ -710,6 +735,7 @@
 	<bean id="TiffITHCP1Profile" class="org.jhove2.module.format.tiff.profile.TiffITHCP1Profile"
 		scope="prototype">
 		<constructor-arg ref="TiffItHCP1Format" />
+		<constructor-arg ref="FormatProfileAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent" />
@@ -740,6 +766,7 @@
 	<bean id="TiffITHCP2Profile" class="org.jhove2.module.format.tiff.profile.TiffITHCP2Profile"
 		scope="prototype">
 		<constructor-arg ref="TiffItHCP2Format" />
+		<constructor-arg ref="FormatProfileAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent" />
@@ -770,6 +797,7 @@
 	<bean id="TiffITLWProfile" class="org.jhove2.module.format.tiff.profile.TiffITLWProfile"
 		scope="prototype">
 		<constructor-arg ref="TiffITLWFormat" />
+		<constructor-arg ref="FormatProfileAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent" />
@@ -800,6 +828,7 @@
 	<bean id="TiffITLWP1Profile" class="org.jhove2.module.format.tiff.profile.TiffITLWP1Profile"
 		scope="prototype">
 		<constructor-arg ref="TiffItLWP1Format" />
+		<constructor-arg ref="FormatProfileAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent" />
@@ -830,6 +859,7 @@
 	<bean id="TiffITLWP2Profile" class="org.jhove2.module.format.tiff.profile.TiffITLWP2Profile"
 		scope="prototype">
 		<constructor-arg ref="TiffItLWP2Format" />
+		<constructor-arg ref="FormatProfileAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent" />
@@ -860,6 +890,7 @@
 	<bean id="TiffITMPProfile" class="org.jhove2.module.format.tiff.profile.TiffITMPProfile"
 		scope="prototype">
 		<constructor-arg ref="TiffITMPFormat" />
+		<constructor-arg ref="FormatProfileAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent" />
@@ -890,6 +921,7 @@
 	<bean id="TiffITMPP1Profile" class="org.jhove2.module.format.tiff.profile.TiffITMPP1Profile"
 		scope="prototype">
 		<constructor-arg ref="TiffITMPP1Format" />
+		<constructor-arg ref="FormatProfileAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent" />
@@ -920,6 +952,7 @@
 	<bean id="TiffITMPP2Profile" class="org.jhove2.module.format.tiff.profile.TiffITMPP2Profile"
 		scope="prototype">
 		<constructor-arg ref="TiffITMPP2Format" />
+		<constructor-arg ref="FormatProfileAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent" />
@@ -950,6 +983,7 @@
 	<bean id="TiffITSDProfile" class="org.jhove2.module.format.tiff.profile.TiffITSDProfile"
 		scope="prototype">
 		<constructor-arg ref="TiffITSDFormat" />
+		<constructor-arg ref="FormatProfileAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent" />
@@ -980,6 +1014,7 @@
 	<bean id="TiffITSDP2Profile" class="org.jhove2.module.format.tiff.profile.TiffITSDP2Profile"
 		scope="prototype">
 		<constructor-arg ref="TiffITSDP2Format" />
+		<constructor-arg ref="FormatProfileAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent" />
@@ -1011,6 +1046,7 @@
 	<bean id="TiffEPProfile" class="org.jhove2.module.format.tiff.profile.TiffEPProfile"
 		scope="prototype">
 		<constructor-arg ref="TiffEPFormat" />
+		<constructor-arg ref="FormatProfileAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent" />
@@ -1048,6 +1084,7 @@
 	<bean id="TiffGeoTIFFProfile" class="org.jhove2.module.format.tiff.profile.TiffGeoTIFFProfile"
 		scope="prototype">
 		<constructor-arg ref="TiffGeoTIFFFormat" />
+		<constructor-arg ref="FormatProfileAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent" />
@@ -1074,6 +1111,7 @@
 	<bean id="TiffDLFProfile" class="org.jhove2.module.format.tiff.profile.TiffDLFProfile"
 		scope="prototype">
 		<constructor-arg ref="TiffDLFFormat" />
+		<constructor-arg ref="FormatProfileAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent" />
@@ -1100,6 +1138,7 @@
 	<bean id="TiffDLFBWProfile" class="org.jhove2.module.format.tiff.profile.TiffDLFBWProfile"
 		scope="prototype">
 		<constructor-arg ref="TiffDLFBWFormat" />
+		<constructor-arg ref="FormatProfileAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent" />
@@ -1126,6 +1165,7 @@
 	<bean id="TiffDLFGrayProfile" class="org.jhove2.module.format.tiff.profile.TiffDLFGrayProfile"
 		scope="prototype">
 		<constructor-arg ref="TiffDLFGrayFormat" />
+		<constructor-arg ref="FormatProfileAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent" />
@@ -1152,6 +1192,7 @@
 	<bean id="TiffDLFColorProfile" class="org.jhove2.module.format.tiff.profile.TiffDLFColorProfile"
 		scope="prototype">
 		<constructor-arg ref="TiffDLFColorFormat" />
+		<constructor-arg ref="FormatProfileAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent" />

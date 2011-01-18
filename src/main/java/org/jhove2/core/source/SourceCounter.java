@@ -38,6 +38,8 @@ package org.jhove2.core.source;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.reportable.AbstractReportable;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * Convenvience class for tallying the number and kind of sources
  * processed by JHOVE2 engine.
@@ -45,6 +47,7 @@ import org.jhove2.core.reportable.AbstractReportable;
  * @author mstrong, slabrams, smorrissey
  * 
  */
+@Persistent
 public class SourceCounter
 	extends AbstractReportable
 {

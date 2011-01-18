@@ -35,6 +35,8 @@
 
 package org.jhove2.module.format.icc.type;
 
+import com.sleepycat.persist.model.Persistent;
+
 /** ICC u16Fixed16Number, a fixed unsigned 4 byte/32 bit quantity with 16
  * fractional bits.  The number is organized as:
  * iiiiiiiiiiiiiiiiffffffffffffffff, with the value:
@@ -42,6 +44,7 @@ package org.jhove2.module.format.icc.type;
  * 
  * @author slabrams
  */
+@Persistent
 public class U16Fixed16Number
 {
     /** Fractional denominator. */
@@ -56,9 +59,13 @@ public class U16Fixed16Number
     /** Floating point value. */
     protected double value;
     
+    private U16Fixed16Number(){
+    	super();
+    }
     /** Instantiate a new <code>U16Fixed16Number</code>.
      */
     public U16Fixed16Number(long in) {
+    	this();
         this.integral   = (int)((in & 0x00000000ffff0000) >> 16);
         this.fractional = (int)  in & 0x0000ffff;
         this.value      = this.integral +

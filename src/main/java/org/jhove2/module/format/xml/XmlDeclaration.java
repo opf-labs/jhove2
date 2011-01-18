@@ -44,6 +44,8 @@ import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * This class is used to hold information about an <i>XML declaration</i>
  * discovered during parsing of an XML instance.  For example: <br />
@@ -52,6 +54,7 @@ import org.jhove2.core.reportable.AbstractReportable;
  * @author rnanders
  * @see http://www.w3.org/TR/xml/#NT-XMLDecl
  */
+@Persistent
 public class XmlDeclaration extends AbstractReportable {
 
     /** The regular expression group for the version information. */
@@ -86,6 +89,10 @@ public class XmlDeclaration extends AbstractReportable {
 
     /** The standalone status actually declared. */
     protected String standaloneDeclared;
+    
+    public XmlDeclaration(){
+    	super();
+    }
 
     /**
      * Gets the version number of the XML Standard to which this instance

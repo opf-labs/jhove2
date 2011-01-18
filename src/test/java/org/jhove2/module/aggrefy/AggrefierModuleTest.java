@@ -57,7 +57,6 @@ import org.jhove2.core.source.DirectorySource;
 import org.jhove2.core.source.FileSetSource;
 import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.Source;
-import org.jhove2.core.source.SourceFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -89,7 +88,13 @@ public class AggrefierModuleTest {
 	 */
 	@Test
 	public void testIdentify() {
-		FileSetSource fsSource = new FileSetSource();
+		FileSetSource fsSource = null;
+		try {
+			fsSource = JHOVE2.getSourceFactory().getFileSetSource();
+		} catch (JHOVE2Exception e2) {
+			e2.printStackTrace();
+			fail();
+		}
 		String shapeDirPath = null;
 		String quickenDirPath = null;
 		String emptyDirPath = null;
@@ -117,13 +122,13 @@ public class AggrefierModuleTest {
 		try {
 			for (String shapeFileName:shapeFileList){
 				String testFilePath = shapeDirPath.concat(shapeFileName);
-				FileSource fs = new FileSource(new File(testFilePath));
-				fsSource.addChildSource(fs);
+				FileSource fs = (FileSource)JHOVE2.getSourceFactory().getSource(new File(testFilePath));
+				fs=(FileSource) fsSource.addChildSource(fs);
 			}
 			for (String quickenFileName:quickenFileList){
 				String testFilePath = quickenDirPath.concat(quickenFileName);
-				FileSource fs = new FileSource(new File(testFilePath));
-				fsSource.addChildSource(fs);
+				FileSource fs = (FileSource)JHOVE2.getSourceFactory().getSource(new File(testFilePath));
+				fs=(FileSource) fsSource.addChildSource(fs);
 			}
 			Set<ClumpSource> clumpSources = 
 				TestAggrefier.identify(JHOVE2, fsSource);
@@ -138,24 +143,24 @@ public class AggrefierModuleTest {
 						assertTrue(shapeStrictKeyCountMap.containsKey(sourceKey));
 						int expectedSourceCount = 
 							Integer.parseInt(shapeStrictKeyCountMap.get(sourceKey));
-						assertEquals(expectedSourceCount, clumpSource.getChildSources().size());
+						assertEquals(expectedSourceCount, clumpSource.getNumChildSources());
 					}
 					else if (format.equals(quickenFileRecognizer.getFormatIdentifier())){
 						String sourceKey = getSourceKey(clumpSource);
 						assertTrue(quickenStrictKeyCountMap.containsKey(sourceKey));
 						int expectedSourceCount = 
 							Integer.parseInt(quickenStrictKeyCountMap.get(sourceKey));
-						assertEquals(expectedSourceCount, clumpSource.getChildSources().size());
+						assertEquals(expectedSourceCount, clumpSource.getNumChildSources());
 					}
 					else {
 						fail("Unmatched format: " + format.getValue());
 					}
 				}
 			}
-			DirectorySource dSource = (DirectorySource) SourceFactory.getSource(
+			DirectorySource dSource = (DirectorySource) JHOVE2.getSourceFactory().getSource(
 					new File(emptyDirPath)); 
 			for (ClumpSource clumpSource:clumpSources){
-				dSource.addChildSource(clumpSource);
+				clumpSource=(ClumpSource) dSource.addChildSource(clumpSource);
 			}
 			Set<ClumpSource> newClumpSources = TestAggrefier.identify(JHOVE2, dSource);
 			assertEquals(0, newClumpSources.size());
@@ -166,7 +171,7 @@ public class AggrefierModuleTest {
 		}
 	}
 
-	private String getSourceKey(Source source){
+	private String getSourceKey(Source source) throws JHOVE2Exception{
 		Source firstSource = source.getChildSources().get(0);
 		String fileName = firstSource.getFile().getName();
 		int i = fileName.indexOf(".");

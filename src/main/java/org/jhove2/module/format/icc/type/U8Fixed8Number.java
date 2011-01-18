@@ -35,6 +35,8 @@
 
 package org.jhove2.module.format.icc.type;
 
+import com.sleepycat.persist.model.Persistent;
+
 /** ICC fixed unsigned 2 byte/16 bit number with 8 fractional bits. The number
  * is organized as:
  * iiiiiiiiffffffff, with the value:
@@ -42,6 +44,7 @@ package org.jhove2.module.format.icc.type;
  * 
  * @author slabrams
  */
+@Persistent
 public class U8Fixed8Number
 {
     /** Fractional denominator. */
@@ -56,9 +59,13 @@ public class U8Fixed8Number
     /** Floating point value. */
     protected double value;
     
+    private U8Fixed8Number(){
+    	super();
+    }
     /** Instantiate a new <code>U15Fixed16Number</code>.
      */
     public U8Fixed8Number(int in) {
+    	this();
         this.integral   = (in & 0xff00) >> 8;
         this.fractional =  in & 0x00ff;
         this.value      = this.integral +

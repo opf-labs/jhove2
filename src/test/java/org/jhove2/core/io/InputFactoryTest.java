@@ -13,6 +13,7 @@ import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.io.Input.Type;
 import org.jhove2.core.source.URLSource;
+import org.jhove2.persist.inmemory.InMemorySourceFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,8 +38,11 @@ public class InputFactoryTest {
 		}
 		try {
 			JHOVE2 jhove2 = new JHOVE2();
+			InMemorySourceFactory sourceFactory = new InMemorySourceFactory();
+			jhove2.setSourceFactory(sourceFactory);
 			Invocation config = jhove2.getInvocation();
-			URLSource yahooURL = new URLSource(config.getTempPrefix(), 
+			URLSource yahooURL = (URLSource)jhove2.getSourceFactory().getSource
+											  (config.getTempPrefix(), 
 					                           config.getTempSuffix(),
 					                           config.getBufferSize(),
 					                           yahoo);

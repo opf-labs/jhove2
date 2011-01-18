@@ -35,6 +35,8 @@
 
 package org.jhove2.module.format.icc.type;
 
+import com.sleepycat.persist.model.Persistent;
+
 /** ICC s15Fixed16Number, a fixed signed 4 byte/32 bit quantity with 16
  * fractional bits.  The number is organized as:
  * siiiiiiiiiiiiiiiffffffffffffffff, with the value:
@@ -42,6 +44,7 @@ package org.jhove2.module.format.icc.type;
  * 
  * @author slabrams
  */
+@Persistent
 public class S15Fixed16Number
 {
     /** Fractional denominator. */
@@ -59,6 +62,7 @@ public class S15Fixed16Number
     /** Instantiate a new <code>S15Fixed16Number</code>.
      */
     public S15Fixed16Number(int in) {
+    	this();
         this.integral   = (in & 0xffff0000) >> 16;
         this.fractional =  in & 0x0000ffff;
         this.value      = this.integral +
@@ -67,6 +71,10 @@ public class S15Fixed16Number
         long ln     = (long)(this.value*100000);
         this.value  = ln;
         this.value /= 100000;
+    }
+    
+    private S15Fixed16Number(){
+    	super();
     }
     
     /** Get fractional part.

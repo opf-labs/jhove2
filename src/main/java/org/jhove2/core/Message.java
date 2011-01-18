@@ -40,6 +40,8 @@ import java.util.Locale;
 
 import org.jhove2.config.ConfigInfo;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * JHOVE2 message. A message has a severity, a context, and a text code.
  * Messages are localized.
@@ -49,6 +51,7 @@ import org.jhove2.config.ConfigInfo;
  * @author slabrams, smorrissey
  * 
  */
+@Persistent
 public class Message {
 	/** Message contexts. */
 	public enum Context {
@@ -104,6 +107,10 @@ public class Message {
 			defaultLocale = Locale.getDefault();
 		}
 
+	@SuppressWarnings("unused")
+	private Message() throws JHOVE2Exception{
+		this(null, null, null, null);
+	}
 	/**
 	 * Instantiate a new localized <code>Message</code>.
 	 * 
@@ -189,6 +196,7 @@ public class Message {
 		throws JHOVE2Exception
 	{
 		String localizedMessage = null;
+		if (this.getConfigInfo() != null && messageCode != null && locale != null)
 		localizedMessage = this.getConfigInfo().getLocalizedMessageText(messageCode, 
 				messageArgs, locale);
 		return localizedMessage;

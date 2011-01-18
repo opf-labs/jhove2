@@ -143,18 +143,6 @@ public class EsisParserTest {
         	assertEquals(1, g.extTextEntCount);
         	assertEquals(2, g.intDataEntCount);
         	assertTrue(g.sdataNames.contains("[percnt]"));
-        	assertTrue(g.elemAttributeType2Count.containsKey("IMPLIED"));
-        	int count = g.elemAttributeType2Count.get("IMPLIED");
-        	assertEquals(1,count);
-        	assertTrue(g.elemAttributeType2Count.containsKey("ID"));
-        	count = g.elemAttributeType2Count.get("ID");
-        	assertEquals(1,count);
-        	assertTrue(g.elemAttributeType2Count.containsKey("TOKEN"));
-        	count = g.elemAttributeType2Count.get("TOKEN");
-        	assertEquals(3,count);
-        	assertTrue(g.elemAttributeType2Count.containsKey("CDATA"));
-        	count = g.elemAttributeType2Count.get("CDATA");
-        	assertEquals(2,count);
         }
         catch (Exception e){
         	fail(e.getMessage());

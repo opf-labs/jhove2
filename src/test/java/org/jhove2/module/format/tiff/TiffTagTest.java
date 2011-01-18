@@ -3,7 +3,6 @@ package org.jhove2.module.format.tiff;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.util.Arrays;
 import java.util.Properties;
 import java.util.Set;
 

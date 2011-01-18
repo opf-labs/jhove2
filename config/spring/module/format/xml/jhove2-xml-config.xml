@@ -1,20 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:util="http://www.springframework.org/schema/util"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-	   xsi:schemaLocation="http://www.springframework.org/schema/beans 
-           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-           http://www.springframework.org/schema/context
-           http://www.springframework.org/schema/context/spring-context-2.5.xsd
-		   http://www.springframework.org/schema/util 
-		   http://www.springframework.org/schema/util/spring-util-2.0.xsd">
-	
-	
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:util="http://www.springframework.org/schema/util" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 	<!-- XML module bean -->
-	<bean id="XmlModule" class="org.jhove2.module.format.xml.XmlModule"
-	      scope="prototype">
-	    <constructor-arg ref="XmlFormat"/>
-     	<property name="developers">
+	<bean id="XmlModule" class="org.jhove2.module.format.xml.XmlModule" scope="prototype">
+		<constructor-arg ref="XmlFormat"/>
+		<constructor-arg ref="FormatModuleAccessor"/>
+		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="StanfordAgent"/>
 			</list>
@@ -24,24 +14,23 @@
 		<property name="ncrParser" value="true"/>
 		<property name="collectCommentText" value="true"/>
 	</bean>
-   
-   	<!-- SAX Parser bean -->
-   	<bean id="SaxParser" class = "org.jhove2.module.format.xml.SaxParser" scope="prototype">
+	<!-- SAX Parser bean -->
+	<bean id="SaxParser" class = "org.jhove2.module.format.xml.SaxParser" scope="prototype">
 		<property name="parser" value="org.apache.xerces.parsers.SAXParser"/>
 		<property name="features">
 			<map>
-				<!-- Specify that validation should occur when the XML instance is parsed -->			
+				<!-- Specify that validation should occur when the XML instance is parsed -->
 				<entry key="http://xml.org/sax/features/validation" value="true"/>
 				<!-- A value of "true" indicates that system IDs in entity declarations will be 
-				absolutized (relative to their base URIs) before reporting.  -->			
+				absolutized (relative to their base URIs) before reporting.  -->
 				<entry key="http://xml.org/sax/features/resolve-dtd-uris" value="false"/>
-				<!-- The parser will validate the document only if a grammar is specified -->			
+				<!-- The parser will validate the document only if a grammar is specified -->
 				<entry key="http://apache.org/xml/features/validation/dynamic" value="true"/>
-				<!-- Turn on XML Schema validation by inserting an XML Schema validator into the pipeline -->			
+				<!-- Turn on XML Schema validation by inserting an XML Schema validator into the pipeline -->
 				<entry key="http://apache.org/xml/features/validation/schema" value="true"/>
-				<!-- Enable full schema grammar constraint checking -->			
+				<!-- Enable full schema grammar constraint checking -->
 				<entry key="http://apache.org/xml/features/validation/schema-full-checking" value="false"/>
-				<!-- Only the first schema location hint encountered by the processor will be used to locate the components for a given target namespace -->			
+				<!-- Only the first schema location hint encountered by the processor will be used to locate the components for a given target namespace -->
 				<entry key="http://apache.org/xml/features/honour-all-schemaLocations" value="false"/>
 			</map>
 		</property>
@@ -55,7 +44,6 @@
 			</list>
 		</property>
 	</bean>
-   
 	<!-- XML format bean -->
 	<bean id="XmlFormat" class="org.jhove2.core.format.Format" scope="singleton">
 		<constructor-arg type="java.lang.String" value="XML"/>
@@ -86,30 +74,29 @@
 			</list>
 		</property>
 	</bean>
-
-	<!-- XML identifier bean -->  
+	<!-- XML identifier bean -->
 	<bean id="XmlIdentifier" class="org.jhove2.core.I8R" scope="singleton">
 		<constructor-arg type="java.lang.String" value="http://jhove2.org/terms/format/xml"/>
 	</bean>
 	<!-- XML PUID aliasIdentifier bean -->
 	<bean id="PUIDfmt101" class="org.jhove2.core.I8R" scope="singleton">
-	    <constructor-arg type="java.lang.String" value="fmt/101"/>
-	    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
-	</bean>	
+		<constructor-arg type="java.lang.String" value="fmt/101"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
+	</bean>
 	<!-- XHTML 1.0 PUID aliasIdentifier bean -->
 	<bean id="PUIDfmt102" class="org.jhove2.core.I8R" scope="singleton">
-	    <constructor-arg type="java.lang.String" value="fmt/102"/>
-	    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
-	</bean>	
+		<constructor-arg type="java.lang.String" value="fmt/102"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
+	</bean>
 	<!-- XHTML 1.1  PUID aliasIdentifier bean -->
 	<bean id="PUIDfmt103" class="org.jhove2.core.I8R" scope="singleton">
-	    <constructor-arg type="java.lang.String" value="fmt/103"/>
-	    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
+		<constructor-arg type="java.lang.String" value="fmt/103"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
 	</bean>
 	<!-- XML MIME aliasIdentifier bean -->
 	<bean id="XmlMIMEType" class="org.jhove2.core.I8R" scope="singleton">
-	    <constructor-arg type="java.lang.String" value="application/xml"/>
-	    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="MIME"/>
+		<constructor-arg type="java.lang.String" value="application/xml"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="MIME"/>
 	</bean>
 	<!--  XML RFC 3023 aliasIdentifier bean -->
 	<bean id="XmlRFC3023" class="org.jhove2.core.I8R" scope="singleton">
@@ -118,10 +105,9 @@
 	</bean>
 	<!-- XML UTI aliasIdentifier bean -->
 	<bean id="XmlUTI" class="org.jhove2.core.I8R" scope="singleton">
-	    <constructor-arg type="java.lang.String" value="public.xml"/>
-	    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="UTI"/>
+		<constructor-arg type="java.lang.String" value="public.xml"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="UTI"/>
 	</bean>
-	
 	<!-- XML 1.0 specification bean -->
 	<bean id="XML10Specification" class="org.jhove2.core.Document" scope="singleton">
 		<constructor-arg type="java.lang.String" value="Extensible Markup Language (XML) 1.0 (Fifth Edition)"/>
@@ -130,7 +116,7 @@
 		<property name="author" value="W3C"/>
 		<property name="date" value="2008"/>
 		<property name="edition" value="REC-xml-20081126"/>
-<!--		<property name="identifier" ref="XML10SpecificationURI"/>-->
+		<!--		<property name="identifier" ref="XML10SpecificationURI"/>-->
 		<property name="identifiers">
 			<list value-type="org.jhove2.core.I8R">
 				<ref bean="XML10SpecificationURI"/>
@@ -138,13 +124,11 @@
 		</property>
 		<property name="publisher" value="W3C"/>
 	</bean>
-	
 	<!-- XML 1.0 specification URI bean -->
 	<bean id="XML10SpecificationURI" class="org.jhove2.core.I8R" scope="singleton">
 		<constructor-arg type="java.lang.String" value="http://www.w3.org/TR/2008/REC-xml-20081126"/>
 		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="URI"/>
 	</bean>
-
 	<!-- XML 1.1 specification bean -->
 	<bean id="XML11Specification" class="org.jhove2.core.Document" scope="singleton">
 		<constructor-arg type="java.lang.String" value="Extensible Markup Language (XML) 1.1 (Second Edition)"/>
@@ -153,7 +137,7 @@
 		<property name="author" value="W3C"/>
 		<property name="date" value="2006"/>
 		<property name="edition" value="REC-xml-20081126"/>
-<!--		<property name="identifier" ref="XML11SpecificationURI"/>-->
+		<!--		<property name="identifier" ref="XML11SpecificationURI"/>-->
 		<property name="identifiers">
 			<list value-type="org.jhove2.core.I8R">
 				<ref bean="XML11SpecificationURI"/>
@@ -161,11 +145,9 @@
 		</property>
 		<property name="publisher" value="W3C"/>
 	</bean>
-	
 	<!-- XML 1.1 specification URI bean -->
 	<bean id="XML11SpecificationURI" class="org.jhove2.core.I8R" scope="singleton">
 		<constructor-arg type="java.lang.String" value="http://www.w3.org/TR/2006/REC-xml11-20060816"/>
 		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="URI"/>
 	</bean>
-	     	
-</beans>		   
+</beans>

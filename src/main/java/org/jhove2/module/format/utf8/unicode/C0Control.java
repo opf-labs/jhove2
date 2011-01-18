@@ -43,6 +43,8 @@ import java.util.TreeSet;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * Unicode C0 control. Controls are initialized from a properties file in the
  * form:
@@ -53,6 +55,7 @@ import org.jhove2.core.JHOVE2Exception;
  * 
  * @author mstrong, slabrams
  */
+@Persistent
 public class C0Control
     implements Comparable<C0Control>
 {
@@ -64,6 +67,9 @@ public class C0Control
 
 	/** Control mnemonic. */
 	protected String mnemonic;
+	
+	@SuppressWarnings("unused")
+	private C0Control(){}
 
 	/**
 	 * Instantiate a <code>C0Control</code> object.

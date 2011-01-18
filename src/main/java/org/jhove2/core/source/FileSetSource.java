@@ -36,12 +36,15 @@
 
 package org.jhove2.core.source;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * File set source unit. A file set is a set of user-specified files that may or may not be related.
  * The most common kind of file set is one the one specified on an application command line.
  * 
  * @author mstrong, slabrams
  */
+@Persistent
 public class FileSetSource
     extends AbstractSource
     implements AggregateSource
@@ -49,7 +52,7 @@ public class FileSetSource
 	/**
 	 * Instantiate a new <code>FileSetSource</code>.
 	 */
-	public FileSetSource() {
+	protected FileSetSource() {
 		super();
 	}
 }

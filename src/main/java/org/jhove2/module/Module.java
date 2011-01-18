@@ -43,6 +43,7 @@ import org.jhove2.core.Agent;
 import org.jhove2.core.TimerInfo;
 import org.jhove2.core.WrappedProduct;
 import org.jhove2.core.reportable.Reportable;
+import org.jhove2.persist.ModuleAccessor;
 
 /**
  * Interface for JHOVE2 modules. A module is an object that performs some process and reports
@@ -160,6 +161,12 @@ public interface Module
 	 */
 	public void setScope(Scope scope);
 	
+	/**
+	 * Set TimerInfo
+	 * @param timer Module TimerInfo
+	 */
+	public void setTimerInfo(TimerInfo timer);
+	
 	/** Set module version.
 	 * @param version Module version
 	 */
@@ -172,4 +179,29 @@ public interface Module
      *            Wrapped product
      */
     public void setWrappedProduct(WrappedProduct product);
+	/**
+	 * @return the moduleId
+	 */
+	public Long getModuleId();
+	/**
+	 * @return the moduleParentSourceId
+	 */
+	public Long getParentSourceId();
+	/**
+	 * @param moduleId the moduleId to set
+	 */
+	public void setModuleId(Long moduleId);
+	/**
+	 * @param moduleParentSourceId the moduleParentSourceId to set
+	 */
+	public void setParentSourceId(Long parentSourceId);
+	
+	/**
+	 * @return the moduleAccessor
+	 */
+	public ModuleAccessor getModuleAccessor();
+	/**
+	 * @param moduleAccessor the moduleAccessor to set
+	 */
+	public void setModuleAccessor(ModuleAccessor moduleAccessor);
 }

@@ -91,7 +91,7 @@ public class IdentifierModuleTest {
 		}
 		String zipFilePath = droidDirPath.concat(sampleFile);
 		try {
-			source = new FileSource(zipFilePath);
+			source =(FileSource)JHOVE2.getSourceFactory().getSource(zipFilePath);
 			input  = source.getInput(JHOVE2);
 		} catch (Exception e) {
 			fail("Couldn't create source: " + e.getMessage());
@@ -121,7 +121,7 @@ public class IdentifierModuleTest {
 			}
 			String testFilePath = shapeDirPath.concat(testFile);
 			try {
-				source = new FileSource(testFilePath);
+				source = (FileSource)JHOVE2.getSourceFactory().getSource(testFilePath);
 			} catch (Exception e) {
 				fail("Couldn't create source: " + e.getMessage());
 			} 

@@ -45,11 +45,15 @@ import org.jhove2.module.format.tiff.IFDEntry;
 import org.jhove2.module.format.tiff.TiffIFD;
 import org.jhove2.module.format.tiff.type.ByteArray;
 import org.jhove2.module.format.tiff.type.Byte;
+import org.jhove2.persist.FormatProfileAccessor;
+
+import com.sleepycat.persist.model.Persistent;
 
 /**
  * @author MStrong
  * 
  */
+@Persistent
 public class TiffITMPP1Profile extends TiffItProfile {
 
     /** Profile version identifier. */
@@ -71,10 +75,15 @@ public class TiffITMPP1Profile extends TiffItProfile {
     /** invalid PixelIntensityRange value message */
     protected Message invalidPixelIntensityRangeValueMessage;
 
-    public TiffITMPP1Profile(Format format) {
-        super(format);
+    public TiffITMPP1Profile(Format format, FormatProfileAccessor formatProfileAccessor) {
+       super(format, formatProfileAccessor);
     }
-
+    
+    @SuppressWarnings("unused")
+	private TiffITMPP1Profile(){
+    	this(null,null);
+    }
+    
     /*
      * (non-Javadoc)
      * 

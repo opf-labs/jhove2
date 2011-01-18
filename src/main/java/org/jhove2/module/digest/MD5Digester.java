@@ -38,11 +38,14 @@ package org.jhove2.module.digest;
 
 import java.security.NoSuchAlgorithmException;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * JHOVE2 MD5 message digester. The MD5 algorithm is defined by RFC 1321
  * 
  * @author mstrong, slabrams
  */
+@Persistent
 public class MD5Digester extends AbstractBufferDigester {
 	/** Algorithm name. */
 	public static final String ALGORITHM = "MD5";

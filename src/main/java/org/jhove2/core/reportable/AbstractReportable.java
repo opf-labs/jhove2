@@ -39,6 +39,8 @@ package org.jhove2.core.reportable;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.I8R;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * Base class for all classes that implement Reportable interface
  * Ensures all Reportables correctly form and populate I8R jhoveIdentifier field
@@ -46,6 +48,7 @@ import org.jhove2.core.I8R;
  * @author smorrissey
  *
  */
+@Persistent
 public abstract class AbstractReportable
 	implements Reportable
 {
@@ -54,6 +57,8 @@ public abstract class AbstractReportable
 	
 	/** Object's simple name;  may be configure by user */
 	protected String reportableName = null;
+	
+	public AbstractReportable(){};
 	
 	/** Get reportable identifier.
 	 * @return Reportable identifier

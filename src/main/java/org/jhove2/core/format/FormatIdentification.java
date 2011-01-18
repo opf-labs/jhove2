@@ -44,11 +44,14 @@ import org.jhove2.core.I8R;
 import org.jhove2.core.Message;
 import org.jhove2.core.reportable.AbstractReportable;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * JHOVE2 presumptive format identifier.
  * 
  * @author mstrong, slabrams, smorrissey
  */
+@Persistent
 public class FormatIdentification
     extends AbstractReportable
     implements Comparable<FormatIdentification>
@@ -117,6 +120,9 @@ public class FormatIdentification
 	/** Messages produced by the identification process. */
 	protected List<Message> messages;
 	
+	private FormatIdentification(){
+		this(null, null);
+	}
 	/**
 	 * Instantiate a new <code>FormatIdentification</code>.
 	 * 

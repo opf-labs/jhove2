@@ -37,6 +37,7 @@
 package org.jhove2.module.aggrefy;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -44,10 +45,12 @@ import java.util.TreeSet;
 
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.TimerInfo;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractModule;
+import org.jhove2.persist.AggrefierAccessor;
+
+import com.sleepycat.persist.model.Persistent;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -58,6 +61,7 @@ import org.jhove2.module.AbstractModule;
  * 
  * @author smorrissey
  */
+@Persistent
 public class AggrefierModule
 	extends AbstractModule 
 	implements Aggrefier
@@ -72,16 +76,18 @@ public class AggrefierModule
 		+ "Stanford Junior University. "
 		+ "Available under the terms of the BSD license.";
 
-	/** list of configured AggregateIdentifiers that can detect instances 
-	 * of an aggregate format.  Each identifier recognizes exactly one format.
-     */
-	protected List<Recognizer> recognizers;
-
 	/**
 	 * Instantiate a new <code>AggrefierModule</code>.
 	 */
 	public AggrefierModule() {
-		super(VERSION, RELEASE, RIGHTS, Scope.Generic);
+		this(null);
+	}
+	/**
+	 * Instantiate a new <code>AggrefierModule</code>.  
+	 * @param aggrefierAccessor AggrefierAccessor to manage access to (possibly persisted) Recognizers
+	 */
+	public AggrefierModule(AggrefierAccessor aggrefierAccessor){
+		super(VERSION, RELEASE, RIGHTS, Scope.Generic, aggrefierAccessor);
 	}
 	
 	/**
@@ -92,8 +98,9 @@ public class AggrefierModule
 	 * @param jhove2 JHOVE2 framework
 	 * @param source Aggregate source unit
 	 * @return Presumptively identified Clump sources
-	 * @throws IOException I/O exception encountered identifying the source unit
-	 * @throws JHOVE2Exception the jHOV e2 exception
+	 * @throws IOException
+	 *             I/O exception encountered identifying the source unit
+	 * @throws JHOVE2Exception
 	 * @see org.jhove2.module.aggrefy.Aggrefier#identify(org.jhove2.core.JHOVE2,
 	 * org.jhove2.core.source.Source)
 	 */
@@ -104,10 +111,9 @@ public class AggrefierModule
 		Set<ClumpSource> clumpSources = 
 			new TreeSet<ClumpSource>();
 		for (Recognizer recognizer:this.getRecognizers()) {	
-			TimerInfo info = recognizer.getTimerInfo();
-			info.setStartTime();
+			recognizer = (Recognizer) recognizer.getModuleAccessor().startTimerInfo(recognizer);
 			clumpSources.addAll((Collection<? extends ClumpSource>) recognizer.recognize(jhove2, source));
-			info.setEndTime();
+			recognizer = (Recognizer) recognizer.getModuleAccessor().endTimerInfo(recognizer);
 		}	
 		return clumpSources;
 	}
@@ -118,8 +124,15 @@ public class AggrefierModule
 	 * @return Aggregate recognizers
 	 */
 	@Override
-	public List<Recognizer> getRecognizers() {
-		return this.recognizers;
+	public List<Recognizer> getRecognizers() throws JHOVE2Exception {
+		if (this.getModuleAccessor()==null){
+			throw new JHOVE2Exception("AggrefierAccessor is null");
+		}
+		if (this.getModuleAccessor()==null){
+			return new ArrayList<Recognizer>();
+		}
+		AggrefierAccessor aa = (AggrefierAccessor)this.getModuleAccessor();
+		return aa.getRecognizers(this);
 	}
 
 	/**
@@ -127,8 +140,12 @@ public class AggrefierModule
 	 *
 	 * @param recognizers the new recognizers
 	 */
-	public void setRecognizers(List<Recognizer> recognizers) {
-		this.recognizers = recognizers;
+	public void setRecognizers(List<Recognizer> recognizers) throws JHOVE2Exception {
+		if (this.getModuleAccessor()==null){
+			throw new JHOVE2Exception("AggrefierAccessor is null");
+		}
+		AggrefierAccessor aa = (AggrefierAccessor)this.getModuleAccessor();
+		aa.setRecognizers(this, recognizers);
 	}
 
 }

@@ -75,10 +75,13 @@ import org.jhove2.module.format.icc.type.TextType;
 import org.jhove2.module.format.icc.type.ViewingConditionsType;
 import org.jhove2.module.format.icc.type.XYZType;
 
+import com.sleepycat.persist.model.Persistent;
+
 /** ICC tag.  See ICC.1:2004-10, \u00a7 7.3.1.
  * 
  * @author slabrams
  */
+@Persistent
 public class ICCTag
     extends AbstractReportable
 {
@@ -944,4 +947,31 @@ public class ICCTag
     public Validity isValid() {
         return this.isValid;
     }
+
+	/**
+	 * @return the lut16Type
+	 */
+    @ReportableProperty(order=7, value="16-bit lookup table (LUT) type element.",
+    		ref="ICC.1:2004-10, \u00a7 10.7.")
+	public LUT16Type getLut16Type() {
+		return lut16Type;
+	}
+
+	/**
+	 * @return the lut8Type
+	 */
+    @ReportableProperty(order=7, value="ICC 8-bit lookup table (LUT) type element.",
+    		ref="ICC.1:2004-10, \u00a7 10.9.")
+	public LUT8Type getLut8Type() {
+		return lut8Type;
+	}
+
+	/**
+	 * @return the color2Type
+	 */
+    @ReportableProperty(order=7, value="ICC named color 2 type element.",
+    		ref="ICC.1:2004-10, \u00a7 10.14.")
+	public NamedColor2Type getColor2Type() {
+		return color2Type;
+	}
 }

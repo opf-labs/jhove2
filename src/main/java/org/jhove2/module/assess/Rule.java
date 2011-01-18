@@ -38,6 +38,8 @@ package org.jhove2.module.assess;
 
 import java.util.List;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * The container for a rule specification.  A rule is evaluated against the 
  * {@link org.jhove2.annotation.ReportableProperty ReportableProperty}(s) 
@@ -85,6 +87,7 @@ import java.util.List;
  * @see <a href="http://mvel.codehaus.org/Language+Guide+for+2.0">MVEL Language Guide</a>
  * @author rnanders
  */
+@Persistent
 public class Rule {
 
     /** The name of the rule.  (Should be unique) */

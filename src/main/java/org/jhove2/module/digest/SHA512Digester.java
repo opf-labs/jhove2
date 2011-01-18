@@ -38,12 +38,15 @@ package org.jhove2.module.digest;
 
 import java.security.NoSuchAlgorithmException;
 
+import com.sleepycat.persist.model.Persistent;
+
 /***
  * JHOVE2 SHA-512 message digester. The SHA-512 algorithm is defined by FIPS PUB
  * 180-2.
  * 
  * @author mstrong, slabrams
  */
+@Persistent
 public class SHA512Digester extends AbstractBufferDigester {
 	/** Algorithm name. */
 	public static final String ALGORITHM = "SHA-512";

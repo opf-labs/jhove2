@@ -51,10 +51,13 @@ import org.jhove2.core.source.Source;
 import org.jhove2.module.format.Parser;
 import org.jhove2.module.format.Validator.Validity;
 
+import com.sleepycat.persist.model.Persistent;
+
 /** ICC colorant table type element, as defined in ICC.1:2004, \u00a7 10.4.
  * 
  * @author slabrams
  */
+@Persistent
 public class ColorantTableType
     extends AbstractReportable
     implements Parser

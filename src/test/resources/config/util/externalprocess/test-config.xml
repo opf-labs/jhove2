@@ -10,7 +10,7 @@
 		   http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 		   
 
-	<bean id="shellHandler" class="org.jhove2.util.externalprocess.ForkShellHandler" >
+	<bean id="epshellHandler" class="org.jhove2.util.externalprocess.ForkShellHandler" >
 		<property name="shellEnv" value="c:\cygwin\bin\bash.exe"/>
 		<property name="shellParms" value="-c"/>
 		<property name="shouldQuoteCommand" value="true"/>
@@ -20,7 +20,7 @@
     <bean id="filter" class="org.jhove2.util.externalprocess.FileSeparatorFilter">
     </bean>
     
-    <bean id="windowsShellHandler" class="org.jhove2.util.externalprocess.ForkShellHandler" >
+    <bean id="epwindowsShellHandler" class="org.jhove2.util.externalprocess.ForkShellHandler" >
     	<property name="shellEnv" value="C:\WINDOWS\system32\cmd.exe"/>
 		<property name="shellParms" value="/C"/>
 		<property name="shouldQuoteCommand" value="false"/>

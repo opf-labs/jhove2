@@ -35,12 +35,15 @@
 
 package org.jhove2.module.format.icc.type;
 
+import com.sleepycat.persist.model.Persistent;
+
 
 /** ICC XYZ number, a set of three fixed signed s15Fixed16Numbers.
  * See ICC.1:2004-10, \u00a7 5.1.11.
  * 
  * @author slabrams
  */
+@Persistent
 public class XYZNumber
 {
     /** X number. */
@@ -55,9 +58,14 @@ public class XYZNumber
     /** Instantiate a new <code>XYZNumber</code>
      */
     public XYZNumber(int x, int y, int z) {
+    	this();
         this.x = new S15Fixed16Number(x);
         this.y = new S15Fixed16Number(y);
         this.z = new S15Fixed16Number(z);
+    }
+    
+    private XYZNumber(){
+    	super();
     }
     
     /** Get X value.

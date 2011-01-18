@@ -48,10 +48,13 @@ import org.jhove2.core.source.Source;
 import org.jhove2.module.format.Validator.Validity;
 import org.jhove2.module.format.riff.field.FormType;
 
+import com.sleepycat.persist.model.Persistent;
+
 /** RIFF chunk.
  * 
  * @author slabrams
  */
+@Persistent
 public class RIFFChunk
     extends GenericChunk
 {   
@@ -118,7 +121,7 @@ public class RIFFChunk
                     args, jhove2.getConfigInfo());
         }
         consumed += 4;
-        
+
         /* Child chunks. */
         long pos = input.getPosition();
         long max = this.getNextChunkOffset();
@@ -136,7 +139,7 @@ public class RIFFChunk
             pos = chunk.getNextChunkOffset();
             input.setPosition(pos);
         }
-
+ 
         return consumed;
     }
     

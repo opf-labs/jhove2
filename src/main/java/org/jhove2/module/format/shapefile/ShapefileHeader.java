@@ -39,11 +39,14 @@ package org.jhove2.module.format.shapefile;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.reportable.AbstractReportable;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * This class holds information extracted from the main shapefile header
  * 
  * @author rnanders
  */
+@Persistent
 public class ShapefileHeader extends AbstractReportable {
 
     /**
@@ -73,6 +76,10 @@ public class ShapefileHeader extends AbstractReportable {
     /** The maximum Y bounding box coordinate. */
     public double maxY;
 
+    public ShapefileHeader(){
+    	super();
+    }
+    
     /**
      * Gets The numeric code for the shape type.
      *

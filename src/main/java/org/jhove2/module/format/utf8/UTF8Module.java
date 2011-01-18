@@ -59,12 +59,16 @@ import org.jhove2.module.format.utf8.unicode.C1Control;
 import org.jhove2.module.format.utf8.unicode.CodeBlock;
 import org.jhove2.module.format.utf8.unicode.Unicode;
 import org.jhove2.module.format.utf8.unicode.Unicode.EOL;
+import org.jhove2.persist.FormatModuleAccessor;
+
+import com.sleepycat.persist.model.Persistent;
 
 /**
  * JHOVE2 UTF-8 module.
  * 
  * @author mstrong, slabrams
  */
+@Persistent
 public class UTF8Module
 	extends BaseFormatModule
 	implements Validator
@@ -73,7 +77,7 @@ public class UTF8Module
 	public static final String VERSION = "2.0.0";
 
 	/** UTF-8 module release date. */
-	public static final String RELEASE = "2010-10-14";
+	public static final String RELEASE = "2010-09-10";
 
 	/** UTF-8 module rights statement. */
 	public static final String RIGHTS =
@@ -125,8 +129,8 @@ public class UTF8Module
 	 * @param format
 	 *            UTF-8 format
 	 */
-	public UTF8Module(Format format) {
-		super(VERSION, RELEASE, RIGHTS, format);
+	public UTF8Module(Format format, FormatModuleAccessor formatModuleAccessor) {
+		super(VERSION, RELEASE, RIGHTS, format, formatModuleAccessor);
 
 		this.c0Characters      = new TreeSet<C0Control>();
 		this.c1Characters      = new TreeSet<C1Control>();
@@ -140,7 +144,7 @@ public class UTF8Module
 	}
 	
 	public UTF8Module(){
-		this(null);
+		this(null, null);
 	}
 
 	/**

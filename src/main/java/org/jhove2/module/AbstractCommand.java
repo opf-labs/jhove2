@@ -36,14 +36,28 @@
 
 package org.jhove2.module;
 
+import static com.sleepycat.persist.model.DeleteAction.NULLIFY;
+import static com.sleepycat.persist.model.Relationship.MANY_TO_ONE;
+
+import org.jhove2.persist.ModuleAccessor;
+
+import com.sleepycat.persist.model.Persistent;
+import com.sleepycat.persist.model.SecondaryKey;
+
 /** Abstract {@link org.jhove2.module.Command}.
  * 
- * @author slabrams
+ * @author smorrissey, slabrams
  */
+@Persistent
 public abstract class AbstractCommand
 	extends AbstractModule
 	implements Command
 {
+	/** foreign key linking Command to parent JHOVE2 framework */
+	@SecondaryKey(relate=MANY_TO_ONE, relatedEntity=AbstractModule.class,
+			onRelatedEntityDelete=NULLIFY)
+	protected Long jhove2ModuleId;
+	
 	/** Instantiate a new <code>AbstractCommand</code>. 
 	 * 	 * @param version
 	 *            Module version identifier in three-part form: "M.N.P"
@@ -53,13 +67,37 @@ public abstract class AbstractCommand
 	 *            Module rights statement
 	 * @param scope
 	 *            Module scope: generic or specific (to a source unit)
+	 * @param moduleAccessor 
+	 *            Command persistence manager
 	 */
 	public AbstractCommand(String version, String release, String rights,
-			               Scope scope) {
-		super(version, release, rights, scope);
+			               Scope scope, ModuleAccessor moduleAccessor) {
+		super(version, release, rights, scope, moduleAccessor);
+	}
+	/**
+	 *Instantiate a new <code>AbstractCommand</code>. 
+	 */
+	public AbstractCommand(){
+		this(null);
+	}
+	/**
+	 * Instantiate a new <code>AbstractCommand</code>. 
+	 * @param moduleAccessor 
+	 * 		      Module persistence manager
+	 */
+	public AbstractCommand(ModuleAccessor moduleAccessor){
+		this(null, null, null, Scope.Generic, moduleAccessor);
+	}
+
+	@Override
+	public Long getJhove2ModuleId() {
+		return jhove2ModuleId;
+	}
+
+	@Override
+	public void setJhove2ModuleId(Long jhove2ModuleId) {
+		this.jhove2ModuleId = jhove2ModuleId;
 	}
 	
-	public AbstractCommand(){
-		super();
-	}
+	
 }

@@ -34,7 +34,7 @@
  */
 package org.jhove2.module.format.tiff;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
@@ -44,6 +44,8 @@ import java.util.TreeSet;
 
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
+
+import com.sleepycat.persist.model.Persistent;
 
 /**
  * Tiff Tags. Tags are initialized from a properties file in the
@@ -60,6 +62,7 @@ import org.jhove2.core.JHOVE2Exception;
  * 
  * @author mstrong
  */
+@Persistent
 public class TiffTag implements Comparable<TiffTag> {
 
     /** Singleton TIFF Tag. */
@@ -104,14 +107,32 @@ public class TiffTag implements Comparable<TiffTag> {
      * @param version
      */
     public TiffTag(int tag, String name, String[] type, String cardinality, String defaultValue, int version) {
+    	this();
         this.tag = tag;
         this.name = name;
-        this.type = Arrays.asList(type);
+        this.type = this.arrayToList(type);
         this.cardinality = cardinality;
         this.defaultValue = defaultValue;
         this.version = version;
     }
+    
+    /** replacement for java.util.Arrays.asString() for use by public constructor setting type field
+     *   needed for BerkeleyDb JE persistence
+     * @param type array of Strings to be converted to  List
+     * @return List<String> of contents of array
+     */
+    private List<String> arrayToList (String[]type){
+    	ArrayList<String> tList = null;
+    	if (type != null){
+    		tList = new ArrayList<String>();
+    		for (String aType:type){
+    			tList.add(aType);
+    		}
+    	}
+    	return tList;
+    }
 
+	private TiffTag(){}
 
     /**
      * 

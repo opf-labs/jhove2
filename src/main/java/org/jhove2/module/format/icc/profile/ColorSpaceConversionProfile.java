@@ -54,11 +54,15 @@ import org.jhove2.module.format.Validator;
 import org.jhove2.module.format.icc.ICCModule;
 import org.jhove2.module.format.icc.ICCTag;
 import org.jhove2.module.format.icc.ICCTagTable;
+import org.jhove2.persist.FormatProfileAccessor;
+
+import com.sleepycat.persist.model.Persistent;
 
 /** ICC colorspace conversion profile, as defined in ICC.1:2004-10, \u00a7 8.7.
  * 
  * @author slabrams
  */
+@Persistent
 public class ColorSpaceConversionProfile
     extends AbstractFormatProfile
     implements Validator
@@ -85,12 +89,18 @@ public class ColorSpaceConversionProfile
     
     /** Instantiate a new <code>ColorSpaceConversionProfile</code>.
      * @param format Profile format 
+     * @param formatProfileAccessor persistence manager
      */
-    public ColorSpaceConversionProfile(Format format) {
-        super(VERSION, RELEASE, RIGHTS, format);
+    public ColorSpaceConversionProfile(Format format, FormatProfileAccessor formatProfileAccessor) {
+        super(VERSION, RELEASE, RIGHTS, format, formatProfileAccessor);
         
         this.isValid = Validity.Undetermined;
         this.missingRequiredTagMessages = new ArrayList<Message>();
+    }
+    
+    @SuppressWarnings("unused")
+	private ColorSpaceConversionProfile(){
+    	this(null, null);
     }
 
     /** Validate the colorspace conversion profile.
@@ -103,8 +113,8 @@ public class ColorSpaceConversionProfile
     public Validity validate(JHOVE2 jhove2, Source source, Input input)
         throws JHOVE2Exception
     {
-        if (this.module != null) {
-            ICCTagTable table = ((ICCModule) this.module).getTagTable();
+        if (this.getFormatModule() != null) {
+            ICCTagTable table = ((ICCModule) this.getFormatModule()).getTagTable();
             if (table != null) {
                 if (table.hasCommonRequirements()) {
                     this.isValid = Validity.True;

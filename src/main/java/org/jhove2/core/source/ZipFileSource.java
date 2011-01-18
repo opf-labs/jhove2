@@ -50,11 +50,15 @@ import org.jhove2.core.io.Input.Type;
 import org.jhove2.module.digest.AbstractArrayDigester;
 import org.jhove2.module.digest.CRC32Digester;
 
+
+import com.sleepycat.persist.model.Persistent;
+
 /**
  *  Zip file source unit.
  * 
  * @author mstrong, slabrams
  */
+@Persistent
 public class ZipFileSource
     extends AbstractSource
     implements NamedSource
@@ -79,6 +83,9 @@ public class ZipFileSource
 	/** Zip file size, in bytes. */
 	protected long size;
 
+	protected ZipFileSource(){
+		super();
+	}
 	/**
 	 * Instantiate a new <code>ZipFileSource</code>.
 	 * 
@@ -91,7 +98,7 @@ public class ZipFileSource
 	 *            Zip file entry
 	 * @throws IOException
 	 */
-	public ZipFileSource(String tmpPrefix, String tmpSuffix,
+	protected ZipFileSource(String tmpPrefix, String tmpSuffix,
 			int bufferSize, InputStream stream, ZipEntry entry)
 			throws IOException {
 		super(tmpPrefix, tmpSuffix, bufferSize, stream);

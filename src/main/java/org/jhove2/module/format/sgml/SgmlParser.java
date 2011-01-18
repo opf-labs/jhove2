@@ -36,7 +36,9 @@
 package org.jhove2.module.format.sgml;
 
 
+import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.source.Source;
 
 /**
  * Interface to wrap actual parser of SGML file
@@ -47,17 +49,21 @@ public interface SgmlParser {
 	/**
 	 * Parses SGML document and extracts significant properties
 	 * @param sgm SgmlModule with Source object representing SGML document
+	 * @param jhove2 Application framework with configuratin information
+	 * @param source Source to be parsed
 	 * @return SgmlDocumentProperties with features extracted by parser
 	 * @throws JHOVE2Exception
 	 */
-	public SgmlDocumentProperties parseFile(SgmlModule sgm)
+	public SgmlDocumentProperties parseFile(SgmlModule sgm, JHOVE2 jhove2, Source source)
 	throws JHOVE2Exception;
 	/**
 	 * Determine doctype of SGML document
 	 * @param sgm SgmlModule with Source object representing SGML document
+	 * @param jhove2 Application framework with configuratin information
+	 * @param source Source to be parsed
 	 * @throws JHOVE2Exception
 	 */
-	public void determineDoctype(SgmlModule sgm)
+	public void determineDoctype(SgmlModule sgm, JHOVE2 jhove2, Source source)
 	throws JHOVE2Exception;
 	
 	/**

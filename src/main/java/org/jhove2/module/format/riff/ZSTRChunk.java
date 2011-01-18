@@ -43,11 +43,14 @@ import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.riff.field.LISTINFOChunks;
 
+import com.sleepycat.persist.model.Persistent;
+
 /** Generic module for handling all RIFF format NUL-terminated text string
  * (ZSTR) chunks, particularly those defined by the LIST INFO chunk.
  * 
  * @author slabrams
  */
+@Persistent
 public class ZSTRChunk
     extends GenericChunk
 {
@@ -57,7 +60,7 @@ public class ZSTRChunk
     /** String. */
     protected String string;
     
-    /** Instantiate a new <code>LISTINFOChunk</code>. */
+    /** Instantiate a new <code>ZSTRChunk</code>. */
     public ZSTRChunk() {
         super();
     }

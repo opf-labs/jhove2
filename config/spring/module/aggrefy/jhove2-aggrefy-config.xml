@@ -12,6 +12,7 @@
 	<!-- Aggrefier module bean -->
 	<bean id="AggrefierModule" class="org.jhove2.module.aggrefy.AggrefierModule"
 	      scope="prototype">
+	    <constructor-arg ref="AggrefierAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
@@ -29,6 +30,7 @@
 	<!-- Shapefile recognizer bean -->
 	<bean id="ShapeFileRecognizer" class="org.jhove2.module.aggrefy.GlobPathRecognizer"
 	 scope="prototype">
+	 	<constructor-arg ref="BaseModuleAccessor"/>
 	 	<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>

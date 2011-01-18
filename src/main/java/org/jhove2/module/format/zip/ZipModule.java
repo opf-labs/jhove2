@@ -58,12 +58,16 @@ import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
 import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.module.format.Validator;
+import org.jhove2.persist.FormatModuleAccessor;
+
+import com.sleepycat.persist.model.Persistent;
 
 /**
  * JHOVE2 Zip module.
  * 
  * @author mstrong, slabrams
  */
+@Persistent
 public class ZipModule
 	extends BaseFormatModule
     implements Validator
@@ -116,16 +120,18 @@ public class ZipModule
 	 * 
 	 * @param format
 	 *            Zip format
+     * @param formatModuleAccessor 
+     *       FormatModuleAccessor to manage access to Format Profiles
 	 */
-	public ZipModule(Format format) {
-		super(VERSION, RELEASE, RIGHTS, format);
-		
+	public ZipModule(Format format, 
+    		FormatModuleAccessor formatModuleAccessor) {
+		super(VERSION, RELEASE, RIGHTS, format, formatModuleAccessor);
 		this.entries = new ArrayList<ZipFileEntry> ();
 		this.isValid = Validity.Undetermined;
 	}
 	
 	public ZipModule(){
-		this(null);
+		this(null,null);
 	}
 
 	/**
@@ -147,7 +153,7 @@ public class ZipModule
 	@Override
 	public long parse(JHOVE2 jhove2, Source source, Input input)
 		throws EOFException, IOException, JHOVE2Exception
-	{
+	{		
 	    long consumed = 0L;
         /* this.isValid = Validity.True; */
 	    input.setByteOrder(ByteOrder.LITTLE_ENDIAN);
@@ -167,11 +173,15 @@ public class ZipModule
 	             */
 	            Map<String, Source> map = new TreeMap<String, Source>();
 	            Enumeration<? extends ZipEntry> en = zip.entries();
+	            SourceFactory factory = jhove2.getSourceFactory();
+	    		if (factory==null){
+	    			throw new JHOVE2Exception("JHOVE2 SourceFactory is null");
+	    		}
 	            while (en.hasMoreElements()) {
 	                ZipEntry entry = en.nextElement();
 	                if (entry.isDirectory()) {
 	                    Source src =
-	                        SourceFactory.getSource(config.getTempPrefix(),
+	                    	factory.getSource(config.getTempPrefix(),
 	                                                config.getTempSuffix(),
 	                                                config.getBufferSize(),
 	                                                zip, entry);
@@ -205,7 +215,7 @@ public class ZipModule
 	                    if (src != null) {
 	                        Input inpt = src.getInput(jhove2);
 	                        try {
-	                            jhove2.characterize(src, inpt);
+	                            src=jhove2.characterize(src, inpt);
 	                        }
 	                        finally {
 	                            if (inpt != null) {
@@ -222,25 +232,25 @@ public class ZipModule
 	                            String key = name.substring(0, in);
 	                            Source parent = map.get(key);
 	                            if (parent != null) {
-	                                parent.addChildSource(src);
+	                            	src=parent.addChildSource(src);
 	                            }
 	                        }
 	                        else {
 	                            /* Directory is a child of the Zip file. */
-	                            source.addChildSource(src);
+	                        	src=source.addChildSource(src);
 	                        }
 	                    }
 	                }
 	                else {
 	                    Source src =
-	                        SourceFactory.getSource(config.getTempPrefix(),
+	                    	factory.getSource(config.getTempPrefix(),
 	                                                config.getTempSuffix(),
 	                                                config.getBufferSize(),
 	                                                zip, entry);
 	                    if (src != null) {
 	                        Input inpt = src.getInput(jhove2);
 	                        try {
-	                            jhove2.characterize(src, inpt);
+	                            src=jhove2.characterize(src, inpt);
 	                        }
 	                        finally {
 	                            if (inpt != null) {
@@ -251,7 +261,7 @@ public class ZipModule
 	                        int in = name.lastIndexOf('/');
 	                        if (in < 0) {
 	                            /* File is a child of the Zip file. */
-	                            source.addChildSource(src);
+	                        	src=source.addChildSource(src);
 	                        } else {
 	                            /*
 	                             * File is a child of a Zip file entry that can
@@ -260,7 +270,7 @@ public class ZipModule
 	                            String key = name.substring(0, in);
 	                            Source parent = map.get(key);
 	                            if (parent != null) {
-	                                parent.addChildSource(src);
+	                            	src=parent.addChildSource(src);
 	                            }
 	                        }
 	                    }

@@ -14,6 +14,7 @@
 	<bean id="XmlModule" class="org.jhove2.module.format.xml.XmlModule"
 	      scope="prototype">
 	    <constructor-arg ref="XmlFormat"/>
+	    <constructor-arg ref="FormatModuleAccessor"/>
      	<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="StanfordAgent"/>

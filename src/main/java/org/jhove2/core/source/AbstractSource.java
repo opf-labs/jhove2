@@ -57,6 +57,7 @@ import java.util.TreeSet;
 
 import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
+import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
 import org.jhove2.core.TimerInfo;
 import org.jhove2.core.format.FormatIdentification;
@@ -65,6 +66,14 @@ import org.jhove2.core.io.InputFactory;
 import org.jhove2.core.io.Input.Type;
 import org.jhove2.core.reportable.AbstractReportable;
 import org.jhove2.module.Module;
+import org.jhove2.persist.SourceAccessor;
+
+import com.sleepycat.persist.model.Entity;
+import com.sleepycat.persist.model.PrimaryKey;
+import com.sleepycat.persist.model.SecondaryKey;
+import static com.sleepycat.persist.model.Relationship.*;
+import static com.sleepycat.persist.model.DeleteAction.*;
+
 
 /**
  * An abstract JHOVE2 source unit. A source unit is a formatted object that can
@@ -73,15 +82,25 @@ import org.jhove2.module.Module;
  * 
  * @author mstrong, slabrams, smorrissey
  */
+@Entity
 public abstract class AbstractSource
 	extends AbstractReportable
 	implements Source, Comparable<Source>
 {
+	/** key for persistence managers that require key */
+	@PrimaryKey(sequence="SOURCE_ID")
+	protected Long sourceId;
+	
+	/** secondary index relates child source to parent source*/
+	@SecondaryKey(relate=MANY_TO_ONE, relatedEntity=AbstractSource.class,
+			onRelatedEntityDelete=NULLIFY)
+	protected Long parentSourceId;
+	
+	/** manages persistence of source */
+	protected SourceAccessor sourceAccessor;
+	
 	/** Identifiers of generic modules registered with the Source. */
 	protected static Set<String> moduleIDs = new HashSet<String>();
-
-	/** Child source units. */
-	protected List<Source> children;
 
 	/** Delete temporary files flag; if true, delete files. */
 	protected boolean deleteTempFiles;
@@ -98,9 +117,6 @@ public abstract class AbstractSource
 	/** Source unit messages. */
 	protected List<Message> messages;
 
-	/** Modules that processed the source unit. */
-	protected List<Module> modules;
-	
 	/** Presumptive identifications for the source unit. */
 	protected Set<FormatIdentification> presumptiveFormatIdentifications;
     
@@ -120,11 +136,9 @@ public abstract class AbstractSource
 	/**
 	 * Instantiate a new <code>AbstractSource</code>.
 	 */
-	protected AbstractSource() {
-		this.children        = new ArrayList<Source>();
+	protected AbstractSource() {		
 		this.deleteTempFiles = Invocation.DEFAULT_DELETE_TEMP_FILES;
-		this.messages        = new ArrayList<Message>();
-		this.modules         = new ArrayList<Module>();
+		this.messages        = new ArrayList<Message>();		
 		this.presumptiveFormatIdentifications = new TreeSet<FormatIdentification>();
 		this.startingOffset  = 0L;
         this.timerInfo       = new TimerInfo();
@@ -136,7 +150,7 @@ public abstract class AbstractSource
 	 * @param file
 	 *            File underlying the source unit
 	 */
-	public AbstractSource(File file) {
+	protected AbstractSource(File file) {
 		this();
 		this.file   = file;
 		this.isTemp = false;
@@ -167,19 +181,27 @@ public abstract class AbstractSource
 	 * 
 	 * @param child
 	 *            Child source unit
+	 * @return child Source
+	 * @throws JHOVE2Exception 
 	 * @see org.jhove2.core.source.Source#addChildSource(org.jhove2.core.source.Source)
 	 */
 	@Override
-	public void addChildSource(Source child) {
-		this.children.add(child);
+	public Source addChildSource(Source child) throws JHOVE2Exception {
+		if (this.getSourceAccessor()==null){
+			throw new JHOVE2Exception("SourceAccessor is null");
+		}
+		return this.sourceAccessor.addChildSource(this, child);
 	}
-	   
-    /** Add a message to be associated with the source unit.
-     * @param message Message to be associated with the source unit
-     */
-    public void addMessage(Message message) {
-        this.messages.add(message);
-    }
+
+	/** Add a message to be associated with the source unit.
+	 * @param message Message to be associated with the source unit
+	 * @return Source with Message added
+	 * @throws JHOVE2Exception 
+	 */
+	@Override
+	public Source addMessage(Message message) throws JHOVE2Exception {
+		return this.getSourceAccessor().addMessage(this, message);
+	}
 
 	/**
 	 * Add a module that processed the source unit.
@@ -187,38 +209,46 @@ public abstract class AbstractSource
 	 * Specific modules are added to each Source upon which they are invoked
 	 * @param module
 	 *            Module that processed the source unit
+	 * @return Module that has been added to Source
+	 * @throws JHOVE2Exception 
 	 * @see org.jhove2.core.source.Source#addModule(org.jhove2.module.Module)
 	 */
 	@Override
-	public void addModule(Module module) {
+	public Module addModule(Module module) throws JHOVE2Exception {
+		if (this.getSourceAccessor()==null){
+			throw new JHOVE2Exception("SourceAccessor is null");
+		}
 		if (module.getScope()== Module.Scope.Specific){
-			this.modules.add(module);
+			module = this.sourceAccessor.addModule(this, module);
 		}
 		else {
 			String id = module.getReportableIdentifier().toString();
 			if (!moduleIDs.contains(id)) {
 					moduleIDs.add(id);
-					this.modules.add(module);
+					module = this.sourceAccessor.addModule(this, module);
 			}
         }
+		return module;
 	}
 	
 	/** Add a presumptively-identified format for this source unit.
 	 * @param fi Presumptively-identified format
+	 * @return Source with format added
+	 * @throws JHOVE2Exception 
 	 */
 	@Override
-	public void addPresumptiveFormat(FormatIdentification fi){
-		this.presumptiveFormatIdentifications.add(fi);
+	public Source addPresumptiveFormat(FormatIdentification fi) throws JHOVE2Exception{
+		return this.getSourceAccessor().addPresumptiveFormat(this, fi);
 	}
 	
 	/** Add set of presumptively-identified formats for this source unit.
 	 * @param fis Presumptively-identified formats
+	 * @return Source with format added
+	 * @throws JHOVE2Exception 
 	 */
 	@Override
-	public void addPresumptiveFormats(Set<FormatIdentification> fis){
-		for (FormatIdentification fi:fis){
-			this.addPresumptiveFormat(fi);
-		}
+	public Source addPresumptiveFormats(Set<FormatIdentification> fis) throws JHOVE2Exception{
+		return this.getSourceAccessor().addPresumptiveFormats(this, fis);
 	}
 
 	/**
@@ -330,10 +360,15 @@ public abstract class AbstractSource
 	 * 
 	 * @param child
 	 *            Child source unit
+	 * @throws JHOVE2Exception 
 	 * @see org.jhove2.core.source.Source#deleteChildSource(Source)
 	 */
-	public void deleteChildSource(Source child) {
-		this.children.remove(child);
+	@Override
+	public Source deleteChildSource(Source child) throws JHOVE2Exception {
+		if (this.getSourceAccessor()==null){
+			throw new JHOVE2Exception("SourceAccessor is null");
+		}
+		return this.sourceAccessor.deleteChildSource(this, child);
 	}
 
 	/**
@@ -351,11 +386,15 @@ public abstract class AbstractSource
 	 * Get child source units.
 	 * 
 	 * @return Child source units
+	 * @throws JHOVE2Exception 
 	 * @see org.jhove2.core.source.Source#getChildSources()
 	 */
 	@Override
-	public List<Source> getChildSources() {
-		return this.children;
+	public List<Source> getChildSources() throws JHOVE2Exception {
+		if (this.getSourceAccessor()==null){
+			throw new JHOVE2Exception("SourceAccessor is null");
+		}
+		return this.sourceAccessor.getChildSources(this);
 	}
 
 	
@@ -393,7 +432,7 @@ public abstract class AbstractSource
     public Input getInput(JHOVE2 jhove2)
 	    throws FileNotFoundException, IOException
 	{
-        return this.getInput(jhove2, ByteOrder.LITTLE_ENDIAN);
+        return this.getInput(jhove2, ByteOrder.BIG_ENDIAN);
     }
 
     /**
@@ -437,14 +476,14 @@ public abstract class AbstractSource
 	public Input getInput(int bufferSize, Type bufferType)
 		throws FileNotFoundException, IOException
 	{
-		return this.getInput(bufferSize, bufferType, ByteOrder.LITTLE_ENDIAN);
+		return this.getInput(bufferSize, bufferType, ByteOrder.BIG_ENDIAN);
 	}
 
 	/**
 	 * Create and get {@link org.jhove2.core.io.Input} for the source unit. Concrete
 	 * classes extending this abstract class must provide an implementation of
 	 * this method if they are are based on parsable input. Classes without
-	 * parsable input (e.g. {@link org.jhove2.core.source.ClumpSr33nource} or
+	 * parsable input (e.g. {@link org.jhove2.core.source.ClumpSource} or
 	 * {@link org.jhove2.core.source.DirectorySource} can let this inherited
 	 * method return null.
 	 * 
@@ -493,33 +532,45 @@ public abstract class AbstractSource
 	 * Get modules that processed the source unit.
 	 * 
 	 * @return Modules that processed the source unit
+	 * @throws JHOVE2Exception 
 	 * @see org.jhove2.core.source.Source#getModules()
 	 */
 	@Override
-	public List<Module> getModules() {
-		return this.modules;
+	public List<Module> getModules() throws JHOVE2Exception {
+		if (this.getSourceAccessor()==null){
+			throw new JHOVE2Exception("SourceAccessor is null");
+		}
+		return this.sourceAccessor.getModules(this);
 	}
 
 	/**
 	 * Get number of child source units.
 	 * 
 	 * @return Number of child source units
+	 * @throws JHOVE2Exception 
 	 * @see org.jhove2.core.source.Source#getNumChildSources()
 	 */
 	@Override
-	public int getNumChildSources() {
-		return this.children.size();
+	public int getNumChildSources() throws JHOVE2Exception {
+		if (this.getSourceAccessor()==null){
+			throw new JHOVE2Exception("SourceAccessor is null");
+		}
+		return this.sourceAccessor.getNumChildSources(this);
 	}
 
 	/**
 	 * Get number of modules.
 	 * 
 	 * @return Number of modules
+	 * @throws JHOVE2Exception 
 	 * @see org.jhove2.core.source.Source#getNumModules()
 	 */
 	@Override
-	public int getNumModules() {
-		return this.modules.size();
+	public int getNumModules() throws JHOVE2Exception {
+		if (this.getSourceAccessor()==null){
+			throw new JHOVE2Exception("SourceAccessor is null");
+		}
+		return this.sourceAccessor.getNumModules(this);
 	}
 	
 	/**
@@ -566,29 +617,24 @@ public abstract class AbstractSource
 	 * 
 	 * @param flag
 	 *            Delete temporary files flag
+	 * @throws JHOVE2Exception 
 	 * @see org.jhove2.core.source.Source#setDeleteTempFiles(boolean)
 	 */
 	@Override
-	public void setDeleteTempFiles(boolean flag) {
+	public Source setDeleteTempFiles(boolean flag) throws JHOVE2Exception {
 		this.deleteTempFiles = flag;
+		return this.getSourceAccessor().persistSource(this);
 	}
 
-	/**
-	 * Set presumptive format identifications for this source unit.
-	 * @param formatIdentifications Presumptive format identifications
-	 */
-	@Override
-	public void setPresumptiveFormats(Set<FormatIdentification> formatIdentifications) {
-		this.presumptiveFormatIdentifications = formatIdentifications;
-	}
 
 	/**
 	 * Set Map of per-source parameters
 	 * @param sourceParams Map of per-source parameter name/parameter value pairs
 	 */
 	@Override
-	public void setSourceParams(Map<String, String> sourceParams) {
+	public Source setSourceParams(Map<String, String> sourceParams) throws JHOVE2Exception {
 		this.sourceParams = sourceParams;
+		return this.getSourceAccessor().persistSource(this);
 	}
 
 	/**
@@ -611,40 +657,56 @@ public abstract class AbstractSource
 		AbstractSource absObj = (AbstractSource) src;
 		int idCompare = 
 			this.getReportableIdentifier().compareTo(absObj.getReportableIdentifier());
-	    if (idCompare != 0){
-	    	return idCompare;
-	    }
-	    File thisFile = this.getFile();
-	    File objFile = absObj.getFile();
-	    if (thisFile==null){
-	    	if (objFile != null){
-	    		return -1;
-	    	}
-	    }
-	    else if (objFile == null){
-	    		return 1;
-	    }
-	    else {
-	    	int fileCompare = thisFile.compareTo(objFile);
-	    	if (fileCompare != 0){
-	    		return fileCompare;
-	    	}
-	    }
-		int thisChildSize = this.getChildSources().size();
-		int srcChildSize = absObj.getChildSources().size();
-		if (thisChildSize < srcChildSize){
-			return -1;
+		if (idCompare != 0){
+			return idCompare;
 		}
-		else if (thisChildSize > srcChildSize){
+		File thisFile = this.getFile();
+		File objFile = absObj.getFile();
+		if (thisFile==null){
+			if (objFile != null){
+				return -1;
+			}
+		}
+		else if (objFile == null){
 			return 1;
+		}
+		else {
+			int fileCompare = thisFile.compareTo(objFile);
+			if (fileCompare != 0){
+				return fileCompare;
+			}
+		}
+		int thisChildSize;
+		int srcChildSize;
+
+		try {
+			thisChildSize = this.getNumChildSources();
+			srcChildSize = absObj.getNumChildSources();
+			if (thisChildSize < srcChildSize){
+				return -1;
+			}
+			else if (thisChildSize > srcChildSize){
+				return 1;
+			}
+		}
+		catch (JHOVE2Exception e){
+			return -1;
 		}
 
 		int containsCount = 0;
-		for (Source childsrc : this.getChildSources()){
-			AbstractSource childSource = (AbstractSource)childsrc;
-			if (absObj.getChildSources().contains(childSource)){
-				containsCount++;
+
+		List<Source> absObjChildSources = null;
+		try {
+			absObjChildSources = absObj.getChildSources();
+			for (Source childsrc : this.getChildSources()){
+				AbstractSource childSource = (AbstractSource)childsrc;
+				if (absObjChildSources.contains(childSource)){
+					containsCount++;
+				}
 			}
+		}
+		catch (JHOVE2Exception e){
+			return -1;
 		}
 		if (thisChildSize < containsCount){
 			return -1;
@@ -652,9 +714,13 @@ public abstract class AbstractSource
 		else if (thisChildSize > containsCount){
 			return 1;
 		}
-		
-		thisChildSize = this.getModules().size();
-		srcChildSize = absObj.getModules().size();
+
+		try {
+			thisChildSize = this.getModules().size();
+			srcChildSize = absObj.getModules().size();
+		} catch (JHOVE2Exception e) {
+			return -1;
+		}
 		if (thisChildSize < srcChildSize){
 			return -1;
 		}
@@ -662,17 +728,24 @@ public abstract class AbstractSource
 			return 1;
 		}
 		containsCount = 0;
-		for (Module module : this.getModules()){
-			if (absObj.getModules().contains(module)){
-				containsCount++;
+		List<Module> absObjModules;
+		try {
+			absObjModules = absObj.getModules();
+
+			for (Module module : this.getModules()){
+				if (absObjModules.contains(module)){
+					containsCount++;
+				}
+			}	
+			if (thisChildSize < containsCount){
+				return -1;
 			}
-		}	
-		if (thisChildSize < containsCount){
+			else if (thisChildSize > containsCount){
+				return 1;
+			}	
+		} catch (JHOVE2Exception e) {
 			return -1;
 		}
-		else if (thisChildSize > containsCount){
-			return 1;
-		}		
 		return 0;
 	}
 
@@ -710,36 +783,61 @@ public abstract class AbstractSource
 		else if (!(this.getFile().equals(absObj.getFile()))){
 			return false;
 		}
-		int thisChildSize = this.getChildSources().size();
-		int srcChildSize = absObj.getChildSources().size();		
-		if (thisChildSize != srcChildSize){
+		int thisChildSize;
+		int srcChildSize;	
+		try {
+			thisChildSize = this.getNumChildSources();
+
+			srcChildSize = absObj.getNumChildSources();	
+			if (thisChildSize != srcChildSize){
+				return false;
+			}
+		} catch (JHOVE2Exception e) {
 			return false;
 		}
+
 		int containsCount = 0;
-		if (thisChildSize > 0){	
-			for (Source src : this.getChildSources()){
-				AbstractSource childSource = (AbstractSource)src;
-				if (absObj.getChildSources().contains(childSource)){
-					containsCount++;
-				}
-			}			
+		List<Source> absObjChildSources;
+		try {
+			absObjChildSources = absObj.getChildSources();
+			if (thisChildSize > 0){	
+				for (Source src : this.getChildSources()){
+					AbstractSource childSource = (AbstractSource)src;
+					if (absObjChildSources.contains(childSource)){
+						containsCount++;
+					}
+				}			
+			}
+		} catch (JHOVE2Exception e) {
+			return false;
 		}
 		if (thisChildSize != containsCount){
 			return false;
 		}		
-		thisChildSize = this.getModules().size();
-		srcChildSize = absObj.getModules().size();
-		if (thisChildSize != srcChildSize){
+		try {
+			thisChildSize = this.getModules().size();
+
+			srcChildSize = absObj.getModules().size();
+			if (thisChildSize != srcChildSize){
+				return false;
+			}
+		} catch (JHOVE2Exception e) {
 			return false;
 		}
 		containsCount = 0;
-		
-		for (Module module : this.getModules()){
-			if (absObj.getModules().contains(module)){
-				containsCount++;
-			}
-		}
 
+		List<Module> absObjModules;
+		try {
+			absObjModules = absObj.getModules();
+
+			for (Module module : this.getModules()){
+				if (absObjModules.contains(module)){
+					containsCount++;
+				}
+			}
+		} catch (JHOVE2Exception e) {
+			return false;
+		}
 		return (thisChildSize == containsCount);
 	}
 
@@ -751,10 +849,66 @@ public abstract class AbstractSource
     {
         final int prime = 31;
         int result = 1;
+        List<Source> children = null;
+        try {
+        	children = this.getChildSources();
+        }
+        catch (Exception e){}
+        List<Module> modules = null;
+        try {
+        	modules = this.getModules();
+        }
+        catch (Exception e){}        
         result = prime * result
                 + ((children == null) ? 0 : children.hashCode());
         result = prime * result + ((file == null) ? 0 : file.hashCode());
         result = prime * result + ((modules == null) ? 0 : modules.hashCode());
         return result;
     }
+	@Override
+	public SourceAccessor getSourceAccessor() {
+		return sourceAccessor;
+	}
+
+	@Override
+	public void setSourceAccessor(SourceAccessor sourceAccessor) {
+		this.sourceAccessor = sourceAccessor;
+	}
+	
+	@Override
+	public void setTimerInfo(TimerInfo timer){
+		this.timerInfo = timer;
+	}
+	@Override
+	public Source startTimer() throws JHOVE2Exception{
+		return this.sourceAccessor.startTimerInfo(this);
+	}
+	
+	@Override
+	public Source endTimer() throws JHOVE2Exception{
+		return this.sourceAccessor.endTimerInfo(this);
+	}
+
+	@Override
+	public Long getSourceId() {
+		return sourceId;
+	}
+
+
+	@Override
+	public Long getParentSourceId() {
+		return parentSourceId;
+	}
+	
+	@Override
+	public void setParentSourceId(Long parentSourceId) {
+		this.parentSourceId = parentSourceId;
+	}
+
+	/**
+	 * @return the moduleIDs
+	 */
+	public static Set<String> getModuleIDs() {
+		return moduleIDs;
+	}
 }

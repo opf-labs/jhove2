@@ -45,6 +45,8 @@ import org.jhove2.core.format.Format;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.Module;
+import org.jhove2.module.format.FormatProfile;
+
 
 /**
  * Interface for format {@link Module} that models a
@@ -81,7 +83,8 @@ public interface FormatModule
 	 * @return Format module format profiles.
 	 */
 	@ReportableProperty(order = 2, value = "Format module format profiles.")
-	public List<FormatProfile> getProfiles();
+	public List<FormatProfile> getProfiles()
+		throws JHOVE2Exception;
 
 	/** Set module format.
 	 * @param format Module format
@@ -93,6 +96,9 @@ public interface FormatModule
 	 * 
 	 * @param profiles
 	 *            Format module format profile
+	 * @return FormatProfiles added to Module
 	 */
-	public void setProfiles(List<FormatProfile> profiles);
+	public List<FormatProfile> setProfiles(List<FormatProfile> profiles)
+		throws JHOVE2Exception;
+
 }

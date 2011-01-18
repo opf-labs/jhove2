@@ -46,11 +46,14 @@ import org.jhove2.core.reportable.AbstractReportable;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.Parser;
 
+import com.sleepycat.persist.model.Persistent;
+
 /** ICC multi-localized Unicode type name record, as defined in
  * ICC.1:2004-10, Table 44.
  * 
  * @author slabrams
  */
+@Persistent
 public class NameRecord
     extends AbstractReportable
     implements Parser

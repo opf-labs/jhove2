@@ -36,6 +36,9 @@
 
 package org.jhove2.module;
 
+import static com.sleepycat.persist.model.DeleteAction.NULLIFY;
+import static com.sleepycat.persist.model.Relationship.MANY_TO_ONE;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,16 +46,32 @@ import org.jhove2.core.Agent;
 import org.jhove2.core.TimerInfo;
 import org.jhove2.core.WrappedProduct;
 import org.jhove2.core.reportable.AbstractReportable;
+import org.jhove2.core.source.AbstractSource;
+import org.jhove2.persist.ModuleAccessor;
+
+import com.sleepycat.persist.model.Entity;
+import com.sleepycat.persist.model.PrimaryKey;
+import com.sleepycat.persist.model.SecondaryKey;
 
 /**
  * An abstract {@link Module}.
  * 
  * @author mstrong, slabrams, smorrissey
  */
+@Entity
 public abstract class AbstractModule
 	extends AbstractReportable
 	implements Module 
  {
+	@PrimaryKey(sequence="MODULE_ID")
+	protected Long moduleId;
+	
+	@SecondaryKey(relate=MANY_TO_ONE, relatedEntity=AbstractSource.class,
+			onRelatedEntityDelete=NULLIFY)			
+	protected Long moduleParentSourceId;
+	
+	protected ModuleAccessor moduleAccessor;
+		
 	/** Product developers. */
 	protected List<Agent> developers;
 
@@ -95,24 +114,36 @@ public abstract class AbstractModule
 	 *            Module rights statement
 	 * @param scope
 	 *            Module scope: generic or specific
+	 * @param moduleAccessor 
+	 * 		      Module persistence manager
 	 */
 	public AbstractModule(String version, String release, String rights,
-			              Scope scope)
+			              Scope scope, ModuleAccessor moduleAccessor)
 	{	
-		this();
+		super();
 		this.version     = version;
 		this.releaseDate = release;
 		this.rights      = rights;
 		this.scope       = scope;
+		
+		this.developers  = new ArrayList<Agent>();		
+		this.timerInfo   = new TimerInfo();
+		this.name        = this.getClass().getSimpleName();
+		this.moduleAccessor = moduleAccessor;
 	}
-
-	/** Instantiate a new <code>AbstractModule</code>. */
+	/**
+	 * Instantiate a new <code>AbstractModule</code>.
+	 * @param moduleAccessor
+	 * 		      Module persistence manager
+	 */
+	public AbstractModule(ModuleAccessor moduleAccessor){
+		this (null, null, null, Scope.Specific, moduleAccessor);
+	}
+	/**
+	 * Instantiate a new <code>AbstractModule</code>.
+	 */
 	public AbstractModule(){
-		super();
-	      
-        this.developers  = new ArrayList<Agent>();      
-        this.timerInfo   = new TimerInfo();
-        this.name        = this.getClass().getSimpleName();
+		this(null);
 	}
 	/**
 	 * Get module developers.
@@ -227,6 +258,11 @@ public abstract class AbstractModule
     public void setScope(Scope scope) {
         this.scope = scope;
     }
+	
+	@Override
+	public void setTimerInfo(TimerInfo timer){
+		this.timerInfo = timer;
+	}
     
 	/** Get module timer information.
 	 * @return Module timer information
@@ -254,4 +290,28 @@ public abstract class AbstractModule
     public void setWrappedProduct(WrappedProduct product) {
         this.wrappedProduct = product;
     }   
+	@Override
+	public Long getModuleId() {
+		return moduleId;
+	}
+	@Override
+	public Long getParentSourceId() {
+		return moduleParentSourceId;
+	}
+	@Override
+	public void setModuleId(Long moduleId) {
+		this.moduleId = moduleId;
+	}
+	@Override
+	public void setParentSourceId(Long parentSourceId) {
+		this.moduleParentSourceId = parentSourceId;
+	}
+	@Override
+	public ModuleAccessor getModuleAccessor() {
+		return moduleAccessor;
+	}
+	@Override
+	public void setModuleAccessor(ModuleAccessor moduleAccessor) {
+		this.moduleAccessor = moduleAccessor;
+	}
 }

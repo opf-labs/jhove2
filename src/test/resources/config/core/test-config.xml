@@ -12,6 +12,7 @@
 		
 		<!-- JHOVE2 framework bean -->
 	<bean id="JHOVE2" class="org.jhove2.core.JHOVE2" scope="prototype">
+		<constructor-arg ref="FrameworkAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
@@ -27,6 +28,7 @@
 			</list>
 		</property>
 		<property name="configInfo" ref="ConfigInfo"/>
+		<property name="sourceFactory" ref="SourceFactory"/>
 	</bean>	
 		<bean id="ConfigInfo" class="org.jhove2.config.spring.SpringConfigInfo"
 		scope="singleton"/>
@@ -35,6 +37,7 @@
 		<!-- Dispatcher command bean -->
 	<bean id="DispatcherCommand" class="org.jhove2.module.format.DispatcherCommand"
 	      scope="prototype">
+	      <constructor-arg ref="BaseModuleAccessor"/>
 	    <property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
@@ -44,6 +47,7 @@
 		</property>
 		<property name="formatFactory" ref="FormatFactory"/>
 		<property name="formatModuleFactory" ref="FormatModuleFactory"/>
+		<property name="baseFormatModuleAccessor" ref="FormatModuleAccessor"/>
 	</bean>
 	
 

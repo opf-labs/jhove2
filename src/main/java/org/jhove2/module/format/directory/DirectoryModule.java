@@ -47,12 +47,16 @@ import org.jhove2.core.io.Input;
 import org.jhove2.core.source.DirectorySource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.BaseFormatModule;
+import org.jhove2.persist.FormatModuleAccessor;
+
+import com.sleepycat.persist.model.Persistent;
 
 /**
  * JHOVE2 file system directory module.
  * 
  * @author mstrong, slabrams
  */
+@Persistent
 public class DirectoryModule
 	extends BaseFormatModule
 {
@@ -73,13 +77,27 @@ public class DirectoryModule
 	 * 
 	 * @param format
 	 *            Directory format
+	 * @param FormatModuleAccessor 
+	 * 				persistence manager     
+	 */
+	public DirectoryModule(Format format,
+			FormatModuleAccessor formatModuleAccessor) {
+		super(VERSION, RELEASE, RIGHTS, Scope.Specific, format, formatModuleAccessor);
+	}
+	/**
+	 * Instantiate a new <code>DirectoryModule</code>.
+	 * 
+	 * @param format
+	 *            Directory format
 	 */
 	public DirectoryModule(Format format) {
-		super(VERSION, RELEASE, RIGHTS, Scope.Specific, format);
+		this(format, null);
 	}
-
+	/**
+	 *Instantiate a new <code>DirectoryModule</code>.
+	 */
 	public DirectoryModule(){
-		super(VERSION, RELEASE, RIGHTS, Scope.Specific, null);
+		this(null, null);
 	}
 	/**
 	 * Parse a directory source unit.
@@ -104,12 +122,12 @@ public class DirectoryModule
 		throws EOFException, IOException, JHOVE2Exception
 	{
 		if (source instanceof DirectorySource) {
-			List<Source> children =
-			    ((DirectorySource) source).getChildSources();
+			List<Source> children = ((DirectorySource) source)
+					.getChildSources();
 			for (Source src : children) {
 			    Input inpt = src.getInput(jhove2);
 			    try {
-			        jhove2.characterize(src, inpt);
+			        jhove2.characterize(src, inpt);// will have been persisted by JHOVE2
 			    }
 			    finally {
 			        if (inpt != null) {

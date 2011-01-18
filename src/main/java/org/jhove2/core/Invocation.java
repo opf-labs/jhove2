@@ -42,11 +42,14 @@ import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.io.Input.Type;
 import org.jhove2.core.reportable.AbstractReportable;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * Configuration information for JHOVE2 applications.
  * 
  * @author mstrong, slabrams, smorrissey
  */
+@Persistent
 public class Invocation
 	extends AbstractReportable
 {

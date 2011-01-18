@@ -6,6 +6,8 @@ package org.jhove2.module.format.tiff.type;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.reportable.AbstractReportable;
 
+import com.sleepycat.persist.model.Persistent;
+
 
 /**
  * stores the Tiff SSHORT type value
@@ -14,6 +16,7 @@ import org.jhove2.core.reportable.AbstractReportable;
  * @author mstrong
  *
  */
+@Persistent
 public class SShort
     extends AbstractReportable {
     private short value;

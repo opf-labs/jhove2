@@ -51,11 +51,14 @@ import org.jhove2.module.format.riff.GenericChunk;
 import org.jhove2.module.format.wave.bwf.MPEGFormatHeader;
 import org.jhove2.module.format.wave.field.FormatCategory;
 
+import com.sleepycat.persist.model.Persistent;
+
 /** WAVE chunk. Note that this class represents a generic WAVE chunk, not the
  * specific "WAVE" chunk.
  * 
  * @author slabrams
  */
+@Persistent
 public class FormatChunk
     extends GenericChunk
 {

@@ -41,9 +41,9 @@ import java.util.List;
 import java.util.Set;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.reportable.Reportable;
 import org.jhove2.module.AbstractModule;
 import org.jhove2.module.assess.MockReportable.MockEnum;
+import org.jhove2.persist.ModuleAccessor;
 
 /**
  * @author rnanders
@@ -61,8 +61,12 @@ public class MockModule extends AbstractModule {
     public static final String RIGHTS = "Copyright 2010 by The Board of Trustees of the Leland Stanford Junior University. "
             + "Available under the terms of the BSD license.";
 
+    public MockModule(ModuleAccessor moduleAccessor) {
+        super(VERSION, RELEASE, RIGHTS, Scope.Specific, moduleAccessor);
+    }
+    
     public MockModule() {
-        super(VERSION, RELEASE, RIGHTS, Scope.Specific);
+        this(null);
     }
 
     /** a value from an enumeration */

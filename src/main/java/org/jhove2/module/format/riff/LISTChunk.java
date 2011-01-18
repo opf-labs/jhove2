@@ -42,10 +42,13 @@ import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 
+import com.sleepycat.persist.model.Persistent;
+
 /** RIFF format LIST chunk.
  * 
  * @author slabrams
  */
+@Persistent
 public class LISTChunk
     extends GenericChunk
 {

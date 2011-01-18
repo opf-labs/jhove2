@@ -39,6 +39,7 @@ package org.jhove2.module.identify;
 import java.io.IOException;
 import java.util.Set;
 
+import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.format.FormatIdentification;
@@ -74,13 +75,27 @@ public interface Identifier
 	/**
 	 * Get file source identifier module.
 	 * @return File source identifier module
+	 * @throws JHOVE2Exception
 	 */
 	public SourceIdentifier getSourceIdentifier() throws JHOVE2Exception;
 	/**
 	 * Set file source identifier module
 	 * @param sourceIdentifier
 	 * @return SourceIdentifier attached to Identifer
+	 * @throws JHOVE2Exception
 	 */
-	public void setSourceIdentifier(SourceIdentifier fileSourceIdentifier);
+	public SourceIdentifier setSourceIdentifier(SourceIdentifier fileSourceIdentifier) throws JHOVE2Exception;
+	
+	/**
+	 * Get pre-identified Sources flag
+	 * @return boolean pre-identified Sources flag
+	 */
+	 @ReportableProperty(order = 2, value = "Skip pre-identified Sources flag")
+	public boolean isShouldSkipIdentifyIfPreIdentified();
+	/**
+	 * Set pre-identified Sources flag
+	 * @param boolean pre-identified Sources flag
+	 */
+	public void setShouldSkipIdentifyIfPreIdentified(boolean shouldSkipIdentifyIfPreIdentified);
 
 }

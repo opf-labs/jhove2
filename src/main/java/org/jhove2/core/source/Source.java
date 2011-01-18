@@ -47,6 +47,7 @@ import java.util.Set;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2;
+import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
 import org.jhove2.core.TimerInfo;
 import org.jhove2.core.format.FormatIdentification;
@@ -54,6 +55,7 @@ import org.jhove2.core.io.Input;
 import org.jhove2.core.io.Input.Type;
 import org.jhove2.core.reportable.Reportable;
 import org.jhove2.module.Module;
+import org.jhove2.persist.SourceAccessor;
 
 /**
  * Interface for JHOVE2 source units. A source unit is a formatted object that
@@ -76,13 +78,17 @@ public interface Source
 	 * 
 	 * @param child
 	 *            Child source unit
+	 * @return Child Source
+	 * @throws JHOVE2Exception 
 	 */
-	public void addChildSource(Source child);
+	public Source addChildSource(Source child) throws JHOVE2Exception;
 	
 	/** Add a message to be associated with the source unit.
 	 * @param message Message to be associated with the source unit
+	 * @return Source with message added
+	 * @throws JHOVE2Exception 
 	 */
-	public void addMessage(Message message);
+	public Source addMessage(Message message) throws JHOVE2Exception;
 
 	/**
 	 * Add a module that processed the source unit.
@@ -90,36 +96,45 @@ public interface Source
 	 * Specific modules are added to each Source upon which they are invoked
 	 * @param module
 	 *            Module that processed the source unit
+	 * @return Module that processed the source unit
+	 * @throws JHOVE2Exception 
 	 */
-	public void addModule(Module module);
+	public Module addModule(Module module) throws JHOVE2Exception;
 	
 	/**
 	 * Add presumptive format to the source unit.
 	 * @param fi Presumptive format
+	 * @return Source with added format
+	 * @throws JHOVE2Exception 
 	 */
-	public void addPresumptiveFormat(FormatIdentification fi);
+	public Source addPresumptiveFormat(FormatIdentification fi) throws JHOVE2Exception;
 	
 	/**
 	 * Add set of presumptive formats to the source unit.
 	 * @param fis Set of presumptive formats
+	 * @return Source with added formats
+	 * @throws JHOVE2Exception 
 	 */
-	public void addPresumptiveFormats(Set<FormatIdentification> fis);
+	public Source addPresumptiveFormats(Set<FormatIdentification> fis) throws JHOVE2Exception;
 	
 	/**
 	 * Delete child source unit.
 	 * 
 	 * @param child
 	 *            Child source unit
+	 * @return Child source deleted from parent
+	 * @throws JHOVE2Exception 
 	 */
-	public void deleteChildSource(Source child);
+	public Source deleteChildSource(Source child) throws JHOVE2Exception;
 
 	/**
 	 * Get child source units.
 	 * 
 	 * @return Child source units
+	 * @throws JHOVE2Exception 
 	 */
 	@ReportableProperty(order = 6, value = "Child source units.")
-	public List<Source> getChildSources();
+	public List<Source> getChildSources() throws JHOVE2Exception;
 
 	/**
 	 * Get delete temporary files flag; if true, delete files.
@@ -196,20 +211,22 @@ public interface Source
 		throws FileNotFoundException;
 
 	/**
-	 * Get modules that processed the source unit.
+	 * Get copy of List of modules that processed the source unit.
 	 * 
 	 * @return Modules that processed the source unit
+	 * @throws JHOVE2Exception 
 	 */
 	@ReportableProperty(order = 4, value = "Modules that processed the source unit")
-	public List<Module> getModules();
+	public List<Module> getModules() throws JHOVE2Exception;
 
 	/**
 	 * Get number of child source units.
 	 * 
 	 * @return Number of child source units
+	 * @throws JHOVE2Exception 
 	 */
 	@ReportableProperty(order = 5, value = "Number of child source units.")
-	public int getNumChildSources();
+	public int getNumChildSources() throws JHOVE2Exception;
 	
 	/** Get messages associated with the source unit.
 	 * @return Source unit messages
@@ -221,8 +238,9 @@ public interface Source
 	 * Get number of modules.
 	 * 
 	 * @return Number of modules
+	 * @throws JHOVE2Exception 
 	 */
-	public int getNumModules();
+	public int getNumModules() throws JHOVE2Exception;
 
 	/**
 	 * Get list of presumptive formats for the source unit.
@@ -237,6 +255,11 @@ public interface Source
 	 */
 	@ReportableProperty(order=1, value="Starting byte offset of the source unit.")
 	public long getStartingOffset();
+	/**
+	 * Get SourceAccessor that manages persistence for this Source
+	 * @return SourceAccessor  that manages persistence for this Source
+	 */
+	public SourceAccessor getSourceAccessor();
 	
 	/**
 	 * Get Map of per-source parameters
@@ -262,18 +285,52 @@ public interface Source
 	 * 
 	 * @param flag
 	 *            Delete temporary files flag
+	 * @return Source with new deleteTempFile flag set
+	 * @throws JHOVE2Exception 
 	 */
-	public void setDeleteTempFiles(boolean flag);
+	public Source setDeleteTempFiles(boolean flag) throws JHOVE2Exception;
 
 	/**
-	 * Set set of presumptive formats to the source unit
-	 * @param fi Set of presumptive formats
+	 * Set SourceAccessor that manages Source persistence
+	 * @param accessor SourceAccessor for this Source
 	 */
-	public void setPresumptiveFormats(Set<FormatIdentification> fi);
-	
+	public void setSourceAccessor(SourceAccessor accessor);
 	/**
 	 * Set Map of per-source parameters
 	 * @param sourceParams Map of per-source parameter name/parameter value pairs
+	 * @return Source with new sourceParams
+	 * @throws JHOVE2Exception 
 	 */
-	public void setSourceParams(Map<String, String> sourceParams);
+	public Source setSourceParams(Map<String, String> sourceParams) throws JHOVE2Exception;
+	/**
+	 * Set timerInfo on Source
+	 * @param timer TimerInfo
+	 */
+	public void setTimerInfo(TimerInfo timer);
+	/**
+	 * Start TimerInfo
+	 * @return Source with TimerInfo started
+	 * @throws JHOVE2Exception
+	 */
+	public Source startTimer() throws JHOVE2Exception;
+	/**
+	 * Stop TimeInfo
+	 * @return Source with TimerInfo stopped
+	 * @throws JHOVE2Exception
+	 */
+	public Source endTimer() throws JHOVE2Exception;	
+	/**
+	 * @return the sourceId
+	 */
+	public Long getSourceId();
+
+	/**
+	 * @return the moduleParentSourceId
+	 */
+	public Long getParentSourceId();
+	/**
+	 * @param moduleParentSourceId the moduleParentSourceId to set
+	 */
+	public void setParentSourceId(Long parentSourceId);
+
 }

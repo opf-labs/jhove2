@@ -52,10 +52,13 @@ import org.jhove2.module.format.Parser;
 import org.jhove2.module.format.Validator.Validity;
 import org.jhove2.module.format.icc.field.ColorantEncoding;
 
+import com.sleepycat.persist.model.Persistent;
+
 /** ICC chromoticity type element, as defined in ICC.1:2004, \u00a7 10.2.
  * 
  * @author slabrams
  */
+@Persistent
 public class ChromaticityType
     extends AbstractReportable
     implements Parser

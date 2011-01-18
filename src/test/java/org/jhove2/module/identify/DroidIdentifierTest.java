@@ -66,7 +66,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 		"classpath*:**/DROIDId-test-config.xml", "classpath*:**/filepaths-config.xml"})
 public class DroidIdentifierTest {
 
-	private DROIDIdentifier dROIDIdentifier;
+	private DROIDIdentifier testDroidIdentifier;
 	private String zipPuid = "x-fmt/263";
 	private String zipJhoveId = "http://jhove2.org/terms/format/zip";
 	private String droidDirBasePath;
@@ -110,14 +110,14 @@ public class DroidIdentifierTest {
 		}
 		String zipFilePath = samplesDirPath.concat(sampleFile);
 		try {
-			source = new FileSource(zipFilePath);
+			source = (FileSource)JHOVE2.getSourceFactory().getSource(zipFilePath);
 			input  = source.getInput(JHOVE2);
 		} catch (Exception e) {
 			fail("Couldn't create source: " + e.getMessage());
 		} 
 		try {
 		    input.setPosition(0);
-			ids = dROIDIdentifier.identify(JHOVE2, source, null);
+			ids = testDroidIdentifier.identify(JHOVE2, source, null);
 			assertEquals(1, ids.size());
 			for (FormatIdentification fi : ids){
 				assertEquals(Confidence.PositiveSpecific, fi.getConfidence());
@@ -125,61 +125,52 @@ public class DroidIdentifierTest {
 				assertEquals(zipJhoveId, fi.getJHOVE2Identifier().getValue());
 				assertEquals(0, fi.getMessages().size());
 			}
-			assertNull(dROIDIdentifier.getFileErrorMessage());
-			assertNull(dROIDIdentifier.getFileNotIdentifiedMessage());
-			assertNull(dROIDIdentifier.getFileNotRunMessage());
+			assertEquals(0,source.getMessages().size());
 		} catch (Exception e) {
 			fail("Couldn't identify: zip " + e.getMessage());
 		} 
 		String badFilePath = samplesDirPath.concat(sampleBadFile);
 		try {
-			source = new FileSource(badFilePath);
+			source = (FileSource)JHOVE2.getSourceFactory().getSource(badFilePath);
 			input  = source.getInput(JHOVE2);
 		} catch (Exception e) {
 			fail("Couldn't create source: " + e.getMessage());
 		}
 		try {
 		    input.setPosition(0);
-			ids = dROIDIdentifier.identify(JHOVE2, source, null);
+			ids = testDroidIdentifier.identify(JHOVE2, source, null);
 			assertEquals(0, ids.size());
-			assertNull(dROIDIdentifier.getFileErrorMessage());
-			assertNull(dROIDIdentifier.getFileNotRunMessage());
-			assertNotNull(dROIDIdentifier.getFileNotIdentifiedMessage());
+			assertEquals(1,source.getMessages().size());
 		} catch (Exception e) {
 			fail("Couldn't identify: bad file " + e.getMessage());
 		} 
-		dROIDIdentifier.setFileNotIdentifiedMessage(null);
-		dROIDIdentifier.setFileErrorMessage(null);
-		dROIDIdentifier.setFileNotRunMessage(null);
 		String noJhoveFormatFilePath = samplesDirPath.concat(sampleNoJhoveIdFile);
 		try {
-			source = new FileSource(noJhoveFormatFilePath);
+			source = (FileSource)JHOVE2.getSourceFactory().getSource(noJhoveFormatFilePath);
 			input  = source.getInput(JHOVE2);
 		} catch (Exception e) {
 			fail("Couldn't create source: " + e.getMessage());
 		}
 		try {
-		    input.setPosition(0);
-			ids = dROIDIdentifier.identify(JHOVE2, source, null);
+			input.setPosition(0);
+			ids = testDroidIdentifier.identify(JHOVE2, source, null);
 			assertEquals(1, ids.size());
 			for (FormatIdentification fi : ids){
 				assertEquals(Confidence.PositiveSpecific, fi.getConfidence());
 				assertNotNull(fi.getJHOVE2Identifier());
 			}
-			assertNull(dROIDIdentifier.getFileErrorMessage());
-			assertNull(dROIDIdentifier.getFileNotRunMessage());
-			assertNull(dROIDIdentifier.getFileNotIdentifiedMessage());
+			assertEquals(0, source.getMessages().size());
 		} catch (Exception e) {
 			fail("Couldn't identify: bad file " + e.getMessage());
 		} 
 	}
 
-	public DROIDIdentifier getDroidIdentifier() {
-		return dROIDIdentifier;
+	public DROIDIdentifier getTestDroidIdentifier() {
+		return testDroidIdentifier;
 	}
 	@Resource
-	public void setDroidIdentifier(DROIDIdentifier testDroidIdentifier) {
-		this.dROIDIdentifier = testDroidIdentifier;
+	public void setTestDroidIdentifier(DROIDIdentifier testDroidIdentifier) {
+		this.testDroidIdentifier = testDroidIdentifier;
 	}
 
 

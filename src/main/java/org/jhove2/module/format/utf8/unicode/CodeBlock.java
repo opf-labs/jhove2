@@ -43,6 +43,8 @@ import java.util.TreeSet;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * A Unicode code block, a range of code points associated with a named language
  * or script system. Code blocks are initialized from a properties file
@@ -54,6 +56,7 @@ import org.jhove2.core.JHOVE2Exception;
  * 
  * @author mstrong, slabrams
  */
+@Persistent
 public class CodeBlock
     implements Comparable<CodeBlock>
 {
@@ -69,6 +72,8 @@ public class CodeBlock
 	/** Unicode code block range starting value. */
 	protected int start;
 
+	@SuppressWarnings("unused")
+	private CodeBlock(){}
 	/**
 	 * Instantiate a <code>CodeBlock</code> object.
 	 * 
