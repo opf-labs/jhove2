@@ -130,7 +130,7 @@ public class SourceFactoryUtil
 			                                    SourceFactory sourceFactory)
 		throws IOException
 	{
-		Source source = new URLSource(tmpSuffix, tmpSuffix, bufferSize, url);
+		Source source = new URLSource(tmpPrefix, tmpSuffix, bufferSize, url);
 		source.setSourceAccessor(sourceFactory.createSourceAccessor(source));
 		return source;
 	}
@@ -168,7 +168,7 @@ public class SourceFactoryUtil
 			source =  new ZipDirectorySource(stream, entry);
 		}
 		else {
-			source = new ZipFileSource(tmpSuffix, tmpSuffix, bufferSize, stream, entry);
+			source = new ZipFileSource(tmpPrefix, tmpSuffix, bufferSize, stream, entry);
 		}
 		if (source.getSourceAccessor()==null){
 			source.setSourceAccessor(sourceFactory.createSourceAccessor(source));
