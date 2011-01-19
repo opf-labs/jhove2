@@ -85,7 +85,7 @@ public class TiffDLFProfile extends TiffProfile {
         if (!isPhotometricInterpretationValid(ifd, new int[] { 0, 1 })) {
             this.isValid = Validity.False;
             this.invalidPhotometricInterpretationValueMessage = new Message(
-                    Severity.ERROR,
+                    Severity.WARNING,
                     Context.OBJECT,
                     "org.jhove2.module.format.tiff.profile.TIFFProfile.InvalidPhotometricInterpretationValueMessage",
                     jhove2.getConfigInfo());

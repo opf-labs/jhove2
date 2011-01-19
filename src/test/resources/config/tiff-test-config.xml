@@ -57,5 +57,16 @@
     <bean id="MACTestFile" class="java.lang.String">
     	<constructor-arg type="java.lang.String" value="MAC_generated.tiff"/>
 	</bean>
+
+  <!-- Invalid Byte Alignment Offset test file -->
+    <bean id="wordAlignmentErrorFile" class="java.lang.String">
+    	<constructor-arg type="java.lang.String" value="invalid_testfiles/Word_Alignment_Error.tif"/>
+	</bean>
+
+  <!-- Invalid Date/Time Format file -->
+    <bean id="invalidDateTimeFile" class="java.lang.String">
+    	<constructor-arg type="java.lang.String" value="invalid_testfiles/Invalid_Datetime.tif"/>
+	</bean>
+
 	
 </beans>
