@@ -42,9 +42,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.source.FileSource;
+import org.jhove2.core.source.NamedSource;
 import org.jhove2.core.source.Source;
-import org.jhove2.core.source.URLSource;
 
 
 import uk.gov.nationalarchives.droid.JHOVE2AnalysisControllerUtil;
@@ -168,15 +167,10 @@ public class DROIDWrapper
         try {
 		  byteReader = newByteReader(identificationFile, source.getInputStream());
           if (identificationFile.getClassification()!= JHOVE2IAnalysisController.FILE_CLASSIFICATION_ERROR){
-        	  if (source instanceof FileSource){
-        		  // set the path so DROID will make use of external signatures as well as internal ones
-        		  identificationFile.setFilePath(source.getFile().getCanonicalPath());
-        	  }
-        	  else if (source instanceof URLSource){
-        		// set the path so DROID will make use of external signatures as well as internal ones
-        		  identificationFile.setFilePath(((URLSource)source).getSourceName());
-        	  }
-            	analysisControl.getSigFile().runFileIdentification(byteReader);
+              if (source instanceof NamedSource) {
+                  identificationFile.setFilePath(((NamedSource) source).getSourceName());
+                  analysisControl.getSigFile().runFileIdentification(byteReader);
+              }
             }
         }
 	    catch (FileNotFoundException e) {
