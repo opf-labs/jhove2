@@ -104,7 +104,6 @@ California Digital Library
 Portico
  * John Meyer
  * Sheila Morrissey
- * Even Owens
 
 Stanford University
  * Richard Anderson
@@ -119,10 +118,12 @@ With help from
  * Walter Henry
  * Nancy Hoebelheinrich
  * Keith Johnson
+ * Even Owens
+ * Isaac Rabinovitch
 
 More information about JHOVE2 and the JHOVE2 project is available at:
 
-<https://confluence.ucop.edu/display/JHOVE2Info/Home>
+<http://jhove2.org/>
 
 <mailto:JHOVE2-Announce-l@listserv.ucop.edu>
 <mailto:JHOVE2-Techtalk-l@listserv.ucop.edu>
