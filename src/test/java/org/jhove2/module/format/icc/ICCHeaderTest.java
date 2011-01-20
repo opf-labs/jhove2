@@ -38,11 +38,12 @@
 package org.jhove2.module.format.icc;
 
 import static org.junit.Assert.assertTrue;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 import javax.annotation.Resource;
 
-import org.jhove2.module.display.Displayer;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -114,11 +115,14 @@ public class ICCHeaderTest
     @Test
     public void testDate() {
         Date d = this.header.getDateAndTime();
-        String s = Displayer.ISO8601.format(d);
+        TimeZone tz = TimeZone.getTimeZone("GMT:00");
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+        fmt.setTimeZone( tz );
+        String s = fmt.format(d);
         String dat1 = s.substring(0, 22);
         String dat2 = s.substring(22);
         s = dat1 + ":" + dat2;
-        assertTrue("date = " + s, s.equals("2007-07-24T17:05:37-07:00"));
+        assertTrue("date = " + s, s.equals("2007-07-25T00:05:37+00:00"));
     }
     
     @Test
