@@ -223,7 +223,11 @@ public class TiffModule
             for (IFD ifd:ifdList){
                 if (ifd instanceof TiffIFD) {
                     ((TiffIFD) ifd).postParse();
-                    ifd.validate(jhove2, source);
+                    ifd.validate(jhove2, source, input);
+                    Validity validity = ifd.isValid();
+                    if (validity != Validity.True) {
+                        this.validity = validity;
+                        }
                     }
                 }
             }

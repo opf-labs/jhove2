@@ -311,7 +311,7 @@ extends AbstractReportable {
      * @throws FileNotFoundException 
      * @throws JHOVE2Exception 
      */
-    abstract Validity validate(JHOVE2 jhove2, Source source) throws JHOVE2Exception, FileNotFoundException, IOException;
+    abstract Validity validate(JHOVE2 jhove2, Source source, Input input) throws JHOVE2Exception, FileNotFoundException, IOException;
 
 
 }

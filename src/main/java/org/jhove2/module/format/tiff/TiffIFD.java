@@ -45,6 +45,7 @@ import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
+import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.Validator.Validity;
 import org.jhove2.module.format.tiff.type.Byte;
@@ -389,7 +390,7 @@ extends IFD
             }
     }
     
-    public Validity validate(JHOVE2 jhove2, Source source) throws JHOVE2Exception, FileNotFoundException, IOException
+    public Validity validate(JHOVE2 jhove2, Source source, Input input) throws JHOVE2Exception, FileNotFoundException, IOException
     {
         IFDEntry entry = null;
 
@@ -472,7 +473,7 @@ extends IFD
                         args, jhove2.getConfigInfo());                   
             }
 
-            long fileLength = source.getInput(jhove2).getSize();
+            long fileLength = input.getSize();
             for (int i=0; i<length; i++) {
                 long offset = stripOffsets[i];
                 long count = stripByteCounts[i];
@@ -616,7 +617,7 @@ extends IFD
                         if (samplesPerPixel < 1 || bitsPerSample[0] != 1) {
                             this.isValid = Validity.False;
                             this.BPSInvalidForTransparencyMaskMessage = new Message(Severity.ERROR, Context.OBJECT,
-                                    "org.jhove2.module.format.tiff.TiffIFD.BPSInvalidForTransparencyMask",
+                                    "org.jhove2.module.format.tiff.TiffIFD.BPSInvalidForTransparencyMaskMessage",
                                     jhove2.getConfigInfo());
                         }
                     }
