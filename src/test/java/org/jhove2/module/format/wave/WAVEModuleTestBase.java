@@ -48,6 +48,8 @@ import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.FileSource;
+import org.jhove2.persist.PersistenceManager;
+import org.jhove2.persist.PersistenceManagerUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -99,14 +101,22 @@ public class WAVEModuleTestBase {
     }
 
     protected void parse(String relativePath) {
+        PersistenceManager persistenceManager = null;
         String waveExampleDirPath = null;
         try {
+            PersistenceManagerUtil.createPersistenceManagerFactory(JHOVE2.getConfigInfo());
+            persistenceManager = PersistenceManagerUtil.getPersistenceManagerFactory().getInstance();
+            persistenceManager.initialize();
             waveExampleDirPath =
                 FeatureConfigurationUtil.getFilePathFromClasspath(this.waveDirBasePath,
                                                                   "WAVE examples base directory");
         }
         catch (JHOVE2Exception e1) {
             fail("Could not create base directory");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            fail("exception");
         }
         File waveExampleDir = new File(waveExampleDirPath);
         assertTrue(waveExampleDir.exists());
@@ -119,7 +129,8 @@ public class WAVEModuleTestBase {
             this.testWaveModule.parse(this.JHOVE2, fileSource, input);
         }
         catch (Exception e) {
-            // fail("Exception thrown: " + e.getMessage());
+            // System.out.println("Exception: " + e.toString());
+            // e.printStackTrace();
         }
     }
 
