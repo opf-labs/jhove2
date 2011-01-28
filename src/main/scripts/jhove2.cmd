@@ -12,5 +12,5 @@ setlocal enableextensions
 
 call env
 
-%JAVA% -cp %CP% org.jhove2.app.JHOVE2CommandLine %*
+%JAVA% -cp "%CP%" org.jhove2.app.JHOVE2CommandLine %*
 

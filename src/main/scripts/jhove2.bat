@@ -40,7 +40,6 @@ REM ECHO JAVA_HOME = %JAVA_HOME%
 REM ECHO JHOVE2_HOME = %JHOVE2_HOME%
 
 SET CP=%JHOVE2_HOME%\lib\jhove2-${project.version}.jar;${classpath}
-ECHO %CP%
 
 REM NOTE: Nothing below this line should be edited
 REM #########################################################################
@@ -53,5 +52,5 @@ IF "%1"=="" GOTO LOOP
   GOTO WHILE
 :LOOP
 
-%JAVA% -cp %CP% org.jhove2.app.JHOVE2CommandLine %ARGS%
+%JAVA% -cp "%CP%" org.jhove2.app.JHOVE2CommandLine %ARGS%
 
