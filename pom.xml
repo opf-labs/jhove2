@@ -74,13 +74,6 @@
 			<artifactId>jargs</artifactId>
 			<version>1.0</version>
 		</dependency>
-		<!--  antlr -->
-		<dependency>
-			<groupId>org.antlr</groupId>
-			<artifactId>antlr-runtime</artifactId>
-			<version>3.2</version>
-			<scope>compile</scope>
-		</dependency>
 		<!--  mvel -->
 		<dependency>
 			<groupId>org.mvel</groupId>
@@ -310,19 +303,6 @@
 						<descriptor>src/main/assembly/jhove2_release.xml</descriptor>
 					</descriptors>
 				</configuration>
-			</plugin>
-			<!-- antlr plugin to generate java code from grammars -->
-			<plugin>
-				 <groupId>org.antlr</groupId>
-                <artifactId>antlr3-maven-plugin</artifactId>
-                <version>3.2</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>antlr</goal>
-                        </goals>
-                    </execution>
-                </executions>
 			</plugin>
 		</plugins>
 	</build>

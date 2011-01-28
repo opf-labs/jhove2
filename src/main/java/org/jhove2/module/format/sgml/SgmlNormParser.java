@@ -37,7 +37,7 @@ package org.jhove2.module.format.sgml;
 
 import java.io.IOException;
 
-import org.antlr.runtime.RecognitionException;
+
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.source.Source;
