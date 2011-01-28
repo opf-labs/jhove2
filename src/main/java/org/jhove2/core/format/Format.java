@@ -120,6 +120,7 @@ public class Format extends AbstractReportable implements Comparable<Format> {
 		this.specifications = new ArrayList<Document>();
 	}
 
+	@SuppressWarnings("unused")
 	private Format(){
 		this(null, null, null, null);
 	}

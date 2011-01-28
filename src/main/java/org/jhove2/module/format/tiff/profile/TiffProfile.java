@@ -121,7 +121,8 @@ public abstract class TiffProfile extends AbstractFormatProfile implements
     }
 
     
-    private TiffProfile(){
+    @SuppressWarnings("unused")
+	private TiffProfile(){
     	this(null, null);
     }
 

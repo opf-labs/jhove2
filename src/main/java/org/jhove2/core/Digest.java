@@ -65,13 +65,13 @@ public class Digest
 	 *            Message digest algorithm
 	 */
 	public Digest(String value, String algorithm) {
-	    super();
+	    this();
 		this.value = value;
 		this.algorithm = algorithm;
 	}
 	
 	private Digest(){
-		super();;
+		super();
 	}
 
 	/**

@@ -318,7 +318,7 @@ implements Comparable<Object> {
                 /* Handle tags which require unique processing of their values */
 
                 /* Parse the ICCProfile or XMP tag */
-                if (this.tag == TiffIFD.ICCPROFILE ||
+                 if (this.tag == TiffIFD.ICCPROFILE ||
                     this.tag == TiffIFD.XMP) {
                     ByteStreamSource bss = jhove2.getSourceFactory().getByteStreamSource(
                     	jhove2, source, this.valueOffset, this.count);

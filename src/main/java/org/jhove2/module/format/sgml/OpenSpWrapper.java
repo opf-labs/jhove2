@@ -48,7 +48,6 @@ import org.jhove2.core.Message.Severity;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.JHOVE2;
 
-import org.jhove2.util.CopyUtils;
 import org.jhove2.util.externalprocess.ExternalProcessHandler;
 import org.jhove2.util.externalprocess.ExternalProcessUtils;
 import org.jhove2.util.externalprocess.FilepathFilter;

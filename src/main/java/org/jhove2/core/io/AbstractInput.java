@@ -288,7 +288,7 @@ public abstract class AbstractInput
 	        this.inputablePosition = this.bufferOffset + this.buffer.position();
 	        return this.bufferSize;
 	    }
-	    return 0L;
+	    return EOF;
 	}
 
 	/**

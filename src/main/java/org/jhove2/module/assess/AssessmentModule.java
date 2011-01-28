@@ -37,7 +37,6 @@
 
 package org.jhove2.module.assess;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -161,8 +160,7 @@ public class AssessmentModule extends AbstractModule implements Assessor {
      * @throws JHOVE2Exception
      */
     @Override
-    public void assess(JHOVE2 jhove2, Source source) throws IOException,
-            JHOVE2Exception {
+    public void assess(JHOVE2 jhove2, Source source) throws JHOVE2Exception {
         /* Assess the source unit. */
         this.configInfo = jhove2.getConfigInfo();
         List<Module> modules = source.getModules();

@@ -67,7 +67,7 @@ public class LinkedHashMapPersistentProxy implements PersistentProxy<LinkedHashM
 		if (map != null && keyList != null){
 			linkedHashMap = new LinkedHashMap(map.size());
 			for (int i=0; i<keyList.size(); i++){
-				linkedHashMap.put(keyList.get(0), map.get(keyList.get(0)));
+				linkedHashMap.put(keyList.get(i), map.get(keyList.get(i)));
 			}
 		}
 		return linkedHashMap;
