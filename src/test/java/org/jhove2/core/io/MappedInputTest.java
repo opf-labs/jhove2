@@ -114,8 +114,9 @@ public class MappedInputTest {
             assertTrue(assertString, abstractInput.getBuffer().order() != nativeOrder);
             abstractInput.close();
             */
-            abstractInput = (MappedInput) InputFactory.getInput(testFile, bufferSize,
-                    Type.Mapped);
+            abstractInput = (MappedInput) InputFactory.getInput(testFile,
+                    (source.isTemp() && source.getDeleteTempFiles()),
+                    bufferSize, Type.Mapped);
             assertTrue("AbstractInput Scope is MemoryMapped", abstractInput.getClass()
                     .getName().equalsIgnoreCase(MappedInput.class.getName()));
             out.printf("AbstractInput buffer order is %s\n",  abstractInput.getBuffer().order());

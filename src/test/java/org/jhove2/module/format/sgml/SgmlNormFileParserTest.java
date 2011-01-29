@@ -43,6 +43,7 @@ import java.io.IOException;
 import javax.annotation.Resource;
 
 import org.jhove2.app.util.FeatureConfigurationUtil;
+import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.source.Source;
@@ -94,7 +95,12 @@ public class SgmlNormFileParserTest {
 		Source inputSource = null;
 		String normOutPubidPath = samplesDirPath.concat(normOutPubid);
 		 try {
-			 inputSource = JHOVE2.getSourceFactory().getSource(normOutPubidPath);
+		     Invocation inv = JHOVE2.getInvocation();
+			 inputSource = JHOVE2.getSourceFactory().getSource(normOutPubidPath,
+                     inv.getTempDirectoryFile(),
+                     inv.getTempPrefix(),
+                     inv.getTempSuffix(),
+                     inv.getBufferSize());
 		 } catch (FileNotFoundException e) {
 			 e.printStackTrace();
 			 fail(e.getMessage());

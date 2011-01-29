@@ -43,6 +43,7 @@ import java.util.List;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.annotation.ReportableProperty.PropertyType;
 import org.jhove2.core.I8R;
+import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
@@ -320,8 +321,13 @@ implements Comparable<Object> {
                 /* Parse the ICCProfile or XMP tag */
                  if (this.tag == TiffIFD.ICCPROFILE ||
                     this.tag == TiffIFD.XMP) {
-                    ByteStreamSource bss = jhove2.getSourceFactory().getByteStreamSource(
-                    	jhove2, source, this.valueOffset, this.count);
+                    Invocation inv = jhove2.getInvocation(); 
+                    ByteStreamSource bss =
+                        jhove2.getSourceFactory().getByteStreamSource(source,
+                                this.valueOffset, this.count,
+                                inv.getTempDirectoryFile(), inv.getTempPrefix(),
+                                (this.tag == TiffIFD.ICCPROFILE) ? ".icc" : ".xml",
+                                inv.getBufferSize());
                     Format format = tiff2FormatMapper.getFormat(this.tag);
                     I8R identifier = format.getIdentifier();
                     FormatIdentification presumptiveFormat = new FormatIdentification(identifier, Confidence.PositiveSpecific); 

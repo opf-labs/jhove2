@@ -43,6 +43,7 @@ import java.io.IOException;
 import javax.annotation.Resource;
 
 import org.jhove2.app.util.FeatureConfigurationUtil;
+import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.source.Source;
@@ -100,6 +101,7 @@ public class ErrFileParserTest {
 	 @Test
 	 public void testParseMessageFile() {
 		 String samplesDirPath = null;
+		 Invocation inv = JHOVE2.getInvocation();
 		 try {
 			 samplesDirPath = 
 				 FeatureConfigurationUtil.getFilePathFromClasspath(sgmlDirBasePath, "sgml samples dir");
@@ -111,7 +113,11 @@ public class ErrFileParserTest {
 		 sp.setMessageParser(parser);
 		 Source inputSource = null;
 		 try {
-			 inputSource = JHOVE2.getSourceFactory().getSource(conformButWarnPath);
+			 inputSource = JHOVE2.getSourceFactory().getSource(conformButWarnPath,
+                     inv.getTempDirectoryFile(),
+                     inv.getTempPrefix(),
+                     inv.getTempSuffix(),
+                     inv.getBufferSize());
 		 } catch (FileNotFoundException e) {
 			 e.printStackTrace();
 			 fail(e.getMessage());
@@ -145,7 +151,11 @@ public class ErrFileParserTest {
 		 sp.setMessageParser(parser);
 		 testSgmlModule.setDocumentProperties(new SgmlDocumentProperties());
 		 try {
-			 inputSource = JHOVE2.getSourceFactory().getSource(conformNoErrPath);
+			 inputSource = JHOVE2.getSourceFactory().getSource(conformNoErrPath,
+                     inv.getTempDirectoryFile(),
+                     inv.getTempPrefix(),
+                     inv.getTempSuffix(),
+                     inv.getBufferSize());
 		 } catch (FileNotFoundException e) {
 			 e.printStackTrace();
 			 fail(e.getMessage());
@@ -179,7 +189,11 @@ public class ErrFileParserTest {
 		 sp.setMessageParser(parser);
 		 testSgmlModule.setDocumentProperties(new SgmlDocumentProperties());
 		 try {
-			 inputSource = JHOVE2.getSourceFactory().getSource(nodoctypePath);
+			 inputSource = JHOVE2.getSourceFactory().getSource(nodoctypePath,
+                     inv.getTempDirectoryFile(),
+                     inv.getTempPrefix(),
+                     inv.getTempSuffix(),
+                     inv.getBufferSize());
 		 } catch (FileNotFoundException e) {
 			 e.printStackTrace();
 			 fail(e.getMessage());
@@ -213,7 +227,11 @@ public class ErrFileParserTest {
 		 sp.setMessageParser(parser);
 		 testSgmlModule.setDocumentProperties(new SgmlDocumentProperties());
 		 try {
-			 inputSource = JHOVE2.getSourceFactory().getSource(spaceBeforePath);
+			 inputSource = JHOVE2.getSourceFactory().getSource(spaceBeforePath,
+                     inv.getTempDirectoryFile(),
+                     inv.getTempPrefix(),
+                     inv.getTempSuffix(),
+                     inv.getBufferSize());
 		 } catch (FileNotFoundException e) {
 			 e.printStackTrace();
 			 fail(e.getMessage());
@@ -247,7 +265,11 @@ public class ErrFileParserTest {
 		 sp.setMessageParser(parser);
 		 testSgmlModule.setDocumentProperties(new SgmlDocumentProperties());
 		 try {
-			 inputSource = JHOVE2.getSourceFactory().getSource(unmatchedPubPath);
+			 inputSource = JHOVE2.getSourceFactory().getSource(unmatchedPubPath,
+                     inv.getTempDirectoryFile(),
+                     inv.getTempPrefix(),
+                     inv.getTempSuffix(),
+                     inv.getBufferSize());
 		 } catch (FileNotFoundException e) {
 			 e.printStackTrace();
 			 fail(e.getMessage());
@@ -281,7 +303,11 @@ public class ErrFileParserTest {
 		 sp.setMessageParser(parser);
 		 testSgmlModule.setDocumentProperties(new SgmlDocumentProperties());
 		 try {
-			 inputSource = JHOVE2.getSourceFactory().getSource(unmatchedSysPath);
+			 inputSource = JHOVE2.getSourceFactory().getSource(unmatchedSysPath,
+                     inv.getTempDirectoryFile(),
+                     inv.getTempPrefix(),
+                     inv.getTempSuffix(),
+                     inv.getBufferSize());
 		 } catch (FileNotFoundException e) {
 			 e.printStackTrace();
 			 fail(e.getMessage());

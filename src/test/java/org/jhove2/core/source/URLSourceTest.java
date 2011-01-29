@@ -78,18 +78,24 @@ public class URLSourceTest {
 			Invocation config = JHOVE2.getInvocation();
 			ptcURL = new URL(ptcUrlString);
 			cdlURL = new URL(cdlUrlString);
-			URLSource uPtc  = (URLSource)JHOVE2.getSourceFactory().getSource(config.getTempPrefix(), 
+			URLSource uPtc  = (URLSource)JHOVE2.getSourceFactory().getSource(ptcURL,
+			                                config.getTempDirectoryFile(),                        
+			                                config.getTempPrefix(), 
 					                        config.getTempSuffix(),
-					                        config.getBufferSize(),
-					                        ptcURL);
-			URLSource uPtc2 = (URLSource)JHOVE2.getSourceFactory().getSource(config.getTempPrefix(), 
+					                        config.getBufferSize()
+					                        );
+			URLSource uPtc2 = (URLSource)JHOVE2.getSourceFactory().getSource(ptcURL,
+			                                config.getTempDirectoryFile(),
+			                                config.getTempPrefix(), 
 					                        config.getTempSuffix(),
-					                        config.getBufferSize(),
-					                        ptcURL);
-			URLSource uCdl  = (URLSource)JHOVE2.getSourceFactory().getSource(config.getTempPrefix(), 
+					                        config.getBufferSize()
+					                        );
+			URLSource uCdl  = (URLSource)JHOVE2.getSourceFactory().getSource(cdlURL,
+			                                config.getTempDirectoryFile(),
+			                                config.getTempPrefix(), 
 					                        config.getTempSuffix(),
-					                        config.getBufferSize(),
-					                        cdlURL);
+					                        config.getBufferSize()
+					                        );
 			uPtc.setDeleteTempFiles(true);
 			uPtc2.setDeleteTempFiles(true);
 			uCdl.setDeleteTempFiles(true);
@@ -131,14 +137,18 @@ public class URLSourceTest {
 			Invocation config = JHOVE2.getInvocation();
 			ptcURL = new URL(ptcUrlString);
 			cdlURL = new URL(cdlUrlString);
-			URLSource uPtc  = (URLSource)JHOVE2.getSourceFactory().getSource(config.getTempPrefix(), 
+			URLSource uPtc  = (URLSource)JHOVE2.getSourceFactory().getSource(ptcURL,
+			                                config.getTempDirectoryFile(),
+			                                config.getTempPrefix(), 
 					                        config.getTempSuffix(),
-					                        config.getBufferSize(),
-					                        ptcURL);
-			URLSource uPtc2 = (URLSource)JHOVE2.getSourceFactory().getSource(config.getTempPrefix(), 
+					                        config.getBufferSize()
+					                        );
+			URLSource uPtc2 = (URLSource)JHOVE2.getSourceFactory().getSource(ptcURL,
+			                                config.getTempDirectoryFile(),
+			                                config.getTempPrefix(), 
 					                        config.getTempSuffix(),
-					                        config.getBufferSize(),
-					                        ptcURL);
+					                        config.getBufferSize()
+					                        );
 			try {
 				uPtc.setDeleteTempFiles(true);
 			} catch (JHOVE2Exception e1) {

@@ -36,7 +36,6 @@
 
 package org.jhove2.core;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -153,7 +152,6 @@ public class JHOVE2
 		throws IOException, JHOVE2Exception
 	{
 		source = source.startTimer();
-		
 		/* Update summary counts of source units, by scope. */
         try {
             this.sourceCounter.incrementSourceCounter(source);	
@@ -180,16 +178,14 @@ public class JHOVE2
                 }
             }
 		    if (tryIt) {
-		    	if (source.getDeleteTempFiles()!= this.getInvocation().getDeleteTempFiles()){
-		    		source = source.setDeleteTempFiles(this.getInvocation().getDeleteTempFiles());
-		    	}
+		        boolean del = this.getInvocation().getDeleteTempFiles();
+		    	source = source.setDeleteTempFiles(del);
 		        for (Command command : this.getCommands()){
 		        	command = (Command) command.getModuleAccessor().resetTimerInfo(command);
 		            try {
 		                command.execute(this, source, input);
 		            }
-		            finally {
-		            	
+		            finally {          	
 		                try{
 		                	command = (Command) command.getModuleAccessor().endTimerInfo(command);
 		                }
@@ -209,8 +205,7 @@ public class JHOVE2
         		sourceName = ((NamedSource)source).getSourceName();
         	}
         	throw new JHOVE2Exception ("Exception characterizing source " + sourceName, e1);
-        }
-       
+        }    
         finally {
 			source.close();
 			source = source.endTimer(); // this will commit source

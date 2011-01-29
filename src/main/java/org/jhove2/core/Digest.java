@@ -71,7 +71,7 @@ public class Digest
 	}
 	
 	private Digest(){
-		super();;
+		super();
 	}
 
 	/**

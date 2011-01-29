@@ -43,9 +43,7 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
-
 
 import com.sleepycat.persist.model.Persistent;
 
@@ -54,99 +52,153 @@ import com.sleepycat.persist.model.Persistent;
  *
  */
 @Persistent
-public abstract class AbstractSourceFactory implements SourceFactory {
-	
+public abstract class AbstractSourceFactory
+    implements SourceFactory
+{
 	public AbstractSourceFactory(){
 		super();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.jhove2.core.source.SourceFactory#getSource(java.lang.String)
+	/** Get source from formatted object name, which may be a file, a directory,
+	 * or a URL.  Note that a URL source requires the creation of a temporary
+	 * file.
+	 * @param name Formatted object name
+     * @param tmpDirectory Temporary directory
+     * @param tmpPrefix Temporary prefix
+     * @param tmpSuffix Temporary suffix
+     * @param bufferSize Buffer size (for creating temporary file)
+	 * @see org.jhove2.core.source.SourceFactory#getSource(java.lang.String, java.io.File, java.lang.String, java.lang.String, int)
 	 */
 	@Override
-	public Source getSource(String pathName) throws FileNotFoundException,
-			IOException, JHOVE2Exception {
-		Source source = SourceFactoryUtil.getSource(pathName, this);
+	public Source getSource(String name, File tmpDirectory, String tmpPrefix,
+	                        String tmpSuffix, int bufferSize)
+	    throws FileNotFoundException, IOException, JHOVE2Exception
+	{
+		Source source = SourceFactoryUtil.getSource(name, this, tmpDirectory,
+		                                            tmpPrefix, tmpSuffix,
+		                                            bufferSize);
 		source = source.getSourceAccessor().persistSource(source);
 		return source;
 	}
 
-	/* (non-Javadoc)
+	/** Get source from a file system object, either a file or a directory.
+	 * @param file Object file
 	 * @see org.jhove2.core.source.SourceFactory#getSource(java.io.File)
 	 */
 	@Override
-	public Source getSource(File file) throws FileNotFoundException,
-			IOException, JHOVE2Exception {
+	public Source getSource(File file)
+	    throws FileNotFoundException, IOException, JHOVE2Exception
+	{
 		Source source = SourceFactoryUtil.getSource(file, this);
 		source = source.getSourceAccessor().persistSource(source);
 		return source;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.jhove2.core.source.SourceFactory#getSource(java.lang.String, java.lang.String, int, java.net.URL)
+	/** Get source unit from a URL.  Note that this requires the creation of a
+	 * temporary file.
+	 * @param url Object URL
+     * @param tmpDirectory Temporary directory
+     * @param tmpPrefix Temporary prefix
+     * @param tmpSuffix Temporary suffix
+     * @param bufferSize Buffer size (for creating temporary file)
+	 * @see org.jhove2.core.source.SourceFactory#getSource(java.net.URL, java.io.File, java.lang.String, java.lang.String, int, java.net.URL)
 	 */
 	@Override
-	public Source getSource(String tmpPrefix, String tmpSuffix, int bufferSize,
-			URL url) throws IOException, JHOVE2Exception {
-		Source source = SourceFactoryUtil.getSource(tmpPrefix, tmpSuffix, bufferSize, url, this);
+	public Source getSource(URL url, File tmpDirectory, String tmpPrefix,
+	                        String tmpSuffix, int bufferSize)
+	    throws IOException, JHOVE2Exception
+	{
+		Source source = SourceFactoryUtil.getSource(url, this, tmpDirectory,
+		                                            tmpPrefix, tmpSuffix, 
+		                                            bufferSize);
 		source = source.getSourceAccessor().persistSource(source);
 		return source;
 	}
 
-	/* (non-Javadoc)
+	/** Get source unit from a Zip file entry.
+	 * @param zip Zip file
+	 * @param entry Zip file entry
+     * @param tmpDirectory Temporary directory
+     * @param tmpPrefix Temporary prefix
+     * @param tmpSuffix Temporary suffix
+     * @param bufferSize Buffer size (for creating temporary file)
 	 * @see org.jhove2.core.source.SourceFactory#getSource(java.lang.String, java.lang.String, int, java.util.zip.ZipFile, java.util.zip.ZipEntry)
 	 */
 	@Override
-	public Source getSource(String tmpPrefix, String tmpSuffix, int bufferSize,
-			ZipFile zip, ZipEntry entry) throws IOException, JHOVE2Exception {
-		Source source = SourceFactoryUtil.getSource(tmpPrefix, tmpSuffix, bufferSize, zip, entry, this);
+	public Source getSource(ZipFile zip, ZipEntry entry, File tmpDirectory,
+	                        String tmpPrefix, String tmpSuffix, int bufferSize)
+	    throws IOException, JHOVE2Exception
+	{
+		Source source = SourceFactoryUtil.getSource(zip, entry, this,
+		                                            tmpDirectory,tmpPrefix,
+		                                            tmpSuffix, bufferSize);
 		source = source.getSourceAccessor().persistSource(source);
 		return source;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.jhove2.core.source.SourceFactory#getSource(java.lang.String, java.lang.String[])
+    /**
+     * Get source unit from a formatted object name, which can be a file, a.
+     * directory, or a URL. Note that a URL source unit requires the
+     * creation of a temporary file.
+     * @param tmpDirectory Temporary directory
+     * @param tmpPrefix Temporary prefix
+     * @param tmpSuffix Temporary suffix
+     * @param bufferSize Buffer size (for creating temporary file)
+     * @param name First formatted object name
+     * @param names Remaining formatted object names
+     * @return Source unit
+     * @throws FileNotFoundException
+     *             File not found
+     * @throws IOException
+     *             I/O exception instantiating source
+     * @throws JHOVE2Exception
+     */
+	@Override
+    public Source getSource(File tmpDirectory, String tmpPrefix,
+                            String tmpSuffix, int bufferSize,
+                            String name, String...names)
+        throws FileNotFoundException, IOException, JHOVE2Exception
+    {
+        Source source = SourceFactoryUtil.getSource(this, tmpDirectory,
+                                                    tmpPrefix, tmpSuffix,
+                                                    bufferSize, name, names);
+        source = source.getSourceAccessor().persistSource(source);
+        return source;
+    }
+   
+	/** Get source unit from a list of formatted object names, which may be
+	 * files, directories, or URLs.  Note that URL source units require the
+	 * creation of temporary files.
+	 * @param names Formatted object names
+     * @param tmpDirectory Temporary directory
+     * @param tmpPrefix Temporary prefix
+     * @param tmpSuffix Temporary suffix
+     * @param bufferSize Buffer size (for creating temporary file)
+	 * @see org.jhove2.core.source.SourceFactory#getSource(java.util.List. java.io.File, java.lang.String, java.lang.String, int)
 	 */
 	@Override
-	public Source getSource(String pathName, String... pathNames)
-			throws IOException, JHOVE2Exception {
-		Source source = SourceFactoryUtil.getSource(pathName, this, pathNames);
+	public Source getSource(List<String> names, File tmpDirectory,
+	                        String tmpPrefix, String tmpSuffix,
+	                        int bufferSize)
+	    throws FileNotFoundException, IOException, JHOVE2Exception
+	{
+		Source source = SourceFactoryUtil.getSource(names, this, tmpDirectory,
+		                                            tmpPrefix,tmpSuffix,
+		                                            bufferSize);
 		source = source.getSourceAccessor().persistSource(source);
 		return source;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.jhove2.core.source.SourceFactory#getSource(java.util.List)
-	 */
+	/** Get Clump source. */
 	@Override
-	public Source getSource(List<String> pathNames)
-			throws FileNotFoundException, IOException, JHOVE2Exception {
-		Source source = SourceFactoryUtil.getSource(pathNames, this);
-		source = source.getSourceAccessor().persistSource(source);
-		return source;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.jhove2.core.source.SourceFactory#getSource(java.util.List, java.lang.String, java.lang.String, int)
-	 */
-	@Override
-	public Source getSource(List<String> pathNames, String tmpPrefix,
-			String tmpSuffix, int bufferSize) throws FileNotFoundException,
-			IOException, JHOVE2Exception {
-		Source source = SourceFactoryUtil.getSource(pathNames, tmpPrefix, tmpSuffix, bufferSize, this);
-		source = source.getSourceAccessor().persistSource(source);
-		return source;
-	}
-	
-
-	@Override
-	public ClumpSource getClumpSource() 
-	throws JHOVE2Exception{
+	public ClumpSource getClumpSource() throws JHOVE2Exception
+	{
 		ClumpSource source = SourceFactoryUtil.getClumpSource(this);
 		source = (ClumpSource) source.getSourceAccessor().persistSource(source);
 		return source;
 	}
 
+	/* Get FileSet source. */
 	@Override
 	public FileSetSource getFileSetSource() throws JHOVE2Exception {
 		FileSetSource source = SourceFactoryUtil.getFileSetSource(this);
@@ -154,10 +206,19 @@ public abstract class AbstractSourceFactory implements SourceFactory {
 		return source;
 	}
 	
+	/* Get ByteStream source. */
 	@Override
-	public ByteStreamSource getByteStreamSource(JHOVE2 jhove2, Source parent, long offset, long size) 
-	throws IOException, JHOVE2Exception {
-		ByteStreamSource source = SourceFactoryUtil.getByteStreamSource(this, jhove2, parent, offset, size);
+	public ByteStreamSource getByteStreamSource(Source parent, long offset,
+	                                            long size, File tmpDirectory,
+	                                            String tmpPrefix,
+	                                            String tmpSuffix,
+	                                            int bufferSize) 
+	    throws IOException, JHOVE2Exception
+	{
+		ByteStreamSource source =
+		    SourceFactoryUtil.getByteStreamSource(parent, offset, size, this,
+		                                          tmpDirectory, tmpPrefix,
+		                                          tmpSuffix, bufferSize);
 		source = (ByteStreamSource) source.getSourceAccessor().persistSource(source);
 		return source;		
 	}

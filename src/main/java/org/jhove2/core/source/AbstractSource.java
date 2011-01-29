@@ -138,6 +138,7 @@ public abstract class AbstractSource
 	 */
 	protected AbstractSource() {		
 		this.deleteTempFiles = Invocation.DEFAULT_DELETE_TEMP_FILES;
+        this.isTemp          = false;
 		this.messages        = new ArrayList<Message>();		
 		this.presumptiveFormatIdentifications = new TreeSet<FormatIdentification>();
 		this.startingOffset  = 0L;
@@ -152,28 +153,30 @@ public abstract class AbstractSource
 	 */
 	protected AbstractSource(File file) {
 		this();
-		this.file   = file;
-		this.isTemp = false;
+		this.file = file;
+		/*System.out.println("# Sourc.const f:" + this.file.getName());
+		System.out.flush();*/
 	}
 
 	/**
 	 * Instantiate a new <code>AbstractSource</code> backed by an input stream
-	 * by creating a temporary file.
-	 * 
+	 * by creating a temporary file. 
+     * @param stream Input stream backing the source unit
+	 * @param tmpDirectory Temporary directory
      * @param tmpPrefix Temporary file prefix
      * @param tmpSuffix Temporary file suffix
-     * @param bufferSize Buffer size used during transfer to a temporary file 
-	 * @param stream
-	 *            Input stream backing the source unit
+     * @param bufferSize Buffer size used during transfer to a temporary file
 	 * @throws IOException
 	 */
-	public AbstractSource(String tmpPrefix, String tmpSuffix,
-			              int bufferSize, InputStream stream)
+	public AbstractSource(InputStream stream, File tmpDirectory, String tmpPrefix, String tmpSuffix,
+			              int bufferSize)
 		throws IOException
 	{
-		this();
-		this.file   = createTempFile(tmpPrefix, tmpSuffix, bufferSize, stream);
+		this(createTempFile(stream, tmpDirectory, tmpPrefix, tmpSuffix,
+                            bufferSize));
 		this.isTemp = true;
+		/*System.out.println("# Sourc.creat f:" + this.file.getName() + " t:true");
+		System.out.flush();*/
 	}
 
 	/**
@@ -215,7 +218,7 @@ public abstract class AbstractSource
 	 */
 	@Override
 	public Module addModule(Module module) throws JHOVE2Exception {
-		if (this.getSourceAccessor()==null){
+		if (this.getSourceAccessor() == null){
 			throw new JHOVE2Exception("SourceAccessor is null");
 		}
 		if (module.getScope()== Module.Scope.Specific){
@@ -237,7 +240,9 @@ public abstract class AbstractSource
 	 * @throws JHOVE2Exception 
 	 */
 	@Override
-	public Source addPresumptiveFormat(FormatIdentification fi) throws JHOVE2Exception{
+	public Source addPresumptiveFormat(FormatIdentification fi)
+	    throws JHOVE2Exception
+	{
 		return this.getSourceAccessor().addPresumptiveFormat(this, fi);
 	}
 	
@@ -247,7 +252,9 @@ public abstract class AbstractSource
 	 * @throws JHOVE2Exception 
 	 */
 	@Override
-	public Source addPresumptiveFormats(Set<FormatIdentification> fis) throws JHOVE2Exception{
+	public Source addPresumptiveFormats(Set<FormatIdentification> fis)
+	    throws JHOVE2Exception
+	{
 		return this.getSourceAccessor().addPresumptiveFormats(this, fis);
 	}
 
@@ -257,64 +264,70 @@ public abstract class AbstractSource
 	 */
 	@Override
 	public void close() {
-		if (this.file != null && this.isTemp && this.deleteTempFiles) {
-			this.file.delete();
-		}
 	}
 
 	/**
 	 * Create a temporary backing file from an input stream.
-	 * 
+     * @param inStream
+     *            Input stream
+	 * @param tmpDirectory Temporary directory
      * @param tmpPrefix Temporary file prefix
      * @param tmpSuffix Temporary file suffix
      * @param  bufferSize Buffer size used during transfer to temporary file 
-	 * @param inStream
-	 *            Input stream
 	 * @return file Temporary backing file
 	 * @throws IOException
 	 */
-	protected File createTempFile(String tmpPrefix, String tmpSuffix,
-			                      int bufferSize, InputStream inStream)
+	protected synchronized static File createTempFile(InputStream inStream,
+	                                                  File tmpDirectory,
+	                                                  String tmpPrefix,
+	                                                  String tmpSuffix,
+	                                                  int bufferSize)
 		throws IOException
 	{
-		File tempFile = File.createTempFile(tmpPrefix, tmpSuffix);
+		File tempFile = File.createTempFile(tmpPrefix, tmpSuffix, tmpDirectory);
 		OutputStream outStream = new FileOutputStream(tempFile);
 		ReadableByteChannel in = Channels.newChannel(inStream);
 		WritableByteChannel out = Channels.newChannel(outStream);
 		final ByteBuffer buffer = ByteBuffer.allocateDirect(bufferSize);
-
-		while ((in.read(buffer)) > 0) {
-			buffer.flip();
-			out.write(buffer);
-			buffer.compact(); /* in case write was incomplete. */
+		try {
+		    while ((in.read(buffer)) > 0) {
+		        buffer.flip();
+		        out.write(buffer);
+		        buffer.compact(); /* in case write was incomplete. */
+		    }
+		    buffer.flip();
+		    while (buffer.hasRemaining()) {
+		        out.write(buffer);
+		    }
 		}
-		buffer.flip();
-		while (buffer.hasRemaining()) {
-			out.write(buffer);
+		finally {
+		    /* Close I/O resources. */
+		    in.close();
+		    out.close();
+		    outStream.close();
 		}
-
-		/* Closing the channel implicitly closes the stream. */
-		in.close();
-		out.close();
 
 		return tempFile;
 	}
 
     /**
      * Create a temporary backing file that is a subset of an input stream.
-     * 
-     * @param tmpPrefix Temporary file prefix
-     * @param tmpSuffix Temporary file suffix
-     * @param  bufferSize Buffer size used during transfer to temporary file 
      * @param inFile Input file
      * @param offset Starting offset of the subset
      * @param size   Size of the subset
+     * @param tmpDirectory Temporary directory
+     * @param tmpPrefix Temporary file prefix
+     * @param tmpSuffix Temporary file suffix
+     * @param  bufferSize Buffer size used during transfer to temporary file 
      * @return file Temporary backing file
      * @throws IOException
      */
-    protected File createTempFile(String tmpPrefix, String tmpSuffix,
-                                  int bufferSize, File inFile, 
-                                  long offset, long size)
+    protected synchronized static File createTempFile(File inFile, long offset,
+                                                      long size,
+                                                      File tmpDirectory, 
+                                                      String tmpPrefix,
+                                                      String tmpSuffix, 
+                                                      int bufferSize)
         throws IOException
     {
         /* Position input stream to starting offset. */
@@ -323,34 +336,38 @@ public abstract class AbstractSource
         ReadableByteChannel in = Channels.newChannel(inStream);
         
         /* Create temporary file. */
-        File tempFile = File.createTempFile(tmpPrefix, tmpSuffix);
+        File tempFile = File.createTempFile(tmpPrefix, tmpSuffix, tmpDirectory);
         OutputStream outStream = new FileOutputStream(tempFile);
         WritableByteChannel out = Channels.newChannel(outStream);
         
         ByteBuffer buffer = ByteBuffer.allocateDirect(bufferSize);
-
-        long consumed = 0;
-        int n = 0;
-        while (consumed < size) {
-            long remaining = size - consumed;
-            if (remaining < bufferSize) {
-                buffer = ByteBuffer.allocateDirect((int) remaining);
+        try {
+            long consumed = 0;
+            int n = 0;
+            while (consumed < size) {
+                long remaining = size - consumed;
+                if (remaining < bufferSize) {
+                    buffer = ByteBuffer.allocateDirect((int) remaining);
+                }
+                if ((n = in.read(buffer)) > 0) {
+                    buffer.flip();
+                    out.write(buffer);
+                    buffer.compact(); /* in case write was incomplete. */
+                    consumed += n;
+                }
             }
-            if ((n = in.read(buffer)) > 0) {
-                buffer.flip();
+            buffer.flip();
+            while (buffer.hasRemaining()) {
                 out.write(buffer);
-                buffer.compact(); /* in case write was incomplete. */
-                consumed += n;
             }
         }
-        buffer.flip();
-        while (buffer.hasRemaining()) {
-            out.write(buffer);
+        finally {
+            /* Close I/O resources). */
+            in.close();
+            out.close();
+            inStream.close();
+            outStream.close();
         }
-
-        /* Closing the channel implicitly closes the stream. */
-        in.close();
-        out.close();
 
         return tempFile;
     }
@@ -365,7 +382,7 @@ public abstract class AbstractSource
 	 */
 	@Override
 	public Source deleteChildSource(Source child) throws JHOVE2Exception {
-		if (this.getSourceAccessor()==null){
+		if (this.getSourceAccessor() == null){
 			throw new JHOVE2Exception("SourceAccessor is null");
 		}
 		return this.sourceAccessor.deleteChildSource(this, child);
@@ -422,6 +439,9 @@ public abstract class AbstractSource
      * Get little-endian {@link org.jhove2.core.io.Input} for the source unit
      * with the buffer size and type specified by the 
      * {@link org.jhove2.core.Invocation}.
+     * If this method is called explicitly and the source unit is not
+     * processed by the JHOVE2.characterize() method, then the corresponding
+     * close() method must be called to avoid a resource leak.
      * Input is returned if it exists.
      * @param jhove2 JHOVE2 framework
      * @return Input for the source unit
@@ -438,6 +458,9 @@ public abstract class AbstractSource
     /**
      * Get {@link org.jhove2.core.io.Input} for the source unit with the 
      * buffer size and type specified by the {@link org.jhove2.core.Invocation}
+     * If this method is called explicitly and the source unit is not
+     * processed by the JHOVE2.characterize() method, then the corresponding
+     * close() method must be called to avoid a resource leak.
      * @param jhove2 JHOVE2 framework
      * @param order  Byte order
      * @return Input for the source unit
@@ -461,6 +484,9 @@ public abstract class AbstractSource
 	 * (e.g. {@link org.jhove2.core.source.ClumpSource} or
 	 * {@link org.jhove2.core.source.DirectorySource} can let this inherited
 	 * method return null.
+     * If this method is called explicitly and the source unit is not
+     * processed by the JHOVE2.characterize() method, then the corresponding
+     * close() method must be called to avoid a resource leak.
 	 * 
 	 * @param bufferSize
 	 *            Input maximum buffer size
@@ -486,6 +512,9 @@ public abstract class AbstractSource
 	 * parsable input (e.g. {@link org.jhove2.core.source.ClumpSource} or
 	 * {@link org.jhove2.core.source.DirectorySource} can let this inherited
 	 * method return null.
+     * If this method is called explicitly and the source unit is not
+     * processed by the JHOVE2.characterize() method, then the corresponding
+     * close() method must be called to avoid a resource leak.
 	 * 
 	 * @param bufferSize
 	 *            Input maximum buffer size, in bytes
@@ -503,7 +532,8 @@ public abstract class AbstractSource
 	public Input getInput(int bufferSize, Type bufferType, ByteOrder order)
 		throws FileNotFoundException, IOException
 	{
-		return InputFactory.getInput(this.file, bufferSize, bufferType, order);
+		return InputFactory.getInput(this.file, (this.isTemp && this.deleteTempFiles),
+		                             bufferSize, bufferType, order);
 	}
 
 	/**

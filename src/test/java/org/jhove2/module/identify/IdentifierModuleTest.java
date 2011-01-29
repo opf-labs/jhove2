@@ -44,6 +44,7 @@ import java.util.Set;
 import javax.annotation.Resource;
 
 import org.jhove2.app.util.FeatureConfigurationUtil;
+import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.format.FormatIdentification;
@@ -83,6 +84,7 @@ public class IdentifierModuleTest {
 		Input      input  = null;
 		Set<FormatIdentification> ids = null;
 		String droidDirPath = null;
+		Invocation inv = JHOVE2.getInvocation();
 		try {
 			droidDirPath = 
 				FeatureConfigurationUtil.getFilePathFromClasspath(droidDirBasePath, "droid dir");
@@ -91,7 +93,11 @@ public class IdentifierModuleTest {
 		}
 		String zipFilePath = droidDirPath.concat(sampleFile);
 		try {
-			source =(FileSource)JHOVE2.getSourceFactory().getSource(zipFilePath);
+			source =(FileSource)JHOVE2.getSourceFactory().getSource(zipFilePath,
+                    inv.getTempDirectoryFile(),
+                    inv.getTempPrefix(),
+                    inv.getTempSuffix(),
+                    inv.getBufferSize());
 			input  = source.getInput(JHOVE2);
 		} catch (Exception e) {
 			fail("Couldn't create source: " + e.getMessage());
@@ -121,7 +127,11 @@ public class IdentifierModuleTest {
 			}
 			String testFilePath = shapeDirPath.concat(testFile);
 			try {
-				source = (FileSource)JHOVE2.getSourceFactory().getSource(testFilePath);
+				source = (FileSource)JHOVE2.getSourceFactory().getSource(testFilePath,
+                        inv.getTempDirectoryFile(),
+                        inv.getTempPrefix(),
+                        inv.getTempSuffix(),
+                        inv.getBufferSize());
 			} catch (Exception e) {
 				fail("Couldn't create source: " + e.getMessage());
 			} 

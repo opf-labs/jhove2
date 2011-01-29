@@ -106,8 +106,9 @@ public class DirectInputTest {
 			assertTrue("AbstractInput Scope is Direct with LITTLE_ENDIAN",
 					abstractInput.getBuffer().order() == ByteOrder.LITTLE_ENDIAN);
 			abstractInput.close();
-			abstractInput = InputFactory.getInput(testFile, bufferSize,
-					Type.Direct);
+			abstractInput = InputFactory.getInput(testFile,
+			        (source.isTemp() && source.getDeleteTempFiles()),
+			        bufferSize,	Type.Direct);
 			assertTrue("AbstractInput Scope is Direct", abstractInput.getClass()
 					.getName().equalsIgnoreCase(DirectInput.class.getName()));
 			abstractInput.setByteOrder(ByteOrder.BIG_ENDIAN);

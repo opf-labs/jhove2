@@ -73,6 +73,9 @@ public abstract class AbstractInput
 
 	/** File underlying the inputable. */
 	protected File file;
+	
+	/** Temporary file deletion status: true if delete on close. */
+	protected boolean deleteOnClose;
 
 	/** InputStream underlying the inputable. */
 	protected InputStream stream;
@@ -97,15 +100,17 @@ public abstract class AbstractInput
 	 * 
 	 * @param file
 	 *            Java {@link java.io.File} underlying the inputable
+     * @param isTemp
+     *            Temporary file status: true if a temporary file
 	 * @throws FileNotFoundException
 	 *             File not found
 	 * @throws IOException
 	 *             I/O exception instantiating input
 	 */
-	public AbstractInput(File file, int maxBufferSize)
+	public AbstractInput(File file, boolean isTemp, int maxBufferSize)
 	    throws FileNotFoundException, IOException
 	{
-		this(file, maxBufferSize, ByteOrder.BIG_ENDIAN);
+		this(file, isTemp, maxBufferSize, ByteOrder.BIG_ENDIAN);
 	}
 
 	/**
@@ -113,6 +118,8 @@ public abstract class AbstractInput
 	 * 
 	 * @param file
 	 *            Java {@link java.io.File} underlying the inputable
+	 * @param deleteOnClose
+	 *            Temporary file deletion status: true if delete on close
 	 * @param order
 	 *            Byte order
 	 * @throws FileNotFoundException
@@ -120,9 +127,11 @@ public abstract class AbstractInput
 	 * @throws IOException
 	 *             I/O exception instantiating input
 	 */
-	public AbstractInput(File file, int maxBufferSize, ByteOrder order)
+	public AbstractInput(File file, boolean deleteOnClose, int maxBufferSize,
+	                     ByteOrder order)
 		throws FileNotFoundException, IOException
 	{
+	    this.deleteOnClose = deleteOnClose;
 	    if (!file.isDirectory()) {
 	        this.file = file;
 	        this.byteOrder = order;   
@@ -146,14 +155,31 @@ public abstract class AbstractInput
 	public void close()
 	    throws IOException
 	{
+	    this.buffer = null;
 	    if (this.stream != null) {
 	        this.stream.close();
+	        this.stream = null;
 	    }
 	    if (this.channel != null) {
 	        this.channel.close();
+	        this.channel = null;
 	    }
+	    if (this.file != null) {
+	        if (this.deleteOnClose) {
+	            this.file.delete();
+	            this.file = null;
+	        }
+        }
 	}
-
+    
+    /** Get temporary file deletion status.
+     * @return True, if delete on close
+     */
+    @Override
+    public boolean deleteOnClose() {
+        return this.deleteOnClose;
+    }
+  
 	/**
 	 * Get the {@link java.nio.ByteBuffer} underlying the inputable.
 	 * 
@@ -311,7 +337,7 @@ public abstract class AbstractInput
 	public long getSize() {
 		return this.fileSize;
 	}
-    
+  
     /** Get UTF-16BE Unicode character at the current position.  This
      * implicitly advances the current position by two bytes.
      * @return Character at the current position

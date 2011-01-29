@@ -41,6 +41,7 @@ import static org.junit.Assert.fail;
 import javax.annotation.Resource;
 
 import org.jhove2.app.util.FeatureConfigurationUtil;
+import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.source.SourceFactory;
 import org.jhove2.module.identify.DROIDWrapper;
@@ -109,7 +110,12 @@ public class DroidTest {
 			String sigFilePath = FeatureConfigurationUtil.getFilePathFromClasspath(sigFileName, "Droid signature file");
 			droid = new DROIDWrapper(configFilePath, sigFilePath);	
 			SourceFactory sourceFactory = new InMemorySourceFactory();
-			IdentificationFile idf = droid.identify(sourceFactory.getSource(sampleFilePath));
+			Invocation inv = new Invocation();
+			IdentificationFile idf = droid.identify(sourceFactory.getSource(sampleFilePath,
+                    inv.getTempDirectoryFile(),
+                    inv.getTempPrefix(),
+                    inv.getTempSuffix(),
+                    inv.getBufferSize()));
 			assertEquals(JHOVE2IAnalysisController.FILE_CLASSIFICATION_POSITIVE,
 					idf.getClassification());
 			assertEquals(1,idf.getNumHits());

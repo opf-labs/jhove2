@@ -42,18 +42,20 @@ public class InputFactoryTest {
 			jhove2.setSourceFactory(sourceFactory);
 			Invocation config = jhove2.getInvocation();
 			URLSource yahooURL = (URLSource)jhove2.getSourceFactory().getSource
-											  (config.getTempPrefix(), 
+											  (yahoo,
+											   config.getTempDirectoryFile(),
+											   config.getTempPrefix(), 
 					                           config.getTempSuffix(),
-					                           config.getBufferSize(),
-					                           yahoo);
+					                           config.getBufferSize()
+					                           );
 			yahooURL.setDeleteTempFiles(true);
 			Input input = yahooURL.getInput(8192, Type.Direct);
-			// this closes the channel and the stream associated with any temp
-			// file created
-			input.close();
 			File file = input.getFile();
 			assertTrue("File doesn't exist", file.exists());
+            // this closes the channel and the stream associated with any temp
+            // file created
 			// this invokes file.delete() on any temp file created
+            input.close();
 			yahooURL.close();
 			file = yahooURL.getFile();
 			assertTrue("File still exists - should be deleted!", !file.exists());

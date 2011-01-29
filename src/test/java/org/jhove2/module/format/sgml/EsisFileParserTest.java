@@ -43,6 +43,7 @@ import java.io.IOException;
 import javax.annotation.Resource;
 
 import org.jhove2.app.util.FeatureConfigurationUtil;
+import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.source.Source;
@@ -87,8 +88,13 @@ public class EsisFileParserTest {
 		validEsisFilePath = samplesDirPath.concat(validEsisFileName);
 		EsisFileParser parser = new EsisFileParser();
 		Source inputSource = null;
+		Invocation inv = JHOVE2.getInvocation();
 		try {
-			inputSource = JHOVE2.getSourceFactory().getSource(validEsisFilePath);
+			inputSource = JHOVE2.getSourceFactory().getSource(validEsisFilePath,
+                    inv.getTempDirectoryFile(),
+                    inv.getTempPrefix(),
+                    inv.getTempSuffix(),
+                    inv.getBufferSize());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			fail(e.getMessage());
@@ -112,7 +118,11 @@ public class EsisFileParserTest {
 		validEsisFilePath02 = samplesDirPath.concat(validEsisFileName02);
 		parser = new EsisFileParser();
 		try {
-			inputSource = JHOVE2.getSourceFactory().getSource(validEsisFileName02);
+			inputSource = JHOVE2.getSourceFactory().getSource(validEsisFileName02,
+                    inv.getTempDirectoryFile(),
+                    inv.getTempPrefix(),
+                    inv.getTempSuffix(),
+                    inv.getBufferSize());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			fail(e.getMessage());
@@ -142,7 +152,11 @@ public class EsisFileParserTest {
 		validEsisFilePath03 = samplesDirPath.concat(validEsisFileName03);
 		parser = new EsisFileParser();
 		try {
-			inputSource = JHOVE2.getSourceFactory().getSource(validEsisFileName03);
+			inputSource = JHOVE2.getSourceFactory().getSource(validEsisFileName03,
+                    inv.getTempDirectoryFile(),
+                    inv.getTempPrefix(),
+                    inv.getTempSuffix(),
+                    inv.getBufferSize());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			fail(e.getMessage());
@@ -166,7 +180,11 @@ public class EsisFileParserTest {
 		emptyEsisFilePath = samplesDirPath.concat(emptyEsisFileName);
 		parser = new EsisFileParser();
 		try {
-			inputSource = JHOVE2.getSourceFactory().getSource(emptyEsisFilePath);
+			inputSource = JHOVE2.getSourceFactory().getSource(emptyEsisFilePath,
+                    inv.getTempDirectoryFile(),
+                    inv.getTempPrefix(),
+                    inv.getTempSuffix(),
+                    inv.getBufferSize());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			fail(e.getMessage());

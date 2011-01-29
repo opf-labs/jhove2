@@ -7,6 +7,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 
+import org.jhove2.core.Invocation;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
 import org.jhove2.persist.inmemory.InMemorySourceFactory;
@@ -50,7 +51,11 @@ public class ReportableInfoTest {
 //		source = new FileSetSource();
 		SourceFactory factory = new InMemorySourceFactory();
 		try {
-			source = factory.getSource("");
+		    Invocation inv = new Invocation();
+			source = factory.getSource("", inv.getTempDirectoryFile(),
+			                           inv.getTempPrefix(),
+			                           inv.getTempSuffix(),
+			                           inv.getBufferSize());
 		} catch (Exception e) {
 			fail("unable to create Source");
 		}

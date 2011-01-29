@@ -43,8 +43,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.Invocation;
-import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 
 import com.sleepycat.persist.model.Persistent;
@@ -58,26 +56,28 @@ import com.sleepycat.persist.model.Persistent;
 public class ByteStreamSource
     extends AbstractSource
 {
-    /** I/O buffer size. */
-    protected int bufferSize;
-    
-    /** Starting offset relative to parent source. */
-    protected long endingOffset;
-    
     /** Backing file that is an appropriate subset of the parent source's
      * backing file; not created unless it is actually requested.
      */
     protected File backingFile;
      
-   
+    /** Buffer size (for creating temporary file). */
+    protected int bufferSize;
+
+    /** Starting offset relative to parent source. */
+    protected long endingOffset;
+    
     /** Size of the byte stream, in bytes. */
     protected long size;
     
+    /** Temporary directory. */
+    protected File tmpDirectory;
+    
     /** Temporary file prefix. */
-    protected String tempPrefix;
+    protected String tmpPrefix;
     
     /** Temporary file suffix. */
-    protected String tempSuffix;
+    protected String tmpSuffix;
     
     @SuppressWarnings("unused")
 	private ByteStreamSource()
@@ -95,29 +95,47 @@ public class ByteStreamSource
      * @throws IOException 
      * @throws JHOVE2Exception 
      */
-    protected ByteStreamSource(JHOVE2 jhove2, Source parent, long offset, long size,SourceFactory sourceFactory)
+    protected ByteStreamSource(Source parent, long offset, long size,
+                               SourceFactory sourceFactory, File tmpDirectory,
+                               String tmpPrefix, String tmpSuffix,
+                               int bufferSize)
         throws IOException, JHOVE2Exception
     {
         super();
         this.file           = parent.getFile();
+        this.isTemp         = parent.isTemp();
         this.startingOffset = offset;
         this.endingOffset   = offset + size;
         this.size           = size;
+        this.backingFile    = null;
         
         /* Keep a copy of the temporary file prefix and suffix and I/O buffer
          * size in case we have to create a temporary backing file.
          */
-        Invocation invocation = jhove2.getInvocation();
-        this.tempPrefix = invocation.getTempPrefix();
-        this.tempSuffix = invocation.getTempSuffix();
-        this.bufferSize = invocation.getBufferSize();
+        this.tmpDirectory = tmpDirectory;
+        this.tmpPrefix    = tmpPrefix;
+        this.tmpSuffix    = tmpSuffix;
+        this.bufferSize   = bufferSize;
         
         /* Make this byte stream a child of its parent. */
         this.setSourceAccessor(sourceFactory.createSourceAccessor(this));
-        // will update parentSourceId and sourceId fields automatically
+        /* will update parentSourceId and sourceId fields automatically. */
         parent.addChildSource(this);
      }
-  
+
+    /**
+     * Close the source unit. If the source unit is backed by a temporary file,
+     * delete the file.
+     */
+    @Override
+    public void close() {
+        super.close();
+        if (this.backingFile != null && this.deleteTempFiles) {
+            this.backingFile.delete();
+            this.backingFile = null;
+        }
+    }
+
     /** Get ending offset of the byte stream, relative to its parent.
      * @return Ending offset
      */
@@ -138,9 +156,10 @@ public class ByteStreamSource
             if (this.file != null) {
                 try {
                     this.backingFile =
-                        this.createTempFile(this.tempPrefix, this.tempSuffix,
-                                            this.bufferSize, this.file,
-                                            this.startingOffset, this.size);
+                        createTempFile(this.file, this.startingOffset,
+                                       this.size, this.tmpDirectory,
+                                       this.tmpPrefix, this.tmpSuffix,
+                                       this.bufferSize);
                 }
                 catch (IOException e) {
                     /* TODO: Create and add an appropriate message.

@@ -71,13 +71,10 @@ public class ZipDirectorySource
 	}
 	/**
 	 * Instantiate a new <code>ZipDirectorySource</code>.
-	 * 
-	 * @param stream
-	 *            Input stream for the Zip directory entry
-	 * @param entry
-	 *            Zip directory entry
+     * @param entry
+     *            Zip directory entry
 	 */
-	protected ZipDirectorySource(InputStream stream, ZipEntry entry) {
+	protected ZipDirectorySource(ZipEntry entry) {
 		super();
 
 		this.path = entry.getName();

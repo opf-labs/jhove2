@@ -36,6 +36,7 @@
 
 package org.jhove2.core.source;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -88,7 +89,7 @@ public class ZipFileSource
 	}
 	/**
 	 * Instantiate a new <code>ZipFileSource</code>.
-	 * 
+	 * @param tmpDirectory Temporary directory
      * @param tmpPrefix Temporary file prefix
      * @param tmpSuffix Temporary file suffix
      * @param bufferSize Buffer size 
@@ -98,10 +99,12 @@ public class ZipFileSource
 	 *            Zip file entry
 	 * @throws IOException
 	 */
-	protected ZipFileSource(String tmpPrefix, String tmpSuffix,
-			int bufferSize, InputStream stream, ZipEntry entry)
-			throws IOException {
-		super(tmpPrefix, tmpSuffix, bufferSize, stream);
+	protected ZipFileSource(ZipEntry entry, InputStream stream,
+	                        File tmpDirectory, String tmpPrefix,
+	                        String tmpSuffix, int bufferSize)
+		throws IOException
+	{
+		super(stream, tmpDirectory, tmpPrefix, tmpSuffix, bufferSize);
 		this.path = entry.getName();
 		this.name = this.path;
 		int in = this.name.lastIndexOf('/');
@@ -148,7 +151,8 @@ public class ZipFileSource
 	 */
 	public Input getInput(int bufferSize, Type bufferType)
 			throws FileNotFoundException, IOException {
-		return InputFactory.getInput(this.file, bufferSize, bufferType);
+		return InputFactory.getInput(this.file, (this.isTemp && this.deleteTempFiles),
+		                             bufferSize, bufferType);
 	}
 
 	/**
