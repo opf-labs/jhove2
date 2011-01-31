@@ -52,6 +52,7 @@ import javax.annotation.Resource;
 import org.jhove2.app.util.FeatureConfigurationUtil;
 import org.jhove2.core.JHOVE2Exception;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -61,6 +62,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @author smorrissey
  *
  */
+@Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath*:**/test-config.xml", 
 "classpath*:**/filepaths-config.xml"})
@@ -94,7 +96,6 @@ public class ForkShellHandlerTest {
 		}
 		tempFile = File.createTempFile("ForkShellHandlerTest", ".txt", 
 				new File(tempDirPath));
-		tempFile.deleteOnExit();
 		tempFilePath = tempFile.getAbsolutePath();
 		if (filter != null){
 			tempFilePath = filter.filter(tempFilePath);
@@ -107,7 +108,6 @@ public class ForkShellHandlerTest {
 		}
 		wtempFile = File.createTempFile("ForkShellHandlerTest", ".txt", 
 				new File(wtempDirPath));
-		wtempFile.deleteOnExit();
 		wtempFilePath = wtempFile.getAbsolutePath();
 	}
 
@@ -221,7 +221,7 @@ public class ForkShellHandlerTest {
 	/**
 	 * @param shellHandler the shellHandler to set
 	 */
-	@Resource
+	@Resource(name="epshellHandler")
 	public void setShellHandler(ForkShellHandler shellHandler) {
 		this.shellHandler = shellHandler;
 	}
@@ -266,7 +266,7 @@ public class ForkShellHandlerTest {
 	/**
 	 * @param windowsShellHandler the windowsShellHandler to set
 	 */
-	@Resource
+	@Resource(name="epwindowsShellHandler")
 	public void setWindowsShellHandler(ForkShellHandler windowsShellHandler) {
 		this.windowsShellHandler = windowsShellHandler;
 	}

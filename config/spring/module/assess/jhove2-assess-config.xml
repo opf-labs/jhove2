@@ -12,6 +12,7 @@
 	<!-- Assessment module bean -->
 	<bean id="AssessmentModule" class="org.jhove2.module.assess.AssessmentModule"
 	      scope="prototype">
+	    <constructor-arg ref="BaseModuleAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>

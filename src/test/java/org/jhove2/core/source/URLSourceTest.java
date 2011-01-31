@@ -48,6 +48,7 @@ import javax.annotation.Resource;
 
 import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
+import org.jhove2.core.JHOVE2Exception;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -65,7 +66,7 @@ public class URLSourceTest {
 	private String cdlUrlString = "http://www.cdlib.org/";
 	private URL ptcURL;
 	private URL cdlURL;
-	private JHOVE2 jhove2;
+	private JHOVE2 JHOVE2;
 	
 
 	/**
@@ -74,21 +75,27 @@ public class URLSourceTest {
 	@Test
 	public void testEqualsObject() {
 		try {
-			Invocation config = jhove2.getInvocation();
+			Invocation config = JHOVE2.getInvocation();
 			ptcURL = new URL(ptcUrlString);
 			cdlURL = new URL(cdlUrlString);
-			URLSource uPtc  = new URLSource(config.getTempPrefix(), 
+			URLSource uPtc  = (URLSource)JHOVE2.getSourceFactory().getSource(ptcURL,
+			                                config.getTempDirectoryFile(),                        
+			                                config.getTempPrefix(), 
 					                        config.getTempSuffix(),
-					                        config.getBufferSize(),
-					                        ptcURL);
-			URLSource uPtc2 = new URLSource(config.getTempPrefix(), 
+					                        config.getBufferSize()
+					                        );
+			URLSource uPtc2 = (URLSource)JHOVE2.getSourceFactory().getSource(ptcURL,
+			                                config.getTempDirectoryFile(),
+			                                config.getTempPrefix(), 
 					                        config.getTempSuffix(),
-					                        config.getBufferSize(),
-					                        ptcURL);
-			URLSource uCdl  = new URLSource(config.getTempPrefix(), 
+					                        config.getBufferSize()
+					                        );
+			URLSource uCdl  = (URLSource)JHOVE2.getSourceFactory().getSource(cdlURL,
+			                                config.getTempDirectoryFile(),
+			                                config.getTempPrefix(), 
 					                        config.getTempSuffix(),
-					                        config.getBufferSize(),
-					                        cdlURL);
+					                        config.getBufferSize()
+					                        );
 			uPtc.setDeleteTempFiles(true);
 			uPtc2.setDeleteTempFiles(true);
 			uCdl.setDeleteTempFiles(true);
@@ -98,14 +105,14 @@ public class URLSourceTest {
 			assertFalse(uPtc2.equals(uPtc));			
 			assertFalse(uPtc.equals(null));
 			assertFalse(uPtc.equals(uCdl));
-			ClumpSource clump = new ClumpSource();
+			ClumpSource clump = JHOVE2.getSourceFactory().getClumpSource();
 			assertFalse(uPtc.equals(clump));
-			ClumpSource clump2 = new ClumpSource();
-			clump.addChildSource(uPtc);
+			ClumpSource clump2 = JHOVE2.getSourceFactory().getClumpSource();
+			uPtc=(URLSource) clump.addChildSource(uPtc);
 			clump2.addChildSource(uPtc);
 			assertEquals(clump, clump2);
 			clump2.deleteChildSource(uPtc);
-			clump2.addChildSource(uCdl);
+			uCdl=(URLSource) clump2.addChildSource(uCdl);
 			assertFalse(clump.equals(clump2));
 			uPtc.close();
 			uPtc2.close();
@@ -114,6 +121,9 @@ public class URLSourceTest {
 			fail("Malformed URL " + e.getMessage());
 		} catch (IOException e) {
 			fail("IOException " + e.getMessage());
+		}
+		catch (JHOVE2Exception e){
+			fail("JHOVE2Exception "+ e.getMessage());
 		}
 		
 	}
@@ -124,24 +134,44 @@ public class URLSourceTest {
 	@Test
 	public void testCompareTo() {
 		try {
-			Invocation config = jhove2.getInvocation();
+			Invocation config = JHOVE2.getInvocation();
 			ptcURL = new URL(ptcUrlString);
 			cdlURL = new URL(cdlUrlString);
-			URLSource uPtc  = new URLSource(config.getTempPrefix(), 
+			URLSource uPtc  = (URLSource)JHOVE2.getSourceFactory().getSource(ptcURL,
+			                                config.getTempDirectoryFile(),
+			                                config.getTempPrefix(), 
 					                        config.getTempSuffix(),
-					                        config.getBufferSize(),
-					                        ptcURL);
-			URLSource uPtc2 = new URLSource(config.getTempPrefix(), 
+					                        config.getBufferSize()
+					                        );
+			URLSource uPtc2 = (URLSource)JHOVE2.getSourceFactory().getSource(ptcURL,
+			                                config.getTempDirectoryFile(),
+			                                config.getTempPrefix(), 
 					                        config.getTempSuffix(),
-					                        config.getBufferSize(),
-					                        ptcURL);
-			uPtc.setDeleteTempFiles(true);
-			uPtc2.setDeleteTempFiles(true);
+					                        config.getBufferSize()
+					                        );
+			try {
+				uPtc.setDeleteTempFiles(true);
+			} catch (JHOVE2Exception e1) {
+				e1.printStackTrace();
+				fail(e1.getMessage());
+			}
+			try {
+				uPtc2.setDeleteTempFiles(true);
+			} catch (JHOVE2Exception e1) {
+				e1.printStackTrace();
+				fail(e1.getMessage());
+			}
 			assertEquals(0,uPtc.compareTo(uPtc));
 			assertEquals(1, uPtc.compareTo(null));
 			boolean notEq = uPtc.compareTo(uPtc2)!=0;
 			assertTrue(notEq);
-			ClumpSource clump = new ClumpSource();
+			ClumpSource clump= null;
+			try {
+				clump = JHOVE2.getSourceFactory().getClumpSource();
+			} catch (JHOVE2Exception e) {
+				e.printStackTrace();
+				fail(e.getMessage());
+			}
 			assertEquals(1,uPtc.compareTo(clump));
 			uPtc.close();
 			uPtc2.close();
@@ -149,15 +179,18 @@ public class URLSourceTest {
 			fail("Malformed URL " + e.getMessage());
 		} catch (IOException e) {
 			fail("IOException " + e.getMessage());
+		} catch (JHOVE2Exception  e){
+			fail("JHOVE2Exception " + e.getMessage());
 		}
 	}
 
-	public JHOVE2 getJhove2() {
-		return jhove2;
+
+	public JHOVE2 getJHOVE2() {
+		return JHOVE2;
 	}
 	@Resource
-	public void setJhove2(JHOVE2 jhove2) {
-		this.jhove2 = jhove2;
+	public void setJHOVE2(JHOVE2 jHOVE2) {
+		JHOVE2 = jHOVE2;
 	}
 
 }

@@ -45,11 +45,15 @@ import org.jhove2.module.format.tiff.IFDEntry;
 import org.jhove2.module.format.tiff.TiffIFD;
 import org.jhove2.module.format.tiff.type.AsciiArray;
 import org.jhove2.module.format.tiff.type.Byte;
+import org.jhove2.persist.FormatProfileAccessor;
+
+import com.sleepycat.persist.model.Persistent;
 
 /**
  * @author MStrong
  * 
  */
+@Persistent
 public class TiffITHCProfile extends TiffItProfile {
 
     /** Profile version identifier. */
@@ -68,8 +72,13 @@ public class TiffITHCProfile extends TiffItProfile {
     /** invalid Transparency Indicator message */
     protected Message invalidTransparencyIndicatorValueMessage;
 
-    public TiffITHCProfile(Format format) {
-        super(format);
+    public TiffITHCProfile(Format format, FormatProfileAccessor formatProfileAccessor) {
+       super(format, formatProfileAccessor);
+    }
+    
+    @SuppressWarnings("unused")
+	private TiffITHCProfile(){
+    	this(null,null);
     }
 
     /*

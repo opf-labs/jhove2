@@ -47,10 +47,13 @@ import org.jhove2.core.source.Source;
 import org.jhove2.module.format.Validator.Validity;
 import org.jhove2.module.format.riff.GenericChunk;
 
+import com.sleepycat.persist.model.Persistent;
+
 /** WAVE instrument chunk.
  * 
  * @author slabrams
  */
+@Persistent
 public class InstrumentChunk
     extends GenericChunk
 {

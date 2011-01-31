@@ -43,11 +43,15 @@ import org.jhove2.core.format.Format;
 import org.jhove2.module.format.tiff.IFDEntry;
 import org.jhove2.module.format.tiff.TiffIFD;
 import org.jhove2.module.format.tiff.type.AsciiArray;
+import org.jhove2.persist.FormatProfileAccessor;
+
+import com.sleepycat.persist.model.Persistent;
 
 /**
  * @author MStrong
  * 
  */
+@Persistent
 public class TiffITSDProfile extends TiffItProfile {
 
     /** Profile version identifier. */
@@ -63,8 +67,13 @@ public class TiffITSDProfile extends TiffItProfile {
     /** Profile validation coverage. */
     public static final Coverage COVERAGE = Coverage.Inclusive;
 
-    public TiffITSDProfile(Format format) {
-        super(format);
+    public TiffITSDProfile(Format format, FormatProfileAccessor formatProfileAccessor) {
+       super(format, formatProfileAccessor);
+    }
+    
+    @SuppressWarnings("unused")
+	private TiffITSDProfile(){
+    	this(null,null);
     }
 
     /*

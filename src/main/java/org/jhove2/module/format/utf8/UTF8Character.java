@@ -59,11 +59,14 @@ import org.jhove2.module.format.utf8.unicode.CodeBlock;
 import org.jhove2.module.format.utf8.unicode.Unicode;
 import org.jhove2.module.format.utf8.unicode.Unicode.EOL;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * JHOVE2 UTF-8 character modeling class.
  * 
  * @author mstrong, slabrams
  */
+@Persistent
 public class UTF8Character
 	extends AbstractReportable
 	implements Parser, Validator

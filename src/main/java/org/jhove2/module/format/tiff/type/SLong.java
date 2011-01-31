@@ -6,12 +6,15 @@ package org.jhove2.module.format.tiff.type;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.reportable.AbstractReportable;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * stores the Tiff SLONG type value
  * A 32-bite (4-byte) signed (two-complement) integer
  * @author mstrong
  *
  */
+@Persistent
 public class SLong 
 extends AbstractReportable {
     private long value;

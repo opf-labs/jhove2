@@ -42,15 +42,21 @@ import java.util.TreeMap;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.reportable.AbstractReportable;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * A class to hold a sorted set of entity names and counts of how many times 
  * an entity reference was found in the XML document.
  */
+@Persistent
 public class EntityReferences extends AbstractReportable {
  
     /** The de-duplicated set of entities that have been referenced in the XML document. */
     TreeMap<String,EntityReference> entityReferenceMap = new TreeMap<String,EntityReference>();
     
+    protected EntityReferences(){
+    	super();
+    }
     /**
      * Get the entity references found during XML parsing.
      * 

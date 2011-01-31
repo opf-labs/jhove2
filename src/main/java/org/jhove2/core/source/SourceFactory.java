@@ -33,36 +33,34 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.jhove2.core.source;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.persist.SourceAccessor;
 
 /**
- * Factory for JHOVE2 file and directory source units.
- * 
- * @author mstrong, slabrams, smorrissey
+ * @author smorrissey
+ *
  */
-public class SourceFactory
-{
+public interface SourceFactory {
+
 	/**
-	 * Get source unit from a file system path name.
-	 * 
-	 * @param pathName
-	 *            File system path name
+	 * Get source unit from a formatted object name, which can be a file, a.
+	 * directory, or a URL. Note that a URL source unit requires the
+	 * creation of a temporary file.
+	 * @param name Formatted object name
+     * @param tmpDirectory Temporary directory
+     * @param tmpPrefix Temporary prefix
+     * @param tmpSuffix Temporary suffix
+     * @param bufferSize Buffer size (for creating temporary file)
 	 * @return Source unit
 	 * @throws FileNotFoundException
 	 *             File not found
@@ -70,12 +68,10 @@ public class SourceFactory
 	 *             I/O exception instantiating source
 	 * @throws JHOVE2Exception 
 	 */
-	public static synchronized Source getSource(String pathName)
-		throws FileNotFoundException, IOException, JHOVE2Exception
-	{
-		return getSource(new File(pathName));
-	}
-
+	public Source getSource(String name, File tmpDirectory, String tmpPrefix,
+	                        String tmpSuffix, int bufferSize)
+	    throws FileNotFoundException, IOException, JHOVE2Exception;
+ 
 	/**
 	 * Get source unit from a Java {@link java.io.File}.
 	 * 
@@ -88,161 +84,128 @@ public class SourceFactory
 	 *             I/O exception instantiating source
 	 * @throws JHOVE2Exception 
 	 */
-	public static synchronized Source getSource(File file)
-		throws FileNotFoundException, IOException, JHOVE2Exception
-	{
-		if (file.isDirectory()) {
-			return new DirectorySource(file);
-		}
-
-		return new FileSource(file);
-	}
+	public Source getSource(File file)
+		throws FileNotFoundException, IOException, JHOVE2Exception;
 
 	/**
 	 * Get source unit from a URL by creating a local temporary file.
 	 * 
+     * @param url
+     *            URL
+	 * @param tmpDirectory Temporary directory
 	 * @param tmpPrefix
 	 *            Temporary file prefix
 	 * @param tmpSuffix
 	 *            Temporary file suffix
 	 * @param bufferSize
-	 *            Buffer size for transfer to temporary file
-	 * @param url
-	 *            URL
+	 *            Buffer size (for creating temporary file)
 	 * @return Source unit
 	 * @throws IOException
 	 *             I/O exception instantiating source
+	 * @throws JHOVE2Exception 
 	 */
-	public static synchronized Source getSource(String tmpPrefix,
-			                                    String tmpSuffix,
-			                                    int bufferSize, URL url)
-		throws IOException
-	{
-		return new URLSource(tmpSuffix, tmpSuffix, bufferSize, url);
-	}
+	public Source getSource(URL url, File tmpDirectory, String tmpPrefix,
+	                        String tmpSuffix, int bufferSize)
+	    throws IOException, JHOVE2Exception;
 
 	/**
 	 * Get source unit from a Zip file entry by creating a temporary file.
 	 * 
+     * @param zip
+     *            Zip file
+     * @param entry
+     *            Zip file entry
+     * @param tmpDirectory            
+     *            Temporary directory
 	 * @param tmpPrefix
 	 *            Temporary file prefix
 	 * @param tmpSuffix
 	 *            Temporary file suffix
 	 * @param bufferSize
-	 *            Buffer size during transfer to temporary file
-	 * @param zip
-	 *            Zip file
-	 * @param entry
-	 *            Zip file entry
+	 *            Buffer size (for creating temporary file)
 	 * @return Source unit
 	 * @throws IOException
 	 *             I/O exception instantiating source
+	 * @throws JHOVE2Exception 
 	 */
-	public static synchronized Source getSource(String tmpPrefix,
-			                                    String tmpSuffix,
-			                                    int bufferSize, ZipFile zip,
-			                                    ZipEntry entry)
-		throws IOException
-	{
-		InputStream stream = zip.getInputStream(entry);
-		if (entry.isDirectory()) {
-			return new ZipDirectorySource(stream, entry);
-		}
+	public Source getSource(ZipFile zip, ZipEntry entry, File tmpDirectory,
+	                        String tmpPrefix, String tmpSuffix, int bufferSize)
+		throws IOException, JHOVE2Exception;
 
-		return new ZipFileSource(tmpSuffix, tmpSuffix, bufferSize, stream, entry);
-	}	
-
+    /**
+     * Get source unit from a formatted object name, which can be a file, a.
+     * directory, or a URL. Note that a URL source unit requires the
+     * creation of a temporary file.
+     * @param tmpDirectory Temporary directory
+     * @param tmpPrefix Temporary prefix
+     * @param tmpSuffix Temporary suffix
+     * @param bufferSize Buffer size (for creating temporary file)
+     * @param name First formatted object name
+     * @param names Remaining formatted object names
+     * @return Source unit
+     * @throws FileNotFoundException
+     *             File not found
+     * @throws IOException
+     *             I/O exception instantiating source
+     * @throws JHOVE2Exception 
+     */
+    public Source getSource(File tmpDirectory, String tmpPrefix,
+                            String tmpSuffix, int bufferSize,
+                            String name, String...names)
+        throws FileNotFoundException, IOException, JHOVE2Exception;
+   
 	/**
-	 * Get source unit from sequence of file system objects (files and
-	 * directories).
-	 * 
-	 * @param pathName
-	 *            First path name
-	 * @param pathNames
-	 *            Remaining path names
+	 * Make Source from list of formatted objects, which may be files,
+	 * directories, and URLS. Note that URL source units require the
+	 * creation of temporary files.
+	 * @param names Formatted object names
+     * @param tmpDirectory            
+     *            Temporary directory
+     * @param tmpPrefix
+     *            Temporary file prefix
+     * @param tmpSuffix
+     *            Temporary file suffix
+     * @param bufferSize
+     *            Buffer size (for creating temporary file)
 	 * @return Source
 	 * @throws IOException
 	 * @throws JHOVE2Exception
 	 */
-	public static synchronized Source getSource(String pathName, String... pathNames)
-	throws IOException, JHOVE2Exception {
-		List<String> list = new ArrayList<String>();
-		list.add(pathName);
-		if (pathNames != null && pathNames.length > 0) {
-			for (int i = 0; i < pathNames.length; i++) {
-				list.add(pathNames[i]);
-			}
-		}
-		return SourceFactory.getSource(list);
-	}
-
-	/**
-	 * Make Source from list of file system objects (files and directories) and URLS
-	 * 
-	 * @param pathNames
-	 *            File system path names
-	 * @return Source
-	 * @throws IOException
-	 * @throws JHOVE2Exception
-	 */
-	public static synchronized Source getSource(List<String> pathNames)
-		throws FileNotFoundException, IOException, JHOVE2Exception
-	{
-		return SourceFactory.getSource(
-				pathNames, 
-				Invocation.DEFAULT_TEMP_PREFIX,
-				Invocation.DEFAULT_TEMP_SUFFIX,
-				Invocation.DEFAULT_BUFFER_SIZE);
-	}
+	public Source getSource(List<String> names, File tmpDirectory,
+	                        String tmpPrefix, String tmpSuffix, int bufferSize)
+		throws FileNotFoundException, IOException, JHOVE2Exception;
 	
 	/**
-	 * Make Source from list of file system objects (files and directories) and URLS
-	 * 
-	 * @param pathNames
-	 *            File system path names
-	 * @param tmpPrefix
-	 * 			  Prefix for any temp files created
-	 * @param tmpSuffix
-	 * 			  Suffix for any temp files created
-	 * @param bufferSize
-     *            Buffer size for reading URLS
-	 * @return Source
-	 * @throws FileNotFoundException
-	 * @throws IOException
+	 * Utility method to create new empty ClumpSource
+	 * @return ClumpSource
 	 * @throws JHOVE2Exception
 	 */
-	public static synchronized Source getSource(List<String> pathNames, String tmpPrefix,
-            String tmpSuffix,
-            int bufferSize)
-		throws FileNotFoundException, IOException, JHOVE2Exception
-	{
-		Source source = null;		
-		if (pathNames.size() == 1) {
-			String pathName = pathNames.get(0);
-			try{
-				URL url = new URL(pathName);
-				source = SourceFactory.getSource(tmpPrefix, tmpSuffix, bufferSize, url);
-			}
-			catch (MalformedURLException m){
-				source = SourceFactory.getSource(pathName);
-			}			
-		}
-		else {
-			source = new FileSetSource();
-			Iterator<String> iter = pathNames.iterator();
-			while (iter.hasNext()) {
-				String pathName = iter.next();
-				Source src = null;
-				try{
-					URL url = new URL(pathName);
-					src = SourceFactory.getSource(tmpPrefix, tmpSuffix, bufferSize, url);
-				}
-				catch (MalformedURLException m){
-					src = SourceFactory.getSource(pathName);
-				}
-				((FileSetSource) source).addChildSource(src);
-			}
-		}
-		return source;
-	}
+	public ClumpSource getClumpSource() throws JHOVE2Exception;
+	
+	/**
+	 * Utility method to create empty FileSetSource
+	 * @return FileSetSource
+	 * @throws JHOVE2Exception 
+	 */
+	public FileSetSource getFileSetSource() throws JHOVE2Exception;
+
+	/**
+	 * Create SourceAccessor for this SourceFactory type
+	 * This will be different, for example, for each persistence model 
+	 * @param Source for which accessor is to be created
+	 * @return SourceAccessor
+	 */
+	public SourceAccessor createSourceAccessor(Source source);
+	
+	/**
+	 * Utility method to create ByteStreamSource
+	 * @return ByteStreamSource
+	 * @throws JHOVE2Exception
+	 */
+	public ByteStreamSource getByteStreamSource(Source parent, long offset,
+	                                            long size, File tmpDirectory,
+	                                            String tmpPrefix,
+	                                            String tmpSuffix,
+	                                            int bufferSize) 
+	    throws IOException, JHOVE2Exception;
 }

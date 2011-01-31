@@ -40,6 +40,8 @@ import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.module.identify.Identifier;
 import org.jhove2.module.identify.IdentifierFactory;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * Spring-based implementation of Factory class for {@link org.jhove2.module.identify.Identifier} 
  * objects
@@ -47,9 +49,15 @@ import org.jhove2.module.identify.IdentifierFactory;
  * @author smorrissey
  *
  */
+@Persistent
 public class SpringIdentifierFactory
     implements IdentifierFactory
 {
+	
+	public SpringIdentifierFactory(){
+		super();
+	}
+	
 	/** Instantiate a new identifier module.
 	 * @see org.jhove2.module.identify.factory.IdentifierFactory#getIdentifier()
 	 */

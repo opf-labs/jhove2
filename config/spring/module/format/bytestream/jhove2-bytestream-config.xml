@@ -39,6 +39,7 @@
 	<bean id="BytestreamModule" class="org.jhove2.module.format.bytestream.Bytestream" 
 		scope="prototype">
 		<constructor-arg ref="BytestreamFormat"/>
+		<constructor-arg ref="FormatModuleAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>

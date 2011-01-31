@@ -49,11 +49,14 @@ import org.jhove2.core.source.Source;
 import org.jhove2.module.format.Parser;
 import org.jhove2.module.format.Validator.Validity;
 
+import com.sleepycat.persist.model.Persistent;
+
 /** ICC text description type element, as defined in ICC1.2001-04,
  * \u00a7 6.5.17.
  * 
  * @author slabrams
  */
+@Persistent
 public class DescriptionType
     extends AbstractReportable
     implements Parser

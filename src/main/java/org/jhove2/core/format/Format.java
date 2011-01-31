@@ -46,11 +46,14 @@ import org.jhove2.core.Document;
 import org.jhove2.core.I8R;
 import org.jhove2.core.reportable.AbstractReportable;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * A "file type" for source units, including those that are not physical files.
  * 
  * @author mstrong, slabrams, smmorrissey
  */
+@Persistent
 public class Format extends AbstractReportable implements Comparable<Format> {
 	/** Format ambiguities. Ambiguous presumptiveFormatIds should report their caveats. */
 	public enum Ambiguity {
@@ -117,6 +120,9 @@ public class Format extends AbstractReportable implements Comparable<Format> {
 		this.specifications = new ArrayList<Document>();
 	}
 
+	private Format(){
+		this(null, null, null, null);
+	}
 	/**
 	 * Get format alias identifiers.
 	 * 

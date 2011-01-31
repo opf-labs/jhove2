@@ -40,12 +40,14 @@ import static org.junit.Assert.fail;
 import javax.annotation.Resource;
 
 import org.jhove2.app.util.FeatureConfigurationUtil;
+import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.Reportable;
 import org.jhove2.core.source.Source;
-import org.jhove2.core.source.SourceFactory;
+import org.jhove2.persist.PersistenceManagerUtil;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -66,6 +68,11 @@ public class AbstractFlatDisplayerTest {
 	private String utf8DirBasePath;
 	private String testFile01;
 
+	@Before
+	public void setUp() throws Exception {
+		PersistenceManagerUtil.createPersistenceManagerFactory(JHOVE2.getConfigInfo());
+		PersistenceManagerUtil.getPersistenceManagerFactory().getInstance().initialize();
+	}
 	/**
 	 * Test method for {@link org.jhove2.module.display.AbstractDisplayer#display(Reportable)}.
 	 */
@@ -80,9 +87,14 @@ public class AbstractFlatDisplayerTest {
 		}
 		try {
 			String filePath = utf8DirPath.concat(testFile01);
-			Source source = SourceFactory.getSource(filePath);
-			Input  input  = source.getInput(JHOVE2);
-			JHOVE2.characterize(source, input);
+			Invocation inv = JHOVE2.getInvocation();
+			Source source = JHOVE2.getSourceFactory().getSource(filePath,
+                    inv.getTempDirectoryFile(),
+                    inv.getTempPrefix(),
+                    inv.getTempSuffix(),
+                    inv.getBufferSize());
+            Input  input  = source.getInput(JHOVE2);
+			source = JHOVE2.characterize(source,input);
 			Displayer displayer = new XMLDisplayer();
 			displayer.setConfigInfo(JHOVE2.getConfigInfo());
 			displayer.display(source);			

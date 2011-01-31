@@ -52,16 +52,18 @@ import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
-import org.jhove2.core.format.Format;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.Validator.Validity;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * @author mstrong
  *
  */
+@Persistent
 public abstract class IFD 
 extends AbstractReportable {
 
@@ -212,19 +214,18 @@ extends AbstractReportable {
 
     /**
      * Parse an IFD. Read and parse each IFDEntry encountered.
-     * 
      * @param input
      *            JHOVE2 framework
      * @param input
      *            Input
+     * @param tiff2FormatMapper Tiff2FormatMapFactory to map tiff id to Format
      * @throws EOFException
      *             If End-of-File is reached reading the source unit
      * @throws IOException
      *             If an I/O exception is raised reading the source unit
      * @throws JHOVE2Exception
      */
-    public void parse(JHOVE2 jhove2, Source source, Input input,
-                      Map<Integer, Format> tagToFormatMap)
+    public void parse(JHOVE2 jhove2, Source source, Input input, Tiff2FormatMapFactory tiff2FormatMapper)
         throws EOFException, IOException, JHOVE2Exception
     {
         this.isValid = Validity.Undetermined;
@@ -261,7 +262,7 @@ extends AbstractReportable {
             
             for (int i=0; i<this.numEntries; i++) {
                 IFDEntry ifdEntry = new IFDEntry();
-                ifdEntry.parse(jhove2, source, input, tagToFormatMap);
+                ifdEntry.parse(jhove2, source, input, tiff2FormatMapper);
                 Validity validity = ifdEntry.isValid();
                 if (validity != Validity.True) {
                     this.isValid = validity;

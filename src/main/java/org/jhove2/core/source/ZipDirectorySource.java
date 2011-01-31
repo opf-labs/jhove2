@@ -42,11 +42,14 @@ import java.util.zip.ZipEntry;
 
 import org.jhove2.annotation.ReportableProperty;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * Container source unit that is directory within a ZIP file.
  * 
  * @author mstrong, slabrams
  */
+@Persistent
 public class ZipDirectorySource
     extends AbstractSource
     implements AggregateSource, NamedSource
@@ -63,15 +66,15 @@ public class ZipDirectorySource
 	/** Zip directory path. */
 	protected String path;
 
+	protected ZipDirectorySource(){
+		super();
+	}
 	/**
 	 * Instantiate a new <code>ZipDirectorySource</code>.
-	 * 
-	 * @param stream
-	 *            Input stream for the Zip directory entry
-	 * @param entry
-	 *            Zip directory entry
+     * @param entry
+     *            Zip directory entry
 	 */
-	public ZipDirectorySource(InputStream stream, ZipEntry entry) {
+	protected ZipDirectorySource(ZipEntry entry) {
 		super();
 
 		this.path = entry.getName();

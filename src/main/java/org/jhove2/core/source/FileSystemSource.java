@@ -37,12 +37,14 @@
 package org.jhove2.core.source;
 
 import org.jhove2.annotation.ReportableProperty;
+import com.sleepycat.persist.model.Persistent;
 
 /** Interface for {@linkplain org.jhove2.core.source.Source source units} that are file
  *  system entities, that is, files or directories.
  * 
  * @author slabrams
  */
+@Persistent
 public interface FileSystemSource
     extends NamedSource
 {

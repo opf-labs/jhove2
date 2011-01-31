@@ -36,10 +36,13 @@ package org.jhove2.module.format.icc.type;
 
 import java.util.List;
 
+import com.sleepycat.persist.model.Persistent;
+
 /** ICC named colour, as defined in ICC.1:2004-10, Table 45.
  * 
  * @author slabrams
  */
+@Persistent
 public class NamedColour
 {
     /** Device coordinates. */
@@ -51,12 +54,16 @@ public class NamedColour
     /** Root name. */
     protected String rootName;
     
+    private NamedColour(){
+    	super();
+    }
     /** Instantiate a new <code>NamedColour</code>.
      * @param root   Root name
      * @param pcs    Profile Connection Space (PCS) coordinates
      * @param device Device coordinate
      */
     public NamedColour(String root, PCSNumber pcs, List<Integer> device) {
+    	this();
         this.rootName          = root;
         this.pcsCoordinates    = pcs;
         this.deviceCoordinates = device;

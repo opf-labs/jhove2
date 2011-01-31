@@ -48,6 +48,9 @@ import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.module.format.FormatModuleFactory;
 import org.jhove2.module.format.FormatProfile;
 
+import com.sleepycat.persist.model.NotPersistent;
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * Spring-based implementation of Factory class for {@link org.jhove2.module.format.FormatModule} 
  * objects
@@ -55,6 +58,7 @@ import org.jhove2.module.format.FormatProfile;
  * @author smorrissey, rnanders
  *
  */
+@Persistent
 public class SpringFormatModuleFactory
     implements FormatModuleFactory
 {
@@ -62,7 +66,12 @@ public class SpringFormatModuleFactory
 	 * Dispatch map. Maps from unique identifiers to Spring bean names for the
 	 * modules associated with the formats.
 	 */
+	@NotPersistent
 	static ConcurrentMap<String, String> dispatchMap;
+	
+	public SpringFormatModuleFactory(){
+		super();
+	}
 
 	/** Instantiate a new format module by identifier.
 	 * @param identifier Format identifier

@@ -54,6 +54,8 @@ public class InputFactory {
 	 * 
 	 * @param file
 	 *            Java {java.io.File} underlying the inputable
+     * @param isTemp
+     *            Temporary file status: true if a temporary file
 	 * @param bufferSize
 	 *            Maximum buffer size, in bytes
 	 * @param scope
@@ -64,10 +66,11 @@ public class InputFactory {
 	 * @throws IOException
 	 *             I/O exception instantiating input
 	 */
-	public static Input getInput(File file, int bufferSize, Type type)
+	public static Input getInput(File file, boolean isTemp, int bufferSize,
+	                             Type type)
 		throws FileNotFoundException, IOException
 	{
-		return getInput(file, bufferSize, type, ByteOrder.BIG_ENDIAN);
+		return getInput(file, isTemp, bufferSize, type, ByteOrder.BIG_ENDIAN);
 	}
 
 	/**
@@ -87,6 +90,8 @@ public class InputFactory {
 	 * 
 	 * @param file
 	 *            Java {java.io.File} underlying the inputable
+     * @param isTemp
+     *            Temporary file status: true if a temporary file
 	 * @param bufferSize
 	 *            Maximum buffer size, in bytes
 	 * @param scope
@@ -99,27 +104,27 @@ public class InputFactory {
 	 * @throws IOException
 	 *             I/O exception instantiating input
 	 */
-	public static Input getInput(File file, int bufferSize, Type type,
-	                             ByteOrder order)
+	public static Input getInput(File file, boolean isTemp, int bufferSize,
+	                             Type type, ByteOrder order)
 	    throws FileNotFoundException, IOException
 	{
 		AbstractInput abstractInput = null;
 		if (file != null && file.canRead()) {
 		    if (type.equals(Type.Direct)) {
-		        abstractInput = new DirectInput(file, bufferSize, order);
+		        abstractInput = new DirectInput(file, isTemp, bufferSize, order);
 		    }
 		    else if (type.equals(Type.NonDirect)) {
-		        abstractInput = new NonDirectInput(file, bufferSize, order);
+		        abstractInput = new NonDirectInput(file, isTemp, bufferSize, order);
 		    }
 		    else if (type.equals(Type.Mapped)) {
 		        /* Only files smaller than Input.MAX_MAPPED_FILESIZE can utilize 
 		         * MappedByteBuffers 
 		         */
 		        if (file.length() < Input.MAX_MAPPED_FILE) {
-		            abstractInput = new MappedInput(file, bufferSize, order);
+		            abstractInput = new MappedInput(file, isTemp, bufferSize, order);
 		        }
 		        else {
-		            abstractInput = new DirectInput(file, bufferSize, order);
+		            abstractInput = new DirectInput(file, isTemp, bufferSize, order);
 		        }
 		    }
 		    abstractInput.setBufferType(type);
@@ -127,6 +132,5 @@ public class InputFactory {
 		}
 
 		return abstractInput;
-
 	}
 }

@@ -40,6 +40,8 @@ import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.module.assess.Assessor;
 import org.jhove2.module.assess.AssessorFactory;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * Spring-based implementation of {@link org.jhove2.module.assess.AssessorFactory AssessorFactory} class for creating {@link org.jhove2.module.assess.AssessmentModule AssessmentModule} 
  * objects
@@ -47,9 +49,14 @@ import org.jhove2.module.assess.AssessorFactory;
  * @author rnanders
  *
  */
+@Persistent
 public class SpringAssessorFactory
     implements AssessorFactory
 {
+	
+	public SpringAssessorFactory(){
+		super();
+	}
 	/**
      * Create a new {@link org.jhove2.module.assess.AssessmentModule
      * AssessmentModule} instance using data from the Spring config files.

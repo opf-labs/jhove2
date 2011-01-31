@@ -73,6 +73,15 @@ package org.jhove2.module.format.sgml;
     public List<String> getDoctypeFinderParseErrors() {
         return doctypeFinderParseErrors;
     }
+    
+    public void setDoctypeFinderParseErrors(List<String> list){
+      doctypeFinderParseErrors = list;
+    }
+}
+@lexer::members{
+  boolean inDocType = false;
+  boolean lexFoundPubid = false;
+  boolean lexFoundSysid = false;
 }
 @lexer::members{
   boolean inDocType = false;

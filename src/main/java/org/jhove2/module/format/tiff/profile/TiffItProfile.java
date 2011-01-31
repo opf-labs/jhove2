@@ -47,11 +47,15 @@ import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
 import org.jhove2.module.format.Validator;
 import org.jhove2.module.format.tiff.TiffIFD;
+import org.jhove2.persist.FormatProfileAccessor;
+
+import com.sleepycat.persist.model.Persistent;
 
 /**
  * @author mstrong
  * 
  */
+@Persistent
 public class TiffItProfile extends TiffProfile implements Validator {
 
     /** Invalid Value for samples per pixel message */
@@ -78,21 +82,26 @@ public class TiffItProfile extends TiffProfile implements Validator {
     /** invalid NumberOfInks value message */
     protected Message invalidNumberOfInksValueMessage;
 
+
+
+    @SuppressWarnings("unused")
+	private TiffItProfile() {
+        this(null, null);
+    }
+     
     /**
      * Instantiate a new <code>TiffItProfile</code>.
      * 
      * @param format
      *            TIFF-IT format
+	 * @param formatProfileAccessor 
+	 * 	          Persistence manager        
      */
-    public TiffItProfile(Format format) {
-        super(format);
-
+    public TiffItProfile(Format format, 
+			FormatProfileAccessor formatProfileAccessor) {
+        super(format, formatProfileAccessor);
         this.isValid = Validity.Undetermined;
         this.missingRequiredTagMessages = new ArrayList<Message>();
-    }
-
-    public TiffItProfile() {
-        this(null);
     }
 
     /**

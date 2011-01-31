@@ -44,6 +44,9 @@ import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.format.Format;
 import org.jhove2.core.format.FormatFactory;
 
+import com.sleepycat.persist.model.NotPersistent;
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * Spring-based implementation of Factory class for {@link org.jhove2.core.format.Format} 
  * objects
@@ -51,12 +54,17 @@ import org.jhove2.core.format.FormatFactory;
  * @author smorrissey
  *
  */
+@Persistent
 public class SpringFormatFactory
     implements FormatFactory
 {
 	/** Map from JHOVE2 format identifiers to bean name for format */
+	@NotPersistent
 	public static ConcurrentMap<String, String> jhoveIdToBeanName;
 
+	public SpringFormatFactory(){
+		super();
+	}
 	/** Instantiate a new format by identifier.
 	 * @param formatIdentifier Format identifier
 	 * @see org.jhove2.core.format.FormatFactory#getFormat(java.lang.String)

@@ -1,15 +1,12 @@
 package org.jhove2.module.format.tiff;
 
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
-import java.util.Properties;
 import java.util.Set;
 
 import javax.annotation.Resource;
 
 import org.jhove2.core.JHOVE2;
-import org.jhove2.core.JHOVE2Exception;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;

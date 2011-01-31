@@ -54,11 +54,15 @@ import org.jhove2.module.format.Validator;
 import org.jhove2.module.format.icc.ICCModule;
 import org.jhove2.module.format.icc.ICCTag;
 import org.jhove2.module.format.icc.ICCTagTable;
+import org.jhove2.persist.FormatProfileAccessor;
+
+import com.sleepycat.persist.model.Persistent;
 
 /** ICC named colour profile, as defined in ICC.1:2004-10,u00a7 8.10.
  * 
  * @author slabrams
  */
+@Persistent
 public class NamedColourProfile
     extends AbstractFormatProfile
     implements Validator
@@ -85,14 +89,20 @@ public class NamedColourProfile
     
     /** Instantiate a new <code>NamedColourProfile</code>.
      * @param format Profile format 
+     * @param formatProfileAccessor persistence manager 
      */
-    public NamedColourProfile(Format format) {
-        super(VERSION, RELEASE, RIGHTS, format);
+    public NamedColourProfile(Format format, FormatProfileAccessor formatProfileAccessor) {
+        super(VERSION, RELEASE, RIGHTS, format, formatProfileAccessor);
         
         this.isValid = Validity.Undetermined;
         this.missingRequiredTagMessages = new ArrayList<Message>();
     }
- 
+
+    @SuppressWarnings("unused")
+    private NamedColourProfile(){
+    	this(null,null);
+    }
+    
     /** Validate the named colour profile.
      * @param jhove2 JHOVE2 framework
      * @param source ICC source unit
@@ -103,8 +113,8 @@ public class NamedColourProfile
     public Validity validate(JHOVE2 jhove2, Source source, Input input)
         throws JHOVE2Exception
     {
-        if (this.module != null) {
-            ICCTagTable table = ((ICCModule) this.module).getTagTable();
+        if (this.getFormatModule() != null) {
+            ICCTagTable table = ((ICCModule) this.getFormatModule()).getTagTable();
             if (table != null) {
                 if (table.hasCommonRequirements()) {
                     this.isValid = Validity.True;

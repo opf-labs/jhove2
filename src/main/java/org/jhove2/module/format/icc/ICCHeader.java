@@ -67,10 +67,13 @@ import org.jhove2.module.format.icc.field.ProfileFlag;
 import org.jhove2.module.format.icc.field.RenderingIntent;
 import org.jhove2.module.format.icc.type.XYZNumber;
 
+import com.sleepycat.persist.model.Persistent;
+
 /** An ICC profile header.  See ICC.1:2004-10, \u00a7 7.2.
  * 
  * @author slabrams
  */
+@Persistent
 public class ICCHeader
     extends AbstractReportable
     implements Parser

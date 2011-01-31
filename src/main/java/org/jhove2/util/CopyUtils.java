@@ -37,10 +37,14 @@ package org.jhove2.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+
+
 
 
 /**
@@ -59,11 +63,14 @@ public class CopyUtils {
 		ArrayList<String> newList = null;
 		if (sourceList != null){
 			newList = new ArrayList<String>();
-			for (String listItem : sourceList){
-				newList.add(listItem);
+			for (int i=0; i<sourceList.size(); i++){
+				String oldString = sourceList.set(i,null);
+				String newItem = new String(oldString);
+				oldString = null;
+				newList.add(newItem);
 			}
 			sourceList.clear();
-			sourceList = null;
+
 		}	
 		return newList;
 	}
@@ -73,16 +80,27 @@ public class CopyUtils {
 	 * @return deep copy of map
 	 */
 	public static Map<String, Integer> copyAndClearIntMap(Map<String, Integer> sourceMap) {
-		HashMap<String, Integer> map = null;
+		HashMap<String, Integer> newMap = null;
 		if (sourceMap != null){
-			map = new HashMap<String, Integer>();
-			for (Map.Entry<String, Integer> entry:sourceMap.entrySet()){
-				map.put(entry.getKey(), entry.getValue());
+			newMap = new HashMap<String, Integer>();
+			Set<String> keySet = sourceMap.keySet();
+			Set<String> copyKeySet = new TreeSet<String>();
+			if (keySet != null){
+				Iterator<String> iter = keySet.iterator();
+				while (iter.hasNext()){
+					String key = new String(iter.next());
+					copyKeySet.add(key);
+				}
 			}
-			sourceMap.clear();
-			sourceMap = null;
+			for(String copyKey:copyKeySet){
+				Integer oldInt = sourceMap.remove(copyKey);
+				Integer value = new Integer(oldInt.intValue());
+				newMap.put(copyKey, value);
+				oldInt = null;
+			}
+			copyKeySet.clear();
 		}		
-		return map;
+		return newMap;
 	}
 	/**
 	 *  Copy items from source to target map; then clear source map and set it to null
@@ -90,16 +108,27 @@ public class CopyUtils {
 	 * @return deep copy of map
 	 */
 	public static Map<String, String> copyAndClearStringMap(Map<String, String> sourceMap) {
-		HashMap<String, String> map = null;
+		HashMap<String, String> newMap = null;
 		if (sourceMap != null){
-			map = new HashMap<String, String>();
-			for (Map.Entry<String, String> entry:sourceMap.entrySet()){
-				map.put(entry.getKey(), entry.getValue());
+			newMap = new HashMap<String, String>();
+			Set<String> keySet = sourceMap.keySet();
+			Set<String> copyKeySet = new TreeSet<String>();
+			if (keySet != null){
+				Iterator<String> iter = keySet.iterator();
+				while(iter.hasNext()){
+					String key = new String(iter.next());
+					copyKeySet.add(key);
+				}
 			}
-			sourceMap.clear();
-			sourceMap = null;
+			for (String copyKey:copyKeySet){
+				String oldString = sourceMap.remove(copyKey);
+				String value = new String(oldString);
+				newMap.put(copyKey, value);
+				oldString = null;
+			}
+			copyKeySet.clear();
 		}		
-		return map;
+		return newMap;
 	}
 	/**
 	 *  Copy items from source to target map; then clear source map and set it to null
@@ -110,21 +139,23 @@ public class CopyUtils {
 		HashMap<String, List<String>> newMap = null;
 		if (sourceMap != null){
 			newMap = new HashMap<String, List<String>>();
-			for (Map.Entry<String, List<String>> entry:sourceMap.entrySet()){
-				String key = entry.getKey();
-				List<String> values = entry.getValue();
-				ArrayList<String> newValues = null;
-				if (values !=null){
-					newValues = new ArrayList<String>();
-					for(String stValue:values){
-						newValues.add(stValue);
-					}
-					values.clear();
+			Set<String> keySet = sourceMap.keySet();
+			Set<String> copyKeySet = new TreeSet<String>();
+			if (keySet != null){
+				Iterator<String> iter = keySet.iterator();
+				while(iter.hasNext()){
+					String key = new String(iter.next());
+					copyKeySet.add(key);
 				}
-				newMap.put(key, newValues);
 			}
-			sourceMap.clear();
-			sourceMap = null;
+			for (String copyKey:copyKeySet){
+				List<String> oldList = sourceMap.remove(copyKey);
+				List<String> newList = copyAndClearList(oldList);
+				newMap.put(copyKey, newList);
+				oldList = null;
+				
+			}
+			copyKeySet.clear();
 		}		
 		return newMap;
 	}
@@ -137,11 +168,16 @@ public class CopyUtils {
 		TreeSet<String> newSet = null;
 		if (sourceSet != null){
 			newSet = new TreeSet<String>();
-			for (String element:sourceSet){
-				newSet.add(element);
+			Iterator<String> iter = sourceSet.iterator();
+			while (iter.hasNext()){
+				String oldKey = iter.next();
+				String key = new String(oldKey);
+				newSet.add(key);
+				oldKey = null;
 			}
-			sourceSet.clear();
-			sourceSet = null;
+			for (String copyKey:newSet){
+				sourceSet.remove(copyKey);
+			}			
 		}		
 		return newSet;
 	}

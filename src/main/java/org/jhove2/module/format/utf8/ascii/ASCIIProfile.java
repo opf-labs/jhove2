@@ -52,12 +52,16 @@ import org.jhove2.core.source.Source;
 import org.jhove2.module.format.AbstractFormatProfile;
 import org.jhove2.module.format.utf8.UTF8Module;
 import org.jhove2.module.format.utf8.unicode.CodeBlock;
+import org.jhove2.persist.FormatProfileAccessor;
+
+import com.sleepycat.persist.model.Persistent;
 
 /**
  * ASCII profile of UTF-8.
  * 
  * @author mstrong, slabrams
  */
+@Persistent
 public class ASCIIProfile
 	extends AbstractFormatProfile
 {
@@ -92,18 +96,24 @@ public class ASCIIProfile
 	 * 
 	 * @param format
 	 *            ASCII format
+	 * @param formatProfileAccessor 
+	 * 	          Persistence manager
 	 */
-	public ASCIIProfile(Format format) {
-		super(VERSION, RELEASE, RIGHTS, format);
-
+	public ASCIIProfile(Format format, 
+			FormatProfileAccessor formatProfileAccessor) {
+		super(VERSION, RELEASE, RIGHTS, format, formatProfileAccessor);
 		this.isValid = Validity.Undetermined;
 		this.nonBasicLatinCodeBlocks = new TreeSet<CodeBlock>();
 	}
 	
-	public ASCIIProfile(){
-		this(null);
-	}
 
+	/**
+	 * Constructor
+	 */
+	@SuppressWarnings("unused")
+	private ASCIIProfile(){
+		this(null, null);
+	}
 	/**
 	 * Validate an ASCII source unit.
 	 * 
@@ -123,7 +133,7 @@ public class ASCIIProfile
 	{
 		this.isValid = Validity.True;
 
-		Set<CodeBlock> blocks = ((UTF8Module) this.module).getCodeBlocks();
+		Set<CodeBlock> blocks = ((UTF8Module) this.getFormatModule()).getCodeBlocks();
 		Iterator<CodeBlock> iter = blocks.iterator();
 		while (iter.hasNext()) {
 			CodeBlock block = iter.next();

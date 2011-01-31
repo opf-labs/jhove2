@@ -41,6 +41,8 @@ import java.util.ArrayList;
 
 import org.jhove2.core.JHOVE2Exception;
 
+import com.sleepycat.persist.model.Persistent;
+
 
 /**
  * This class is used to create a child process using Java's Runtime API, which actually
@@ -51,6 +53,7 @@ import org.jhove2.core.JHOVE2Exception;
  * @author smorrissey
  *
  */
+@Persistent
 public class ForkShellHandler implements ExternalProcessHandler {
 	
 

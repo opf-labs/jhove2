@@ -39,11 +39,14 @@ package org.jhove2.core;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.reportable.AbstractReportable;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * {@link org.jhove2.core.reportable.Reportable} wrapper for third-party product.
  * 
  * @author mstrong, slabrams, smorrissey
  */
+@Persistent
 public class WrappedProduct
 	extends AbstractReportable
 {
@@ -99,7 +102,7 @@ public class WrappedProduct
 	
 	public WrappedProduct(String name, String version, String releaseDate,
 			              String rightsStatement) {
-		super();
+		this();
 		this.name            = name;
 		this.version         = version;
 		this.releaseDate     = releaseDate;

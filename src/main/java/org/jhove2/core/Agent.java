@@ -39,11 +39,14 @@ package org.jhove2.core;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.reportable.AbstractReportable;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * A JHOVE2 human or corporate agent. Represents person or corporate entity responsible for code.
  * 
  * @author mstrong, slabrams
  */
+@Persistent
 public class Agent extends AbstractReportable {
 	/** Agent types. */
 	public enum Type {
@@ -87,10 +90,13 @@ public class Agent extends AbstractReportable {
          *            Agent type (personal or corporate)
 	 */
 	public Agent(String name, Type type) {
-		super();
-
+		this();
 		this.name = name;
 		this.type = type;
+	}
+	
+	private Agent(){
+		super();
 	}
 
 	/**

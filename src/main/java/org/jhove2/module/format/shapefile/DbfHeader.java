@@ -39,6 +39,8 @@ package org.jhove2.module.format.shapefile;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.reportable.AbstractReportable;
 
+import com.sleepycat.persist.model.Persistent;
+
 import java.util.List;
 import java.util.ArrayList;
 
@@ -48,6 +50,7 @@ import java.util.ArrayList;
  * 
  * @author rnanders
  */
+@Persistent
 public class DbfHeader extends AbstractReportable {
 
     /** the number of records in the file. */
@@ -61,7 +64,13 @@ public class DbfHeader extends AbstractReportable {
 
     /** The names of the table columns. */
     public List<String> fieldNames = new ArrayList<String>();
-
+    
+    /**
+     * Constructor
+     */
+    public DbfHeader (){
+    	super();
+    }
     /**
      * Gets the number of records in the file.
      *

@@ -41,10 +41,12 @@ import java.util.ArrayList;
 import org.antlr.runtime.ANTLRFileStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
+import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
+import org.jhove2.core.source.Source;
 import org.jhove2.util.CopyUtils;
 
 /**
@@ -55,29 +57,15 @@ import org.jhove2.util.CopyUtils;
  * the err file.
  * @author smorrissey
  */
-public class OpenSpMessageParser {
+public class OpenSpMessageParser extends AbstractOpenSpMessageParser {
 	
 	/** prefix for parser error messages to indicate which grammar generated parse errors */
 	public static final String OSPMESSAGEERR = "SPMESSAGE: ";
-	// fragments for formatting OpenSP message
-	public static final String  MESSAGE_LEVEL = "MESSAGE LEVEL: ";
-	public static final String NA = "NA";
-	public static final String  MESSAGE_CODE = ":   MESSAGE CODE: ";
-	public static final String LINE = ":   LINE: ";
-	public static final String POSITION =  ":   POSITION: ";
-	public static final String MESSAGE_TEXT = ":  MESSAGE TEXT:\n\t";
-	
-	/**
-	 * Invokes ANTLR-generated grammar class to parse OpenSP-generated .err file
-	 * @param messageFilePath path to OpenSP-generated .err file
-	 * @param sgm SGML module with Source object to which Messages may be added as required
-	 * @return SgmlParseMessagesParser with extracted message info
-	 * @throws JHOVE2Exception
-	 * @throws IOException 
-	 * @throws RecognitionException 
+	/* (non-Javadoc)
+	 * @see org.jhove2.module.format.sgml.OpenSpErrMessageParser#parseMessageFile(java.lang.String, org.jhove2.core.JHOVE2, org.jhove2.core.source.Source, org.jhove2.module.format.sgml.SgmlModule)
 	 */
-	public SgmlParseMessagesParser parseMessageFile(String messageFilePath, SgmlModule sgm)
-	throws JHOVE2Exception, IOException, RecognitionException {
+	public void parseMessageFile(String messageFilePath, JHOVE2 jhove2, Source source, SgmlModule sgm)
+	throws JHOVE2Exception, IOException {
 		SgmlParseMessagesLexer lex = null;
 		SgmlParseMessagesParser parser = null;
 		try {
@@ -93,8 +81,8 @@ public class OpenSpMessageParser {
 					Context.PROCESS,
 					"org.jhove2.module.format.sgml.OpenSpMessageParser.IOExceptionForOpenSpMessageLexer",
 					messageArgs,
-					sgm.jhove2.getConfigInfo());
-			sgm.source.addMessage(message);
+					jhove2.getConfigInfo());
+			sgm.getSgmlParserErrorMessages().add(message);
 			throw e;
 		}
 		CommonTokenStream tokens = new CommonTokenStream(lex);
@@ -112,11 +100,14 @@ public class OpenSpMessageParser {
 					Context.PROCESS,
 					"org.jhove2.module.format.sgml.OpenSpMessageParser.RecognitionExceptionForOpenSpMessageLexer",
 					messageArgs,
-					sgm.jhove2.getConfigInfo());
-			sgm.source.addMessage(message);
-			throw e;
+					jhove2.getConfigInfo());
+			sgm.getSgmlParserErrorMessages().add(message);
 		}
-		return parser;
+		if (sgm.getDocumentProperties()==null){
+			sgm.setDocumentProperties(new SgmlDocumentProperties());
+		}
+		this.extractDocProperties(parser, sgm.getDocumentProperties());
+		return;
 	}
 	/**
 	 * Method to extract fields from ANTLR parser and make deep copy into SgmlDocumentProperties object.
@@ -124,13 +115,14 @@ public class OpenSpMessageParser {
 	 * @param errParser SgmlParseMessagesParser with .err properties to be extracted
 	 * @param props SgmlDocumentProperties object maintaing information about SGML document
 	 */
-	public void extractDocProperties(SgmlParseMessagesParser errParser,  SgmlDocumentProperties props){
+	protected void extractDocProperties(SgmlParseMessagesParser errParser,  SgmlDocumentProperties props){
 		if (errParser.getSgmlMessagesParseErrors() != null){
 			if (props.getParseErrors() == null){
 				props.setParseErrors(new ArrayList<String>());
 			}
 			props.getParseErrors().addAll(
 					CopyUtils.copyAndClearList(errParser.getSgmlMessagesParseErrors()));
+			errParser.setSgmlMessagesParseErrors(null);
 		}
 		props.setErrorLevelMessageCount(errParser.eLevelMessageCount);
 		props.setWarningLevelMessageCount(errParser.wLevelMessageCount);
@@ -139,52 +131,6 @@ public class OpenSpMessageParser {
 		props.setXrefLevelMessageCount(errParser.xLevelMessageCount);
 		props.setTotMessageCount(errParser.totMessageCount);
 		props.setSgmlParserMessages(CopyUtils.copyAndClearList(errParser.openSpMessages));
-	}
-	
-	/**
-	 * Same as createCodedMessageString(fileName, lineNumber, posNumber, messageText, null, null)
-     * @param fileName String with SGML or DTD file name
-	 * @param lineNumber line in file to which message pertains
-	 * @param posNumber  position in line to which message pertains
-	 * @param messageText text of message
-	 * @return formatted string containing message information
-	 */
-	public static String createMessageString(String fileName, String lineNumber, String posNumber, 
-			String messageText) {
-		return createCodedMessageString(fileName, lineNumber, posNumber, messageText, null, null);
-	}
-	/**
-	 * Takes components of message string generated by OpenSp and creates formatted message string
-     * @param fileName String with SGML or DTD file name
-	 * @param lineNumber line in file to which message pertains
-	 * @param posNumber  position in line to which message pertains
-	 * @param messageText text of message
-	 * @param messageLevel message Level/Type (Error, warning, info, xref, Name(quantity)length issue)
-	 * @param messageCode message code assigned by OpenSp
-	 * @return formatted string containing message information
-	 */
-	public static String createCodedMessageString(String fileName, String lineNumber, String posNumber, 
-			String messageText, String messageLevel, String messageCode) {
-		StringBuffer msg = new StringBuffer(MESSAGE_LEVEL);
-		if (messageLevel != null){
-			msg.append(messageLevel);
-		}
-		else {
-			msg.append(NA);
-		}
-		msg.append(MESSAGE_CODE);
-		if (messageCode != null){
-			msg.append(messageCode);
-		}
-		else {
-			msg.append(NA);
-		}
-		msg.append(LINE);
-		msg.append(lineNumber);
-		msg.append(POSITION);
-		msg.append(posNumber);
-		msg.append(MESSAGE_TEXT);
-		msg.append(messageText);
-		return msg.toString();
+		errParser.openSpMessages = null;
 	}
 }

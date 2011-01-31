@@ -36,17 +36,21 @@
 
 package org.jhove2.core;
 
+import java.io.File;
 import java.util.Properties;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.io.Input.Type;
 import org.jhove2.core.reportable.AbstractReportable;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * Configuration information for JHOVE2 applications.
  * 
  * @author mstrong, slabrams, smorrissey
  */
+@Persistent
 public class Invocation
 	extends AbstractReportable
 {
@@ -85,31 +89,34 @@ public class Invocation
 
 	/** Delete temporary files flag: if true, delete temporary files. */
 	protected boolean deleteTempFiles;
-	
+
+    /**
+     * Framework fail fast limit. Processing of a given source unit is
+     * terminated once the number of detected errors exceeds the limit. A limit
+     * of 0 indicates no fail fast, i.e., process and report all errors.
+     */
+    protected int failFastLimit;
+    
+    /** JHOVE2 home directory (from environment; defaults to user directory */
+    protected String jhove2Home;
+
+    /** Temporary directory. */
+    protected String tempDirectory;
+    
+    /** Temporary directory {@link java.io.File}. */
+    protected File tempDirectoryFile;
+    
 	/** Framework temporary file prefix. */
 	protected String tempPrefix;
 
 	/** Framework temporary file suffix. */
 	protected String tempSuffix;
 
-	/**
-	 * Framework fail fast limit. Processing of a given source unit is
-	 * terminated once the number of detected errors exceeds the limit. A limit
-	 * of 0 indicates no fail fast, i.e., process and report all errors.
-	 */
-	protected int failFastLimit;
-
-	/** Temporary directory. */
-	protected String tempDirectory;
-
 	/** Application user name. */
 	protected String userName;
 
 	/** Application current working directory. */
 	protected String workingDirectory;
-	
-	/** JHOVE2 home directory (from environment; defaults to user directory */
-	protected String jhove2Home;
 
 	/**
 	 * Instantiate a new <code>AbstractApplication</code>.
@@ -183,6 +190,15 @@ public class Invocation
 		return this.failFastLimit;
 	}
 	
+	/** Get temporary directory {@link java.io.File}.
+	 * @return Temporary directory
+	 */
+	public File getTempDirectoryFile()	{
+	    if (this.tempDirectoryFile == null) {
+	        this.tempDirectoryFile = new File(this.tempDirectory);
+	    }
+	    return this.tempDirectoryFile;
+	}
 	
 	/**
 	 * Get temporary directory.

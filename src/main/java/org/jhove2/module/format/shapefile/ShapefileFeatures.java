@@ -42,11 +42,14 @@ import java.util.List;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.reportable.AbstractReportable;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * This class is used to hold all feature values extracted from the shapefile.
  * 
  * @author rnanders
  */
+@Persistent
 public class ShapefileFeatures extends AbstractReportable {
 
     /**
@@ -73,6 +76,9 @@ public class ShapefileFeatures extends AbstractReportable {
     /** The coordinate system read in from the project file, if it exists. */
     public String coordinateSystem = null;
 
+    public ShapefileFeatures(){
+    	super();
+    }
     /**
      * Get filename stem shared by the Shapefile main, index, dBASE, etc files.
      * 

@@ -112,7 +112,7 @@ public class TiffModuleTestBase {
         File testFile = new File(tiffExampleDirPath, relativePath);
         assertTrue(testFile.exists());
         try {
-            FileSource fileSource = new FileSource(testFile);
+            FileSource fileSource = (FileSource) JHOVE2.getSourceFactory().getSource(testFile);
             Input input = fileSource.getInput(JHOVE2);
             testTiffModule.parse(JHOVE2, fileSource, input);
         }

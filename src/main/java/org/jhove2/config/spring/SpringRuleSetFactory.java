@@ -45,6 +45,9 @@ import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.module.assess.RuleSet;
 import org.jhove2.module.assess.RuleSetFactory;
 
+import com.sleepycat.persist.model.NotPersistent;
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * Spring-based implementation of
  * {@link org.jhove2.module.assess.RuleSetFactory RuleSetFactory} for creating a
@@ -52,6 +55,7 @@ import org.jhove2.module.assess.RuleSetFactory;
  * 
  * @author rnanders
  */
+@Persistent
 public class SpringRuleSetFactory
     implements RuleSetFactory
 {
@@ -60,8 +64,12 @@ public class SpringRuleSetFactory
      * RuleSet}(s) found in the Spring config files.
      * Maps from ObjectFilter {@link Class#getName() className} to List<RuleSet>.
       */
+	@NotPersistent
 	static ConcurrentMap<String, List<RuleSet>> ruleSetMap;
 
+	public SpringRuleSetFactory(){
+		super();
+	}
 
 	/**
 	 * Returns the {@link #ruleSetMap}.  First time it is called it

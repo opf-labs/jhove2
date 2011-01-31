@@ -36,11 +36,14 @@
 
 package org.jhove2.core;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * Represents the time used to complete a task.
  * 
  * @author mstrong, slabrams
  */
+@Persistent
 public class Duration {
 	/** Indicator of an uninitialized time. */
 	public static final long UNINITIALIZED = -1L;
@@ -56,6 +59,12 @@ public class Duration {
 	 */
 	public Duration(long duration) {
 		this.duration = duration;
+	}
+	
+	
+	@SuppressWarnings("unused")
+	private Duration(){
+		this(0L);
 	}
 
 	/**

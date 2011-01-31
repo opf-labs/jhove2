@@ -43,18 +43,23 @@ import java.security.NoSuchAlgorithmException;
 import org.jhove2.core.Digest;
 import org.jhove2.core.reportable.AbstractReportable;
 
+import com.sleepycat.persist.model.NotPersistent;
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * Abstract JHOVE2 algorithm-specific message digester that operates on a Java
  * NIO {@link java.nio.ByteBuffer}.
  * 
  * @author mstrong, slabrams
  */
+@Persistent
 public abstract class AbstractBufferDigester extends AbstractReportable
 implements BufferDigester {
 	/** Message digest algorithm. */
 	protected String algorithm;
 
 	/** Message digester. */
+	@NotPersistent
 	protected MessageDigest digester;
 	
 	public AbstractBufferDigester(){
@@ -71,6 +76,7 @@ implements BufferDigester {
 	 */
 	public AbstractBufferDigester(String algorithm)
 			throws NoSuchAlgorithmException {
+		this();
 		this.algorithm = algorithm;
 
 		this.digester = MessageDigest.getInstance(algorithm);

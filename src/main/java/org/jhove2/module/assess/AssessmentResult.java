@@ -49,12 +49,15 @@ import org.jhove2.core.reportable.AbstractReportable;
 import org.jhove2.module.format.Validator.Validity;
 import org.mvel2.MVEL;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * An instance of this object stores the assessment outcome for a given rule
  * against the object being assessed. A list of AssessmentResult instances 
  * and a reference to the assessed object is
  * stored in a parent {@link AssessmentResultSet} object.
  */
+@Persistent
 public class AssessmentResult extends AbstractReportable {
 	
 	/** regex pattern used to test for presence of single equals sign in rule predicates */

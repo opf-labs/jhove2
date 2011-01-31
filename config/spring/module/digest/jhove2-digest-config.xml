@@ -13,6 +13,7 @@
 	<bean id="DigesterModule"
 	      class="org.jhove2.module.digest.DigesterModule"
 	      scope="prototype">
+	    <constructor-arg ref="BaseModuleAccessor"/>
 		<property name="arrayDigesters">
 	    	<list value-type="org.jhove2.module.digest.ArrayDigester">
 	    		<!-- <ref bean="CRC32Digester"/> -->

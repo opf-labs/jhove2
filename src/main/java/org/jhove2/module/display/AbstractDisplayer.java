@@ -36,6 +36,9 @@
 
 package org.jhove2.module.display;
 
+import static com.sleepycat.persist.model.DeleteAction.NULLIFY;
+import static com.sleepycat.persist.model.Relationship.ONE_TO_ONE;
+
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
@@ -58,16 +61,27 @@ import org.jhove2.core.reportable.info.ReportableInfo;
 import org.jhove2.core.reportable.info.ReportablePropertyInfo;
 import org.jhove2.core.reportable.info.ReportableSourceInfo;
 import org.jhove2.module.AbstractModule;
+import org.jhove2.persist.ModuleAccessor;
+
+import com.sleepycat.persist.model.Persistent;
+import com.sleepycat.persist.model.SecondaryKey;
 
 /**
  * JHOVE2 displayer utility.
  * 
  * @author mstrong, slabrams, smorrissey
  */
+@Persistent
 public abstract class AbstractDisplayer
     extends AbstractModule
     implements Displayer
 {
+	/** foreign key linking Displayer to AbstractApplication */
+    @SecondaryKey(relate=ONE_TO_ONE, relatedEntity=AbstractModule.class,
+			onRelatedEntityDelete=NULLIFY)
+	protected Long parentAppId;
+    
+    
 	/** Feature display visibilities. */
 	public enum DisplayVisibility {
 		Always, IfFalse, IfNegative, IfNonNegative, IfNonPositive, IfNonZero, IfPositive, IfTrue, IfZero, Never
@@ -106,7 +120,21 @@ public abstract class AbstractDisplayer
     
     /** Show raw properties flag: if true, show properties. */
     protected boolean showRawProperties;
+    /**
+     * Instantiate a new <code>AbstractDisplayer</code>.
+     */
+    public AbstractDisplayer(){
+    	this(null);
+    }
     
+    /**
+     * Instantiate a new <code>AbstractDisplayer</code>.
+     * @param moduleAccessor 
+	 * 		      Abstract Displayer persistence manager
+     */
+    public AbstractDisplayer (ModuleAccessor moduleAccessor){
+    	this(null, null, null, moduleAccessor);
+    }
 	/**
 	 * Instantiate a new <code>AbstractDisplayer</code>.
 	 * 
@@ -116,10 +144,13 @@ public abstract class AbstractDisplayer
 	 *            AbstractDisplayer build date
 	 * @param rights
 	 *            AbstractDisplayer rights statement
+	 * @param moduleAccessor 
+	 * 		      Abstract Displayer persistence manager
 	 */
-	public AbstractDisplayer(String version, String date, String rights) {
-		super(version, date, rights, Scope.Generic);
-		
+	public AbstractDisplayer(String version, String date, String rights, 
+			ModuleAccessor moduleAccessor) {
+		super(version, date, rights, Scope.Generic, moduleAccessor);		
+
 		this.setCharacterEncoding(DEFAULT_CHARACTER_ENCODING);
 		this.setShowDescriptiveProperties(DEFAULT_SHOW_DESCRIPTIVE_PROPERTIES);
 		this.setShowRawProperties(DEFAULT_SHOW_RAW_PROPERTIES);
@@ -187,7 +218,6 @@ public abstract class AbstractDisplayer
 		throws JHOVE2Exception
 	{
 		this.getTimerInfo().setStartTime();
-		
 		Map<String, String> units = getUnits(this);
 		Map<String, DisplayVisibility> visibilities = getVisibilities(this);
 		
@@ -608,5 +638,13 @@ public abstract class AbstractDisplayer
 	@Override
 	public void setShouldIndent(boolean shouldIndent){
 		this.shouldIndent = shouldIndent;
+	}
+	@Override
+	public Long getParentAppId() {
+		return parentAppId;
+	}
+	@Override
+	public void setParentAppId(Long parentAppId) {
+		this.parentAppId = parentAppId;
 	}
 }

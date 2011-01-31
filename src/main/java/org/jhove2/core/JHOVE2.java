@@ -45,10 +45,15 @@ import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.FileSystemSource;
+import org.jhove2.core.source.NamedSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceCounter;
+import org.jhove2.core.source.SourceFactory;
 import org.jhove2.module.AbstractModule;
 import org.jhove2.module.Command;
+import org.jhove2.persist.FrameworkAccessor;
+
+import com.sleepycat.persist.model.Persistent;
 
 /**
  * Singleton object that drives the characterization process. Widely referred to throughout the
@@ -56,6 +61,7 @@ import org.jhove2.module.Command;
  * 
  * @author mstrong, slabrams, smorrissey
  */
+@Persistent
 public class JHOVE2  
 	extends AbstractModule
 {
@@ -74,9 +80,6 @@ public class JHOVE2
 	/** Counter to track number and scope of sources processed by framework */
 	protected SourceCounter sourceCounter;
 
-	/** List of characterization commands. Executed in List order for each source unit
-         *  characterized. */
-	protected List<Command> commands;
 
 	/** Invocation settings for framework.  If not configured, default values will be used */
 	protected Invocation invocation;
@@ -86,6 +89,10 @@ public class JHOVE2
 	
 	/** Configuration settings for framework.  If not configured, default values will be used  */
 	protected ConfigInfo configInfo;
+	
+	/** Factory class for creating new Sources for characterization */
+	protected SourceFactory sourceFactory;
+	
 
 	/**
 	 * Instantiate a new <code>JHOVE2</code> core framework with a default
@@ -96,7 +103,18 @@ public class JHOVE2
 	public JHOVE2()
 		throws JHOVE2Exception
 	{
-		this(new Invocation());
+		this(null);
+	}
+	
+	/**
+	 * Instantiate a new <code>JHOVE2</code> core framework with a default
+	 * configuration and a specified FrameworkAccessor 
+	 * @param frameworkAccessor FrameworkAccessor to manage access to list of Commands
+	 * @throws JHOVE2Exception
+	 */
+	public JHOVE2(FrameworkAccessor frameworkAccessor) 
+		throws JHOVE2Exception{
+		this(new Invocation(), frameworkAccessor);
 	}
 	
 	/**
@@ -104,10 +122,12 @@ public class JHOVE2
 	 * configuration.
 	 * @param invocation Configuration settings for this instance of the
 	 *                      JHOVE2 framework
+	 * @param frameworkAccessor 
+	 *                      framework persistence manager
+	 * @throws JHOVE2Exception 
 	 */
-	public JHOVE2(Invocation invocation) {
-		super(VERSION, RELEASE, RIGHTS, Scope.Generic);
-		
+	public JHOVE2(Invocation invocation, FrameworkAccessor frameworkAccessor) throws JHOVE2Exception {
+		super(VERSION, RELEASE, RIGHTS, Scope.Generic, frameworkAccessor);		
 		this.invocation = invocation;
 		this.sourceCounter = new SourceCounter();		
 	}
@@ -122,20 +142,20 @@ public class JHOVE2
 	 * 
 	 * @param source
 	 *            Source unit
-	 * @param input
+     * @param input
 	 *            Source input
+	 * @return source which has been characterized 
 	 * @throws JHOVE2Exception
 	 * @throws IOException
 	 */
-	public void characterize(Source source, Input input)
+	public Source characterize(Source source, Input input)
 		throws IOException, JHOVE2Exception
 	{
-		TimerInfo timer = source.getTimerInfo();
-		timer.setStartTime();
-		
+		source = source.startTimer();
 		/* Update summary counts of source units, by scope. */
         try {
-            this.sourceCounter.incrementSourceCounter(source);				
+            this.sourceCounter.incrementSourceCounter(source);	
+            this.getModuleAccessor().persistModule(this);
 		
             /* Characterize the source unit. */
             boolean tryIt = true;
@@ -143,14 +163,14 @@ public class JHOVE2
                 FileSystemSource fs = (FileSystemSource) source;
                 String name = fs.getSourceName();
                 if (!fs.isExtant()) {
-                    source.addMessage(new Message(Severity.ERROR,
+                    source = source.addMessage(new Message(Severity.ERROR,
                         Context.PROCESS,
                         "org.jhove2.core.source.FileSystemSource.FileNotFoundMessage",
                         new Object[]{name}, this.getConfigInfo()));
                     tryIt = false;
                 }
                 else if (!fs.isReadable()) {
-                    source.addMessage(new Message(Severity.ERROR,
+                    source = source.addMessage(new Message(Severity.ERROR,
                         Context.PROCESS,
                         "org.jhove2.core.source.FileSystemSource.FileNotReadableMessage",
                         new Object[]{name}, this.getConfigInfo()));
@@ -158,23 +178,39 @@ public class JHOVE2
                 }
             }
 		    if (tryIt) {
-		        source.setDeleteTempFiles(this.getInvocation().getDeleteTempFiles());
-		        for (Command command : this.commands){
-		            TimerInfo time2 = command.getTimerInfo();
-		            time2.resetStartTime();
+		        boolean del = this.getInvocation().getDeleteTempFiles();
+		    	source = source.setDeleteTempFiles(del);
+		        for (Command command : this.getCommands()){
+		        	command = (Command) command.getModuleAccessor().resetTimerInfo(command);
 		            try {
 		                command.execute(this, source, input);
 		            }
-		            finally {
-		                time2.setEndTime();
+		            finally {          	
+		                try{
+		                	command = (Command) command.getModuleAccessor().endTimerInfo(command);
+		                }
+		                catch(JHOVE2Exception j){
+		                	throw j;
+		                }
 		            }
 		        }
 			}
 		}
+        catch (JHOVE2Exception e){
+        	throw e;
+        }
+        catch (Exception e1){
+        	String sourceName = "";
+        	if (source instanceof NamedSource){
+        		sourceName = ((NamedSource)source).getSourceName();
+        	}
+        	throw new JHOVE2Exception ("Exception characterizing source " + sourceName, e1);
+        }    
         finally {
 			source.close();
-			timer.setEndTime();
+			source = source.endTimer(); // this will commit source
 		}
+        return source;
 	}
     
 	/**
@@ -196,10 +232,15 @@ public class JHOVE2
 	 * Get list of commands to be executed in sequence to characterize
 	 * a source unit.
 	 * @return List of command to be executed
+	 * @throws JHOVE2Exception 
 	 */
 	@ReportableProperty(order = 3, value = "Configured commands.")
-	public List<Command> getCommands() {
-		return commands;
+	public List<Command> getCommands() throws JHOVE2Exception {
+		if (this.getModuleAccessor()==null){
+			throw new JHOVE2Exception("FrameworkAccessor is null");
+		}
+		FrameworkAccessor fa = (FrameworkAccessor) this.getModuleAccessor();
+		return fa.getCommands(this);
 	}
 
 	/**
@@ -249,9 +290,15 @@ public class JHOVE2
 	 * Set commands to be executed in sequence to characterize
 	 * {@link org.jhove2.core.source.Source} units.
 	 * @param commands Commands to be executed
+	 * @return List<Commands> added to JHOVE2
+	 * @throws JHOVE2Exception 
 	 */
-	public void setCommands(List<Command> commands) {
-		this.commands = commands;
+	public List<Command> setCommands(List<Command> commands) throws JHOVE2Exception {
+		if (this.getModuleAccessor()==null){
+			throw new JHOVE2Exception("FrameworkAccessor is null");
+		}
+		FrameworkAccessor fa = (FrameworkAccessor)this.getModuleAccessor();
+		return fa.setCommands(this, commands);
 	}
 
 	/**
@@ -293,4 +340,19 @@ public class JHOVE2
 	public void setConfigInfo(ConfigInfo configInfo) {
 		this.configInfo = configInfo;
 	}
+
+	/**
+	 * @return the sourceFactory
+	 */
+	public SourceFactory getSourceFactory() {
+		return sourceFactory;
+	}
+
+	/**
+	 * @param sourceFactory the sourceFactory to set
+	 */
+	public void setSourceFactory(SourceFactory sourceFactory) {
+		this.sourceFactory = sourceFactory;
+	}
+
 }

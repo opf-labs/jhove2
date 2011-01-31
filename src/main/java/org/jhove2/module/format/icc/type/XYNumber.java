@@ -34,10 +34,13 @@
 
 package org.jhove2.module.format.icc.type;
 
+import com.sleepycat.persist.model.Persistent;
+
 /** ICC XY number, a set of two fixed unsigned u16Fixed16Numbers.
  * 
  * @author slabrams
  */
+@Persistent
 public class XYNumber
 {
     /** X number. */
@@ -46,9 +49,13 @@ public class XYNumber
     /** Y number. */
     protected U16Fixed16Number y;
  
+    private XYNumber(){
+    	super();
+    }
     /** Instantiate a new <code>XYNumber</code>
      */
     public XYNumber(long x, long y) {
+    	this();
         this.x = new U16Fixed16Number(x);
         this.y = new U16Fixed16Number(y);
     }

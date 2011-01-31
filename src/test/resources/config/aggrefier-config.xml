@@ -13,6 +13,7 @@
 	<!-- Aggrefier module bean -->
 	<bean id="TestAggrefier" class="org.jhove2.module.aggrefy.AggrefierModule"
 	      scope="prototype">
+	    <constructor-arg ref="AggrefierAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
@@ -21,7 +22,7 @@
 			</list>
 		</property>
 		<property name="recognizers">
-			<list value-type="org.jhove2.module.identify.Identifier">
+			<list value-type="org.jhove2.module.aggrefy.Recognizer">
 				<ref bean="testStrictShapeFileRecognizer"/>
 				<ref bean="quickenFileRecognizer"/>
 			</list>
@@ -58,8 +59,7 @@
 			</map>
 		</constructor-arg>
 	</bean>
-
-		<bean id="quickenFileList" class="java.util.ArrayList">
+	<bean id="quickenFileList" class="java.util.ArrayList">
 		<constructor-arg type="java.util.Collection">
 			<list>
 				<value>finances.idx</value>

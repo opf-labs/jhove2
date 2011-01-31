@@ -13,6 +13,7 @@
   	<!-- ASCII profile bean -->
 	<bean id="ASCIIProfile" class="org.jhove2.module.format.utf8.ascii.ASCIIProfile" scope="prototype">
 	    <constructor-arg ref="ASCIIFormat"/>
+		<constructor-arg ref="FormatProfileAccessor"/>
 	    <property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
@@ -262,7 +263,7 @@
 	<bean id="UTF8Module" class="org.jhove2.module.format.utf8.UTF8Module"
 	      scope="prototype">
 	    <constructor-arg ref="UTF8Format"/>
-		<!--	    <property name="profile" ref="ASCIIProfile"/>-->
+		<constructor-arg ref="FormatModuleAccessor"/>
 		<property name="profiles">
 			<list value-type="org.jhove2.module.format.FormatProfile">
 				<ref bean="ASCIIProfile"/>

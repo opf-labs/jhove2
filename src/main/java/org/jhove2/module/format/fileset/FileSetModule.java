@@ -51,12 +51,16 @@ import org.jhove2.core.source.FileSetSource;
 import org.jhove2.core.source.FileSystemSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.BaseFormatModule;
+import org.jhove2.persist.FormatModuleAccessor;
+
+import com.sleepycat.persist.model.Persistent;
 
 /**
  * JHOVE2 file set module. A file set is a set of unrelated files.
  * 
  * @author mstrong, slabrams
  */
+@Persistent
 public class FileSetModule
 	extends BaseFormatModule
 {
@@ -71,6 +75,17 @@ public class FileSetModule
 			+ "Ithaka Harbors, Inc., and The Board of Trustees of the Leland "
 			+ "Stanford Junior University. "
 			+ "Available under the terms of the BSD license.";
+
+	/**
+	 * Instantiate a new <code>FileSetModule</code>.
+	 * 
+	 * @param format
+	 *            Pseudo-directory format
+	 */
+	public FileSetModule(Format format, 
+			FormatModuleAccessor formatModuleAccessor) {
+		super(VERSION, RELEASE, RIGHTS, Scope.Specific, format, formatModuleAccessor);
+	}
 	
 	/**
 	 * Instantiate a new <code>FileSetModule</code>.
@@ -79,11 +94,11 @@ public class FileSetModule
 	 *            Pseudo-directory format
 	 */
 	public FileSetModule(Format format) {
-		super(VERSION, RELEASE, RIGHTS, Scope.Specific, format);
+		this(format, null);
 	}
 
 	public FileSetModule(){
-		super(VERSION, RELEASE, RIGHTS, Scope.Specific, null);
+		this(null, null);
 	}
 	/**
 	 * Parse pseudo-directory source unit.
@@ -117,14 +132,14 @@ public class FileSetModule
 			        FileSystemSource fs = (FileSystemSource) src;
 			        String name = fs.getSourceName();
 			        if (!fs.isExtant()) {
-			            source.addMessage(new Message(Severity.ERROR,
+			            source=source.addMessage(new Message(Severity.ERROR,
 			                Context.PROCESS,
 			                "org.jhove2.core.source.FileSystemSource.FileNotFoundMessage",
 			                new Object[]{name}, jhove2.getConfigInfo()));
 			            continue;
 			        }
 			        else if (!fs.isReadable()) {
-			            source.addMessage(new Message(Severity.ERROR,
+			            source=source.addMessage(new Message(Severity.ERROR,
                             Context.PROCESS,
                             "org.jhove2.core.source.FileSysttemSource.FileNotReadableMessage",
                             new Object[]{name}, jhove2.getConfigInfo()));
@@ -133,11 +148,12 @@ public class FileSetModule
 			    }
 			    Input inpt = src.getInput(jhove2);
 			    try {
-			        jhove2.characterize(src, inpt);
+			        src = jhove2.characterize(src, inpt);// will have been persisted by JHOVE2
 			    }
 			    finally {
 			        if (inpt != null) {
 			            inpt.close();
+			            inpt = null;
 			        }
 			    }
 			}

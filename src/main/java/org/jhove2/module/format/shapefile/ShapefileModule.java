@@ -57,12 +57,16 @@ import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.module.format.Validator;
+import org.jhove2.persist.FormatModuleAccessor;
+
+import com.sleepycat.persist.model.Persistent;
 
 /**
  * JHOVE2 Shapefile module.  Used to extract information from shapefiles.
  * 
  * @author rnanders
  */
+@Persistent
 public class ShapefileModule
 	extends BaseFormatModule
 	implements  Validator
@@ -92,10 +96,15 @@ public class ShapefileModule
     
 
 	/**
-	 * Instantiates a new shapefile module.
+	 * Instantiate a new <code>ShapefileModule</code>.
+	 * 
+	 * @param format
+	 *            Shapefile format
 	 */
-	public ShapefileModule() {
-		this(null);
+	public ShapefileModule(Format format, 
+    		FormatModuleAccessor formatModuleAccessor) {
+		super(VERSION, RELEASE, RIGHTS, format, formatModuleAccessor);
+		this.isValid = Validity.Undetermined;
 	}
 
 	/**
@@ -105,8 +114,11 @@ public class ShapefileModule
 	 *            Shapefile format
 	 */
 	public ShapefileModule(Format format) {
-		super(VERSION, RELEASE, RIGHTS, format);
-		this.isValid = Validity.Undetermined;
+		this(format, null);
+	}
+	
+	public ShapefileModule(){
+		this(null, null);
 	}
 
 	/**
@@ -196,8 +208,9 @@ public class ShapefileModule
 	 * Extract a list of the member files.
 	 *
 	 * @param clump the clump
+	 * @throws JHOVE2Exception 
 	 */
-	private void inventoryMemberFiles(ClumpSource clump) {
+	private void inventoryMemberFiles(ClumpSource clump) throws JHOVE2Exception {
        for (Source child : clump.getChildSources()) {
             if (child instanceof FileSource) {
                 FileSource fileSource = (FileSource) child;

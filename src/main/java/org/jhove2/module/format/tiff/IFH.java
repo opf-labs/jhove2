@@ -39,10 +39,13 @@ import java.nio.ByteOrder;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.reportable.AbstractReportable;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * @author mstrong
  *
  */
+@Persistent
 public class IFH 
     extends AbstractReportable {
 	
@@ -63,6 +66,10 @@ public class IFH
 	
 	public ByteOrder getByteOrder() {
 		return byteOrder;
+	}
+	
+	public IFH(){
+		super();
 	}
 	
 	@ReportableProperty(order = 1, value = "IFH byte order.")

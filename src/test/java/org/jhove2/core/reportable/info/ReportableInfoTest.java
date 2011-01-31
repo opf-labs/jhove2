@@ -4,9 +4,13 @@
 package org.jhove2.core.reportable.info;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
-import org.jhove2.core.source.FileSetSource;
+
+import org.jhove2.core.Invocation;
 import org.jhove2.core.source.Source;
+import org.jhove2.core.source.SourceFactory;
+import org.jhove2.persist.inmemory.InMemorySourceFactory;
 import org.junit.Test;
 
 /**
@@ -44,7 +48,18 @@ public class ReportableInfoTest {
 	 */
 	@Test
 	public void testGetIdentifier() {
-		source = new FileSetSource();
+//		source = new FileSetSource();
+		SourceFactory factory = new InMemorySourceFactory();
+		try {
+		    Invocation inv = new Invocation();
+			source = factory.getSource("", inv.getTempDirectoryFile(),
+			                           inv.getTempPrefix(),
+			                           inv.getTempSuffix(),
+			                           inv.getBufferSize());
+		} catch (Exception e) {
+			fail("unable to create Source");
+		}
+
 		ReportableInfo reportableInfo = new ReportableInfo(source);
 		assertEquals("JHOVE2", reportableInfo.getIdentifier().getNamespace().toString());
 	}

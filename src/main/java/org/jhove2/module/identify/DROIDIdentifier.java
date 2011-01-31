@@ -54,7 +54,11 @@ import org.jhove2.core.format.FormatIdentification;
 import org.jhove2.core.format.FormatIdentification.Confidence;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
-import org.jhove2.module.AbstractModule;
+import org.jhove2.persist.ModuleAccessor;
+
+import com.sleepycat.persist.model.NotPersistent;
+import com.sleepycat.persist.model.Persistent;
+
 
 import uk.gov.nationalarchives.droid.JHOVE2IAnalysisController;
 import uk.gov.nationalarchives.droid.IdentificationFile;
@@ -73,8 +77,9 @@ import uk.gov.nationalarchives.droid.signatureFile.FFSignatureFile;
  * 
  * @author smorrissey
  */
+@Persistent
 public class DROIDIdentifier
-	extends AbstractModule
+	extends AbstractFileSourceIdentifier
 	implements SourceIdentifier
 {
 	/** Framework version identifier. */
@@ -98,15 +103,6 @@ public class DROIDIdentifier
 	/** Bean name for bean for properties file mapping JHOVE2 format identifiers to JHOVE2 format bean names */
 	public static final String JHOVE2BEANMAP_BEANNAME = "FormatBeanMap";
 
-	/** File not identified message (returned by DROID). */
-	protected Message fileNotIdentifiedMessage;
-
-	/** File not run message(returned by DROID). */
-	protected Message fileNotRunMessage;
-
-	/** File Error Message(returned by DROID). */
-	protected Message fileErrorMessage;
-
 	/** DROID Configuration file name */
 	private String configurationFileName = null;
 	
@@ -114,12 +110,15 @@ public class DROIDIdentifier
 	private String signatureFileName = null;
 	
 	/** map from DROID PUIDs to JHOVE2 format ids */
+	@NotPersistent
 	private static ConcurrentMap<String, String> puidToJhoveId;
 
 	/** static member to cache parsed droid config file */
+	@NotPersistent
 	private static ConfigFile cachedConfigFile = null;
 
 	/** static member to cache parsed droid signature file */
+	@NotPersistent
 	private static FFSignatureFile cachedSigFile = null;
 
 	/**Instantiate a new <code>DROIDIdentifier</code> module that wraps DROID.
@@ -128,19 +127,30 @@ public class DROIDIdentifier
 	public DROIDIdentifier()
 		throws JHOVE2Exception
 	{
-		this(null, null);
+		this(null);
 	}
 	
+	/**Instantiate a new <code>DROIDIdentifier</code> module that wraps DROID.
+	 * @param moduleAccessor persistence manager
+	 * @throws JHOVE2Exception 
+	 */
+	public DROIDIdentifier(ModuleAccessor moduleAccessor)
+		throws JHOVE2Exception
+	{
+		this(null, null, moduleAccessor);
+	}
 	
 	/**Instantiate a new <code>DROIDIdentifier</code> module that wraps DROID.
 	 * @param configFileName path to DROID configuration file
 	 * @param sigFileName path to DROID signature file
+	 * @param moduleAccessor persistence manager
 	 * @throws JHOVE2Exception 
 	 */
-	public DROIDIdentifier(String configFileName, String sigFileName)
+	public DROIDIdentifier(String configFileName, String sigFileName, 
+			ModuleAccessor moduleAccessor)
 		throws JHOVE2Exception
 	{
-		super(VERSION, RELEASE, RIGHTS, Scope.Generic);
+		super(VERSION, RELEASE, RIGHTS, Scope.Generic, moduleAccessor);
 		this.setConfigFileName(configFileName);
 		this.setSigFileName(sigFileName);
 	}
@@ -172,7 +182,7 @@ public class DROIDIdentifier
 			droid.setConfigFile(configFile);
 			droid.setSigFile(sigFile);
 			IdentificationFile idf = droid.identify(source);
-			boolean matchFound = this.matchFound(idf, jhove2);
+			boolean matchFound = this.matchFound(idf, jhove2, source);
 			if (matchFound){
 				String msgText = idf.getWarning();				
 				Message idWarningMessage = null;
@@ -297,35 +307,6 @@ public class DROIDIdentifier
         return path;
     }
 
-    /**
-     * Get DROID File Not Found message.
-     * 
-     * @return File Not Found message
-     */
-    @ReportableProperty(order = 13, value = "DROID File Not Identified Message")
-    public Message getFileNotIdentifiedMessage() {
-        return this.fileNotIdentifiedMessage;
-    }
-    
-    /**
-     * Get DROID File Not run message.
-     * 
-     * @return File Not run message
-     */
-    @ReportableProperty(order = 14, value = "DROID File Not Run Message")
-    public Message getFileNotRunMessage() {
-        return this.fileNotRunMessage;
-    }
-    
-    /**
-     * Get DROID File error message.
-     * 
-     * @return File error message
-     */
-    @ReportableProperty(order = 15, value = "DROID File Error Message.")
-    public Message getFileErrorMessage() {
-        return this.fileErrorMessage;
-    }
     
     /**
      * Map from DROID confidence levels to JHOVE2 confidence levels
@@ -398,7 +379,7 @@ public class DROIDIdentifier
 	 * @return true if DROID able to identify file; otherwise false
 	 * @throws JHOVE2Exception 
 	 */
-	protected boolean matchFound(IdentificationFile idf, JHOVE2 jhove2)
+	protected boolean matchFound(IdentificationFile idf, JHOVE2 jhove2, Source source)
 		throws JHOVE2Exception
 	{
 		boolean matchFound = false;
@@ -411,10 +392,11 @@ public class DROIDIdentifier
 				msgText = new String("");
 			}
 			Object[]messageParms = new Object[]{msgText};
-			this.fileNotIdentifiedMessage = new Message(Severity.WARNING,
+			Message fileNotIdentifiedMessage = new Message(Severity.WARNING,
 					Context.OBJECT,
 					"org.jhove2.module.identify.DROIDIdentifier.fileNotIdentifiedMessage",
 					messageParms, jhove2.getConfigInfo());
+			source.addMessage(fileNotIdentifiedMessage);
 			break;
 		case JHOVE2IAnalysisController.FILE_CLASSIFICATION_NOTCLASSIFIED:
 			msgText = idf.getWarning();
@@ -422,10 +404,11 @@ public class DROIDIdentifier
 				msgText = new String("");
 			}
 			messageParms = new Object[]{msgText};
-			this.fileNotRunMessage = new Message(Severity.ERROR,
+			Message fileNotRunMessage = new Message(Severity.ERROR,
 					Context.PROCESS,
 					"org.jhove2.module.identify.DROIDIdentifier.fileNotRunMessage",
 					messageParms, jhove2.getConfigInfo());
+			source.addMessage(fileNotRunMessage);
 			break;
 		case JHOVE2IAnalysisController.FILE_CLASSIFICATION_ERROR:
 			msgText = idf.getWarning();
@@ -433,10 +416,11 @@ public class DROIDIdentifier
 				msgText = new String("");
 			}
 			messageParms = new Object[]{msgText};
-			this.fileErrorMessage = new Message(Severity.ERROR,
+			Message fileErrorMessage = new Message(Severity.ERROR,
 					Context.PROCESS,
 					"org.jhove2.module.identify.DROIDIdentifier.fileErrorMessage",
 					messageParms, jhove2.getConfigInfo());
+			source.addMessage(fileErrorMessage);
 			break;
 		default:
 			matchFound = true;
@@ -445,27 +429,6 @@ public class DROIDIdentifier
 		return matchFound;
 	}
 
-
-	/** Set File Error message.
-	 * @param fileErrorMessage File Error message
-	 */
-	public void setFileErrorMessage(Message fileErrorMessage) {
-		this.fileErrorMessage = fileErrorMessage;
-	}
-	
-	/** Set File Not Identified message.
-	 * @param fileNotIdentifiedMessage File Not Identified message
-	 */
-	public void setFileNotIdentifiedMessage(Message fileNotIdentifiedMessage) {
-		this.fileNotIdentifiedMessage = fileNotIdentifiedMessage;
-	}
-
-	/** Set File Not Run message.
-	 * @param fileNotRunMessage File Not Run message
-	 */
-	public void setFileNotRunMessage(Message fileNotRunMessage) {
-		this.fileNotRunMessage = fileNotRunMessage;
-	}
 
 	/**
 	 * Set the name of the config file

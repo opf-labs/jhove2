@@ -39,12 +39,16 @@ package org.jhove2.module.display;
 import java.io.PrintStream;
 
 import org.jhove2.core.I8R;
+import org.jhove2.persist.ModuleAccessor;
+
+import com.sleepycat.persist.model.Persistent;
 
 /**
  * JHOVE2 text displayer.
  * 
  * @author mstrong, slabrams
  */
+@Persistent
 public class TextDisplayer extends AbstractDisplayer {
 	/** Text displayer version identifier. */
 	public static final String VERSION = "2.0.0";
@@ -62,7 +66,16 @@ public class TextDisplayer extends AbstractDisplayer {
 	 * Instantiate a new <code>TextDisplayer</code>.
 	 */
 	public TextDisplayer() {
-		super(VERSION, RELEASE, RIGHTS);
+		this(null);
+	}
+	
+	/**
+	 * Instantiate a new <code>TextDisplayer</code>.
+     * @param moduleAccessor 
+	 * 		      Displayer persistence manager
+	 */
+	public TextDisplayer(ModuleAccessor moduleAccessor) {
+		super(VERSION, RELEASE, RIGHTS, moduleAccessor);
 		this.setShouldIndent(true);
 	}
 

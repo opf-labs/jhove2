@@ -58,7 +58,7 @@ public interface Displayer
 {	
 	/** ISO 8601 date/time format. */
 	public static final SimpleDateFormat ISO8601 = new SimpleDateFormat(
-			"yyyy-MM-dd'T'hh:mm:ssZ");
+			"yyyy-MM-dd'T'HH:mm:ssZ");
    
     /** Default UTF-8 output character set. */
     public static final String DEFAULT_CHARACTER_ENCODING = "UTF-8";
@@ -281,6 +281,7 @@ public interface Displayer
 	
 	/**
 	 * Get show identifiers flag.
+	 * 
 	 * @return Show identifier flag; if true, show identifiers in non-XML
 	 *         display modes
 	 */
@@ -345,6 +346,13 @@ public interface Displayer
 	 * @param shouldIndent Indentation flag
 	 */
 	public void setShouldIndent(boolean shouldIndent);
-	
+	/**
+	 * @return the parentAppId
+	 */
+	public Long getParentAppId();
+	/**
+	 * @param parentAppId the parentAppId to set
+	 */
+	public void setParentAppId(Long parentAppId);
 	
 }

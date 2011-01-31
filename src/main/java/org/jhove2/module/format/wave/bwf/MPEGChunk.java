@@ -46,11 +46,14 @@ import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.riff.GenericChunk;
 
+import com.sleepycat.persist.model.Persistent;
+
 /** Broadcast Wave Format (BWF) MPEG-1 audio chunk, as defined by EBU Tech 3285–E –- Supplement 1,
  * July 1997.
  * 
  * @author slabrams
  */
+@Persistent
 public class MPEGChunk
     extends GenericChunk
 {

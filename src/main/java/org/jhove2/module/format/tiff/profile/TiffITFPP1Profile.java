@@ -40,14 +40,17 @@ import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
-import org.jhove2.module.format.Validator.Validity;
 import org.jhove2.module.format.tiff.IFDEntry;
 import org.jhove2.module.format.tiff.TiffIFD;
+import org.jhove2.persist.FormatProfileAccessor;
+
+import com.sleepycat.persist.model.Persistent;
 
 /**
  * @author MStrong
  * 
  */
+@Persistent
 public class TiffITFPP1Profile extends TiffItProfile {
 
     /** Profile version identifier. */
@@ -63,8 +66,13 @@ public class TiffITFPP1Profile extends TiffItProfile {
     /** Profile validation coverage. */
     public static final Coverage COVERAGE = Coverage.Inclusive;
 
-    public TiffITFPP1Profile(Format format) {
-        super(format);
+    public TiffITFPP1Profile(Format format, FormatProfileAccessor formatProfileAccessor) {
+       super(format, formatProfileAccessor);
+    }
+    
+    @SuppressWarnings("unused")
+	private TiffITFPP1Profile(){
+    	this(null,null);
     }
 
     /*

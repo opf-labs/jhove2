@@ -42,11 +42,15 @@ import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
 import org.jhove2.module.format.tiff.TiffIFD;
+import org.jhove2.persist.FormatProfileAccessor;
+
+import com.sleepycat.persist.model.Persistent;
 
 /**
  * @author MStrong
  * 
  */
+@Persistent
 public class TiffGeoTIFFProfile extends TiffProfile {
 
     /** Profile version identifier. */
@@ -65,8 +69,18 @@ public class TiffGeoTIFFProfile extends TiffProfile {
     /** ModelTransformation tag / ModelTiePoint tag not defined message */
     private Message modelTagsNotDefinedMessage;
 
-    public TiffGeoTIFFProfile(Format format) {
-        super(format);
+    /**
+     * 
+     * @param format
+     * @param formatProfileAccessor
+     */
+    public TiffGeoTIFFProfile(Format format, FormatProfileAccessor formatProfileAccessor) {
+        super(format, formatProfileAccessor);
+    }
+    
+    @SuppressWarnings("unused")
+	private TiffGeoTIFFProfile(){
+    	this(null,null);
     }
 
     /*

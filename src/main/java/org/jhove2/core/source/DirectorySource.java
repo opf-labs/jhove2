@@ -43,11 +43,15 @@ import java.io.IOException;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2Exception;
 
+
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * File system directory source unit.
  * 
  * @author mstrong, slabrams
  */
+@Persistent
 public class DirectorySource
     extends AbstractSource
     implements AggregateSource,	FileSystemSource
@@ -64,19 +68,24 @@ public class DirectorySource
 	/** Directory path. */
 	protected String path;
 
+	protected DirectorySource(){
+		super();
+	}
 	/**
 	 * Instantiate a new <code>DirectorySource</code>.
 	 * 
 	 * @param pathName
 	 *            Directory path name
+	 * @param sourceFactory SourceFactory which configures accessors for this source
 	 * @throws IOException
 	 * @throws FileNotFoundException
 	 * @throws JHOVE2Exception 
+	 * @throws JHOVE2Exception 
 	 */
-	public DirectorySource(String pathName)
+	protected DirectorySource(String pathName, SourceFactory sourceFactory)
 	    throws FileNotFoundException, IOException, JHOVE2Exception
 	{
-		this(new File(pathName));
+		this(new File(pathName), sourceFactory);
 	}
 
 	/**
@@ -84,15 +93,16 @@ public class DirectorySource
 	 * 
 	 * @param file
 	 *            Java {@link java.io.File} representing a directory
+	 * @param sourceFactory  SourceFactory which configures accessors for this source
 	 * @throws IOException
 	 * @throws FileNotFoundException
 	 * @throws JHOVE2Exception 
 	 */
-	public DirectorySource(File file)
+	protected DirectorySource(File file, SourceFactory sourceFactory)
 	    throws FileNotFoundException, IOException, JHOVE2Exception
 	{
 		super(file);
-
+		this.setSourceAccessor(sourceFactory.createSourceAccessor(this));
 		this.directoryName = file.getName();
 		try {
 			this.path = file.getCanonicalPath();
@@ -104,8 +114,8 @@ public class DirectorySource
 			this.isReadable = file.canRead();
 			File[] list = file.listFiles();
 			for (int i = 0; i < list.length; i++) {
-				Source source = SourceFactory.getSource(list[i]);
-				this.children.add(source);
+				Source source = sourceFactory.getSource(list[i]);
+				source=this.addChildSource(source);
 			} 
 		}
 	}

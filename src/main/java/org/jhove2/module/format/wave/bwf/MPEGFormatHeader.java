@@ -54,10 +54,13 @@ import org.jhove2.module.format.wave.bwf.field.MPEGLayer;
 import org.jhove2.module.format.wave.bwf.field.MPEGMode;
 import org.jhove2.module.format.wave.bwf.field.MPEGModeExtension;
 
+import com.sleepycat.persist.model.Persistent;
+
 /** WAVE format MPEG-1 header.
  * 
  * @author slabrams
  */
+@Persistent
 public class MPEGFormatHeader
     extends AbstractReportable
     implements Parser

@@ -44,10 +44,13 @@ import org.jhove2.core.reportable.AbstractReportable;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.Parser;
 
+import com.sleepycat.persist.model.Persistent;
+
 /** WAVE play list.
  * 
  * @author slabrams
  */
+@Persistent
 public class PlayList
     extends AbstractReportable
     implements Parser

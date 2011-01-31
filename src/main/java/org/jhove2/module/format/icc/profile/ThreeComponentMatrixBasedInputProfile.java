@@ -55,12 +55,16 @@ import org.jhove2.module.format.icc.ICCHeader;
 import org.jhove2.module.format.icc.ICCModule;
 import org.jhove2.module.format.icc.ICCTag;
 import org.jhove2.module.format.icc.ICCTagTable;
+import org.jhove2.persist.FormatProfileAccessor;
+
+import com.sleepycat.persist.model.Persistent;
 
 /** ICC three component matrix-based input profile, as defined in
  * ICC.1:2004-10, \u00a7 8.3.3.
  * 
  * @author slabrams
  */
+@Persistent
 public class ThreeComponentMatrixBasedInputProfile
     extends AbstractFormatProfile
     implements Validator
@@ -90,13 +94,19 @@ public class ThreeComponentMatrixBasedInputProfile
     
     /** Instantiate a new <code>ThreeComponentMatrixBasedInputProfile</code>
      * @param format Profile format
+     * @param formatProfileAccessor persistence manager
      */
-    public ThreeComponentMatrixBasedInputProfile(Format format)
+    public ThreeComponentMatrixBasedInputProfile(Format format, FormatProfileAccessor formatProfileAccessor)
     {
-        super(VERSION, RELEASE, RIGHTS, format);
+        super(VERSION, RELEASE, RIGHTS, format, formatProfileAccessor);
         
         this.isValid = Validity.Undetermined;
         this.missingRequiredTagMessages = new ArrayList<Message>();
+    }
+    
+    @SuppressWarnings("unused")
+    private ThreeComponentMatrixBasedInputProfile(){
+    	this(null,null);
     }
 
     /** Validate the profile.
@@ -110,8 +120,8 @@ public class ThreeComponentMatrixBasedInputProfile
     public Validity validate(JHOVE2 jhove2, Source source, Input input)
         throws JHOVE2Exception
     {
-        if (this.module != null) {
-            ICCHeader   header = ((ICCModule) this.module).getHeader();
+        if (this.getFormatModule() != null) {
+            ICCHeader   header = ((ICCModule) this.getFormatModule()).getHeader();
             String pcs = header.getProfileConnectionSpace_raw();
             if (pcs == null || !pcs.equals("XYZ ")) {
                 this.isValid = Validity.False;
@@ -122,7 +132,7 @@ public class ThreeComponentMatrixBasedInputProfile
                         args, jhove2.getConfigInfo());
             }
             
-            ICCTagTable table  = ((ICCModule) this.module).getTagTable();
+            ICCTagTable table  = ((ICCModule) this.getFormatModule()).getTagTable();
             if (table != null) {
                 if (table.hasCommonRequirements()) {
                     this.isValid = Validity.True;

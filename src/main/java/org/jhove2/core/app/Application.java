@@ -41,6 +41,7 @@ import java.util.Date;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.Installation;
 import org.jhove2.core.Invocation;
+import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.module.Module;
 import org.jhove2.module.display.Displayer;
 
@@ -71,8 +72,9 @@ public interface Application
 	
 	/** Get application {@link org.jhove2.module.display.Displayer} properties.
 	 * @return Application displayer
+	 * @throws JHOVE2Exception 
 	 */
-	public Displayer getDisplayer();
+	public Displayer getDisplayer() throws JHOVE2Exception;
 	
 
 	/** Get application {@link org.jhove2.core.Invocation} properties.
@@ -89,8 +91,10 @@ public interface Application
 	/**
 	 * Set application displayer
 	 * @param displayer Application displayer
+	 * @return Displayer assigned to Application
+	 * @throws JHOVE2Exception 
 	 */
-	public void setDisplayer(Displayer displayer);
+	public Displayer setDisplayer(Displayer displayer) throws JHOVE2Exception;
 	
 	
 

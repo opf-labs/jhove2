@@ -50,13 +50,15 @@ import org.jhove2.core.io.Input;
 import org.jhove2.core.source.FileSource;
 import org.jhove2.module.display.Displayer;
 import org.jhove2.module.display.TextDisplayer;
+import org.jhove2.persist.PersistenceManager;
+import org.jhove2.persist.PersistenceManagerUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * Tests of tiff Module
+ * Tests of utf-8 Module
  * 
  * @see org.jhove2.module.utf8.utf8Module
  * @author mstrong
@@ -82,6 +84,7 @@ public class UTF8ModuleTestBase {
     public void setTestUtf8Module(UTF8Module Utf8Module) {
         this.testUtf8Module = Utf8Module;
     }
+
 
     public JHOVE2 getJHOVE2() {
         return JHOVE2;
@@ -116,7 +119,7 @@ public class UTF8ModuleTestBase {
         File testFile = new File(Utf8ExampleDirPath, relativePath);
         assertTrue(testFile.exists());
         try {
-            fileSource = new FileSource(testFile);
+            fileSource = (FileSource) JHOVE2.getSourceFactory().getSource(testFile);
             input      = fileSource.getInput(JHOVE2);
             testUtf8Module.parse(JHOVE2, fileSource, input);
         }
@@ -128,6 +131,9 @@ public class UTF8ModuleTestBase {
     public void display() {
         try {
             input.setPosition(0);
+            PersistenceManagerUtil.createPersistenceManagerFactory(JHOVE2.getConfigInfo());
+            PersistenceManager persistenceManager = PersistenceManagerUtil.getPersistenceManagerFactory().getInstance();
+			persistenceManager.initialize();
             JHOVE2.characterize(fileSource, input);
             Displayer displayer = new TextDisplayer();
             displayer.setConfigInfo(JHOVE2.getConfigInfo());

@@ -13,6 +13,7 @@ import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.io.Input.Type;
 import org.jhove2.core.source.URLSource;
+import org.jhove2.persist.inmemory.InMemorySourceFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,19 +38,24 @@ public class InputFactoryTest {
 		}
 		try {
 			JHOVE2 jhove2 = new JHOVE2();
+			InMemorySourceFactory sourceFactory = new InMemorySourceFactory();
+			jhove2.setSourceFactory(sourceFactory);
 			Invocation config = jhove2.getInvocation();
-			URLSource yahooURL = new URLSource(config.getTempPrefix(), 
+			URLSource yahooURL = (URLSource)jhove2.getSourceFactory().getSource
+											  (yahoo,
+											   config.getTempDirectoryFile(),
+											   config.getTempPrefix(), 
 					                           config.getTempSuffix(),
-					                           config.getBufferSize(),
-					                           yahoo);
+					                           config.getBufferSize()
+					                           );
 			yahooURL.setDeleteTempFiles(true);
 			Input input = yahooURL.getInput(8192, Type.Direct);
-			// this closes the channel and the stream associated with any temp
-			// file created
-			input.close();
 			File file = input.getFile();
 			assertTrue("File doesn't exist", file.exists());
+            // this closes the channel and the stream associated with any temp
+            // file created
 			// this invokes file.delete() on any temp file created
+            input.close();
 			yahooURL.close();
 			file = yahooURL.getFile();
 			assertTrue("File still exists - should be deleted!", !file.exists());

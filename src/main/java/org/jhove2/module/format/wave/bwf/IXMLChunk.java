@@ -36,6 +36,7 @@ package org.jhove2.module.format.wave.bwf;
 import java.io.EOFException;
 import java.io.IOException;
 import org.jhove2.core.I8R;
+import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.format.Format;
@@ -46,10 +47,13 @@ import org.jhove2.core.source.ByteStreamSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.riff.GenericChunk;
 
+import com.sleepycat.persist.model.Persistent;
+
 /** Broadcast Wave Format (BWF) iXML chunk.
  * 
  * @author slabrams
  */
+@Persistent
 public class IXMLChunk
         extends GenericChunk
 {
@@ -60,9 +64,13 @@ public class IXMLChunk
      * @param xml XML format 
      */
     protected IXMLChunk(Format xml) {
-        super();
+        this();
         
         this.xmlFormat = xml;
+    }
+    
+    private IXMLChunk(){
+    	super();
     }
     
     /** Parse an iXML chunk.
@@ -81,13 +89,17 @@ public class IXMLChunk
         long consumed = super.parse(jhove2, source, input);
         
         /* The chunk contents are in XML; invoke the XML module. */
+        Invocation inv = jhove2.getInvocation();
         ByteStreamSource child =
-            new ByteStreamSource(jhove2, source, input.getPosition(), this.size);
-        I8R xml = xmlFormat.getIdentifier();
+            jhove2.getSourceFactory().getByteStreamSource(source,
+                    input.getPosition(), this.size,
+                    inv.getTempDirectoryFile(), inv.getTempPrefix(),
+                    ".xml", inv.getBufferSize());
+        I8R xml = this.xmlFormat.getIdentifier();
         FormatIdentification id = new FormatIdentification(xml, Confidence.PositiveGeneric);
-        child.addPresumptiveFormat(id);
-        source.addChildSource(child);
-        jhove2.characterize(child, input);      
+        child=(ByteStreamSource) child.addPresumptiveFormat(id);
+        child=(ByteStreamSource) source.addChildSource(child);
+        jhove2.characterize(child, input);
         consumed += this.size;
         
         return consumed;

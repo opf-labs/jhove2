@@ -50,6 +50,9 @@ import org.jhove2.module.format.Validator;
 import org.jhove2.module.format.tiff.IFD;
 import org.jhove2.module.format.tiff.TiffIFD;
 import org.jhove2.module.format.tiff.TiffModule;
+import org.jhove2.persist.FormatProfileAccessor;
+
+import com.sleepycat.persist.model.Persistent;
 
 
 /**
@@ -58,6 +61,7 @@ import org.jhove2.module.format.tiff.TiffModule;
  * 
  * @author mstrong
  */
+@Persistent
 public abstract class TiffProfile extends AbstractFormatProfile implements
         Validator {
     /** Profile version identifier. */
@@ -108,12 +112,17 @@ public abstract class TiffProfile extends AbstractFormatProfile implements
      * 
      * @param format
      *            Profile format
+     * @param formatProfileAccessor Profile persistence manager
      */
-    public TiffProfile(Format format) {
-        super(VERSION, RELEASE, RIGHTS, format);
-
+    public TiffProfile(Format format, FormatProfileAccessor formatProfileAccessor) {
+        super(VERSION, RELEASE, RIGHTS, format, formatProfileAccessor);
         this.isValid = Validity.Undetermined;
         this.missingRequiredTagMessages = new ArrayList<Message>();
+    }
+
+    
+    private TiffProfile(){
+    	this(null, null);
     }
 
     /**
@@ -128,8 +137,8 @@ public abstract class TiffProfile extends AbstractFormatProfile implements
      */
     public Validity validate(JHOVE2 jhove2, Source source, Input input)
             throws JHOVE2Exception {
-        if (this.module != null) {
-            List<IFD> IFDList = ((TiffModule) this.module).getIFDs();
+        if (this.getFormatModule() != null) {
+            List<IFD> IFDList = ((TiffModule) this.getFormatModule()).getIFDs();
             if (IFDList != null) {
                 for (IFD ifd : IFDList) {
                     if (ifd instanceof TiffIFD) {

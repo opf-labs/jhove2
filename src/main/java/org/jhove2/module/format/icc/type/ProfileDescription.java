@@ -46,10 +46,13 @@ import org.jhove2.core.reportable.AbstractReportable;
 import org.jhove2.module.format.icc.field.DeviceAttribute;
 import org.jhove2.module.format.icc.field.TechnologySignature;
 
+import com.sleepycat.persist.model.Persistent;
+
 /** ICC profile description, as defined in ICC.1:2004-10, Table 49.
  * 
  * @author slabrams
  */
+@Persistent
 public class ProfileDescription
     extends AbstractReportable
 {
@@ -71,6 +74,9 @@ public class ProfileDescription
     /** Device technology signature in descriptive form. */
     protected String technology_d;
     
+    private ProfileDescription(){
+    	super();
+    }
     /** Instantiate a new <code>ProfileDescription</code>.
      * @param manufacturer Device manufacturer
      * @param model        Device model
@@ -83,7 +89,7 @@ public class ProfileDescription
                               String technology, JHOVE2 jhove2)
         throws JHOVE2Exception
     {
-        super();
+        this();
         
         this.deviceManufacturer = manufacturer;
         this.deviceModel        = model;

@@ -73,12 +73,15 @@ public interface Aggrefier
 			throws IOException, JHOVE2Exception;
 	/** Get aggregate Recognizers.
 	 * @return Aggregate recognizers
+	 * @throws JHOVE2Exception 
 	 */
-	public List<Recognizer> getRecognizers();
+	public List<Recognizer> getRecognizers() throws JHOVE2Exception;
 	/**
 	 * Set aggregate Recognizers
 	 * @param recognizers Recognizers for Aggrefier
+	 * @throws JHOVE2Exception 
 	 */
-	public void setRecognizers(List<Recognizer> recognizers);
+	public void setRecognizers(List<Recognizer> recognizers) throws JHOVE2Exception;
+
 
 }

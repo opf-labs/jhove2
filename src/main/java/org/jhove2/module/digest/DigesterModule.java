@@ -45,15 +45,20 @@ import java.util.TreeSet;
 
 import org.jhove2.core.Digest;
 import org.jhove2.core.JHOVE2;
+import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractModule;
+import org.jhove2.persist.ModuleAccessor;
+
+import com.sleepycat.persist.model.Persistent;
 
 /**
  * JHOVE2 message digester module.
  * 
  * @author mstrong, slabrams
  */
+@Persistent
 public class DigesterModule
 	extends AbstractModule 
 	implements Digester
@@ -75,12 +80,24 @@ public class DigesterModule
 
 	/** Algorithm-specific byte buffer digesters. */
 	protected List<BufferDigester> bufferDigesters;
+	
+	/** All computed digests */
+	protected Set<Digest> digests;
 
 	/**
 	 * Instantiate a new <code>DigesterModule</code>.
+	 * @throws JHOVE2Exception 
 	 */
-	public DigesterModule() {
-		super(VERSION, RELEASE, RIGHTS, Scope.Specific);
+	public DigesterModule() throws JHOVE2Exception {
+		this(null);
+	}
+	
+	/**
+	 * Instantiate a new <code>DigesterModule</code>.
+	 * @throws JHOVE2Exception 
+	 */
+	public DigesterModule(ModuleAccessor moduleAccessor) throws JHOVE2Exception {
+		super(VERSION, RELEASE, RIGHTS, Scope.Specific, moduleAccessor);
 	}
 
 	/**
@@ -90,12 +107,10 @@ public class DigesterModule
 	 *            JHOVE2 framework
 	 * @param source
 	 *            Source unit
-	 * @param input
-	 *            Source input
-	 * @see org.jhove2.module.digest.Digester#digest(org.jhove2.core.JHOVE2,
-	 *      org.jhove2.core.source.Source, org.jhove2.core.io.Input)
 	 * @throws IOException
 	 *             I/O exception calculating message digests
+	 * @see org.jhove2.module.digest.Digester#digest(org.jhove2.core.JHOVE2,
+	 *      org.jhove2.core.source.Source)
 	 */
 	@Override
 	public void digest(JHOVE2 jhove2, Source source, Input input)
@@ -129,6 +144,8 @@ public class DigesterModule
 	        }
 	        ptr += bufferSize;
 	    }
+		this.setDigests(this.evaluateDigests());
+
 	}
 	
 	/**
@@ -139,26 +156,20 @@ public class DigesterModule
 	 */
 	@Override
 	public Set<Digest> getDigests() {
-		Set<Digest> set = new TreeSet<Digest>();
-		if (this.arrayDigesters != null && this.arrayDigesters.size() > 0) {
-			Iterator<ArrayDigester> iter = this.arrayDigesters.iterator();
-			while (iter.hasNext()) {
-				ArrayDigester digester = iter.next();
-				Digest digest = digester.getDigest();
-				set.add(digest);
-			}
-		}
-		if (this.bufferDigesters != null && this.bufferDigesters.size() > 0) {
-			Iterator<BufferDigester> iter = this.bufferDigesters.iterator();
-			while (iter.hasNext()) {
-				BufferDigester digester = iter.next();
-				Digest digest = digester.getDigest();
-				set.add(digest);
-			}
-		}
-
-		return set;
+		return this.digests;
 	}
+	
+	/**
+	 * Set message digests
+	 * 
+	 * @param  Message digests
+	 * @param digests
+	 */
+	public void setDigests (Set<Digest> digests){
+		this.digests = digests;
+	}
+	
+
 
 	/**
 	 * Set the algorithm-specific byte array digesters.
@@ -179,4 +190,29 @@ public class DigesterModule
 	public void setBufferDigesters(List<BufferDigester> digesters) {
 		this.bufferDigesters = digesters;
 	}
+	/**
+	 * Gets hex value of each already-computed digest and creates Digest object for eac 
+	 * @return Set<Digest> of all computed and formatted Digest objects
+	 */
+	protected Set<Digest> evaluateDigests(){
+		Set<Digest> set = new TreeSet<Digest>();
+		if (this.arrayDigesters != null && this.arrayDigesters.size() > 0) {
+			Iterator<ArrayDigester> iter = this.arrayDigesters.iterator();
+			while (iter.hasNext()) {
+				ArrayDigester digester = iter.next();
+				Digest digest = digester.getDigest();
+				set.add(digest);
+			}
+		}
+		if (this.bufferDigesters != null && this.bufferDigesters.size() > 0) {
+			Iterator<BufferDigester> iter = this.bufferDigesters.iterator();
+			while (iter.hasNext()) {
+				BufferDigester digester = iter.next();
+				Digest digest = digester.getDigest();
+				set.add(digest);
+			}
+		}
+		return set;
+	}
+	
 }

@@ -45,12 +45,16 @@ import org.jhove2.core.format.Format;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.BaseFormatModule;
+import org.jhove2.persist.FormatModuleAccessor;
+
+import com.sleepycat.persist.model.Persistent;
 
 /**
  * THIS is a placeholder for the bytestream module
  * 
  * @author mstrong, slabrams, smmorrissey
  */
+@Persistent
 public class Bytestream
 	extends BaseFormatModule
 {
@@ -72,13 +76,28 @@ public class Bytestream
 	 * 
 	 * @param format
 	 *            Bytestream format
+	 * @param FormatModuleAccessor 
+	 * 				persistence manager
+	 */
+	public Bytestream(Format format, 
+			FormatModuleAccessor formatModuleAccessor) {
+		super(VERSION, RELEASE, RIGHTS, format, formatModuleAccessor);
+	}
+	
+	/**
+	 * Instantiate a new <code>Bytestream</code>.
+	 * 
+	 * @param format
+	 *            Bytestream format
 	 */
 	public Bytestream(Format format) {
-		super(VERSION, RELEASE, RIGHTS, format);
+		this(format, null);
 	}
-
+	/**
+	 * Instantiate a new <code>Bytestream</code>.
+	 */
 	public Bytestream(){
-		super();
+		this(null, null);
 	}
 	/**
 	 * Parse a bytestream

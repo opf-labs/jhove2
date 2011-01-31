@@ -37,14 +37,13 @@ package org.jhove2.core.source;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import javax.annotation.Resource;
 
 import org.jhove2.core.JHOVE2;
+import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.module.aggrefy.AggrefierModule;
-import org.jhove2.module.assess.AssessmentModule;
-import org.jhove2.module.digest.DigesterModule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -66,53 +65,51 @@ public class AbstractSourceTest {
 	 */
 	@Test
 	public void testEqualsObject() {
-		FileSetSource fsSource1 = new FileSetSource();
-		assertEquals(fsSource1, fsSource1);
-		assertFalse(fsSource1.equals(null));
-		FileSetSource fsSource2 = new FileSetSource();
-		assertEquals(fsSource2, fsSource2);
-		assertFalse(fsSource2.equals(null));
-		assertEquals(fsSource1,fsSource2);
-		assertEquals(fsSource2,fsSource1);
-		ClumpSource clump1 = new ClumpSource();
-		assertEquals(clump1, clump1);
-		assertFalse(clump1.equals(null));
-		assertFalse(clump1.equals(fsSource1));
-		assertFalse(clump1.equals(fsSource2));
-		assertFalse(fsSource1.equals(clump1));
-		assertFalse(fsSource2.equals(clump1));
-		ClumpSource clump2 = new ClumpSource();
-		assertEquals(clump2, clump2);
-		assertFalse(clump2.equals(null));
-		assertFalse(clump2.equals(fsSource1));
-		assertFalse(clump2.equals(fsSource2));
-		assertFalse(fsSource1.equals(clump2));
-		assertFalse(fsSource2.equals(clump2));
-		assertEquals(clump1, clump2);
-		assertEquals(clump2, clump1);
-		
-		clump1.addChildSource(fsSource1);
-		assertFalse(clump1.equals(fsSource1));
-		assertFalse(clump1.equals(clump2));
-		assertFalse(clump2.equals(clump1));
-		clump2.addChildSource(fsSource2);
-		assertEquals(clump1, clump2);
-		
-		fsSource1.addModule(JHOVE2);
-		assertFalse(fsSource1.equals(fsSource2));
-		assertFalse(clump1.equals(clump2));
-		//2010.08.13 this changes because JHOVE2 is specific and is not added more than once to any Source in play
-		fsSource2.addModule(JHOVE2);
-		assertFalse(fsSource1.equals(fsSource2));
-		assertFalse(clump1.equals(clump2));
-		fsSource1.getModules().clear();
-		assertTrue(fsSource1.equals(fsSource2));
-		fsSource1.addModule(Aggrefier);
-		assertFalse(fsSource1.equals(fsSource2));
-		assertFalse(clump1.equals(clump2));
-		fsSource2.addModule(Aggrefier);
-		//2010.08.13 this changes because JHOVE2 is specific and is not added more than once to any Source in play
-		assertFalse(fsSource1.equals(fsSource2));
+		try {
+			FileSetSource fsSource1 = JHOVE2.getSourceFactory().getFileSetSource();
+			assertEquals(fsSource1, fsSource1);
+			assertFalse(fsSource1.equals(null));
+			FileSetSource fsSource2 = JHOVE2.getSourceFactory().getFileSetSource();
+			assertEquals(fsSource2, fsSource2);
+			assertFalse(fsSource2.equals(null));
+			assertEquals(fsSource1,fsSource2);
+			assertEquals(fsSource2,fsSource1);
+			ClumpSource clump1;
+			ClumpSource clump2;
+			clump1 = JHOVE2.getSourceFactory().getClumpSource();
+			assertEquals(clump1, clump1);
+			assertFalse(clump1.equals(null));
+			assertFalse(clump1.equals(fsSource1));
+			assertFalse(clump1.equals(fsSource2));
+			assertFalse(fsSource1.equals(clump1));
+			assertFalse(fsSource2.equals(clump1));
+			clump2 = JHOVE2.getSourceFactory().getClumpSource();
+			assertEquals(clump2, clump2);
+			assertFalse(clump2.equals(null));
+			assertFalse(clump2.equals(fsSource1));
+			assertFalse(clump2.equals(fsSource2));
+			assertFalse(fsSource1.equals(clump2));
+			assertFalse(fsSource2.equals(clump2));
+			assertEquals(clump1, clump2);
+			assertEquals(clump2, clump1);
+
+			fsSource1=(FileSetSource) clump1.addChildSource(fsSource1);
+			assertFalse(clump1.equals(fsSource1));
+			assertFalse(clump1.equals(clump2));
+			assertFalse(clump2.equals(clump1));
+			fsSource2=(FileSetSource) clump2.addChildSource(fsSource2);
+			assertEquals(clump1, clump2);
+
+			JHOVE2=(JHOVE2) fsSource1.addModule(JHOVE2);
+			assertFalse(fsSource1.equals(fsSource2));
+			assertFalse(clump1.equals(clump2));
+			JHOVE2=(JHOVE2) fsSource2.addModule(JHOVE2);
+			// these will be false now; because fsSource1 has generic module(JHOVe2) attached to it
+			assertFalse(fsSource1.equals(fsSource2));
+			assertFalse(clump1.equals(clump2));
+		} catch (JHOVE2Exception e) {
+			fail(e.getMessage());
+		}
 	}
 
 	/**
@@ -120,41 +117,52 @@ public class AbstractSourceTest {
 	 */
 	@Test
 	public void testCompareTo() {
-		FileSetSource fsSource1 = new FileSetSource();
-		assertEquals(0,fsSource1.compareTo(fsSource1));
-		assertEquals(1,fsSource1.compareTo(null));		
-		FileSetSource fsSource2 = new FileSetSource();
-		assertEquals(0,fsSource1.compareTo(fsSource2));		
-		assertEquals(0,fsSource2.compareTo(fsSource1));
-		
-		ClumpSource clump1 = new ClumpSource();		
-		ClumpSource clump2 = new ClumpSource();
-		assertEquals(0, clump1.compareTo(clump1));
-		assertEquals(0, clump1.compareTo(clump2));
-		assertEquals(1, fsSource1.compareTo(clump1));
-		assertEquals(-1, clump2.compareTo(fsSource2));
-		
-		clump1.addChildSource(fsSource1);
-		assertEquals(1, clump1.compareTo(clump2));
-		assertEquals(-1, clump2.compareTo(clump1));
-		clump2.addChildSource(fsSource2);
-		assertEquals(0, clump1.compareTo(clump2));
-		
-		AssessmentModule assessor = new AssessmentModule();
-		DigesterModule digestor = new DigesterModule();
-		fsSource1.addModule(assessor);
-		assertEquals(1,fsSource1.compareTo(fsSource2));
-		assertEquals(1,clump1.compareTo(clump2));
-		fsSource2.addModule(assessor);
-		assertEquals(0,fsSource2.compareTo(fsSource1));
-		assertEquals(0, clump1.compareTo(clump2));
-		fsSource2.addModule(digestor);
-		assertEquals(-1, fsSource1.compareTo(fsSource2));
-		assertEquals(1,clump1.compareTo(clump2));
-		fsSource1.getModules().clear();
-		fsSource1.addModule(digestor);
-		fsSource1.addModule(assessor);
-		assertEquals(0, fsSource1.compareTo(fsSource2));
+
+		try {
+			FileSetSource fsSource1 =JHOVE2.getSourceFactory().getFileSetSource();
+			assertEquals(0,fsSource1.compareTo(fsSource1));
+			assertEquals(1,fsSource1.compareTo(null));		
+			FileSetSource fsSource2 = JHOVE2.getSourceFactory().getFileSetSource();
+			assertEquals(0,fsSource1.compareTo(fsSource2));		
+			assertEquals(0,fsSource2.compareTo(fsSource1));
+			ClumpSource clump1 = null;
+			ClumpSource clump2 = null;
+			try {
+				clump1 = JHOVE2.getSourceFactory().getClumpSource();
+			} catch (JHOVE2Exception e1) {
+				e1.printStackTrace();
+				fail(e1.getMessage());
+			}	
+			try {
+				clump2 = JHOVE2.getSourceFactory().getClumpSource();
+			} catch (JHOVE2Exception e1) {
+				e1.printStackTrace();
+				fail(e1.getMessage());
+			}
+			assertEquals(0, clump1.compareTo(clump1));
+			assertEquals(0, clump1.compareTo(clump2));
+			assertEquals(1, fsSource1.compareTo(clump1));
+			assertEquals(-1, clump2.compareTo(fsSource2));
+
+			fsSource1=(FileSetSource) clump1.addChildSource(fsSource1);
+
+			assertEquals(1, clump1.compareTo(clump2));
+			assertEquals(-1, clump2.compareTo(clump1));
+			fsSource2=(FileSetSource) clump2.addChildSource(fsSource2);
+			assertEquals(0, clump1.compareTo(clump2));
+
+			JHOVE2=(JHOVE2) fsSource1.addModule(JHOVE2);
+			assertEquals(0,fsSource1.compareTo(fsSource2));
+			assertEquals(0,clump1.compareTo(clump2));
+			JHOVE2=(JHOVE2) fsSource2.addModule(JHOVE2);
+			assertEquals(0,fsSource2.compareTo(fsSource1));
+			assertEquals(0, clump1.compareTo(clump2));
+			Aggrefier=(AggrefierModule) fsSource2.addModule(Aggrefier);
+			assertEquals(-1, fsSource1.compareTo(fsSource2));
+			assertEquals(1,clump1.compareTo(clump2));
+		} catch (JHOVE2Exception e) {
+			fail(e.getMessage());
+		}
 	}
 
 

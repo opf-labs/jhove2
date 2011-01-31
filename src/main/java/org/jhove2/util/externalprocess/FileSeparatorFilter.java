@@ -35,11 +35,14 @@
  */
 package org.jhove2.util.externalprocess;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * Filter to "normalize" paths to unix-like path strings
  * @author smorrissey
  *
  */
+@Persistent
 public class FileSeparatorFilter implements FilepathFilter {
 
 	public FileSeparatorFilter(){

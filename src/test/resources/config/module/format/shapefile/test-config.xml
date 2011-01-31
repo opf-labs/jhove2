@@ -14,7 +14,8 @@
 	<bean id="ShapefileModule" class="org.jhove2.module.format.shapefile.ShapefileModule"
 	      scope="prototype">
 	    <constructor-arg ref="ShapefileFormat"/>
-	    	    <property name="developers">
+	    <constructor-arg ref="FormatModuleAccessor"/>
+	    <property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="StanfordAgent"/>
 			</list>

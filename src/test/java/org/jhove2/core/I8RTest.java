@@ -38,8 +38,9 @@ package org.jhove2.core;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
-import org.jhove2.core.source.FileSetSource;
+import org.jhove2.persist.inmemory.InMemorySourceFactory;
 import org.jhove2.core.source.Source;
+import org.jhove2.core.source.SourceFactory;
 import org.jhove2.module.Module;
 import org.jhove2.module.aggrefy.GlobPathRecognizer;
 import org.junit.Before;
@@ -63,7 +64,11 @@ public class I8RTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		source = new FileSetSource();
+		SourceFactory factory = new InMemorySourceFactory();
+		Invocation inv = new Invocation();
+		source = factory.getSource(inv.getTempDirectoryFile(),
+		                           inv.getTempPrefix(), inv.getTempSuffix(),
+		                           inv.getBufferSize(), "a","b");
 		String classString = source.getClass().getCanonicalName();
 		classString = classString.replace(".", "/");
 		StringBuffer sb = new StringBuffer(I8R.JHOVE2_PREFIX);

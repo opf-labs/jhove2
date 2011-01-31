@@ -47,11 +47,15 @@ import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.module.format.Validator;
+import org.jhove2.persist.FormatModuleAccessor;
+
+import com.sleepycat.persist.model.Persistent;
 
 /** JHOVE2 ICC colour profile module.
  * 
  * @author slabrams
  */
+@Persistent
 public class ICCModule
     extends BaseFormatModule
     implements Validator
@@ -82,11 +86,17 @@ public class ICCModule
     /** Instantiate a new <code>ICCModule</code>
      * 
      * @param format ICC format
+     * @param formatModuleAccessor persistence manager
      */
-    public ICCModule(Format format) {
-        super(VERSION, RELEASE, RIGHTS, format);
+    public ICCModule(Format format, FormatModuleAccessor formatModuleAccessor) {
+        super(VERSION, RELEASE, RIGHTS, format, formatModuleAccessor);
         
         this.isValid = Validity.Undetermined;
+    }
+    
+    @SuppressWarnings("unused")
+	private ICCModule(){
+    	this(null, null);
     }
     
 

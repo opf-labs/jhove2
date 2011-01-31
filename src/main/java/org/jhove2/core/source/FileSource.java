@@ -44,11 +44,15 @@ import java.util.Date;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2Exception;
 
+
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * File source unit. Represents physical file on file system.
  * 
  * @author mstrong, slabrams
  */
+@Persistent
 public class FileSource
 	extends AbstractSource
 	implements FileSystemSource
@@ -88,12 +92,17 @@ public class FileSource
 	 *             I/O exception instantiating source
 	 * @throws JHOVE2Exception 
 	 */
-	public FileSource(String pathName)
+	protected FileSource(String pathName)
 	    throws FileNotFoundException, IOException, JHOVE2Exception
 	{
 		this(new File(pathName));
 	}
 
+	
+	@SuppressWarnings("unused")
+	private FileSource(){
+		super();
+	}
 	/**
 	 * Instantiate a new <code>FileSource</code>.
 	 * 
@@ -103,7 +112,7 @@ public class FileSource
 	 * @throws FileNotFoundException
 	 * @throws JHOVE2Exception 
 	 */
-	public FileSource(File file)
+	protected FileSource(File file)
 	    throws FileNotFoundException, IOException, JHOVE2Exception
 	{
 		super(file);

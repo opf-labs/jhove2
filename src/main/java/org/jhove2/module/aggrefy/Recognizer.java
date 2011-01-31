@@ -68,4 +68,14 @@ public interface Recognizer
 	 */
 	public Set<ClumpSource> recognize(JHOVE2 jhove2, Source source)
 			throws IOException, JHOVE2Exception;
+	
+	/**
+	 * @return the parentAggrefierId
+	 */
+	public Long getParentAggrefierId();
+
+	/**
+	 * @param parentAggrefierId the parentAggrefierId to set
+	 */
+	public void setParentAggrefierId(Long parentAggrefierId);
 }

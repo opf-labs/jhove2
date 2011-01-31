@@ -138,6 +138,11 @@ public interface Input  {
 	 */
 	public long getPosition();
 	
+	/** Get backing file deletion status.
+	 * @return True, if the backing file should be deleted on close
+	 */
+	public boolean deleteOnClose();
+	
 	/** Get UTF-16BE Unicode character at the current position.  This
 	 * implicitly advances the current position by two bytes.
 	 * @return Characer at the current position

@@ -41,9 +41,12 @@ import java.util.ArrayList;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.reportable.AbstractReportable;
 
+import com.sleepycat.persist.model.Persistent;
+
 /**
  * A class to hold a list of comment strings.
  */
+@Persistent
 public class CommentInformation extends AbstractReportable {
 
     /** The count of comments */
@@ -55,6 +58,9 @@ public class CommentInformation extends AbstractReportable {
     /** If true, collect the text of all comments */
     protected boolean collectCommentText = false;
     
+    protected CommentInformation(){
+    	super();
+    }
     /**
      * Get the count of comment strings.
      * 

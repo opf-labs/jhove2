@@ -2,276 +2,304 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:util="http://www.springframework.org/schema/util" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 	<!-- SGML: module bean -->
 	<bean id="SgmlModule" class="org.jhove2.module.format.sgml.SgmlModule" scope="prototype">
-	    <constructor-arg ref="SgmlFormat"/>
-     	<property name="developers">
+		<constructor-arg ref="SgmlFormat"/>
+		<constructor-arg ref="FormatModuleAccessor"/>
+		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="PorticoAgent"/>
 			</list>
 		</property>
-        <property name="wrappedProduct" ref="OpenSgml"/>
-        <!--  Comment out unused sgmlParser property, depending on which OS/exe configuration you employ -->
-        <!-- if using OpenJade unix exe on Unix or via Cygwin on Windows -->
+		<property name="wrappedProduct" ref="OpenSgml"/>
+		<!--  Comment out unused sgmlParser property, depending on which OS/exe configuration you employ -->
+		<!-- if using OpenJade unix exe on Unix or via Cygwin on Windows -->
 		<property name="sgmlParser" ref="OpenSpWrapper"/>
-        <!-- if using OpenJade Windows dll and executable -->
-        <!-- <property name="sgmlParser" ref="OpenSpWrapperForWindowsExe"/> -->
-        <property name="shouldFindDoctype" value="true"/>
+		<!-- if using OpenJade Windows dll and executable -->
+		<!-- <property name="sgmlParser" ref="OpenSpWrapperForWindowsExe"/> -->
+		<property name="shouldFindDoctype" value="true"/>
 	</bean>
 	<!-- OpenSpWrapper bean wraps invocations to OpenSP executables (UNIX or Cygwin on Windows -->
 	<!--  Edit any paths as appropriate for your installation -->
 	<bean id="OpenSpWrapper" class="org.jhove2.module.format.sgml.OpenSpWrapper" scope="prototype">
-        <property name="processHandler" ref="ExternalProcessHandler"/>
-        <property name="onsgmlsPath" value="/usr/bin/onsgmls"/>
-        <property name="sgmlnormPath" value="/usr/bin/sgmlnorm"/>
-        <property name="filepathFilter" ref="OpenSpFilepathFilter"/>
-        <property name="onsgmlsOptions" ref="OnsgmlsOptions"/>
-        <property name="sgmlnormOptions" ref="SgmlNormOptions"/>
-        <property name="spaceEscapeChar" value="'"/>
+		<property name="processHandler" ref="ExternalProcessHandler"/>
+		<property name="onsgmlsPath" value="/usr/bin/onsgmls"/>
+		<property name="sgmlnormPath" value="/usr/bin/sgmlnorm"/>
+		<property name="filepathFilter" ref="OpenSpFilepathFilter"/>
+		<property name="onsgmlsOptions" ref="OnsgmlsOptions"/>
+		<property name="sgmlnormOptions" ref="SgmlNormOptions"/>
+		<property name="spaceEscapeChar" value="'"/>
+<!--		<property name="esisFileParser" ref="AntlrEsisParser"/>-->
+		<property name="esisFileParser" ref="DirectEsisParser"/>
+<!--		<property name="messageParser"  ref="AntlrMessageParser"/>-->
+		<property name="messageParser"  ref="DirectMessageParser"/>
+<!--		<property name="doctypeParser" ref="AntlrDoctypeParser"/>-->
+		<property name="doctypeParser" ref="DirectDoctypeParser"/>
 	</bean>
-		<!-- OpenSpWrapper bean wraps invocations to OpenSP executables (Windows dll and exe -->
-		<!--  assumes Windows exe and dll are in c:\Program Files\OpenSp\ -->
-		<!--  Edit any paths as appropriate for your installation -->
+	<!-- OpenSpWrapper bean wraps invocations to OpenSP executables (Windows dll and exe -->
+	<!--  assumes Windows exe and dll are in c:\Program Files\OpenSp\ -->
+	<!--  Edit any paths as appropriate for your installation -->
 	<bean id="OpenSpWrapperForWindowsExe" class="org.jhove2.module.format.sgml.OpenSpWrapper" scope="prototype">
-        <property name="processHandler" ref="WindowsExternalProcessHandler"/>
-        <!-- 
+		<property name="processHandler" ref="WindowsExternalProcessHandler"/>
+		<!-- 
         <property name="onsgmlsPath" value="C:\PROGRA~1\OpenSp\onsgmls.exe"/>
         <property name="sgmlnormPath" value="C:\PROGRA~1\OpenSp\osgmlnorm.exe"/>
-        -->        
-        <property name="onsgmlsPath" value="C:\cygwin\bin\onsgmls.exe"/>
-        <property name="sgmlnormPath" value="C:\cygwin\bin\osgmlnorm.exe"/>
-        <property name="onsgmlsOptions" ref="WindowsOnsgmlsOptions"/>
-        <property name="sgmlnormOptions" ref="WindowsSgmlNormOptions"/>
-        <property name="spaceEscapeChar" value='"'/>
+        -->
+		<property name="onsgmlsPath" value="C:\cygwin\bin\onsgmls.exe"/>
+		<property name="sgmlnormPath" value="C:\cygwin\bin\osgmlnorm.exe"/>
+		<property name="onsgmlsOptions" ref="WindowsOnsgmlsOptions"/>
+		<property name="sgmlnormOptions" ref="WindowsSgmlNormOptions"/>
+		<property name="spaceEscapeChar" value='"'/>
+<!--		<property name="esisFileParser" ref="AntlrEsisParser"/>-->
+		<property name="esisFileParser" ref="DirectEsisParser"/>
+<!--		<property name="messageParser"  ref="AntlrMessageParser"/>-->
+		<property name="messageParser"  ref="DirectMessageParser"/>
+<!--		<property name="doctypeParser" ref="AntlrDoctypeParser"/>-->
+		<property name="doctypeParser" ref="DirectDoctypeParser"/>
 	</bean>
+	
+	<bean id="DirectEsisParser" class="org.jhove2.module.format.sgml.EsisFileParser"
+	      scope="prototype"/>
+	<bean id="DirectMessageParser" class="org.jhove2.module.format.sgml.ErrFileParser"
+		  scope="prototype"/>
+	<bean id="DirectDoctypeParser" class="org.jhove2.module.format.sgml.SgmlNormFileParser" 
+		  scope="prototype"/>
+	
+	<bean id="AntlrEsisParser" class="org.jhove2.module.format.sgml.EsisParser"
+	      scope="prototype"/>
+	<bean id="AntlrMessageParser" class="org.jhove2.module.format.sgml.OpenSpMessageParser"
+	      scope="prototype"/>
+	<bean id="AntlrDoctypeParser" class="org.jhove2.module.format.sgml.DoctypeParser"
+	      scope="prototype"/>
+	
 	<!--  SGML catalog file path bean: unix  or Cygwin on Windows; edit as appropriate for your installation-->
 	<bean id="SgmlCatalogPath" class="java.lang.String">
-	    <constructor-arg type="java.lang.String" value="/usr/local/etc/sgml/catalog"/>
+		<constructor-arg type="java.lang.String" value="/usr/local/etc/sgml/catalog"/>
 	</bean>
-		<!--  SGML catalog file path bean: unix  or Cywgin on Windows; edit as appropriate for your installation-->
+	<!--  SGML catalog file path bean: unix  or Cywgin on Windows; edit as appropriate for your installation-->
 	<bean id="WindowsSgmlCatalogPath" class="java.lang.String">
-	    <constructor-arg type="java.lang.String" value="C:\PROGRA~1\OpenSp\catalog"/>
-	    <!-- <constructor-arg type="java.lang.String" value="C:\cygwin\usr\share\sgml\OpenSP\catalog"/>	   -->   
+		<constructor-arg type="java.lang.String" value="C:\PROGRA~1\OpenSp\catalog"/>
+		<!-- <constructor-arg type="java.lang.String" value="C:\cygwin\usr\share\sgml\OpenSP\catalog"/>	   -->
 	</bean>
 	<!-- Bean containing options settings for OpenSp ongsmls executable: Unix or Cygwin on Windows-->
-   <bean id="OnsgmlsOptions" class="org.jhove2.module.format.sgml.OnsgmlsOptions" scope="singleton"> 
-   		<property name="filepathFilter" ref="OpenSpFilepathFilter"/>      
-        <!--  OpenSp options -->
-        <!--  option -c: use catalog PathToCatalog  if empty or null, does not use catalog -->
-        <property name="catalogPath" ref="SgmlCatalogPath"/>
-        <!--  option -D: search these directories for files specified in system identifiers -->
-        <property name="searchDiretories">
+	<bean id="OnsgmlsOptions" class="org.jhove2.module.format.sgml.OnsgmlsOptions" scope="singleton">
+		<property name="filepathFilter" ref="OpenSpFilepathFilter"/>
+		<!--  OpenSp options -->
+		<!--  option -c: use catalog PathToCatalog  if empty or null, does not use catalog -->
+		<property name="catalogPath" ref="SgmlCatalogPath"/>
+		<!--  option -D: search these directories for files specified in system identifiers -->
+		<property name="searchDiretories">
 			<list value-type="java.lang.String"></list>
-        </property>
-        <!--  option -E: OpenSp exits after maxErrors; if 0: no limit; default value is 200 -->
-        <property name="maxErrors" value="200"/> 
-        <!-- option -e  Show open entities in error messages -->
-        <property name="showOpenEntities" value="true"/>
-        <!-- option -g  Show the generic identifiers of open elements in error messages -->
-        <property name="showGI" value="true"/>
-        <!-- option -i overrides "IGNORE" to "INCLUDE" for marked sections for entities -->
-        <property name="includedEntities">
+		</property>
+		<!--  option -E: OpenSp exits after maxErrors; if 0: no limit; default value is 200 -->
+		<property name="maxErrors" value="200"/>
+		<!-- option -e  Show open entities in error messages -->
+		<property name="showOpenEntities" value="true"/>
+		<!-- option -g  Show the generic identifiers of open elements in error messages -->
+		<property name="showGI" value="true"/>
+		<!-- option -i overrides "IGNORE" to "INCLUDE" for marked sections for entities -->
+		<property name="includedEntities">
 			<list value-type="java.lang.String"></list>
-        </property>
-        <!-- option -n Show message numbers in error output -->
-        <property name="showMessageNumbers" value="true"/>
-        <!--  output options -->
-        <property name="outputOptions">
-        <!--  comment out any options you do not wish to employ -->
-        	<list value-type="java.lang.String">
-        		<!-- Output definitions of all general entities  -->
-        		<value>entity</value>
-        		<!-- Distinguish attributes whose declared value is ID -->
-        		<value>id</value>
-        		<!-- Output L commands giving the current line number and filename. -->
-        		<value>line</value>
-        		<!-- Output an i command for included sub-elements. -->
-        		<value>included</value>
-        		<!-- Output an e command for elements a declared content of empty or with a content reference attribute -->
-        		<value>empty</value>
-        		<!-- Output an f command before an N command, if a system identifier could be generated for that notation. -->
-        		<value>notation-sysid</value>
-        		<!-- output \% escape sequences for non-SGML data characters -->
-        		<value>nonsgml</value>
-        		<!-- Output the notation name and attributes for DATA attributes. -->
-        		<value>data-attribute</value>
-        		<!-- Output an _ command with the contents of a comment. -->
-        		<value>comment</value>
-        		<!-- Output an o command before a command which was implied by the input document, but omitted from the actual markup. -->
-        		<value>omitted</value>
-        	</list>
-        </property>
-        <!-- option -w Warning and error options -->
-        <property name="warningOptions">
-        	<list value-type="java.lang.String">
-        		<value>all</value>
-        	</list>
-        </property>
-        <!-- option -x  Show information about relevant clauses (from ISO 8879:1986) in error messages. -->
-        <property name="showIsoRefs" value="true"/>
-   </bean>
-   	<!-- Bean containing options settings for OpenSp ongsmls executable: Windows dll and exe-->
-   <bean id="WindowsOnsgmlsOptions" class="org.jhove2.module.format.sgml.OnsgmlsOptions" scope="singleton">      
-        <!--  OpenSp options -->
-        <!--  option -c: use catalog PathToCatalog  if empty or null, does not use catalog -->
-        <property name="catalogPath" ref="WindowsSgmlCatalogPath"/>
-        <!--  option -D: search these directories for files specified in system identifiers -->
-        <property name="searchDiretories">
+		</property>
+		<!-- option -n Show message numbers in error output -->
+		<property name="showMessageNumbers" value="true"/>
+		<!--  output options -->
+		<property name="outputOptions">
+			<!--  comment out any options you do not wish to employ -->
+			<list value-type="java.lang.String">
+				<!-- Output definitions of all general entities  -->
+				<value>entity</value>
+				<!-- Distinguish attributes whose declared value is ID -->
+				<value>id</value>
+				<!-- Output L commands giving the current line number and filename. -->
+				<value>line</value>
+				<!-- Output an i command for included sub-elements. -->
+				<value>included</value>
+				<!-- Output an e command for elements a declared content of empty or with a content reference attribute -->
+				<value>empty</value>
+				<!-- Output an f command before an N command, if a system identifier could be generated for that notation. -->
+				<value>notation-sysid</value>
+				<!-- output \% escape sequences for non-SGML data characters -->
+				<value>nonsgml</value>
+				<!-- Output the notation name and attributes for DATA attributes. -->
+				<value>data-attribute</value>
+				<!-- Output an _ command with the contents of a comment. -->
+				<value>comment</value>
+				<!-- Output an o command before a command which was implied by the input document, but omitted from the actual markup. -->
+				<value>omitted</value>
+			</list>
+		</property>
+		<!-- option -w Warning and error options -->
+		<property name="warningOptions">
+			<list value-type="java.lang.String">
+				<value>all</value>
+			</list>
+		</property>
+		<!-- option -x  Show information about relevant clauses (from ISO 8879:1986) in error messages. -->
+		<property name="showIsoRefs" value="true"/>
+	</bean>
+	<!-- Bean containing options settings for OpenSp ongsmls executable: Windows dll and exe-->
+	<bean id="WindowsOnsgmlsOptions" class="org.jhove2.module.format.sgml.OnsgmlsOptions" scope="singleton">
+		<!--  OpenSp options -->
+		<!--  option -c: use catalog PathToCatalog  if empty or null, does not use catalog -->
+		<property name="catalogPath" ref="WindowsSgmlCatalogPath"/>
+		<!--  option -D: search these directories for files specified in system identifiers -->
+		<property name="searchDiretories">
 			<list value-type="java.lang.String"></list>
-        </property>
-        <!--  option -E: OpenSp exits after maxErrors; if 0: no limit; default value is 200 -->
-        <property name="maxErrors" value="200"/> 
-        <!-- option -e  Show open entities in error messages -->
-        <property name="showOpenEntities" value="true"/>
-        <!-- option -g  Show the generic identifiers of open elements in error messages -->
-        <property name="showGI" value="true"/>
-        <!-- option -i overrides "IGNORE" to "INCLUDE" for marked sections for entities -->
-        <property name="includedEntities">
+		</property>
+		<!--  option -E: OpenSp exits after maxErrors; if 0: no limit; default value is 200 -->
+		<property name="maxErrors" value="200"/>
+		<!-- option -e  Show open entities in error messages -->
+		<property name="showOpenEntities" value="true"/>
+		<!-- option -g  Show the generic identifiers of open elements in error messages -->
+		<property name="showGI" value="true"/>
+		<!-- option -i overrides "IGNORE" to "INCLUDE" for marked sections for entities -->
+		<property name="includedEntities">
 			<list value-type="java.lang.String"></list>
-        </property>
-        <!-- option -n Show message numbers in error output -->
-        <property name="showMessageNumbers" value="true"/>
-        <!--  output options -->
-        <property name="outputOptions">
-        	<list value-type="java.lang.String">
-        	<!--  comment out any options you do not wish to employ -->
-        		<!-- Output definitions of all general entities  -->
-        		<value>entity</value>
-        		<!-- Distinguish attributes whose declared value is ID -->
-        		<value>id</value>
-        		<!-- Output L commands giving the current line number and filename. -->
-        		<value>line</value>
-        		<!-- Output an i command for included sub-elements. -->
-        		<value>included</value>
-        		<!-- Output an e command for elements a declared content of empty or with a content reference attribute -->
-        		<value>empty</value>
-        		<!-- Output an f command before an N command, if a system identifier could be generated for that notation. -->
-        		<value>notation-sysid</value>
-        		<!-- output \% escape sequences for non-SGML data characters -->
-        		<value>nonsgml</value>
-        		<!-- Output the notation name and attributes for DATA attributes. -->
-        		<value>data-attribute</value>
-        		<!-- Output an _ command with the contents of a comment. -->
-        		<value>comment</value>
-        		<!-- Output an o command before a command which was implied by the input document, but omitted from the actual markup. -->
-        		<value>omitted</value>
-        	</list>
-        </property>
-        <!-- option -w Warning and error options -->
-        <!--  comment out any options you do not wish to employ -->
-        <property name="warningOptions">
-        	<list value-type="java.lang.String">
-        		<value>all</value>
-        	</list>
-        </property>
-        <!-- option -x  Show information about relevant clauses (from ISO 8879:1986) in error messages. -->
-        <property name="showIsoRefs" value="true"/>
-   </bean>
-   <!-- Bean containing options settings for OpenSp sgmlnorm executable: Unix or Cygwin on Windows -->
-   <bean id="SgmlNormOptions" class="org.jhove2.module.format.sgml.SgmlNormOptions" scope="singleton">
-   		<property name="filepathFilter" ref="OpenSpFilepathFilter"/>      
-        <!--  OpenSp options -->
-        <!--  option -c: use catalog PathToCatalog  if empty or null, does not use catalog -->
-        <property name="catalogPath" ref="SgmlCatalogPath"/>
-         <!--  option -E: OpenSp exits after maxErrors; if 0: no limit; default value is 200 -->
-        <property name="maxErrors" value="0"/>
-        <!-- option -e  Show open entities in error messages -->
-        <property name="showOpenEntities" value="false"/>
-        <!-- option -g  Show the generic identifiers of open elements in error messages -->
-        <property name="showGI" value="false"/>
-        <!-- option error-numbers Show message numbers in error output -->
-        <property name="showMessageNumbers" value="false"/>
-        <!-- option -x  Show information about relevant clauses (from ISO 8879:1986) in error messages. -->
-        <property name="showIsoRefs" value="false"/>
-        <!--  option -d Create docytpe statement in output  Should be true this is why we are running sgmlnorm -->
-        <property name="showDoctype" value="true"/>
-        <!--  option -m show marked sections in output  -->
-        <property name="showMarkedSections" value="false"/>
-        <!-- option -n Show comments output -->
-        <property name="showComments" value="false"/>
-        <!--  option -D: search these directories for files specified in system identifiers -->
-        <property name="searchDiretories">
+		</property>
+		<!-- option -n Show message numbers in error output -->
+		<property name="showMessageNumbers" value="true"/>
+		<!--  output options -->
+		<property name="outputOptions">
+			<list value-type="java.lang.String">
+				<!--  comment out any options you do not wish to employ -->
+				<!-- Output definitions of all general entities  -->
+				<value>entity</value>
+				<!-- Distinguish attributes whose declared value is ID -->
+				<value>id</value>
+				<!-- Output L commands giving the current line number and filename. -->
+				<value>line</value>
+				<!-- Output an i command for included sub-elements. -->
+				<value>included</value>
+				<!-- Output an e command for elements a declared content of empty or with a content reference attribute -->
+				<value>empty</value>
+				<!-- Output an f command before an N command, if a system identifier could be generated for that notation. -->
+				<value>notation-sysid</value>
+				<!-- output \% escape sequences for non-SGML data characters -->
+				<value>nonsgml</value>
+				<!-- Output the notation name and attributes for DATA attributes. -->
+				<value>data-attribute</value>
+				<!-- Output an _ command with the contents of a comment. -->
+				<value>comment</value>
+				<!-- Output an o command before a command which was implied by the input document, but omitted from the actual markup. -->
+				<value>omitted</value>
+			</list>
+		</property>
+		<!-- option -w Warning and error options -->
+		<!--  comment out any options you do not wish to employ -->
+		<property name="warningOptions">
+			<list value-type="java.lang.String">
+				<value>all</value>
+			</list>
+		</property>
+		<!-- option -x  Show information about relevant clauses (from ISO 8879:1986) in error messages. -->
+		<property name="showIsoRefs" value="true"/>
+	</bean>
+	<!-- Bean containing options settings for OpenSp sgmlnorm executable: Unix or Cygwin on Windows -->
+	<bean id="SgmlNormOptions" class="org.jhove2.module.format.sgml.SgmlNormOptions" scope="singleton">
+		<property name="filepathFilter" ref="OpenSpFilepathFilter"/>
+		<!--  OpenSp options -->
+		<!--  option -c: use catalog PathToCatalog  if empty or null, does not use catalog -->
+		<property name="catalogPath" ref="SgmlCatalogPath"/>
+		<!--  option -E: OpenSp exits after maxErrors; if 0: no limit; default value is 200 -->
+		<property name="maxErrors" value="0"/>
+		<!-- option -e  Show open entities in error messages -->
+		<property name="showOpenEntities" value="false"/>
+		<!-- option -g  Show the generic identifiers of open elements in error messages -->
+		<property name="showGI" value="false"/>
+		<!-- option error-numbers Show message numbers in error output -->
+		<property name="showMessageNumbers" value="false"/>
+		<!-- option -x  Show information about relevant clauses (from ISO 8879:1986) in error messages. -->
+		<property name="showIsoRefs" value="false"/>
+		<!--  option -d Create docytpe statement in output  Should be true this is why we are running sgmlnorm -->
+		<property name="showDoctype" value="true"/>
+		<!--  option -m show marked sections in output  -->
+		<property name="showMarkedSections" value="false"/>
+		<!-- option -n Show comments output -->
+		<property name="showComments" value="false"/>
+		<!--  option -D: search these directories for files specified in system identifiers -->
+		<property name="searchDiretories">
 			<list value-type="java.lang.String"></list>
-        </property>
-         <!-- option -i overrides "IGNORE" to "INCLUDE" for marked sections for entities -->
-        <property name="includedEntities">
+		</property>
+		<!-- option -i overrides "IGNORE" to "INCLUDE" for marked sections for entities -->
+		<property name="includedEntities">
 			<list value-type="java.lang.String"></list>
-        </property>
-         <!-- option -w Warning and error options -->
-        <property name="warningOptions">
-        	<list value-type="java.lang.String">
-        		<value>all</value>
-        	</list>
-        </property>
-   </bean>
-      <!-- Bean containing options settings for OpenSp sgmlnorm executable: Windows dll and exe-->
-   <bean id="WindowsSgmlNormOptions" class="org.jhove2.module.format.sgml.SgmlNormOptions" scope="singleton">   
-        <!--  OpenSp options -->
-        <!--  option -c: use catalog PathToCatalog  if empty or null, does not use catalog -->
-        <property name="catalogPath" ref="WindowsSgmlCatalogPath"/>
-         <!--  option -E: OpenSp exits after maxErrors; if 0: no limit; default value is 200 -->
-        <property name="maxErrors" value="0"/>
-        <!-- option -e  Show open entities in error messages -->
-        <property name="showOpenEntities" value="false"/>
-        <!-- option -g  Show the generic identifiers of open elements in error messages -->
-        <property name="showGI" value="false"/>
-        <!-- option error-numbers Show message numbers in error output -->
-        <property name="showMessageNumbers" value="false"/>
-        <!-- option -x  Show information about relevant clauses (from ISO 8879:1986) in error messages. -->
-        <property name="showIsoRefs" value="false"/>
-        <!--  option -d Create docytpe statement in output  Should be true this is why we are running sgmlnorm -->
-        <property name="showDoctype" value="true"/>
-        <!--  option -m show marked sections in output  -->
-        <property name="showMarkedSections" value="false"/>
-        <!-- option -n Show comments output -->
-        <property name="showComments" value="false"/>
-        <!--  option -D: search these directories for files specified in system identifiers -->
-        <property name="searchDiretories">
+		</property>
+		<!-- option -w Warning and error options -->
+		<property name="warningOptions">
+			<list value-type="java.lang.String">
+				<value>all</value>
+			</list>
+		</property>
+	</bean>
+	<!-- Bean containing options settings for OpenSp sgmlnorm executable: Windows dll and exe-->
+	<bean id="WindowsSgmlNormOptions" class="org.jhove2.module.format.sgml.SgmlNormOptions" scope="singleton">
+		<!--  OpenSp options -->
+		<!--  option -c: use catalog PathToCatalog  if empty or null, does not use catalog -->
+		<property name="catalogPath" ref="WindowsSgmlCatalogPath"/>
+		<!--  option -E: OpenSp exits after maxErrors; if 0: no limit; default value is 200 -->
+		<property name="maxErrors" value="0"/>
+		<!-- option -e  Show open entities in error messages -->
+		<property name="showOpenEntities" value="false"/>
+		<!-- option -g  Show the generic identifiers of open elements in error messages -->
+		<property name="showGI" value="false"/>
+		<!-- option error-numbers Show message numbers in error output -->
+		<property name="showMessageNumbers" value="false"/>
+		<!-- option -x  Show information about relevant clauses (from ISO 8879:1986) in error messages. -->
+		<property name="showIsoRefs" value="false"/>
+		<!--  option -d Create docytpe statement in output  Should be true this is why we are running sgmlnorm -->
+		<property name="showDoctype" value="true"/>
+		<!--  option -m show marked sections in output  -->
+		<property name="showMarkedSections" value="false"/>
+		<!-- option -n Show comments output -->
+		<property name="showComments" value="false"/>
+		<!--  option -D: search these directories for files specified in system identifiers -->
+		<property name="searchDiretories">
 			<list value-type="java.lang.String"></list>
-        </property>
-         <!-- option -i overrides "IGNORE" to "INCLUDE" for marked sections for entities -->
-        <property name="includedEntities">
+		</property>
+		<!-- option -i overrides "IGNORE" to "INCLUDE" for marked sections for entities -->
+		<property name="includedEntities">
 			<list value-type="java.lang.String"></list>
-        </property>
-         <!-- option -w Warning and error options -->
-        <property name="warningOptions">
-        	<list value-type="java.lang.String">
-        		<value>all</value>
-        	</list>
-        </property>
-   </bean>
-   <!-- Bean for handler to invoke external process for OpenSp utilities: Unix or Cygwin on Windows-->
-   <!--  Edit any paths as appropriate for your installation -->
-   <bean id="ExternalProcessHandler" class="org.jhove2.util.externalprocess.ForkShellHandler" scope="prototype">
- 		<property name="shellEnv" value="c:\cygwin\bin\bash.exe"/>
+		</property>
+		<!-- option -w Warning and error options -->
+		<property name="warningOptions">
+			<list value-type="java.lang.String">
+				<value>all</value>
+			</list>
+		</property>
+	</bean>
+	<!-- Bean for handler to invoke external process for OpenSp utilities: Unix or Cygwin on Windows-->
+	<!--  Edit any paths as appropriate for your installation -->
+	<bean id="ExternalProcessHandler" class="org.jhove2.util.externalprocess.ForkShellHandler" scope="prototype">
+		<property name="shellEnv" value="c:\cygwin\bin\bash.exe"/>
 		<property name="shellParms" value="-c"/>
 		<property name="shouldQuoteCommand" value="true"/>
 		<property name="shouldSyncAfterExcecution" value="true"/>
 	</bean>
-   <!-- Bean for handler to invoke external process for OpenSp utilities : Windows dll and exe-->
-   <!--  Edit any paths as appropriate for your installation -->
-   <bean id="WindowsExternalProcessHandler" class="org.jhove2.util.externalprocess.ForkShellHandler" scope="prototype">
-     	<property name="shellEnv" value="C:\WINDOWS\system32\cmd.exe"/>
+	<!-- Bean for handler to invoke external process for OpenSp utilities : Windows dll and exe-->
+	<!--  Edit any paths as appropriate for your installation -->
+	<bean id="WindowsExternalProcessHandler" class="org.jhove2.util.externalprocess.ForkShellHandler" scope="prototype">
+		<property name="shellEnv" value="C:\WINDOWS\system32\cmd.exe"/>
 		<property name="shellParms" value="/C"/>
 		<property name="shouldQuoteCommand" value="false"/>
 		<property name="shouldSyncAfterExcecution" value="false"/>
 	</bean>
 	<!--  bean to filter filepaths before passing to ExternalProcessHandler -->
 	<bean id="OpenSpFilepathFilter" class="org.jhove2.util.externalprocess.FileSeparatorFilter" scope="prototype"></bean>
-   <!-- OpenSGML wrapped product bean -->
-   <bean id="OpenSgml" class="org.jhove2.core.WrappedProduct" scope="singleton" >
-   		<property name="authority" value="Open Jade:  http://openjade.sourceforge.net/"/>
-   		<property name="constraints" value="Executable MUST be on runtime path"/>
-   		<property name="developers" value="James Clark, Henry Thompson, Cees A. de Groot, Matthias Clasen, Peter Newcomb"/>
-   		<property name="environments" value="Unix Windows Macintosh"/>
-   		<property name="languages" value="C++"/>
-   		<property name="name" value="OpenSP"/>
-   		<property name="note" value="This package is a collection of SGML/XML tools called OpenSP. It is a fork from James Clark's SP suite. These tools are used to parse, validate, and normalize SGML and XML files"/>
-   		<property name="openSource" value="true"/>
-   		<property name="releaseDate" value="2005-12-23"/>
-   		<!--  
+	<!-- OpenSGML wrapped product bean -->
+	<bean id="OpenSgml" class="org.jhove2.core.WrappedProduct" scope="singleton" >
+		<property name="authority" value="Open Jade: http://openjade.sourceforge.net/"/>
+		<property name="constraints" value="Executable MUST be on runtime path"/>
+		<property name="developers" value="James Clark, Henry Thompson, Cees A. de Groot, Matthias Clasen, Peter Newcomb"/>
+		<property name="environments" value="Unix Windows Macintosh"/>
+		<property name="languages" value="C++"/>
+		<property name="name" value="OpenSP"/>
+		<property name="note" value="This package is a collection of SGML/XML tools called OpenSP. It is a fork from James Clark's SP suite. These tools are used to parse, validate, and normalize SGML and XML files"/>
+		<property name="openSource" value="true"/>
+		<property name="releaseDate" value="2005-12-23"/>
+		<!--  
    		<property name="rightsStatement" value="Copyright (c) 1994, 1995, 1996, 1997, 1998 James Clark Permission is hereby granted, free of charge, to any person obtaininga copy of this software and associated documentation files (the'Software'), to deal in the Software without restriction, includingwithout limitation the rights to use, copy, modify, merge, publish,distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.  THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL JAMES CLARK BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  Except as contained in this notice, the name of James Clark shall not be used in advertising or otherwise to promote the sale, use or other dealings in this Software without prior written authorization from James Clark."/>
    		-->
-   		<property name="version" value="1.5.2"/>
-   </bean>
+		<property name="version" value="1.5.2"/>
+	</bean>
 	<!-- SGML format bean -->
 	<bean id="SgmlFormat" class="org.jhove2.core.format.Format" scope="singleton">
 		<constructor-arg type="java.lang.String" value="SGML"/>
@@ -319,7 +347,7 @@
 		<!--		<property name="identifier" ref="ISOSGMLSpecificationURI"/>-->
 		<property name="publisher" value="ISO"/>
 	</bean>
-   <bean id="ISOSGMLSpecificationCo1" class="org.jhove2.core.Document" scope="singleton">
+	<bean id="ISOSGMLSpecificationCo1" class="org.jhove2.core.Document" scope="singleton">
 		<constructor-arg type="java.lang.String" value="ISO 8879:1986/Cor 1:1996"/>
 		<constructor-arg type="org.jhove2.core.Document$Type" value="Standard"/>
 		<constructor-arg type="org.jhove2.core.Document$Intention" value="Authoritative"/>
@@ -333,7 +361,7 @@
 		<!--		<property name="identifier" ref="ISOSGMLSpecificationCo1URI"/>-->
 		<property name="publisher" value="ISO"/>
 	</bean>
-   <bean id="ISOSGMLSpecificationCo2" class="org.jhove2.core.Document" scope="singleton">
+	<bean id="ISOSGMLSpecificationCo2" class="org.jhove2.core.Document" scope="singleton">
 		<constructor-arg type="java.lang.String" value="ISO 8879:1986/Cor 2:1999"/>
 		<constructor-arg type="org.jhove2.core.Document$Type" value="Standard"/>
 		<constructor-arg type="org.jhove2.core.Document$Intention" value="Authoritative"/>
@@ -347,8 +375,7 @@
 		<!--		<property name="identifier" ref="ISOSGMLSpecificationCo2URI"/>-->
 		<property name="publisher" value="ISO"/>
 	</bean>
-
-   <bean id="ISOSGMLSpecificationAmd" class="org.jhove2.core.Document" scope="singleton">
+	<bean id="ISOSGMLSpecificationAmd" class="org.jhove2.core.Document" scope="singleton">
 		<constructor-arg type="java.lang.String" value="ISO 8879:1986/Amd 1:1988"/>
 		<constructor-arg type="org.jhove2.core.Document$Type" value="Standard"/>
 		<constructor-arg type="org.jhove2.core.Document$Intention" value="Authoritative"/>
@@ -382,53 +409,53 @@
 		<constructor-arg type="java.lang.String" value="http://www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=16388"/>
 		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="URI"/>
 	</bean>
-	<!-- SGML identifier bean -->  
+	<!-- SGML identifier bean -->
 	<bean id="SgmlIdentifier" class="org.jhove2.core.I8R" scope="singleton">
 		<constructor-arg type="java.lang.String" value="http://jhove2.org/terms/format/sgml"/>
 	</bean>
 	<!-- SGML PUID aliasIdentifier bean -->
 	<bean id="PUIDSgml" class="org.jhove2.core.I8R" scope="singleton">
-	    <constructor-arg type="java.lang.String" value="x-fmt/195"/>
-	    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
+		<constructor-arg type="java.lang.String" value="x-fmt/195"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
 	</bean>
 	<!-- HTML PUID aliasIdentifier bean -->
 	<bean id="PUIDHtmlfmt96" class="org.jhove2.core.I8R" scope="singleton">
-	    <constructor-arg type="java.lang.String" value="fmt/96"/>
-	    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
-	</bean>	
+		<constructor-arg type="java.lang.String" value="fmt/96"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
+	</bean>
 	<!-- HTML 2.0 PUID aliasIdentifier bean -->
 	<bean id="PUIDHtmlfmt97" class="org.jhove2.core.I8R" scope="singleton">
-	    <constructor-arg type="java.lang.String" value="fmt/97"/>
-	    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
-	</bean>	
+		<constructor-arg type="java.lang.String" value="fmt/97"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
+	</bean>
 	<!-- HTML 3.2 PUID aliasIdentifier bean -->
 	<bean id="PUIDHtmlfmt98" class="org.jhove2.core.I8R" scope="singleton">
-	    <constructor-arg type="java.lang.String" value="fmt/98"/>
-	    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
+		<constructor-arg type="java.lang.String" value="fmt/98"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
 	</bean>
 	<!-- HTML 4.0 PUID aliasIdentifier bean -->
 	<bean id="PUIDHtmlfmt99" class="org.jhove2.core.I8R" scope="singleton">
-	    <constructor-arg type="java.lang.String" value="fmt/99"/>
-	    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
-	</bean>	
+		<constructor-arg type="java.lang.String" value="fmt/99"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
+	</bean>
 	<!-- HTML 4.01 PUID aliasIdentifier bean -->
 	<bean id="PUIDHtmlfmt100" class="org.jhove2.core.I8R" scope="singleton">
-	    <constructor-arg type="java.lang.String" value="fmt/100"/>
-	    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
-	</bean>		
+		<constructor-arg type="java.lang.String" value="fmt/100"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
+	</bean>
 	<!-- SGML MIME aliasIdentifier bean -->
 	<bean id="SgmlMIMEType" class="org.jhove2.core.I8R" scope="singleton">
-	    <constructor-arg type="java.lang.String" value="application/sgml"/>
-	    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="MIME"/>
+		<constructor-arg type="java.lang.String" value="application/sgml"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="MIME"/>
 	</bean>
 	<!--  SGML RFC 1874 aliasIdentifier bean -->
 	<bean id="SgmlRFC1874" class="org.jhove2.core.I8R" scope="singleton">
 		<constructor-arg type="java.lang.String" value="RFC 1874"/>
 		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="RFC"/>
 	</bean>
-		<!--  SGML ISO 8879 aliasIdentifier bean -->
+	<!--  SGML ISO 8879 aliasIdentifier bean -->
 	<bean id="SgmlISO8879" class="org.jhove2.core.I8R" scope="singleton">
 		<constructor-arg type="java.lang.String" value="ISO 8879:1986"/>
 		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="ISO"/>
 	</bean>
-</beans>		   
+</beans>

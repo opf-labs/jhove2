@@ -12,6 +12,7 @@
 		<!-- Identifier module bean -->
 	<bean id="testIdentifier" class="org.jhove2.module.identify.IdentifierModule"
 	      scope="prototype">
+	    <constructor-arg ref="IdentifierAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
@@ -26,6 +27,7 @@
 		<!-- Identifier command bean -->
 	<bean id="IdentifierCommand" class="org.jhove2.module.identify.IdentifierCommand"
 	 	scope="prototype">
+	 	<constructor-arg ref="BaseModuleAccessor"/>
 	 	 <property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
@@ -43,7 +45,8 @@
 	      
 	<!-- DROID identifier bean -->
 	<bean id="testDroidIdentifier" class="org.jhove2.module.identify.DROIDIdentifier"
-	      scope="prototype">	
+	      scope="prototype">
+	    <constructor-arg ref="BaseModuleAccessor"/>	
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
@@ -53,12 +56,12 @@
 		</property>
 		<property name="configFileName" value="DROID_config.xml"/>
 		<property name="sigFileName" value="DROID_SignatureFile_V20.xml"/>
-		<property name="wrappedProduct" ref="DROIDWrappedProduct"/>
+		<property name="wrappedProduct" ref="TestDROIDWrappedProduct"/>
 	</bean>
 	
 		
    <!-- DROID Wrapped Product bean -->
-   <bean id="DROIDWrappedProduct" class="org.jhove2.core.WrappedProduct" scope="singleton" >
+   <bean id="TestDROIDWrappedProduct" class="org.jhove2.core.WrappedProduct" scope="singleton" >
       	<property name="name" value="DROID"/>
       	<property name="version" value="4.0.0"/>
       	<property name="releaseDate" value="2009-07-23"/>
@@ -73,6 +76,7 @@
  	<!-- Aggrefier command Bean -->
 	<bean id="AggrefierCommand" class="org.jhove2.module.aggrefy.AggrefierCommand"
 		scope="prototype" >
+		<constructor-arg ref="BaseModuleAccessor"/>
 		 <property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
@@ -91,6 +95,7 @@
 	<!-- Aggrefier module bean -->
 	<bean id="Aggrefier" class="org.jhove2.module.aggrefy.AggrefierModule"
 	      scope="prototype">
+	    <constructor-arg ref="AggrefierAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
@@ -110,6 +115,7 @@
 	     Must have all 3 required files; does NOT accept files with unrecognized extensions -->
 	<bean id="testStrictShapeFileRecognizer" class="org.jhove2.module.aggrefy.GlobPathRecognizer"
 	 scope="prototype">
+	 	<constructor-arg ref="BaseModuleAccessor"/>
 	 	<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
@@ -133,6 +139,7 @@
 		    Only need 2 out of 3 required files; accepts u files with unrecognized extensions -->
 	<bean id="relaxedShapeFileRecognizer" class="org.jhove2.module.aggrefy.GlobPathRecognizer"
 	 scope="prototype">
+	    <constructor-arg ref="BaseModuleAccessor"/>
 	 	<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
@@ -157,6 +164,7 @@
 	     Must have all 3 required files; does NOT accept files with unrecognized extensions -->
 	<bean id="quickenFileRecognizer" class="org.jhove2.module.aggrefy.GlobPathRecognizer"
 	 scope="prototype">
+	    <constructor-arg ref="BaseModuleAccessor"/>
 	 	<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
