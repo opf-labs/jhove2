@@ -56,6 +56,8 @@ public class InputFactory {
 	 *            Java {java.io.File} underlying the inputable
      * @param isTemp
      *            Temporary file status: true if a temporary file
+     * @param deleteOnClose
+     *            Delete on close status: true if delete on close
 	 * @param bufferSize
 	 *            Maximum buffer size, in bytes
 	 * @param scope
@@ -66,11 +68,12 @@ public class InputFactory {
 	 * @throws IOException
 	 *             I/O exception instantiating input
 	 */
-	public static Input getInput(File file, boolean isTemp, int bufferSize,
-	                             Type type)
+	public static Input getInput(File file, boolean isTemp, boolean deleteOnClose,
+	                             int bufferSize, Type type)
 		throws FileNotFoundException, IOException
 	{
-		return getInput(file, isTemp, bufferSize, type, ByteOrder.BIG_ENDIAN);
+		return getInput(file, isTemp, deleteOnClose, bufferSize, type,
+		                ByteOrder.BIG_ENDIAN);
 	}
 
 	/**
@@ -92,6 +95,8 @@ public class InputFactory {
 	 *            Java {java.io.File} underlying the inputable
      * @param isTemp
      *            Temporary file status: true if a temporary file
+	 * @param deleteOnClose
+	 *            Delete on close status: true if delete on close
 	 * @param bufferSize
 	 *            Maximum buffer size, in bytes
 	 * @param scope
@@ -104,33 +109,37 @@ public class InputFactory {
 	 * @throws IOException
 	 *             I/O exception instantiating input
 	 */
-	public static Input getInput(File file, boolean isTemp, int bufferSize,
-	                             Type type, ByteOrder order)
+	public static Input getInput(File file, boolean isTemp, boolean deleteOnClose,
+	                             int bufferSize, Type type, ByteOrder order)
 	    throws FileNotFoundException, IOException
 	{
-		AbstractInput abstractInput = null;
+		AbstractInput input = null;
 		if (file != null && file.canRead()) {
 		    if (type.equals(Type.Direct)) {
-		        abstractInput = new DirectInput(file, isTemp, bufferSize, order);
+		        input = new DirectInput(file, isTemp, deleteOnClose, bufferSize,
+		                                order);
 		    }
 		    else if (type.equals(Type.NonDirect)) {
-		        abstractInput = new NonDirectInput(file, isTemp, bufferSize, order);
+		        input = new NonDirectInput(file, isTemp, deleteOnClose,
+		                                   bufferSize, order);
 		    }
 		    else if (type.equals(Type.Mapped)) {
 		        /* Only files smaller than Input.MAX_MAPPED_FILESIZE can utilize 
 		         * MappedByteBuffers 
 		         */
 		        if (file.length() < Input.MAX_MAPPED_FILE) {
-		            abstractInput = new MappedInput(file, isTemp, bufferSize, order);
+		            input = new MappedInput(file, isTemp, deleteOnClose,
+		                                    bufferSize, order);
 		        }
 		        else {
-		            abstractInput = new DirectInput(file, isTemp, bufferSize, order);
+		            input = new DirectInput(file, isTemp, deleteOnClose,
+		                                    bufferSize, order);
 		        }
 		    }
-		    abstractInput.setBufferType(type);
-		    abstractInput.setByteOrder(order);
+		    input.setBufferType(type);
+		    input.setByteOrder(order);
 		}
 
-		return abstractInput;
+		return input;
 	}
 }

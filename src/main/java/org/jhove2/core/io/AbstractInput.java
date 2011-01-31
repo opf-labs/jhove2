@@ -89,6 +89,9 @@ public abstract class AbstractInput
 	 */
 	protected long inputablePosition;
 
+	/** Temporary backing file status: true if temporary. */
+	protected boolean isTemp;
+	
 	/** Size, in bytes. */
 	protected long fileSize;
 
@@ -102,15 +105,18 @@ public abstract class AbstractInput
 	 *            Java {@link java.io.File} underlying the inputable
      * @param isTemp
      *            Temporary file status: true if a temporary file
+     * @param deleteOnClose            
+     *            Delete on close status: true if delete on close
 	 * @throws FileNotFoundException
 	 *             File not found
 	 * @throws IOException
 	 *             I/O exception instantiating input
 	 */
-	public AbstractInput(File file, boolean isTemp, int maxBufferSize)
+	public AbstractInput(File file, boolean isTemp, boolean deleteOnClose,
+	                     int maxBufferSize)
 	    throws FileNotFoundException, IOException
 	{
-		this(file, isTemp, maxBufferSize, ByteOrder.BIG_ENDIAN);
+		this(file, isTemp, deleteOnClose, maxBufferSize, ByteOrder.BIG_ENDIAN);
 	}
 
 	/**
@@ -118,6 +124,8 @@ public abstract class AbstractInput
 	 * 
 	 * @param file
 	 *            Java {@link java.io.File} underlying the inputable
+	 * @param isTemp
+	 *            Temporary file status: true if temporary
 	 * @param deleteOnClose
 	 *            Temporary file deletion status: true if delete on close
 	 * @param order
@@ -127,10 +135,11 @@ public abstract class AbstractInput
 	 * @throws IOException
 	 *             I/O exception instantiating input
 	 */
-	public AbstractInput(File file, boolean deleteOnClose, int maxBufferSize,
-	                     ByteOrder order)
+	public AbstractInput(File file, boolean isTemp, boolean deleteOnClose,
+	                     int maxBufferSize, ByteOrder order)
 		throws FileNotFoundException, IOException
 	{
+	    this.isTemp        = isTemp;
 	    this.deleteOnClose = deleteOnClose;
 	    if (!file.isDirectory()) {
 	        this.file = file;
@@ -165,7 +174,7 @@ public abstract class AbstractInput
 	        this.channel = null;
 	    }
 	    if (this.file != null) {
-	        if (this.deleteOnClose) {
+	        if (this.isTemp && this.deleteOnClose) {
 	            this.file.delete();
 	            this.file = null;
 	        }

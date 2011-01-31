@@ -107,7 +107,7 @@ public class DirectInputTest {
 					abstractInput.getBuffer().order() == ByteOrder.LITTLE_ENDIAN);
 			abstractInput.close();
 			abstractInput = InputFactory.getInput(testFile,
-			        (source.isTemp() && source.getDeleteTempFiles()),
+			        source.isTemp(), source.getDeleteTempFiles(),
 			        bufferSize,	Type.Direct);
 			assertTrue("AbstractInput Scope is Direct", abstractInput.getClass()
 					.getName().equalsIgnoreCase(DirectInput.class.getName()));

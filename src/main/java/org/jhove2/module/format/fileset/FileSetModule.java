@@ -153,7 +153,6 @@ public class FileSetModule
 			    finally {
 			        if (inpt != null) {
 			            inpt.close();
-			            inpt = null;
 			        }
 			    }
 			}

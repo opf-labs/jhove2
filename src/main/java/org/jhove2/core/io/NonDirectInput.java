@@ -55,8 +55,10 @@ public class NonDirectInput
 	 * 
 	 * @param file
 	 *            Java {@link java.io.File} underlying the inputable
+     * @param isTemp
+     *            Temporary file  status: true if temporary
      * @param deleteOnClose
-     *            Temporary file deletion status: true if delete on close
+     *            Delete on close status: true if delete on close
 	 * @param maxBufferSize
 	 *            Size of the direct buffer, in bytes
 	 * @throws FileNotFoundException
@@ -64,9 +66,10 @@ public class NonDirectInput
 	 * @throws IOException
 	 *             I/O exception instantiating input
 	 */
-	public NonDirectInput(File file, boolean deleteOnClose, int maxBufferSize)
+	public NonDirectInput(File file, boolean isTemp, boolean deleteOnClose,
+	                      int maxBufferSize)
 			throws FileNotFoundException, IOException {
-		this(file, deleteOnClose, maxBufferSize, ByteOrder.BIG_ENDIAN);
+		this(file, isTemp, deleteOnClose, maxBufferSize, ByteOrder.BIG_ENDIAN);
 	}
 
 	/**
@@ -74,8 +77,10 @@ public class NonDirectInput
 	 * 
 	 * @param file
 	 *            Java {@link java.io.File} underlying the inputable
+     * @param isTemp
+     *            Temporary file status: true if temporary
      * @param deleteOnClose
-     *            Temporary file deletion status: true if delete on close
+     *            Delete on close status: true if delete on close
 	 * @param maxBufferSize
 	 *            Size of the direct buffer, in bytes
 	 * @param order
@@ -85,11 +90,11 @@ public class NonDirectInput
 	 * @throws IOException
 	 *             I/O exception instantiating input
 	 */
-	public NonDirectInput(File file, boolean deleteOnClose, int maxBufferSize,
-	                      ByteOrder order)
+	public NonDirectInput(File file, boolean isTemp, boolean deleteOnClose,
+	                      int maxBufferSize, ByteOrder order)
 		throws FileNotFoundException, IOException
 	{
-		super(file, deleteOnClose, maxBufferSize, order);
+		super(file, isTemp, deleteOnClose, maxBufferSize, order);
 
 		/* Allocate direct buffer and initialize it. */
 		this.buffer = ByteBuffer.allocate(this.maxBufferSize).order(order);

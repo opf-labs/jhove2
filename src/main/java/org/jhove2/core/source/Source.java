@@ -68,8 +68,7 @@ public interface Source
 	extends Reportable, Comparable<Source>
 {
 	/**
-	 * Close the source unit. If the source unit is backed by a temporary file,
-	 * delete the file.
+	 * Close the source unit.
 	 */
 	public void close();
 

@@ -151,7 +151,7 @@ public class ZipFileSource
 	 */
 	public Input getInput(int bufferSize, Type bufferType)
 			throws FileNotFoundException, IOException {
-		return InputFactory.getInput(this.file, (this.isTemp && this.deleteTempFiles),
+		return InputFactory.getInput(this.file, this.isTemp, this.deleteTempFiles,
 		                             bufferSize, bufferType);
 	}
 

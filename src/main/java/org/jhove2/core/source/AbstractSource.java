@@ -154,8 +154,6 @@ public abstract class AbstractSource
 	protected AbstractSource(File file) {
 		this();
 		this.file = file;
-		/*System.out.println("# Sourc.const f:" + this.file.getName());
-		System.out.flush();*/
 	}
 
 	/**
@@ -175,8 +173,6 @@ public abstract class AbstractSource
 		this(createTempFile(stream, tmpDirectory, tmpPrefix, tmpSuffix,
                             bufferSize));
 		this.isTemp = true;
-		/*System.out.println("# Sourc.creat f:" + this.file.getName() + " t:true");
-		System.out.flush();*/
 	}
 
 	/**
@@ -190,7 +186,7 @@ public abstract class AbstractSource
 	 */
 	@Override
 	public Source addChildSource(Source child) throws JHOVE2Exception {
-		if (this.getSourceAccessor()==null){
+		if (this.getSourceAccessor() == null){
 			throw new JHOVE2Exception("SourceAccessor is null");
 		}
 		return this.sourceAccessor.addChildSource(this, child);
@@ -532,7 +528,7 @@ public abstract class AbstractSource
 	public Input getInput(int bufferSize, Type bufferType, ByteOrder order)
 		throws FileNotFoundException, IOException
 	{
-		return InputFactory.getInput(this.file, (this.isTemp && this.deleteTempFiles),
+		return InputFactory.getInput(this.file, this.isTemp, this.deleteTempFiles,
 		                             bufferSize, bufferType, order);
 	}
 

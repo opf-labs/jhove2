@@ -108,7 +108,7 @@ public class NonDirectInputTest {
 			 * abstractInput.close();
 			 */
 			abstractInput = InputFactory.getInput(testFile,
-			        (source.isTemp() && source.getDeleteTempFiles()),
+			        source.isTemp(), source.getDeleteTempFiles(),
 			        bufferSize,	Type.NonDirect, ByteOrder.LITTLE_ENDIAN);
 			assertTrue("AbstractInput Scope is NonDirect", abstractInput
 					.getClass().getName().equalsIgnoreCase(
@@ -272,7 +272,7 @@ public class NonDirectInputTest {
 	public void testReadShort() {
 		int testValue = 0;
 		try {
-		    abstractInput = InputFactory.getInput(testFile, false, 
+		    abstractInput = InputFactory.getInput(testFile, false, true,
 		            bufferSize, Type.NonDirect, ByteOrder.LITTLE_ENDIAN);
 			abstractInput.setPosition(0);
 			testValue = abstractInput.readUnsignedShort();
@@ -432,7 +432,7 @@ public class NonDirectInputTest {
 
 			// test going beyond boundary explicitly with LITTLE_ENDIAN byte
 			// ordering
-			ByteOrder bo = abstractInput.getBuffer().order();
+			//ByteOrder bo = abstractInput.getBuffer().order();
 			abstractInput.setByteOrder(ByteOrder.LITTLE_ENDIAN);
 			abstractInput.setPosition(98);
 			testValue = abstractInput.readUnsignedInt();

@@ -132,7 +132,6 @@ public class DirectoryModule
 			    finally {
 			        if (inpt != null) {
 			            inpt.close();
-			            inpt = null;
 			        }
 			    }
 			}

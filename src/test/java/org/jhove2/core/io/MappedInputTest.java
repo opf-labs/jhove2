@@ -115,7 +115,7 @@ public class MappedInputTest {
             abstractInput.close();
             */
             abstractInput = (MappedInput) InputFactory.getInput(testFile,
-                    (source.isTemp() && source.getDeleteTempFiles()),
+                    source.isTemp(), source.getDeleteTempFiles(),
                     bufferSize, Type.Mapped);
             assertTrue("AbstractInput Scope is MemoryMapped", abstractInput.getClass()
                     .getName().equalsIgnoreCase(MappedInput.class.getName()));
