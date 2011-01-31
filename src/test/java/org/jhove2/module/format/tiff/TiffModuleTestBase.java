@@ -117,9 +117,11 @@ public class TiffModuleTestBase {
             testTiffModule.parse(JHOVE2, fileSource, input);
         }
         catch (Exception e) {
-            // fail("Exception thrown: " + e.getMessage());
+             fail("Exception thrown: " + e.getMessage());
+             e.printStackTrace();
         }
     }
+
 
     /**
      * Test method for tiff Declaration information
