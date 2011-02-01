@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+         http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+         http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context-2.5.xsd
+         http://www.springframework.org/schema/util
+         http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+    <bean id="TiffRuleSet" class="org.jhove2.module.assess.RuleSet" scope="singleton">
+        <property name="name" value="TiffRuleSet"/>
+        <property name="description" value="Ruleset for Tiff module"/>
+        <property name="objectFilter" value="org.jhove2.module.format.tiff.TiffModule"/>
+        <property name="rules">
+            <list value-type="org.jhove2.module.assess.Rule">
+                <ref local="TiffAcceptable"/>
+            </list>
+        </property>
+        <property name="enabled" value="true"/>
+    </bean>
+    <bean id="TiffAcceptable" class="org.jhove2.module.assess.Rule" scope="singleton">
+      <property name="name" value="TiffAcceptable"/>
+      <property name="description" value="Is the Tiff file valid or is there only ByteOffsetNotWordAligned or date format error messages?"/>
+      <property name="consequent" value="Acceptable"/>
+      <property name="alternative" value="Not Acceptable"/>
+      <property name="quantifier" value="ANY_OF"/>
+        <property name="predicates">
+            <list value-type="java.lang.String">
+                <value><![CDATA[valid.toString() == 'true']]></value>
+                <value><![CDATA[ 
+				 // if (invalidFirstTwoBytesMessage.size() == 0) { return false }
+				 // if (invalidMagicNumberMessage.size() == 0) { return false }
+				 // if (prematureEOFMessage.size() == 0) { return false }
+				 // if (invalidFieldMessage.size() == 0) { return false }
+				    foreach (ifd: getIFDs()) { 
+				        if (ifd.zeroIFDEntriesMessage != null)  { return false }
+				        if (ifd instanceof org.jhove2.module.format.tiff.TiffIFD) {
+				            if (ifd.missingRequiredTagMessages.size() > 0) { return false }
+				            if (ifd.stripByteCountsNotDefinedMessage != null ) { return false }
+				            if (ifd.stripOffsetsNotDefinedMessage != null ) { return false }
+				            if (ifd.StripsLengthInconsistentMessage != null ) { return false }
+				            if (ifd.invalidStripOffsetMessage != null ) { return false }
+				            if (ifd.tileWidthNotDefinedMessage != null ) { return false }
+				            if (ifd.tileLengthNotDefinedMessage != null ) { return false }
+				            if (ifd.tileByteCountsNotDefinedMessage != null ) { return false }
+				            if (ifd.tileOffsetsNotDefinedMessage != null ) { return false }
+				            if (ifd.tilesAndStripsDefinedMessage != null ) { return false }
+				            if (ifd.tileOffsetValuesInsufficientMessage != null ) { return false }
+				            if (ifd.tileByteCountsValuesInsufficientMessage != null ) { return false }
+				            if (ifd.transparencyMaskValueInconsistentMessage != null ) { return false }
+				            if (ifd.BPSInvalidForTransparencyMaskMessage != null ) { return false }
+				            if (ifd.photometricInterpretationSppLT1InvalidMessage != null ) { return false }
+				            if (ifd.photometricInterpretationSppLT3InvalidMessage != null ) { return false }
+				            if (ifd.colorMapNotDefinedForPalletteColorMessage != null ) { return false }
+				            if (ifd.sppMustEqualOneForPalleteColorMessage != null ) { return false }
+				            if (ifd.insufficientColorMapValuesForPalleteColorMessage != null ) { return false }
+				            if (ifd.sppExtraSamplesValueInvalidMessage != null ) { return false }
+				            if (ifd.bpsValueInvalidforCIELabMessage != null ) { return false }
+				            if (ifd.insufficientColorMapValuesForPalleteColorMessage != null ) { return false }
+				            if (ifd.cellLengthShouldNotBePresentMessage != null ) { return false }
+				            if (ifd.dotRangeOutofRangeMessage != null ) { return false }
+				            if (ifd.xClipPathUnitsNotDefinedMessage != null ) { return false }
+				        }
+				        foreach (ifdEntry : ifd.getIFDEntries()) { 
+				            if (ifdEntry.InvalidCountValueMessage != null ) { return false }
+				            if (ifdEntry.TypeMismatchMessage != null ) { return false }
+				            if (ifdEntry.UnknownTagMessage != null ) { return false }
+				            if (ifdEntry.TagSortOrderErrorMessage != null ) { return false }
+				            if (ifdEntry.ValueOffsetReferenceLocationFileMessage != null ) { return false }
+				            if (ifdEntry.getTileLengthNotMultipleOf16Message() != null ) { return false }
+				            if (ifdEntry.getTileWidthNotMultipleOf16Message() != null ) { return false }
+				        }
+				    }
+				    return true;
+              ]]></value>
+           </list></property>
+        <property name="enabled" value="true"/>
+    </bean>
+</beans>
