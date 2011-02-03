@@ -15,4 +15,4 @@
 
 . ./env.sh
 
-${JAVA} -cp $CP org.jhove2.app.util.DisplayerPropertyFileGenerator $@
+${JAVA} -cp "$CP" org.jhove2.app.util.DisplayerPropertyFileGenerator $@

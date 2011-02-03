@@ -448,7 +448,7 @@ public class IFDEntry
                 Object[]messageArgs = new Object[]{dateTime};
                 this.invalidDateTimeMessage = new Message(Severity.ERROR,
                         Context.OBJECT,
-                        "org.jhove2.module.format.tiff.IFDEntry.invalidDateTimeFormatMessage",
+                        "org.jhove2.module.format.tiff.IFDEntry.invalidDateTimeMessage",
                         messageArgs, jhove2.getConfigInfo());
             }
         }        

@@ -41,5 +41,5 @@ IF "%1"=="" GOTO LOOP
   GOTO WHILE
 :LOOP
 
-%JAVA% -cp %CP% org.jhove2.app.util.UnitsPropertyFileGenerator %ARGS%
+%JAVA% -cp "%CP%" org.jhove2.app.util.UnitsPropertyFileGenerator %ARGS%
 

@@ -621,7 +621,7 @@ extends IFD
                         if (samplesPerPixel < 1 || bitsPerSample[0] != 1) {
                             this.isValid = Validity.False;
                             this.BPSInvalidForTransparencyMaskMessage = new Message(Severity.ERROR, Context.OBJECT,
-                                    "org.jhove2.module.format.tiff.TiffIFD.BPSInvalidForTransparencyMask",
+                                    "org.jhove2.module.format.tiff.TiffIFD.BPSInvalidForTransparencyMaskMessage",
                                     jhove2.getConfigInfo());
                         }
                     }
