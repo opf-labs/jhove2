@@ -46,6 +46,8 @@ import java.nio.ByteOrder;
 import javax.annotation.Resource;
 
 import org.jhove2.app.util.FeatureConfigurationUtil;
+import org.jhove2.core.Invocation;
+import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.io.Input.Type;
 import org.jhove2.core.source.Source;
@@ -74,10 +76,15 @@ public class NonDirectInputTest {
 	private String testFile01;
 	private File testFile;
 	PrintWriter out;
+	private JHOVE2 jhove2;
 
 	@Before
 	public void setUp() throws Exception {
-		bufferSize = 100;
+	    bufferSize = 100;
+        jhove2 = new JHOVE2();
+        Invocation inv = jhove2.getInvocation();
+        inv.setBufferSize(bufferSize);
+        inv.setBufferType(Type.NonDirect);
 		String utf8DirPath = null;
 		try {
 			utf8DirPath = 
@@ -99,7 +106,7 @@ public class NonDirectInputTest {
 
 		try {
 			SourceFactory factory = new InMemorySourceFactory();
-			Source source = factory.getSource(testFile);
+			Source source = factory.getSource(jhove2, testFile);
 			/*
 			 * abstractInput = source.getInput(bufferSize, Scope.NonDirect,
 			 * ByteOrder.LITTLE_ENDIAN);
@@ -107,9 +114,8 @@ public class NonDirectInputTest {
 			 * abstractInput.getBuffer().order() == ByteOrder.LITTLE_ENDIAN);
 			 * abstractInput.close();
 			 */
-			abstractInput = InputFactory.getInput(testFile,
-			        source.isTemp(), source.getDeleteTempFiles(),
-			        bufferSize,	Type.NonDirect, ByteOrder.LITTLE_ENDIAN);
+			abstractInput = InputFactory.getInput(jhove2, testFile,
+			        source.isTemp(), ByteOrder.LITTLE_ENDIAN);
 			assertTrue("AbstractInput Scope is NonDirect", abstractInput
 					.getClass().getName().equalsIgnoreCase(
 							NonDirectInput.class.getName()));
@@ -128,13 +134,6 @@ public class NonDirectInputTest {
 
 		Buffer buffer = abstractInput.getBuffer();
 		assertTrue("Buffer returned is null", buffer != null);
-	}
-
-	@Test
-	public void testGetFile() {
-		File inputableFile = abstractInput.getFile();
-		assertTrue("File is not same as abstractInput", testFile.getName()
-				.equals(inputableFile.getName()));
 	}
 
 	@Test
@@ -201,8 +200,7 @@ public class NonDirectInputTest {
 			 * test that the last buffer read returns expected number of bytes
 			 */
 			abstractInput.setPosition(0);
-			File inFile = abstractInput.getFile();
-			long size = inFile.length();
+			long size = testFile.length();
 			long lastBufferSizeChunk = size
 					- ((size / bufferSize) * bufferSize);
 			for (int i = 0; i < size / bufferSize; i++) {
@@ -272,8 +270,7 @@ public class NonDirectInputTest {
 	public void testReadShort() {
 		int testValue = 0;
 		try {
-		    abstractInput = InputFactory.getInput(testFile, false, true,
-		            bufferSize, Type.NonDirect, ByteOrder.LITTLE_ENDIAN);
+		    abstractInput = InputFactory.getInput(jhove2, testFile, false, ByteOrder.LITTLE_ENDIAN);
 			abstractInput.setPosition(0);
 			testValue = abstractInput.readUnsignedShort();
 			String testStr = Integer.toHexString(testValue);

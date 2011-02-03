@@ -47,7 +47,6 @@ import java.io.File;
 import javax.annotation.Resource;
 
 import org.jhove2.app.util.FeatureConfigurationUtil;
-import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.source.Source;
@@ -131,12 +130,7 @@ public class OpenSpWrapperTest {
 		File fGoodFile = new File(goodFilePath);
 		goodFilePath = fGoodFile.getPath();
 		try {
-		    Invocation inv = JHOVE2.getInvocation();
-			inputSource = JHOVE2.getSourceFactory().getSource(goodFilePath,
-                    inv.getTempDirectoryFile(),
-                    inv.getTempPrefix(),
-                    inv.getTempSuffix(),
-                    inv.getBufferSize());
+			inputSource = JHOVE2.getSourceFactory().getSource(JHOVE2, goodFilePath);
 		}catch (Exception e){
 			e.printStackTrace();
 			fail("Failed to create source for input file");
@@ -188,12 +182,7 @@ public class OpenSpWrapperTest {
 		File fBadFile = new File(badFilePath);
 		badFilePath = fBadFile.getPath();
 		try {
-		    Invocation inv = JHOVE2.getInvocation();
-			inputSource = JHOVE2.getSourceFactory().getSource(badFilePath,
-                    inv.getTempDirectoryFile(),
-                    inv.getTempPrefix(),
-                    inv.getTempSuffix(),
-                    inv.getBufferSize());
+			inputSource = JHOVE2.getSourceFactory().getSource(JHOVE2, badFilePath);
 		}catch (Exception e){
 			e.printStackTrace();
 			fail("Failed to create source for input file");
@@ -230,12 +219,7 @@ public class OpenSpWrapperTest {
 		fGoodFile = new File(goodFilePath);
 		goodFilePath = fGoodFile.getPath();
 		try {
-		    Invocation inv = JHOVE2.getInvocation();
-			inputSource = JHOVE2.getSourceFactory().getSource(goodFilePath,
-                    inv.getTempDirectoryFile(),
-                    inv.getTempPrefix(),
-                    inv.getTempSuffix(),
-                    inv.getBufferSize());
+			inputSource = JHOVE2.getSourceFactory().getSource(JHOVE2, goodFilePath);
 		}
 		catch (Exception e){
 			e.printStackTrace();
@@ -277,12 +261,7 @@ public class OpenSpWrapperTest {
 		File fGoodFile = new File(goodFilePath);
 		goodFilePath = fGoodFile.getPath();
 		try {
-		    Invocation inv = JHOVE2.getInvocation();
-			inputSource = JHOVE2.getSourceFactory().getSource(goodFilePath,
-                    inv.getTempDirectoryFile(),
-                    inv.getTempPrefix(),
-                    inv.getTempSuffix(),
-                    inv.getBufferSize());
+			inputSource = JHOVE2.getSourceFactory().getSource(JHOVE2, goodFilePath);
 		}catch (Exception e){
 			e.printStackTrace();
 			fail("Failed to create source for input file");
@@ -323,12 +302,7 @@ public class OpenSpWrapperTest {
 		File fGoodFile = new File(goodFilePath);
 		goodFilePath = fGoodFile.getPath();
 		try {
-		    Invocation inv = JHOVE2.getInvocation();
-			inputSource = JHOVE2.getSourceFactory().getSource(goodFilePath,
-                    inv.getTempDirectoryFile(),
-                    inv.getTempPrefix(),
-                    inv.getTempSuffix(),
-                    inv.getBufferSize());
+			inputSource = JHOVE2.getSourceFactory().getSource(JHOVE2, goodFilePath);
 		}catch (Exception e){
 			e.printStackTrace();
 			fail("Failed to create source for input file");

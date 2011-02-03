@@ -16,7 +16,7 @@ import org.jhove2.app.util.FeatureConfigurationUtil;
 import org.jhove2.config.ConfigInfo;
 import org.jhove2.config.spring.SpringConfigInfo;
 import org.jhove2.core.I8R;
-import org.jhove2.core.Invocation;
+import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
 import org.jhove2.core.TimerInfo;
@@ -56,7 +56,7 @@ public class BerkeleyDbSourceAccessorTest {
 	protected String sgmlDirBasePath;
 	protected String sgmlDirPath;
 	protected String tempDirBasePath;
-	protected static Invocation inv;
+	protected static JHOVE2 jhove2;
 	
 	/**
 	 * @throws java.lang.Exception
@@ -66,7 +66,7 @@ public class BerkeleyDbSourceAccessorTest {
 		PersistenceManagerUtil.createPersistenceManagerFactory(persistenceMgrClassName);
 		persistenceManager = PersistenceManagerUtil.getPersistenceManagerFactory().getInstance();
 		persistenceManager.initialize();
-		inv = new Invocation();
+		jhove2 = new JHOVE2();
 	}
 
 	/**
@@ -113,11 +113,7 @@ public class BerkeleyDbSourceAccessorTest {
 	public void testAddModule() {
 		long sourceId=0L, moduleId=0L;
 		try {
-			source = sourceFactory.getSource(sgmlDirPath,
-			                                 inv.getTempDirectoryFile(),
-			                                 inv.getTempPrefix(),
-			                                 inv.getTempSuffix(),
-			                                 inv.getBufferSize());
+			source = sourceFactory.getSource(jhove2, sgmlDirPath);
 			source = source.getSourceAccessor().persistSource(source);
 			assertNotNull( source.getSourceId());
 			sourceId = source.getSourceId().longValue();
@@ -174,22 +170,14 @@ public class BerkeleyDbSourceAccessorTest {
 	@Test
 	public void testAddChildSource() {
 		try {
-			source = sourceFactory.getSource(sgmlDirPath,
-                    inv.getTempDirectoryFile(),
-                    inv.getTempPrefix(),
-                    inv.getTempSuffix(),
-                    inv.getBufferSize());
+			source = sourceFactory.getSource(jhove2, sgmlDirPath);
 			source = source.getSourceAccessor().persistSource(source);
 			assertNotNull(source.getSourceId());
 			source = source.getSourceAccessor().retrieveSource(source.getSourceId());	
 
 			int childSourceCount = source.getNumChildSources();
 
-			Source source02 = sourceFactory.getSource(tempDirBasePath,
-                    inv.getTempDirectoryFile(),
-                    inv.getTempPrefix(),
-                    inv.getTempSuffix(),
-                    inv.getBufferSize());
+			Source source02 = sourceFactory.getSource(jhove2, tempDirBasePath);
 			assertNotNull(source02.getSourceId());
 			assertNull(source02.getParentSourceId());
 
@@ -205,11 +193,7 @@ public class BerkeleyDbSourceAccessorTest {
 			assertEquals(source.getSourceId(), source.getSourceId());
 			assertEquals(source.getSourceId(), source02.getParentSourceId());
 
-			Source source03 = sourceFactory.getSource(tempDirBasePath,
-                    inv.getTempDirectoryFile(),
-                    inv.getTempPrefix(),
-                    inv.getTempSuffix(),
-                    inv.getBufferSize());
+			Source source03 = sourceFactory.getSource(jhove2, tempDirBasePath);
 			assertNotNull(source03.getSourceId());
 			assertNull(source03.getParentSourceId());
 			source03 = source.addChildSource(source03);	
@@ -243,11 +227,7 @@ public class BerkeleyDbSourceAccessorTest {
 	@Test
 	public void testStartTimerInfo() {
 		try {
-			source = sourceFactory.getSource(tempDirBasePath,
-                    inv.getTempDirectoryFile(),
-                    inv.getTempPrefix(),
-                    inv.getTempSuffix(),
-                    inv.getBufferSize());
+			source = sourceFactory.getSource(jhove2, tempDirBasePath);
 			TimerInfo timer = source.getTimerInfo();
 			assertEquals(1,timer.getElapsedTime().getDuration());
 			source = source.startTimer();
@@ -271,11 +251,7 @@ public class BerkeleyDbSourceAccessorTest {
 		ConfigInfo configInfo = new SpringConfigInfo();
 
 		try {
-			source = sourceFactory.getSource(tempDirBasePath,
-                    inv.getTempDirectoryFile(),
-                    inv.getTempPrefix(),
-                    inv.getTempSuffix(),
-                    inv.getBufferSize());
+			source = sourceFactory.getSource(jhove2, tempDirBasePath);
 			assertEquals(0, source.getMessages().size());
 			message01 = new Message(Severity.ERROR,
 					Context.OBJECT, 
@@ -303,11 +279,7 @@ public class BerkeleyDbSourceAccessorTest {
 			new FormatIdentification(i8r, Confidence.PositiveSpecific);
 
 		try {
-			source = sourceFactory.getSource(tempDirBasePath,
-                    inv.getTempDirectoryFile(),
-                    inv.getTempPrefix(),
-                    inv.getTempSuffix(),
-                    inv.getBufferSize());
+			source = sourceFactory.getSource(jhove2, tempDirBasePath);
 			assertEquals(0,source.getPresumptiveFormats().size());
 			source = source.addPresumptiveFormat(fi);
 			assertEquals(1,source.getPresumptiveFormats().size());
@@ -329,11 +301,7 @@ public class BerkeleyDbSourceAccessorTest {
 			new FormatIdentification(i8r, Confidence.Tentative);
 		Set<FormatIdentification>  fis = new TreeSet<FormatIdentification>();
 		try {
-			source = sourceFactory.getSource(tempDirBasePath,
-                    inv.getTempDirectoryFile(),
-                    inv.getTempPrefix(),
-                    inv.getTempSuffix(),
-                    inv.getBufferSize());
+			source = sourceFactory.getSource(jhove2, tempDirBasePath);
 			assertEquals(0,source.getPresumptiveFormats().size());
 			source = source.addPresumptiveFormats(fis);
 			assertEquals(0,source.getPresumptiveFormats().size());

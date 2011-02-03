@@ -22,7 +22,7 @@
 	<bean id="IdentifierAccessor"        class="org.jhove2.persist.inmemory.InMemoryIdentifierAccessor" scope="prototype"/>
 	<bean id="BaseModuleAccessor"        class="org.jhove2.persist.inmemory.InMemoryBaseModuleAccessor" scope="prototype"/>
     -->
-			
+    
 	<!--  Beans for BerkeleyDB persistence -->
 	
     <bean id="SourceFactory"             class="org.jhove2.persist.berkeleydpl.BerkeleyDbSourceFactory" scope="prototype"/>

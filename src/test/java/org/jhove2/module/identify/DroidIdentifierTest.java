@@ -37,7 +37,6 @@ package org.jhove2.module.identify;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -46,7 +45,6 @@ import java.util.Set;
 import javax.annotation.Resource;
 
 import org.jhove2.app.util.FeatureConfigurationUtil;
-import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.format.FormatIdentification;
@@ -103,7 +101,6 @@ public class DroidIdentifierTest {
 		Input      input  = null;
 		Set<FormatIdentification> ids = null;
 		String samplesDirPath = null;
-		Invocation inv = JHOVE2.getInvocation();
 		try {
 			samplesDirPath = 
 				FeatureConfigurationUtil.getFilePathFromClasspath(droidDirBasePath, "droid samples dir");
@@ -112,11 +109,8 @@ public class DroidIdentifierTest {
 		}
 		String zipFilePath = samplesDirPath.concat(sampleFile);
 		try {
-			source = (FileSource)JHOVE2.getSourceFactory().getSource(zipFilePath,
-                    inv.getTempDirectoryFile(),
-                    inv.getTempPrefix(),
-                    inv.getTempSuffix(),
-                    inv.getBufferSize());
+			source = (FileSource)JHOVE2.getSourceFactory().getSource(JHOVE2,
+			        zipFilePath);
 			input  = source.getInput(JHOVE2);
 		} catch (Exception e) {
 			fail("Couldn't create source: " + e.getMessage());
@@ -137,11 +131,8 @@ public class DroidIdentifierTest {
 		} 
 		String badFilePath = samplesDirPath.concat(sampleBadFile);
 		try {
-			source = (FileSource)JHOVE2.getSourceFactory().getSource(badFilePath,
-                    inv.getTempDirectoryFile(),
-                    inv.getTempPrefix(),
-                    inv.getTempSuffix(),
-                    inv.getBufferSize());
+			source = (FileSource)JHOVE2.getSourceFactory().getSource(JHOVE2,
+			        badFilePath);
 			input  = source.getInput(JHOVE2);
 		} catch (Exception e) {
 			fail("Couldn't create source: " + e.getMessage());
@@ -156,11 +147,8 @@ public class DroidIdentifierTest {
 		} 
 		String noJhoveFormatFilePath = samplesDirPath.concat(sampleNoJhoveIdFile);
 		try {
-			source = (FileSource)JHOVE2.getSourceFactory().getSource(noJhoveFormatFilePath,
-                    inv.getTempDirectoryFile(),
-                    inv.getTempPrefix(),
-                    inv.getTempSuffix(),
-                    inv.getBufferSize());
+			source = (FileSource)JHOVE2.getSourceFactory().getSource(JHOVE2,
+			        noJhoveFormatFilePath);
 			input  = source.getInput(JHOVE2);
 		} catch (Exception e) {
 			fail("Couldn't create source: " + e.getMessage());

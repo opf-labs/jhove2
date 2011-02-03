@@ -45,7 +45,6 @@ import java.io.InputStream;
 import javax.annotation.Resource;
 
 import org.jhove2.app.util.FeatureConfigurationUtil;
-import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.persist.inmemory.InMemorySourceFactory;
@@ -80,13 +79,8 @@ public class FileSourceTest {
 		}
 		String filePath = utf8DirPath.concat(testFile01);
 		try {
-		    Invocation inv = this.jhove2.getInvocation();
 			SourceFactory factory = new InMemorySourceFactory();
-			Source source = factory.getSource(filePath,
-			                            inv.getTempDirectoryFile(),
-			                            inv.getTempPrefix(),
-			                            inv.getTempSuffix(),
-			                            inv.getBufferSize());
+			Source source = factory.getSource(jhove2, filePath);
 			InputStream inputStream = source.getInputStream();
 			long fileSize = source.getFile().length();
 			long inputStreamCount = 0L;

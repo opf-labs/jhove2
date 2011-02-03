@@ -65,10 +65,8 @@ public class I8RTest {
 	@Before
 	public void setUp() throws Exception {
 		SourceFactory factory = new InMemorySourceFactory();
-		Invocation inv = new Invocation();
-		source = factory.getSource(inv.getTempDirectoryFile(),
-		                           inv.getTempPrefix(), inv.getTempSuffix(),
-		                           inv.getBufferSize(), "a","b");
+		JHOVE2 jhove2 = new JHOVE2();
+		source = factory.getSource(jhove2, "a","b");
 		String classString = source.getClass().getCanonicalName();
 		classString = classString.replace(".", "/");
 		StringBuffer sb = new StringBuffer(I8R.JHOVE2_PREFIX);

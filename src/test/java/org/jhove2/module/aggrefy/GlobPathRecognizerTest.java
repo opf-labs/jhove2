@@ -101,7 +101,7 @@ public class GlobPathRecognizerTest{
 			FileSetSource fsSource = JHOVE2.getSourceFactory().getFileSetSource();
 			for (String fileName:this.getTestFileList()){
 				String testFilePath = samplesDirPath.concat(fileName);
-				FileSource fs = (FileSource)JHOVE2.getSourceFactory().getSource(new File(testFilePath));
+				FileSource fs = (FileSource)JHOVE2.getSourceFactory().getSource(JHOVE2, new File(testFilePath));
 				fs=(FileSource) fsSource.addChildSource(fs);
 			}
 			strictShapeFileRecognizer.compilePatterns();
@@ -154,7 +154,7 @@ public class GlobPathRecognizerTest{
 			FileSetSource fsSource = JHOVE2.getSourceFactory().getFileSetSource();
 			for (String fileName:this.getTestFileList()){
 				String testFilePath = samplesDirPath.concat(fileName);
-				FileSource fs = (FileSource)JHOVE2.getSourceFactory().getSource(new File(testFilePath));
+				FileSource fs = (FileSource)JHOVE2.getSourceFactory().getSource(JHOVE2, new File(testFilePath));
 				fs=(FileSource) fsSource.addChildSource(fs);
 			}
 			ArrayList<String> fullFailKeys = new ArrayList<String>();
@@ -244,7 +244,7 @@ public class GlobPathRecognizerTest{
 			FileSetSource fsSource = JHOVE2.getSourceFactory().getFileSetSource();
 			for (String fileName:this.getTestFileList()){
 				String testFilePath = samplesDirPath.concat(fileName);
-				FileSource fs = (FileSource)JHOVE2.getSourceFactory().getSource(new File(testFilePath));
+				FileSource fs = (FileSource)JHOVE2.getSourceFactory().getSource(JHOVE2, new File(testFilePath));
 				fs=(FileSource) fsSource.addChildSource(fs);
 			}
 			Set<ClumpSource> sources = 

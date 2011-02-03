@@ -36,7 +36,7 @@ public class EmptyShapefileTest {
 			clump = JHOVE2.getSourceFactory().getClumpSource();
 			for (File file : wbDir.listFiles()) {
 				if (file.getName().startsWith("abc.")) {
-					FileSource fs = (FileSource) JHOVE2.getSourceFactory().getSource(file);
+					FileSource fs = (FileSource) JHOVE2.getSourceFactory().getSource(JHOVE2, file);
 					clump.addChildSource(fs);
 				}
 			}			

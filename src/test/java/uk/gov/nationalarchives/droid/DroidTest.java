@@ -42,7 +42,10 @@ import javax.annotation.Resource;
 
 import org.jhove2.app.util.FeatureConfigurationUtil;
 import org.jhove2.core.Invocation;
+import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.io.Input;
+import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
 import org.jhove2.module.identify.DROIDWrapper;
 import org.jhove2.persist.inmemory.InMemorySourceFactory;
@@ -101,8 +104,8 @@ public class DroidTest {
 					idf.getClassification());
 			assertEquals(0,idf.getNumHits());
 		} catch (Exception e) {
+            e.printStackTrace();
 			fail("Exception thrown: " + e.getMessage());
-			e.printStackTrace();
 		}
 		// now try it on an input stream
 		try {		
@@ -110,12 +113,10 @@ public class DroidTest {
 			String sigFilePath = FeatureConfigurationUtil.getFilePathFromClasspath(sigFileName, "Droid signature file");
 			droid = new DROIDWrapper(configFilePath, sigFilePath);	
 			SourceFactory sourceFactory = new InMemorySourceFactory();
-			Invocation inv = new Invocation();
-			IdentificationFile idf = droid.identify(sourceFactory.getSource(sampleFilePath,
-                    inv.getTempDirectoryFile(),
-                    inv.getTempPrefix(),
-                    inv.getTempSuffix(),
-                    inv.getBufferSize()));
+			JHOVE2 jhove2 = new JHOVE2();
+			Source source = sourceFactory.getSource(jhove2, sampleFilePath);
+			Input input = source.getInput(jhove2);
+			IdentificationFile idf = droid.identify(source, input);
 			assertEquals(JHOVE2IAnalysisController.FILE_CLASSIFICATION_POSITIVE,
 					idf.getClassification());
 			assertEquals(1,idf.getNumHits());

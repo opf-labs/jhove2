@@ -89,7 +89,9 @@ public class AggrefierModuleTest {
 	@Test
 	public void testIdentify() {
 		FileSetSource fsSource = null;
+		JHOVE2 jhove2 = null;
 		try {
+		    jhove2 = new JHOVE2();
 			fsSource = JHOVE2.getSourceFactory().getFileSetSource();
 		} catch (JHOVE2Exception e2) {
 			e2.printStackTrace();
@@ -122,12 +124,12 @@ public class AggrefierModuleTest {
 		try {
 			for (String shapeFileName:shapeFileList){
 				String testFilePath = shapeDirPath.concat(shapeFileName);
-				FileSource fs = (FileSource)JHOVE2.getSourceFactory().getSource(new File(testFilePath));
+				FileSource fs = (FileSource)JHOVE2.getSourceFactory().getSource(jhove2, new File(testFilePath));
 				fs=(FileSource) fsSource.addChildSource(fs);
 			}
 			for (String quickenFileName:quickenFileList){
 				String testFilePath = quickenDirPath.concat(quickenFileName);
-				FileSource fs = (FileSource)JHOVE2.getSourceFactory().getSource(new File(testFilePath));
+				FileSource fs = (FileSource)JHOVE2.getSourceFactory().getSource(jhove2, new File(testFilePath));
 				fs=(FileSource) fsSource.addChildSource(fs);
 			}
 			Set<ClumpSource> clumpSources = 
@@ -158,7 +160,7 @@ public class AggrefierModuleTest {
 				}
 			}
 			DirectorySource dSource = (DirectorySource) JHOVE2.getSourceFactory().getSource(
-					new File(emptyDirPath)); 
+					jhove2, new File(emptyDirPath)); 
 			for (ClumpSource clumpSource:clumpSources){
 				clumpSource=(ClumpSource) dSource.addChildSource(clumpSource);
 			}

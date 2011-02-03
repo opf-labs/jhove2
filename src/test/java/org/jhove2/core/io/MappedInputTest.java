@@ -48,6 +48,8 @@ import java.nio.ByteOrder;
 import javax.annotation.Resource;
 
 import org.jhove2.app.util.FeatureConfigurationUtil;
+import org.jhove2.core.Invocation;
+import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.io.Input.Type;
 import org.jhove2.core.source.Source;
@@ -100,8 +102,11 @@ public class MappedInputTest {
     public void testGetInput() {
 
         try {
+            JHOVE2 jhove2 = new JHOVE2();
+            Invocation inv = jhove2.getInvocation();
+            inv.setBufferType(Type.Mapped);
         	SourceFactory factory = new InMemorySourceFactory();
-            Source source = factory.getSource(testFile);
+            Source source = factory.getSource(jhove2, testFile);
             /* Buffers are always created big-endian, not native-endian, so this test
              * isn't operative.
              */
@@ -114,9 +119,8 @@ public class MappedInputTest {
             assertTrue(assertString, abstractInput.getBuffer().order() != nativeOrder);
             abstractInput.close();
             */
-            abstractInput = (MappedInput) InputFactory.getInput(testFile,
-                    source.isTemp(), source.getDeleteTempFiles(),
-                    bufferSize, Type.Mapped);
+            abstractInput = (MappedInput) InputFactory.getInput(jhove2, testFile,
+                    source.isTemp());
             assertTrue("AbstractInput Scope is MemoryMapped", abstractInput.getClass()
                     .getName().equalsIgnoreCase(MappedInput.class.getName()));
             out.printf("AbstractInput buffer order is %s\n",  abstractInput.getBuffer().order());

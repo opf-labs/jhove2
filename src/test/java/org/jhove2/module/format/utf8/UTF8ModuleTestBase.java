@@ -106,7 +106,11 @@ public class UTF8ModuleTestBase {
 
     protected void parse(String relativePath) {
         String Utf8ExampleDirPath = null;
+        PersistenceManager persistenceManager = null;
         try {
+            PersistenceManagerUtil.createPersistenceManagerFactory(JHOVE2.getConfigInfo());
+            persistenceManager = PersistenceManagerUtil.getPersistenceManagerFactory().getInstance();
+            persistenceManager.initialize();
             Utf8ExampleDirPath = FeatureConfigurationUtil
                     .getFilePathFromClasspath(utf8DirBasePath,
                             "Utf8 examples base directory");
@@ -119,7 +123,7 @@ public class UTF8ModuleTestBase {
         File testFile = new File(Utf8ExampleDirPath, relativePath);
         assertTrue(testFile.exists());
         try {
-            fileSource = (FileSource) JHOVE2.getSourceFactory().getSource(testFile);
+            fileSource = (FileSource) JHOVE2.getSourceFactory().getSource(JHOVE2, testFile);
             input      = fileSource.getInput(JHOVE2);
             testUtf8Module.parse(JHOVE2, fileSource, input);
         }
@@ -131,9 +135,6 @@ public class UTF8ModuleTestBase {
     public void display() {
         try {
             input.setPosition(0);
-            PersistenceManagerUtil.createPersistenceManagerFactory(JHOVE2.getConfigInfo());
-            PersistenceManager persistenceManager = PersistenceManagerUtil.getPersistenceManagerFactory().getInstance();
-			persistenceManager.initialize();
             JHOVE2.characterize(fileSource, input);
             Displayer displayer = new TextDisplayer();
             displayer.setConfigInfo(JHOVE2.getConfigInfo());

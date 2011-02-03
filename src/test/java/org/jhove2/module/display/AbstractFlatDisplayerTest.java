@@ -40,7 +40,6 @@ import static org.junit.Assert.fail;
 import javax.annotation.Resource;
 
 import org.jhove2.app.util.FeatureConfigurationUtil;
-import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.io.Input;
@@ -87,12 +86,7 @@ public class AbstractFlatDisplayerTest {
 		}
 		try {
 			String filePath = utf8DirPath.concat(testFile01);
-			Invocation inv = JHOVE2.getInvocation();
-			Source source = JHOVE2.getSourceFactory().getSource(filePath,
-                    inv.getTempDirectoryFile(),
-                    inv.getTempPrefix(),
-                    inv.getTempSuffix(),
-                    inv.getBufferSize());
+			Source source = JHOVE2.getSourceFactory().getSource(JHOVE2, filePath);
             Input  input  = source.getInput(JHOVE2);
 			source = JHOVE2.characterize(source,input);
 			Displayer displayer = new XMLDisplayer();

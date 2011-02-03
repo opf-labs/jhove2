@@ -43,7 +43,6 @@ import java.io.IOException;
 import javax.annotation.Resource;
 
 import org.jhove2.app.util.FeatureConfigurationUtil;
-import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.source.Source;
@@ -101,7 +100,6 @@ public class ErrFileParserTest {
 	 @Test
 	 public void testParseMessageFile() {
 		 String samplesDirPath = null;
-		 Invocation inv = JHOVE2.getInvocation();
 		 try {
 			 samplesDirPath = 
 				 FeatureConfigurationUtil.getFilePathFromClasspath(sgmlDirBasePath, "sgml samples dir");
@@ -113,11 +111,7 @@ public class ErrFileParserTest {
 		 sp.setMessageParser(parser);
 		 Source inputSource = null;
 		 try {
-			 inputSource = JHOVE2.getSourceFactory().getSource(conformButWarnPath,
-                     inv.getTempDirectoryFile(),
-                     inv.getTempPrefix(),
-                     inv.getTempSuffix(),
-                     inv.getBufferSize());
+			 inputSource = JHOVE2.getSourceFactory().getSource(JHOVE2, conformButWarnPath);
 		 } catch (FileNotFoundException e) {
 			 e.printStackTrace();
 			 fail(e.getMessage());
@@ -151,11 +145,7 @@ public class ErrFileParserTest {
 		 sp.setMessageParser(parser);
 		 testSgmlModule.setDocumentProperties(new SgmlDocumentProperties());
 		 try {
-			 inputSource = JHOVE2.getSourceFactory().getSource(conformNoErrPath,
-                     inv.getTempDirectoryFile(),
-                     inv.getTempPrefix(),
-                     inv.getTempSuffix(),
-                     inv.getBufferSize());
+			 inputSource = JHOVE2.getSourceFactory().getSource(JHOVE2, conformNoErrPath);
 		 } catch (FileNotFoundException e) {
 			 e.printStackTrace();
 			 fail(e.getMessage());
@@ -189,11 +179,7 @@ public class ErrFileParserTest {
 		 sp.setMessageParser(parser);
 		 testSgmlModule.setDocumentProperties(new SgmlDocumentProperties());
 		 try {
-			 inputSource = JHOVE2.getSourceFactory().getSource(nodoctypePath,
-                     inv.getTempDirectoryFile(),
-                     inv.getTempPrefix(),
-                     inv.getTempSuffix(),
-                     inv.getBufferSize());
+			 inputSource = JHOVE2.getSourceFactory().getSource(JHOVE2, nodoctypePath);
 		 } catch (FileNotFoundException e) {
 			 e.printStackTrace();
 			 fail(e.getMessage());
@@ -227,11 +213,7 @@ public class ErrFileParserTest {
 		 sp.setMessageParser(parser);
 		 testSgmlModule.setDocumentProperties(new SgmlDocumentProperties());
 		 try {
-			 inputSource = JHOVE2.getSourceFactory().getSource(spaceBeforePath,
-                     inv.getTempDirectoryFile(),
-                     inv.getTempPrefix(),
-                     inv.getTempSuffix(),
-                     inv.getBufferSize());
+			 inputSource = JHOVE2.getSourceFactory().getSource(JHOVE2, spaceBeforePath);
 		 } catch (FileNotFoundException e) {
 			 e.printStackTrace();
 			 fail(e.getMessage());
@@ -265,11 +247,7 @@ public class ErrFileParserTest {
 		 sp.setMessageParser(parser);
 		 testSgmlModule.setDocumentProperties(new SgmlDocumentProperties());
 		 try {
-			 inputSource = JHOVE2.getSourceFactory().getSource(unmatchedPubPath,
-                     inv.getTempDirectoryFile(),
-                     inv.getTempPrefix(),
-                     inv.getTempSuffix(),
-                     inv.getBufferSize());
+			 inputSource = JHOVE2.getSourceFactory().getSource(JHOVE2, unmatchedPubPath);
 		 } catch (FileNotFoundException e) {
 			 e.printStackTrace();
 			 fail(e.getMessage());
@@ -303,11 +281,7 @@ public class ErrFileParserTest {
 		 sp.setMessageParser(parser);
 		 testSgmlModule.setDocumentProperties(new SgmlDocumentProperties());
 		 try {
-			 inputSource = JHOVE2.getSourceFactory().getSource(unmatchedSysPath,
-                     inv.getTempDirectoryFile(),
-                     inv.getTempPrefix(),
-                     inv.getTempSuffix(),
-                     inv.getBufferSize());
+			 inputSource = JHOVE2.getSourceFactory().getSource(JHOVE2, unmatchedSysPath);
 		 } catch (FileNotFoundException e) {
 			 e.printStackTrace();
 			 fail(e.getMessage());
