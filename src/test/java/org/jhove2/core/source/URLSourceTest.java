@@ -80,9 +80,8 @@ public class URLSourceTest {
 			URLSource uPtc2 = (URLSource)JHOVE2.getSourceFactory().getSource(JHOVE2, ptcURL);
 			URLSource uCdl  = (URLSource)JHOVE2.getSourceFactory().getSource(JHOVE2, cdlURL);
 			assertEquals(uPtc,uPtc);
-			// this will fail, because the temp file underlying each URL will be different
-			assertFalse(uPtc.equals(uPtc2));
-			assertFalse(uPtc2.equals(uPtc));			
+			assertTrue(uPtc.equals(uPtc2));
+			assertTrue(uPtc2.equals(uPtc));			
 			assertFalse(uPtc.equals(null));
 			assertFalse(uPtc.equals(uCdl));
 			ClumpSource clump = JHOVE2.getSourceFactory().getClumpSource();
@@ -100,6 +99,7 @@ public class URLSourceTest {
 		} catch (MalformedURLException e) {
 			fail("Malformed URL " + e.getMessage());
 		} catch (IOException e) {
+		    e.printStackTrace();
 			fail("IOException " + e.getMessage());
 		}
 		catch (JHOVE2Exception e){
@@ -120,8 +120,8 @@ public class URLSourceTest {
 			URLSource uPtc2 = (URLSource)JHOVE2.getSourceFactory().getSource(JHOVE2, ptcURL);
 			assertEquals(0,uPtc.compareTo(uPtc));
 			assertEquals(1, uPtc.compareTo(null));
-			boolean notEq = uPtc.compareTo(uPtc2)!=0;
-			assertTrue(notEq);
+			boolean eq = uPtc.compareTo(uPtc2)==0;
+			assertTrue(eq);
 			ClumpSource clump= null;
 			try {
 				clump = JHOVE2.getSourceFactory().getClumpSource();

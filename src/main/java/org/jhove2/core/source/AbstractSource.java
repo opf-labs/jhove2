@@ -175,7 +175,8 @@ public abstract class AbstractSource
 
         /* Get format extension from name. */
         Invocation inv = jhove2.getInvocation();
-		this.file = createTempFile(stream, inv.getTempDirectory(), name,
+		this.file = createTempFile(stream, name, inv.getTempDirectoryFile(),
+		                           inv.getTempPrefix(), inv.getTempSuffix(),
 		                           inv.getBufferSize());
 		this.isTemp = true;
 		this.deleteOnClose = inv.getDeleteTempFiles();
@@ -270,18 +271,29 @@ public abstract class AbstractSource
 	/**
 	 * Create a temporary backing file from an input stream.
      * @param inStream Input stream
+     * @param name Temporary file name
 	 * @param tmpDirectory Temporary directory
-	 * @param name Temporary file name
+	 * @param tmpPrefix Temporary file prefix
+	 * @param tmpSuffix Temporary file suffix
      * @param  bufferSize Buffer size used during transfer to temporary file 
 	 * @return file Temporary backing file
 	 * @throws IOException
 	 */
 	protected static synchronized File createTempFile(InputStream inStream,
-	                                                  String tmpDirectory,
-	                                                  String name, int bufferSize)
+	                                                  String name,
+	                                                  File tmpDirectory,
+	                                                  String tmpPrefix,
+	                                                  String tmpSuffix,
+	                                                  int bufferSize)
 		throws IOException
 	{
-	    File tempFile = new File(tmpDirectory + File.separator + name);
+	    File tempFile = null;
+	    if (name == null || name.length() == 0) {
+	        tempFile = File.createTempFile(tmpPrefix, tmpSuffix, tmpDirectory);;
+	    }
+	    else {
+	        tempFile = new File(tmpDirectory.getPath() + File.separator + name);
+	    }
 		OutputStream outStream = new FileOutputStream(tempFile);
 		ReadableByteChannel in = Channels.newChannel(inStream);
 		WritableByteChannel out = Channels.newChannel(outStream);
