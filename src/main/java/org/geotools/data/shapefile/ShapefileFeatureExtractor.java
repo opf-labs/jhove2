@@ -34,31 +34,26 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * </p>
  */
+
 package org.geotools.data.shapefile;
 
 import com.vividsolutions.jts.geom.GeometryFactory;
-import org.geotools.data.FileDataStore;
-import org.geotools.data.FileDataStoreFinder;
-import org.geotools.data.shapefile.dbf.DbaseFileHeader;
-import org.geotools.data.shapefile.dbf.DbaseFileReader;
-import org.geotools.data.shapefile.indexed.IndexType;
-import org.geotools.data.shapefile.indexed.IndexedShapefileDataStore;
-import org.geotools.data.shapefile.prj.PrjFileReader;
-import org.geotools.data.shapefile.shp.ShapefileHeader;
-import org.geotools.data.shapefile.shp.ShapefileReader;
-import org.jhove2.module.format.shapefile.DbfHeader;
-import org.jhove2.module.format.shapefile.ShapefileRecord;
-import org.jhove2.module.format.shapefile.ShapefileFeatures;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.charset.Charset;
-import java.util.List;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Map;
+import java.net.URI;
+import java.net.URL;
+import java.util.List;
+
+import org.geotools.data.shapefile.dbf.DbaseFileHeader;
+import org.geotools.data.shapefile.dbf.DbaseFileReader;
+import org.geotools.data.shapefile.prj.PrjFileReader;
+import org.geotools.data.shapefile.shp.ShapefileHeader;
+import org.geotools.data.shapefile.shp.ShapefileReader;
+
+import org.jhove2.module.format.shapefile.DbfHeader;
+import org.jhove2.module.format.shapefile.ShapefileRecord;
+import org.jhove2.module.format.shapefile.ShapefileFeatures;
 
 /**
  * Provides an interface to the geotools shapefile readers that are used to
@@ -98,9 +93,8 @@ public class ShapefileFeatureExtractor {
         URL url = shpFile.toURI().toURL();
         URI namespace = null;
         boolean useMemoryMappedBuffer = false;
-        shapefileDS = new ShapefileDataStore(url, namespace,
-           useMemoryMappedBuffer);
-        
+        this.shapefileDS = new ShapefileDataStore(url, namespace,
+                                                  useMemoryMappedBuffer);
     }
 
     /**
@@ -113,7 +107,8 @@ public class ShapefileFeatureExtractor {
      *             Signals that an I/O exception has occurred.
      */
     public void extractFeatures(ShapefileFeatures reportables)
-            throws IOException {
+        throws IOException
+    {
         try {
             shpReader = shapefileDS.openShapeReader(new GeometryFactory());
             reportables.dbfCharsetName = shapefileDS.getStringCharset().name();
@@ -155,7 +150,8 @@ public class ShapefileFeatureExtractor {
      *             Signals that an I/O exception has occurred.
      */
     private void extractRecords(ShapefileFeatures features)
-            throws IOException {
+        throws IOException
+    {
         List<ShapefileRecord> srecs = features.shapefileRecords;
         while (shpReader.hasNext()) {
             ShapefileReader.Record record = shpReader.nextRecord();
@@ -180,7 +176,8 @@ public class ShapefileFeatureExtractor {
      *             Signals that an I/O exception has occurred.
      */
     private void extractDbfHeader(ShapefileFeatures features)
-            throws IOException {
+        throws IOException
+    {
         DbaseFileReader dbfReader = null;
         try {
             dbfReader = shapefileDS.openDbfReader();
@@ -227,5 +224,4 @@ public class ShapefileFeatureExtractor {
             }
         }
     }
-
 }

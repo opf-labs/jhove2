@@ -36,6 +36,7 @@
 
 package org.jhove2.core.source;
 
+import java.io.File;
 import java.util.Date;
 import java.util.zip.ZipEntry;
 
@@ -78,17 +79,16 @@ public class ZipDirectorySource
 
 		this.isAggregate = true;
 		this.path = entry.getName();
-		/* Directory name has a trailing slash (/). */
-		int in = this.path.lastIndexOf('/');
+		/* Delete trailing slash (/), if found. */
+		int in = this.path.lastIndexOf(File.separator);
 		if (in == this.path.length() - 1) {
 			this.path = this.path.substring(0, in);
 		}
 		this.sourceName = this.path;
-		/*
-		int in = this.sourceName.lastIndexOf('/');
+		in = this.sourceName.lastIndexOf(File.separator);
 		if (in > -1) {
-			this.name = this.name.substring(in + 1);
-		}*/
+			this.sourceName = this.sourceName.substring(in + 1);
+		}
 		this.lastModified = new Date(entry.getTime());
 		this.comment = entry.getComment();
 	}

@@ -112,7 +112,6 @@ public class DirectorySource
 		this.sourceName = file.getName();
 		try {
 			this.path = file.getCanonicalPath();
-			this.sourceName = this.path;
 		} catch (IOException e) {
 			/* Let path stay uninitialized. */
 		}

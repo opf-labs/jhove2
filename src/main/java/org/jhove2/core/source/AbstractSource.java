@@ -175,13 +175,7 @@ public abstract class AbstractSource
 
         /* Get format extension from name. */
         Invocation inv = jhove2.getInvocation();
-        String ext = inv.getTempSuffix();
-        int in = name.lastIndexOf('.');
-        if (in > -1) {
-            ext = name.substring(in);
-        }
-		this.file = createTempFile(stream, inv.getTempDirectoryFile(),
-		                           inv.getTempPrefix(), ext,
+		this.file = createTempFile(stream, inv.getTempDirectory(), name,
 		                           inv.getBufferSize());
 		this.isTemp = true;
 		this.deleteOnClose = inv.getDeleteTempFiles();
@@ -267,38 +261,27 @@ public abstract class AbstractSource
 	}
 
 	/**
-	 * Close the source unit. If the source unit is backed by a temporary file,
-	 * delete the file.
+	 * Close the source unit.
 	 */
 	@Override
 	public void close() {
-	    /*if (this.file != null) {
-	        if (this.isTemp && this.deleteOnClose) {
-	            this.file.delete();
-	            this.file = null;
-	        }
-	    }*/
 	}
 
 	/**
 	 * Create a temporary backing file from an input stream.
-     * @param inStream
-     *            Input stream
+     * @param inStream Input stream
 	 * @param tmpDirectory Temporary directory
-     * @param tmpPrefix Temporary file prefix
-     * @param tmpSuffix Temporary file suffix
+	 * @param name Temporary file name
      * @param  bufferSize Buffer size used during transfer to temporary file 
 	 * @return file Temporary backing file
 	 * @throws IOException
 	 */
 	protected static synchronized File createTempFile(InputStream inStream,
-	                                                  File tmpDirectory,
-	                                                  String tmpPrefix,
-	                                                  String tmpSuffix,
-	                                                  int bufferSize)
+	                                                  String tmpDirectory,
+	                                                  String name, int bufferSize)
 		throws IOException
 	{
-		File tempFile = File.createTempFile(tmpPrefix, tmpSuffix, tmpDirectory);
+	    File tempFile = new File(tmpDirectory + File.separator + name);
 		OutputStream outStream = new FileOutputStream(tempFile);
 		ReadableByteChannel in = Channels.newChannel(inStream);
 		WritableByteChannel out = Channels.newChannel(outStream);

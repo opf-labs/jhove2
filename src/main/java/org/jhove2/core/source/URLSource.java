@@ -39,6 +39,7 @@ package org.jhove2.core.source;
 import java.io.IOException;
 import java.net.URL;
 
+import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2;
 
 import com.sleepycat.persist.model.Persistent;
@@ -65,13 +66,16 @@ public class URLSource
 
     /** File size, in bytes. */
     protected long size;
-
+ 
     /** Starting offset, in bytes, relative to the
      * parent source.  If there is no parent, the ending offset is the
      * size.
      */
     protected long startingOffset;
- 
+    
+    /** URL. */
+    protected String url;
+
 	protected URLSource(){
 		super();
 	}
@@ -81,17 +85,33 @@ public class URLSource
      * @param url    Source URL
 	 * @throws IOException
 	 */
-
 	protected URLSource(JHOVE2 jhove2, URL url)
 	    throws IOException
 	{
-		super(jhove2, url.openStream(), url.toString());
-		this.sourceName = url.toString();
+		super(jhove2, url.openStream(), trimPath(url.getPath()));
+		this.url = url.toString();
+		this.sourceName = url.getPath();
+		int in = sourceName.lastIndexOf("/");
+		if (in > -1) {
+		    this.sourceName = this.sourceName.substring(in+1);
+		}
         this.size = this.file.length();
         this.startingOffset = 0L;
         this.endingOffset   = this.size;
 	}
 
+	/** Get the trailing part of the URL path.
+	 * @param path URL path
+	 * @return Trailing part of the URL path
+	 */
+    private static synchronized String trimPath(String path) {
+        int in = path.lastIndexOf("/");
+        if (in > -1) {
+            path = path.substring(in+1);
+        }
+        return path;
+    }
+    
     /** Get ending offset of the source unit, in bytes, relative to the
      * parent source.  If there is no parent, the ending offset is the
      * size.
@@ -127,6 +147,14 @@ public class URLSource
 	@Override
 	public String getSourceName() {
 		return this.sourceName;
+	}
+	
+	/** Get URL.
+	 * @return URL
+	 */
+	@ReportableProperty(order=1, value="URL")
+	public String getURL() {
+	    return this.url;
 	}
 	
 	/** Compare the URL.

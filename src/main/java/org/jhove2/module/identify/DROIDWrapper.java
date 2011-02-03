@@ -172,10 +172,12 @@ public class DROIDWrapper
             stream = source.getInputStream();
             byteReader = newByteReader(identificationFile, stream);
             if (identificationFile.getClassification()!= JHOVE2IAnalysisController.FILE_CLASSIFICATION_ERROR){
+                String name = source.getFile().getName();
                 if (source instanceof NamedSource) {
-                    identificationFile.setFilePath(((NamedSource) source).getSourceName());
-                    analysisControl.getSigFile().runFileIdentification(byteReader);
+                    name = ((NamedSource) source).getSourceName();
                 }
+                identificationFile.setFilePath(name);
+                analysisControl.getSigFile().runFileIdentification(byteReader);
             }
         }
 	    catch (FileNotFoundException e) {

@@ -38,7 +38,6 @@ package org.jhove2.module.aggrefy;
 import static com.sleepycat.persist.model.DeleteAction.NULLIFY;
 import static com.sleepycat.persist.model.Relationship.MANY_TO_ONE;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
@@ -240,8 +239,8 @@ implements Recognizer
 			//File sourceFile = childSource.getFile();
 			//if (sourceFile !=  null){
 				//String filePath = childSource.getFile().getPath();
-		    if (source instanceof NamedSource) {
-		        String filePath = ((NamedSource) source).getSourceName();
+		    if (childSource instanceof NamedSource) {
+		        String filePath = ((NamedSource) childSource).getSourceName();
 				// does the Source file path match the pattern that indicates a related file?
 				Matcher m = this.fileGroupingPattern.matcher(filePath);
 				if (m.matches()){

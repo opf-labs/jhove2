@@ -36,6 +36,7 @@
 
 package org.jhove2.core.source;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
@@ -61,6 +62,7 @@ public class ZipFileSource
 {
 	/** CRC message digest value recorded in the ZipEntry. */
 	protected long crc;
+	
 	/** Zip file CRC-32 message digest. */
 	protected Digest crc32;
 
@@ -110,10 +112,10 @@ public class ZipFileSource
 		super(jhove2, stream, entry.getName());
 		this.path = entry.getName();
 		this.sourceName = this.path;
-		/*int in = this.sourceName.lastIndexOf('/');
+		int in = this.sourceName.lastIndexOf(File.separator);
 		if (in > -1) {
 			this.sourceName = this.sourceName.substring(in + 1);
-		}*/
+		}
 		this.size = entry.getSize();
 		this.lastModified = new Date(entry.getTime());
 		this.crc = entry.getCrc();
@@ -135,7 +137,7 @@ public class ZipFileSource
      * CRC value recorded in ZipEntry
      * @return CRC value
      */
-    public long getCrc() {
+    public long getCRC() {
         return crc;
     }
     
@@ -158,7 +160,7 @@ public class ZipFileSource
     public long getEndingOffset() {
         return this.endingOffset;
     }
-   
+
 	/**
 	 * Get Zip file last modified date.
 	 * 
@@ -263,7 +265,7 @@ public class ZipFileSource
 		if (!equals){
 			return false;
 		}
-		equals = this.getCrc()==zObj.getCrc();
+		equals = this.getCRC()==zObj.getCRC();
 		if (!equals){
 			return false;
 		}
@@ -364,10 +366,10 @@ public class ZipFileSource
 				return 1;
 			}
 		}
-		if (this.getCrc()< zObj.getCrc()){
+		if (this.getCRC()< zObj.getCRC()){
 			return -1;
 		}
-		else if (this.getCrc()>zObj.getCrc()){
+		else if (this.getCRC()>zObj.getCRC()){
 			return 1;
 		}
 		if (this.getSize()< zObj.getSize()){

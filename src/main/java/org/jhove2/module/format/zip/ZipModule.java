@@ -163,6 +163,7 @@ public class ZipModule
 	    File file = source.getFile();
 	    ZipFile zip = new ZipFile(file, ZipFile.OPEN_READ);
 	    if (zip != null) {
+	        source.setIsAggregate(true);
 	        try {
 	            /*
 	             * Zip entries are not necessarily in hierarchical order.
