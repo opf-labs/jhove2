@@ -112,12 +112,6 @@ public class TiffModule
     /** List of IFDs */
     List<IFD> ifdList = new LinkedList<IFD>();
 
-    /** The JHOVE2 object passed in by the parse method */
-    protected JHOVE2 jhove2; 
-
-    /** The Source object passed in by the parse method */
-    protected  Source source;
-
     /** Factory for mapper from tiff id to Format */
     protected Tiff2FormatMapFactory tiff2FormatMapFactory;
     
@@ -238,10 +232,6 @@ public class TiffModule
                     "org.jhove2.module.format.tiff.TIFFModule.PrematureEOFMessage",
                     jhove2.getConfigInfo()));       
             return consumed;
-        }
-        finally {
-            this.jhove2 = null;
-            this.source = null;
         }
         
         return consumed;
