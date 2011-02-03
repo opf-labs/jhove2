@@ -46,11 +46,14 @@ import com.sleepycat.persist.model.*;
  * @author mstrong, slabrams
  */
 @Persistent
-public class ClumpSource extends AbstractSource {
+public class ClumpSource
+    extends AbstractSource
+{
 	/**
 	 * Instantiate a new <code>ClumpSource</code>.
 	 */
 	protected ClumpSource() {
 		super();
+		this.isAggregate = true;
 	}
 }

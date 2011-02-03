@@ -41,6 +41,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.ByteOrder;
 
+import org.jhove2.core.Invocation;
+import org.jhove2.core.JHOVE2;
 import org.jhove2.core.io.Input.Type;
 
 /**
@@ -51,29 +53,21 @@ import org.jhove2.core.io.Input.Type;
 public class InputFactory {
 	/**
 	 * Factory to create an appropriate big-endian <code>AbstractInput</code>.
-	 * 
+	 * @param jhove2 JHOVE2 framework object
 	 * @param file
 	 *            Java {java.io.File} underlying the inputable
      * @param isTemp
      *            Temporary file status: true if a temporary file
-     * @param deleteOnClose
-     *            Delete on close status: true if delete on close
-	 * @param bufferSize
-	 *            Maximum buffer size, in bytes
-	 * @param scope
-	 *            Input buffer type
 	 * @return Input
 	 * @throws FileNotFoundException
 	 *             File not found
 	 * @throws IOException
 	 *             I/O exception instantiating input
 	 */
-	public static Input getInput(File file, boolean isTemp, boolean deleteOnClose,
-	                             int bufferSize, Type type)
+	public static Input getInput(JHOVE2 jhove2, File file, boolean isTemp)
 		throws FileNotFoundException, IOException
 	{
-		return getInput(file, isTemp, deleteOnClose, bufferSize, type,
-		                ByteOrder.BIG_ENDIAN);
+		return getInput(jhove2, file, isTemp, ByteOrder.BIG_ENDIAN);
 	}
 
 	/**
@@ -90,17 +84,11 @@ public class InputFactory {
 	 * if the java heap needs to be increased beyond its default. 
 	 * If sharing is enabled then the maximum will be reduced 
 	 * to about ~1-1.1GB.
-	 * 
+	 * @param jhove2 JHOVE2 framework object
 	 * @param file
 	 *            Java {java.io.File} underlying the inputable
      * @param isTemp
      *            Temporary file status: true if a temporary file
-	 * @param deleteOnClose
-	 *            Delete on close status: true if delete on close
-	 * @param bufferSize
-	 *            Maximum buffer size, in bytes
-	 * @param scope
-	 *            Input buffer type
 	 * @param order
 	 *            ByteOrder Endianess of buffer
 	 * @return Input
@@ -109,35 +97,31 @@ public class InputFactory {
 	 * @throws IOException
 	 *             I/O exception instantiating input
 	 */
-	public static Input getInput(File file, boolean isTemp, boolean deleteOnClose,
-	                             int bufferSize, Type type, ByteOrder order)
+	public static Input getInput(JHOVE2 jhove2, File file, boolean isTemp,
+	                             ByteOrder order)
 	    throws FileNotFoundException, IOException
 	{
 		AbstractInput input = null;
-		if (file != null && file.canRead()) {
+		if (file != null && file.exists() && file.canRead()) {
+		    Invocation inv = jhove2.getInvocation();
+		    Type type = inv.getBufferType();
 		    if (type.equals(Type.Direct)) {
-		        input = new DirectInput(file, isTemp, deleteOnClose, bufferSize,
-		                                order);
+		        input = new DirectInput(jhove2, file, isTemp, order);
 		    }
 		    else if (type.equals(Type.NonDirect)) {
-		        input = new NonDirectInput(file, isTemp, deleteOnClose,
-		                                   bufferSize, order);
+		        input = new NonDirectInput(jhove2, file, isTemp, order);
 		    }
 		    else if (type.equals(Type.Mapped)) {
 		        /* Only files smaller than Input.MAX_MAPPED_FILESIZE can utilize 
 		         * MappedByteBuffers 
 		         */
 		        if (file.length() < Input.MAX_MAPPED_FILE) {
-		            input = new MappedInput(file, isTemp, deleteOnClose,
-		                                    bufferSize, order);
+		            input = new MappedInput(jhove2, file, isTemp, order);
 		        }
 		        else {
-		            input = new DirectInput(file, isTemp, deleteOnClose,
-		                                    bufferSize, order);
+		            input = new DirectInput(jhove2, file, isTemp, order);
 		        }
 		    }
-		    input.setBufferType(type);
-		    input.setByteOrder(order);
 		}
 
 		return input;

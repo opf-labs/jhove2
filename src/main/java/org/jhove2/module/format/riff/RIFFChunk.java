@@ -44,6 +44,7 @@ import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.io.Input;
+import org.jhove2.core.source.MensurableSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.Validator.Validity;
 import org.jhove2.module.format.riff.field.FormType;
@@ -97,7 +98,7 @@ public class RIFFChunk
     {
         /* Chunk identifier and size. */
         long consumed = super.parse(jhove2, source, input);
-        long offset   = source.getStartingOffset();
+        long offset   = ((MensurableSource) source).getStartingOffset();
         int numErrors = 0;
         
         /* Chunk form type. */

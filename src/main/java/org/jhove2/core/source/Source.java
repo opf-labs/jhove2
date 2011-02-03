@@ -52,7 +52,6 @@ import org.jhove2.core.Message;
 import org.jhove2.core.TimerInfo;
 import org.jhove2.core.format.FormatIdentification;
 import org.jhove2.core.io.Input;
-import org.jhove2.core.io.Input.Type;
 import org.jhove2.core.reportable.Reportable;
 import org.jhove2.module.Module;
 import org.jhove2.persist.SourceAccessor;
@@ -67,11 +66,6 @@ import org.jhove2.persist.SourceAccessor;
 public interface Source
 	extends Reportable, Comparable<Source>
 {
-	/**
-	 * Close the source unit.
-	 */
-	public void close();
-
 	/**
 	 * Add a child source unit.
 	 * 
@@ -115,7 +109,12 @@ public interface Source
 	 * @throws JHOVE2Exception 
 	 */
 	public Source addPresumptiveFormats(Set<FormatIdentification> fis) throws JHOVE2Exception;
-	
+
+    /**
+     * Close the source unit and release all underlying system I/O resources.
+     */
+    public void close();
+
 	/**
 	 * Delete child source unit.
 	 * 
@@ -132,22 +131,23 @@ public interface Source
 	 * @return Child source units
 	 * @throws JHOVE2Exception 
 	 */
-	@ReportableProperty(order = 6, value = "Child source units.")
+	@ReportableProperty(order=6, value="Child source units.")
 	public List<Source> getChildSources() throws JHOVE2Exception;
 
 	/**
-	 * Get delete temporary files flag; if true, delete files.
+	 * Get temporary file deletion flag; if true, delete on close.
 	 * 
-	 * @return Delete temporary files flag
+	 * @return Deletion flag
 	 */
-	public boolean getDeleteTempFiles();
+	public boolean getDeleteTempOnClose();
+	   
+    /**
+     * Get {@link java.io.File} backing the source unit.
+     * 
+     * @return File backing the source unit, of null if a Clump or FileSet source
+     */
+    public File getFile();
 
-	/**
-	 * Get {@link java.io.File} backing the source unit.
-	 * 
-	 * @return File backing the source unit
-	 */
-	public File getFile();
 
     /**
      * Get little-endian {@link org.jhove2.core.io.Input} for the source unit
@@ -173,52 +173,16 @@ public interface Source
      */
     public Input getInput(JHOVE2 jhove2, ByteOrder order)
         throws FileNotFoundException, IOException;
-    
+  
 	/**
-	 * Get {@link org.jhove2.core.io.Input} for the source unit.
-     * If this method is called explicitly and the source unit is not
-     * processed by the JHOVE2.characterize() method, then the corresponding
-     * close() method must be called to avoid a resource leak.
+	 * Get {@link java.io.InputStream} for the file backing the source unit.
 	 * 
-	 * @param bufferSize
-	 *            Input maximum buffer size
-	 * @param bufferType
-	 *            Input buffer type
-	 * @return Input for the source unit
-	 * @throws FileNotFoundException
-	 * @throws IOException
+	 * @return Input stream for the file backing the source unit, or null if
+	 *         a Clump, Directory, or FileSet source
+	 * @throws FileNotFoundException Backing file not found
+	 * @throws IOException Backing file cannot be created
 	 */
-	public Input getInput(int bufferSize, Type bufferType)
-		throws FileNotFoundException, IOException;
-
-	/**
-	 * Get little-endian {@link org.jhove2.core.io.Input} for the source unit.
-     * If this method is called explicitly and the source unit is not
-     * processed by the JHOVE2.characterize() method, then the corresponding
-     * close() method must be called to avoid a resource leak.
-	 * 
-	 * @param bufferSize
-	 *            Input maximum buffer size
-	 * @param bufferType
-	 *            Input buffer type
-	 * @param order
-	 *            Byte order
-	 * @return Input for the source unit
-	 * @throws FileNotFoundException
-	 * @throws IOException
-	 */
-	public Input getInput(int bufferSize, Type bufferType, ByteOrder order)
-			throws FileNotFoundException, IOException;
-
-	/**
-	 * Get {@link java.io.InputStream} backing the source unit
-	 * 
-	 * @return Input stream backing the source unit
-	 * @throws FileNotFoundException
-	 *             File not found
-	 */
-	public InputStream getInputStream()
-		throws FileNotFoundException;
+	public InputStream getInputStream() throws FileNotFoundException, IOException;
 
 	/**
 	 * Get copy of List of modules that processed the source unit.
@@ -226,7 +190,7 @@ public interface Source
 	 * @return Modules that processed the source unit
 	 * @throws JHOVE2Exception 
 	 */
-	@ReportableProperty(order = 4, value = "Modules that processed the source unit")
+	@ReportableProperty(order=3, value="Modules that processed the source unit")
 	public List<Module> getModules() throws JHOVE2Exception;
 
 	/**
@@ -235,13 +199,13 @@ public interface Source
 	 * @return Number of child source units
 	 * @throws JHOVE2Exception 
 	 */
-	@ReportableProperty(order = 5, value = "Number of child source units.")
+	@ReportableProperty(order=5, value="Number of child source units.")
 	public int getNumChildSources() throws JHOVE2Exception;
 	
 	/** Get messages associated with the source unit.
 	 * @return Source unit messages
 	 */
-	@ReportableProperty(order = 3, value = "Source unit messages.")
+	@ReportableProperty(order=2, value="Source unit messages.")
 	public List<Message> getMessages();
 
 	/**
@@ -252,19 +216,23 @@ public interface Source
 	 */
 	public int getNumModules() throws JHOVE2Exception;
 
+    /**
+     * @return the moduleParentSourceId
+     */
+    public Long getParentSourceId();
+    
 	/**
 	 * Get list of presumptive formats for the source unit.
 	 * @return List of presumptive formats
 	 */
-	@ReportableProperty(order = 2, value="Presumptive formats for the source.")
+	@ReportableProperty(order=1, value="Presumptive formats for the source.")
 	public Set<FormatIdentification> getPresumptiveFormats();
-	
-	/** Get starting offset of the source unit, in bytes.
-	 * @return Starting offset of the source unit
-	 * Except for {@link ByteStreamSource}s, this will generally be 0.
-	 */
-	@ReportableProperty(order=1, value="Starting byte offset of the source unit.")
-	public long getStartingOffset();
+	   
+    /**
+     * @return the sourceId
+     */
+    public Long getSourceId();
+
 	/**
 	 * Get SourceAccessor that manages persistence for this Source
 	 * @return SourceAccessor  that manages persistence for this Source
@@ -276,35 +244,55 @@ public interface Source
 	 * @return Map of per-source parameter name/parameter value pairs
 	 */
 	public Map<String, String> getSourceParams();
+	
 	/**
 	 * Get elapsed time processing this source unit.
 	 * @return Elapsed time
 	 */
-	@ReportableProperty(order = 7, value="Timer info for this Source.")
+	@ReportableProperty(order=7, value="Timer info for this Source.")
 	public TimerInfo getTimerInfo();
-	
+
+    /** Aggregate source flag: true if an aggregate source.
+     * @return Aggregate source flag
+     */
+    @ReportableProperty(order=4, value="Aggregate source status: true if an " +
+        "aggregate source.")
+    public boolean isAggregate();
+    
 	/**
-	 * Get source unit backing file temporary status.
+	 * Get temporary flag: true if the file backing the source unit is a 
+	 * temporary file.
 	 * 
 	 * @return True if the source unit backing file is a temporary file
 	 */
 	public boolean isTemp();
 
 	/**
-	 * Set delete temporary files flag; if true, delete files.
+	 * Set temporary file deletion flag; if true, delete on close.
 	 * 
 	 * @param flag
 	 *            Delete temporary files flag
-	 * @return Source with new deleteTempFile flag set
+	 * @return Source with new deletion flag set
 	 * @throws JHOVE2Exception 
 	 */
-	public Source setDeleteTempFiles(boolean flag) throws JHOVE2Exception;
+	public Source setDeleteTempOnClose(boolean flag) throws JHOVE2Exception;
+
+    /** Set aggregate flag.
+     * @param flag Aggregate flag: true if an aggregate
+     */
+    public Source setIsAggregate(boolean flag) throws JHOVE2Exception;
+
+    /**
+     * @param moduleParentSourceId the moduleParentSourceId to set
+     */
+    public void setParentSourceId(Long parentSourceId);
 
 	/**
 	 * Set SourceAccessor that manages Source persistence
 	 * @param accessor SourceAccessor for this Source
 	 */
 	public void setSourceAccessor(SourceAccessor accessor);
+	
 	/**
 	 * Set Map of per-source parameters
 	 * @param sourceParams Map of per-source parameter name/parameter value pairs
@@ -312,35 +300,24 @@ public interface Source
 	 * @throws JHOVE2Exception 
 	 */
 	public Source setSourceParams(Map<String, String> sourceParams) throws JHOVE2Exception;
+	
 	/**
 	 * Set timerInfo on Source
 	 * @param timer TimerInfo
 	 */
 	public void setTimerInfo(TimerInfo timer);
+	
 	/**
 	 * Start TimerInfo
 	 * @return Source with TimerInfo started
 	 * @throws JHOVE2Exception
 	 */
 	public Source startTimer() throws JHOVE2Exception;
+	
 	/**
 	 * Stop TimeInfo
 	 * @return Source with TimerInfo stopped
 	 * @throws JHOVE2Exception
 	 */
 	public Source endTimer() throws JHOVE2Exception;	
-	/**
-	 * @return the sourceId
-	 */
-	public Long getSourceId();
-
-	/**
-	 * @return the moduleParentSourceId
-	 */
-	public Long getParentSourceId();
-	/**
-	 * @param moduleParentSourceId the moduleParentSourceId to set
-	 */
-	public void setParentSourceId(Long parentSourceId);
-
 }

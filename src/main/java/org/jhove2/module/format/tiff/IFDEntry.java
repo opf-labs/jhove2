@@ -32,6 +32,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * </p>
  */
+
 package org.jhove2.module.format.tiff;
 
 import java.io.IOException;
@@ -43,7 +44,6 @@ import java.util.List;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.annotation.ReportableProperty.PropertyType;
 import org.jhove2.core.I8R;
-import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
@@ -55,6 +55,7 @@ import org.jhove2.core.format.FormatIdentification.Confidence;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
 import org.jhove2.core.source.ByteStreamSource;
+import org.jhove2.core.source.MensurableSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.Validator.Validity;
 import org.jhove2.module.format.tiff.type.Ascii;
@@ -87,10 +88,9 @@ import com.sleepycat.persist.model.Persistent;
  */
 @Persistent
 public class IFDEntry 
-extends AbstractReportable
-implements Comparable<Object> {
-
-
+    extends AbstractReportable
+    implements Comparable<Object>
+{
     /** The number of values, Count of the indicated Type */
     protected long count;
 
@@ -220,11 +220,11 @@ implements Comparable<Object> {
 
     @ReportableProperty(order=6, value = "Entry value/offset.")
     public long getValueOffset() {
-        return valueOffset;
+        return this.valueOffset;
     }
 
     public int getVersion() {
-        return version;
+        return this.version;
     }
 
 
@@ -253,8 +253,8 @@ implements Comparable<Object> {
     {
         this.isValid = Validity.True;
         this.tag = input.readUnsignedShort();
-        if (tag > prevTag)
-            prevTag = tag;
+        if (this.tag > prevTag)
+            prevTag = this.tag;
         else {
             this.isValid = Validity.False;
             Object[]messageArgs = new Object[]{tag, input.getPosition()};
@@ -265,11 +265,11 @@ implements Comparable<Object> {
         }               
 
         this.type = input.readUnsignedShort();
-        this.tiffType = TiffType.getType(type);
+        this.tiffType = TiffType.getType(this.type);
 
         /* Skip over tags with unknown type; those outside of defined range. */
-        if (type < TiffType.BYTE.num()|| type > TiffType.IFD.num()) {
-            Object[]messageArgs = new Object[]{type, input.getPosition() };
+        if (this.type < TiffType.BYTE.num()|| this.type > TiffType.IFD.num()) {
+            Object[]messageArgs = new Object[] {this.type, input.getPosition() };
             this.unknownTypeMessages.add(new Message(Severity.WARNING,
                     Context.OBJECT,
                     "org.jhove2.module.format.tiff.IFD.UnknownTypeMessage",
@@ -282,14 +282,13 @@ implements Comparable<Object> {
             }
 
             this.count = (int) input.readUnsignedInt();
-
             this.savedValueOffset = input.getPosition();        // save the offset of the ValueOffset field 
             this.valueOffset = input.readUnsignedInt();    // read in the value stored in the ValueOffset field
             long value = this.valueOffset;
             
             if (calcValueSize(this.type, this.count) > 4) {
                 /* the value read is the offset to the value */
-                long size = input.getSize();
+                long size = ((MensurableSource) source).getSize();
 
                 /* test that the value offset is within the file */
                 if (value > size) {
@@ -305,7 +304,7 @@ implements Comparable<Object> {
                 /* test offset is word aligned */
                 if ((value & 1) != 0){
                     this.isValid = Validity.False;
-                    Object[]messageArgs = new Object[]{value};
+                    Object[]messageArgs = new Object[] {value};
                     this.ByteOffsetNotWordAlignedMessage = (new Message(Severity.ERROR,
                             Context.OBJECT,
                             "org.jhove2.module.format.tiff.IFD.ValueByteOffsetNotWordAlignedMessage",
@@ -319,15 +318,12 @@ implements Comparable<Object> {
                 /* Handle tags which require unique processing of their values */
 
                 /* Parse the ICCProfile or XMP tag */
-                 if (this.tag == TiffIFD.ICCPROFILE ||
+                if (this.tag == TiffIFD.ICCPROFILE ||
                     this.tag == TiffIFD.XMP) {
-                    Invocation inv = jhove2.getInvocation(); 
                     ByteStreamSource bss =
-                        jhove2.getSourceFactory().getByteStreamSource(source,
+                        jhove2.getSourceFactory().getByteStreamSource(jhove2, source,
                                 this.valueOffset, this.count,
-                                inv.getTempDirectoryFile(), inv.getTempPrefix(),
-                                (this.tag == TiffIFD.ICCPROFILE) ? ".icc" : ".xml",
-                                inv.getBufferSize());
+                                (this.tag == TiffIFD.ICCPROFILE) ? ".icc" : ".xml");
                     Format format = tiff2FormatMapper.getFormat(this.tag);
                     I8R identifier = format.getIdentifier();
                     FormatIdentification presumptiveFormat = new FormatIdentification(identifier, Confidence.PositiveSpecific); 
@@ -344,10 +340,8 @@ implements Comparable<Object> {
              * the offset of the Value field + 4 bytes will get you to the next Tag field
              */
             input.setPosition(this.savedValueOffset + 4);
-
         }
     }
-
 
     /**
      * 
@@ -400,23 +394,23 @@ implements Comparable<Object> {
 
         /* version 5 tags */
         if (this.tag == TiffIFD.ARTIST) {
-            if (version < 5) {
-                version = 5;
+            if (this.version < 5) {
+                this.version = 5;
             }
         }
         else if (this.tag == TiffIFD.COLORMAP) {
-            if (version < 5) {
-                version = 5;
+            if (this.version < 5) {
+                this.version = 5;
             }
         }
         else if (this.tag == TiffIFD.COMPRESSION) {
             // get the scheme to determine version
             int scheme = ((Short) this.getValue()).getValue();
             if (scheme == 5 && version < 5) {
-                version = 5;
+                this.version = 5;
             }
             else if (scheme == 6 && version < 6) {
-                version = 6;
+                this.version = 6;
             }
             /* set the descriptive format for the Compression Scheme */
             Compression compression =
@@ -428,8 +422,8 @@ implements Comparable<Object> {
 
         /* validate Date format is YYYY:MM:DD HH:MM:SS */
         else if (this.tag == TiffIFD.DATETIME) {
-            if (version < 5) {
-                version = 5;
+            if (this.version < 5) {
+                this.version = 5;
             }
             SimpleDateFormat date = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss");
             String dateTime = (String)((AsciiArray) this.getValue()).toString();
@@ -459,138 +453,138 @@ implements Comparable<Object> {
             }
         }        
         else if (this.tag == TiffIFD.HOSTCOMPUTER) {
-            if (version < 5) {
-                version = 5;
+            if (this.version < 5) {
+                this.version = 5;
             }
         }
         else if (this.tag == TiffIFD.NEWSUBFILETYPE) {
-            if (version < 5) {
-                version = 5;
+            if (this.version < 5) {
+                this.version = 5;
             }
         }
         else if (this.tag == TiffIFD.PREDICTOR) {
-            if (version < 5) {
-                version = 5;
+            if (this.version < 5) {
+                this.version = 5;
             }
         }
         else if (this.tag == TiffIFD.PRIMARY_CHROMATACITIES){
-            if (version < 5) {
-                version = 5;
+            if (this.version < 5) {
+                this.version = 5;
             }
         }
         else if (this.tag == TiffIFD.SOFTWARE) {
-            if (version < 5) {
-                version = 5;
+            if (this.version < 5) {
+                this.version = 5;
             }
         }        
         else if (this.tag == TiffIFD.WHITEPOINT) {
-            if (version < 5) {
-                version = 5;
+            if (this.version < 5) {
+                this.version = 5;
             }
         }
 
         /* version 6 tags */
         else if (this.tag == TiffIFD.COPYRIGHT) {
-            if (version < 6)
-                version = 6;
+            if (this.version < 6)
+                this.version = 6;
         }
         else if (this.tag == TiffIFD.DOTRANGE) {
-            if (version < 6)
-                version = 6;
+            if (this.version < 6)
+                this.version = 6;
         }
         else if (this.tag == TiffIFD.EXTRASAMPLES) {
-            if (version < 6)
-                version = 6;
+            if (this.version < 6)
+                this.version = 6;
         }
         else if (this.tag == TiffIFD.HALFTONEHINTS) {
-            if (version < 6)
-                version = 6;
+            if (this.version < 6)
+                this.version = 6;
         }
         else if (this.tag == TiffIFD.INKNAMES) {
-            if (version < 6)
-                version = 6;
+            if (this.version < 6)
+                this.version = 6;
         }
         else if (this.tag == TiffIFD.INKSET) {
-            if (version < 6)
-                version = 6;
+            if (this.version < 6)
+                this.version = 6;
         }
         else if (this.tag == TiffIFD.JPEGACTABLES) {
-            if (version < 6)
-                version = 6;
+            if (this.version < 6)
+                this.version = 6;
         }
         else if (this.tag == TiffIFD.JPEGDCTABLES) {
-            if (version < 6)
-                version = 6;
+            if (this.version < 6)
+                this.version = 6;
         }
         else if (this.tag == TiffIFD.JPEGINTERCHANGEFORMAT) {
-            if (version < 6)
-                version = 6;
+            if (this.version < 6)
+                this.version = 6;
         }
         else if (this.tag == TiffIFD.JPEGINTERCHANGEFORMATLENGTH) {
-            if (version < 6)
-                version = 6;
+            if (this.version < 6)
+                this.version = 6;
         }
         else if (this.tag == TiffIFD.JPEGLOSSLESSPREDICTORS) {
-            if (version < 6)
-                version = 6;
+            if (this.version < 6)
+                this.version = 6;
         }
         else if (this.tag == TiffIFD.JPEGPOINTTRANSFORMS) {
-            if (version < 6)
-                version = 6;
+            if (this.version < 6)
+                this.version = 6;
         }
         else if (this.tag == TiffIFD.JPEGPROC) {
-            if (version < 6)
-                version = 6;
+            if (this.version < 6)
+                this.version = 6;
         }
         else if (this.tag == TiffIFD.JPEG_RESTART_INTERVAL) {
-            if (version < 6)
-                version = 6;
+            if (this.version < 6)
+                this.version = 6;
         }
         else if (this.tag == TiffIFD.JPEG_QTABLES) {
-            if (version < 6)
-                version = 6;
+            if (this.version < 6)
+                this.version = 6;
         }
         else if (this.tag == TiffIFD.NUMBEROFINKS) {
-            if (version < 6)
-                version = 6;
+            if (this.version < 6)
+                this.version = 6;
         }
         else if (this.tag == TiffIFD.PHOTMETRIC_INTERPRETATION) {
             int photometricInterpretation = ((Short) this.getValue()).getValue();
             if (photometricInterpretation == 5 ||  //(CMYK)
                     photometricInterpretation == 6 ||  //(YCbCr)
                     photometricInterpretation == 8) {  //(CIE L*a*b*)
-                if (version < 6)
-                    version = 6;
+                if (this.version < 6)
+                    this.version = 6;
             }   
         }
         else if (this.tag == TiffIFD.REFERENCEBLACKWHITE) {
-            if (version < 6)
-                version = 6;
+            if (this.version < 6)
+                this.version = 6;
         }
         else if (this.tag == TiffIFD.SAMPLEFORMAT) {
-            if (version < 6)
-                version = 6;
+            if (this.version < 6)
+                this.version = 6;
         }
         else if (this.tag == TiffIFD.SMINSAMPLEVALUE) {
-            if (version < 6)
-                version = 6;
+            if (this.version < 6)
+                this.version = 6;
         }
         else if (this.tag == TiffIFD.SMAXSAMPLEVALUE) {
-            if (version < 6)
-                version = 6;
+            if (this.version < 6)
+                this.version = 6;
         }
         else if (this.tag == TiffIFD.TARGETPRINTER) {
-            if (version < 6)
-                version = 6;
+            if (this.version < 6)
+                this.version = 6;
         }
         /* Validate TILELENGTH  value is integral multiple of 16  */
         else if (this.tag == TiffIFD.TILELENGTH ) {
-            if (version < 6) 
-                version = 6;
+            if (this.version < 6) 
+                this.version = 6;
             long tileLength = ((Long) this.getValue()).getValue();
             if (tileLength%16 > 0) {
                 this.isValid = Validity.False;
-                Object[]messageArgs = new Object[]{this.tag, this.valueOffset};
+                Object[]messageArgs = new Object[] {this.tag, this.valueOffset};
                 this.tileLengthNotMultipleof16Message = (new Message(Severity.WARNING,
                         Context.OBJECT,
                         "org.jhove2.module.format.tiff.IFDEntry.tileLengthNotMultipleof16Message",
@@ -600,13 +594,13 @@ implements Comparable<Object> {
         }
         /* Validate TILEWIDTH value is integral multiple of 16  */
         else if (this.tag == TiffIFD.TILEWIDTH ) {
-            if (version < 6) 
-                version = 6;
+            if (this.version < 6) 
+                this.version = 6;
             long tileWidth = ((Long) this.getValue()).getValue();
 
             if (tileWidth%16 > 0) {
                 this.isValid = Validity.False;
-                Object[]messageArgs = new Object[]{this.tag, this.valueOffset};
+                Object[]messageArgs = new Object[] {this.tag, this.valueOffset};
                 this.tileWidthNotMultipleof16Message = (new Message(Severity.WARNING,
                         Context.OBJECT,
                         "org.jhove2.module.format.tiff.IFDEntry.tileWidthNotMultipleof16Message",
@@ -614,32 +608,30 @@ implements Comparable<Object> {
             }
         }
         else if (this.tag == TiffIFD.TILEBYTECOUNTS ) {
-            if (version < 6) 
-                version = 6;
+            if (this.version < 6) 
+                this.version = 6;
         }
         else if (this.tag == TiffIFD.TILEOFFSETS ) {
-            if (version < 6) 
-                version = 6;
+            if (this.version < 6) 
+                this.version = 6;
         }
         else if (this.tag == TiffIFD.TRANSFERRANGE) {
-            if (version < 6)
-                version = 6;
+            if (this.version < 6)
+                this.version = 6;
         }
         else if (this.tag == TiffIFD.YCBCRCOEFFICIENTS) {
-            if (version < 6)
-                version = 6;
+            if (this.version < 6)
+                this.version = 6;
         }
         else if (this.tag == TiffIFD.YCBCRPOSITIONING) {
-            if (version < 6)
-                version = 6;
+            if (this.version < 6)
+                this.version = 6;
         }
         else if (this.tag == TiffIFD.YCBCRSUBSAMPLING) {
-            if (version < 6)
-                version = 6;
+            if (this.version < 6)
+                this.version = 6;
         }
-
     }
-
 
     /**
      * checks that the count value read in matches the expected count value
@@ -649,12 +641,14 @@ implements Comparable<Object> {
      * @param expectedCount
      * @throws JHOVE2Exception
      */
-    private void checkCount(JHOVE2 jhove2, long count, String expectedCount ) throws JHOVE2Exception {
+    private void checkCount(JHOVE2 jhove2, long count, String expectedCount)
+        throws JHOVE2Exception
+    {
         if (expectedCount != null) {
             int expected = Integer.parseInt(expectedCount);
             if (count < expected) {
                 this.isValid = Validity.False;
-                Object[]messageArgs = new Object[]{this.tag, count, expectedCount};
+                Object[]messageArgs = new Object[] {this.tag, count, expectedCount};
                 this.InvalidCountValueMessage = (new Message(Severity.WARNING,
                         Context.OBJECT,
                         "org.jhove2.module.format.tiff.IFDEntry.InvalidCountValueMessage",
@@ -679,7 +673,7 @@ implements Comparable<Object> {
         String typeReadIn = type.name();
         /* type values of 6-12 were defined in TIFF 6.0 */
         if (typeNum > TiffType.SBYTE.num()) {
-            version = 6;
+            this.version = 6;
         }
 
         boolean typeAccepted = false;
@@ -713,7 +707,7 @@ implements Comparable<Object> {
         }
         if (!match) { 
             this.isValid = Validity.False;
-            Object[]messageArgs = new Object[]{typeReadIn, this.tag, expectedTypes};
+            Object[]messageArgs = new Object[] {typeReadIn, this.tag, expectedTypes};
             this.TypeMismatchMessage = (new Message(Severity.ERROR,
                     Context.OBJECT,
                     "org.jhove2.module.format.tiff.IFDEntry.TypeMismatchMessage",
@@ -749,93 +743,98 @@ implements Comparable<Object> {
         else
             input.setPosition(this.savedValueOffset);            
         
-        if (count <= 1 ) {
+        if (this.count <= 1 ) {
             /* store a single value */
-            if (type.equals(TiffType.BYTE) || type.equals(TiffType.UNDEFINED)) 
-                byteValue = new Byte(input.readUnsignedByte());
+            if (type.equals(TiffType.BYTE) || type.equals(TiffType.UNDEFINED)) {
+                this.byteValue = new Byte(input.readUnsignedByte());
+            }
             else if (type.equals(TiffType.ASCII)){
-                asciiValue = new Ascii();
-                asciiValue.setValue(input, count );
+                this.asciiValue = new Ascii();
+                this.asciiValue.setValue(input, this.count);
             }
             else if (type.equals(TiffType.SHORT)) {
-                shortValue = new Short(input.readUnsignedShort());
+                this.shortValue = new Short(input.readUnsignedShort());
                 // store in Long type if it can be SHORT or LONG 
                 if (this.tagDefinition.getType().contains("LONG")) 
-                    longValue = new Long (shortValue.getValue());
+                    this.longValue = new Long (shortValue.getValue());
             }
-            else if (type.equals(TiffType.LONG))
-                longValue = new Long(input.readUnsignedInt());
+            else if (type.equals(TiffType.LONG)) {
+                this.longValue = new Long(input.readUnsignedInt());
+            }
             else if (type.equals(TiffType.FLOAT)) {
-                floatValue = new FloatObject(input.readFloat());
+                this.floatValue = new FloatObject(input.readFloat());
             }
             else if (type.equals(TiffType.DOUBLE)) {
-                doubleValue = new Double(input.readDouble());
+                this.doubleValue = new Double(input.readDouble());
             }
             else if (type.equals(TiffType.RATIONAL)) {
                 long num = input.readUnsignedInt();
                 long denom = input.readUnsignedInt();
-                rationalValue = new Rational(num, denom);
+                this.rationalValue = new Rational(num, denom);
             }
-            else if (type.equals(TiffType.SBYTE)) 
-                sByteValue = new SByte(input.readSignedByte());
-            else if (type.equals(TiffType.SSHORT))
-                sShortValue = new SShort(input.readSignedShort());
-            else if (type.equals(TiffType.SLONG))
-                sLongValue = new SLong(input.readSignedLong());
+            else if (type.equals(TiffType.SBYTE)) {
+                this.sByteValue = new SByte(input.readSignedByte());
+            }
+            else if (type.equals(TiffType.SSHORT)) {
+                this.sShortValue = new SShort(input.readSignedShort());
+            }
+            else if (type.equals(TiffType.SLONG)) {
+                this.sLongValue = new SLong(input.readSignedLong());
+            }
             else if (type.equals(TiffType.SRATIONAL)) {
                 long num = input.readSignedInt();
                 long demon = input.readSignedInt();
-                sRationalValue = new Rational(num, demon);
+                this.sRationalValue = new Rational(num, demon);
             }
         }
         else {
-            isArray = true;
+            this.isArray = true;
             /* read into an array */
             if (type.equals(TiffType.BYTE) || type.equals(TiffType.UNDEFINED)) {
-                byteArrayValue = new ByteArray();
-                byteArrayValue.setValue(input, count);
+                this.byteArrayValue = new ByteArray();
+                this.byteArrayValue.setValue(input, this.count);
             }
             else if (type.equals(TiffType.ASCII)){
-                asciiArrayValue = new AsciiArray();
-                asciiArrayValue.setValue(input, count);
+                this.asciiArrayValue = new AsciiArray();
+                this.asciiArrayValue.setValue(input, this.count);
             }
             else if (type.equals(TiffType.SHORT)) {
-                shortArrayValue = new ShortArray();
-                shortArrayValue.setValue(input, count);
+                this.shortArrayValue = new ShortArray();
+                this.shortArrayValue.setValue(input, this.count);
                 // store in Long type if it can be SHORT or LONG 
                 if (this.tagDefinition.getType().contains("LONG")) {
-                    longArrayValue = new LongArray (shortArrayValue.getShortArrayValue());
+                    this.longArrayValue = new LongArray (shortArrayValue.getShortArrayValue());
                 }
             }
             else if (type.equals(TiffType.LONG)) {
-                longArrayValue = new LongArray();
-                longArrayValue.setValue(input, count);
+                this.longArrayValue = new LongArray();
+                this.longArrayValue.setValue(input, this.count);
             }
             else if (type.equals(TiffType.DOUBLE)) {
                 doubleArrayValue = new DoubleArray();
-                doubleArrayValue.setValue(input, count);
+                doubleArrayValue.setValue(input, this.count);
             }
             else if (type.equals(TiffType.RATIONAL)) {
                 long num = input.readUnsignedInt();
                 long denom = input.readUnsignedInt();
-                rationalValue = new Rational(num, denom);
+                this.rationalValue = new Rational(num, denom);
             }
             else if (type.equals(TiffType.SBYTE)) { 
-                sbyteArrayValue = new SByteArray();
-                sbyteArrayValue.setValue(input, count);
+                this.sbyteArrayValue = new SByteArray();
+                this.sbyteArrayValue.setValue(input, this.count);
             }
             else if (type.equals(TiffType.SSHORT)) {
-                sShortArrayValue = new SShortArray();
-                sShortArrayValue.setValue(input, count);
+                this.sShortArrayValue = new SShortArray();
+                this.sShortArrayValue.setValue(input, this.count);
             }
             else if (type.equals(TiffType.SLONG)) {
-                sLongArrayValue = new SLongArray();
-                sLongArrayValue.setValue(input, count);
+                this.sLongArrayValue = new SLongArray();
+                this.sLongArrayValue.setValue(input, this.count);
             }
             else if (type.equals(TiffType.SRATIONAL)) {
                 long num = input.readSignedLong();
                 long demon = input.readSignedLong();
-                rationalValue = new Rational(num, demon);
+                this.rationalValue = new Rational(num, demon);
             }
 
         }
@@ -849,51 +848,67 @@ implements Comparable<Object> {
     @ReportableProperty(order=7, value = "Tiff Tag Value.")
     public Object getValue(){
         TiffType type = this.tiffType;
-        if (isArray) {
-            if (type.equals(TiffType.BYTE) || (type.equals(TiffType.UNDEFINED)))
-                return byteArrayValue;
-            else if (type.equals(TiffType.ASCII))
-                return asciiArrayValue;
+        if (this.isArray) {
+            if (type.equals(TiffType.BYTE) || (type.equals(TiffType.UNDEFINED))) {
+                return this.byteArrayValue;
+            }
+            else if (type.equals(TiffType.ASCII)) {
+                return this.asciiArrayValue;
+            }
             else if (type.equals(TiffType.SHORT)) {
                 // if value can be LONG or SHORT return the value stored in Long 
                 if (this.tagDefinition.getType().contains("LONG")) 
-                    return longArrayValue;
+                    return this.longArrayValue;
                 else
-                    return shortArrayValue;
+                    return this.shortArrayValue;
             }
-            else if (type.equals(TiffType.LONG))
-                return longArrayValue;
-            else if (type.equals(TiffType.RATIONAL))
-                return rationalArrayValue;
-            else if (type.equals(TiffType.SSHORT))
-                return sShortArrayValue;
-            else if (type.equals(TiffType.SLONG))
-                return sLongArrayValue;
-            else if (type.equals(TiffType.SRATIONAL))
-                return sRationalArrayValue;
+            else if (type.equals(TiffType.LONG)) {
+                return this.longArrayValue;
+            }
+            else if (type.equals(TiffType.RATIONAL)) {
+                return this.rationalArrayValue;
+            }
+            else if (type.equals(TiffType.SSHORT)) {
+                return this.sShortArrayValue;
+            }
+            else if (type.equals(TiffType.SLONG)) {
+                return this.sLongArrayValue;
+            }
+            else if (type.equals(TiffType.SRATIONAL)) {
+                return this.sRationalArrayValue;
+            }
         }
         else  {
-            if (type.equals(TiffType.BYTE) || (type.equals(TiffType.UNDEFINED)))
-                return byteValue;
-            else if (type.equals(TiffType.ASCII))
-                return asciiValue;
+            if (type.equals(TiffType.BYTE) || (type.equals(TiffType.UNDEFINED))) {
+                return this.byteValue;
+            }
+            else if (type.equals(TiffType.ASCII)) {
+                return this.asciiValue;
+            }
             else if (type.equals(TiffType.SHORT)) {
                 // if value can be LONG or SHORT return the value stored in Long 
-                if (this.tagDefinition.getType().contains("LONG")) 
-                    return longValue;
-                else
-                    return shortValue;
+                if (this.tagDefinition.getType().contains("LONG")) {
+                    return this.longValue;
+                }
+                else {
+                    return this.shortValue;
+                }
             }
-            else if (type.equals(TiffType.LONG))
-                return longValue;
-            else if (type.equals(TiffType.RATIONAL))
-                return rationalValue;
-            else if (type.equals(TiffType.SBYTE))
-                return sByteValue;
-            else if (type.equals(TiffType.SLONG))
-                return sLongValue;
-            else if (type.equals(TiffType.SRATIONAL))
-                return sRationalValue;
+            else if (type.equals(TiffType.LONG)) {
+                return this.longValue;
+            }
+            else if (type.equals(TiffType.RATIONAL)) {
+                return this.rationalValue;
+            }
+            else if (type.equals(TiffType.SBYTE)) {
+                return this.sByteValue;
+            }
+            else if (type.equals(TiffType.SLONG)) {
+                return this.sLongValue;
+            }
+            else if (type.equals(TiffType.SRATIONAL)) {
+                return this.sRationalValue;
+            }
         }
         return null;
     }
@@ -924,7 +939,7 @@ implements Comparable<Object> {
      */
     @ReportableProperty (order=5, value="Entry cardinality, number of values.")
     public long getCount(){
-        return count;
+        return this.count;
     }
 
     /**
@@ -933,7 +948,7 @@ implements Comparable<Object> {
      */
     @ReportableProperty (order=1, value = "Entry tag name.")
     public String getName(){
-        return name;
+        return this.name;
     }
 
     /**
@@ -942,7 +957,7 @@ implements Comparable<Object> {
      */
     @ReportableProperty(order=2, value="Entry tag.")
     public int getTag(){
-        return tag;
+        return this.tag;
     }
 
     /**
@@ -951,7 +966,7 @@ implements Comparable<Object> {
      */
     @ReportableProperty(order=9, value = "unknown tag message.")
     public Message getUnknownTagMessage() {
-        return UnknownTagMessage;
+        return this.UnknownTagMessage;
     }
 
     /**
@@ -981,7 +996,7 @@ implements Comparable<Object> {
      */
     @ReportableProperty(order=7, value = "tag sort order error message.")
     public Message getTagSortOrderErrorMessage() {
-        return TagSortOrderErrorMessage;
+        return this.TagSortOrderErrorMessage;
     }
 
     /**
@@ -991,7 +1006,7 @@ implements Comparable<Object> {
      */
     @ReportableProperty(order=8, value = "unknown type message.")
     public List<Message> getUnknownTypeMessage() {
-        return unknownTypeMessages;
+        return this.unknownTypeMessages;
     }
     /**
      * Get byte offset not word aligned message
@@ -1000,7 +1015,7 @@ implements Comparable<Object> {
      */
     @ReportableProperty(order=9, value = "Byte offset not word aligned message.")
     public Message getByteOffsetNotWordAlignedMessage() {
-        return ByteOffsetNotWordAlignedMessage;
+        return this.ByteOffsetNotWordAlignedMessage;
     }
 
     /**
@@ -1010,16 +1025,15 @@ implements Comparable<Object> {
      */
     @ReportableProperty(order=10, value = "value offset reference location file message.")
     public Message getValueOffsetReferenceLocationFileMessage() {
-        return ValueOffsetReferenceLocationFileMessage;
+        return this.ValueOffsetReferenceLocationFileMessage;
     }
-
 
     /**
      * @return the typeMismatchMessage
      */
     @ReportableProperty(order=11, value="type mismatch message.")
     public Message getTypeMismatchMessage() {
-        return TypeMismatchMessage;
+        return this.TypeMismatchMessage;
     }
 
     /**
@@ -1027,7 +1041,7 @@ implements Comparable<Object> {
      */
     @ReportableProperty(order=12, value="Invalid Count Value Message.")
     public Message getInvalidCountValueMessage() {
-        return InvalidCountValueMessage;
+        return this.InvalidCountValueMessage;
     }
 
     /**
@@ -1035,7 +1049,7 @@ implements Comparable<Object> {
      */
     @ReportableProperty(order=13, value="Unknown Type Message.")
     public List<Message> getUnknownTypeMessages() {
-        return unknownTypeMessages;
+        return this.unknownTypeMessages;
     }
 
     /**
@@ -1043,7 +1057,7 @@ implements Comparable<Object> {
      */
     @ReportableProperty(order=14, value="Invalid Date Time Message.")
     public Message getInvalidDateTimeMessage() {
-        return invalidDateTimeMessage;
+        return this.invalidDateTimeMessage;
     }
 
     /**
@@ -1072,7 +1086,7 @@ implements Comparable<Object> {
 
     @ReportableProperty(order=7, value="Compression Scheme in descriptive form.",
             type=PropertyType.Descriptive)
-            public String getCompression_descriptive() {
+    public String getCompression_descriptive() {
         return this.compression_d;
     }
 
@@ -1081,12 +1095,11 @@ implements Comparable<Object> {
      */
     @ReportableProperty(order=18, value="IFDEntry validity.")
     public Validity isValid() {
-        return isValid;
+        return this.isValid;
     }
 
     @Override
     public int compareTo(Object o) {
         return 0;
     }
-
 }

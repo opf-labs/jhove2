@@ -48,6 +48,7 @@ import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
 import org.jhove2.core.io.Input;
+import org.jhove2.core.source.MensurableSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.module.format.Validator;
@@ -142,7 +143,7 @@ public class WAVEModule
         long consumed = 0L;
         this.isValid = Validity.True;
         input.setByteOrder(ByteOrder.LITTLE_ENDIAN);
-        input.setPosition(source.getStartingOffset());
+        input.setPosition(((MensurableSource) source).getStartingOffset());
                 
         StringBuffer sb = new StringBuffer(4);
         for (int i=0; i<4; i++) {

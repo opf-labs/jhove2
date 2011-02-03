@@ -34,12 +34,9 @@
 package org.jhove2.core.io;
 
 import java.io.EOFException;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-
 
 /**
  * JHOVE2 input, an I/O abstraction used for parsing the contents of source
@@ -63,7 +60,7 @@ public interface Input  {
 	public final static int MAX_MAPPED_FILE = 1717986918;
 
 	/**
-	 * Close the input.
+	 * Close the input and release all underlying system I/O resources.
 	 * 
 	 * @throws IOException
 	 *             I/O exception closing input
@@ -71,9 +68,12 @@ public interface Input  {
 	public void close() throws IOException;
 
 	/**
-	 * Get the {@link java.nio.ByteBuffer} underlying the inputable.
+	 * Get the {@link java.nio.ByteBuffer} underlying the Input.  If the
+	 * buffer position is locally manipulated, the resetBuffer() method must
+	 * be invoked prior to reading the Input.
+	 * @see org.jhove2.core.io.Input#resetBuffer()
 	 * 
-	 * @return Buffer underlying the inputable
+	 * @return Buffer underlying the Input
 	 */
 	public ByteBuffer getBuffer();
 
@@ -109,20 +109,6 @@ public interface Input  {
 	 * @return Buffer type
 	 */
 	public Type getBufferType();
-	
-	/**
-	 * Get {@link java.io.File} backing the input.
-	 * 
-	 * @return File backing the input
-	 */
-	public File getFile();
-
-	/**
-	 * Get {@link java.io.InputStream} backing the input
-	 * 
-	 * @return Input stream backing the input
-	 */
-	public InputStream getInputStream();
 
 	/**
 	 * Get maximum buffer size, in bytes.
@@ -138,17 +124,28 @@ public interface Input  {
 	 */
 	public long getPosition();
 	
-	/** Get backing file deletion status.
-	 * @return True, if the backing file should be deleted on close
-	 */
-	public boolean deleteOnClose();
-	
 	/** Get UTF-16BE Unicode character at the current position.  This
 	 * implicitly advances the current position by two bytes.
 	 * @return Characer at the current position
 	 */
 	public char readChar() throws EOFException, IOException;
 
+    /**
+     * Get signed double float point at the current position. This implicitly advances
+     * the current position by eight bytes.
+     * 
+     * @return signed double floating point at the current position, or -1 if EOF
+     */
+    double readDouble() throws IOException;
+
+    /**
+     * Get signed 32 bit floating point float at the current position. This implicitly advances
+     * the current position by four bytes.
+     * 
+     * @return signed 32 bit floating point float at the current position, or -1 if EOF
+     */
+    float readFloat() throws IOException;
+    
 	/**
 	 * Get signed byte at the current position. This implicitly advances the
 	 * current position by one byte.
@@ -218,6 +215,13 @@ public interface Input  {
 	 *             I/O exception reading int
 	 */
 	public long readUnsignedInt() throws IOException;
+    
+    /** Reset the buffer position.  This method is only necessary after
+     * a buffer has been retrieved via getBuffer() and the position of 
+     * that local copy has been manipulated.
+     * @see org.jhove2.core.io.Input#getBuffer()
+     */
+    public void resetBuffer();
 
 	/**
 	 * Set byte order: big-endian or little-endian.
@@ -237,31 +241,8 @@ public interface Input  {
 	 */
 	public void setPosition(long position) throws IOException;
 
-	/**
-	 * Get size in bytes of file underlying the Input
-	 * 
-	 * @return Input size, in bytes
-	 */
-	public long getSize();
-	
 	/** Set buffer type.
 	 * @param type Buffer type
 	 */
 	public void setBufferType(Type type);
-
-    /**
-     * Get signed double float point at the current position. This implicitly advances
-     * the current position by eight bytes.
-     * 
-     * @return signed double floating point at the current position, or -1 if EOF
-     */
-    double readDouble() throws IOException;
-
-    /**
-     * Get signed 32 bit floating point float at the current position. This implicitly advances
-     * the current position by four bytes.
-     * 
-     * @return signed 32 bit floating point float at the current position, or -1 if EOF
-     */
-    float readFloat() throws IOException;
 }

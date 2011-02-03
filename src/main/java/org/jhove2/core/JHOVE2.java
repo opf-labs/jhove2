@@ -178,8 +178,6 @@ public class JHOVE2
                 }
             }
 		    if (tryIt) {
-		        boolean del = this.getInvocation().getDeleteTempFiles();
-		    	source = source.setDeleteTempFiles(del);
 		        for (Command command : this.getCommands()){
 		        	command = (Command) command.getModuleAccessor().resetTimerInfo(command);
 		            try {

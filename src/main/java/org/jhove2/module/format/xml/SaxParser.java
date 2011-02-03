@@ -38,6 +38,7 @@
 package org.jhove2.module.format.xml;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -52,6 +53,7 @@ import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
+import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
 import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.Source;
@@ -373,13 +375,16 @@ public class SaxParser
         }
     }
     
-    protected void parse(Source source, JHOVE2 jhove2) throws JHOVE2Exception, IOException {
-        
+    //protected void parse(Source source, JHOVE2 jhove2) throws JHOVE2Exception, IOException {
+    protected void parse(JHOVE2 jhove2, Source source, Input input)
+        throws JHOVE2Exception, IOException
+    {    
         /* The XMLReader does the parsing of the XML */
         XMLReader xmlReader = getXmlReader();
         
         /* Create the InputSource object containing the XML entity to be parsed */
-        InputSource saxInputSource = new InputSource(source.getInputStream());
+        InputStream stream = source.getInputStream();
+        InputSource saxInputSource = new InputSource(stream);
         /* Provide the BASE path of the source file, in case relative paths need to be resolved */
         if (source instanceof FileSource){
             saxInputSource.setSystemId(source.getFile().getAbsolutePath());
@@ -410,6 +415,11 @@ public class SaxParser
                     Context.OBJECT,
                     "org.jhove2.module.format.xml.XmlModule.entityReferenceNotResolved",
                     messageArgs, jhove2.getConfigInfo()));
+        }
+        finally {
+            if (stream != null) {
+                stream.close();
+            }
         }
  
     }

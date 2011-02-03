@@ -48,6 +48,7 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 
 /**
@@ -62,10 +63,6 @@ public class SourceFactoryUtil
 	 * 
 	 * @param name Object name, either a file name, directory name, or a URL
 	 * @param sourceFactory SourceFactory to configure Accessors for source
-	 * @param tmpDirectory Temporary directory
-	 * @param tmpPrefix Temporary prefix
-	 * @param tmpSuffix Temporary suffix
-	 * @param bufferSize Buffer size (for creating temporary file)
 	 * @return Source unit
 	 * @throws FileNotFoundException
 	 *             File not found
@@ -73,12 +70,8 @@ public class SourceFactoryUtil
 	 *             I/O exception instantiating source
 	 * @throws JHOVE2Exception 
 	 */
-	public static synchronized Source getSource(String name,
-	                                            SourceFactory sourceFactory,
-	                                            File tmpDirectory,
-	                                            String tmpPrefix,
-	                                            String tmpSuffix,
-	                                            int bufferSize)
+	public static synchronized Source getSource(JHOVE2 jhove2, String name,
+	                                            SourceFactory sourceFactory)
 		throws FileNotFoundException, IOException, JHOVE2Exception
 	{
 	    Source source = null;
@@ -88,13 +81,11 @@ public class SourceFactoryUtil
 	     */
         try{
             URL url = new URL(name);
-            source = SourceFactoryUtil.getSource(url, sourceFactory,
-                                                 tmpDirectory, tmpPrefix,
-                                                 tmpSuffix, bufferSize);
+            source = SourceFactoryUtil.getSource(jhove2, url, sourceFactory);
         }
         catch (MalformedURLException m){
             File file = new File(name);
-            source = SourceFactoryUtil.getSource(file, sourceFactory);
+            source = SourceFactoryUtil.getSource(jhove2, file, sourceFactory);
         }
         
 		return source;
@@ -103,6 +94,7 @@ public class SourceFactoryUtil
 	/**
 	 * Get source unit from a Java {@link java.io.File}.
 	 * 
+     * @param jhove2 JHOVE2 framework object
 	 * @param file
 	 *            Java {@link java.io.File}
 	 * @param sourceFactory  SourceFactory which configures accessors for this source
@@ -113,18 +105,19 @@ public class SourceFactoryUtil
 	 *             I/O exception instantiating source
 	 * @throws JHOVE2Exception 
 	 */
-	public static synchronized Source getSource(File file, SourceFactory sourceFactory)
+	public static synchronized Source getSource(JHOVE2 jhove2, File file,
+	                                            SourceFactory sourceFactory)
 		throws FileNotFoundException, IOException, JHOVE2Exception
 	{
 		Source source = null;
 		if (file.isDirectory()) {		
-			source = new DirectorySource(file, sourceFactory);
+			source = new DirectorySource(jhove2, file, sourceFactory);
 			/* Note, the DirectorySource constructor automatically associates
 			 * the source factory, so we don't need to do it here.
 			 */
 		}
 		else{
-			source = new FileSource(file);
+			source = new FileSource(jhove2, file);
 			source.setSourceAccessor(sourceFactory.createSourceAccessor(source));
 		}
 		
@@ -133,68 +126,38 @@ public class SourceFactoryUtil
 
 	/**
 	 * Get source unit from a URL by creating a local temporary file.
+     * @param jhove2 JHOVE2 framework object
      * @param url URL
      * @param sourceFactory SourceFactory which configures accessors for this source
-     * @param tmpDirectory Temporary directory
-	 * @param tmpPrefix
-	 *            Temporary file prefix
-	 * @param tmpSuffix
-	 *            Temporary file suffix
-	 * @param bufferSize
-	 *            Buffer size (for creating temporary file)
-	 * 
-	 * @return Source unit
+	 * @return URL source unit
 	 * @throws IOException
 	 *             I/O exception instantiating source
 	 */
-	public static synchronized Source getSource(URL url,
-	                                            SourceFactory sourceFactory,
-	                                            File tmpDirectory,
-	                                            String tmpPrefix,
-	                                            String tmpSuffix,
-			                                    int bufferSize)
+	public static synchronized Source getSource(JHOVE2 jhove2, URL url,
+	                                            SourceFactory sourceFactory)
 		throws IOException
 	{
-	    /* Try to recover the format extension from the URL path. If not
-	     * available, use the temporary suffix.
-	     */
-	    String ext  = tmpSuffix;
-	    String path = url.getPath();
-	    int in = path.lastIndexOf('.');
-	    if (in > 0) {
-	        ext = path.substring(in);
-	    }
-		Source source = new URLSource(url, tmpDirectory, tmpPrefix, ext,
-		                              bufferSize);
+		Source source = new URLSource(jhove2, url);
 		source.setSourceAccessor(sourceFactory.createSourceAccessor(source));
 		return source;
 	}
 
 	/**
 	 * Get source unit from a Zip file entry by creating a temporary file.
+	 * @param jhove2 JHOVE2 framework object
      * @param zip
      *            Zip file
      * @param entry
      *            Zip file entry
      * @param sourceFactory 
      *          SourceFactory which configures accessors for this source
-	 * @param tmpDirectory Temporary directory
-	 * @param tmpPrefix
-	 *            Temporary file prefix
-	 * @param tmpSuffix
-	 *            Temporary file suffix
-	 * @param bufferSize
-	 *            Buffer size (for creating temporary file)
 	 * @return Source unit
 	 * @throws IOException
 	 *             I/O exception instantiating source
 	 */
-	public static synchronized Source getSource(ZipFile zip, ZipEntry entry,
-	                                            SourceFactory sourceFactory,
-	                                            File tmpDirectory,
-	                                            String tmpPrefix,
-			                                    String tmpSuffix,
-			                                    int bufferSize)
+	public static synchronized Source getSource(JHOVE2 jhove2, ZipFile zip,
+	                                            ZipEntry entry,
+	                                            SourceFactory sourceFactory)
 		throws IOException
 	{
 		Source source = null;
@@ -202,18 +165,8 @@ public class SourceFactoryUtil
 			source = new ZipDirectorySource(entry);
 		}
 		else {
-		    /* Try to recover file extension.  If not available, use the 
-		     * temporary suffix.
-		     */
-		    String ext = tmpSuffix;
-		    String name = entry.getName();
-		    int in = name.lastIndexOf('.');
-		    if (in > 0) {
-		        ext = name.substring(in);
-		    }
 	        InputStream stream = zip.getInputStream(entry);
-			source = new ZipFileSource(entry, stream, tmpDirectory, tmpPrefix,
-			                           ext, bufferSize);
+			source = new ZipFileSource(jhove2, entry, stream);
 	        stream.close();
 		}
 		source.setSourceAccessor(sourceFactory.createSourceAccessor(source));
@@ -225,27 +178,19 @@ public class SourceFactoryUtil
 	 * Make Source from list of formatted objects, which may be files,
 	 * directories. and URLS
 	 * 
-	 * @param names
-	 *            Object names, which may be files, directories, or URLs
-	 * @param tmpDirectory Temporary directory
-	 * @param tmpPrefix
-	 * 			  Prefix for any temp files created
-	 * @param tmpSuffix
-	 * 			  Suffix for any temp files created
-	 * @param bufferSize
-     *            Buffer size for reading URLS
+     * @param jhove2 JHOVE2 framework object
 	 * @param sourceFactory 
 	 * 			SourceFactory which configures accessors for this source
+     * @param name First object name, which may be a file, directory, or URL
+     * @param names
+     *            Additional object names, which may be files, directories, or URLs
 	 * @return Source
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 * @throws JHOVE2Exception
 	 */
-	public static synchronized Source getSource(SourceFactory sourceFactory,
-	                                            File tmpDirectory,
-	                                            String tmpPrefix,
-	                                            String tmpSuffix,
-	                                            int bufferSize,
+	public static synchronized Source getSource(JHOVE2 jhove2, 
+	                                            SourceFactory sourceFactory,
 	                                            String name, String...names)
 		throws FileNotFoundException, IOException, JHOVE2Exception
 	{
@@ -256,23 +201,15 @@ public class SourceFactoryUtil
                 list.add(names[i]);
             }
         }
-        return SourceFactoryUtil.getSource(list, sourceFactory, tmpDirectory,
-                                           tmpPrefix, tmpSuffix, bufferSize);
+        return SourceFactoryUtil.getSource(jhove2, list, sourceFactory);
 	}
 	   
     /**
      * Make Source from list of formatted objects, which may be files,
      * directories. and URLS
-     * 
+     * @param jhove2 JHOVE2 framework object
      * @param names
      *            Object names, which may be files, directories, or URLs
-     * @param tmpDirectory Temporary directory
-     * @param tmpPrefix
-     *            Prefix for any temp files created
-     * @param tmpSuffix
-     *            Suffix for any temp files created
-     * @param bufferSize
-     *            Buffer size for reading URLS
      * @param sourceFactory 
      *          SourceFactory which configures accessors for this source
      * @return Source
@@ -280,20 +217,15 @@ public class SourceFactoryUtil
      * @throws IOException
      * @throws JHOVE2Exception
      */
-    public static synchronized Source getSource(List<String> pathNames, 
-                                                SourceFactory sourceFactory,
-                                                File tmpDirectory,
-                                                String tmpPrefix,
-                                                String tmpSuffix,
-                                                int bufferSize)
+    public static synchronized Source getSource(JHOVE2 jhove2,
+                                                List<String> pathNames, 
+                                                SourceFactory sourceFactory)
         throws FileNotFoundException, IOException, JHOVE2Exception
     {
         Source source = null;       
         if (pathNames.size() == 1) {
             String name = pathNames.get(0);
-            source = SourceFactoryUtil.getSource(name, sourceFactory,
-                                                 tmpDirectory, tmpPrefix,
-                                                 tmpSuffix, bufferSize);        
+            source = SourceFactoryUtil.getSource(jhove2, name, sourceFactory);        
         }
         else {
             source = new FileSetSource();
@@ -302,9 +234,7 @@ public class SourceFactoryUtil
             while (iter.hasNext()) {
                 Source src = null;
                 String name = iter.next();
-                src = SourceFactoryUtil.getSource(name, sourceFactory,
-                                                  tmpDirectory, tmpPrefix,
-                                                  tmpSuffix, bufferSize);
+                src = SourceFactoryUtil.getSource(jhove2, name, sourceFactory);
                 src = ((FileSetSource)source).addChildSource(src);
             }
         }
@@ -312,11 +242,32 @@ public class SourceFactoryUtil
         return source;
     }
     
+    /** Create new ByteStreamSource
+     * @param jhove2 JHOVE2 framework object
+     * @param parent Parent source unit
+     * @param offset Starting byte offset byte strea,
+     * @param size   Size of byte stream
+     * @param name   Name, if known
+     * @param sourceFactory Source factory
+     * @return Byte stream source unit
+     * @throws IOException
+     * @throws JHOVE2Exception
+     */
+    public static synchronized ByteStreamSource getByteStreamSource(JHOVE2 jhove2,
+                                                    Source parent, long offset,
+                                                    long size, String name,
+                                                    SourceFactory sourceFactory)
+        throws IOException, JHOVE2Exception
+    {
+        ByteStreamSource source = new ByteStreamSource(jhove2, parent, offset,
+                                                       size, name, sourceFactory);
+        return source;
+    }    
 	/**
 	 * Create new ClumpSource
 	 * @param sourceFactory
 	 * 			SourceFactory which configures accessors for this source
-	 * @return ClumpSource
+	 * @return Clump source unt
 	 * @throws JHOVE2Exception 
 	 */
 	public static synchronized ClumpSource getClumpSource(SourceFactory sourceFactory) 
@@ -331,28 +282,11 @@ public class SourceFactoryUtil
 	 * Create new empty FileSetSource
 	 * @param sourceFactory
 	 * 			SourceFactory which configures accessors for this source
-	 * @return FileSetSource
+	 * @return FileSet source unit
 	 */
 	public static synchronized FileSetSource getFileSetSource(SourceFactory sourceFactory) {
 		FileSetSource source = new FileSetSource();
 		source.setSourceAccessor(sourceFactory.createSourceAccessor(source));
-		return source;
-	}
-	
-	public static synchronized ByteStreamSource getByteStreamSource(Source parent,
-	                                                                long offset,
-	                                                                long size,
-	                                                                SourceFactory sourceFactory,
-	                                                                File tmpDirectory,
-	                                                                String tmpPrefix,
-	                                                                String tmpSuffix,
-	                                                                int bufferSize)
-	    throws IOException, JHOVE2Exception
-	{
-		ByteStreamSource source = new ByteStreamSource(parent, offset, size,
-		                                               sourceFactory,
-		                                               tmpDirectory, tmpPrefix,
-		                                               tmpSuffix, bufferSize);
 		return source;
 	}
 }

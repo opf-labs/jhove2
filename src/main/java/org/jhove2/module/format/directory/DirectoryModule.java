@@ -122,8 +122,8 @@ public class DirectoryModule
 		throws EOFException, IOException, JHOVE2Exception
 	{
 		if (source instanceof DirectorySource) {
-			List<Source> children = ((DirectorySource) source)
-					.getChildSources();
+			List<Source> children =
+			    ((DirectorySource) source).getChildSources();
 			for (Source src : children) {
 			    Input inpt = src.getInput(jhove2);
 			    try {

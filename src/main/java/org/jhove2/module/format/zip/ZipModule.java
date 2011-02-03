@@ -49,7 +49,6 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.format.Format;
@@ -161,10 +160,9 @@ public class ZipModule
 	    /* Use the native Java Zip classes to retrieve the (possibly)
 	     * compressed entries as individual source units.
 	     */
-	    File file = input.getFile();
+	    File file = source.getFile();
 	    ZipFile zip = new ZipFile(file, ZipFile.OPEN_READ);
 	    if (zip != null) {
-	        Invocation inv = jhove2.getInvocation();
 	        try {
 	            /*
 	             * Zip entries are not necessarily in hierarchical order.
@@ -181,10 +179,7 @@ public class ZipModule
 	                ZipEntry entry = en.nextElement();
 	                if (entry.isDirectory()) {
 	                    Source src =
-	                    	factory.getSource(zip, entry, inv.getTempDirectoryFile(),
-	                    	                  inv.getTempPrefix(),
-	                    	                  inv.getTempSuffix(),
-	                                          inv.getBufferSize());
+	                    	factory.getSource(jhove2, zip, entry);
 	                    if (src != null) {
 	                        String key = entry.getName();
 	                        /* Remove trailing slash. */
@@ -243,11 +238,7 @@ public class ZipModule
 	                }
 	                else {
 	                    Source src =
-	                    	factory.getSource(zip, entry,
-	                    	                  inv.getTempDirectoryFile(),
-	                    	                  inv.getTempPrefix(),
-	                                          inv.getTempSuffix(),
-	                                          inv.getBufferSize());
+	                    	factory.getSource(jhove2, zip, entry);
 	                    if (src != null) {
 	                        Input inpt = src.getInput(jhove2);
 	                        try {

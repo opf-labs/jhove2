@@ -114,11 +114,11 @@ extends AbstractApplication
 
 	/**
 	 * Main entry point for the JHOVE2 command line application. Creates a
-         * {@linkplain org.jhove2.core.source.FileSetSource file set source unit}
-         * from the files specified on the command line. This file set is passed to
-         * the {@link JHOVE2} object for characterization; this initiates a search for
-         * all unitary and aggregate source units within the file set; these are characterized
-         * in turn.
+     * {@linkplain org.jhove2.core.source.FileSetSource file set source unit}
+     * from the files specified on the command line. This file set is passed to
+     * the {@link JHOVE2} object for characterization; this initiates a search
+     * for all unitary and aggregate source units within the file set; these
+     * are characterized in turn.
 	 * 
 	 * @param args Command line arguments
 	 */
@@ -127,22 +127,25 @@ extends AbstractApplication
 		PersistenceManager persistenceManager = null;
 		try {
 			SpringConfigInfo factory = new SpringConfigInfo();
-			// Create PersistenceManagerFactory; will be used by ApplicationModuleAccessor to
-			// manage persistence
+			/* Create PersistenceManagerFactory; will be used by ApplicationModuleAccessor to
+			 * manage persistence.
+			 */
 			PersistenceManagerUtil.createPersistenceManagerFactory(factory);
 			persistenceManager = PersistenceManagerUtil.getPersistenceManagerFactory().getInstance();
 			persistenceManager.initialize();
-			
-			/* Create and initialize the JHOVE2 command-line application. */
 
 			/* Create and initialize the JHOVE2 command-line application. */
-			JHOVE2CommandLine app = SpringConfigInfo.getReportable(JHOVE2CommandLine.class, 
-					"JHOVE2CommandLine");
-			// make sure there is a default displayer
+			JHOVE2CommandLine app =
+			    SpringConfigInfo.getReportable(JHOVE2CommandLine.class, 
+					                          "JHOVE2CommandLine");
+			/* Make sure there is a default displayer. */
 			Displayer displayer = app.getDisplayer();
 			if (displayer == null) {
-				Class defaultDisplayerClass = Class.forName(Displayer.DEFAULT_DISPLAYER_CLASS);
-				displayer = (Displayer)SpringConfigInfo.getReportable(defaultDisplayerClass, "Text");
+				Class defaultDisplayerClass =
+				    (Class) Class.forName(Displayer.DEFAULT_DISPLAYER_CLASS);
+				displayer =
+				    (Displayer)SpringConfigInfo.getReportable(defaultDisplayerClass,
+				                                             "Text");
 				displayer = app.setDisplayer(displayer);
 			}
 			app.getDisplayer().setConfigInfo(factory);
@@ -155,12 +158,11 @@ extends AbstractApplication
 			List<String> names = app.parse(args); 	
 			app = (JHOVE2CommandLine) app.getModuleAccessor().persistModule(app);
 			
-			
 			/* Create and initialize the JHOVE2 framework and register it with
 			 * the application.
 			 */		
 			JHOVE2 jhove2 = SpringConfigInfo.getReportable(JHOVE2.class,
-							"JHOVE2");
+							                              "JHOVE2");
 			Invocation inv = app.getInvocation();
 			jhove2.setInvocation(inv);
 			jhove2.setInstallation(app.getInstallation());
@@ -169,18 +171,13 @@ extends AbstractApplication
 			 * URLS specified on the command line, or a single File, Directory, or
 			 * URL if only one is specified.
 			 */
-			Source source =
-			    jhove2.getSourceFactory().getSource(names,
-					                                inv.getTempDirectoryFile(),                            
-					                                inv.getTempPrefix(), 
-					                                inv.getTempSuffix(), 
-					                                inv.getBufferSize());
+			Source source = jhove2.getSourceFactory().getSource(jhove2, names);
 			app = (JHOVE2CommandLine) source.addModule(app);
 			jhove2 = (JHOVE2) source.addModule(jhove2);
 			displayer = app.getDisplayer(); /* displayer might have been updated by parse method; */
 			displayer.setConfigInfo(factory);
 			displayer = (Displayer) source.addModule(displayer);
-			displayer = app.setDisplayer(displayer );	/* this will persist the updated Displayer linked to app */				 				
+			displayer = app.setDisplayer(displayer);	/* this will persist the updated Displayer linked to app */				 				
 			  
 			/* Characterize the FileSet source unit (and all subsidiary
 			 * source units that it encapsulates.
@@ -193,13 +190,11 @@ extends AbstractApplication
 	        finally {
 	            if (input != null) {
 	                input.close();
-	                input = null;
 	            }
 	        }			
 			jhove2 = (JHOVE2) jhove2.getModuleAccessor().endTimerInfo(jhove2);
 			
-			/* Display characterization information for the FileSet.
-			 */
+			/* Display characterization information for the FileSet. */
 			app.getDisplayer().display(source);
 		}
 		catch (Exception e) {

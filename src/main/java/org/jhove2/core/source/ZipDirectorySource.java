@@ -36,7 +36,6 @@
 
 package org.jhove2.core.source;
 
-import java.io.InputStream;
 import java.util.Date;
 import java.util.zip.ZipEntry;
 
@@ -52,7 +51,7 @@ import com.sleepycat.persist.model.Persistent;
 @Persistent
 public class ZipDirectorySource
     extends AbstractSource
-    implements AggregateSource, NamedSource
+    implements NamedSource
 {
 	/** Zip directory comment. */
 	protected String comment;
@@ -60,11 +59,11 @@ public class ZipDirectorySource
 	/** Zip directory last modified date. */
 	protected Date lastModified;
 
-	/** Zip directory name. */
-	protected String name;
-
 	/** Zip directory path. */
 	protected String path;
+
+    /** Zip directory source name. */
+    protected String sourceName;
 
 	protected ZipDirectorySource(){
 		super();
@@ -77,17 +76,19 @@ public class ZipDirectorySource
 	protected ZipDirectorySource(ZipEntry entry) {
 		super();
 
+		this.isAggregate = true;
 		this.path = entry.getName();
 		/* Directory name has a trailing slash (/). */
 		int in = this.path.lastIndexOf('/');
 		if (in == this.path.length() - 1) {
 			this.path = this.path.substring(0, in);
 		}
-		this.name = this.path;
-		in = this.name.lastIndexOf('/');
+		this.sourceName = this.path;
+		/*
+		int in = this.sourceName.lastIndexOf('/');
 		if (in > -1) {
 			this.name = this.name.substring(in + 1);
-		}
+		}*/
 		this.lastModified = new Date(entry.getTime());
 		this.comment = entry.getComment();
 	}
@@ -113,14 +114,14 @@ public class ZipDirectorySource
 	}
 
 	/**
-	 * Get Zip directory name.
+	 * Get Zip directory source name.
 	 * 
-	 * @return Zip directory name
+	 * @return Zip directory source name
 	 * @see org.jhove2.core.source.NamedSource#getSourceName()
 	 */
 	@Override
 	public String getSourceName() {
-		return this.name;
+		return this.sourceName;
 	}
 
 	/**
@@ -201,7 +202,7 @@ public class ZipDirectorySource
         result = prime * result + ((comment == null) ? 0 : comment.hashCode());
         result = prime * result
                 + ((lastModified == null) ? 0 : lastModified.hashCode());
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ((sourceName == null) ? 0 : sourceName.hashCode());
         result = prime * result + ((path == null) ? 0 : path.hashCode());
         return result;
     }

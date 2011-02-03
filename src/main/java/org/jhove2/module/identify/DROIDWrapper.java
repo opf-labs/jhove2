@@ -40,8 +40,10 @@ import static uk.gov.nationalarchives.droid.binFileReader.AbstractByteReader.new
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.io.Input;
 import org.jhove2.core.source.NamedSource;
 import org.jhove2.core.source.Source;
 
@@ -158,19 +160,22 @@ public class DROIDWrapper
     /**
      * identify files using DROID
      * @param source Source to be identified by DROID
+     * @param input  Source input
      * @return
      */
-    public IdentificationFile identify(Source source) {
+    public IdentificationFile identify(Source source, Input input) {
         IdentificationFile identificationFile = new IdentificationFile();
         identificationFile.setFilePath("-"); // necessary to force DROID to treat this as InputStream not file
+        InputStream stream = null;
         ByteReader byteReader = null;
         try {
-		  byteReader = newByteReader(identificationFile, source.getInputStream());
-          if (identificationFile.getClassification()!= JHOVE2IAnalysisController.FILE_CLASSIFICATION_ERROR){
-              if (source instanceof NamedSource) {
-                  identificationFile.setFilePath(((NamedSource) source).getSourceName());
-                  analysisControl.getSigFile().runFileIdentification(byteReader);
-              }
+            stream = source.getInputStream();
+            byteReader = newByteReader(identificationFile, stream);
+            if (identificationFile.getClassification()!= JHOVE2IAnalysisController.FILE_CLASSIFICATION_ERROR){
+                if (source instanceof NamedSource) {
+                    identificationFile.setFilePath(((NamedSource) source).getSourceName());
+                    analysisControl.getSigFile().runFileIdentification(byteReader);
+                }
             }
         }
 	    catch (FileNotFoundException e) {
@@ -180,8 +185,16 @@ public class DROIDWrapper
 	    	identificationFile.setIDStatus(JHOVE2IAnalysisController.FILE_CLASSIFICATION_NOTCLASSIFIED);
 		}
         finally{
-            if (byteReader != null)
+            if (byteReader != null) {
                 byteReader.close();
+            }
+            if (stream != null) {
+                try {
+                    stream.close();
+                }
+                catch (IOException e) { /* Do nothing if the close fails. */
+                }
+            }
         }
         return identificationFile;
     }

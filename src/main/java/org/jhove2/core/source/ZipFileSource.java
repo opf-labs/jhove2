@@ -36,8 +36,6 @@
 
 package org.jhove2.core.source;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
@@ -45,12 +43,9 @@ import java.util.zip.ZipEntry;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.Digest;
-import org.jhove2.core.io.Input;
-import org.jhove2.core.io.InputFactory;
-import org.jhove2.core.io.Input.Type;
+import org.jhove2.core.JHOVE2;
 import org.jhove2.module.digest.AbstractArrayDigester;
 import org.jhove2.module.digest.CRC32Digester;
-
 
 import com.sleepycat.persist.model.Persistent;
 
@@ -62,7 +57,7 @@ import com.sleepycat.persist.model.Persistent;
 @Persistent
 public class ZipFileSource
     extends AbstractSource
-    implements NamedSource
+    implements MensurableSource, NamedSource
 {
 	/** CRC message digest value recorded in the ZipEntry. */
 	protected long crc;
@@ -71,18 +66,28 @@ public class ZipFileSource
 
 	/** Zip file comment. */
 	protected String comment;
+	
+    /** Ending offset, in bytes, relative to the parent source.  If there is
+     * no parent, the ending offset is the size.
+     */
+    protected long endingOffset;
 
 	/** Zip file last modified date. */
 	protected Date lastModified;
-
-	/** Zip file name. */
-	protected String name;
 
 	/** Zip file path. */
 	protected String path;
 
 	/** Zip file size, in bytes. */
 	protected long size;
+
+    /** Zip file source name. */
+    protected String sourceName;
+
+    /** Starting offset, in bytes, relative to the parent source.  If there is
+     * no parent, the starting offset is 0.
+     */
+    protected long startingOffset;
 
 	protected ZipFileSource(){
 		super();
@@ -99,18 +104,16 @@ public class ZipFileSource
 	 *            Zip file entry
 	 * @throws IOException
 	 */
-	protected ZipFileSource(ZipEntry entry, InputStream stream,
-	                        File tmpDirectory, String tmpPrefix,
-	                        String tmpSuffix, int bufferSize)
+	protected ZipFileSource(JHOVE2 jhove2, ZipEntry entry, InputStream stream)
 		throws IOException
 	{
-		super(stream, tmpDirectory, tmpPrefix, tmpSuffix, bufferSize);
+		super(jhove2, stream, entry.getName());
 		this.path = entry.getName();
-		this.name = this.path;
-		int in = this.name.lastIndexOf('/');
+		this.sourceName = this.path;
+		/*int in = this.sourceName.lastIndexOf('/');
 		if (in > -1) {
-			this.name = this.name.substring(in + 1);
-		}
+			this.sourceName = this.sourceName.substring(in + 1);
+		}*/
 		this.size = entry.getSize();
 		this.lastModified = new Date(entry.getTime());
 		this.crc = entry.getCrc();
@@ -127,7 +130,15 @@ public class ZipFileSource
 	public String getComment() {
 		return this.comment;
 	}
-
+	   
+    /**
+     * CRC value recorded in ZipEntry
+     * @return CRC value
+     */
+    public long getCrc() {
+        return crc;
+    }
+    
 	/**
 	 * Get Zip file CRC-32 message digest.
 	 * 
@@ -138,23 +149,16 @@ public class ZipFileSource
 		return this.crc32;
 	}
 
-	/**
-	 * Get {@link org.jhove2.core.io.Input} for the Zip file.
-	 * 
-	 * @param bufferSize
-	 *            Input buffer size
-	 * @param bufferType
-	 *            Input buffer type
-	 * @return Input for the source unit
-	 * @throws FileNotFoundException
-	 * @throws IOException
-	 */
-	public Input getInput(int bufferSize, Type bufferType)
-			throws FileNotFoundException, IOException {
-		return InputFactory.getInput(this.file, this.isTemp, this.deleteTempFiles,
-		                             bufferSize, bufferType);
-	}
-
+    /** Get ending offset of the source unit, in bytes, relative to the
+     * parent source.  If there is no parent, the ending offset is the
+     * size.
+     * @return Starting offset of the source unit
+     */
+    @Override
+    public long getEndingOffset() {
+        return this.endingOffset;
+    }
+   
 	/**
 	 * Get Zip file last modified date.
 	 * 
@@ -163,17 +167,6 @@ public class ZipFileSource
 	@ReportableProperty(order = 3, value = "Zip file last modified date.")
 	public Date getLastModified() {
 		return this.lastModified;
-	}
-
-	/**
-	 * Get Zip file name.
-	 * 
-	 * @return Zip file name
-	 * @see org.jhove2.core.source.NamedSource#getSourceName()
-	 */
-	@Override
-	public String getSourceName() {
-		return this.name;
 	}
 
 	/**
@@ -195,14 +188,27 @@ public class ZipFileSource
 	public long getSize() {
 		return this.size;
 	}
-	/**
-	 * CRC value recorded in ZipEntry
-	 * @return CRC value
-	 */
-	public long getCrc() {
-		return crc;
-	}
-	
+
+    /**
+     * Get Zip file name.
+     * 
+     * @return Zip file name
+     * @see org.jhove2.core.source.NamedSource#getSourceName()
+     */
+    @Override
+    public String getSourceName() {
+        return this.sourceName;
+    }
+
+    /** Get starting offset of the source unit, in bytes, relative to the
+     * parent source.  If there is no parent, the starting offset is 0.
+     * @return Starting offset of the source unit
+     */
+    @Override
+    public long getStartingOffset() {
+        return this.startingOffset;
+    }
+ 
 	/** Equality comparison.
 	 * @oparam obj The object being compared
 	 * @return True if the object is equal
@@ -281,7 +287,7 @@ public class ZipFileSource
         result = prime * result + ((crc32 == null) ? 0 : crc32.hashCode());
         result = prime * result
                 + ((lastModified == null) ? 0 : lastModified.hashCode());
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ((sourceName == null) ? 0 : sourceName.hashCode());
         result = prime * result + ((path == null) ? 0 : path.hashCode());
         result = prime * result + (int) (size ^ (size >>> 32));
         return result;
