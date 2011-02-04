@@ -8,10 +8,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.io.Input.Type;
 import org.jhove2.core.source.URLSource;
 import org.jhove2.persist.inmemory.InMemorySourceFactory;
 import org.junit.After;
@@ -40,20 +38,15 @@ public class InputFactoryTest {
 			JHOVE2 jhove2 = new JHOVE2();
 			InMemorySourceFactory sourceFactory = new InMemorySourceFactory();
 			jhove2.setSourceFactory(sourceFactory);
-			Invocation config = jhove2.getInvocation();
 			URLSource yahooURL = (URLSource)jhove2.getSourceFactory().getSource
-											  (config.getTempPrefix(), 
-					                           config.getTempSuffix(),
-					                           config.getBufferSize(),
-					                           yahoo);
-			yahooURL.setDeleteTempFiles(true);
-			Input input = yahooURL.getInput(8192, Type.Direct);
-			// this closes the channel and the stream associated with any temp
-			// file created
-			input.close();
-			File file = input.getFile();
+											  (jhove2, yahoo);
+			Input input = yahooURL.getInput(jhove2);
+			File file = yahooURL.getFile();
 			assertTrue("File doesn't exist", file.exists());
+            // this closes the channel and the stream associated with any temp
+            // file created
 			// this invokes file.delete() on any temp file created
+            input.close();
 			yahooURL.close();
 			file = yahooURL.getFile();
 			assertTrue("File still exists - should be deleted!", !file.exists());

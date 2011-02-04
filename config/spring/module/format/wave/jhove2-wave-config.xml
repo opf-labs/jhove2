@@ -207,6 +207,7 @@
 
 	<!-- Broadcast Wave format link chunk bean -->
 	<bean id="LinkChunk" class="org.jhove2.module.format.wave.bwf.LinkChunk" scope="prototype">
+	    <constructor-arg ref="XmlFormat"/>
 	    <property name="identifier" value="link"/>
 	</bean>
 

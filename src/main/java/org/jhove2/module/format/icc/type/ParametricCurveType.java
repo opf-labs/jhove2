@@ -45,6 +45,7 @@ import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
+import org.jhove2.core.source.MensurableSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.Parser;
 import org.jhove2.module.format.Validator.Validity;
@@ -132,7 +133,7 @@ public class ParametricCurveType
         long consumed  = 0L;
         int  numErrors = 0;
         this.isValid   = Validity.True;
-        long start     = source.getStartingOffset();
+        long start     = ((MensurableSource) source).getStartingOffset();
   
         /* Tag signature. */
         for (int i=0; i<4; i++) {

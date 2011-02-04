@@ -41,6 +41,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 
 
@@ -54,26 +55,29 @@ import com.sleepycat.persist.model.Persistent;
 @Persistent
 public class DirectorySource
     extends AbstractSource
-    implements AggregateSource,	FileSystemSource
+    implements FileSystemSource
 {
 	/** Directory existence. */
 	protected boolean isExtant;
 
 	/** Directory readability. */
 	protected boolean isReadable;
-
-	/** Directory name. */
-	protected String directoryName;
-    
+  
 	/** Directory path. */
 	protected String path;
 
+    /** Directory source name. */
+    protected String sourceName;
+  
 	protected DirectorySource(){
 		super();
+		this.isAggregate = true;
 	}
+	
 	/**
 	 * Instantiate a new <code>DirectorySource</code>.
 	 * 
+     * @param jhove2 JHOVE2 framework object
 	 * @param pathName
 	 *            Directory path name
 	 * @param sourceFactory SourceFactory which configures accessors for this source
@@ -82,15 +86,17 @@ public class DirectorySource
 	 * @throws JHOVE2Exception 
 	 * @throws JHOVE2Exception 
 	 */
-	protected DirectorySource(String pathName, SourceFactory sourceFactory)
+	protected DirectorySource(JHOVE2 jhove2, String pathName,
+	                          SourceFactory sourceFactory)
 	    throws FileNotFoundException, IOException, JHOVE2Exception
 	{
-		this(new File(pathName), sourceFactory);
+		this(jhove2, new File(pathName), sourceFactory);
 	}
 
 	/**
 	 * Instantiate a new <code>DirectorySource</code>.
 	 * 
+     * @param jhove2 JHOVE2 framework object
 	 * @param file
 	 *            Java {@link java.io.File} representing a directory
 	 * @param sourceFactory  SourceFactory which configures accessors for this source
@@ -98,12 +104,12 @@ public class DirectorySource
 	 * @throws FileNotFoundException
 	 * @throws JHOVE2Exception 
 	 */
-	protected DirectorySource(File file, SourceFactory sourceFactory)
+	protected DirectorySource(JHOVE2 jhove2, File file, SourceFactory sourceFactory)
 	    throws FileNotFoundException, IOException, JHOVE2Exception
 	{
-		super(file);
+		super(jhove2, file);
 		this.setSourceAccessor(sourceFactory.createSourceAccessor(this));
-		this.directoryName = file.getName();
+		this.sourceName = file.getName();
 		try {
 			this.path = file.getCanonicalPath();
 		} catch (IOException e) {
@@ -114,23 +120,13 @@ public class DirectorySource
 			this.isReadable = file.canRead();
 			File[] list = file.listFiles();
 			for (int i = 0; i < list.length; i++) {
-				Source source = sourceFactory.getSource(list[i]);
+				Source source = sourceFactory.getSource(jhove2, list[i]);
 				source=this.addChildSource(source);
 			} 
 		}
+		this.isAggregate = true;
 	}
 
-	/**
-	 * Get directory name.
-	 * 
-	 * @return Directory name
-	 * @see org.jhove2.core.source.NamedSource#getSourceName()
-	 */
-	@Override
-	public String getSourceName() {
-		return this.directoryName;
-	}
-    
 	/**
 	 * Get directory path.
 	 * 
@@ -141,6 +137,17 @@ public class DirectorySource
 		return this.path;
 	}
 
+    /**
+     * Get directory source name.
+     * 
+     * @return Directory source name
+     * @see org.jhove2.core.source.NamedSource#getSourceName()
+     */
+    @Override
+    public String getSourceName() {
+        return this.sourceName;
+    }
+    
 	/**
 	 * Get directory existence.
 	 * 

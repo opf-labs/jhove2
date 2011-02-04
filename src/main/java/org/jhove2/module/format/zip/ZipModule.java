@@ -49,7 +49,6 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.format.Format;
@@ -161,10 +160,10 @@ public class ZipModule
 	    /* Use the native Java Zip classes to retrieve the (possibly)
 	     * compressed entries as individual source units.
 	     */
-	    File file = input.getFile();
+	    File file = source.getFile();
 	    ZipFile zip = new ZipFile(file, ZipFile.OPEN_READ);
 	    if (zip != null) {
-	        Invocation config = jhove2.getInvocation();
+	        source.setIsAggregate(true);
 	        try {
 	            /*
 	             * Zip entries are not necessarily in hierarchical order.
@@ -174,17 +173,14 @@ public class ZipModule
 	            Map<String, Source> map = new TreeMap<String, Source>();
 	            Enumeration<? extends ZipEntry> en = zip.entries();
 	            SourceFactory factory = jhove2.getSourceFactory();
-	    		if (factory==null){
+	    		if (factory == null){
 	    			throw new JHOVE2Exception("JHOVE2 SourceFactory is null");
 	    		}
 	            while (en.hasMoreElements()) {
 	                ZipEntry entry = en.nextElement();
 	                if (entry.isDirectory()) {
 	                    Source src =
-	                    	factory.getSource(config.getTempPrefix(),
-	                                                config.getTempSuffix(),
-	                                                config.getBufferSize(),
-	                                                zip, entry);
+	                    	factory.getSource(jhove2, zip, entry);
 	                    if (src != null) {
 	                        String key = entry.getName();
 	                        /* Remove trailing slash. */
@@ -215,7 +211,7 @@ public class ZipModule
 	                    if (src != null) {
 	                        Input inpt = src.getInput(jhove2);
 	                        try {
-	                            src=jhove2.characterize(src, inpt);
+	                            src = jhove2.characterize(src, inpt);
 	                        }
 	                        finally {
 	                            if (inpt != null) {
@@ -232,25 +228,22 @@ public class ZipModule
 	                            String key = name.substring(0, in);
 	                            Source parent = map.get(key);
 	                            if (parent != null) {
-	                            	src=parent.addChildSource(src);
+	                            	src = parent.addChildSource(src);
 	                            }
 	                        }
 	                        else {
 	                            /* Directory is a child of the Zip file. */
-	                        	src=source.addChildSource(src);
+	                        	src = source.addChildSource(src);
 	                        }
 	                    }
 	                }
 	                else {
 	                    Source src =
-	                    	factory.getSource(config.getTempPrefix(),
-	                                                config.getTempSuffix(),
-	                                                config.getBufferSize(),
-	                                                zip, entry);
+	                    	factory.getSource(jhove2, zip, entry);
 	                    if (src != null) {
 	                        Input inpt = src.getInput(jhove2);
 	                        try {
-	                            src=jhove2.characterize(src, inpt);
+	                            src = jhove2.characterize(src, inpt);
 	                        }
 	                        finally {
 	                            if (inpt != null) {
@@ -261,7 +254,7 @@ public class ZipModule
 	                        int in = name.lastIndexOf('/');
 	                        if (in < 0) {
 	                            /* File is a child of the Zip file. */
-	                        	src=source.addChildSource(src);
+	                        	src = source.addChildSource(src);
 	                        } else {
 	                            /*
 	                             * File is a child of a Zip file entry that can
@@ -270,7 +263,7 @@ public class ZipModule
 	                            String key = name.substring(0, in);
 	                            Source parent = map.get(key);
 	                            if (parent != null) {
-	                            	src=parent.addChildSource(src);
+	                            	src = parent.addChildSource(src);
 	                            }
 	                        }
 	                    }

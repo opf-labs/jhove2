@@ -42,6 +42,7 @@ import java.io.IOException;
 import java.util.Date;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 
 
@@ -55,8 +56,13 @@ import com.sleepycat.persist.model.Persistent;
 @Persistent
 public class FileSource
 	extends AbstractSource
-	implements FileSystemSource
+	implements MensurableSource, FileSystemSource  
 {
+    /** Ending offset, in bytes, relative to the parent source.  If there is
+     * no parent, the ending offset is the size.
+     */
+    protected long endingOffset;
+ 
 	/** File existence. */
 	protected boolean isExtant;
 
@@ -72,18 +78,24 @@ public class FileSource
 	/** File last modified date. */
 	protected Date lastModified;
 
-	/** File name. */
-	protected String fileName;
-
 	/** File path name. */
 	protected String path;
 
 	/** File size, in bytes. */
 	protected long size;
+	   
+    /** File source name. */
+    protected String sourceName;
 
+    /** Starting offset, in bytes, relative to the parent source.  If there
+     * is no parent, the starting offset is 0.
+     */
+    protected long startingOffset;
+    
 	/**
 	 * Instantiate a new <code>FileSource</code>.
 	 * 
+     * @param jhove2 JHOVE2 framework object
 	 * @param pathName
 	 *            File path name
 	 * @throws FileNotFoundException
@@ -92,12 +104,11 @@ public class FileSource
 	 *             I/O exception instantiating source
 	 * @throws JHOVE2Exception 
 	 */
-	protected FileSource(String pathName)
+	protected FileSource(JHOVE2 jhove2, String pathName)
 	    throws FileNotFoundException, IOException, JHOVE2Exception
 	{
-		this(new File(pathName));
+		this(jhove2, new File(pathName));
 	}
-
 	
 	@SuppressWarnings("unused")
 	private FileSource(){
@@ -106,18 +117,19 @@ public class FileSource
 	/**
 	 * Instantiate a new <code>FileSource</code>.
 	 * 
+     * @param jhove2 JHOVE2 framework object
 	 * @param file
 	 *            Java {@link java.io.File}
 	 * @throws IOException
 	 * @throws FileNotFoundException
 	 * @throws JHOVE2Exception 
 	 */
-	protected FileSource(File file)
+	protected FileSource(JHOVE2 jhove2, File file)
 	    throws FileNotFoundException, IOException, JHOVE2Exception
 	{
-		super(file);
+		super(jhove2, file);
 
-		this.fileName = file.getName();
+		this.sourceName = file.getName();
 		try {
 			this.path = file.getCanonicalPath();
 		} catch (IOException e) {
@@ -136,33 +148,26 @@ public class FileSource
 			this.isHidden = false;
 			this.isSpecial = false;
 		}
+		this.startingOffset = 0L;
+		this.endingOffset = this.size;
 	}
 
-	/**
-	 * Get Java {@link java.io.File}.
-	 * 
-	 * @return Java {@link java.io.File}
-	 */
-	public File getFile() {
-		return this.file;
-	}
-
-	/** Get file name.
-	 * @return File name
-     * @see org.jhove2.core.source.NamedSource#getSourceName()
-	 */
+    /** Get ending offset of the source unit, in bytes, relative to the
+     * parent source.  If there is no parent, the ending offset is the
+     * size.
+     * @return Starting offset of the source unit
+     */
     @Override
-    public String getSourceName()
-    {
-        return this.fileName;
+    public long getEndingOffset() {
+        return this.endingOffset;
     }
- 
+    
     /**
      * Get file last modified date.
      * 
      * @return File last modified date
      */
-    @ReportableProperty(order = 3, value = "File last modified date.")
+    @ReportableProperty(order = 2, value = "File last modified date.")
     public Date getLastModified() {
         return this.lastModified;
     }
@@ -177,16 +182,33 @@ public class FileSource
 		return this.path;
 	}
 
-	/**
-	 * Get file size, in bytes.
-	 * 
-	 * @return File size, in bytes
-	 */
-	@ReportableProperty(order = 2, value = "File size, in bytes.")
-	public long getSize() {
-		return this.size;
-	}
+    /** Get size, in bytes.
+     * @return Size
+     */
+    @Override
+    public long getSize() {
+        return this.size;
+    }
 
+    /** Get file source name.
+     * @return File source name
+     * @see org.jhove2.core.source.NamedSource#getSourceName()
+     */
+    @Override
+    public String getSourceName()
+    {
+        return this.sourceName;
+    }
+
+    /** Get starting offset of the source unit, in bytes, relative to the
+     * parent source.  If there is no parent, the starting offset is 0.
+     * @return Starting offset of the source unit
+     */
+    @Override
+    public long getStartingOffset() {
+        return this.startingOffset;
+    }
+    
     /**
      * Get file existence.
      * 
@@ -202,7 +224,7 @@ public class FileSource
      * 
      * @return True if file is hidden
      */
-    @ReportableProperty(order = 4, value = "File hiddeness: True if the file is "
+    @ReportableProperty(order = 3, value = "File hiddeness: True if the file is "
             + "hidden")
     public boolean isHidden() {
         return this.isHidden;
@@ -223,7 +245,7 @@ public class FileSource
 	 * 
 	 * @return True if file is special
 	 */
-	@ReportableProperty(order = 5, value = "File specialness: true if the file is "
+	@ReportableProperty(order = 4, value = "File specialness: true if the file is "
 			+ "special.")
 	public boolean isSpecial() {
 		return this.isSpecial;

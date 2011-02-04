@@ -40,13 +40,17 @@ import com.sleepycat.persist.model.*;
  * Clump source unit. A clump is an aggregation of file source units that
  * collectively form an identifiable source unit.
  *
- * Although a clump is obviously a kind of aggregate source unit, <tt>ClumpSource</tt>
- * does not implement {@link AggregateSource}. TODO: why not?
+ * Note that a ClumpSource is not considered to be an aggregate source, even
+ * though it explicitly has related children.  If it were marked as an
+ * aggregate it would be passed to the Aggrefier and re-identified as a Clump,
+ * triggering an infinite recursion.
  * 
  * @author mstrong, slabrams
  */
 @Persistent
-public class ClumpSource extends AbstractSource {
+public class ClumpSource
+    extends AbstractSource
+{
 	/**
 	 * Instantiate a new <code>ClumpSource</code>.
 	 */

@@ -36,13 +36,11 @@
 
 package org.jhove2.core.source;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 
-import org.jhove2.core.io.Input;
-import org.jhove2.core.io.InputFactory;
-import org.jhove2.core.io.Input.Type;
+import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.JHOVE2;
 
 import com.sleepycat.persist.model.Persistent;
 
@@ -55,73 +53,108 @@ import com.sleepycat.persist.model.Persistent;
 @Persistent
 public class URLSource
     extends AbstractSource
-    implements NamedSource
+    implements MensurableSource, NamedSource
 {
-    /** URL name. */
-    protected String name;
+    /** Ending offset, in bytes, relative to the
+     * parent source.  If there is no parent, the ending offset is the
+     * size.
+     */
+    protected long endingOffset;
     
-	/** URL backing the source unit. */
-	protected URL url;
+    /** URL source name. */
+    protected String sourceName;
+
+    /** File size, in bytes. */
+    protected long size;
+ 
+    /** Starting offset, in bytes, relative to the
+     * parent source.  If there is no parent, the ending offset is the
+     * size.
+     */
+    protected long startingOffset;
+    
+    /** URL. */
+    protected String url;
 
 	protected URLSource(){
 		super();
 	}
 	/**
 	 * Instantiate a new <code>URLSource</code>.
-	 * 
-     * @param String temporary file prefix
-     * @param String temporary file suffix
-     * @param int buffer size 
-	 * @param url
-	 *            URL
+	 * @param jhove2 JHOVE2 framework object
+     * @param url    Source URL
 	 * @throws IOException
 	 */
-
-	protected URLSource(String tmpPrefix, String tmpSuffix,
-			int bufferSize, URL url) throws IOException {
-		super(tmpPrefix, tmpSuffix, bufferSize, url.openStream());
-		
-		this.name = url.toString();
-		this.url  = url;
+	protected URLSource(JHOVE2 jhove2, URL url)
+	    throws IOException
+	{
+		super(jhove2, url.openStream(), trimPath(url.getPath()));
+		this.url = url.toString();
+		this.sourceName = url.getPath();
+		int in = sourceName.lastIndexOf("/");
+		if (in > -1) {
+		    this.sourceName = this.sourceName.substring(in+1);
+		}
+        this.size = this.file.length();
+        this.startingOffset = 0L;
+        this.endingOffset   = this.size;
 	}
 
-	/**
-	 * Get {@link org.jhove2.core.io.Input} for the source unit.
-	 * 
-	 * @param bufferSize
-	 *            Input buffer size
-	 * @param bufferType
-	 *            Input buffer type
-	 * @return Input
-	 * @throws FileNotFoundException
-	 *             File not found
-	 * @throws IOException
-	 *             I/O exception instantiating input
-	 * @see org.jhove2.core.source.Source#getInput(int,
-	 *      org.jhove2.core.io.Input.Type)
+	/** Get the trailing part of the URL path.
+	 * @param path URL path
+	 * @return Trailing part of the URL path
 	 */
-	@Override
-	public Input getInput(int bufferSize, Type bufferType)
-			throws FileNotFoundException, IOException {
-		return InputFactory.getInput(this.file, bufferSize, bufferType);
-	}
+    private static synchronized String trimPath(String path) {
+        int in = path.lastIndexOf("/");
+        if (in > -1) {
+            path = path.substring(in+1);
+        }
+        return path;
+    }
+    
+    /** Get ending offset of the source unit, in bytes, relative to the
+     * parent source.  If there is no parent, the ending offset is the
+     * size.
+     * @return Starting offset of the source unit
+     */
+    @Override
+    public long getEndingOffset() {
+        return this.endingOffset;
+    }
+    
+    /** Get size, in bytes.
+     * @return Size
+     */
+    @Override
+    public long getSize() {
+        return this.size;
+    }
 
+    /** Get starting offset of the source unit, in bytes, relative to the
+     * parent source.  If there is no parent, the starting offset is 0.
+     * @return Starting offset of the source unit
+     */
+    @Override
+    public long getStartingOffset() {
+        return this.startingOffset;
+    }
+    
 	/**
-	 * Get URL name.
+	 * Get URL source name.
 	 * 
-	 * @return URL name
+	 * @return URL source name
 	 */
 	@Override
 	public String getSourceName() {
-		return this.name;
+		return this.sourceName;
 	}
 	
 	/** Get URL.
-	 * 
 	 * @return URL
 	 */
-	public URL getURL(){
-		return this.url;
+	@ReportableProperty(order=1, value="URL")
+	public String getURL() {
+	    return this.url;
 	}
 	
 	/** Compare the URL.
@@ -129,7 +162,7 @@ public class URLSource
 	 * @see org.jhove2.core.source.AbstractSource#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals(Object obj){
+	public boolean equals(Object obj) {
 		if (obj == null){
 			return false;
 		}
@@ -139,16 +172,7 @@ public class URLSource
 		if (!(obj instanceof URLSource)){
 			return false;
 		}
-		URLSource uObj = (URLSource)obj;
-		if (this.getURL()==null){
-			if (uObj.getURL()!= null){
-				return false;
-			}
-		}
-		else if (uObj.getURL()==null){
-			return false;
-		}
-		boolean equals = this.name.equalsIgnoreCase(uObj.getSourceName());
+		boolean equals = this.sourceName.equalsIgnoreCase(((NamedSource)obj).getSourceName());
 		if (!equals){
 			return false;
 		}
@@ -163,8 +187,7 @@ public class URLSource
     {
         final int prime = 31;
         int result = super.hashCode();
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + ((url == null) ? 0 : url.hashCode());
+        result = prime * result + ((sourceName == null) ? 0 : sourceName.hashCode());
         return result;
     }
     
@@ -185,24 +208,13 @@ public class URLSource
 			int compareSource = this.getReportableIdentifier().
 				compareTo(source.getReportableIdentifier());
 			return compareSource;
+		}		
+		int stCompare = this.sourceName.compareToIgnoreCase(((NamedSource)source).getSourceName());
+		if (stCompare < 0){
+		    return -1;
 		}
-		URLSource uObj = (URLSource)source;
-		if (this.getURL()==null){
-			if (uObj.getURL()!= null){
-				return -1;
-			}
-		}
-		else if (uObj.getURL()==null){
-			return 1;
-		}
-		else {			
-			int stCompare = this.name.compareToIgnoreCase(uObj.getSourceName());
-			if (stCompare < 0){
-				return -1;
-			}
-			else if (stCompare > 0){
-				return 1;
-			}
+		else if (stCompare > 0){
+		    return 1;
 		}
 		return super.compareTo(source);
 	}

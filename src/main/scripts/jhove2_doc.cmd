@@ -16,6 +16,6 @@ setlocal enableextensions
 
 call env
 
-%JAVA% -cp %CP% org.jhove2.app.util.JHOVE2Doc %*
+%JAVA% -cp "%CP%" org.jhove2.app.util.JHOVE2Doc %*
 
 

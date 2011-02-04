@@ -67,8 +67,10 @@ public class XMPChunk
         long consumed = super.parse(jhove2, source, input);
         
         /* The chunk contents are in XML; invoke the XML module. */
-        ByteStreamSource child = jhove2.getSourceFactory().getByteStreamSource(
-            jhove2, source, input.getPosition(), this.size);
+        ByteStreamSource child =
+            jhove2.getSourceFactory().getByteStreamSource(jhove2, source,
+                                                          input.getPosition(),
+                                                          this.size, ".xml");
         I8R xml = xmlFormat.getIdentifier();
         FormatIdentification id = new FormatIdentification(xml, Confidence.PositiveGeneric);
         child.addPresumptiveFormat(id);

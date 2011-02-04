@@ -47,12 +47,12 @@ import com.sleepycat.persist.model.Persistent;
 @Persistent
 public class FileSetSource
     extends AbstractSource
-    implements AggregateSource
 {
 	/**
 	 * Instantiate a new <code>FileSetSource</code>.
 	 */
 	protected FileSetSource() {
 		super();
+		this.isAggregate = true;
 	}
 }

@@ -47,6 +47,8 @@ import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
+import org.jhove2.core.Invocation;
+import org.jhove2.core.JHOVE2;
 
 /**
  * Abstract JHOVE2 inputter.
@@ -73,6 +75,9 @@ public abstract class AbstractInput
 
 	/** File underlying the inputable. */
 	protected File file;
+	
+	/** Temporary file deletion status: true if delete on close. */
+	protected boolean deleteOnClose;
 
 	/** InputStream underlying the inputable. */
 	protected InputStream stream;
@@ -86,33 +91,40 @@ public abstract class AbstractInput
 	 */
 	protected long inputablePosition;
 
+	/** Temporary backing file status: true if temporary. */
+	protected boolean isTemp;
+	
 	/** Size, in bytes. */
-	protected long fileSize;
+	//protected long fileSize;
 
 	/** Buffer size, in bytes. */
 	protected int maxBufferSize;
 
 	/**
 	 * Instantiate a new, big-endian <code>AbstractInput</code>.
-	 * 
+	 * @param jhove2 JHOVE2 framework object
 	 * @param file
 	 *            Java {@link java.io.File} underlying the inputable
+     * @param isTemp
+     *            Temporary file status: true if a temporary file
 	 * @throws FileNotFoundException
 	 *             File not found
 	 * @throws IOException
 	 *             I/O exception instantiating input
 	 */
-	public AbstractInput(File file, int maxBufferSize)
+	public AbstractInput(JHOVE2 jhove2, File file, boolean isTemp)
 	    throws FileNotFoundException, IOException
 	{
-		this(file, maxBufferSize, ByteOrder.BIG_ENDIAN);
+		this(jhove2, file, isTemp, ByteOrder.BIG_ENDIAN);
 	}
 
 	/**
 	 * Instantiate a new <code>AbstractInput</code>.
-	 * 
+	 * @param jhove2 JHOVE2 framework object
 	 * @param file
 	 *            Java {@link java.io.File} underlying the inputable
+	 * @param isTemp
+	 *            Temporary file status: true if temporary
 	 * @param order
 	 *            Byte order
 	 * @throws FileNotFoundException
@@ -120,16 +132,20 @@ public abstract class AbstractInput
 	 * @throws IOException
 	 *             I/O exception instantiating input
 	 */
-	public AbstractInput(File file, int maxBufferSize, ByteOrder order)
+	public AbstractInput(JHOVE2 jhove2, File file, boolean isTemp,
+	                     ByteOrder order)
 		throws FileNotFoundException, IOException
 	{
+        this.file      = file;
+	    this.isTemp    = isTemp;
+        this.byteOrder = order;   
+        Invocation inv = jhove2.getInvocation();
+        this.maxBufferSize = inv.getBufferSize();
+	    this.deleteOnClose = inv.getDeleteTempFiles();
 	    if (!file.isDirectory()) {
-	        this.file = file;
-	        this.byteOrder = order;   
-	        this.maxBufferSize = maxBufferSize;
 	        this.stream = new BufferedInputStream(new FileInputStream(file),
 	                                              this.maxBufferSize);
-	        this.fileSize = file.length();
+	        //this.fileSize = file.length();
 	        this.inputablePosition = 0L;
 
 	        RandomAccessFile raf = new RandomAccessFile(file, "r");
@@ -146,19 +162,32 @@ public abstract class AbstractInput
 	public void close()
 	    throws IOException
 	{
+	    this.buffer = null;
 	    if (this.stream != null) {
 	        this.stream.close();
+	        this.stream = null;
 	    }
 	    if (this.channel != null) {
 	        this.channel.close();
+	        this.channel = null;
 	    }
+	    if (this.file != null) {
+	        if (this.isTemp && this.deleteOnClose) {
+	            this.file.delete();
+	            this.file = null;
+	        }
+        }
 	}
-
+  
 	/**
-	 * Get the {@link java.nio.ByteBuffer} underlying the inputable.
+	 * Get the {@link java.nio.ByteBuffer} underlying the Input.  If the
+     * buffer position is locally manipulated, the resetBuffer() method must
+     * be invoked prior to reading the Input.
+     * @see org.jhove2.core.io.Input#resetBuffer()
 	 * 
-	 * @return Buffer underlying the inputable
+	 * @return Buffer underlying the Input
 	 * @see org.jhove2.core.io.Input#getBuffer()
+	 * @see org.jhove2.core.io.Input#resetBuffer()
 	 */
 	@Override
 	public ByteBuffer getBuffer() {
@@ -180,28 +209,6 @@ public abstract class AbstractInput
 	@Override
 	public Type getBufferType() {
 	    return this.bufferType;
-	}
-
-	/**
-	 * Get {@link java.io.File} backing the input.
-	 * 
-	 * @return File backing the input
-	 * @see org.jhove2.core.io.Input#getFile()
-	 */
-	@Override
-	public File getFile() {
-		return this.file;
-	}
-
-	/**
-	 * Get {@link java.io.InputStream} backing the input.
-	 * 
-	 * @return Input stream backing the input
-	 * @see org.jhove2.core.io.Input#getInputStream()
-	 */
-	@Override
-	public InputStream getInputStream() {
-		return this.stream;
 	}
 
 	/**
@@ -302,16 +309,6 @@ public abstract class AbstractInput
 		return this.inputablePosition;
 	}
 
-	/**
-	 * Get size, in bytes.
-	 * 
-	 * @return Size
-	 */
-	@Override
-	public long getSize() {
-		return this.fileSize;
-	}
-    
     /** Get UTF-16BE Unicode character at the current position.  This
      * implicitly advances the current position by two bytes.
      * @return Character at the current position
@@ -761,6 +758,17 @@ public abstract class AbstractInput
 
 		return sh;
 	}
+	
+	/** Reset the buffer position.  This method is only necessary after
+     * a buffer has been retrieved via getBuffer() and the position of 
+     * that local copy has been manipulated.
+     * @see org.jhove2.core.io.Input#getBuffer()
+	 */
+	@Override
+	public void resetBuffer() {
+	    this.buffer.position(0);
+	    this.inputablePosition = this.bufferOffset;
+	}
 
 	/**
 	 * Set byte order: big-endian or little-endian.
@@ -796,7 +804,6 @@ public abstract class AbstractInput
 			this.buffer.position(pos + (int) del);
 			this.inputablePosition = position;
 		}
-
 	}
 
 	/** Set buffer type.

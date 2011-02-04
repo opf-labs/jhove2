@@ -24,7 +24,11 @@
 				<ref bean="CDLAgent" />
 			</list>
 		</property>
+		<property name="tiff2FormatMapFactory" ref="TiffMapFactory"/>
 	</bean>
+		<bean name="TiffMapFactory" class="org.jhove2.config.spring.SpringTiff2FormatMapFactory"
+		scope="prototype"/>
+		
 		<!-- Tiff format bean -->
 	<bean id="TiffFormat" class="org.jhove2.core.format.Format" scope="singleton">
 		<constructor-arg type="java.lang.String" value="Tiff" />
@@ -57,5 +61,21 @@
     <bean id="MACTestFile" class="java.lang.String">
     	<constructor-arg type="java.lang.String" value="MAC_generated.tiff"/>
 	</bean>
+
+  <!-- Invalid Byte Alignment Offset test file -->
+    <bean id="wordAlignmentErrorFile" class="java.lang.String">
+    	<constructor-arg type="java.lang.String" value="invalid_testfiles/Word_Alignment_Error.tif"/>
+	</bean>
+
+  <!-- Invalid Date/Time Format file -->
+    <bean id="invalidDateTimeFile" class="java.lang.String">
+    	<constructor-arg type="java.lang.String" value="invalid_testfiles/Invalid_Datetime.tif"/>
+	</bean>
+
+  <!-- Embedded File format test file -->
+    <bean id="blueSquareTif" class="java.lang.String">
+    	<constructor-arg type="java.lang.String" value="BlueSquare.tif"/>
+	</bean>
+
 	
 </beans>

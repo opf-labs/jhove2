@@ -137,7 +137,7 @@ public class NumericCharacterReferenceInformation extends AbstractReportable {
      * @throws JHOVE2Exception
      */
     protected void parse(Input input, String encodingFromSAX2, JHOVE2 jhove2)
-            throws IOException, JHOVE2Exception 
+        throws IOException, JHOVE2Exception 
     {
         ByteBuffer bbuf = input.getBuffer();
         int position = bbuf.position();
@@ -163,7 +163,7 @@ public class NumericCharacterReferenceInformation extends AbstractReportable {
         }
         finally {
             bbuf.position(position);
+            input.resetBuffer();
         }
     }
-
 }

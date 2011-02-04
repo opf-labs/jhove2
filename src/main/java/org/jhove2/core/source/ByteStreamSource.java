@@ -42,7 +42,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
@@ -57,27 +56,36 @@ import com.sleepycat.persist.model.Persistent;
 @Persistent
 public class ByteStreamSource
     extends AbstractSource
+    implements MensurableSource
 {
-    /** I/O buffer size. */
-    protected int bufferSize;
-    
-    /** Starting offset relative to parent source. */
-    protected long endingOffset;
-    
     /** Backing file that is an appropriate subset of the parent source's
      * backing file; not created unless it is actually requested.
      */
     protected File backingFile;
      
-   
+    /** Buffer size (for creating temporary file). */
+    protected int bufferSize;
+
+    /** Starting offset relative to parent source. */
+    protected long endingOffset;
+    
+    /** Name, if known. */
+    protected String name;
+    
     /** Size of the byte stream, in bytes. */
     protected long size;
     
+    /** Starting offset relative to parent source. */
+    protected long startingOffset;
+    
+    /** Temporary directory. */
+    protected File tmpDirectory;
+    
     /** Temporary file prefix. */
-    protected String tempPrefix;
+    protected String tmpPrefix;
     
     /** Temporary file suffix. */
-    protected String tempSuffix;
+    protected String tmpSuffix;
     
     @SuppressWarnings("unused")
 	private ByteStreamSource()
@@ -92,65 +100,82 @@ public class ByteStreamSource
      * @param parent Parent source
      * @param offset Starting offset relative to parent
      * @param size   Size of the byte stream
+     * @param name   Byte stream name, if known
+     * @param sourceFactory Source factory
      * @throws IOException 
      * @throws JHOVE2Exception 
      */
-    protected ByteStreamSource(JHOVE2 jhove2, Source parent, long offset, long size,SourceFactory sourceFactory)
+    protected ByteStreamSource(JHOVE2 jhove2, Source parent, long offset,
+                               long size, String name, SourceFactory sourceFactory)
         throws IOException, JHOVE2Exception
     {
         super();
         this.file           = parent.getFile();
+        this.isTemp         = parent.isTemp();
+        this.size           = size;
         this.startingOffset = offset;
         this.endingOffset   = offset + size;
-        this.size           = size;
+        this.name           = name;
+        this.backingFile    = null;
         
         /* Keep a copy of the temporary file prefix and suffix and I/O buffer
          * size in case we have to create a temporary backing file.
          */
-        Invocation invocation = jhove2.getInvocation();
-        this.tempPrefix = invocation.getTempPrefix();
-        this.tempSuffix = invocation.getTempSuffix();
-        this.bufferSize = invocation.getBufferSize();
+        Invocation inv     = jhove2.getInvocation();
+        this.tmpDirectory  = inv.getTempDirectoryFile();
+        this.tmpPrefix     = inv.getTempPrefix();
+        this.tmpSuffix     = inv.getTempSuffix();
+        this.bufferSize    = inv.getBufferSize();
+        this.deleteOnClose = inv.getDeleteTempFiles();
         
         /* Make this byte stream a child of its parent. */
         this.setSourceAccessor(sourceFactory.createSourceAccessor(this));
-        // will update parentSourceId and sourceId fields automatically
+        /* will update parentSourceId and sourceId fields automatically. */
         parent.addChildSource(this);
      }
-  
+
+    /**
+     * Close the source unit. If the source unit is backed by a temporary file,
+     * delete the file.
+     */
+    @Override
+    public void close() {
+        super.close();
+        if (this.backingFile != null && this.deleteOnClose) {
+            this.backingFile.delete();
+            this.backingFile = null;
+        }
+    }
+
     /** Get ending offset of the byte stream, relative to its parent.
      * @return Ending offset
      */
-    @ReportableProperty(order=2, value="Ending offset of the byte stream, relative to its parent.")
+    @Override
     public long getEndingOffset() {
         return this.endingOffset;
     }
 
     /**
-     * Get {@link java.io.File} backing the source unit.
+     * Get {@link java.io.File} backing only the byte stream subset of its
+     * parent source.
      * 
-     * @return File backing the source unit
-     * @see org.jhove2.core.source.Source#getFile()
+     * @return File backing the byte stream
+     * @throws JHOVE2Exception 
      */
-    @Override
-    public File getFile() {
+    public File getBackingFile()
+        throws IOException
+    {
         if (this.backingFile == null) {
-            if (this.file != null) {
-                try {
-                    this.backingFile =
-                        this.createTempFile(this.tempPrefix, this.tempSuffix,
-                                            this.bufferSize, this.file,
-                                            this.startingOffset, this.size);
-                }
-                catch (IOException e) {
-                    /* TODO: Create and add an appropriate message.
-                     * Do we have access to a ConfigInfo?
-                     */
-                }
+            /* Get format extension from name. */
+            String ext = this.tmpSuffix;
+            int in = name.lastIndexOf('.');
+            if (in > -1) {
+                ext = name.substring(in);
             }
-            else {
-                /* TODO: Create and add an appropriate message. */
-            }
+            this.backingFile =
+                createTempFile(this.file, this.startingOffset,
+                               this.size, this.tmpDirectory,
+                               this.tmpPrefix, ext, this.bufferSize);
         }
         return this.backingFile;
     }
@@ -159,21 +184,33 @@ public class ByteStreamSource
      * Get {@link java.io.InputStream} backing the source unit
      * 
      * @return Input stream backing the source unit
-     * @throws FileNotFoundException
+     * @throws FileNotFoundException Backing file not found
+     * @throws IOException Backing file could not be created
      * @see org.jhove2.core.source.Source#getInputStream()
      */
     @Override
     public InputStream getInputStream()
-        throws FileNotFoundException
+        throws FileNotFoundException, IOException
     {
-        return new FileInputStream(this.getFile());
+        InputStream stream = null;
+        stream = new FileInputStream(this.getBackingFile());
+        return stream;
     }
      
     /** Get byte stream size, in bytes.
      * @return Byte stream size
      */
-    @ReportableProperty(order=1, value="Byte stream size, in bytes.")
+    @Override
     public long getSize() {
         return this.size;
+    }
+
+    /** Get starting offset of the source unit, in bytes, relative to its
+     * parent.
+     * @return Starting offset of the source unit
+     */
+    @Override
+    public long getStartingOffset() {
+        return this.startingOffset;
     }
 }

@@ -44,8 +44,7 @@ import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.io.Input;
-import org.jhove2.core.source.AggregateSource;
-import org.jhove2.core.source.ClumpSource;
+import org.jhove2.core.source.MensurableSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractCommand;
 import org.jhove2.persist.ModuleAccessor;
@@ -100,8 +99,7 @@ public class DigesterCommand
 	public void execute(JHOVE2 jhove2, Source source, Input input) 
 		throws JHOVE2Exception
 	{
-		if (!(source instanceof AggregateSource ||
-			  source instanceof ClumpSource)) {
+		if (source instanceof MensurableSource) {
 			if (jhove2.getInvocation().getCalcDigests()) {
 				try {	
 					Digester digester = 

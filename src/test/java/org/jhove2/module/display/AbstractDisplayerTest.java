@@ -87,7 +87,7 @@ public class AbstractDisplayerTest {
 			persistenceManager = PersistenceManagerUtil.getPersistenceManagerFactory().getInstance();
 			persistenceManager.initialize();
 			String filePath = utf8DirPath.concat(testFile01);
-			Source source = JHOVE2.getSourceFactory().getSource(filePath);
+			Source source = JHOVE2.getSourceFactory().getSource(JHOVE2, filePath);
 			
 			Input  input  = source.getInput(JHOVE2);
 			source = JHOVE2.characterize(source, input);

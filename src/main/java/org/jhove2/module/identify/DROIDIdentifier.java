@@ -181,7 +181,7 @@ public class DROIDIdentifier
 			FFSignatureFile sigFile = getCachedSignatureFile(configFile, this.getSignatureFile());
 			droid.setConfigFile(configFile);
 			droid.setSigFile(sigFile);
-			IdentificationFile idf = droid.identify(source);
+			IdentificationFile idf = droid.identify(source, input);
 			boolean matchFound = this.matchFound(idf, jhove2, source);
 			if (matchFound){
 				String msgText = idf.getWarning();				

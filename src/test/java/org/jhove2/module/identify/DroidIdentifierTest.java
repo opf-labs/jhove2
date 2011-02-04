@@ -37,7 +37,6 @@ package org.jhove2.module.identify;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -110,7 +109,8 @@ public class DroidIdentifierTest {
 		}
 		String zipFilePath = samplesDirPath.concat(sampleFile);
 		try {
-			source = (FileSource)JHOVE2.getSourceFactory().getSource(zipFilePath);
+			source = (FileSource)JHOVE2.getSourceFactory().getSource(JHOVE2,
+			        zipFilePath);
 			input  = source.getInput(JHOVE2);
 		} catch (Exception e) {
 			fail("Couldn't create source: " + e.getMessage());
@@ -131,7 +131,8 @@ public class DroidIdentifierTest {
 		} 
 		String badFilePath = samplesDirPath.concat(sampleBadFile);
 		try {
-			source = (FileSource)JHOVE2.getSourceFactory().getSource(badFilePath);
+			source = (FileSource)JHOVE2.getSourceFactory().getSource(JHOVE2,
+			        badFilePath);
 			input  = source.getInput(JHOVE2);
 		} catch (Exception e) {
 			fail("Couldn't create source: " + e.getMessage());
@@ -146,7 +147,8 @@ public class DroidIdentifierTest {
 		} 
 		String noJhoveFormatFilePath = samplesDirPath.concat(sampleNoJhoveIdFile);
 		try {
-			source = (FileSource)JHOVE2.getSourceFactory().getSource(noJhoveFormatFilePath);
+			source = (FileSource)JHOVE2.getSourceFactory().getSource(JHOVE2,
+			        noJhoveFormatFilePath);
 			input  = source.getInput(JHOVE2);
 		} catch (Exception e) {
 			fail("Couldn't create source: " + e.getMessage());

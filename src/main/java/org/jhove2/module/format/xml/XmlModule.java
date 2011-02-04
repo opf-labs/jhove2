@@ -49,6 +49,7 @@ import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
 import org.jhove2.core.io.Input;
+import org.jhove2.core.source.MensurableSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.module.format.Validator;
@@ -453,18 +454,19 @@ public class XmlModule
         this.jhove2 = jhove2;
             
         /* Use SAX2 to get what information is available from that mechanism */
-        saxParser.parse(source, jhove2);
+        saxParser.parse(jhove2, source, input); //source, jhove2);
 
         /*
          * Do a separate parse of the XML Declaration at the start of the
          * document
          */
-        input.setPosition(source.getStartingOffset());
+        long start = ((MensurableSource) source).getStartingOffset();
+        input.setPosition(start);
         xmlDeclaration.parse(input);
 
         /* Do a separate parse to inventory numeric character references */
         if (this.ncrParser) {
-            input.setPosition(source.getStartingOffset());
+            input.setPosition(start);
             numericCharacterReferenceInformation.parse(input,
                     xmlDeclaration.encodingFromSAX2, jhove2);
         }   

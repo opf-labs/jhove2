@@ -11,4 +11,4 @@
 . ./env.sh
 
 
-${JAVA} -cp $CP org.jhove2.app.JHOVE2CommandLine $@
+${JAVA} -cp "$CP" org.jhove2.app.JHOVE2CommandLine $@

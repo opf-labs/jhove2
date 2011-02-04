@@ -53,7 +53,6 @@ import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.ClumpSource;
-import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.module.format.Validator;
@@ -148,8 +147,10 @@ public class ShapefileModule
             try {
                 sfe = new ShapefileFeatureExtractor(memberFileMap.get("SHP"));
                 sfe.extractFeatures(shapefileFeatures);
-            } catch (Exception e) {
-                setErrorMessage(jhove2, source, "Shapefile could not be parsed: " + e.getMessage());
+            }
+            catch (Exception e) {
+                setErrorMessage(jhove2, source, "Shapefile could not be parsed: " +
+                                e.getMessage());
                 return -1;
             }
  		}
@@ -210,29 +211,32 @@ public class ShapefileModule
 	 * @param clump the clump
 	 * @throws JHOVE2Exception 
 	 */
-	private void inventoryMemberFiles(ClumpSource clump) throws JHOVE2Exception {
-       for (Source child : clump.getChildSources()) {
-            if (child instanceof FileSource) {
-                FileSource fileSource = (FileSource) child;
-                File file = fileSource.getFile();
-                String filename = file.getName().toUpperCase();
-                if (filename.endsWith(".SHP.XML")) {
-                    memberFileMap.put("SHP.XML", file);
-                } else {
-                    String extension = filename.substring(filename.lastIndexOf(".")+1);
-                    memberFileMap.put(extension, file);
-                }
-                File mainFile = memberFileMap.get("SHP");  
-                if (mainFile != null) {
-                    String mainFilename = mainFile.getName();
-                    shapefileFeatures.shapefileStem = mainFilename.substring(0, (mainFilename.length()-4));
-                }
-            }    
-        }  
-       shapefileFeatures.memberFiles = new ArrayList<String>();
-        for (Entry<String, File> entry : memberFileMap.entrySet()) {
-            shapefileFeatures.memberFiles.add(entry.getKey() + " => " + entry.getValue().getName());
-        }
+	private void inventoryMemberFiles(ClumpSource clump)
+	    throws JHOVE2Exception
+	{
+	    for (Source child : clump.getChildSources()) {
+	        File file = child.getFile();
+	        String filename = file.getName().toUpperCase();
+	        if (filename.endsWith(".SHP.XML")) {
+	            memberFileMap.put("SHP.XML", file);
+	        }
+	        else {
+	            String extension =
+	                filename.substring(filename.lastIndexOf(".") + 1);
+	            memberFileMap.put(extension, file);
+	        }
+	        File mainFile = memberFileMap.get("SHP");  
+	        if (mainFile != null) {
+	            String mainFilename = mainFile.getName();
+	            shapefileFeatures.shapefileStem =
+	                mainFilename.substring(0, (mainFilename.length()-4));
+	        }    
+	    }  
+	    shapefileFeatures.memberFiles = new ArrayList<String>();
+	    for (Entry<String, File> entry : memberFileMap.entrySet()) {
+	        shapefileFeatures.memberFiles.add(entry.getKey() + " => " + 
+	                                          entry.getValue().getName());
+	    }
 	}
 	
 	/**
@@ -258,10 +262,13 @@ public class ShapefileModule
 	 */
 	private String verifyFile(String type, int minSize) {
         File file = memberFileMap.get(type);
-        if (! file.exists())
-            return type + " file does not exist; ";
-        if (file.length() < minSize)
-            return type + " file smaller than " + minSize + " bytes; ";
+        if (!file.exists()) {
+            return type + " file does not exist (" + file.getPath() + "); ";
+        }
+        if (file.length() < minSize) {
+            return type + " file smaller than " + minSize + " bytes (" +
+                   file.getPath() + "; ";
+        }
         return "";
 	    
 	}
@@ -290,7 +297,5 @@ public class ShapefileModule
                 Context.PROCESS,
                 "org.jhove2.module.format.shapefile.ShapefileModule.parseMessage",
                 messageArgs, jhove2.getConfigInfo()));
-
     }
 }
-

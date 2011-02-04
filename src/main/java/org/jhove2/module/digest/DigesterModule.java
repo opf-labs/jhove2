@@ -47,6 +47,7 @@ import org.jhove2.core.Digest;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.io.Input;
+import org.jhove2.core.source.MensurableSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractModule;
 import org.jhove2.persist.ModuleAccessor;
@@ -116,9 +117,9 @@ public class DigesterModule
 	public void digest(JHOVE2 jhove2, Source source, Input input)
 		throws IOException
 	{
-	    long inputSize = input.getSize();
+	    long inputSize = ((MensurableSource) source).getSize();
 	    long bufferSize = input.getMaxBufferSize();
-	    long ptr = source.getStartingOffset();
+	    long ptr = ((MensurableSource) source).getStartingOffset();
 	    while (inputSize - ptr > -1L) {
 	        input.setPosition(ptr);
 	        if (this.arrayDigesters != null &&
@@ -141,6 +142,7 @@ public class DigesterModule
 	                buffer.position(0);
 	                digester.update(buffer);
 	            }
+	            input.resetBuffer();
 	        }
 	        ptr += bufferSize;
 	    }

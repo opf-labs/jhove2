@@ -6,7 +6,7 @@ package org.jhove2.core.reportable.info;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-
+import org.jhove2.core.JHOVE2;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
 import org.jhove2.persist.inmemory.InMemorySourceFactory;
@@ -50,7 +50,8 @@ public class ReportableInfoTest {
 //		source = new FileSetSource();
 		SourceFactory factory = new InMemorySourceFactory();
 		try {
-			source = factory.getSource("");
+		    JHOVE2 jhove2 = new JHOVE2();
+			source = factory.getSource(jhove2, "");
 		} catch (Exception e) {
 			fail("unable to create Source");
 		}

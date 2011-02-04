@@ -114,11 +114,11 @@ extends AbstractApplication
 
 	/**
 	 * Main entry point for the JHOVE2 command line application. Creates a
-         * {@linkplain org.jhove2.core.source.FileSetSource file set source unit}
-         * from the files specified on the command line. This file set is passed to
-         * the {@link JHOVE2} object for characterization; this initiates a search for
-         * all unitary and aggregate source units within the file set; these are characterized
-         * in turn.
+     * {@linkplain org.jhove2.core.source.FileSetSource file set source unit}
+     * from the files specified on the command line. This file set is passed to
+     * the {@link JHOVE2} object for characterization; this initiates a search
+     * for all unitary and aggregate source units within the file set; these
+     * are characterized in turn.
 	 * 
 	 * @param args Command line arguments
 	 */
@@ -127,22 +127,25 @@ extends AbstractApplication
 		PersistenceManager persistenceManager = null;
 		try {
 			SpringConfigInfo factory = new SpringConfigInfo();
-			// Create PersistenceManagerFactory; will be used by ApplicationModuleAccessor to
-			// manage persistence
+			/* Create PersistenceManagerFactory; will be used by ApplicationModuleAccessor to
+			 * manage persistence.
+			 */
 			PersistenceManagerUtil.createPersistenceManagerFactory(factory);
 			persistenceManager = PersistenceManagerUtil.getPersistenceManagerFactory().getInstance();
 			persistenceManager.initialize();
-			
-			/* Create and initialize the JHOVE2 command-line application. */
 
 			/* Create and initialize the JHOVE2 command-line application. */
-			JHOVE2CommandLine app = SpringConfigInfo.getReportable(JHOVE2CommandLine.class, 
-					"JHOVE2CommandLine");
-			// make sure there is a default displayer
+			JHOVE2CommandLine app =
+			    SpringConfigInfo.getReportable(JHOVE2CommandLine.class, 
+					                          "JHOVE2CommandLine");
+			/* Make sure there is a default displayer. */
 			Displayer displayer = app.getDisplayer();
-			if (displayer==null) {
-				Class defaultDisplayerClass = Class.forName(Displayer.DEFAULT_DISPLAYER_CLASS);
-				displayer = (Displayer)SpringConfigInfo.getReportable(defaultDisplayerClass, "Text");
+			if (displayer == null) {
+				Class defaultDisplayerClass =
+				    (Class) Class.forName(Displayer.DEFAULT_DISPLAYER_CLASS);
+				displayer =
+				    (Displayer)SpringConfigInfo.getReportable(defaultDisplayerClass,
+				                                             "Text");
 				displayer = app.setDisplayer(displayer);
 			}
 			app.getDisplayer().setConfigInfo(factory);
@@ -152,51 +155,46 @@ extends AbstractApplication
 			 * Spring-wired) settings in {@link org.jhove2.core.AppConfigInfo}
 			 * with any command line options.
 			 */
-			List<String> pathNames = app.parse(args); 	
+			List<String> names = app.parse(args); 	
 			app = (JHOVE2CommandLine) app.getModuleAccessor().persistModule(app);
-			
 			
 			/* Create and initialize the JHOVE2 framework and register it with
 			 * the application.
 			 */		
 			JHOVE2 jhove2 = SpringConfigInfo.getReportable(JHOVE2.class,
-							"JHOVE2");
-
-			jhove2.setInvocation(app.getInvocation());
+							                              "JHOVE2");
+			Invocation inv = app.getInvocation();
+			jhove2.setInvocation(inv);
 			jhove2.setInstallation(app.getInstallation());
 
 			/* Create a FileSet source unit out of all files, directories, and
 			 * URLS specified on the command line, or a single File, Directory, or
 			 * URL if only one is specified.
 			 */
-			Source source = jhove2.getSourceFactory().getSource(pathNames,
-					jhove2.getInvocation().getTempPrefix(), 
-					jhove2.getInvocation().getTempSuffix(), 
-					jhove2.getInvocation().getBufferSize());
-			app=(JHOVE2CommandLine) source.addModule(app);
-			jhove2=(JHOVE2) source.addModule(jhove2);
-			displayer = app.getDisplayer(); // displayer might have been updated by parse method;
+			Source source = jhove2.getSourceFactory().getSource(jhove2, names);
+			app = (JHOVE2CommandLine) source.addModule(app);
+			jhove2 = (JHOVE2) source.addModule(jhove2);
+			displayer = app.getDisplayer(); /* displayer might have been updated by parse method; */
 			displayer.setConfigInfo(factory);
 			displayer = (Displayer) source.addModule(displayer);
-			displayer = app.setDisplayer(displayer );	// this will persist the updated Displayer linked to app				 				
+			displayer = app.setDisplayer(displayer);	/* this will persist the updated Displayer linked to app */				 				
 			  
 			/* Characterize the FileSet source unit (and all subsidiary
 			 * source units that it encapsulates.
 			 */			
 			jhove2 = (JHOVE2) jhove2.getModuleAccessor().startTimerInfo(jhove2);
 			Input input = source.getInput(jhove2);
-	            try {
-	            	source=jhove2.characterize(source, input);
+	        try {
+	            source = jhove2.characterize(source, input);
+	        }
+	        finally {
+	            if (input != null) {
+	                input.close();
 	            }
-	            finally {
-	                if (input != null) {
-	                    input.close();
-	                }
-	            }			
+	        }			
 			jhove2 = (JHOVE2) jhove2.getModuleAccessor().endTimerInfo(jhove2);
 			
-			/* Display characterization information for the FileSet.
-			 */
+			/* Display characterization information for the FileSet. */
 			app.getDisplayer().display(source);
 		}
 		catch (Exception e) {
@@ -222,15 +220,15 @@ extends AbstractApplication
 	 *
 	 * Parse the JHOVE2 application command line and update the default values
 	 * in the {@link org.jhove2.core.Invocation} object with any
-	 * command-line settings; and construct the list of file system paths to be
-	 * processed by the application.  Also save the commandLine string as an
-	 * instance member.
+	 * command-line settings; and construct the list of formatted object names,
+	 * which may be files, directories, or URLs, to be processed by the
+	 * application.  Also save the commandLine string as an instance member.
 	 * 
 	 * For command line options and usage, refer to the <i>JHOVE2 User's Guide</i>.
 	 *   
 	 * @param args
 	 *            Command line arguments
-	 * @return File system path names
+	 * @return Formatted object names
 	 * @throws JHOVE2Exception 
 	 */
 	public List<String> parse(String[] args)
@@ -238,7 +236,7 @@ extends AbstractApplication
 	{
 		Parser parser = new Parser(JHOVE2CommandLine.class.getName());
 
-		ArrayList<String> pathNames = new ArrayList<String>();
+		ArrayList<String> names = new ArrayList<String>();
 		boolean showIdentifiers = this.getDisplayer().getShowIdentifiers();
 		String filePathname   = null;
 		Integer bufferSize    = null;
@@ -382,8 +380,8 @@ extends AbstractApplication
 		displayer = this.setDisplayer(displayer);
 		/* process remaining arguments 	
 		 */
-		 for ( int i = 0; i < otherArgs.length; ++i ) {
-			 pathNames.add(otherArgs[i]);
+		 for (int i = 0; i < otherArgs.length; ++i ) {
+			 names.add(otherArgs[i]);
 		 }
 
 		 /* save the command line string
@@ -396,7 +394,7 @@ extends AbstractApplication
 			 }
 		 }
 
-		 return pathNames;
+		 return names;
 	}
 
 	/**

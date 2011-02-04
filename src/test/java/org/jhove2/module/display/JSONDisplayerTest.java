@@ -69,7 +69,7 @@ public class JSONDisplayerTest {
 	public void testDisplay() {
 		try {
 			String filePath = utf8DirBasePath.concat(testFile01);
-			Source source = JHOVE2.getSourceFactory().getSource(filePath);
+			Source source = JHOVE2.getSourceFactory().getSource(JHOVE2, filePath);
 			Input  input  = source.getInput(JHOVE2);
 			source = JHOVE2.characterize(source, input);
 			Displayer displayer = new JSONDisplayer();

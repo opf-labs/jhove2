@@ -42,7 +42,6 @@ import java.util.Set;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.Digest;
 import org.jhove2.core.JHOVE2;
-import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.Module;

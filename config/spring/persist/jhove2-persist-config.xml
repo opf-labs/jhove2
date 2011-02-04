@@ -12,23 +12,20 @@
 	     scope="singleton"/>
 	     
 	<!--  Beans for in-memory persistence -->
-	
-<!--	<bean id="SourceFactory"             class="org.jhove2.persist.inmemory.InMemorySourceFactory" scope="prototype"/>-->
-<!--	<bean id="ApplicationModuleAccessor" class="org.jhove2.persist.inmemory.InMemoryApplicationModuleAccessor"/>-->
-<!--	<bean id="FrameworkAccessor"         class="org.jhove2.persist.inmemory.InMemoryFrameworkAccessor" scope="prototype"/>-->
-<!--	<bean id="FormatModuleAccessor"      class="org.jhove2.persist.inmemory.InMemoryFormatModuleAccessor" scope="prototype"/>-->
-<!--	<bean id="FormatProfileAccessor"     class="org.jhove2.persist.inmemory.InMemoryFormatProfileAccessor" scope="prototype"/>-->
-<!--	<bean id="AggrefierAccessor"         class="org.jhove2.persist.inmemory.InMemoryAggrefierAccessor" scope="prototype"/>-->
-<!--	<bean id="IdentifierAccessor"        class="org.jhove2.persist.inmemory.InMemoryIdentifierAccessor" scope="prototype"/>-->
-<!--	<bean id="BaseModuleAccessor"        class="org.jhove2.persist.inmemory.InMemoryBaseModuleAccessor" scope="prototype"/>-->
-	
-	
-	
-	
-			
+    <!--
+	<bean id="SourceFactory"             class="org.jhove2.persist.inmemory.InMemorySourceFactory" scope="prototype"/>
+	<bean id="ApplicationModuleAccessor" class="org.jhove2.persist.inmemory.InMemoryApplicationModuleAccessor"/>
+	<bean id="FrameworkAccessor"         class="org.jhove2.persist.inmemory.InMemoryFrameworkAccessor" scope="prototype"/>
+	<bean id="FormatModuleAccessor"      class="org.jhove2.persist.inmemory.InMemoryFormatModuleAccessor" scope="prototype"/>
+	<bean id="FormatProfileAccessor"     class="org.jhove2.persist.inmemory.InMemoryFormatProfileAccessor" scope="prototype"/>
+	<bean id="AggrefierAccessor"         class="org.jhove2.persist.inmemory.InMemoryAggrefierAccessor" scope="prototype"/>
+	<bean id="IdentifierAccessor"        class="org.jhove2.persist.inmemory.InMemoryIdentifierAccessor" scope="prototype"/>
+	<bean id="BaseModuleAccessor"        class="org.jhove2.persist.inmemory.InMemoryBaseModuleAccessor" scope="prototype"/>
+    -->
+    
 	<!--  Beans for BerkeleyDB persistence -->
 	
-	<bean id="SourceFactory"             class="org.jhove2.persist.berkeleydpl.BerkeleyDbSourceFactory" scope="prototype"/>
+    <bean id="SourceFactory"             class="org.jhove2.persist.berkeleydpl.BerkeleyDbSourceFactory" scope="prototype"/>
 	<bean id="ApplicationModuleAccessor" class="org.jhove2.persist.berkeleydpl.BerkeleyDbApplicationModuleAccessor"/>
 	<bean id="FrameworkAccessor"         class="org.jhove2.persist.berkeleydpl.BerkeleyDbFrameworkAccessor" scope="prototype"/>
 	<bean id="FormatModuleAccessor"      class="org.jhove2.persist.berkeleydpl.BerkeleyDbFormatModuleAccessor" scope="prototype"/>
