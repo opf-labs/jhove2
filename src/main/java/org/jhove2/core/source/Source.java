@@ -111,7 +111,8 @@ public interface Source
 	public Source addPresumptiveFormats(Set<FormatIdentification> fis) throws JHOVE2Exception;
 
     /**
-     * Close the source unit and release all underlying system I/O resources.
+     * Close the source unit and release all underlying system I/O resources,
+     * including a temporary backing file, if one exists.
      */
     public void close();
 
@@ -147,7 +148,6 @@ public interface Source
      * @return File backing the source unit, of null if a Clump or FileSet source
      */
     public File getFile();
-
 
     /**
      * Get little-endian {@link org.jhove2.core.io.Input} for the source unit

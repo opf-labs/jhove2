@@ -62,7 +62,7 @@ public class URLSource
     protected long endingOffset;
     
     /** URL source name. */
-    protected String sourceName;
+    //protected String sourceName;
 
     /** File size, in bytes. */
     protected long size;
@@ -90,11 +90,6 @@ public class URLSource
 	{
 		super(jhove2, url.openStream(), trimPath(url.getPath()));
 		this.url = url.toString();
-		this.sourceName = url.getPath();
-		int in = sourceName.lastIndexOf("/");
-		if (in > -1) {
-		    this.sourceName = this.sourceName.substring(in+1);
-		}
         this.size = this.file.length();
         this.startingOffset = 0L;
         this.endingOffset   = this.size;
@@ -146,7 +141,7 @@ public class URLSource
 	 */
 	@Override
 	public String getSourceName() {
-		return this.sourceName;
+		return this.url;
 	}
 	
 	/** Get URL.
@@ -172,7 +167,7 @@ public class URLSource
 		if (!(obj instanceof URLSource)){
 			return false;
 		}
-		boolean equals = this.sourceName.equalsIgnoreCase(((NamedSource)obj).getSourceName());
+		boolean equals = this.url.equalsIgnoreCase(((NamedSource)obj).getSourceName());
 		if (!equals){
 			return false;
 		}
@@ -187,7 +182,7 @@ public class URLSource
     {
         final int prime = 31;
         int result = super.hashCode();
-        result = prime * result + ((sourceName == null) ? 0 : sourceName.hashCode());
+        result = prime * result + ((this.url == null) ? 0 : this.url.hashCode());
         return result;
     }
     
@@ -209,7 +204,7 @@ public class URLSource
 				compareTo(source.getReportableIdentifier());
 			return compareSource;
 		}		
-		int stCompare = this.sourceName.compareToIgnoreCase(((NamedSource)source).getSourceName());
+		int stCompare = this.url.compareToIgnoreCase(((NamedSource)source).getSourceName());
 		if (stCompare < 0){
 		    return -1;
 		}

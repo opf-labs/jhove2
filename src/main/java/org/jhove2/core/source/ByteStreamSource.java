@@ -58,8 +58,8 @@ public class ByteStreamSource
     extends AbstractSource
     implements MensurableSource
 {
-    /** Backing file that is an appropriate subset of the parent source's
-     * backing file; not created unless it is actually requested.
+    /** Temporary backing file that is an appropriate subset of the parent
+     * source's backing file; not created unless it is actually requested.
      */
     protected File backingFile;
      
@@ -135,8 +135,8 @@ public class ByteStreamSource
      }
 
     /**
-     * Close the source unit. If the source unit is backed by a temporary file,
-     * delete the file.
+     * Close the source unit and release all underlying system I/O resources,
+     * including a temporary backing file, if one exists..
      */
     @Override
     public void close() {

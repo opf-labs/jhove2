@@ -63,9 +63,6 @@ public class ZipDirectorySource
 	/** Zip directory path. */
 	protected String path;
 
-    /** Zip directory source name. */
-    protected String sourceName;
-
 	protected ZipDirectorySource(){
 		super();
 	}
@@ -83,11 +80,6 @@ public class ZipDirectorySource
 		int in = this.path.lastIndexOf(File.separator);
 		if (in == this.path.length() - 1) {
 			this.path = this.path.substring(0, in);
-		}
-		this.sourceName = this.path;
-		in = this.sourceName.lastIndexOf(File.separator);
-		if (in > -1) {
-			this.sourceName = this.sourceName.substring(in + 1);
 		}
 		this.lastModified = new Date(entry.getTime());
 		this.comment = entry.getComment();
@@ -121,7 +113,7 @@ public class ZipDirectorySource
 	 */
 	@Override
 	public String getSourceName() {
-		return this.sourceName;
+		return this.path;
 	}
 
 	/**
@@ -202,7 +194,6 @@ public class ZipDirectorySource
         result = prime * result + ((comment == null) ? 0 : comment.hashCode());
         result = prime * result
                 + ((lastModified == null) ? 0 : lastModified.hashCode());
-        result = prime * result + ((sourceName == null) ? 0 : sourceName.hashCode());
         result = prime * result + ((path == null) ? 0 : path.hashCode());
         return result;
     }

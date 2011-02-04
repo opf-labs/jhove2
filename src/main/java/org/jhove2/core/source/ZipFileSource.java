@@ -36,7 +36,6 @@
 
 package org.jhove2.core.source;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
@@ -83,9 +82,6 @@ public class ZipFileSource
 	/** Zip file size, in bytes. */
 	protected long size;
 
-    /** Zip file source name. */
-    protected String sourceName;
-
     /** Starting offset, in bytes, relative to the parent source.  If there is
      * no parent, the starting offset is 0.
      */
@@ -111,11 +107,6 @@ public class ZipFileSource
 	{
 		super(jhove2, stream, entry.getName());
 		this.path = entry.getName();
-		this.sourceName = this.path;
-		int in = this.sourceName.lastIndexOf(File.separator);
-		if (in > -1) {
-			this.sourceName = this.sourceName.substring(in + 1);
-		}
 		this.size = entry.getSize();
 		this.lastModified = new Date(entry.getTime());
 		this.crc = entry.getCrc();
@@ -199,7 +190,7 @@ public class ZipFileSource
      */
     @Override
     public String getSourceName() {
-        return this.sourceName;
+        return this.path;
     }
 
     /** Get starting offset of the source unit, in bytes, relative to the
@@ -289,7 +280,6 @@ public class ZipFileSource
         result = prime * result + ((crc32 == null) ? 0 : crc32.hashCode());
         result = prime * result
                 + ((lastModified == null) ? 0 : lastModified.hashCode());
-        result = prime * result + ((sourceName == null) ? 0 : sourceName.hashCode());
         result = prime * result + ((path == null) ? 0 : path.hashCode());
         result = prime * result + (int) (size ^ (size >>> 32));
         return result;

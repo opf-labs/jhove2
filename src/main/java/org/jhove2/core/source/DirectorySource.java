@@ -66,9 +66,6 @@ public class DirectorySource
 	/** Directory path. */
 	protected String path;
 
-    /** Directory source name. */
-    protected String sourceName;
-  
 	protected DirectorySource(){
 		super();
 		this.isAggregate = true;
@@ -109,11 +106,11 @@ public class DirectorySource
 	{
 		super(jhove2, file);
 		this.setSourceAccessor(sourceFactory.createSourceAccessor(this));
-		this.sourceName = file.getName();
+		this.path = file.getName();
 		try {
 			this.path = file.getCanonicalPath();
 		} catch (IOException e) {
-			/* Let path stay uninitialized. */
+			/* Let path stay initialized to just the file name. */
 		}
 		this.isExtant = file.exists();
 		if (this.isExtant) {
@@ -121,7 +118,7 @@ public class DirectorySource
 			File[] list = file.listFiles();
 			for (int i = 0; i < list.length; i++) {
 				Source source = sourceFactory.getSource(jhove2, list[i]);
-				source=this.addChildSource(source);
+				source = this.addChildSource(source);
 			} 
 		}
 		this.isAggregate = true;
@@ -145,7 +142,7 @@ public class DirectorySource
      */
     @Override
     public String getSourceName() {
-        return this.sourceName;
+        return this.path;
     }
     
 	/**

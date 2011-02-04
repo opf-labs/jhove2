@@ -83,9 +83,6 @@ public class FileSource
 
 	/** File size, in bytes. */
 	protected long size;
-	   
-    /** File source name. */
-    protected String sourceName;
 
     /** Starting offset, in bytes, relative to the parent source.  If there
      * is no parent, the starting offset is 0.
@@ -129,11 +126,11 @@ public class FileSource
 	{
 		super(jhove2, file);
 
-		this.sourceName = file.getName();
+		this.path = file.getName();
 		try {
 			this.path = file.getCanonicalPath();
 		} catch (IOException e) {
-			/* Let path stay uninitialized. */
+			/* Let path stay initialized to just the file name. */
 		}
 		this.isExtant = file.exists();
 		if (this.isExtant) {
@@ -197,7 +194,7 @@ public class FileSource
     @Override
     public String getSourceName()
     {
-        return this.sourceName;
+        return this.path; //sourceName;
     }
 
     /** Get starting offset of the source unit, in bytes, relative to the
