@@ -74,13 +74,6 @@
 			<artifactId>jargs</artifactId>
 			<version>1.0</version>
 		</dependency>
-		<!--  antlr -->
-		<dependency>
-			<groupId>org.antlr</groupId>
-			<artifactId>antlr-runtime</artifactId>
-			<version>3.2</version>
-			<scope>compile</scope>
-		</dependency>
 		<!--  mvel -->
 		<dependency>
 			<groupId>org.mvel</groupId>
@@ -184,49 +177,44 @@
 					</additionalClasspathElements>
 				</configuration>
 			</plugin>
-			<!-- build a UNIX classpath from the project dependencies -->
+			<!-- build classpaths from the project dependencies -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<executions>
-					<execution>
-						<id>build-unix-classpath</id>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>build-classpath</goal>
-						</goals>
-						<configuration>
-							<prefix>$JHOVE2_HOME/lib</prefix>
-							<!-- Unix uses / as file separator and : as a path separator -->
-							<pathSeparator>:</pathSeparator>
-							<fileSeparator>\/</fileSeparator>
-							<outputFilterFile>true</outputFilterFile>
-							<outputFile>${project.basedir}/src/main/assembly/classpath_sh.properties</outputFile>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<!-- build a Windows classpath from the project dependencies -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>build-windows-classpath</id>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>build-classpath</goal>
-						</goals>
-						<configuration>
-							<prefix>%JHOVE2_HOME%\lib</prefix>
-							<!-- Windows uses \ as file separator and ; as a path separator -->
-							<pathSeparator>;</pathSeparator>
-							<fileSeparator>\\</fileSeparator>
-							<outputFilterFile>true</outputFilterFile>
-							<outputFile>${project.basedir}/src/main/assembly/classpath_cmd.properties</outputFile>
-						</configuration>
-					</execution>
-				</executions>
+				<!-- build a UNIX classpath  -->
+				<execution>
+					<id>build-unix-classpath</id>
+					<phase>prepare-package</phase>
+					<goals>
+						<goal>build-classpath</goal>
+					</goals>
+					<configuration>
+						<prefix>$JHOVE2_HOME/lib</prefix>
+						<!-- Unix uses / as file separator and : as a path separator -->
+						<pathSeparator>:</pathSeparator>
+						<fileSeparator>\/</fileSeparator>
+						<outputFilterFile>true</outputFilterFile>
+						<outputFile>${project.basedir}/src/main/assembly/classpath_sh.properties</outputFile>
+					</configuration>
+				</execution>
+				<!-- build a Windows classpath  -->
+				<execution>
+					<id>build-windows-classpath</id>
+					<phase>prepare-package</phase>
+					<goals>
+						<goal>build-classpath</goal>
+					</goals>
+					<configuration>
+						<prefix>%JHOVE2_HOME%\lib</prefix>
+						<!-- Windows uses \ as file separator and ; as a path separator -->
+						<pathSeparator>;</pathSeparator>
+						<fileSeparator>\\</fileSeparator>
+						<outputFilterFile>true</outputFilterFile>
+						<outputFile>${project.basedir}/src/main/assembly/classpath_cmd.properties</outputFile>
+					</configuration>
+				</execution>
+				</executions> 
 			</plugin>
 			<!-- Replace the classpath with the content of the properties file generated above -->
 			<plugin>
@@ -310,19 +298,6 @@
 						<descriptor>src/main/assembly/jhove2_release.xml</descriptor>
 					</descriptors>
 				</configuration>
-			</plugin>
-			<!-- antlr plugin to generate java code from grammars -->
-			<plugin>
-				 <groupId>org.antlr</groupId>
-                <artifactId>antlr3-maven-plugin</artifactId>
-                <version>3.2</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>antlr</goal>
-                        </goals>
-                    </execution>
-                </executions>
 			</plugin>
 		</plugins>
 	</build>

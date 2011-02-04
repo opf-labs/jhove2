@@ -7,6 +7,7 @@
 		<format>zip</format>
 	</formats>
 	<fileSets>
+		<!--  move scripts and transforms dir into assembly -->
 		<fileSet>
 			<directory>${project.basedir}/src/main/scripts</directory>
 			<includes>
@@ -17,27 +18,25 @@
 			<outputDirectory>/</outputDirectory>
 			<fileMode>0755</fileMode>
 		</fileSet>
+		<!--  move licenses into assembly -->
 		<fileSet>
 			<directory>${project.basedir}/src/main/resources</directory>
 			<includes>
 				<include>*.txt</include>
 			</includes>
-			<outputDirectory>/</outputDirectory>
+			<outputDirectory>/licenses/</outputDirectory>
 		</fileSet>
+		<!--  move src dir, config dir and pom.xml into assembly -->
 		<fileSet>
 			<!--  move src dir and all top level files into assembly -->
 			<directory>${project.basedir}</directory>
+			<includes>
+				<include>${project.basedir}/src/**</include>
+				<include>${project.basedir}/config/**</include>
+				<include>pom.xml</include>
+			</includes>
 			<!-- exclude SVN files -->
 			<useDefaultExcludes>true</useDefaultExcludes>
-			<excludes>
-				<exclude>${project.build.directory}/**</exclude>
-				<exclude>${project.basedir}/src/main/assembly/</exclude>
-				<exclude>${project.basedir}/src/main/scripts/</exclude>
-				<exclude>.classpath</exclude>
-				<exclude>.project</exclude>
-				<exclude>.settings/**</exclude>
-				<exclude>.hgtags</exclude>
-			</excludes>
 		</fileSet>
 		<!-- add the javadoc -->
 		<fileSet>

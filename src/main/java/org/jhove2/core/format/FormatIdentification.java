@@ -120,6 +120,7 @@ public class FormatIdentification
 	/** Messages produced by the identification process. */
 	protected List<Message> messages;
 	
+	@SuppressWarnings("unused")
 	private FormatIdentification(){
 		this(null, null);
 	}

@@ -56,12 +56,12 @@
 		</property>
 		<property name="configFileName" value="DROID_config.xml"/>
 		<property name="sigFileName" value="DROID_SignatureFile_V20.xml"/>
-		<property name="wrappedProduct" ref="TestDROIDWrappedProduct"/>
+		<property name="wrappedProduct" ref="DROIDWrappedProduct"/>
 	</bean>
 	
 		
    <!-- DROID Wrapped Product bean -->
-   <bean id="TestDROIDWrappedProduct" class="org.jhove2.core.WrappedProduct" scope="singleton" >
+   <bean id="DROIDWrappedProduct" class="org.jhove2.core.WrappedProduct" scope="singleton" >
       	<property name="name" value="DROID"/>
       	<property name="version" value="4.0.0"/>
       	<property name="releaseDate" value="2009-07-23"/>
