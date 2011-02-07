@@ -4496,7 +4496,35 @@
     <constructor-arg type="org.jhove2.core.I8R$Namespace"
                      value="PUID"/>
   </bean>
-
+  
+  <bean id="JPEG2000" class="org.jhove2.core.format.Format"
+        scope="singleton">
+		<constructor-arg type="java.lang.String" value="JPEG 2000"/>
+		<constructor-arg ref="JPEG2000Identifier"/>
+    <constructor-arg type="org.jhove2.core.format.Format$Type"
+                     value="Format"/>
+    <constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
+                     value="Unambiguous"/>
+		<property name="aliasIdentifiers">
+			<set value-type="org.jhove2.core.I8R">
+				<ref bean="JPEG2000Identifier"/>
+				<ref bean="JPEG2000PUID1"/>
+			</set>
+		</property>
+	</bean>
+	<!-- JPEG2000 JHOVE2 identifier bean -->
+	<bean id="JPEG2000Identifier" class="org.jhove2.core.I8R" scope="singleton">
+    <constructor-arg type="java.lang.String"
+                     value="http://jhove2.org/terms/format/jpeg-2000"/>
+	</bean>
+	<!-- JPEG2000 PUID identifier bean -->
+	<bean id="JPEG2000PUID1" class="org.jhove2.core.I8R" scope="singleton">
+    <constructor-arg type="java.lang.String"
+                     value="x-fmt/392"/>
+    <constructor-arg type="org.jhove2.core.I8R$Namespace"
+                     value="PUID"/>
+  </bean>
+  
   <bean id="JustWriteTextDocumentFormat" class="org.jhove2.core.format.Format"
         scope="singleton">
 		<constructor-arg type="java.lang.String" value="JustWrite Text Document"/>
@@ -7940,7 +7968,91 @@
     <constructor-arg type="org.jhove2.core.I8R$Namespace"
                      value="PUID"/>
   </bean>
-
+    
+  <bean id="PortableDocumentFormat" class="org.jhove2.core.format.Format"
+        scope="singleton">
+		<constructor-arg type="java.lang.String" value="PostScript"/>
+		<constructor-arg ref="PortableDocumentFormatIdentifier"/>
+    <constructor-arg type="org.jhove2.core.format.Format$Type"
+                     value="Format"/>
+    <constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
+                     value="Unambiguous"/>
+		<property name="aliasIdentifiers">
+			<set value-type="org.jhove2.core.I8R">
+				<ref bean="PortableDocumentFormatIdentifier"/>
+				<ref bean="PortableDocumentFormatPUID1"/>
+				<ref bean="PortableDocumentFormatPUID2"/>
+				<ref bean="PortableDocumentFormatPUID3"/>
+				<ref bean="PortableDocumentFormatPUID4"/>
+				<ref bean="PortableDocumentFormatPUID5"/>
+				<ref bean="PortableDocumentFormatPUID6"/>
+				<ref bean="PortableDocumentFormatPUID7"/>
+				<ref bean="PortableDocumentFormatPUID8"/>
+			</set>
+		</property>
+	</bean>
+	<!-- Portable Document Format JHOVE2 identifier bean -->
+	<bean id="PortableDocumentFormatIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+    <constructor-arg type="java.lang.String"
+                     value="http://jhove2.org/terms/format/pdf"/>
+	</bean>
+	<!-- Portable Document Format PUID identifier bean -->
+	<bean id="PortableDocumentFormatPUID1" class="org.jhove2.core.I8R" scope="singleton">
+    <constructor-arg type="java.lang.String"
+                     value="fmt/14"/>
+    <constructor-arg type="org.jhove2.core.I8R$Namespace"
+                     value="PUID"/>
+	</bean>
+	<!-- Portable Document Format PUID identifier bean -->
+	<bean id="PortableDocumentFormatPUID2" class="org.jhove2.core.I8R" scope="singleton">
+    <constructor-arg type="java.lang.String"
+                     value="fmt/15"/>
+    <constructor-arg type="org.jhove2.core.I8R$Namespace"
+                     value="PUID"/>
+	</bean>
+	<!-- Portable Document Format PUID identifier bean -->
+	<bean id="PortableDocumentFormatPUID3" class="org.jhove2.core.I8R" scope="singleton">
+    <constructor-arg type="java.lang.String"
+                     value="fmt/16"/>
+    <constructor-arg type="org.jhove2.core.I8R$Namespace"
+                     value="PUID"/>
+	</bean>
+	<!-- Portable Document Format PUID identifier bean -->
+	<bean id="PortableDocumentFormatPUID4" class="org.jhove2.core.I8R" scope="singleton">
+    <constructor-arg type="java.lang.String"
+                     value="fmt/17"/>
+    <constructor-arg type="org.jhove2.core.I8R$Namespace"
+                     value="PUID"/>
+    </bean>
+	<!-- Portable Document Format PUID identifier bean -->
+	<bean id="PortableDocumentFormatPUID5" class="org.jhove2.core.I8R" scope="singleton">
+    <constructor-arg type="java.lang.String"
+                     value="fmt/18"/>
+    <constructor-arg type="org.jhove2.core.I8R$Namespace"
+                     value="PUID"/>
+    </bean>
+	<!-- Portable Document Format PUID identifier bean -->
+	<bean id="PortableDocumentFormatPUID6" class="org.jhove2.core.I8R" scope="singleton">
+    <constructor-arg type="java.lang.String"
+                     value="fmt/19"/>
+    <constructor-arg type="org.jhove2.core.I8R$Namespace"
+                     value="PUID"/>
+    </bean>
+	<!-- Portable Document Format PUID identifier bean -->
+	<bean id="PortableDocumentFormatPUID7" class="org.jhove2.core.I8R" scope="singleton">
+    <constructor-arg type="java.lang.String"
+                     value="fmt/20"/>
+    <constructor-arg type="org.jhove2.core.I8R$Namespace"
+                     value="PUID"/>
+    </bean>
+	<!-- Portable Document Format PUID identifier bean -->
+	<bean id="PortableDocumentFormatPUID8" class="org.jhove2.core.I8R" scope="singleton">
+    <constructor-arg type="java.lang.String"
+                     value="fmt/95"/>
+    <constructor-arg type="org.jhove2.core.I8R$Namespace"
+                     value="PUID"/>
+  </bean>
+  
   <bean id="PortableNetworkGraphicsFormat" class="org.jhove2.core.format.Format"
         scope="singleton">
 		<constructor-arg type="java.lang.String" value="Portable Network Graphics"/>
