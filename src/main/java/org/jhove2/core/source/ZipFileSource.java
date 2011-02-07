@@ -36,14 +36,18 @@
 
 package org.jhove2.core.source;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.ByteOrder;
 import java.util.Date;
 import java.util.zip.ZipEntry;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.Digest;
 import org.jhove2.core.JHOVE2;
+import org.jhove2.core.io.Input;
+import org.jhove2.core.io.InputFactory;
 import org.jhove2.module.digest.AbstractArrayDigester;
 import org.jhove2.module.digest.CRC32Digester;
 
@@ -112,6 +116,20 @@ public class ZipFileSource
 		this.crc = entry.getCrc();
 		this.crc32 = new Digest(AbstractArrayDigester.toHexString(this.crc), CRC32Digester.ALGORITHM);
 		this.comment = entry.getComment();
+		
+		/* This is a temporary fix.  We need to keep the temporary backing
+		 * files for Zip components in case we need to later get an
+		 * {@link java.io.InputStream} on the component
+		 * (Source.getInputStream()) to pass to a third-party package that
+		 * doesn't support {@link org.jhove2.core.io.Input}s.
+		 * 
+		 * Note that the temporary files will accumulate in the temporary
+		 * directory after termination.
+		 * 
+		 * TODO: Find a better mechanism for dealing with this problem
+		 * in the recursive processing model.
+		 */
+		this.deleteOnClose = false;
 	}
 
 	/**
@@ -152,6 +170,37 @@ public class ZipFileSource
         return this.endingOffset;
     }
 
+    /**
+     * Create and get {@link org.jhove2.core.io.Input} for the source unit. Concrete
+     * classes extending this abstract class must provide an implementation of
+     * this method if they are are based on parsable input. Classes without
+     * parsable input (e.g. {@link org.jhove2.core.source.ClumpSource} or
+     * {@link org.jhove2.core.source.DirectorySource} can let this inherited
+     * method return null.
+     * 
+     * TODO: This override is only necessary to set the Input delete-on-close
+     * flag to the the Source flag.  Once we have a better way to maintain the
+     * temporary files for Zip components, this method can be removed.
+     * 
+     * @param jhove2 JHOVE2 framework object
+     * @param order
+     *            Byte order
+     * @return null
+     * @throws FileNotFoundException
+     *             File not found
+     * @throws IOException
+     *             I/O exception getting input
+     */
+    @Override
+    public Input getInput(JHOVE2 jhove2, ByteOrder order)
+        throws FileNotFoundException, IOException
+    {
+        Input input = InputFactory.getInput(jhove2, this.file, this.isTemp, order);
+        /* Set the Input delete-on-close flag to the Source flag. */
+        input.setDeleteTempOnClose(this.deleteOnClose);
+        return input;
+    }
+    
 	/**
 	 * Get Zip file last modified date.
 	 * 

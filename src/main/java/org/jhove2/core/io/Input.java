@@ -231,6 +231,14 @@ public interface Input  {
 	 */
 	public void setByteOrder(ByteOrder order);
 
+    /**
+     * Set temporary file deletion flag; if true, delete on close.
+     * 
+     * @param flag
+     *            Delete temporary files flag
+     */
+    public void setDeleteTempOnClose(boolean flag);
+
 	/**
 	 * Set current position, as a byte offset.
 	 * 

@@ -782,7 +782,19 @@ public abstract class AbstractInput
 		this.buffer.order(order);
 		this.byteOrder = this.buffer.order();
 	}
-
+    
+    /**
+     * Set delete temporary files flag; if true, delete files.
+     * 
+     * @param flag
+     *            Delete temporary files flag
+     * @see org.jhove2.core.io.Input#setDeleteTempOnClose()
+     */
+	@Override
+    public void setDeleteTempOnClose(boolean flag) {
+        this.deleteOnClose = flag;
+    }
+    
 	/**
 	 * Set the current position, as a byte offset
 	 * 
