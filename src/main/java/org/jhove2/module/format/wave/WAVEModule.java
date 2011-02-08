@@ -38,8 +38,11 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
@@ -90,6 +93,14 @@ public class WAVEModule
     /** WAVE validation status. */
     protected Validity isValid;
     
+    /** Duplicate chunk message. */
+    protected Message duplicateChunkMessage;
+    
+    /** File truncated message: the RIFF chunk size is greater than the file
+     * size.
+     */
+    protected Message fileTruncatedMessage;
+    
     /** Format chunk not before data chunk message. */
     protected Message formatChunkNotBeforeDataChunkMessage;
     
@@ -101,6 +112,12 @@ public class WAVEModule
     
     /** Missing required format chunk message. */
     protected Message missingRequiredFormatChunkMessage;
+    
+    /** RIFF chunk size smaller than file size message.
+     * This is considered an error according to the US Federal Agencies
+     * Digitization Guidelines Initiative (FADGI).
+     */
+    protected Message riffChunkSmallerThanFileMessage;
 
     /** Instantiate a new <code>WAVEModule</code>.
      * @param format WAVE format
@@ -167,6 +184,10 @@ public class WAVEModule
     public Validity validate(JHOVE2 jhove2, Source source, Input input)
         throws JHOVE2Exception
     {
+        /* Only FILR, FLLR, PAD_, JUNK, and JUNQ chunks can have more than 
+         * one instance.
+         */
+        Map<String, Integer> map = new HashMap<String, Integer>();
         /* A valid WAVE must have a format chunk followed by a data chunk.
          */
         Iterator<Chunk> it = this.chunks.iterator();
@@ -174,6 +195,9 @@ public class WAVEModule
             Chunk ch = it.next();
             String id = ch.getIdentifier();
             if (id.equals("RIFF")) {
+                Integer c = map.get(id);
+                int ct = (c == null ? 0 : c.intValue());
+                map.put(id, ct+1);
                 int     formatCategory = 0; 
                 boolean hasDataChunk   = false;
                 boolean hasFactChunk   = false;
@@ -184,6 +208,9 @@ public class WAVEModule
                 while (iter.hasNext()) {
                     Chunk chunk = iter.next();
                     id = chunk.getIdentifier();
+                    c = map.get(id);
+                    ct = (c == null ? 0 : c.intValue());
+                    map.put(id, ct+1);
                     if (id.equals("data")) {
                         hasDataChunk = true;
                         
@@ -204,6 +231,33 @@ public class WAVEModule
                         
                         formatCategory =
                             ((FormatChunk) chunk).getFormatCategory_raw();
+                    }
+                    
+                    /* Check if RIFF chunk size (+8 to account for the ID and
+                     * size fields) is equal to file size.
+                     */
+                    long chunkSize = ch.getSize();
+                    long fileSize  = ((MensurableSource) source).getSize();
+                    if ((chunkSize+8) < fileSize) {
+                        this.isValid = Validity.False;
+                        Object [] a = new Object [] {chunkSize, fileSize};
+                        this.riffChunkSmallerThanFileMessage =
+                            new Message(Severity.ERROR, Context.OBJECT,
+                                    "org.jhove2.module.format.wave.WaveModule.riffChunkSmallerThanFile",
+                                    a, jhove2.getConfigInfo());
+                    }
+                    
+                    /* Check if the file has been truncated, i.e. the RIFF
+                     * chunk size is greater than the file size.
+                     */
+                    if ((chunkSize+8) > fileSize) {
+                        this.isValid = Validity.False;
+                        Object [] a = new Object [] {chunkSize, fileSize};
+                        this.fileTruncatedMessage =
+                            new Message(Severity.ERROR, Context.OBJECT,
+                                    "org.jhove2.module.format.wave.WaveModule.fileTruncated",
+                                    a, jhove2.getConfigInfo());
+                            
                     }
                 }
                 /* Format and data chunks are required. */
@@ -234,6 +288,23 @@ public class WAVEModule
                 break;
             }
         }
+        Set<String> keys = map.keySet();
+        Iterator<String> iter = keys.iterator();
+        while (iter.hasNext()) {
+            String key = iter.next();
+            int ct = map.get(key);
+            if (ct > 1 && !key.equals("FILR") && !key.equals("FLLR") &&
+                          !key.equals("PAD_") && !key.equals("JUNK") &&
+                          !key.equals("JUNQ")) {
+                this.isValid = Validity.False;
+                Object [] args = new Object [] {key};
+                this.duplicateChunkMessage =
+                    new Message(Severity.ERROR, Context.OBJECT,
+                            "org.jhove2.module.format.wave.WaveModule.duplicateChunk",
+                            args, jhove2.getConfigInfo());
+            }
+        }
+        
         return this.isValid();
     }
     
@@ -260,8 +331,24 @@ public class WAVEModule
     public Coverage getCoverage()
     {
         return COVERAGE;
+    }   
+      
+    /** Get duplicate chunk message.
+     * @return Duplicate chunk message
+     */
+    @ReportableProperty(order=27, value="Duplicate chunk message.")
+    public Message getDuplicateChunkMessage() {
+        return this.duplicateChunkMessage;
     }
     
+    /** Get file truncated message.
+     * @return File truncated message
+     */
+    @ReportableProperty(order=26, value="File truncated message.")
+    public Message getFileTruncatedMessage() {
+        return this.fileTruncatedMessage;
+    }
+        
     /** Get format chunk not before data chunk message.
      * @return Format chunk not before data chunk message
      */
@@ -290,8 +377,16 @@ public class WAVEModule
      * @return Missing required format chunk message
      */
     @ReportableProperty(order=22, value="Missing required format chunk message.")
-    public Message GetMissingRequiredFormatChunkMessage() {
+    public Message getMissingRequiredFormatChunkMessage() {
         return this.missingRequiredFormatChunkMessage;
+    }
+    
+    /** Get RIFF chunk smaller than file size message.
+     * @return RIFF chunk smaller than file size message
+     */
+    @ReportableProperty(order=25, value="RIFF chunk smaller than file size message.")
+    public Message getRIFFChunkSmallerThanFileMessage() {
+        return this.riffChunkSmallerThanFileMessage;
     }
 
     /** Get validation status.
