@@ -213,10 +213,10 @@ public class IFDEntry
     private Message invalidDateTimeFormatMessage;
 
     /** invalid tilewidth not multiple of 16 message */
-    private Message tileWidthNotMultipleof16Message;
+    private Message tileWidthNotMultipleOf16Message;
 
     /** invalid tile length not multiple of 16 message */
-    private Message tileLengthNotMultipleof16Message;
+    private Message tileLengthNotMultipleOf16Message;
 
     @ReportableProperty(order=6, value = "Entry value/offset.")
     public long getValueOffset() {
@@ -585,7 +585,7 @@ public class IFDEntry
             if (tileLength%16 > 0) {
                 this.isValid = Validity.False;
                 Object[]messageArgs = new Object[] {this.tag, this.valueOffset};
-                this.tileLengthNotMultipleof16Message = (new Message(Severity.WARNING,
+                this.tileLengthNotMultipleOf16Message = (new Message(Severity.WARNING,
                         Context.OBJECT,
                         "org.jhove2.module.format.tiff.IFDEntry.tileLengthNotMultipleof16Message",
                         messageArgs, jhove2.getConfigInfo()));  
@@ -601,7 +601,7 @@ public class IFDEntry
             if (tileWidth%16 > 0) {
                 this.isValid = Validity.False;
                 Object[]messageArgs = new Object[] {this.tag, this.valueOffset};
-                this.tileWidthNotMultipleof16Message = (new Message(Severity.WARNING,
+                this.tileWidthNotMultipleOf16Message = (new Message(Severity.WARNING,
                         Context.OBJECT,
                         "org.jhove2.module.format.tiff.IFDEntry.tileWidthNotMultipleof16Message",
                         messageArgs, jhove2.getConfigInfo()));  
@@ -1073,7 +1073,7 @@ public class IFDEntry
      */
     @ReportableProperty(order = 16, value = "TileWidth not multiple of 16 message.")
     public Message getTileWidthNotMultipleOf16Message() {
-        return this.tileWidthNotMultipleof16Message;
+        return this.tileWidthNotMultipleOf16Message;
     }
 
     /**
@@ -1081,7 +1081,7 @@ public class IFDEntry
      */
     @ReportableProperty(order = 17, value = "TileLength not multiple of 16 message.")
     public Message getTileLengthNotMultipleOf16Message() {
-        return this.tileLengthNotMultipleof16Message;
+        return this.tileLengthNotMultipleOf16Message;
     }
 
     @ReportableProperty(order=7, value="Compression Scheme in descriptive form.",
