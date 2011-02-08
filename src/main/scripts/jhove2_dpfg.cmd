@@ -16,4 +16,4 @@ setlocal enableextensions
 
 call env
 
-%JAVA% -cp %CP% org.jhove2.app.util.DisplayerPropertyFileGenerator %*
+%JAVA% -cp "%CP%" org.jhove2.app.util.DisplayerPropertyFileGenerator %*

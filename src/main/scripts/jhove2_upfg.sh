@@ -15,4 +15,4 @@
 
 . ./env.sh
 
-${JAVA} -cp $CP org.jhove2.app.util.UnitsPropertyFileGenerator $@
+${JAVA} -cp "$CP" org.jhove2.app.util.UnitsPropertyFileGenerator $@

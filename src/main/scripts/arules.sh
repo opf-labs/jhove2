@@ -12,4 +12,4 @@
 
 . ./env.sh 
 
-${JAVA} -cp $CP org.jhove2.app.util.ARules $@
+${JAVA} -cp "$CP" org.jhove2.app.util.ARules $@
