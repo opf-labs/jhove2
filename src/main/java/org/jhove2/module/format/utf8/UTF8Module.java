@@ -49,10 +49,8 @@ import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
 import org.jhove2.core.io.Input;
-import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.MeasurableSource;
 import org.jhove2.core.source.Source;
-import org.jhove2.core.source.ZipFileSource;
 import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.module.format.Validator;
 import org.jhove2.module.format.utf8.unicode.C0Control;
@@ -174,14 +172,8 @@ public class UTF8Module
 		this.isValid = Validity.Undetermined;
 		int numErrors = 0;
 
-		long start = ((MeasurableSource) source).getStartingOffset();
-		long end = 0L;
-		if (source instanceof FileSource) {
-		    end = ((FileSource) source).getSize();
-		}
-		else if (source instanceof ZipFileSource) {
-		    end = ((ZipFileSource) source).getSize();
-		}
+		long start =         ((MeasurableSource) source).getStartingOffset();
+		long end   = start + ((MeasurableSource) source).getSize();
 		input.setPosition(start);
 
 		EOL eol = null;
