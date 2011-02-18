@@ -48,7 +48,7 @@ import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
-import org.jhove2.core.source.MensurableSource;
+import org.jhove2.core.source.MeasurableSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.Parser;
 import org.jhove2.module.format.Validator.Validity;
@@ -121,7 +121,7 @@ public class MultiLocalizedUnicodeType
         int  numErrors = 0;
         this.isValid   = Validity.True;
         long position  = input.getPosition();
-        long start     = ((MensurableSource) source).getStartingOffset();
+        long start     = ((MeasurableSource) source).getStartingOffset();
   
         /* Tag signature. */
         for (int i=0; i<4; i++) {

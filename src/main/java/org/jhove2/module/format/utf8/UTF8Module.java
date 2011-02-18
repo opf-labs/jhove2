@@ -50,7 +50,7 @@ import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.FileSource;
-import org.jhove2.core.source.MensurableSource;
+import org.jhove2.core.source.MeasurableSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.ZipFileSource;
 import org.jhove2.module.format.BaseFormatModule;
@@ -174,7 +174,7 @@ public class UTF8Module
 		this.isValid = Validity.Undetermined;
 		int numErrors = 0;
 
-		long start = ((MensurableSource) source).getStartingOffset();
+		long start = ((MeasurableSource) source).getStartingOffset();
 		long end = 0L;
 		if (source instanceof FileSource) {
 		    end = ((FileSource) source).getSize();

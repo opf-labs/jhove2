@@ -10,7 +10,7 @@ import org.jhove2.annotation.ReportableProperty;
  * 
  * @author slabrams
  */
-public interface MensurableSource
+public interface MeasurableSource
     extends Source
 {
     /** Get ending offset of the source unit, in bytes, relative to the

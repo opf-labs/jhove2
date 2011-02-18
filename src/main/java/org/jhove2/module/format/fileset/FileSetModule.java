@@ -141,7 +141,7 @@ public class FileSetModule
 			        else if (!fs.isReadable()) {
 			            source=source.addMessage(new Message(Severity.ERROR,
                             Context.PROCESS,
-                            "org.jhove2.core.source.FileSysttemSource.FileNotReadableMessage",
+                            "org.jhove2.core.source.FileSystemSource.FileNotReadableMessage",
                             new Object[]{name}, jhove2.getConfigInfo()));
 			            continue;
 			        }

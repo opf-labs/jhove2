@@ -44,7 +44,7 @@ import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.format.Format;
 import org.jhove2.core.io.Input;
-import org.jhove2.core.source.MensurableSource;
+import org.jhove2.core.source.MeasurableSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.module.format.Validator;
@@ -126,7 +126,7 @@ public class ICCModule
         long consumed = 0L;
         this.isValid = Validity.True;
         input.setByteOrder(ByteOrder.BIG_ENDIAN);
-        input.setPosition(((MensurableSource) source).getStartingOffset());
+        input.setPosition(((MeasurableSource) source).getStartingOffset());
         long start = 0L;
         if ((start = input.getPosition()) == 0) {
             input.setPosition(0L);

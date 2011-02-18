@@ -56,7 +56,7 @@ import com.sleepycat.persist.model.Persistent;
 @Persistent
 public class FileSource
 	extends AbstractSource
-	implements MensurableSource, FileSystemSource  
+	implements MeasurableSource, FileSystemSource  
 {
     /** Ending offset, in bytes, relative to the parent source.  If there is
      * no parent, the ending offset is the size.
@@ -147,6 +147,9 @@ public class FileSource
 		}
 		this.startingOffset = 0L;
 		this.endingOffset = this.size;
+        if (this.size > 0L) {
+            this.endingOffset--;
+        }
 	}
 
     /** Get ending offset of the source unit, in bytes, relative to the

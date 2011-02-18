@@ -49,7 +49,7 @@ import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
 import org.jhove2.core.io.Input;
-import org.jhove2.core.source.MensurableSource;
+import org.jhove2.core.source.MeasurableSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.module.format.Validator;
@@ -460,7 +460,7 @@ public class XmlModule
          * Do a separate parse of the XML Declaration at the start of the
          * document
          */
-        long start = ((MensurableSource) source).getStartingOffset();
+        long start = ((MeasurableSource) source).getStartingOffset();
         input.setPosition(start);
         xmlDeclaration.parse(input);
 

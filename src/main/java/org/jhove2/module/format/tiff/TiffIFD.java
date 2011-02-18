@@ -45,7 +45,7 @@ import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
-import org.jhove2.core.source.MensurableSource;
+import org.jhove2.core.source.MeasurableSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.Validator.Validity;
 import org.jhove2.module.format.tiff.type.Byte;
@@ -477,7 +477,7 @@ extends IFD
                         args, jhove2.getConfigInfo());                   
             }
 
-            long fileLength = ((MensurableSource) source).getSize();
+            long fileLength = ((MeasurableSource) source).getSize();
             for (int i=0; i<length; i++) {
                 long offset = stripOffsets[i];
                 long count = stripByteCounts[i];

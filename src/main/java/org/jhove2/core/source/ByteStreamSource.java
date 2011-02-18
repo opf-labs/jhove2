@@ -56,7 +56,7 @@ import com.sleepycat.persist.model.Persistent;
 @Persistent
 public class ByteStreamSource
     extends AbstractSource
-    implements MensurableSource
+    implements MeasurableSource
 {
     /** Temporary backing file that is an appropriate subset of the parent
      * source's backing file; not created unless it is actually requested.
@@ -115,6 +115,9 @@ public class ByteStreamSource
         this.size           = size;
         this.startingOffset = offset;
         this.endingOffset   = offset + size;
+        if (size > 0L) {
+            this.endingOffset--;
+        }
         this.name           = name;
         this.backingFile    = null;
         
@@ -126,7 +129,7 @@ public class ByteStreamSource
         this.tmpPrefix     = inv.getTempPrefix();
         this.tmpSuffix     = inv.getTempSuffix();
         this.bufferSize    = inv.getBufferSize();
-        this.deleteOnClose = inv.getDeleteTempFiles();
+        this.deleteTempFileOnClose = inv.getDeleteTempFiles();
         
         /* Make this byte stream a child of its parent. */
         this.setSourceAccessor(sourceFactory.createSourceAccessor(this));
@@ -141,7 +144,7 @@ public class ByteStreamSource
     @Override
     public void close() {
         super.close();
-        if (this.backingFile != null && this.deleteOnClose) {
+        if (this.backingFile != null && this.deleteTempFileOnClose) {
             this.backingFile.delete();
             this.backingFile = null;
         }

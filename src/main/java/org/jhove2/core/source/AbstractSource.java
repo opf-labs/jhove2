@@ -101,11 +101,7 @@ public abstract class AbstractSource
 	protected static Set<String> moduleIDs = new HashSet<String>();
 
 	/** Temporary file deletion flag; if true, delete on close. */
-	protected boolean deleteOnClose;
-	   
-    /** Ending offset, in bytes, relative to the underlying
-     * {@link org.jhove2.core.io.Input}. */
-    protected long endingOffset;
+	protected boolean deleteTempFileOnClose;
     
 	/** Source unit backing file. This may be an actual file system
 	 * file or a temporary file created from an {@link java.io.InputStream}.
@@ -141,7 +137,7 @@ public abstract class AbstractSource
 	 * Instantiate a new <code>AbstractSource</code>.
 	 */
 	protected AbstractSource() {       
-        this.deleteOnClose   = Invocation.DEFAULT_DELETE_TEMP_FILES;
+        this.deleteTempFileOnClose   = Invocation.DEFAULT_DELETE_TEMP_FILES;
 		this.isAggregate     = false;
         this.isTemp          = false;
 		this.messages        = new ArrayList<Message>();		
@@ -179,7 +175,7 @@ public abstract class AbstractSource
 		                           inv.getTempPrefix(), inv.getTempSuffix(),
 		                           inv.getBufferSize());
 		this.isTemp = true;
-		this.deleteOnClose = inv.getDeleteTempFiles();
+		this.deleteTempFileOnClose = inv.getDeleteTempFiles();
 	}
 
 	/**
@@ -400,11 +396,11 @@ public abstract class AbstractSource
 	 * Get delete temporary files flag; if true, delete files.
 	 * 
 	 * @return Delete temporary files flag
-	 * @see org.jhove2.core.source.Source#getDeleteTempOnClose()
+	 * @see org.jhove2.core.source.Source#getDeleteTempFileOnClose()
 	 */
 	@Override
-	public boolean getDeleteTempOnClose() {
-		return this.deleteOnClose;
+	public boolean getDeleteTempFileOnClose() {
+		return this.deleteTempFileOnClose;
 	}
 
 	/**
@@ -625,7 +621,7 @@ public abstract class AbstractSource
 	public Source setDeleteTempOnClose(boolean flag)
 	    throws JHOVE2Exception
 	{
-		this.deleteOnClose = flag;
+		this.deleteTempFileOnClose = flag;
 		return this.getSourceAccessor().persistSource(this);
 	}
     

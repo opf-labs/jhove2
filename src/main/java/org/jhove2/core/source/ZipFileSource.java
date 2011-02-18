@@ -61,7 +61,7 @@ import com.sleepycat.persist.model.Persistent;
 @Persistent
 public class ZipFileSource
     extends AbstractSource
-    implements MensurableSource, NamedSource
+    implements MeasurableSource, NamedSource
 {
 	/** CRC message digest value recorded in the ZipEntry. */
 	protected long crc;
@@ -116,6 +116,11 @@ public class ZipFileSource
 		this.crc = entry.getCrc();
 		this.crc32 = new Digest(AbstractArrayDigester.toHexString(this.crc), CRC32Digester.ALGORITHM);
 		this.comment = entry.getComment();
+		this.startingOffset = 0L;
+		this.endingOffset   = this.size;
+        if (this.size > 0L) {
+            this.endingOffset--;
+        }
 		
 		/* This is a temporary fix.  We need to keep the temporary backing
 		 * files for Zip components in case we need to later get an
@@ -129,7 +134,7 @@ public class ZipFileSource
 		 * TODO: Find a better mechanism for dealing with this problem
 		 * in the recursive processing model.
 		 */
-		this.deleteOnClose = false;
+		this.deleteTempFileOnClose = false;
 	}
 
 	/**
@@ -197,7 +202,7 @@ public class ZipFileSource
     {
         Input input = InputFactory.getInput(jhove2, this.file, this.isTemp, order);
         /* Set the Input delete-on-close flag to the Source flag. */
-        input.setDeleteTempOnClose(this.deleteOnClose);
+        input.setDeleteTempOnClose(this.deleteTempFileOnClose);
         return input;
     }
     

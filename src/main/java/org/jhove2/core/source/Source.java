@@ -140,7 +140,7 @@ public interface Source
 	 * 
 	 * @return Deletion flag
 	 */
-	public boolean getDeleteTempOnClose();
+	public boolean getDeleteTempFileOnClose();
 	   
     /**
      * Get {@link java.io.File} backing the source unit.

@@ -53,17 +53,14 @@ import com.sleepycat.persist.model.Persistent;
 @Persistent
 public class URLSource
     extends AbstractSource
-    implements MensurableSource, NamedSource
+    implements MeasurableSource, NamedSource
 {
     /** Ending offset, in bytes, relative to the
      * parent source.  If there is no parent, the ending offset is the
      * size.
      */
     protected long endingOffset;
-    
-    /** URL source name. */
-    //protected String sourceName;
-
+ 
     /** File size, in bytes. */
     protected long size;
  
@@ -93,6 +90,9 @@ public class URLSource
         this.size = this.file.length();
         this.startingOffset = 0L;
         this.endingOffset   = this.size;
+        if (this.size > 0L) {
+            this.endingOffset--;
+        }
 	}
 
 	/** Get the trailing part of the URL path.

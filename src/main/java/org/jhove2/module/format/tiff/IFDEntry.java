@@ -55,7 +55,7 @@ import org.jhove2.core.format.FormatIdentification.Confidence;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
 import org.jhove2.core.source.ByteStreamSource;
-import org.jhove2.core.source.MensurableSource;
+import org.jhove2.core.source.MeasurableSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.Validator.Validity;
 import org.jhove2.module.format.tiff.type.Ascii;
@@ -288,7 +288,7 @@ public class IFDEntry
             
             if (calcValueSize(this.type, this.count) > 4) {
                 /* the value read is the offset to the value */
-                long size = ((MensurableSource) source).getSize();
+                long size = ((MeasurableSource) source).getSize();
 
                 /* test that the value offset is within the file */
                 if (value > size) {
