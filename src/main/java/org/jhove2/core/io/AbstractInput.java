@@ -141,7 +141,7 @@ public abstract class AbstractInput
         this.byteOrder = order;   
         Invocation inv = jhove2.getInvocation();
         this.maxBufferSize = inv.getBufferSize();
-	    this.deleteOnClose = inv.getDeleteTempFiles();
+	    this.deleteOnClose = inv.getDeleteTempFilesOnClose();
 	    if (!file.isDirectory()) {
 	        this.stream = new BufferedInputStream(new FileInputStream(file),
 	                                              this.maxBufferSize);

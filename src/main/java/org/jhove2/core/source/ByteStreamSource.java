@@ -129,7 +129,7 @@ public class ByteStreamSource
         this.tmpPrefix     = inv.getTempPrefix();
         this.tmpSuffix     = inv.getTempSuffix();
         this.bufferSize    = inv.getBufferSize();
-        this.deleteTempFileOnClose = inv.getDeleteTempFiles();
+        this.deleteTempFileOnClose = inv.getDeleteTempFilesOnClose();
         
         /* Make this byte stream a child of its parent. */
         this.setSourceAccessor(sourceFactory.createSourceAccessor(this));

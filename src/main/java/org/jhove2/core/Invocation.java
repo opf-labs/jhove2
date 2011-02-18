@@ -67,7 +67,7 @@ public class Invocation
 	public static final int DEFAULT_FAIL_FAST_LIMIT = 0;
 
 	/** Default delete temporary files flag: delete files. */
-	public static final boolean DEFAULT_DELETE_TEMP_FILES = true;
+	public static final boolean DEFAULT_DELETE_TEMP_FILES_ON_CLOSE = true;
 
 	/** Default message digests flag: don't calculate digests. */
 	public static final boolean DEFAULT_CALC_DIGESTS = false;
@@ -88,7 +88,7 @@ public class Invocation
 	protected boolean calcDigests;
 
 	/** Delete temporary files flag: if true, delete temporary files. */
-	protected boolean deleteTempFiles;
+	protected boolean deleteTempFilesOnClose;
 
     /**
      * Framework fail fast limit. Processing of a given source unit is
@@ -130,7 +130,7 @@ public class Invocation
 		this.bufferSize       = DEFAULT_BUFFER_SIZE;
 		this.bufferType       = DEFAULT_BUFFER_TYPE;
 		this.calcDigests      = DEFAULT_CALC_DIGESTS;
-		this.deleteTempFiles  = DEFAULT_DELETE_TEMP_FILES;
+		this.deleteTempFilesOnClose  = DEFAULT_DELETE_TEMP_FILES_ON_CLOSE;
 		this.tempPrefix       = DEFAULT_TEMP_PREFIX;
 		this.tempSuffix       = DEFAULT_TEMP_SUFFIX;
 		this.failFastLimit    = DEFAULT_FAIL_FAST_LIMIT;	
@@ -174,8 +174,8 @@ public class Invocation
 	 */
 	@ReportableProperty(order = 7, value="Temporary file deletion flag; if" +
 			"true, delete temporary files.")
-	public boolean getDeleteTempFiles() {
-		return this.deleteTempFiles;
+	public boolean getDeleteTempFilesOnClose() {
+		return this.deleteTempFilesOnClose;
 	}
 	
 	/**
@@ -185,7 +185,11 @@ public class Invocation
 	 * 
 	 * @return Fail fast limit
 	 */
+/* TODO: Fail fast processing is not yet enabled. Keep the method, but do not
+ * make it a reportable property. */
+/*****************************************************************************
 	@ReportableProperty(order = 8, value = "Fail fast limit.")
+ *****************************************************************************/
 	public int getFailFastLimit() {
 		return this.failFastLimit;
 	}
@@ -280,7 +284,7 @@ public class Invocation
 	 *                        temporary files
 	 */
 	public void setDeleteTempFiles(boolean deleteTempFiles) {
-		this.deleteTempFiles = deleteTempFiles;
+		this.deleteTempFilesOnClose = deleteTempFiles;
 	}
 	
 	/**

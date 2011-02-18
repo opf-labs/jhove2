@@ -284,11 +284,14 @@ extends AbstractApplication
 			parser.addHelp(parser.addStringOption('d', "display"), 
 					displayerValues.toString(),
 			"Display format");
+/************** TODO: Fail fast processing is not yet enable. ****************/
+/*****************************************************************************
 		Parser.Option failFastLimitO =
 			parser.addHelp(parser.addIntegerOption('f', "fail-fast"), 
 					"<failFastLimit>",
 					"Fail fast limit (default=0; " +
 			"no limit on the number of reported errors)");
+ *****************************************************************************/
 		Parser.Option tempDirectoryO =
 			parser.addHelp(parser.addStringOption('t', "temp"), 
 					"<tempDirectory>",
@@ -354,9 +357,12 @@ extends AbstractApplication
 			config.setBufferSize(bufferSize.intValue());
 		}
 		// bufferTypeO and displayerTypeO already used above to set config.BufferType and this.Displayer
+/************* TODO: Fail fast processing is not yet enabled. ****************/
+/*****************************************************************************
 		if ((failFastLimit = (Integer)parser.getOptionValue(failFastLimitO)) != null) {
 			config.setFailFastLimit(failFastLimit.intValue());
 		}
+ *****************************************************************************/
 		/* Displayer will have been set either to Default displayer by constructor,
 		 * or to some other displayer by the handling of the displayerType0 option above */
 		Displayer displayer = this.getDisplayer();

@@ -329,7 +329,7 @@ public class OpenSpWrapper implements SgmlParser {
 			sgmlModule.getSgmlParserErrorMessages().add(message);
 			continue;				
 			}
-			if (jhove2.getInvocation().getDeleteTempFiles()){
+			if (jhove2.getInvocation().getDeleteTempFilesOnClose()){
 				try {
 					this.tempFilePaths.add(tempOutFile.getCanonicalPath());
 				}
@@ -360,7 +360,7 @@ public class OpenSpWrapper implements SgmlParser {
 				sgmlModule.getSgmlParserErrorMessages().add(message);
 				continue;
 			}
-			if (jhove2.getInvocation().getDeleteTempFiles()){
+			if (jhove2.getInvocation().getDeleteTempFilesOnClose()){
 				try {
 					this.tempFilePaths.add(tempOutFile.getCanonicalPath());
 				}
@@ -390,7 +390,7 @@ public class OpenSpWrapper implements SgmlParser {
 				sgmlModule.getSgmlParserErrorMessages().add(message);
 				continue;
 			}
-			if (jhove2.getInvocation().getDeleteTempFiles()){
+			if (jhove2.getInvocation().getDeleteTempFilesOnClose()){
 				try {
 					this.tempFilePaths.add(tempOutFile.getCanonicalPath());
 				}

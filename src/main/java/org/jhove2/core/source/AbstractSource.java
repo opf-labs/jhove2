@@ -137,7 +137,7 @@ public abstract class AbstractSource
 	 * Instantiate a new <code>AbstractSource</code>.
 	 */
 	protected AbstractSource() {       
-        this.deleteTempFileOnClose   = Invocation.DEFAULT_DELETE_TEMP_FILES;
+        this.deleteTempFileOnClose   = Invocation.DEFAULT_DELETE_TEMP_FILES_ON_CLOSE;
 		this.isAggregate     = false;
         this.isTemp          = false;
 		this.messages        = new ArrayList<Message>();		
@@ -175,7 +175,7 @@ public abstract class AbstractSource
 		                           inv.getTempPrefix(), inv.getTempSuffix(),
 		                           inv.getBufferSize());
 		this.isTemp = true;
-		this.deleteTempFileOnClose = inv.getDeleteTempFiles();
+		this.deleteTempFileOnClose = inv.getDeleteTempFilesOnClose();
 	}
 
 	/**
