@@ -153,7 +153,7 @@ public interface Source
      * Get little-endian {@link org.jhove2.core.io.Input} for the source unit
      * with the buffer size and type specified by the
      * {@link org.jhove2.core.Invocation}.
-     * If this method is called explicitly, then the corresponding close()
+     * If this method is called explicitly, then the corresponding Input.close()
      * method must be called to avoid a resource leak.
      * @param jhove2 JHOVE2 framework
      * @return Input for the source unit
@@ -164,9 +164,8 @@ public interface Source
     /**
      * Get {@link org.jhove2.core.io.Input} for the source unit with the 
      * buffer size and type specified by the {@link org.jhove2.core.Invocation}.
-     * If this method is called explicitly and the source unit is not
-     * processed by the JHOVE2.characterize() method, then the corresponding
-     * close() method must be called to avoid a resource leak.
+     * If this method is called explicitly, then the corresponding
+     * Input.close() method must be called to avoid a resource leak.
      * @param jhove2 JHOVE2 framework
      * @param order  Byte order
      * @return Input for the source unit
@@ -176,6 +175,8 @@ public interface Source
   
 	/**
 	 * Get {@link java.io.InputStream} for the file backing the source unit.
+     * If this method is called explicitly, then the corresponding
+     * InputStream.close() method must be called to avoid a resource leak. 
 	 * 
 	 * @return Input stream for the file backing the source unit, or null if
 	 *         a Clump, Directory, or FileSet source

@@ -58,10 +58,11 @@ public class ByteStreamSource
     extends AbstractSource
     implements MeasurableSource
 {
-    /** Temporary backing file that is an appropriate subset of the parent
-     * source's backing file; not created unless it is actually requested.
+    /** The backing file of the parent source unit.  If parent is itself a
+     * ByteStreamSource, then the backing file of the parent's parent, and
+     * so on.
      */
-    protected File backingFile;
+    protected File parentFile;
      
     /** Buffer size (for creating temporary file). */
     protected int bufferSize;
@@ -110,8 +111,12 @@ public class ByteStreamSource
         throws IOException, JHOVE2Exception
     {
         super();
-        this.file           = parent.getFile();
-        this.isTemp         = parent.isTemp();
+        if (parent instanceof ByteStreamSource) {
+            this.parentFile = ((ByteStreamSource) parent).getParentFile();
+        }
+        else {
+            this.parentFile = parent.getFile();
+        }
         this.size           = size;
         this.startingOffset = offset;
         this.endingOffset   = offset + size;
@@ -119,7 +124,6 @@ public class ByteStreamSource
             this.endingOffset--;
         }
         this.name           = name;
-        this.backingFile    = null;
         
         /* Keep a copy of the temporary file prefix and suffix and I/O buffer
          * size in case we have to create a temporary backing file.
@@ -144,9 +148,9 @@ public class ByteStreamSource
     @Override
     public void close() {
         super.close();
-        if (this.backingFile != null && this.deleteTempFileOnClose) {
-            this.backingFile.delete();
-            this.backingFile = null;
+        if (this.file != null && this.isTemp && this.deleteTempFileOnClose) {
+            this.file.delete();
+            this.file = null;
         }
     }
 
@@ -159,32 +163,41 @@ public class ByteStreamSource
     }
 
     /**
-     * Get {@link java.io.File} backing only the byte stream subset of its
-     * parent source.
+     * Get {@link java.io.File} backing byte stream subset of its
+     * parent source.  Note that this File is not created until
+     * actually required, and will be deleted on close().
      * 
-     * @return File backing the byte stream
-     * @throws JHOVE2Exception 
+     * @return File backing the byte stream; or null if the backing
+     *         file cannot be created successfully
      */
-    public File getBackingFile()
-        throws IOException
+    @Override
+    public File getFile()
     {
-        if (this.backingFile == null) {
+        if (this.file == null) {
             /* Get format extension from name. */
             String ext = this.tmpSuffix;
             int in = name.lastIndexOf('.');
             if (in > -1) {
                 ext = name.substring(in);
             }
-            this.backingFile =
-                createTempFile(this.file, this.startingOffset,
+            try {
+                this.file =
+                    createTempFile(this.parentFile, this.startingOffset,
                                this.size, this.tmpDirectory,
                                this.tmpPrefix, ext, this.bufferSize);
+                this.isTemp = true;
+            }
+            catch (IOException e) {
+                /* Can't do anything more than return a null value. */
+            }
         }
-        return this.backingFile;
+        return this.file;
     }
 
     /**
-     * Get {@link java.io.InputStream} backing the source unit
+     * Get {@link java.io.InputStream} backing the source unit.
+     * If this method is called explicitly, then the corresponding
+     * InputStream.close() method must be called to avoid a resource leak. 
      * 
      * @return Input stream backing the source unit
      * @throws FileNotFoundException Backing file not found
@@ -196,10 +209,19 @@ public class ByteStreamSource
         throws FileNotFoundException, IOException
     {
         InputStream stream = null;
-        stream = new FileInputStream(this.getBackingFile());
+        stream = new FileInputStream(this.getFile());
         return stream;
     }
      
+    /** Get parent file.  This is the file associated with the parent source
+     * unit, unless the parent is also a ByteStreamSource, in which case it
+     * is the file that parent source's parent, and so on.
+     * @return Parent file
+     */
+    public File getParentFile() {
+        return this.parentFile;
+    }
+    
     /** Get byte stream size, in bytes.
      * @return Byte stream size
      */
