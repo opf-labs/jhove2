@@ -165,8 +165,20 @@ public class SourceFactoryUtil
 			source = new ZipDirectorySource(entry);
 		}
 		else {
+		    /* Recover the filename from the pathname. Although the path
+		     * separator always should be a forward slash (/), in practice a
+		     * backward slash (\) may be found.
+		     */
+		    String name = entry.getName();
+		    int in = name.lastIndexOf('/');
+		    if (in < 0) {
+		        in = name.lastIndexOf('\\');
+		    }
+		    if (in > -1) {
+		        name = name.substring(in+1);
+		    }
 	        InputStream stream = zip.getInputStream(entry);
-			source = new ZipFileSource(jhove2, entry, stream);
+			source = new ZipFileSource(jhove2, entry, stream, name);
 	        stream.close();
 		}
 		source.setSourceAccessor(sourceFactory.createSourceAccessor(source));
@@ -232,9 +244,8 @@ public class SourceFactoryUtil
             source.setSourceAccessor(sourceFactory.createSourceAccessor(source));
             Iterator<String> iter = pathNames.iterator();
             while (iter.hasNext()) {
-                Source src = null;
                 String name = iter.next();
-                src = SourceFactoryUtil.getSource(jhove2, name, sourceFactory);
+                Source src = SourceFactoryUtil.getSource(jhove2, name, sourceFactory);
                 src = ((FileSetSource)source).addChildSource(src);
             }
         }

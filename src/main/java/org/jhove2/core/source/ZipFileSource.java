@@ -96,20 +96,19 @@ public class ZipFileSource
 	}
 	/**
 	 * Instantiate a new <code>ZipFileSource</code>.
-	 * @param tmpDirectory Temporary directory
-     * @param tmpPrefix Temporary file prefix
-     * @param tmpSuffix Temporary file suffix
-     * @param bufferSize Buffer size 
+	 * @param jhove2 JHOVE2 framework object 
+     * @param entry
+     *            Zip file entry
 	 * @param stream
 	 *            Input stream for the Zip file entry
-	 * @param entry
-	 *            Zip file entry
+	 * @param name
+	 *            File name
 	 * @throws IOException
 	 */
-	protected ZipFileSource(JHOVE2 jhove2, ZipEntry entry, InputStream stream)
+	protected ZipFileSource(JHOVE2 jhove2, ZipEntry entry, InputStream stream, String name)
 		throws IOException
 	{
-		super(jhove2, stream, entry.getName());
+		super(jhove2, stream, name);
 		this.path = entry.getName();
 		this.size = entry.getSize();
 		this.lastModified = new Date(entry.getTime());

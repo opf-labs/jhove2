@@ -36,7 +36,6 @@
 
 package org.jhove2.core.source;
 
-import java.io.File;
 import java.util.Date;
 import java.util.zip.ZipEntry;
 
@@ -76,8 +75,14 @@ public class ZipDirectorySource
 
 		this.isAggregate = true;
 		this.path = entry.getName();
-		/* Delete trailing slash (/), if found. */
-		int in = this.path.lastIndexOf(File.separator);
+		/* Delete trailing slash from path name, if necessary. Although this
+		 * always should be a forward slash (/), in practice a backward slash
+		 * \) may be found.
+		 */
+		int in = this.path.lastIndexOf('/');
+		if (in < 0) {
+		    in = this.path.lastIndexOf('\\');
+		}
 		if (in == this.path.length() - 1) {
 			this.path = this.path.substring(0, in);
 		}
