@@ -122,7 +122,10 @@ public class IFDEntry
      *  used to read the value into the proper value type object */
     protected long savedValueOffset;
 
-    /** Contains the value iff the value is 4 or less bytes.  Otherwise is offset to value 
+    /** offset to the IFDEntry being parsed */
+    protected long tagOffset;
+    
+    /** Contains the value iff the value is 4 or less bytes.  
      * Otherwise it is the offset of value */
     protected long valueOffset;
 
@@ -252,12 +255,13 @@ public class IFDEntry
         throws IOException, JHOVE2Exception
     {
         this.isValid = Validity.True;
+        this.tagOffset = input.getPosition();
         this.tag = input.readUnsignedShort();
         if (this.tag > prevTag)
             prevTag = this.tag;
         else {
             this.isValid = Validity.False;
-            Object[]messageArgs = new Object[]{tag, input.getPosition()};
+            Object[]messageArgs = new Object[]{tag, this.tagOffset};
             this.TagSortOrderErrorMessage = (new Message(Severity.ERROR,
                     Context.OBJECT,
                     "org.jhove2.module.format.tiff.IFD.TagSortOrderErrorMessage",
@@ -269,7 +273,7 @@ public class IFDEntry
 
         /* Skip over tags with unknown type; those outside of defined range. */
         if (this.type < TiffType.BYTE.num()|| this.type > TiffType.IFD.num()) {
-            Object[]messageArgs = new Object[] {this.type, input.getPosition() };
+            Object[]messageArgs = new Object[] {this.type, this.tagOffset };
             this.unknownTypeMessages.add(new Message(Severity.WARNING,
                     Context.OBJECT,
                     "org.jhove2.module.format.tiff.IFD.UnknownTypeMessage",
@@ -347,9 +351,8 @@ public class IFDEntry
      * 
      * isValidTag 
      * 
-     *  1) if tag is known and defined
-     *  2) that the type matches expected type values for that tag definition
-     *  3) that count expected matches the count read in
+     *  1) that the type matches expected type values for that tag definition
+     *  2) that count expected matches the count read in
      *  
      * @param jhove2
      * @return boolean 
@@ -369,13 +372,11 @@ public class IFDEntry
             checkCount(jhove2, this.count, this.tagDefinition.getCardinality());
         }
         else {
-            this.isValid = Validity.False;
-            Object[]messageArgs = new Object[]{this.tag, this.valueOffset};
+            Object[]messageArgs = new Object[]{this.tag, tagOffset};
             this.UnknownTagMessage = (new Message(Severity.WARNING,
                     Context.OBJECT,
                     "org.jhove2.module.format.tiff.IFDEntry.UnknownTagMessage",
                     messageArgs, jhove2.getConfigInfo()));  
-            isValid = false;
         }
         return isValid;
     }
@@ -755,7 +756,7 @@ public class IFDEntry
             else if (type.equals(TiffType.SHORT)) {
                 this.shortValue = new Short(input.readUnsignedShort());
                 // store in Long type if it can be SHORT or LONG 
-                if (this.tagDefinition.getType().contains("LONG")) 
+                if (this.tagDefinition != null && this.tagDefinition.getType().contains("LONG")) 
                     this.longValue = new Long (shortValue.getValue());
             }
             else if (type.equals(TiffType.LONG)) {
@@ -802,7 +803,7 @@ public class IFDEntry
                 this.shortArrayValue = new ShortArray();
                 this.shortArrayValue.setValue(input, this.count);
                 // store in Long type if it can be SHORT or LONG 
-                if (this.tagDefinition.getType().contains("LONG")) {
+                if (this.tagDefinition != null && this.tagDefinition.getType().contains("LONG")) {
                     this.longArrayValue = new LongArray (shortArrayValue.getShortArrayValue());
                 }
             }
@@ -857,7 +858,7 @@ public class IFDEntry
             }
             else if (type.equals(TiffType.SHORT)) {
                 // if value can be LONG or SHORT return the value stored in Long 
-                if (this.tagDefinition.getType().contains("LONG")) 
+                if (this.tagDefinition != null && this.tagDefinition.getType().contains("LONG")) 
                     return this.longArrayValue;
                 else
                     return this.shortArrayValue;
@@ -887,7 +888,7 @@ public class IFDEntry
             }
             else if (type.equals(TiffType.SHORT)) {
                 // if value can be LONG or SHORT return the value stored in Long 
-                if (this.tagDefinition.getType().contains("LONG")) {
+                if (this.tagDefinition != null && this.tagDefinition.getType().contains("LONG")) {
                     return this.longValue;
                 }
                 else {
