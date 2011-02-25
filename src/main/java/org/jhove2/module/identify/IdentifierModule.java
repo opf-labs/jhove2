@@ -50,7 +50,6 @@ import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.DirectorySource;
 import org.jhove2.core.source.FileSetSource;
 import org.jhove2.core.source.Source;
-import org.jhove2.core.source.ZipDirectorySource;
 import org.jhove2.module.AbstractModule;
 import org.jhove2.persist.IdentifierAccessor;
 
@@ -128,8 +127,7 @@ implements Identifier
 				 */
 				;
 			}
-			else if (source instanceof DirectorySource ||
-					source instanceof ZipDirectorySource) {
+			else if (source instanceof DirectorySource) {
 				FormatIdentification id =
 					new FormatIdentification(new I8R(I8R.JHOVE2_PREFIX + "/" +
 							I8R.JHOVE2_FORMAT_INFIX +

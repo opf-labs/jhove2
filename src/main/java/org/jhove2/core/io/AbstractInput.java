@@ -77,7 +77,7 @@ public abstract class AbstractInput
 	protected File file;
 	
 	/** Temporary file deletion status: true if delete on close. */
-	protected boolean deleteOnClose;
+	protected boolean deleteTempFileOnClose;
 
 	/** InputStream underlying the inputable. */
 	protected InputStream stream;
@@ -125,7 +125,8 @@ public abstract class AbstractInput
 	 *            Java {@link java.io.File} underlying the inputable
 	 * @param isTemp
 	 *            Temporary file status: true if temporary
-	 * @param order
+     * @param deleteTempFileOnClose Temporary file deletion flag: if true
+     *                              delete temporary file on close@param order
 	 *            Byte order
 	 * @throws FileNotFoundException
 	 *             File not found
@@ -141,7 +142,7 @@ public abstract class AbstractInput
         this.byteOrder = order;   
         Invocation inv = jhove2.getInvocation();
         this.maxBufferSize = inv.getBufferSize();
-	    this.deleteOnClose = inv.getDeleteTempFilesOnClose();
+	    this.deleteTempFileOnClose = inv.getDeleteTempFilesOnClose();
 	    if (!file.isDirectory()) {
 	        this.stream = new BufferedInputStream(new FileInputStream(file),
 	                                              this.maxBufferSize);
@@ -172,7 +173,7 @@ public abstract class AbstractInput
 	        this.channel = null;
 	    }
 	    if (this.file != null) {
-	        if (this.isTemp && this.deleteOnClose) {
+	        if (this.isTemp && this.deleteTempFileOnClose) {
 	            this.file.delete();
 	            this.file = null;
 	        }
@@ -791,8 +792,8 @@ public abstract class AbstractInput
      * @see org.jhove2.core.io.Input#setDeleteTempOnClose()
      */
 	@Override
-    public void setDeleteTempOnClose(boolean flag) {
-        this.deleteOnClose = flag;
+    public void setDeleteTempFileOnClose(boolean flag) {
+        this.deleteTempFileOnClose = flag;
     }
     
 	/**

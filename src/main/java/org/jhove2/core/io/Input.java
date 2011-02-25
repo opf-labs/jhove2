@@ -237,7 +237,7 @@ public interface Input  {
      * @param flag
      *            Delete temporary files flag
      */
-    public void setDeleteTempOnClose(boolean flag);
+    public void setDeleteTempFileOnClose(boolean flag);
 
 	/**
 	 * Set current position, as a byte offset.

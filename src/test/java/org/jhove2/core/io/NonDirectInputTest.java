@@ -106,6 +106,7 @@ public class NonDirectInputTest {
 
 		try {
 			SourceFactory factory = new InMemorySourceFactory();
+            jhove2.setSourceFactory(factory);
 			Source source = factory.getSource(jhove2, testFile);
 			/*
 			 * abstractInput = source.getInput(bufferSize, Scope.NonDirect,

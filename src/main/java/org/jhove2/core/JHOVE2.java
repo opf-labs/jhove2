@@ -44,7 +44,7 @@ import org.jhove2.config.ConfigInfo;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.io.Input;
-import org.jhove2.core.source.FileSystemSource;
+import org.jhove2.core.source.FileSystemProperties;
 import org.jhove2.core.source.NamedSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceCounter;
@@ -159,17 +159,21 @@ public class JHOVE2
 		
             /* Characterize the source unit. */
             boolean tryIt = true;
-            if (source instanceof FileSystemSource) {
-                FileSystemSource fs = (FileSystemSource) source;
-                String name = fs.getSourceName();
-                if (!fs.isExtant()) {
+            /* Check to see if this is a file system source unit, that is, a
+             * physical file or directory on the file system, and if so,
+             * that it exists and is readable.
+             */
+            FileSystemProperties properties = source.getFileSystemProperties();
+            if (properties != null) {
+                String name = ((NamedSource) source).getSourceName();
+                if (!properties.isExtant()) {
                     source = source.addMessage(new Message(Severity.ERROR,
                         Context.PROCESS,
                         "org.jhove2.core.source.FileSystemSource.FileNotFoundMessage",
                         new Object[]{name}, this.getConfigInfo()));
                     tryIt = false;
                 }
-                else if (!fs.isReadable()) {
+                else if (!properties.isReadable()) {
                     source = source.addMessage(new Message(Severity.ERROR,
                         Context.PROCESS,
                         "org.jhove2.core.source.FileSystemSource.FileNotReadableMessage",

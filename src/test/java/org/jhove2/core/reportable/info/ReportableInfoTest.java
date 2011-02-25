@@ -51,6 +51,7 @@ public class ReportableInfoTest {
 		SourceFactory factory = new InMemorySourceFactory();
 		try {
 		    JHOVE2 jhove2 = new JHOVE2();
+	        jhove2.setSourceFactory(factory);
 			source = factory.getSource(jhove2, "");
 		} catch (Exception e) {
 			fail("unable to create Source");

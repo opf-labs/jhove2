@@ -99,7 +99,7 @@ public class InputFactory {
 	 */
 	public static Input getInput(JHOVE2 jhove2, File file, boolean isTemp,
 	                             ByteOrder order)
-	    throws FileNotFoundException, IOException
+	    throws IOException
 	{
 		AbstractInput input = null;
 		if (file != null && file.exists() && file.canRead()) {

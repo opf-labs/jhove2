@@ -31,7 +31,8 @@ public class WorldBordersTest {
 	public void setUp() throws Exception {
 		try {
 		    JHOVE2 jhove2 = new JHOVE2();
-			clump = factory.getClumpSource();
+		    jhove2.setSourceFactory(factory);
+			clump = factory.getClumpSource(jhove2);
 			String wbDirName = "src/test/resources/examples/shapefiles/worldBorders";
 			File wbDir = new File(wbDirName);
 			for (File file : wbDir.listFiles()) {

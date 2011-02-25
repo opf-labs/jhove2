@@ -76,6 +76,16 @@ public interface Source
 	 */
 	public Source addChildSource(Source child) throws JHOVE2Exception;
 	
+	/** Add an extra properties {@link org.jhove2.core.reportable.Reportable}
+	 * to be associated with the source unit.  Extra properties are those not
+	 * known at the time the source unit is instantiated and which are not
+	 * associated with a particular {@link org.jhove2.module.format.FormatModule}.
+	 * @param properties Extra properties reportable
+	 * @return Source with extra properties added
+	 * @throws JHOVE2Exception
+	 */
+	public Source addExtraProperties(Reportable properties) throws JHOVE2Exception;
+	
 	/** Add a message to be associated with the source unit.
 	 * @param message Message to be associated with the source unit
 	 * @return Source with message added
@@ -132,8 +142,17 @@ public interface Source
 	 * @return Child source units
 	 * @throws JHOVE2Exception 
 	 */
-	@ReportableProperty(order=6, value="Child source units.")
+	@ReportableProperty(order=8, value="Child source units.")
 	public List<Source> getChildSources() throws JHOVE2Exception;
+	
+	/** Get extra properties.  Extra properties are those not known at the
+	 * time the source unit is instantiated but which are not associated with
+	 * a particular {@link org.jhove2.module.format.FormatModule}.
+	 * @return Extra properties
+	 * @throws JHOVE2Exception
+	 */
+	@ReportableProperty(order=2, value="Extra properties.")
+	public List<Reportable> getExtraProperties() throws JHOVE2Exception;
 
 	/**
 	 * Get temporary file deletion flag; if true, delete on close.
@@ -145,9 +164,18 @@ public interface Source
     /**
      * Get {@link java.io.File} backing the source unit.
      * 
-     * @return File backing the source unit, of null if a Clump or FileSet source
+     * @return File backing the source unit, of null if a Clump, Directory, or
+     * FileSet source
      */
     public File getFile();
+    
+    /** Get {@link org.jhove2.core.source.FileSystemProperties}, if the source
+     * is a physical file or directory in the file system.
+     * @return File system properties
+     */
+    @ReportableProperty(order=1, value="File system properties, if the source " +
+            "is a physical file or directory int the file system.")
+    public FileSystemProperties getFileSystemProperties();
 
     /**
      * Get little-endian {@link org.jhove2.core.io.Input} for the source unit
@@ -156,10 +184,11 @@ public interface Source
      * If this method is called explicitly, then the corresponding Input.close()
      * method must be called to avoid a resource leak.
      * @param jhove2 JHOVE2 framework
-     * @return Input for the source unit
+     * @return Input for the source unit, or null if a Clump, Directory, or
+     * FileSet source
      */
     public Input getInput(JHOVE2 jhove2)
-        throws FileNotFoundException, IOException;
+        throws IOException;
 
     /**
      * Get {@link org.jhove2.core.io.Input} for the source unit with the 
@@ -168,10 +197,11 @@ public interface Source
      * Input.close() method must be called to avoid a resource leak.
      * @param jhove2 JHOVE2 framework
      * @param order  Byte order
-     * @return Input for the source unit
+     * @return Input for the source unit, or null if a Clump, Directory, or
+     * FileSet source
      */
     public Input getInput(JHOVE2 jhove2, ByteOrder order)
-        throws FileNotFoundException, IOException;
+        throws IOException;
   
 	/**
 	 * Get {@link java.io.InputStream} for the file backing the source unit.
@@ -183,7 +213,7 @@ public interface Source
 	 * @throws FileNotFoundException Backing file not found
 	 * @throws IOException Backing file cannot be created
 	 */
-	public InputStream getInputStream() throws FileNotFoundException, IOException;
+	public InputStream getInputStream() throws IOException;
 
 	/**
 	 * Get copy of List of modules that processed the source unit.
@@ -191,7 +221,7 @@ public interface Source
 	 * @return Modules that processed the source unit
 	 * @throws JHOVE2Exception 
 	 */
-	@ReportableProperty(order=3, value="Modules that processed the source unit")
+	@ReportableProperty(order=5, value="Modules that processed the source unit")
 	public List<Module> getModules() throws JHOVE2Exception;
 
 	/**
@@ -200,13 +230,13 @@ public interface Source
 	 * @return Number of child source units
 	 * @throws JHOVE2Exception 
 	 */
-	@ReportableProperty(order=5, value="Number of child source units.")
+	@ReportableProperty(order=7, value="Number of child source units.")
 	public int getNumChildSources() throws JHOVE2Exception;
 	
 	/** Get messages associated with the source unit.
 	 * @return Source unit messages
 	 */
-	@ReportableProperty(order=2, value="Source unit messages.")
+	@ReportableProperty(order=3, value="Source unit messages.")
 	public List<Message> getMessages();
 
 	/**
@@ -226,7 +256,7 @@ public interface Source
 	 * Get list of presumptive formats for the source unit.
 	 * @return List of presumptive formats
 	 */
-	@ReportableProperty(order=1, value="Presumptive formats for the source.")
+	@ReportableProperty(order=4, value="Presumptive formats for the source.")
 	public Set<FormatIdentification> getPresumptiveFormats();
 	   
     /**
@@ -250,13 +280,13 @@ public interface Source
 	 * Get elapsed time processing this source unit.
 	 * @return Elapsed time
 	 */
-	@ReportableProperty(order=7, value="Timer info for this Source.")
+	@ReportableProperty(order=9, value="Timer info for this Source.")
 	public TimerInfo getTimerInfo();
 
     /** Aggregate source flag: true if an aggregate source.
      * @return Aggregate source flag
      */
-    @ReportableProperty(order=4, value="Aggregate source status: true if an " +
+    @ReportableProperty(order=6, value="Aggregate source status: true if an " +
         "aggregate source.")
     public boolean isAggregate();
     
@@ -276,12 +306,17 @@ public interface Source
 	 * @return Source with new deletion flag set
 	 * @throws JHOVE2Exception 
 	 */
-	public Source setDeleteTempOnClose(boolean flag) throws JHOVE2Exception;
+	public Source setDeleteTempFileOnClose(boolean flag) throws JHOVE2Exception;
 
     /** Set aggregate flag.
      * @param flag Aggregate flag: true if an aggregate
      */
     public Source setIsAggregate(boolean flag) throws JHOVE2Exception;
+    
+    /** Set temporary file flag.
+     * @param flag Temporary file flag; true if the backing file is temporary
+     */
+    public Source setIsTemp(boolean flag) throws JHOVE2Exception;
 
     /**
      * @param moduleParentSourceId the moduleParentSourceId to set

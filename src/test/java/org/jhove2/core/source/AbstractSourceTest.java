@@ -66,24 +66,24 @@ public class AbstractSourceTest {
 	@Test
 	public void testEqualsObject() {
 		try {
-			FileSetSource fsSource1 = JHOVE2.getSourceFactory().getFileSetSource();
+			FileSetSource fsSource1 = JHOVE2.getSourceFactory().getFileSetSource(JHOVE2);
 			assertEquals(fsSource1, fsSource1);
 			assertFalse(fsSource1.equals(null));
-			FileSetSource fsSource2 = JHOVE2.getSourceFactory().getFileSetSource();
+			FileSetSource fsSource2 = JHOVE2.getSourceFactory().getFileSetSource(JHOVE2);
 			assertEquals(fsSource2, fsSource2);
 			assertFalse(fsSource2.equals(null));
 			assertEquals(fsSource1,fsSource2);
 			assertEquals(fsSource2,fsSource1);
 			ClumpSource clump1;
 			ClumpSource clump2;
-			clump1 = JHOVE2.getSourceFactory().getClumpSource();
+			clump1 = JHOVE2.getSourceFactory().getClumpSource(JHOVE2);
 			assertEquals(clump1, clump1);
 			assertFalse(clump1.equals(null));
 			assertFalse(clump1.equals(fsSource1));
 			assertFalse(clump1.equals(fsSource2));
 			assertFalse(fsSource1.equals(clump1));
 			assertFalse(fsSource2.equals(clump1));
-			clump2 = JHOVE2.getSourceFactory().getClumpSource();
+			clump2 = JHOVE2.getSourceFactory().getClumpSource(JHOVE2);
 			assertEquals(clump2, clump2);
 			assertFalse(clump2.equals(null));
 			assertFalse(clump2.equals(fsSource1));
@@ -119,22 +119,22 @@ public class AbstractSourceTest {
 	public void testCompareTo() {
 
 		try {
-			FileSetSource fsSource1 =JHOVE2.getSourceFactory().getFileSetSource();
+			FileSetSource fsSource1 =JHOVE2.getSourceFactory().getFileSetSource(JHOVE2);
 			assertEquals(0,fsSource1.compareTo(fsSource1));
 			assertEquals(1,fsSource1.compareTo(null));		
-			FileSetSource fsSource2 = JHOVE2.getSourceFactory().getFileSetSource();
+			FileSetSource fsSource2 = JHOVE2.getSourceFactory().getFileSetSource(JHOVE2);
 			assertEquals(0,fsSource1.compareTo(fsSource2));		
 			assertEquals(0,fsSource2.compareTo(fsSource1));
 			ClumpSource clump1 = null;
 			ClumpSource clump2 = null;
 			try {
-				clump1 = JHOVE2.getSourceFactory().getClumpSource();
+				clump1 = JHOVE2.getSourceFactory().getClumpSource(JHOVE2);
 			} catch (JHOVE2Exception e1) {
 				e1.printStackTrace();
 				fail(e1.getMessage());
 			}	
 			try {
-				clump2 = JHOVE2.getSourceFactory().getClumpSource();
+				clump2 = JHOVE2.getSourceFactory().getClumpSource(JHOVE2);
 			} catch (JHOVE2Exception e1) {
 				e1.printStackTrace();
 				fail(e1.getMessage());

@@ -106,6 +106,7 @@ public class MappedInputTest {
             Invocation inv = jhove2.getInvocation();
             inv.setBufferType(Type.Mapped);
         	SourceFactory factory = new InMemorySourceFactory();
+            jhove2.setSourceFactory(factory);
             Source source = factory.getSource(jhove2, testFile);
             /* Buffers are always created big-endian, not native-endian, so this test
              * isn't operative.

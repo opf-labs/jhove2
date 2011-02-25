@@ -36,11 +36,19 @@
 
 package org.jhove2.core.source;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.nio.ByteOrder;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
+import org.jhove2.core.io.Input;
+import org.jhove2.core.io.InputFactory;
 
 import com.sleepycat.persist.model.Persistent;
 
@@ -60,6 +68,9 @@ public class URLSource
      * size.
      */
     protected long endingOffset;
+    
+    /** Temporary backing file. */
+    protected File file;
  
     /** File size, in bytes. */
     protected long size;
@@ -85,7 +96,14 @@ public class URLSource
 	protected URLSource(JHOVE2 jhove2, URL url)
 	    throws IOException
 	{
-		super(jhove2, url.openStream(), trimPath(url.getPath()));
+		super(jhove2);
+        Invocation inv = jhove2.getInvocation();
+        this.file = createTempFile(url.openStream(), trimPath(url.getPath()),
+                                   inv.getTempDirectoryFile(),
+                                   inv.getTempPrefix(), inv.getTempSuffix(),
+                                   inv.getBufferSize());
+        this.isTemp = true;
+	    
 		this.url = url.toString();
         this.size = this.file.length();
         this.startingOffset = 0L;
@@ -116,7 +134,60 @@ public class URLSource
     public long getEndingOffset() {
         return this.endingOffset;
     }
+
+    /**
+     * Get {@link java.io.File} backing the source unit.
+     * 
+     * @return File backing the source unit
+     * @see org.jhove2.core.source.Source#getFile()
+     */
+    @Override
+    public File getFile() {
+        return this.file;
+    }
     
+    /**
+     * Create and get {@link org.jhove2.core.io.Input} for the source unit. 
+     * If this method is called explicitly, then the corresponding Input.close()
+     * method must be called to avoid a resource leak.
+     * @param jhove2 JHOVE2 framework object
+     * @param order
+     *            Byte order
+     * @return Source unit input
+     * @throws IOException
+     *             I/O exception getting input
+     */
+    @Override
+    public Input getInput(JHOVE2 jhove2, ByteOrder order)
+        throws IOException
+    {
+        Input input = InputFactory.getInput(jhove2, this.file, this.isTemp, order);
+        input.setDeleteTempFileOnClose(this.deleteTempFileOnClose);
+        return input;
+    }
+    
+    /**
+     * Get {@link java.io.InputStream} backing the source unit.
+     * If this method is called explicitly, then the corresponding
+     * InputStream.close() method must be called to avoid a resource leak. 
+     * 
+     * @return Input stream backing the source unit, or null if a Clump,
+     *         Directory, or FileSet source
+     * @throws FileNotFoundException  Backing file not found
+     * @throws IOException Backing file could not be created
+     * @see org.jhove2.core.source.Source#getInputStream()
+     */
+    @Override
+    public InputStream getInputStream()
+        throws IOException
+    {
+        InputStream stream = null;
+        if (this.file != null) {
+            stream = new FileInputStream(this.file);
+        }
+        return stream;
+    }
+        
     /** Get size, in bytes.
      * @return Size
      */

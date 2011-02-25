@@ -66,6 +66,7 @@ public class I8RTest {
 	public void setUp() throws Exception {
 		SourceFactory factory = new InMemorySourceFactory();
 		JHOVE2 jhove2 = new JHOVE2();
+        jhove2.setSourceFactory(factory);
 		source = factory.getSource(jhove2, "a","b");
 		String classString = source.getClass().getCanonicalName();
 		classString = classString.replace(".", "/");

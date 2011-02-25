@@ -33,7 +33,7 @@ public class EmptyShapefileTest {
 		try {
 			String wbDirName = "src/test/resources/examples/shapefiles/multipleEmpty";
 			File wbDir = new File(wbDirName);
-			clump = JHOVE2.getSourceFactory().getClumpSource();
+			clump = JHOVE2.getSourceFactory().getClumpSource(JHOVE2);
 			for (File file : wbDir.listFiles()) {
 				if (file.getName().startsWith("abc.")) {
 					FileSource fs = (FileSource) JHOVE2.getSourceFactory().getSource(JHOVE2, file);

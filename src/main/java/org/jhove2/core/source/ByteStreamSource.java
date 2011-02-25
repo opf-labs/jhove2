@@ -70,6 +70,9 @@ public class ByteStreamSource
     /** Starting offset relative to parent source. */
     protected long endingOffset;
     
+    /** Backing file. */
+    protected File file;
+    
     /** Name, if known. */
     protected String name;
     
@@ -102,15 +105,14 @@ public class ByteStreamSource
      * @param offset Starting offset relative to parent
      * @param size   Size of the byte stream
      * @param name   Byte stream name, if known
-     * @param sourceFactory Source factory
      * @throws IOException 
      * @throws JHOVE2Exception 
      */
     protected ByteStreamSource(JHOVE2 jhove2, Source parent, long offset,
-                               long size, String name, SourceFactory sourceFactory)
+                               long size, String name)
         throws IOException, JHOVE2Exception
     {
-        super();
+        super(jhove2);
         if (parent instanceof ByteStreamSource) {
             this.parentFile = ((ByteStreamSource) parent).getParentFile();
         }
@@ -135,8 +137,7 @@ public class ByteStreamSource
         this.bufferSize    = inv.getBufferSize();
         this.deleteTempFileOnClose = inv.getDeleteTempFilesOnClose();
         
-        /* Make this byte stream a child of its parent. */
-        this.setSourceAccessor(sourceFactory.createSourceAccessor(this));
+        //this.setSourceAccessor(sourceFactory.createSourceAccessor(this));
         /* will update parentSourceId and sourceId fields automatically. */
         parent.addChildSource(this);
      }
@@ -206,7 +207,7 @@ public class ByteStreamSource
      */
     @Override
     public InputStream getInputStream()
-        throws FileNotFoundException, IOException
+        throws IOException
     {
         InputStream stream = null;
         stream = new FileInputStream(this.getFile());

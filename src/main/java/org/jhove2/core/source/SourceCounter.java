@@ -66,6 +66,9 @@ public class SourceCounter
 	/** Number of pseudo-directory source units. */
 	protected int numFileSets;
 	
+	/** Number of URL source units. */
+	protected int numURLs;
+	
 	/**
 	 * Constructor
 	 */
@@ -76,16 +79,18 @@ public class SourceCounter
 	 * @param source Source whose scope determines which counter to increment
 	 */
 	public void incrementSourceCounter(Source source){
-		if (source instanceof ClumpSource) {
+		if (source instanceof ByteStreamSource) {
+		    this.numBytestreams++;
+		} else if (source instanceof ClumpSource) {
 			this.numClumps++;
-		} else if (source instanceof DirectorySource
-				|| source instanceof ZipDirectorySource) {
+		} else if (source instanceof DirectorySource) {
 			this.numDirectories++;
-		} else if (source instanceof FileSource
-				|| source instanceof ZipFileSource) {
+		} else if (source instanceof FileSource) {
 			this.numFiles++;
 		} else if (source instanceof FileSetSource) {
 			this.numFileSets++;
+		} else if (source instanceof URLSource) {
+		    this.numURLs++;
 		}
 	}
 	
@@ -98,6 +103,7 @@ public class SourceCounter
 		this.numDirectories = 0;
 		this.numFiles = 0;
 		this.numFileSets = 0; 
+		this.numURLs = 0;
 	}
 
 	/**
@@ -137,12 +143,17 @@ public class SourceCounter
 		this.numFileSets++;
 	}
 	
+	/** Increment the number of URL source units. */
+	public void incrementNumURLs() {
+	    this.numURLs++;
+	}
+	
 	/**
 	 * Get number of aggregate source units processed.
 	 * 
 	 * @return Number of aggregate source units processed
 	 */
-	@ReportableProperty(order = 6, value = "Number of bytestream source units "
+	@ReportableProperty(order = 3, value = "Number of bytestream source units "
 		+ "processed.")
 		public int getNumBytestreamSources() {
 		return this.numBytestreams;
@@ -153,7 +164,7 @@ public class SourceCounter
 	 * 
 	 * @return Number of clump source units processed
 	 */
-	@ReportableProperty(order = 3, value = "Number of clump source units "
+	@ReportableProperty(order = 7, value = "Number of clump source units "
 		+ "processed.")
 		public int getNumClumpSources() {
 		return this.numClumps;
@@ -165,7 +176,7 @@ public class SourceCounter
 	 * 
 	 * @return Number of directory source units processed
 	 */
-	@ReportableProperty(order = 4, value = "Number of directory source units "
+	@ReportableProperty(order = 5, value = "Number of directory source units "
 		+ "processed, including both file system directories and Zip "
 		+ "entry directories.")
 		public int getNumDirectorySources() {
@@ -177,7 +188,7 @@ public class SourceCounter
 	 * 
 	 * @return Number of file set source units processed
 	 */
-	@ReportableProperty(order = 2, value = "Number of file set source units "
+	@ReportableProperty(order = 6, value = "Number of file set source units "
 		+ "processed.")
 		public int getNumFileSetSources() {
 		return this.numFileSets;
@@ -188,7 +199,7 @@ public class SourceCounter
 	 * 
 	 * @return Number of file source units processed
 	 */
-	@ReportableProperty(order = 5, value = "Number of file source units "
+	@ReportableProperty(order = 2, value = "Number of file source units "
 		+ "processed, including both file system files and Zip entry "
 		+ "files.")
 		public int getNumFileSources() {
@@ -203,6 +214,6 @@ public class SourceCounter
 	@ReportableProperty(order = 1, value = "Number of source units processed.")
 	public int getNumSources() {
 		return this.numFileSets + this.numDirectories + this.numClumps
-		+ this.numFiles + this.numBytestreams;
+		+ this.numFiles + this.numBytestreams + this.numURLs;
 	}
 }

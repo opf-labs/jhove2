@@ -114,6 +114,7 @@ public class DroidTest {
 			droid = new DROIDWrapper(configFilePath, sigFilePath);	
 			SourceFactory sourceFactory = new InMemorySourceFactory();
 			JHOVE2 jhove2 = new JHOVE2();
+			jhove2.setSourceFactory(sourceFactory);
 			Source source = sourceFactory.getSource(jhove2, sampleFilePath);
 			Input input = source.getInput(jhove2);
 			IdentificationFile idf = droid.identify(source, input);
@@ -131,8 +132,8 @@ public class DroidTest {
 					idf.getClassification());
 			assertEquals(0,idf.getNumHits());
 		} catch (Exception e) {
-			fail("Exception thrown: " + e.getMessage());
-			e.printStackTrace();
+            e.printStackTrace();
+			fail("Exception thrown: " + e.toString());
 		}
 	}
 

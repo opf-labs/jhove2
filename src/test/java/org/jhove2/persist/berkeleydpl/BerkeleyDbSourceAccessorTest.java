@@ -88,6 +88,7 @@ public class BerkeleyDbSourceAccessorTest {
 	@Before
 	public void setUp() throws Exception {
 		sourceFactory = new BerkeleyDbSourceFactory();
+		jhove2.setSourceFactory(sourceFactory);
 		try {
 			sgmlDirPath = 
 				FeatureConfigurationUtil.getFilePathFromClasspath(sgmlDirBasePath, "temp dir");

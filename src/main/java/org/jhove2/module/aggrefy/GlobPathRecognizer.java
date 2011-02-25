@@ -331,7 +331,7 @@ implements Recognizer
 			if (jhove2.getSourceFactory() == null){
 				throw new JHOVE2Exception("JHOVE2 SourceFactory is null");
 			}
-			clumpSource = jhove2.getSourceFactory().getClumpSource();
+			clumpSource = jhove2.getSourceFactory().getClumpSource(jhove2);
 			clumpSource = (ClumpSource) clumpSource.addPresumptiveFormat(fi);
 			for (GlobPathMatchInfo sourceInfo:fileGroup.getSourceMatchInfoList()){
 				if ((sourceInfo.isMustHave() || sourceInfo.isMayHave()) ||

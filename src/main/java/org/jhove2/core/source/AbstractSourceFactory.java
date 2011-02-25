@@ -68,9 +68,9 @@ public abstract class AbstractSourceFactory
 	 */
 	@Override
 	public Source getSource(JHOVE2 jhove2, String name)
-	    throws FileNotFoundException, IOException, JHOVE2Exception
+	    throws IOException, JHOVE2Exception
 	{
-		Source source = SourceFactoryUtil.getSource(jhove2, name, this);
+		Source source = SourceFactoryUtil.getSource(jhove2, name);
 		source = source.getSourceAccessor().persistSource(source);
 		return source;
 	}
@@ -82,9 +82,9 @@ public abstract class AbstractSourceFactory
 	 */
 	@Override
 	public Source getSource(JHOVE2 jhove2, File file)
-	    throws FileNotFoundException, IOException, JHOVE2Exception
+	    throws IOException, JHOVE2Exception
 	{
-		Source source = SourceFactoryUtil.getSource(jhove2, file, this);
+		Source source = SourceFactoryUtil.getSource(jhove2, file);
 		source = source.getSourceAccessor().persistSource(source);
 		return source;
 	}
@@ -99,7 +99,7 @@ public abstract class AbstractSourceFactory
 	public Source getSource(JHOVE2 jhove2, URL url)
 	    throws IOException, JHOVE2Exception
 	{
-		Source source = SourceFactoryUtil.getSource(jhove2, url, this);
+		Source source = SourceFactoryUtil.getSource(jhove2, url);
 		source = source.getSourceAccessor().persistSource(source);
 		return source;
 	}
@@ -115,7 +115,7 @@ public abstract class AbstractSourceFactory
 	public Source getSource(JHOVE2 jhove2, ZipFile zip, ZipEntry entry)
 	    throws IOException, JHOVE2Exception
 	{
-		Source source = SourceFactoryUtil.getSource(jhove2, zip, entry, this);
+		Source source = SourceFactoryUtil.getSource(jhove2, zip, entry);
 		source = source.getSourceAccessor().persistSource(source);
 		return source;
 	}
@@ -137,7 +137,7 @@ public abstract class AbstractSourceFactory
      */
 	@Override
     public Source getSource(JHOVE2 jhove2, String name, String...names)
-        throws FileNotFoundException, IOException, JHOVE2Exception
+        throws IOException, JHOVE2Exception
     {
         Source source = SourceFactoryUtil.getSource(jhove2, this, name, names);
         source = source.getSourceAccessor().persistSource(source);
@@ -154,14 +154,14 @@ public abstract class AbstractSourceFactory
 	 */
 	@Override
 	public Source getSource(JHOVE2 jhove2, List<String> names)
-	    throws FileNotFoundException, IOException, JHOVE2Exception
+	    throws IOException, JHOVE2Exception
 	{
-		Source source = SourceFactoryUtil.getSource(jhove2, names, this);
+		Source source = SourceFactoryUtil.getSource(jhove2, names);
 		source = source.getSourceAccessor().persistSource(source);
 		return source;
 	}
     
-    /* Get ByteStream source.
+    /** Get ByteStream source.
      * @param jhove2 JHOVE2 framework object
      * @param parent Parent source unit
      * @param offset Starting offset
@@ -178,24 +178,45 @@ public abstract class AbstractSourceFactory
     {
         ByteStreamSource source =
             SourceFactoryUtil.getByteStreamSource(jhove2, parent, offset, size,
-                                                  name, this);
+                                                  name);
         source = (ByteStreamSource) source.getSourceAccessor().persistSource(source);
         return source;      
     }
     
-	/** Get Clump source. */
+	/** Get Clump source.
+	 * @param jhove2 JHOVE2 framework object */
 	@Override
-	public ClumpSource getClumpSource() throws JHOVE2Exception
+	public ClumpSource getClumpSource(JHOVE2 jhove2) throws JHOVE2Exception
 	{
-		ClumpSource source = SourceFactoryUtil.getClumpSource(this);
+		ClumpSource source = SourceFactoryUtil.getClumpSource(jhove2);
 		source = (ClumpSource) source.getSourceAccessor().persistSource(source);
 		return source;
 	}
-
-	/* Get FileSet source. */
+	
+    /**
+     * Utility method to create empty non-file system DirectorySource
+     * @param jhove2 JHOVE2 framework object
+     * @param name   Directory name 
+     * @return Directory source unit
+     * @throws JHOVE2Exception 
+     * @throws IOException 
+     * @throws FileNotFoundException 
+     */
 	@Override
-	public FileSetSource getFileSetSource() throws JHOVE2Exception {
-		FileSetSource source = SourceFactoryUtil.getFileSetSource(this);
+    public DirectorySource getDirectorySource(JHOVE2 jhove2, String name)
+        throws IOException, JHOVE2Exception
+    {
+	    DirectorySource source = SourceFactoryUtil.getDirectorySource(jhove2, name);
+	    source = (DirectorySource) source.getSourceAccessor().persistSource(source);
+	    return source;
+    }
+
+	/* Get FileSet source.
+	 * @param jhove2 JHOVE2 framework object
+	 */
+	@Override
+	public FileSetSource getFileSetSource(JHOVE2 jhove2) throws JHOVE2Exception {
+		FileSetSource source = SourceFactoryUtil.getFileSetSource(jhove2);
 		source = (FileSetSource) source.getSourceAccessor().persistSource(source);
 		return source;
 	}

@@ -42,13 +42,9 @@ import java.util.List;
 
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.core.Message;
-import org.jhove2.core.Message.Context;
-import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.FileSetSource;
-import org.jhove2.core.source.FileSystemSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.persist.FormatModuleAccessor;
@@ -125,27 +121,6 @@ public class FileSetModule
 		if (source instanceof FileSetSource) {
 			List<Source> children = ((FileSetSource) source).getChildSources();
 			for (Source src : children) {
-			    /* Make sure that the source unit exists and is readable before
-			     * trying to characterize it.
-			     */
-			    if (src instanceof FileSystemSource) {
-			        FileSystemSource fs = (FileSystemSource) src;
-			        String name = fs.getSourceName();
-			        if (!fs.isExtant()) {
-			            source=source.addMessage(new Message(Severity.ERROR,
-			                Context.PROCESS,
-			                "org.jhove2.core.source.FileSystemSource.FileNotFoundMessage",
-			                new Object[]{name}, jhove2.getConfigInfo()));
-			            continue;
-			        }
-			        else if (!fs.isReadable()) {
-			            source=source.addMessage(new Message(Severity.ERROR,
-                            Context.PROCESS,
-                            "org.jhove2.core.source.FileSystemSource.FileNotReadableMessage",
-                            new Object[]{name}, jhove2.getConfigInfo()));
-			            continue;
-			        }
-			    }
 			    Input inpt = src.getInput(jhove2);
 			    try {
 			        src = jhove2.characterize(src, inpt);// will have been persisted by JHOVE2

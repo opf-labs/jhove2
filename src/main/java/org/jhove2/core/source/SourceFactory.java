@@ -36,7 +36,6 @@
 package org.jhove2.core.source;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -60,14 +59,12 @@ public interface SourceFactory {
 	 * @param jhove2 JHOVE2 framework object
 	 * @param name Formatted object name
 	 * @return File, Directory, or URL Source unit
-	 * @throws FileNotFoundException
-	 *             File not found
 	 * @throws IOException
 	 *             I/O exception instantiating source
 	 * @throws JHOVE2Exception 
 	 */
 	public Source getSource(JHOVE2 jhove2, String name)
-	    throws FileNotFoundException, IOException, JHOVE2Exception;
+	    throws IOException, JHOVE2Exception;
  
 	/**
 	 * Get source unit from a Java {@link java.io.File}.
@@ -76,14 +73,12 @@ public interface SourceFactory {
 	 * @param file
 	 *            Java {@link java.io.File}
 	 * @return File or Directory source unit
-	 * @throws FileNotFoundException
-	 *             File not found
 	 * @throws IOException
 	 *             I/O exception instantiating source
 	 * @throws JHOVE2Exception 
 	 */
 	public Source getSource(JHOVE2 jhove2, File file)
-		throws FileNotFoundException, IOException, JHOVE2Exception;
+		throws IOException, JHOVE2Exception;
 
 	/**
 	 * Get URL source unit from a URL by creating a local temporary file.
@@ -124,14 +119,12 @@ public interface SourceFactory {
      * @param name First formatted object name
      * @param names Remaining formatted object names
      * @return FileSet source unit
-     * @throws FileNotFoundException
-     *             File not found
      * @throws IOException
      *             I/O exception instantiating source
      * @throws JHOVE2Exception 
      */
     public Source getSource(JHOVE2 jhove2, String name, String...names)
-        throws FileNotFoundException, IOException, JHOVE2Exception;
+        throws IOException, JHOVE2Exception;
    
 	/**
 	 * Make FileSetSource from list of formatted objects, which may be files,
@@ -145,7 +138,7 @@ public interface SourceFactory {
 	 * @throws JHOVE2Exception
 	 */
 	public Source getSource(JHOVE2 jhove2, List<String> names)
-		throws FileNotFoundException, IOException, JHOVE2Exception;
+		throws IOException, JHOVE2Exception;
 	   
     /**
      * Utility method to create ByteStreamSource
@@ -164,17 +157,30 @@ public interface SourceFactory {
     
 	/**
 	 * Utility method to create new empty ClumpSource
+     * @param jhove2 JHOVE2 framework object
 	 * @return Clump source unit
 	 * @throws JHOVE2Exception
 	 */
-	public ClumpSource getClumpSource() throws JHOVE2Exception;
-	
+	public ClumpSource getClumpSource(JHOVE2 jhove2) throws JHOVE2Exception;
+	   
+    /**
+     * Utility method to create empty non-file system DirectorySource
+     * @param jhove2 JHOVE2 framework object
+     * @param name   Directory name 
+     * @return Directory source unit
+     * @throws IOException
+     * @throws JHOVE2Exception 
+     */
+    public DirectorySource getDirectorySource(JHOVE2 jhove2, String name)
+        throws IOException, JHOVE2Exception;
+    
 	/**
 	 * Utility method to create empty FileSetSource
+     * @param jhove2 JHOVE2 framework object
 	 * @return FileSet source unit
 	 * @throws JHOVE2Exception 
 	 */
-	public FileSetSource getFileSetSource() throws JHOVE2Exception;
+	public FileSetSource getFileSetSource(JHOVE2 jhove2) throws JHOVE2Exception;
 
 	/**
 	 * Create SourceAccessor for this SourceFactory type

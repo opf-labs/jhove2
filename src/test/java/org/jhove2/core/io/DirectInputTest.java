@@ -52,6 +52,8 @@ import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.io.Input.Type;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
+import org.jhove2.persist.PersistenceManager;
+import org.jhove2.persist.PersistenceManagerUtil;
 import org.jhove2.persist.inmemory.InMemorySourceFactory;
 import org.junit.After;
 import org.junit.Before;
@@ -67,7 +69,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath*:**/abstractdisplayer-config.xml",
-"classpath*:**/filepaths-config.xml"})
+        "classpath*:**/test-config.xml", "classpath*:**/filepaths-config.xml"})
 public class DirectInputTest {
 
     int bufferSize;
@@ -82,6 +84,10 @@ public class DirectInputTest {
     public void setUp() throws Exception {
         bufferSize = 100;
         jhove2 = new JHOVE2();
+        PersistenceManagerUtil.createPersistenceManagerFactory(jhove2.getConfigInfo());
+        PersistenceManager persistenceManager = PersistenceManagerUtil.getPersistenceManagerFactory().getInstance();
+        persistenceManager.initialize();
+
         Invocation inv = jhove2.getInvocation();
         inv.setBufferSize(bufferSize);
         inv.setBufferType(Type.Direct);
@@ -106,6 +112,7 @@ public class DirectInputTest {
 
         try {
 			SourceFactory factory = new InMemorySourceFactory();
+			jhove2.setSourceFactory(factory);
 			Source source = factory.getSource(jhove2, testFile);
 			abstractInput = source.getInput(jhove2, ByteOrder.LITTLE_ENDIAN);// ,
             // ByteOrder.LITTLE_ENDIAN);

@@ -45,7 +45,6 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -55,7 +54,7 @@ import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.format.Format;
 import org.jhove2.core.io.Input;
-import org.jhove2.core.source.FileSetSource;
+import org.jhove2.core.source.DirectorySource;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
 import org.jhove2.module.format.BaseFormatModule;
@@ -167,11 +166,32 @@ public class ZipModule
 	    ZipFile zip = new ZipFile(file, ZipFile.OPEN_READ);
 	    if (zip != null) {
 	        source.setIsAggregate(true);
+
 	        try {
-	            /*
-	             * Zip entries are not necessarily in hierarchical order.
-	             * Build a map of directory names and source units so we 
-	             * can associate file entries to their correct parent.
+	            /* Zip entries (files and directories) are not necessarily in
+	             * hierarchical order.  Also, directories may be implicit, that
+	             * is, referred to in the pathnames of files or directories but
+	             * not explicitly present in the form of a directory entry.
+	             * 
+	             * Since all files and directories need to be associated with 
+	             * the correct parent directory in order for aggregate
+	             * characterization to work properly, we there are three stages
+	             * of processing:
+	             * 
+	             * (1) Identify all explicit directory entries, creating
+	             *     Directory sources and putting them into a map keyed to
+	             *     the directory pathname.
+	             *     
+	             * (2) Identify all implicit directories (by extracting
+	             *     directories from pathnames and checking to see if they
+	             *     are not already in the map), creating Directory sources
+	             *     and putting them into the map.  Also characterize any
+	             *     top-level file entries (children of the Zip file) that
+	             *     are found.
+	             *     
+	             * (3) Directly characterize all top-level directories, that
+	             *     is, those whose parent is the Zip file.  This will
+	             *     implicitly characterize all child files and directories.
 	             */
 	            Map<String, Source> map = new TreeMap<String, Source>();
 	            Enumeration<? extends ZipEntry> en = zip.entries();
@@ -179,6 +199,8 @@ public class ZipModule
 	    		if (factory == null){
 	    			throw new JHOVE2Exception("JHOVE2 SourceFactory is null");
 	    		}
+	    		
+	    		/* (1) Identify all directories that are explicit entries. */ 
 	            while (en.hasMoreElements()) {
 	                ZipEntry entry = en.nextElement();
 	                if (entry.isDirectory()) {
@@ -202,11 +224,18 @@ public class ZipModule
 	                }
 	            }
 
-	            /*
-	             * Characterize each file entry and associate it with its parent
-	             * source unit.  Directory entries are not characterized now,
-	             * since all of their child files may not yet be associated
-	             * with them.
+                /* (2) Characterize each file entry and associate it with its
+	             * parent source unit.  Directory entries are not characterized
+	             * now, since all of their child files may not yet be
+	             * associated with them.
+	             */
+	            /* Identify all directories that are not implicit entries but
+	             * are implied by file and directory pathnames.  Also, create
+	             * File source units for file entries, and if they are top-
+	             * level entries, that is, child of the Zip file, characterize
+	             * them.  Lower level file entries (and directories) will be 
+	             * characterized later on as part of the recursive processing
+	             * of top-level directories.
 	             */
 	            en = zip.entries();
 	            while (en.hasMoreElements()) {
@@ -224,57 +253,40 @@ public class ZipModule
 	                    else if (ch == '\\') {
 	                        name = name.substring(0, len);
 	                    }
-	                    /* Get the directory source unit from the map. */
-	                    Source src = map.get(name);
-	                    if (src != null) {	                        
-	                        /* Check if the pathname includes a directory
-	                         * component. Although the path separator always
-	                         * should be a forward slash (/), in practice a
-	                         * backward slash (\) may be found.
-	                         */
-	                        int in = name.lastIndexOf('/');
-	                        if (in < 0) {
-	                            in = name.lastIndexOf('\\');
-	                        }
-	                        if (in > -1 && in < name.length() - 1) {
-	                            /*
-	                             * Directory is a child of a Zip directory
-	                             * entry that can be retrieved from the map.
-	                             */
-	                            String key = name.substring(0, in);
-	                            Source parent = map.get(key);
-	                            if (parent == null) {
-                                    /* The directory pathname includes a parent
-                                     * directory, but that directory is not a
-                                     * Zip entry. Create a FileSetSource, a
-                                     * child of the Zip file and the parent of
-                                     * this file, to represent the directory. 
-                                     */
-                                    parent = jhove2.getSourceFactory().getFileSetSource();
-                                    parent = source.addChildSource(parent);
-                                    map.put(key, parent);
-                                }
-	                            src = parent.addChildSource(src);
-	                        }
-	                        else {
-	                            /* Directory is a child of the Zip file. */
-	                        	src = source.addChildSource(src);
-	                        }
-	                    }
 	                }
-	                else {
+	                /* Check to make sure all directories implied in the
+	                 * pathname are also in the map.
+	                 */
+	                checkForImpliedDirectories(jhove2, name, map, source,
+	                                           factory);
+	                if (entry.isDirectory()) {
+	                    Source src = map.get(name);
+	                    
+	                    /* Retrieve directory parent from the map. Although
+	                     * the path separator always should be a forward slash
+	                     * (/), in practice a backward slash (\) may be found. */
+	                    int in = name.lastIndexOf('/');
+                        if (in < 0) {
+                            in = name.lastIndexOf('\\');
+                        }
+                        if (in > -1) {
+                            /* Directory is a child of a Directory retrievable
+                             * from the map.
+                             */
+                            String key = name.substring(0, in);
+                            Source parent = map.get(key);
+                            src = parent.addChildSource(src);
+                        }
+                        else {
+                            /* Directory is a child of the Zip file. */
+                            src = source.addChildSource(src);
+                        }
+	                }
+	                else {  /* Entry is a file. */
 	                    Source src =
 	                    	factory.getSource(jhove2, zip, entry);
 	                    if (src != null) {
-	                        /* Some FileSources may be children of a FileSetSource
-	                         * if the filename includes a directory that is not
-	                         * a Zip entry.  These FileSetSources should not be
-	                         * characterized now, since we'll characterize the
-	                         * FileSet later, including its children.
-	                         */
-	                        boolean hasFileSetParent = false;
-
-	                        /* Check if the pathname includes a directory
+	                        /* Check if the file pathname includes a directory
 	                         * component. Although the path separator always
 	                         * should be a forward slash (/), in practice a
 	                         * backward slash (\) may be found.
@@ -283,42 +295,25 @@ public class ZipModule
 	                        if (in < 0) {
 	                            in = name.lastIndexOf('\\');
 	                        }
-	                        if (in < 0) {
-	                            /* File is a child of the Zip file. */
-	                        	src = source.addChildSource(src);
-	                        } else {
-	                            /*
-	                             * File is a child of a Zip file entry that can
-	                             * be retrieved from the map.
+	                        if (in > -1) {
+	                            /* File is a child of a Directory retrievable
+	                             * from the map.
 	                             */
 	                            String key = name.substring(0, in);
 	                            Source parent = map.get(key);
-	                            if (parent != null) {
-	                                if (parent instanceof FileSetSource) {
-	                                    hasFileSetParent = true;
-	                                }
-	                            }
-	                            else {
-	                                hasFileSetParent = true;
-	                                /* The filename includes a parent directory,
-	                                 * but that directory is not a Zip entry.
-	                                 * Create a FileSetSource, a child of the
-	                                 * Zip file and the parent of this file, to
-	                                 * represent the directory. 
-	                                 */
-	                                parent = jhove2.getSourceFactory().getFileSetSource();
-	                                parent = source.addChildSource(parent);
-                                    map.put(key, parent);
-	                            }
 	                            src = parent.addChildSource(src);
 	                        }
-	                        /* Only characterize sources that are not children
-	                         * of a FileSetSource.
-	                         */
-	                        if (!hasFileSetParent) {
-	                            /* Make sure to close the Input after
-	                             * characterization is completed.
-	                             */
+	                        else {
+                                /* File is a child of the Zip file and can be
+                                 * characterized now.  All other files will be
+                                 * characterized later as part of the recursive
+                                 * characterization of top-level directories.
+                                 */
+                                src = source.addChildSource(src);
+
+                                /* Make sure to close the Input after
+                                 * characterization is completed.
+                                 */
 	                            Input inpt = src.getInput(jhove2);
 	                            try {
 	                                src = jhove2.characterize(src, inpt);
@@ -332,19 +327,17 @@ public class ZipModule
 	                    }
 	                }
 	            }
-	            /* Make sure to characterize any ZipDirectory and FileSet
-	             * sources (that were created to represent non-Zip-entry
-	             * directories) in the map, since they weren't characterized
-	             * previously.
+	            
+	            /* (3) Characterize all top-level directories, implicitly
+	             * characterizing all lower-level files and directories.
 	             */
-	            Set<String> set = map.keySet();
-	            Iterator<String> iter = set.iterator();
+	            List<Source> list = source.getChildSources();
+	            Iterator<Source> iter = list.iterator();
 	            while (iter.hasNext()) {
-	                String key = iter.next();
-	                Source src = map.get(key);
-	                if (src != null) {
-                        /* Make sure to close the Input after
-                         * characterization is completed.
+	                Source src = iter.next();
+	                if (src instanceof DirectorySource) {
+                        /* Make sure to close the Input after characterization
+                         * is completed.
                          */
 	                    Input inpt = src.getInput(jhove2);
                         try {
@@ -404,5 +397,58 @@ public class ZipModule
     public Validity isValid()
     {
         return this.isValid;
+    }
+    
+    /** Check for directories implied by the pathnames for file and directory
+     * entries.
+     * @param jhove2  JHOVE2 framework object
+     * @param name    File or directory entry pathname
+     * @param map     Map of directories
+     * @param source  Zip file source unit
+     * @param factory Source factory
+     * @throws JHOVE2Exception 
+     * @throws IOException 
+     * 
+     */
+    protected void checkForImpliedDirectories(JHOVE2 jhove2, String name,
+                                              Map<String, Source> map,
+                                              Source source,
+                                              SourceFactory factory)
+        throws IOException, JHOVE2Exception
+    {
+        Source parent = source;
+        int n = 0;
+        boolean again = true;
+        
+        /* Check each directory in the path.  If it is not already in the map,
+         * create a new Directory source, add it to the map, and add it as a
+         * child of the appropriate directory or the Zip file itself.
+         */
+        while (again) {
+            /* Although the path separator always should be a forward slash
+             * (/), in practice a backward slash (\) may be found.
+             */
+            int in = name.indexOf('/', n);
+            if (in < 0) {
+                in = name.indexOf('\\', n);
+            }
+            if (in > 0) {
+                String key = name.substring(0, in);
+            
+                /* If the directory is not in the map, add it. */
+                Source src = map.get(key);
+                if (src == null) {
+                    src = factory.getDirectorySource(jhove2, key);
+                    src = parent.addChildSource(src);
+                    map.put(key, src);
+                    parent = src;
+                }
+            
+                n = in + 1;
+            }
+            else {
+                again = false;
+            }
+        }
     }
 }

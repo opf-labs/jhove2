@@ -84,9 +84,9 @@ public class URLSourceTest {
 			assertTrue(uPtc2.equals(uPtc));			
 			assertFalse(uPtc.equals(null));
 			assertFalse(uPtc.equals(uCdl));
-			ClumpSource clump = JHOVE2.getSourceFactory().getClumpSource();
+			ClumpSource clump = JHOVE2.getSourceFactory().getClumpSource(JHOVE2);
 			assertFalse(uPtc.equals(clump));
-			ClumpSource clump2 = JHOVE2.getSourceFactory().getClumpSource();
+			ClumpSource clump2 = JHOVE2.getSourceFactory().getClumpSource(JHOVE2);
 			uPtc=(URLSource) clump.addChildSource(uPtc);
 			clump2.addChildSource(uPtc);
 			assertEquals(clump, clump2);
@@ -124,7 +124,7 @@ public class URLSourceTest {
 			assertTrue(eq);
 			ClumpSource clump= null;
 			try {
-				clump = JHOVE2.getSourceFactory().getClumpSource();
+				clump = JHOVE2.getSourceFactory().getClumpSource(JHOVE2);
 			} catch (JHOVE2Exception e) {
 				e.printStackTrace();
 				fail(e.getMessage());
