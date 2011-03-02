@@ -62,9 +62,8 @@ import org.jhove2.core.Message;
 import org.jhove2.core.TimerInfo;
 import org.jhove2.core.format.FormatIdentification;
 import org.jhove2.core.io.Input;
-import org.jhove2.core.io.InputFactory;
-import org.jhove2.core.io.Input.Type;
 import org.jhove2.core.reportable.AbstractReportable;
+import org.jhove2.core.reportable.Reportable;
 import org.jhove2.module.Module;
 import org.jhove2.persist.SourceAccessor;
 
@@ -73,7 +72,6 @@ import com.sleepycat.persist.model.PrimaryKey;
 import com.sleepycat.persist.model.SecondaryKey;
 import static com.sleepycat.persist.model.Relationship.*;
 import static com.sleepycat.persist.model.DeleteAction.*;
-
 
 /**
  * An abstract JHOVE2 source unit. A source unit is a formatted object that can
@@ -102,15 +100,30 @@ public abstract class AbstractSource
 	/** Identifiers of generic modules registered with the Source. */
 	protected static Set<String> moduleIDs = new HashSet<String>();
 
-	/** Delete temporary files flag; if true, delete files. */
-	protected boolean deleteTempFiles;
+	/** Temporary file deletion flag; if true, delete on close. */
+	protected boolean deleteTempFileOnClose;
+	
+	/** Extra properties.  Extra properties are those not known at the time a
+	 * source unit is instantiated and are not associated with a particular
+	 * {@link org.jhove2.module.format.FormatModule}. */
+	protected List<Reportable> extraProperties;
+    
+	/** Source unit backing file. This may be an actual file system
+	 * file or a temporary file created from an {@link java.io.InputStream}.
+	 */
+	//protected File file;
+	
+	/** File system properties, if the source is a physical file or directory
+	 * in the file system.
+	 */
+	protected FileSystemProperties fileSystemProperties;
 
-	/** Source unit backing file. */
-	protected File file;
-
+	/** Source unit aggregate flag: true if an aggregate. */
+	protected boolean isAggregate;
+	
 	/**
-	 * Source unit backing file temporary status: true if the source unit
-	 * backing file is a temporary file.
+	 * Temporary file flag: true if the file backing the source unit is
+	 * a temporary file.
 	 */
 	protected boolean isTemp;
 	
@@ -119,61 +132,44 @@ public abstract class AbstractSource
 
 	/** Presumptive identifications for the source unit. */
 	protected Set<FormatIdentification> presumptiveFormatIdentifications;
-    
-	/** Starting offset, in bytes. */
-	protected long startingOffset;
-	
+ 
     /**
-     * Timer info  used to track elapsed time for running of this module
+     * Timer info used to track elapsed time for running of this module
      */
     protected TimerInfo timerInfo;
     
     /**
      * Mechanism for providing per-source information
      */
-    protected Map<String, String>sourceParams;
+    protected Map<String, String> sourceParams;
     
 	/**
 	 * Instantiate a new <code>AbstractSource</code>.
 	 */
-	protected AbstractSource() {		
-		this.deleteTempFiles = Invocation.DEFAULT_DELETE_TEMP_FILES;
+	protected AbstractSource() {       
+        this.deleteTempFileOnClose   = Invocation.DEFAULT_DELETE_TEMP_FILES_ON_CLOSE;
+        this.extraProperties = new ArrayList<Reportable>();
+		this.isAggregate     = false;
+        this.isTemp          = false;
 		this.messages        = new ArrayList<Message>();		
 		this.presumptiveFormatIdentifications = new TreeSet<FormatIdentification>();
-		this.startingOffset  = 0L;
         this.timerInfo       = new TimerInfo();
 	}
 
 	/**
-	 * Instantiate a new <code>AbstractSource</code> backed by a file.
-	 * 
-	 * @param file
-	 *            File underlying the source unit
+	 * Instantiate a new <code>AbstractSource</code>. 
+	 * @param jhove2 JHOVE2 framework object
 	 */
-	protected AbstractSource(File file) {
-		this();
-		this.file   = file;
-		this.isTemp = false;
-	}
-
-	/**
-	 * Instantiate a new <code>AbstractSource</code> backed by an input stream
-	 * by creating a temporary file.
-	 * 
-     * @param tmpPrefix Temporary file prefix
-     * @param tmpSuffix Temporary file suffix
-     * @param bufferSize Buffer size used during transfer to a temporary file 
-	 * @param stream
-	 *            Input stream backing the source unit
-	 * @throws IOException
-	 */
-	public AbstractSource(String tmpPrefix, String tmpSuffix,
-			              int bufferSize, InputStream stream)
-		throws IOException
+	public AbstractSource(JHOVE2 jhove2)
 	{
 		this();
-		this.file   = createTempFile(tmpPrefix, tmpSuffix, bufferSize, stream);
-		this.isTemp = true;
+		
+		/* Set the temporary file deletion flag. */
+		Invocation inv = jhove2.getInvocation();
+		this.deleteTempFileOnClose = inv.getDeleteTempFilesOnClose();
+		
+		/* Create the source accessor. */
+		this.setSourceAccessor(jhove2.getSourceFactory().createSourceAccessor(this));
 	}
 
 	/**
@@ -187,12 +183,28 @@ public abstract class AbstractSource
 	 */
 	@Override
 	public Source addChildSource(Source child) throws JHOVE2Exception {
-		if (this.getSourceAccessor()==null){
+		if (this.getSourceAccessor() == null){
 			throw new JHOVE2Exception("SourceAccessor is null");
 		}
 		return this.sourceAccessor.addChildSource(this, child);
 	}
 
+	   
+    /** Add an extra properties {@link org.jhove2.core.reportable.Reportable}
+     * to be associated with the source unit.  Extra properties are those not
+     * known at the time the source unit is instantiated and which are not
+     * associated with a particular {@link org.jhove2.module.format.FormatModule}.
+     * @param properties Extra properties reportable
+     * @return Source with extra properties added
+     * @throws JHOVE2Exception
+     */
+	@Override
+    public Source addExtraProperties(Reportable properties)
+        throws JHOVE2Exception
+    {
+	    return this.getSourceAccessor().addExtraProperties(this, properties);
+    }
+    
 	/** Add a message to be associated with the source unit.
 	 * @param message Message to be associated with the source unit
 	 * @return Source with Message added
@@ -215,7 +227,7 @@ public abstract class AbstractSource
 	 */
 	@Override
 	public Module addModule(Module module) throws JHOVE2Exception {
-		if (this.getSourceAccessor()==null){
+		if (this.getSourceAccessor() == null){
 			throw new JHOVE2Exception("SourceAccessor is null");
 		}
 		if (module.getScope()== Module.Scope.Specific){
@@ -237,7 +249,9 @@ public abstract class AbstractSource
 	 * @throws JHOVE2Exception 
 	 */
 	@Override
-	public Source addPresumptiveFormat(FormatIdentification fi) throws JHOVE2Exception{
+	public Source addPresumptiveFormat(FormatIdentification fi)
+	    throws JHOVE2Exception
+	{
 		return this.getSourceAccessor().addPresumptiveFormat(this, fi);
 	}
 	
@@ -247,74 +261,87 @@ public abstract class AbstractSource
 	 * @throws JHOVE2Exception 
 	 */
 	@Override
-	public Source addPresumptiveFormats(Set<FormatIdentification> fis) throws JHOVE2Exception{
+	public Source addPresumptiveFormats(Set<FormatIdentification> fis)
+	    throws JHOVE2Exception
+	{
 		return this.getSourceAccessor().addPresumptiveFormats(this, fis);
 	}
 
 	/**
-	 * Close the source unit. If the source unit is backed by a temporary file,
-	 * delete the file.
+	 * Close the source unit.
 	 */
 	@Override
 	public void close() {
-		if (this.file != null && this.isTemp && this.deleteTempFiles) {
-			this.file.delete();
-		}
 	}
 
 	/**
 	 * Create a temporary backing file from an input stream.
-	 * 
-     * @param tmpPrefix Temporary file prefix
-     * @param tmpSuffix Temporary file suffix
+     * @param inStream Input stream
+     * @param name Temporary file name
+	 * @param tmpDirectory Temporary directory
+	 * @param tmpPrefix Temporary file prefix
+	 * @param tmpSuffix Temporary file suffix
      * @param  bufferSize Buffer size used during transfer to temporary file 
-	 * @param inStream
-	 *            Input stream
 	 * @return file Temporary backing file
 	 * @throws IOException
 	 */
-	protected File createTempFile(String tmpPrefix, String tmpSuffix,
-			                      int bufferSize, InputStream inStream)
+	protected static synchronized File createTempFile(InputStream inStream,
+	                                                  String name,
+	                                                  File tmpDirectory,
+	                                                  String tmpPrefix,
+	                                                  String tmpSuffix,
+	                                                  int bufferSize)
 		throws IOException
 	{
-		File tempFile = File.createTempFile(tmpPrefix, tmpSuffix);
+	    File tempFile = null;
+	    if (name == null || name.length() == 0) {
+	        tempFile = File.createTempFile(tmpPrefix, tmpSuffix, tmpDirectory);;
+	    }
+	    else {
+	        tempFile = new File(tmpDirectory.getPath() + File.separator + name);
+	    }
 		OutputStream outStream = new FileOutputStream(tempFile);
 		ReadableByteChannel in = Channels.newChannel(inStream);
 		WritableByteChannel out = Channels.newChannel(outStream);
 		final ByteBuffer buffer = ByteBuffer.allocateDirect(bufferSize);
-
-		while ((in.read(buffer)) > 0) {
-			buffer.flip();
-			out.write(buffer);
-			buffer.compact(); /* in case write was incomplete. */
+		try {
+		    while ((in.read(buffer)) > 0) {
+		        buffer.flip();
+		        out.write(buffer);
+		        buffer.compact(); /* in case write was incomplete. */
+		    }
+		    buffer.flip();
+		    while (buffer.hasRemaining()) {
+		        out.write(buffer);
+		    }
 		}
-		buffer.flip();
-		while (buffer.hasRemaining()) {
-			out.write(buffer);
+		finally {
+		    /* Close I/O resources. */
+		    in.close();
+		    out.close();
+		    outStream.close();
 		}
-
-		/* Closing the channel implicitly closes the stream. */
-		in.close();
-		out.close();
 
 		return tempFile;
 	}
 
     /**
      * Create a temporary backing file that is a subset of an input stream.
-     * 
-     * @param tmpPrefix Temporary file prefix
-     * @param tmpSuffix Temporary file suffix
-     * @param  bufferSize Buffer size used during transfer to temporary file 
      * @param inFile Input file
      * @param offset Starting offset of the subset
      * @param size   Size of the subset
+     * @param tmpDirectory Temporary directory
+     * @param tmpPrefix Temporary file prefix
+     * @param tmpSuffix Temporary file suffix
+     * @param  bufferSize Buffer size used during transfer to temporary file 
      * @return file Temporary backing file
      * @throws IOException
      */
-    protected File createTempFile(String tmpPrefix, String tmpSuffix,
-                                  int bufferSize, File inFile, 
-                                  long offset, long size)
+    protected static synchronized File createTempFile(File inFile, long offset,
+                                                      long size, File tmpDirectory,
+                                                      String tmpPrefix,
+                                                      String tmpSuffix,
+                                                      int bufferSize)
         throws IOException
     {
         /* Position input stream to starting offset. */
@@ -323,34 +350,38 @@ public abstract class AbstractSource
         ReadableByteChannel in = Channels.newChannel(inStream);
         
         /* Create temporary file. */
-        File tempFile = File.createTempFile(tmpPrefix, tmpSuffix);
+        File tempFile = File.createTempFile(tmpPrefix, tmpSuffix, tmpDirectory);
         OutputStream outStream = new FileOutputStream(tempFile);
         WritableByteChannel out = Channels.newChannel(outStream);
         
         ByteBuffer buffer = ByteBuffer.allocateDirect(bufferSize);
-
-        long consumed = 0;
-        int n = 0;
-        while (consumed < size) {
-            long remaining = size - consumed;
-            if (remaining < bufferSize) {
-                buffer = ByteBuffer.allocateDirect((int) remaining);
+        try {
+            long consumed = 0;
+            int n = 0;
+            while (consumed < size) {
+                long remaining = size - consumed;
+                if (remaining < bufferSize) {
+                    buffer = ByteBuffer.allocateDirect((int) remaining);
+                }
+                if ((n = in.read(buffer)) > 0) {
+                    buffer.flip();
+                    out.write(buffer);
+                    buffer.compact(); /* in case write was incomplete. */
+                    consumed += n;
+                }
             }
-            if ((n = in.read(buffer)) > 0) {
-                buffer.flip();
+            buffer.flip();
+            while (buffer.hasRemaining()) {
                 out.write(buffer);
-                buffer.compact(); /* in case write was incomplete. */
-                consumed += n;
             }
         }
-        buffer.flip();
-        while (buffer.hasRemaining()) {
-            out.write(buffer);
+        finally {
+            /* Close I/O resources). */
+            in.close();
+            out.close();
+            inStream.close();
+            outStream.close();
         }
-
-        /* Closing the channel implicitly closes the stream. */
-        in.close();
-        out.close();
 
         return tempFile;
     }
@@ -365,7 +396,7 @@ public abstract class AbstractSource
 	 */
 	@Override
 	public Source deleteChildSource(Source child) throws JHOVE2Exception {
-		if (this.getSourceAccessor()==null){
+		if (this.getSourceAccessor() == null){
 			throw new JHOVE2Exception("SourceAccessor is null");
 		}
 		return this.sourceAccessor.deleteChildSource(this, child);
@@ -375,11 +406,11 @@ public abstract class AbstractSource
 	 * Get delete temporary files flag; if true, delete files.
 	 * 
 	 * @return Delete temporary files flag
-	 * @see org.jhove2.core.source.Source#getDeleteTempFiles()
+	 * @see org.jhove2.core.source.Source#getDeleteTempFileOnClose()
 	 */
 	@Override
-	public boolean getDeleteTempFiles() {
-		return this.deleteTempFiles;
+	public boolean getDeleteTempFileOnClose() {
+		return this.deleteTempFileOnClose;
 	}
 
 	/**
@@ -396,33 +427,51 @@ public abstract class AbstractSource
 		}
 		return this.sourceAccessor.getChildSources(this);
 	}
+    
+    /** Get extra properties.  Extra properties are those not known at the
+     * time the source unit is instantiated but which are not associated with
+     * a particular {@link org.jhove2.module.format.FormatModule}.
+     * @return Extra properties
+     * @throws JHOVE2Exception
+     */
+    @Override
+    public List<Reportable> getExtraProperties()
+        throws JHOVE2Exception
+    {
+        return this.extraProperties;
+    }
 
-	
-	/**
-	 * Get Map of per-source parameters
-	 * @return Map of per-source parameter name/parameter value pairs
-	 */
-	@Override
-	public Map<String, String> getSourceParams() {
-		return sourceParams;
-	}
+    /**
+     * Get {@link java.io.File} backing the source unit.
+     * Sources with an underlying tangible backing file
+     * (e.g. {@link org.jhove2.core.source.FileSource},
+     * {@link org.jhove2.core.source.ByteStreamSource}, and
+     * {@link org.jhove2.core.source.URLSource} should override this method
+     * return the appropriate input. 
+     * 
+     * @return File backing the source unit
+     * @see org.jhove2.core.source.Source#getFile()
+     */
+    @Override
+    public File getFile() {
+        return null;
+    }
+    
+    /** Get {@link org.jhove2.core.source.FileSystemProperties}.
+     * @return File system properties
+     */
+    @Override
+    public FileSystemProperties getFileSystemProperties() {
+        return this.fileSystemProperties;
+    }
 
-	/**
-	 * Get {@link java.io.File} backing the source unit.
-	 * 
-	 * @return File backing the source unit
-	 * @see org.jhove2.core.source.Source#getFile()
-	 */
-	@Override
-	public File getFile() {
-		return this.file;
-	}
 
     /**
      * Get little-endian {@link org.jhove2.core.io.Input} for the source unit
      * with the buffer size and type specified by the 
      * {@link org.jhove2.core.Invocation}.
-     * Input is returned if it exists.
+     * If this method is called explicitly, then the corresponding Input.close()
+     * method must be called to avoid a resource leak.
      * @param jhove2 JHOVE2 framework
      * @return Input for the source unit
      * @throws IOException 
@@ -430,67 +479,20 @@ public abstract class AbstractSource
      */
 	@Override
     public Input getInput(JHOVE2 jhove2)
-	    throws FileNotFoundException, IOException
+	    throws IOException
 	{
         return this.getInput(jhove2, ByteOrder.BIG_ENDIAN);
     }
 
-    /**
-     * Get {@link org.jhove2.core.io.Input} for the source unit with the 
-     * buffer size and type specified by the {@link org.jhove2.core.Invocation}
-     * @param jhove2 JHOVE2 framework
-     * @param order  Byte order
-     * @return Input for the source unit
-     */
-	@Override
-    public Input getInput(JHOVE2 jhove2, ByteOrder order)
-        throws FileNotFoundException, IOException
-    {
-	    Invocation invocation = jhove2.getInvocation();
-	    
-        return this.getInput(invocation.getBufferSize(),
-                             invocation.getBufferType(),
-                             order);
-    }
-    
 	/**
-	 * Create and get little-endian {@link org.jhove2.core.io.Input} for the
-	 * source unit. Concrete classes extending this abstract class must
-	 * provide an implementation of this method if they are are based on
-	 * parsable input. Classes without parsable input
-	 * (e.g. {@link org.jhove2.core.source.ClumpSource} or
-	 * {@link org.jhove2.core.source.DirectorySource} can let this inherited
-	 * method return null.
-	 * 
-	 * @param bufferSize
-	 *            Input maximum buffer size
-	 * @param bufferType
-	 *            Input buffer type
-	 * @return Input
-	 * @throws FileNotFoundException
-	 *             File not found
-	 * @throws IOException
-	 *             I/O exception getting input
-	 */
-	@Override
-	public Input getInput(int bufferSize, Type bufferType)
-		throws FileNotFoundException, IOException
-	{
-		return this.getInput(bufferSize, bufferType, ByteOrder.BIG_ENDIAN);
-	}
-
-	/**
-	 * Create and get {@link org.jhove2.core.io.Input} for the source unit. Concrete
-	 * classes extending this abstract class must provide an implementation of
-	 * this method if they are are based on parsable input. Classes without
-	 * parsable input (e.g. {@link org.jhove2.core.source.ClumpSource} or
-	 * {@link org.jhove2.core.source.DirectorySource} can let this inherited
-	 * method return null.
-	 * 
-	 * @param bufferSize
-	 *            Input maximum buffer size, in bytes
-	 * @param bufferType
-	 *            Input buffer type
+	 * Create and get {@link org.jhove2.core.io.Input} for the source unit.
+	 * Sources with tangible input (e.g. {@link org.jhove2.core.source.FileSource},
+	 * {@link org.jhove2.core.source.ByteStreamSource}, and
+	 * {@link org.jhove2.core.source.URLSource} should override this method
+	 * return the appropriate input.
+     * If this method is called explicitly, then the corresponding Input.close()
+     * method must be called to avoid a resource leak.
+	 * @param jhove2 JHOVE2 framework object
 	 * @param order
 	 *            Byte order
 	 * @return null
@@ -500,24 +502,32 @@ public abstract class AbstractSource
 	 *             I/O exception getting input
 	 */
 	@Override
-	public Input getInput(int bufferSize, Type bufferType, ByteOrder order)
-		throws FileNotFoundException, IOException
+	public Input getInput(JHOVE2 jhove2, ByteOrder order)
+        throws IOException
 	{
-		return InputFactory.getInput(this.file, bufferSize, bufferType, order);
+		return null;
 	}
 
 	/**
-	 * Get {@link java.io.InputStream} backing the source unit
+	 * Get {@link java.io.InputStream} backing the source unit.  Sources with
+     * tangible input (e.g. {@link org.jhove2.core.source.FileSource},
+     * {@link org.jhove2.core.source.ByteStreamSource}, and
+     * {@link org.jhove2.core.source.DirectorySource} should override this method
+     * return the appropriate stream.
+     * If this method is called explicitly, then the corresponding
+     * InputStream.close() method must be called to avoid a resource leak. 
 	 * 
-	 * @return Input stream backing the source unit
-	 * @throws FileNotFoundException
+	 * @return Input stream backing the source unit, or null if a Clump,
+	 *         Directory, or FileSet source
+	 * @throws FileNotFoundException  Backing file not found
+	 * @throws IOException Backing file could not be created
 	 * @see org.jhove2.core.source.Source#getInputStream()
 	 */
 	@Override
 	public InputStream getInputStream()
-		throws FileNotFoundException
+	    throws IOException
 	{
-		return new FileInputStream(this.file);
+	    return null;
 	}
 
 	/** Get source unit messages.
@@ -527,7 +537,14 @@ public abstract class AbstractSource
 	public List<Message> getMessages() {
 	    return this.messages;
 	}
-	
+
+    /**
+     * @return the moduleIDs
+     */
+    public static Set<String> getModuleIDs() {
+        return moduleIDs;
+    }
+    
 	/**
 	 * Get modules that processed the source unit.
 	 * 
@@ -581,16 +598,31 @@ public abstract class AbstractSource
 	public Set<FormatIdentification> getPresumptiveFormats() {
 		return presumptiveFormatIdentifications;
 	}
-    
-    /** Get starting offset of the source unit, in bytes.
-     * @return Starting offset of the source unit
-     * Except for {@link ByteStreamSource}s, this will generally be 0.
+
+    @Override
+    public SourceAccessor getSourceAccessor() {
+        return sourceAccessor;
+    }
+
+    /**
+     * Get Map of per-source parameters
+     * @return Map of per-source parameter name/parameter value pairs
      */
     @Override
-    public long getStartingOffset() {
-        return this.startingOffset;
+    public Map<String, String> getSourceParams() {
+        return sourceParams;
     }
-    
+
+    @Override
+    public Long getSourceId() {
+        return sourceId;
+    }
+
+    @Override
+    public Long getParentSourceId() {
+        return parentSourceId;
+    }
+         
 	/**
 	 * Get elapsed time processing the source unit.
 	 * @return Elapsed time
@@ -598,6 +630,14 @@ public abstract class AbstractSource
 	@Override
 	public TimerInfo getTimerInfo() {
 		return timerInfo;
+	}
+	
+	/** Get aggregate flag: true if source is an aggregate.
+	 * @return Aggregate flag
+	 */
+	@Override
+	public boolean isAggregate() {
+	    return this.isAggregate;
 	}
 	
 	/**
@@ -610,7 +650,6 @@ public abstract class AbstractSource
 	public boolean isTemp() {
 		return this.isTemp;
 	}
-
 	
 	/**
 	 * Set delete temporary files flag; if true, delete files.
@@ -618,15 +657,63 @@ public abstract class AbstractSource
 	 * @param flag
 	 *            Delete temporary files flag
 	 * @throws JHOVE2Exception 
-	 * @see org.jhove2.core.source.Source#setDeleteTempFiles(boolean)
+	 * @see org.jhove2.core.source.Source#setDeleteTempFileOnClose(boolean)
 	 */
 	@Override
-	public Source setDeleteTempFiles(boolean flag) throws JHOVE2Exception {
-		this.deleteTempFiles = flag;
+	public Source setDeleteTempFileOnClose(boolean flag)
+	    throws JHOVE2Exception
+	{
+		this.deleteTempFileOnClose = flag;
 		return this.getSourceAccessor().persistSource(this);
 	}
+    
+    /**
+     * Set aggregate flag; if true, source is an aggregate.
+     * 
+     * @param flag
+     *            Aggregate flag
+     * @throws JHOVE2Exception 
+     * @see org.jhove2.core.source.Source#setIsAggregate(boolean)
+     */
+    @Override
+    public Source setIsAggregate(boolean flag)
+        throws JHOVE2Exception
+    {
+        this.isAggregate = flag;
+        return this.getSourceAccessor().persistSource(this);
+    }
+    
+    /** Set temporary file flag.
+     * @param flag Temporary file flag; true if the backing file is temporary
+     */
+    @Override
+    public Source setIsTemp(boolean flag)
+        throws JHOVE2Exception
+    {
+        this.isTemp = flag;
+        return this.getSourceAccessor().persistSource(this);
+    }
 
+    @Override
+    public void setParentSourceId(Long parentSourceId) {
+        this.parentSourceId = parentSourceId;
+    }
 
+    @Override
+    public void setSourceAccessor(SourceAccessor sourceAccessor) {
+        this.sourceAccessor = sourceAccessor;
+    }
+
+    @Override
+    public Source startTimer() throws JHOVE2Exception{
+        return this.sourceAccessor.startTimerInfo(this);
+    }
+    
+    @Override
+    public Source endTimer() throws JHOVE2Exception{
+        return this.sourceAccessor.endTimerInfo(this);
+    }
+    
 	/**
 	 * Set Map of per-source parameters
 	 * @param sourceParams Map of per-source parameter name/parameter value pairs
@@ -637,6 +724,11 @@ public abstract class AbstractSource
 		return this.getSourceAccessor().persistSource(this);
 	}
 
+    @Override
+    public void setTimerInfo(TimerInfo timer){
+        this.timerInfo = timer;
+    }
+    
 	/**
 	 * Lexically compare format identifications.
 	 * 
@@ -861,54 +953,7 @@ public abstract class AbstractSource
         catch (Exception e){}        
         result = prime * result
                 + ((children == null) ? 0 : children.hashCode());
-        result = prime * result + ((file == null) ? 0 : file.hashCode());
         result = prime * result + ((modules == null) ? 0 : modules.hashCode());
         return result;
     }
-	@Override
-	public SourceAccessor getSourceAccessor() {
-		return sourceAccessor;
-	}
-
-	@Override
-	public void setSourceAccessor(SourceAccessor sourceAccessor) {
-		this.sourceAccessor = sourceAccessor;
-	}
-	
-	@Override
-	public void setTimerInfo(TimerInfo timer){
-		this.timerInfo = timer;
-	}
-	@Override
-	public Source startTimer() throws JHOVE2Exception{
-		return this.sourceAccessor.startTimerInfo(this);
-	}
-	
-	@Override
-	public Source endTimer() throws JHOVE2Exception{
-		return this.sourceAccessor.endTimerInfo(this);
-	}
-
-	@Override
-	public Long getSourceId() {
-		return sourceId;
-	}
-
-
-	@Override
-	public Long getParentSourceId() {
-		return parentSourceId;
-	}
-	
-	@Override
-	public void setParentSourceId(Long parentSourceId) {
-		this.parentSourceId = parentSourceId;
-	}
-
-	/**
-	 * @return the moduleIDs
-	 */
-	public static Set<String> getModuleIDs() {
-		return moduleIDs;
-	}
 }

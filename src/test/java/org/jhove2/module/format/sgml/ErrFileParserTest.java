@@ -111,7 +111,7 @@ public class ErrFileParserTest {
 		 sp.setMessageParser(parser);
 		 Source inputSource = null;
 		 try {
-			 inputSource = JHOVE2.getSourceFactory().getSource(conformButWarnPath);
+			 inputSource = JHOVE2.getSourceFactory().getSource(JHOVE2, conformButWarnPath);
 		 } catch (FileNotFoundException e) {
 			 e.printStackTrace();
 			 fail(e.getMessage());
@@ -145,7 +145,7 @@ public class ErrFileParserTest {
 		 sp.setMessageParser(parser);
 		 testSgmlModule.setDocumentProperties(new SgmlDocumentProperties());
 		 try {
-			 inputSource = JHOVE2.getSourceFactory().getSource(conformNoErrPath);
+			 inputSource = JHOVE2.getSourceFactory().getSource(JHOVE2, conformNoErrPath);
 		 } catch (FileNotFoundException e) {
 			 e.printStackTrace();
 			 fail(e.getMessage());
@@ -179,7 +179,7 @@ public class ErrFileParserTest {
 		 sp.setMessageParser(parser);
 		 testSgmlModule.setDocumentProperties(new SgmlDocumentProperties());
 		 try {
-			 inputSource = JHOVE2.getSourceFactory().getSource(nodoctypePath);
+			 inputSource = JHOVE2.getSourceFactory().getSource(JHOVE2, nodoctypePath);
 		 } catch (FileNotFoundException e) {
 			 e.printStackTrace();
 			 fail(e.getMessage());
@@ -213,7 +213,7 @@ public class ErrFileParserTest {
 		 sp.setMessageParser(parser);
 		 testSgmlModule.setDocumentProperties(new SgmlDocumentProperties());
 		 try {
-			 inputSource = JHOVE2.getSourceFactory().getSource(spaceBeforePath);
+			 inputSource = JHOVE2.getSourceFactory().getSource(JHOVE2, spaceBeforePath);
 		 } catch (FileNotFoundException e) {
 			 e.printStackTrace();
 			 fail(e.getMessage());
@@ -247,7 +247,7 @@ public class ErrFileParserTest {
 		 sp.setMessageParser(parser);
 		 testSgmlModule.setDocumentProperties(new SgmlDocumentProperties());
 		 try {
-			 inputSource = JHOVE2.getSourceFactory().getSource(unmatchedPubPath);
+			 inputSource = JHOVE2.getSourceFactory().getSource(JHOVE2, unmatchedPubPath);
 		 } catch (FileNotFoundException e) {
 			 e.printStackTrace();
 			 fail(e.getMessage());
@@ -281,7 +281,7 @@ public class ErrFileParserTest {
 		 sp.setMessageParser(parser);
 		 testSgmlModule.setDocumentProperties(new SgmlDocumentProperties());
 		 try {
-			 inputSource = JHOVE2.getSourceFactory().getSource(unmatchedSysPath);
+			 inputSource = JHOVE2.getSourceFactory().getSource(JHOVE2, unmatchedSysPath);
 		 } catch (FileNotFoundException e) {
 			 e.printStackTrace();
 			 fail(e.getMessage());

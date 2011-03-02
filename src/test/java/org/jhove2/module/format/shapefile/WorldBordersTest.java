@@ -30,12 +30,14 @@ public class WorldBordersTest {
 	@Before
 	public void setUp() throws Exception {
 		try {
-			clump = factory.getClumpSource();
+		    JHOVE2 jhove2 = new JHOVE2();
+		    jhove2.setSourceFactory(factory);
+			clump = factory.getClumpSource(jhove2);
 			String wbDirName = "src/test/resources/examples/shapefiles/worldBorders";
 			File wbDir = new File(wbDirName);
 			for (File file : wbDir.listFiles()) {
 				if (file.getName().startsWith("TM_WORLD_BORDERS-0.2.")) {
-					FileSource fs = (FileSource) factory.getSource(file);
+					FileSource fs = (FileSource) factory.getSource(jhove2, file);
 					clump.addChildSource(fs);
 				}
 			}			

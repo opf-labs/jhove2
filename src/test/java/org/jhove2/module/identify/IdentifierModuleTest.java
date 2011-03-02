@@ -50,6 +50,8 @@ import org.jhove2.core.format.FormatIdentification;
 import org.jhove2.core.format.FormatIdentification.Confidence;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.FileSource;
+import org.jhove2.persist.PersistenceManager;
+import org.jhove2.persist.PersistenceManagerUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -83,7 +85,11 @@ public class IdentifierModuleTest {
 		Input      input  = null;
 		Set<FormatIdentification> ids = null;
 		String droidDirPath = null;
+        PersistenceManager persistenceManager = null;
 		try {
+            PersistenceManagerUtil.createPersistenceManagerFactory(JHOVE2.getConfigInfo());
+            persistenceManager = PersistenceManagerUtil.getPersistenceManagerFactory().getInstance();
+            persistenceManager.initialize();
 			droidDirPath = 
 				FeatureConfigurationUtil.getFilePathFromClasspath(droidDirBasePath, "droid dir");
 		} catch (JHOVE2Exception e1) {
@@ -91,7 +97,7 @@ public class IdentifierModuleTest {
 		}
 		String zipFilePath = droidDirPath.concat(sampleFile);
 		try {
-			source =(FileSource)JHOVE2.getSourceFactory().getSource(zipFilePath);
+			source =(FileSource)JHOVE2.getSourceFactory().getSource(JHOVE2, zipFilePath);
 			input  = source.getInput(JHOVE2);
 		} catch (Exception e) {
 			fail("Couldn't create source: " + e.getMessage());
@@ -121,7 +127,7 @@ public class IdentifierModuleTest {
 			}
 			String testFilePath = shapeDirPath.concat(testFile);
 			try {
-				source = (FileSource)JHOVE2.getSourceFactory().getSource(testFilePath);
+				source = (FileSource)JHOVE2.getSourceFactory().getSource(JHOVE2, testFilePath);
 			} catch (Exception e) {
 				fail("Couldn't create source: " + e.getMessage());
 			} 

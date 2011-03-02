@@ -36,13 +36,19 @@
 
 package org.jhove2.core.source;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.nio.ByteOrder;
 
+import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.Invocation;
+import org.jhove2.core.JHOVE2;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.io.InputFactory;
-import org.jhove2.core.io.Input.Type;
 
 import com.sleepycat.persist.model.Persistent;
 
@@ -55,73 +61,166 @@ import com.sleepycat.persist.model.Persistent;
 @Persistent
 public class URLSource
     extends AbstractSource
-    implements NamedSource
+    implements MeasurableSource, NamedSource
 {
-    /** URL name. */
-    protected String name;
+    /** Ending offset, in bytes, relative to the
+     * parent source.  If there is no parent, the ending offset is the
+     * size.
+     */
+    protected long endingOffset;
     
-	/** URL backing the source unit. */
-	protected URL url;
+    /** Temporary backing file. */
+    protected File file;
+ 
+    /** File size, in bytes. */
+    protected long size;
+ 
+    /** Starting offset, in bytes, relative to the
+     * parent source.  If there is no parent, the ending offset is the
+     * size.
+     */
+    protected long startingOffset;
+    
+    /** URL. */
+    protected String url;
 
 	protected URLSource(){
 		super();
 	}
 	/**
 	 * Instantiate a new <code>URLSource</code>.
-	 * 
-     * @param String temporary file prefix
-     * @param String temporary file suffix
-     * @param int buffer size 
-	 * @param url
-	 *            URL
+	 * @param jhove2 JHOVE2 framework object
+     * @param url    Source URL
 	 * @throws IOException
 	 */
-
-	protected URLSource(String tmpPrefix, String tmpSuffix,
-			int bufferSize, URL url) throws IOException {
-		super(tmpPrefix, tmpSuffix, bufferSize, url.openStream());
-		
-		this.name = url.toString();
-		this.url  = url;
+	protected URLSource(JHOVE2 jhove2, URL url)
+	    throws IOException
+	{
+		super(jhove2);
+        Invocation inv = jhove2.getInvocation();
+        this.file = createTempFile(url.openStream(), trimPath(url.getPath()),
+                                   inv.getTempDirectoryFile(),
+                                   inv.getTempPrefix(), inv.getTempSuffix(),
+                                   inv.getBufferSize());
+        this.isTemp = true;
+	    
+		this.url = url.toString();
+        this.size = this.file.length();
+        this.startingOffset = 0L;
+        this.endingOffset   = this.size;
+        if (this.size > 0L) {
+            this.endingOffset--;
+        }
 	}
 
-	/**
-	 * Get {@link org.jhove2.core.io.Input} for the source unit.
-	 * 
-	 * @param bufferSize
-	 *            Input buffer size
-	 * @param bufferType
-	 *            Input buffer type
-	 * @return Input
-	 * @throws FileNotFoundException
-	 *             File not found
-	 * @throws IOException
-	 *             I/O exception instantiating input
-	 * @see org.jhove2.core.source.Source#getInput(int,
-	 *      org.jhove2.core.io.Input.Type)
+	/** Get the trailing part of the URL path.
+	 * @param path URL path
+	 * @return Trailing part of the URL path
 	 */
-	@Override
-	public Input getInput(int bufferSize, Type bufferType)
-			throws FileNotFoundException, IOException {
-		return InputFactory.getInput(this.file, bufferSize, bufferType);
-	}
+    private static synchronized String trimPath(String path) {
+        int in = path.lastIndexOf("/");
+        if (in > -1) {
+            path = path.substring(in+1);
+        }
+        return path;
+    }
+    
+    /** Get ending offset of the source unit, in bytes, relative to the
+     * parent source.  If there is no parent, the ending offset is the
+     * size.
+     * @return Starting offset of the source unit
+     */
+    @Override
+    public long getEndingOffset() {
+        return this.endingOffset;
+    }
 
+    /**
+     * Get {@link java.io.File} backing the source unit.
+     * 
+     * @return File backing the source unit
+     * @see org.jhove2.core.source.Source#getFile()
+     */
+    @Override
+    public File getFile() {
+        return this.file;
+    }
+    
+    /**
+     * Create and get {@link org.jhove2.core.io.Input} for the source unit. 
+     * If this method is called explicitly, then the corresponding Input.close()
+     * method must be called to avoid a resource leak.
+     * @param jhove2 JHOVE2 framework object
+     * @param order
+     *            Byte order
+     * @return Source unit input
+     * @throws IOException
+     *             I/O exception getting input
+     */
+    @Override
+    public Input getInput(JHOVE2 jhove2, ByteOrder order)
+        throws IOException
+    {
+        Input input = InputFactory.getInput(jhove2, this.file, this.isTemp, order);
+        input.setDeleteTempFileOnClose(this.deleteTempFileOnClose);
+        return input;
+    }
+    
+    /**
+     * Get {@link java.io.InputStream} backing the source unit.
+     * If this method is called explicitly, then the corresponding
+     * InputStream.close() method must be called to avoid a resource leak. 
+     * 
+     * @return Input stream backing the source unit, or null if a Clump,
+     *         Directory, or FileSet source
+     * @throws FileNotFoundException  Backing file not found
+     * @throws IOException Backing file could not be created
+     * @see org.jhove2.core.source.Source#getInputStream()
+     */
+    @Override
+    public InputStream getInputStream()
+        throws IOException
+    {
+        InputStream stream = null;
+        if (this.file != null) {
+            stream = new FileInputStream(this.file);
+        }
+        return stream;
+    }
+        
+    /** Get size, in bytes.
+     * @return Size
+     */
+    @Override
+    public long getSize() {
+        return this.size;
+    }
+
+    /** Get starting offset of the source unit, in bytes, relative to the
+     * parent source.  If there is no parent, the starting offset is 0.
+     * @return Starting offset of the source unit
+     */
+    @Override
+    public long getStartingOffset() {
+        return this.startingOffset;
+    }
+    
 	/**
-	 * Get URL name.
+	 * Get URL source name.
 	 * 
-	 * @return URL name
+	 * @return URL source name
 	 */
 	@Override
 	public String getSourceName() {
-		return this.name;
+		return this.url;
 	}
 	
 	/** Get URL.
-	 * 
 	 * @return URL
 	 */
-	public URL getURL(){
-		return this.url;
+	@ReportableProperty(order=1, value="URL")
+	public String getURL() {
+	    return this.url;
 	}
 	
 	/** Compare the URL.
@@ -129,7 +228,7 @@ public class URLSource
 	 * @see org.jhove2.core.source.AbstractSource#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals(Object obj){
+	public boolean equals(Object obj) {
 		if (obj == null){
 			return false;
 		}
@@ -139,16 +238,7 @@ public class URLSource
 		if (!(obj instanceof URLSource)){
 			return false;
 		}
-		URLSource uObj = (URLSource)obj;
-		if (this.getURL()==null){
-			if (uObj.getURL()!= null){
-				return false;
-			}
-		}
-		else if (uObj.getURL()==null){
-			return false;
-		}
-		boolean equals = this.name.equalsIgnoreCase(uObj.getSourceName());
+		boolean equals = this.url.equalsIgnoreCase(((NamedSource)obj).getSourceName());
 		if (!equals){
 			return false;
 		}
@@ -163,8 +253,7 @@ public class URLSource
     {
         final int prime = 31;
         int result = super.hashCode();
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + ((url == null) ? 0 : url.hashCode());
+        result = prime * result + ((this.url == null) ? 0 : this.url.hashCode());
         return result;
     }
     
@@ -185,24 +274,13 @@ public class URLSource
 			int compareSource = this.getReportableIdentifier().
 				compareTo(source.getReportableIdentifier());
 			return compareSource;
+		}		
+		int stCompare = this.url.compareToIgnoreCase(((NamedSource)source).getSourceName());
+		if (stCompare < 0){
+		    return -1;
 		}
-		URLSource uObj = (URLSource)source;
-		if (this.getURL()==null){
-			if (uObj.getURL()!= null){
-				return -1;
-			}
-		}
-		else if (uObj.getURL()==null){
-			return 1;
-		}
-		else {			
-			int stCompare = this.name.compareToIgnoreCase(uObj.getSourceName());
-			if (stCompare < 0){
-				return -1;
-			}
-			else if (stCompare > 0){
-				return 1;
-			}
+		else if (stCompare > 0){
+		    return 1;
 		}
 		return super.compareTo(source);
 	}

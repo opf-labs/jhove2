@@ -42,6 +42,8 @@ import javax.annotation.Resource;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
+import org.jhove2.persist.PersistenceManager;
+import org.jhove2.persist.PersistenceManagerUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -67,9 +69,13 @@ public class JSONDisplayerTest {
 	 */
 	@Test
 	public void testDisplay() {
+	    PersistenceManager persistenceManager = null;
 		try {
+	        PersistenceManagerUtil.createPersistenceManagerFactory(JHOVE2.getConfigInfo());
+	        persistenceManager = PersistenceManagerUtil.getPersistenceManagerFactory().getInstance();
+	        persistenceManager.initialize();
 			String filePath = utf8DirBasePath.concat(testFile01);
-			Source source = JHOVE2.getSourceFactory().getSource(filePath);
+			Source source = JHOVE2.getSourceFactory().getSource(JHOVE2, filePath);
 			Input  input  = source.getInput(JHOVE2);
 			source = JHOVE2.characterize(source, input);
 			Displayer displayer = new JSONDisplayer();

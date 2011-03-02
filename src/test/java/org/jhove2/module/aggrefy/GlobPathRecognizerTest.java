@@ -58,6 +58,8 @@ import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.FileSetSource;
 import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.Source;
+import org.jhove2.persist.PersistenceManager;
+import org.jhove2.persist.PersistenceManagerUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -90,18 +92,22 @@ public class GlobPathRecognizerTest{
 	 */
 	@Test
 	public void testGroupSources() {
+	    PersistenceManager persistenceManager = null;
 		String samplesDirPath = null;
 		try {
+	        PersistenceManagerUtil.createPersistenceManagerFactory(JHOVE2.getConfigInfo());
+	        persistenceManager = PersistenceManagerUtil.getPersistenceManagerFactory().getInstance();
+	        persistenceManager.initialize();
 			samplesDirPath = 
 				FeatureConfigurationUtil.getFilePathFromClasspath(shapeDirBasePath, "samples dir");
 		} catch (JHOVE2Exception e1) {
 			fail("Could not create base directory");
 		}
 		try {			
-			FileSetSource fsSource = JHOVE2.getSourceFactory().getFileSetSource();
+			FileSetSource fsSource = JHOVE2.getSourceFactory().getFileSetSource(JHOVE2);
 			for (String fileName:this.getTestFileList()){
 				String testFilePath = samplesDirPath.concat(fileName);
-				FileSource fs = (FileSource)JHOVE2.getSourceFactory().getSource(new File(testFilePath));
+				FileSource fs = (FileSource)JHOVE2.getSourceFactory().getSource(JHOVE2, new File(testFilePath));
 				fs=(FileSource) fsSource.addChildSource(fs);
 			}
 			strictShapeFileRecognizer.compilePatterns();
@@ -151,10 +157,10 @@ public class GlobPathRecognizerTest{
 			fail("Could not create base directory");
 		}
 		try{
-			FileSetSource fsSource = JHOVE2.getSourceFactory().getFileSetSource();
+			FileSetSource fsSource = JHOVE2.getSourceFactory().getFileSetSource(JHOVE2);
 			for (String fileName:this.getTestFileList()){
 				String testFilePath = samplesDirPath.concat(fileName);
-				FileSource fs = (FileSource)JHOVE2.getSourceFactory().getSource(new File(testFilePath));
+				FileSource fs = (FileSource)JHOVE2.getSourceFactory().getSource(JHOVE2, new File(testFilePath));
 				fs=(FileSource) fsSource.addChildSource(fs);
 			}
 			ArrayList<String> fullFailKeys = new ArrayList<String>();
@@ -233,18 +239,22 @@ public class GlobPathRecognizerTest{
 	 */
 	@Test
 	public void testIdentify() {
+	    PersistenceManager persistenceManager = null;
 		String samplesDirPath = null;
 		try {
+	        PersistenceManagerUtil.createPersistenceManagerFactory(JHOVE2.getConfigInfo());
+	        persistenceManager = PersistenceManagerUtil.getPersistenceManagerFactory().getInstance();
+	        persistenceManager.initialize();
 			samplesDirPath = 
 				FeatureConfigurationUtil.getFilePathFromClasspath(shapeDirBasePath, "samples dir");
 		} catch (JHOVE2Exception e1) {
 			fail("Could not create base directory");
 		}
 		try {
-			FileSetSource fsSource = JHOVE2.getSourceFactory().getFileSetSource();
+			FileSetSource fsSource = JHOVE2.getSourceFactory().getFileSetSource(JHOVE2);
 			for (String fileName:this.getTestFileList()){
 				String testFilePath = samplesDirPath.concat(fileName);
-				FileSource fs = (FileSource)JHOVE2.getSourceFactory().getSource(new File(testFilePath));
+				FileSource fs = (FileSource)JHOVE2.getSourceFactory().getSource(JHOVE2, new File(testFilePath));
 				fs=(FileSource) fsSource.addChildSource(fs);
 			}
 			Set<ClumpSource> sources = 

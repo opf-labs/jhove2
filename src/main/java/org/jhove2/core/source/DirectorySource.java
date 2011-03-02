@@ -37,10 +37,10 @@
 package org.jhove2.core.source;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Date;
 
-import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 
 
@@ -54,110 +54,143 @@ import com.sleepycat.persist.model.Persistent;
 @Persistent
 public class DirectorySource
     extends AbstractSource
-    implements AggregateSource,	FileSystemSource
-{
-	/** Directory existence. */
-	protected boolean isExtant;
-
-	/** Directory readability. */
-	protected boolean isReadable;
-
-	/** Directory name. */
-	protected String directoryName;
+    implements NamedSource
+{  
+    /** Java {java.io.File} underlying the directory, if a physical directory
+     * on the file system.
+     */
+    protected File file;
     
-	/** Directory path. */
-	protected String path;
+	/** Directory name. */
+	protected String name;
 
 	protected DirectorySource(){
 		super();
+		this.isAggregate = true;
 	}
+	
 	/**
 	 * Instantiate a new <code>DirectorySource</code>.
 	 * 
-	 * @param pathName
+     * @param jhove2 JHOVE2 framework object
+	 * @param name
 	 *            Directory path name
-	 * @param sourceFactory SourceFactory which configures accessors for this source
 	 * @throws IOException
-	 * @throws FileNotFoundException
 	 * @throws JHOVE2Exception 
 	 * @throws JHOVE2Exception 
 	 */
-	protected DirectorySource(String pathName, SourceFactory sourceFactory)
-	    throws FileNotFoundException, IOException, JHOVE2Exception
+	protected DirectorySource(JHOVE2 jhove2, String name)
+	    throws IOException, JHOVE2Exception
 	{
-		this(new File(pathName), sourceFactory);
-	}
-
-	/**
-	 * Instantiate a new <code>DirectorySource</code>.
-	 * 
-	 * @param file
-	 *            Java {@link java.io.File} representing a directory
-	 * @param sourceFactory  SourceFactory which configures accessors for this source
-	 * @throws IOException
-	 * @throws FileNotFoundException
-	 * @throws JHOVE2Exception 
-	 */
-	protected DirectorySource(File file, SourceFactory sourceFactory)
-	    throws FileNotFoundException, IOException, JHOVE2Exception
-	{
-		super(file);
-		this.setSourceAccessor(sourceFactory.createSourceAccessor(this));
-		this.directoryName = file.getName();
-		try {
-			this.path = file.getCanonicalPath();
-		} catch (IOException e) {
-			/* Let path stay uninitialized. */
-		}
-		this.isExtant = file.exists();
-		if (this.isExtant) {
-			this.isReadable = file.canRead();
-			File[] list = file.listFiles();
-			for (int i = 0; i < list.length; i++) {
-				Source source = sourceFactory.getSource(list[i]);
-				source=this.addChildSource(source);
-			} 
-		}
-	}
-
-	/**
-	 * Get directory name.
-	 * 
-	 * @return Directory name
-	 * @see org.jhove2.core.source.NamedSource#getSourceName()
-	 */
-	@Override
-	public String getSourceName() {
-		return this.directoryName;
+		this(jhove2, name, true);
 	}
     
+    /**
+     * Instantiate a new <code>DirectorySource</code>.
+     * 
+     * @param jhove2 JHOVE2 framework object
+     * @param name
+     *            Directory path name
+     * @param fileSystemDirectory True if a physical directory on the file system
+     * @throws IOException
+     * @throws JHOVE2Exception 
+     */
+    protected DirectorySource(JHOVE2 jhove2, String name,
+                              boolean fileSystemDirectory)
+        throws IOException, JHOVE2Exception
+    {
+        super(jhove2);
+        
+        /* Is this is a physical directory (and not a directory embedded in
+         * a container, create a Java {@link java.io.File}.
+         */
+        this.file = null;
+        if (fileSystemDirectory) {
+            this.file = new File(name);
+        }
+        init(jhove2, name, this.file, fileSystemDirectory);
+    }
+    
+    /**
+     * Instantiate a new <code>DirectorySource</code>.
+     * 
+     * @param jhove2 JHOVE2 framework object
+     * @param file
+     *            Java {@link java.io.File} representing a directory
+     * @throws IOException
+     * @throws JHOVE2Exception 
+     */
+    protected DirectorySource(JHOVE2 jhove2, File file)
+        throws IOException, JHOVE2Exception
+    {
+        this(jhove2, file, true);
+    }
+    
 	/**
-	 * Get directory path.
+	 * Instantiate a new <code>DirectorySource</code>.
 	 * 
-	 * @return Directory path
+     * @param jhove2 JHOVE2 framework object
+	 * @param file
+	 *            Java {@link java.io.File} representing a directory
+	 * @param fileSystemDirectory True if a physical directory on the file
+	 *                            system, as opposed to a directory embedded
+	 *                            in a container
+	 * @throws IOException
+	 * @throws JHOVE2Exception 
 	 */
-	@ReportableProperty(order = 1, value = "Directory path.")
-	public String getPath() {
-		return this.path;
+	protected DirectorySource(JHOVE2 jhove2, File file,
+	                          boolean fileSystemDirectory)
+	    throws IOException, JHOVE2Exception
+	{
+		super(jhove2);
+		
+		init(jhove2, file.getName(), file, fileSystemDirectory);
+	}
+	
+	/** Initialize the directory source.
+	 * @param jhove2 JHOVE2 framework object
+	 * @param name   Directory name
+	 * @param file   Directory file, if a physical directory
+	 * @param fileSystemDirectory True if a physical directory
+	 * @throws IOException
+	 * @throws JHOVE2Exception
+	 */
+	protected void init(JHOVE2 jhove2, String name, File file,
+	                    boolean fileSystemDirectory)
+	    throws IOException, JHOVE2Exception 
+	{
+        this.name = name;
+		if (fileSystemDirectory) { 
+		    /* Get child source units. */
+		    File[] list = file.listFiles();
+		    for (int i = 0; i < list.length; i++) {
+		        Source source = jhove2.getSourceFactory().getSource(jhove2,
+		                                                            list[i]);
+		        source = this.addChildSource(source);
+		    }
+		    /* Get file system-specific properties. */
+            String path = name;
+	        try {
+                path = file.getCanonicalPath();
+	        } catch (IOException e) {
+	            /* Let path stay initialized to just the directory name. */
+	        }
+            this.fileSystemProperties =
+                new FileSystemProperties(path, file.exists(), file.canRead(),
+                                         file.isHidden(), false,
+                                         new Date(file.lastModified()));
+		}
+		this.isAggregate = true;
 	}
 
-	/**
-	 * Get directory existence.
-	 * 
-	 * @return True if directory exists
-	 */
-	@Override
-	public boolean isExtant() {
-		return this.isExtant;
-	}
-
-	/**
-	 * Get directory readability.
-	 * 
-	 * @return True if directory is readable
-	 */
-	@Override
-	public boolean isReadable() {
-		return this.isReadable;
-	}
-}
+    /**
+     * Get directory source name.
+     * 
+     * @return Directory source name
+     * @see org.jhove2.core.source.NamedSource#getSourceName()
+     */
+    @Override
+    public String getSourceName() {
+        return this.name;
+    }
+ }

@@ -36,7 +36,6 @@
 
 package org.jhove2.core.reportable;
 
-import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.I8R;
 
 import com.sleepycat.persist.model.Persistent;
@@ -77,7 +76,6 @@ public abstract class AbstractReportable
 	 * @see org.jhove2.core.reportable.Reportable#getReportableName()
 	 */
 	@Override
-	@ReportableProperty(value = "Reportable name")
 	public String getReportableName(){
 		if (this.reportableName == null) {
 			this.reportableName = this.getClass().getSimpleName();

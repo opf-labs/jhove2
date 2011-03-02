@@ -36,6 +36,7 @@
 
 package org.jhove2.core;
 
+import java.io.File;
 import java.util.Properties;
 
 import org.jhove2.annotation.ReportableProperty;
@@ -66,7 +67,7 @@ public class Invocation
 	public static final int DEFAULT_FAIL_FAST_LIMIT = 0;
 
 	/** Default delete temporary files flag: delete files. */
-	public static final boolean DEFAULT_DELETE_TEMP_FILES = true;
+	public static final boolean DEFAULT_DELETE_TEMP_FILES_ON_CLOSE = true;
 
 	/** Default message digests flag: don't calculate digests. */
 	public static final boolean DEFAULT_CALC_DIGESTS = false;
@@ -87,32 +88,35 @@ public class Invocation
 	protected boolean calcDigests;
 
 	/** Delete temporary files flag: if true, delete temporary files. */
-	protected boolean deleteTempFiles;
-	
+	protected boolean deleteTempFilesOnClose;
+
+    /**
+     * Framework fail fast limit. Processing of a given source unit is
+     * terminated once the number of detected errors exceeds the limit. A limit
+     * of 0 indicates no fail fast, i.e., process and report all errors.
+     */
+    protected int failFastLimit;
+    
+    /** JHOVE2 home directory (from environment; defaults to user directory */
+    protected String jhove2Home;
+
+    /** Temporary directory. */
+    protected String tempDirectory;
+    
+    /** Temporary directory {@link java.io.File}. */
+    protected File tempDirectoryFile;
+    
 	/** Framework temporary file prefix. */
 	protected String tempPrefix;
 
 	/** Framework temporary file suffix. */
 	protected String tempSuffix;
 
-	/**
-	 * Framework fail fast limit. Processing of a given source unit is
-	 * terminated once the number of detected errors exceeds the limit. A limit
-	 * of 0 indicates no fail fast, i.e., process and report all errors.
-	 */
-	protected int failFastLimit;
-
-	/** Temporary directory. */
-	protected String tempDirectory;
-
 	/** Application user name. */
 	protected String userName;
 
 	/** Application current working directory. */
 	protected String workingDirectory;
-	
-	/** JHOVE2 home directory (from environment; defaults to user directory */
-	protected String jhove2Home;
 
 	/**
 	 * Instantiate a new <code>AbstractApplication</code>.
@@ -126,7 +130,7 @@ public class Invocation
 		this.bufferSize       = DEFAULT_BUFFER_SIZE;
 		this.bufferType       = DEFAULT_BUFFER_TYPE;
 		this.calcDigests      = DEFAULT_CALC_DIGESTS;
-		this.deleteTempFiles  = DEFAULT_DELETE_TEMP_FILES;
+		this.deleteTempFilesOnClose  = DEFAULT_DELETE_TEMP_FILES_ON_CLOSE;
 		this.tempPrefix       = DEFAULT_TEMP_PREFIX;
 		this.tempSuffix       = DEFAULT_TEMP_SUFFIX;
 		this.failFastLimit    = DEFAULT_FAIL_FAST_LIMIT;	
@@ -170,8 +174,8 @@ public class Invocation
 	 */
 	@ReportableProperty(order = 7, value="Temporary file deletion flag; if" +
 			"true, delete temporary files.")
-	public boolean getDeleteTempFiles() {
-		return this.deleteTempFiles;
+	public boolean getDeleteTempFilesOnClose() {
+		return this.deleteTempFilesOnClose;
 	}
 	
 	/**
@@ -181,11 +185,24 @@ public class Invocation
 	 * 
 	 * @return Fail fast limit
 	 */
+/* TODO: Fail fast processing is not yet enabled. Keep the method, but do not
+ * make it a reportable property. */
+/*****************************************************************************
 	@ReportableProperty(order = 8, value = "Fail fast limit.")
+ *****************************************************************************/
 	public int getFailFastLimit() {
 		return this.failFastLimit;
 	}
 	
+	/** Get temporary directory {@link java.io.File}.
+	 * @return Temporary directory
+	 */
+	public File getTempDirectoryFile()	{
+	    if (this.tempDirectoryFile == null) {
+	        this.tempDirectoryFile = new File(this.tempDirectory);
+	    }
+	    return this.tempDirectoryFile;
+	}
 	
 	/**
 	 * Get temporary directory.
@@ -267,7 +284,7 @@ public class Invocation
 	 *                        temporary files
 	 */
 	public void setDeleteTempFiles(boolean deleteTempFiles) {
-		this.deleteTempFiles = deleteTempFiles;
+		this.deleteTempFilesOnClose = deleteTempFiles;
 	}
 	
 	/**

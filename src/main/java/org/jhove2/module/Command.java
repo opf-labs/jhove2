@@ -60,7 +60,7 @@ public interface Command
 	 * Execute a JHOVE2 command on a {@link org.jhove2.core.source.Source} unit and its
 	 * {@link org.jhove2.core.io.Input}.
 	 * @param jhove2 JHOVE2 application framework for configuration information and callback
-     * @param source Source unit on which command is to be executed
+         * @param source Source unit on which command is to be executed
 	 * @throws JHOVE2Exception
 	 */
 	public void execute(JHOVE2 jhove2, Source source, Input input)

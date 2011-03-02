@@ -39,7 +39,7 @@
 			</list>
 		</property>
 	 	<property name="formatIdentifier" ref="ShapefileIdentifier"/>
-	 	<property name="fileGroupingExpr" value="(.*)\.((?i:shp\.)?\w{3})$"/>
+	 	<property name="fileGroupingExpr" value="(.*?)\.((?i:shp\.)?\w{3})$"/>
 	 	<property name="mustHaveExpr" value="^((?i:shp)|(?i:shx)|(?i:dbf))$"/>
 	 	<property name="mayHaveExpr" 
 	 	          value="^((?i:shp.xml)|(?i:prj)|(?i:sbn)|(?i:sbx)|(?i:atx)|(?i:qix)|(?i:fix)|(?i:grx))$"/>

@@ -203,13 +203,15 @@ implements Recognizer
 	 */
 	@Override
 	public Set<ClumpSource> recognize(JHOVE2 jhove2, Source source)
-	throws IOException, JHOVE2Exception {
-		Set<ClumpSource> clumpSources = 
-			new TreeSet<ClumpSource>();
+	    throws IOException, JHOVE2Exception
+	{
+		Set<ClumpSource> clumpSources = new TreeSet<ClumpSource>();
 		this.compilePatterns();
-		Collection<GlobPathMatchInfoGroup> sourceGroups = this.groupSources(source);
-		for (GlobPathMatchInfoGroup sourceGroup:sourceGroups){
-			ClumpSource clumpSource = this.recognizeGroupedSource(sourceGroup, jhove2);
+		Collection<GlobPathMatchInfoGroup> sourceGroups =
+		    this.groupSources(source);
+		for (GlobPathMatchInfoGroup sourceGroup : sourceGroups) {
+			ClumpSource clumpSource =
+			    this.recognizeGroupedSource(sourceGroup, jhove2);
 			if (clumpSource != null){
 				clumpSources.add(clumpSource);
 			}
@@ -229,13 +231,14 @@ implements Recognizer
 	 * @throws JHOVE2Exception 
 	 */
 	protected Collection <GlobPathMatchInfoGroup> groupSources(Source source) 
-	throws JHOVE2Exception{
+	    throws JHOVE2Exception
+	{
 		HashMap<String,  GlobPathMatchInfoGroup> groupMap = 
 			new HashMap<String, GlobPathMatchInfoGroup>();
 		for (Source childSource:source.getChildSources()){
 			File sourceFile = childSource.getFile();
 			if (sourceFile !=  null){
-				String filePath = childSource.getFile().getPath();			
+				String filePath = childSource.getFile().getPath();
 				// does the Source file path match the pattern that indicates a related file?
 				Matcher m = this.fileGroupingPattern.matcher(filePath);
 				if (m.matches()){
@@ -314,17 +317,19 @@ implements Recognizer
 	 *         otherwise returns null;
 	 * @throws JHOVE2Exception
 	 */
-	protected ClumpSource recognizeGroupedSource(GlobPathMatchInfoGroup fileGroup, JHOVE2 jhove2)
-	throws JHOVE2Exception {
+	protected ClumpSource recognizeGroupedSource(GlobPathMatchInfoGroup fileGroup,
+	                                             JHOVE2 jhove2)
+	    throws JHOVE2Exception
+	{
 		FormatIdentification fi = null;
 		ClumpSource clumpSource = null;
 		if (fileGroup.getMustHaveCount() >= this.minMustHavesToIdentify){
 			fi = new FormatIdentification(this.format, GLOB_PATH_CONFIDENCE, 
 					this.getReportableIdentifier());
-			if (jhove2.getSourceFactory()==null){
+			if (jhove2.getSourceFactory() == null){
 				throw new JHOVE2Exception("JHOVE2 SourceFactory is null");
 			}
-			clumpSource = jhove2.getSourceFactory().getClumpSource();
+			clumpSource = jhove2.getSourceFactory().getClumpSource(jhove2);
 			clumpSource = (ClumpSource) clumpSource.addPresumptiveFormat(fi);
 			for (GlobPathMatchInfo sourceInfo:fileGroup.getSourceMatchInfoList()){
 				if ((sourceInfo.isMustHave() || sourceInfo.isMayHave()) ||

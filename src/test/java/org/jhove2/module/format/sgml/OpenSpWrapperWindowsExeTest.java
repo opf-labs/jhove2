@@ -136,7 +136,7 @@ public class OpenSpWrapperWindowsExeTest {
 			File fGoodFile = new File(goodFilePath);
 			goodFilePath = fGoodFile.getPath();
 			try {
-				inputSource = JHOVE2.getSourceFactory().getSource(goodFilePath);
+				inputSource = JHOVE2.getSourceFactory().getSource(JHOVE2, goodFilePath);
 			}catch (Exception e){
 				e.printStackTrace();
 				fail("Failed to create source for input file");
@@ -163,7 +163,7 @@ public class OpenSpWrapperWindowsExeTest {
 			fGoodFile = new File(goodFilePath);
 			goodFilePath = fGoodFile.getPath();
 			try {
-				inputSource = JHOVE2.getSourceFactory().getSource(goodFilePath);
+				inputSource = JHOVE2.getSourceFactory().getSource(JHOVE2, goodFilePath);
 			}catch (Exception e){
 				e.printStackTrace();
 				fail("Failed to create source for input file");
@@ -204,7 +204,7 @@ public class OpenSpWrapperWindowsExeTest {
 			File fBadFile = new File(badFilePath);
 			badFilePath = fBadFile.getPath();
 			try {
-				inputSource = JHOVE2.getSourceFactory().getSource(badFilePath);
+				inputSource = JHOVE2.getSourceFactory().getSource(JHOVE2, badFilePath);
 			}catch (Exception e){
 				e.printStackTrace();
 				fail("Failed to create source for input file");
@@ -235,7 +235,7 @@ public class OpenSpWrapperWindowsExeTest {
 			File fGoodFile = new File(goodFilePath);
 			goodFilePath = fGoodFile.getPath();
 			try {
-				inputSource = JHOVE2.getSourceFactory().getSource(goodFilePath);
+				inputSource = JHOVE2.getSourceFactory().getSource(JHOVE2, goodFilePath);
 			}catch (Exception e){
 				e.printStackTrace();
 				fail("Failed to create source for input file");
@@ -277,7 +277,7 @@ public class OpenSpWrapperWindowsExeTest {
 			File fGoodFile = new File(goodFilePath);
 			goodFilePath = fGoodFile.getPath();
 			try {
-				inputSource = JHOVE2.getSourceFactory().getSource(goodFilePath);
+				inputSource = JHOVE2.getSourceFactory().getSource(JHOVE2, goodFilePath);
 			}catch (Exception e){
 				e.printStackTrace();
 				fail("Failed to create source for input file");

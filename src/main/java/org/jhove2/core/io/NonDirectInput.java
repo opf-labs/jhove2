@@ -41,6 +41,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import org.jhove2.core.JHOVE2;
+import org.jhove2.core.io.Input.Type;
 
 /**
  * JHOVE2 non direct inputable.
@@ -52,28 +54,28 @@ public class NonDirectInput
 {
 	/**
 	 * Instantiate a new, big-endian <code>NonDirectInput</code> object.
-	 * 
+	 * @param jhove2 JHOVE2 framework object
 	 * @param file
 	 *            Java {@link java.io.File} underlying the inputable
-	 * @param maxBufferSize
-	 *            Size of the direct buffer, in bytes
+     * @param isTemp
+     *            Temporary file  status: true if temporary
 	 * @throws FileNotFoundException
 	 *             File not found
 	 * @throws IOException
 	 *             I/O exception instantiating input
 	 */
-	public NonDirectInput(File file, int maxBufferSize)
+	public NonDirectInput(JHOVE2 jhove2, File file, boolean isTemp)
 			throws FileNotFoundException, IOException {
-		this(file, maxBufferSize, ByteOrder.BIG_ENDIAN);
+		this(jhove2, file, isTemp, ByteOrder.BIG_ENDIAN);
 	}
 
 	/**
 	 * Instantiate a new <code>NonDirectInput</code> object.
-	 * 
+	 * @param jhove2 JHOVE2 framework object
 	 * @param file
 	 *            Java {@link java.io.File} underlying the inputable
-	 * @param maxBufferSize
-	 *            Size of the direct buffer, in bytes
+     * @param isTemp
+     *            Temporary file status: true if temporary
 	 * @param order
 	 *            Byte order of the underlying buffer
 	 * @throws FileNotFoundException
@@ -81,10 +83,11 @@ public class NonDirectInput
 	 * @throws IOException
 	 *             I/O exception instantiating input
 	 */
-	public NonDirectInput(File file, int maxBufferSize, ByteOrder order)
+	public NonDirectInput(JHOVE2 jhove2, File file, boolean isTemp, ByteOrder order)
 		throws FileNotFoundException, IOException
 	{
-		super(file, maxBufferSize, order);
+		super(jhove2, file, isTemp, order);
+        this.bufferType = Type.NonDirect;
 
 		/* Allocate direct buffer and initialize it. */
 		this.buffer = ByteBuffer.allocate(this.maxBufferSize).order(order);

@@ -94,7 +94,7 @@ public class SgmlNormFileParserTest {
 		Source inputSource = null;
 		String normOutPubidPath = samplesDirPath.concat(normOutPubid);
 		 try {
-			 inputSource = JHOVE2.getSourceFactory().getSource(normOutPubidPath);
+			 inputSource = JHOVE2.getSourceFactory().getSource(JHOVE2, normOutPubidPath);
 		 } catch (FileNotFoundException e) {
 			 e.printStackTrace();
 			 fail(e.getMessage());

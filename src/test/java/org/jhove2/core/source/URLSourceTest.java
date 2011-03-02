@@ -46,7 +46,6 @@ import java.net.URL;
 
 import javax.annotation.Resource;
 
-import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.junit.Test;
@@ -75,33 +74,19 @@ public class URLSourceTest {
 	@Test
 	public void testEqualsObject() {
 		try {
-			Invocation config = JHOVE2.getInvocation();
 			ptcURL = new URL(ptcUrlString);
 			cdlURL = new URL(cdlUrlString);
-			URLSource uPtc  = (URLSource)JHOVE2.getSourceFactory().getSource(config.getTempPrefix(), 
-					                        config.getTempSuffix(),
-					                        config.getBufferSize(),
-					                        ptcURL);
-			URLSource uPtc2 = (URLSource)JHOVE2.getSourceFactory().getSource(config.getTempPrefix(), 
-					                        config.getTempSuffix(),
-					                        config.getBufferSize(),
-					                        ptcURL);
-			URLSource uCdl  = (URLSource)JHOVE2.getSourceFactory().getSource(config.getTempPrefix(), 
-					                        config.getTempSuffix(),
-					                        config.getBufferSize(),
-					                        cdlURL);
-			uPtc.setDeleteTempFiles(true);
-			uPtc2.setDeleteTempFiles(true);
-			uCdl.setDeleteTempFiles(true);
+			URLSource uPtc  = (URLSource)JHOVE2.getSourceFactory().getSource(JHOVE2, ptcURL);
+			URLSource uPtc2 = (URLSource)JHOVE2.getSourceFactory().getSource(JHOVE2, ptcURL);
+			URLSource uCdl  = (URLSource)JHOVE2.getSourceFactory().getSource(JHOVE2, cdlURL);
 			assertEquals(uPtc,uPtc);
-			// this will fail, because the temp file underlying each URL will be different
-			assertFalse(uPtc.equals(uPtc2));
-			assertFalse(uPtc2.equals(uPtc));			
+			assertTrue(uPtc.equals(uPtc2));
+			assertTrue(uPtc2.equals(uPtc));			
 			assertFalse(uPtc.equals(null));
 			assertFalse(uPtc.equals(uCdl));
-			ClumpSource clump = JHOVE2.getSourceFactory().getClumpSource();
+			ClumpSource clump = JHOVE2.getSourceFactory().getClumpSource(JHOVE2);
 			assertFalse(uPtc.equals(clump));
-			ClumpSource clump2 = JHOVE2.getSourceFactory().getClumpSource();
+			ClumpSource clump2 = JHOVE2.getSourceFactory().getClumpSource(JHOVE2);
 			uPtc=(URLSource) clump.addChildSource(uPtc);
 			clump2.addChildSource(uPtc);
 			assertEquals(clump, clump2);
@@ -114,6 +99,7 @@ public class URLSourceTest {
 		} catch (MalformedURLException e) {
 			fail("Malformed URL " + e.getMessage());
 		} catch (IOException e) {
+		    e.printStackTrace();
 			fail("IOException " + e.getMessage());
 		}
 		catch (JHOVE2Exception e){
@@ -128,36 +114,17 @@ public class URLSourceTest {
 	@Test
 	public void testCompareTo() {
 		try {
-			Invocation config = JHOVE2.getInvocation();
 			ptcURL = new URL(ptcUrlString);
 			cdlURL = new URL(cdlUrlString);
-			URLSource uPtc  = (URLSource)JHOVE2.getSourceFactory().getSource(config.getTempPrefix(), 
-					                        config.getTempSuffix(),
-					                        config.getBufferSize(),
-					                        ptcURL);
-			URLSource uPtc2 = (URLSource)JHOVE2.getSourceFactory().getSource(config.getTempPrefix(), 
-					                        config.getTempSuffix(),
-					                        config.getBufferSize(),
-					                        ptcURL);
-			try {
-				uPtc.setDeleteTempFiles(true);
-			} catch (JHOVE2Exception e1) {
-				e1.printStackTrace();
-				fail(e1.getMessage());
-			}
-			try {
-				uPtc2.setDeleteTempFiles(true);
-			} catch (JHOVE2Exception e1) {
-				e1.printStackTrace();
-				fail(e1.getMessage());
-			}
+			URLSource uPtc  = (URLSource)JHOVE2.getSourceFactory().getSource(JHOVE2, ptcURL);
+			URLSource uPtc2 = (URLSource)JHOVE2.getSourceFactory().getSource(JHOVE2, ptcURL);
 			assertEquals(0,uPtc.compareTo(uPtc));
 			assertEquals(1, uPtc.compareTo(null));
-			boolean notEq = uPtc.compareTo(uPtc2)!=0;
-			assertTrue(notEq);
+			boolean eq = uPtc.compareTo(uPtc2)==0;
+			assertTrue(eq);
 			ClumpSource clump= null;
 			try {
-				clump = JHOVE2.getSourceFactory().getClumpSource();
+				clump = JHOVE2.getSourceFactory().getClumpSource(JHOVE2);
 			} catch (JHOVE2Exception e) {
 				e.printStackTrace();
 				fail(e.getMessage());

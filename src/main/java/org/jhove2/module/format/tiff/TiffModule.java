@@ -49,6 +49,7 @@ import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
 import org.jhove2.core.io.Input;
+import org.jhove2.core.source.MeasurableSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.module.format.Validator;
@@ -112,12 +113,6 @@ public class TiffModule
     /** List of IFDs */
     List<IFD> ifdList = new LinkedList<IFD>();
 
-    /** The JHOVE2 object passed in by the parse method */
-    protected JHOVE2 jhove2; 
-
-    /** The Source object passed in by the parse method */
-    protected  Source source;
-
     /** Factory for mapper from tiff id to Format */
     protected Tiff2FormatMapFactory tiff2FormatMapFactory;
     
@@ -168,7 +163,7 @@ public class TiffModule
         TiffTag.getTiffTags(jhove2);
 
         int numErrors = 0;
-        long start  = source.getStartingOffset();
+        long start  = ((MeasurableSource) source).getStartingOffset();
 
         input.setPosition(start);
         try {
@@ -224,6 +219,10 @@ public class TiffModule
                 if (ifd instanceof TiffIFD) {
                     ((TiffIFD) ifd).postParse();
                     ifd.validate(jhove2, source);
+                    Validity validity = ifd.isValid();
+                    if (validity != Validity.True) {
+                        this.validity = validity;
+                        }
                     }
                 }
             }
@@ -234,10 +233,6 @@ public class TiffModule
                     "org.jhove2.module.format.tiff.TIFFModule.PrematureEOFMessage",
                     jhove2.getConfigInfo()));       
             return consumed;
-        }
-        finally {
-            this.jhove2 = null;
-            this.source = null;
         }
         
         return consumed;
@@ -270,7 +265,7 @@ public class TiffModule
 
         }
         catch (IOException e) {
-            throw new JHOVE2Exception ("TiffModule.parseIFDs(): IOException reading offset to first IFD",e);
+            throw new IOException ("TiffModule.parseIFDs(): IOException reading offset to first IFD",e);
         }
 
         /* Parse the list of IFDs */                  
@@ -402,9 +397,59 @@ public class TiffModule
     }
 
     /**
+     * Get Invalid Field Message.
+     * 
+     * @return InvalidFieldMessage
+     */
+    @ReportableProperty(order = 4, value = "Invalid Field Message.")
+    public List<Message> getInvalidFieldMessage() {
+        return invalidFieldMessage;
+    }
+
+    /**
+     * Get Invalid First Two Bytes Message.
+     * 
+     * @return InvalidFirstTwoBytesMessage
+     */
+    @ReportableProperty(order = 5, value = "Invalid First Two Bytes Message.")
+    public List<Message> getInvalidFirstTwoBytesMessage() {
+        return invalidFirstTwoBytesMessage;
+    }
+
+    /**
+     * Get Premature EOF Message.
+     * 
+     * @return PrematureEOFMessage
+     */
+    @ReportableProperty(order = 6, value = "Premature EOF Message.")
+    public List<Message> getPrematureEOFMessage() {
+        return prematureEOFMessage;
+    }
+
+    /**
+     * Get Invalid Magic Number Message.
+     * 
+     * @return InvalidMagicNumberMessage
+     */
+    @ReportableProperty(order = 7, value = "Invalid Magic Number Message.")
+    public List<Message> getInvalidMagicNumberMessage() {
+        return invalidMagicNumberMessage;
+    }
+
+    /**
+     * Get Byte Offset Not Word Aligned Message.
+     * 
+     * @return ByteOffsetNotWordAlignedMessage
+     */
+    @ReportableProperty(order = 8, value = "Byte Offset Not Word Aligned Message.")
+    public List<Message> getByteOffsetNotWordAlignedMessage() {
+        return byteOffsetNotWordAlignedMessage;
+    }
+
+    /**
      * @return the version
      */
-    @ReportableProperty(order = 4, value = "TIFF version.")
+    @ReportableProperty(order = 9, value = "TIFF version.")
     public int getTiffVersion() {
         return this.version;
     }

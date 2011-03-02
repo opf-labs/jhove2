@@ -43,6 +43,7 @@ import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.io.Input;
+import org.jhove2.core.source.MeasurableSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.Validator.Validity;
 import org.jhove2.module.format.riff.GenericChunk;
@@ -115,7 +116,7 @@ public class InstrumentChunk
         throws EOFException, IOException, JHOVE2Exception
     {
         long consumed = super.parse(jhove2, source, input);
-        long start    = source.getStartingOffset();
+        long start    = ((MeasurableSource) source).getStartingOffset();
         
         /* Unshifted note. */
         this.unshiftedNote = input.readUnsignedByte();

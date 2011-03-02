@@ -36,6 +36,7 @@
 
 package org.jhove2.core.reportable;
 
+import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.I8R;
 
 /**
@@ -57,6 +58,7 @@ public interface Reportable
 	 * 
 	 * @return String containing object name
 	 */
+    @ReportableProperty(value = "Reportable name")
 	public String getReportableName();
 	
 	/**

@@ -36,7 +36,6 @@
 package org.jhove2.core.source;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -54,139 +53,134 @@ import org.jhove2.persist.SourceAccessor;
 public interface SourceFactory {
 
 	/**
-	 * Get source unit from a file system path name.
-	 * 
-	 * @param pathName
-	 *            File system path name
-	 * @return Source unit
-	 * @throws FileNotFoundException
-	 *             File not found
+	 * Get source unit from a formatted object name, which can be a file, a.
+	 * directory, or a URL. Note that a URL source unit requires the
+	 * creation of a temporary file.
+	 * @param jhove2 JHOVE2 framework object
+	 * @param name Formatted object name
+	 * @return File, Directory, or URL Source unit
 	 * @throws IOException
 	 *             I/O exception instantiating source
 	 * @throws JHOVE2Exception 
 	 */
-	public Source getSource(String pathName)
-	throws FileNotFoundException, IOException, JHOVE2Exception;
-	
+	public Source getSource(JHOVE2 jhove2, String name)
+	    throws IOException, JHOVE2Exception;
+ 
 	/**
 	 * Get source unit from a Java {@link java.io.File}.
 	 * 
+     * @param jhove2 JHOVE2 framework object
 	 * @param file
 	 *            Java {@link java.io.File}
-	 * @return Source unit
-	 * @throws FileNotFoundException
-	 *             File not found
+	 * @return File or Directory source unit
 	 * @throws IOException
 	 *             I/O exception instantiating source
 	 * @throws JHOVE2Exception 
 	 */
-	public Source getSource(File file)
-		throws FileNotFoundException, IOException, JHOVE2Exception;
+	public Source getSource(JHOVE2 jhove2, File file)
+		throws IOException, JHOVE2Exception;
 
 	/**
-	 * Get source unit from a URL by creating a local temporary file.
+	 * Get URL source unit from a URL by creating a local temporary file.
 	 * 
-	 * @param tmpPrefix
-	 *            Temporary file prefix
-	 * @param tmpSuffix
-	 *            Temporary file suffix
-	 * @param bufferSize
-	 *            Buffer size for transfer to temporary file
-	 * @param url
-	 *            URL
-	 * @return Source unit
+     * @param jhove2 JHOVE2 framework object
+     * @param url
+     *            URL
+	 * @return URL source unit
 	 * @throws IOException
 	 *             I/O exception instantiating source
 	 * @throws JHOVE2Exception 
 	 */
-	public Source getSource(String tmpPrefix,String tmpSuffix,
-			                                    int bufferSize, URL url)
-	throws IOException, JHOVE2Exception;
+	public Source getSource(JHOVE2 jhove2, URL url)
+	    throws IOException, JHOVE2Exception;
 
 	/**
 	 * Get source unit from a Zip file entry by creating a temporary file.
 	 * 
-	 * @param tmpPrefix
-	 *            Temporary file prefix
-	 * @param tmpSuffix
-	 *            Temporary file suffix
-	 * @param bufferSize
-	 *            Buffer size during transfer to temporary file
-	 * @param zip
-	 *            Zip file
-	 * @param entry
-	 *            Zip file entry
+     * @param jhove2 JHOVE2 framework object
+     * @param zip
+     *            Zip file
+     * @param entry
+     *            Zip file entry
 	 * @return Source unit
 	 * @throws IOException
 	 *             I/O exception instantiating source
 	 * @throws JHOVE2Exception 
 	 */
-	public Source getSource(String tmpPrefix,
-			                                    String tmpSuffix,
-			                                    int bufferSize, ZipFile zip,
-			                                    ZipEntry entry)
+	public Source getSource(JHOVE2 jhove2, ZipFile zip, ZipEntry entry)
 		throws IOException, JHOVE2Exception;
 
+    /**
+     * Get FileSet source unit from a formatted object name, which can be a file, a.
+     * directory, or a URL. Note that a URL source unit requires the
+     * creation of a temporary file.
+     * 
+     * @param jhove2 JHOVE2 framework object
+     * @param name First formatted object name
+     * @param names Remaining formatted object names
+     * @return FileSet source unit
+     * @throws IOException
+     *             I/O exception instantiating source
+     * @throws JHOVE2Exception 
+     */
+    public Source getSource(JHOVE2 jhove2, String name, String...names)
+        throws IOException, JHOVE2Exception;
+   
 	/**
-	 * Get source unit from sequence of file system objects (files and
-	 * directories).
+	 * Make FileSetSource from list of formatted objects, which may be files,
+	 * directories, and URLS. Note that URL source units require the
+	 * creation of temporary files.
 	 * 
-	 * @param pathName
-	 *            First path name
-	 * @param pathNames
-	 *            Remaining path names
-	 * @return Source
+     * @param jhove2 JHOVE2 framework object
+	 * @param names Formatted object names
+	 * @return FileSet source
 	 * @throws IOException
 	 * @throws JHOVE2Exception
 	 */
-	public Source getSource(String pathName, String... pathNames)
-	throws IOException, JHOVE2Exception ;
-	/**
-	 * Make Source from list of file system objects (files and directories) and URLS
-	 * 
-	 * @param pathNames
-	 *            File system path names
-	 * @return Source
-	 * @throws IOException
-	 * @throws JHOVE2Exception
-	 */
-	public Source getSource(List<String> pathNames)
-		throws FileNotFoundException, IOException, JHOVE2Exception;
-	
-	/**
-	 * Make Source from list of file system objects (files and directories) and URLS
-	 * 
-	 * @param pathNames
-	 *            File system path names
-	 * @param tmpPrefix
-	 * 			  Prefix for any temp files created
-	 * @param tmpSuffix
-	 * 			  Suffix for any temp files created
-	 * @param bufferSize
-     *            Buffer size for reading URLS
-	 * @return Source
-	 * @throws FileNotFoundException
-	 * @throws IOException
-	 * @throws JHOVE2Exception
-	 */
-	public Source getSource(List<String> pathNames, String tmpPrefix,
-            String tmpSuffix,
-            int bufferSize)
-		throws FileNotFoundException, IOException, JHOVE2Exception;
-	
+	public Source getSource(JHOVE2 jhove2, List<String> names)
+		throws IOException, JHOVE2Exception;
+	   
+    /**
+     * Utility method to create ByteStreamSource
+     * @param jhove2 JHOVE2 framework object
+     * @param parent Parent source unit
+     * @param offset Starting offset
+     * @param size   Size
+     * @param name   Name, if known
+     * @return ByteStream source unit
+     * @throws JHOVE2Exception
+     */
+    public ByteStreamSource getByteStreamSource(JHOVE2 jhove2, Source parent,
+                                                long offset, long size,
+                                                String name) 
+        throws IOException, JHOVE2Exception;
+    
 	/**
 	 * Utility method to create new empty ClumpSource
-	 * @return ClumpSource
+     * @param jhove2 JHOVE2 framework object
+	 * @return Clump source unit
 	 * @throws JHOVE2Exception
 	 */
-	public ClumpSource getClumpSource() throws JHOVE2Exception;
-	
+	public ClumpSource getClumpSource(JHOVE2 jhove2) throws JHOVE2Exception;
+	   
+    /**
+     * Utility method to create empty non-file system DirectorySource
+     * @param jhove2 JHOVE2 framework object
+     * @param name   Directory name 
+     * @return Directory source unit
+     * @throws IOException
+     * @throws JHOVE2Exception 
+     */
+    public DirectorySource getDirectorySource(JHOVE2 jhove2, String name)
+        throws IOException, JHOVE2Exception;
+    
 	/**
 	 * Utility method to create empty FileSetSource
-	 * @return FileSetSource
+     * @param jhove2 JHOVE2 framework object
+	 * @return FileSet source unit
 	 * @throws JHOVE2Exception 
 	 */
-	public FileSetSource getFileSetSource() throws JHOVE2Exception;
+	public FileSetSource getFileSetSource(JHOVE2 jhove2) throws JHOVE2Exception;
 
 	/**
 	 * Create SourceAccessor for this SourceFactory type
@@ -195,12 +189,5 @@ public interface SourceFactory {
 	 * @return SourceAccessor
 	 */
 	public SourceAccessor createSourceAccessor(Source source);
-	
-	/**
-	 * Utility method to create ByteStreamSource
-	 * @return ByteStreamSource
-	 * @throws JHOVE2Exception
-	 */
-	public ByteStreamSource getByteStreamSource(JHOVE2 jhove2, Source parent, long offset, long size) 
-	throws IOException, JHOVE2Exception;
+
 }

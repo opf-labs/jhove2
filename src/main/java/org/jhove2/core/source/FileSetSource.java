@@ -36,6 +36,7 @@
 
 package org.jhove2.core.source;
 
+import org.jhove2.core.JHOVE2;
 import com.sleepycat.persist.model.Persistent;
 
 /**
@@ -47,12 +48,19 @@ import com.sleepycat.persist.model.Persistent;
 @Persistent
 public class FileSetSource
     extends AbstractSource
-    implements AggregateSource
 {
 	/**
 	 * Instantiate a new <code>FileSetSource</code>.
 	 */
 	protected FileSetSource() {
 		super();
+		this.isAggregate = true;
+	}
+	
+	/** Instantiate a new <code>FileSetSource</code>.
+	 * @param jhove2 JHOVE2 framework object
+	 */
+	protected FileSetSource(JHOVE2 jhove2) {
+	    super(jhove2);
 	}
 }

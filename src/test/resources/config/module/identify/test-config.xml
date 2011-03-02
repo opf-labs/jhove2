@@ -124,7 +124,7 @@
 			</list>
 		</property>
 	 	<property name="formatIdentifier" ref="ShapefileIdentifier"/>
-	 	<property name="fileGroupingExpr" value="(.*[\\/]\w+).((?i:shp\.)?\w{3})"/>
+	 	<property name="fileGroupingExpr" value="(.*?)\.((?i:shp\.)?\w{3})$"/>
 	 	<property name="mustHaveExpr" value="^((?i:shp)|(?i:shx)|(?i:dbf))$"/>
 	 	<property name="mayHaveExpr" 
 	 	          value="^((?i:shp.xml)|(?i:prj)|(?i:sbn)|(?i:sbx)|(?i:atx)|(?i:qix)|(?i:fix)|(?i:grx))$"/>
@@ -148,7 +148,7 @@
 			</list>
 		</property>
 	 	<property name="formatIdentifier" ref="ShapefileIdentifier"/>
-	 	<property name="fileGroupingExpr" value="(.*[\\/]\w+).((?i:shp\.)?\w{3})"/>
+	 	<property name="fileGroupingExpr" value="(.*?)\.((?i:shp\.)?\w{3})$"/>
 	 	<property name="mustHaveExpr" value="^((?i:shp)|(?i:shx)|(?i:dbf))$"/>
 	 	<property name="mayHaveExpr" 
 	 	          value="^((?i:shp.xml)|(?i:prj)|(?i:sbn)|(?i:sbx)|(?i:atx)|(?i:qix)|(?i:fix)|(?i:grx))$"/>
@@ -173,7 +173,7 @@
 			</list>
 		</property>
 	 	<property name="formatIdentifier" ref="QuickenIdentifier"/>
-	 	<property name="fileGroupingExpr" value="(.*[\\/]\w+).(\w{3})"/>
+	 	<property name="fileGroupingExpr" value="(.*[\\/]\w+)\.(\w{3})"/>
 	 	<property name="mustHaveExpr" value="^((?i:idx)|(?i:qel)|(?i:qph)|(?i:qdf)|(?i:ptx))$"/>
 	 	<property name="fileGroupingCaptureGroupIndex" value="1" />
 	 	<property name="mustHaveCaptureGroupIndex" value="2"/>

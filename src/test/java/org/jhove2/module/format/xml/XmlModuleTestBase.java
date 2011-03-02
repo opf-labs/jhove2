@@ -111,7 +111,7 @@ public class XmlModuleTestBase {
         File testFile = new File(xmlExampleDirPath, relativePath);
         assertTrue(testFile.exists());
         try {
-            FileSource fileSource = (FileSource)JHOVE2.getSourceFactory().getSource(testFile);
+            FileSource fileSource = (FileSource)JHOVE2.getSourceFactory().getSource(JHOVE2, testFile);
 			Input input = fileSource.getInput(JHOVE2);
             testXmlModule.parse(JHOVE2, fileSource, input);
             testXmlModule.validate(JHOVE2, fileSource, input);

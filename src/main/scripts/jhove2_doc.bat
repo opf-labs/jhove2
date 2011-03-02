@@ -43,5 +43,5 @@ IF "%1"=="" GOTO LOOP
   GOTO WHILE
 :LOOP
 
-%JAVA% -cp %CP% org.jhove2.app.util.JHOVE2Doc %ARGS%
+%JAVA% -cp "%CP%" org.jhove2.app.util.JHOVE2Doc %ARGS%
 

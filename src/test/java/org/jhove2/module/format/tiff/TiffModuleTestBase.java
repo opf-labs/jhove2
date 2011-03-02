@@ -48,6 +48,8 @@ import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.FileSource;
+import org.jhove2.persist.PersistenceManager;
+import org.jhove2.persist.PersistenceManagerUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -66,6 +68,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class TiffModuleTestBase {
 
     protected TiffModule testTiffModule;
+    protected FileSource fileSource;
     private JHOVE2 JHOVE2;
     private String tiffDirBasePath;
     protected boolean initialized;
@@ -98,8 +101,12 @@ public class TiffModuleTestBase {
     }
 
     protected void parse(String relativePath) {
+        PersistenceManager persistenceManager = null;
         String tiffExampleDirPath = null;
         try {
+            PersistenceManagerUtil.createPersistenceManagerFactory(JHOVE2.getConfigInfo());
+            persistenceManager = PersistenceManagerUtil.getPersistenceManagerFactory().getInstance();
+            persistenceManager.initialize();
             tiffExampleDirPath = FeatureConfigurationUtil
                     .getFilePathFromClasspath(tiffDirBasePath,
                             "tiff examples base directory");
@@ -107,19 +114,25 @@ public class TiffModuleTestBase {
         catch (JHOVE2Exception e1) {
             fail("Could not create base directory");
         }
+        catch (Exception e) {
+            e.printStackTrace();
+            fail("Exception thrown: " + e.getMessage());
+        }
         File tiffExampleDir = new File(tiffExampleDirPath);
         assertTrue(tiffExampleDir.exists());
         File testFile = new File(tiffExampleDirPath, relativePath);
         assertTrue(testFile.exists());
         try {
-            FileSource fileSource = (FileSource) JHOVE2.getSourceFactory().getSource(testFile);
+            fileSource = (FileSource) JHOVE2.getSourceFactory().getSource(JHOVE2, testFile);
             Input input = fileSource.getInput(JHOVE2);
             testTiffModule.parse(JHOVE2, fileSource, input);
         }
         catch (Exception e) {
-            // fail("Exception thrown: " + e.getMessage());
+             fail("Exception thrown: " + e.getMessage());
+             e.printStackTrace();
         }
     }
+
 
     /**
      * Test method for tiff Declaration information

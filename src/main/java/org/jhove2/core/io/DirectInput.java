@@ -41,6 +41,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import org.jhove2.core.JHOVE2;
 
 /**
  * JHOVE2 direct inputable. Use of a direct buffer permits the JVM to use native
@@ -53,28 +54,24 @@ public class DirectInput
 {
 	/**
 	 * Instantiate a new, big-endian <code>DirectInput</code> object.
-	 * 
+	 * @param jhove2 JHOVE2 framework object
 	 * @param file
 	 *            Java {@link java.io.File} underlying the inputable
-	 * @param maxBufferSize
-	 *            Size of the direct buffer, in bytes
 	 * @throws FileNotFoundException
 	 *             File not found
 	 * @throws IOException
 	 *             I/O exception instantiating input
 	 */
-	public DirectInput(File file, int maxBufferSize)
+	public DirectInput(JHOVE2 jhove2, File file, boolean isTemp)
 			throws FileNotFoundException, IOException {
-		this(file, maxBufferSize, ByteOrder.BIG_ENDIAN);
+		this(jhove2, file, isTemp, ByteOrder.BIG_ENDIAN);
 	}
 
 	/**
 	 * Instantiate a new <code>DirectInput</code> object from a File object.
-	 * 
+	 * @param jhove2 JHOVE2 framework object
 	 * @param file
 	 *            Java {@link java.io.File} underlying the inputable
-	 * @param maxBufferSize
-	 *            Size of the direct buffer, in bytes
 	 * @param order
 	 *            Byte order of the underlying buffer
 	 * @throws FileNotFoundException
@@ -82,11 +79,12 @@ public class DirectInput
 	 * @throws IOException
 	 *             I/O exception instantiating input
 	 */
-	public DirectInput(File file, int maxBufferSize, ByteOrder order)
+	public DirectInput(JHOVE2 jhove2, File file, boolean isTemp, ByteOrder order)
 		throws FileNotFoundException, IOException
 	{
-		super(file, maxBufferSize, order);
-
+		super(jhove2, file, isTemp, order);
+		this.bufferType = Type.Direct;
+		
 		/* Allocate direct buffer and initialize it. */
 		this.buffer =
 		    ByteBuffer.allocateDirect(this.maxBufferSize).order(order);

@@ -68,7 +68,7 @@ public class AXMLChunk
         this();
         
         this.xmlFormat = xml;
-    }
+     }
     
 	private AXMLChunk(){
 		super();
@@ -90,9 +90,12 @@ public class AXMLChunk
         long consumed = super.parse(jhove2, source, input);
         
         /* The chunk contents are in XML; invoke the XML module. */
-        ByteStreamSource child = jhove2.getSourceFactory().getByteStreamSource(
-        		jhove2, source, input.getPosition(), this.size);
-        I8R xml = xmlFormat.getIdentifier();
+        ByteStreamSource child =
+            jhove2.getSourceFactory().getByteStreamSource(jhove2, source,
+                                                          input.getPosition(),
+                                                          this.size,
+                                                          ".xml");
+        I8R xml = this.xmlFormat.getIdentifier();
         FormatIdentification id = new FormatIdentification(xml, Confidence.PositiveGeneric);
         child.addPresumptiveFormat(id);
         jhove2.characterize(child, input);      

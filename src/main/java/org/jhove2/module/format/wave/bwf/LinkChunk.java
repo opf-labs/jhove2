@@ -36,11 +36,10 @@ package org.jhove2.module.format.wave.bwf;
 
 import java.io.EOFException;
 import java.io.IOException;
-import java.util.Map;
-import org.jhove2.config.spring.SpringConfigInfo;
 import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.format.Format;
 import org.jhove2.core.format.FormatIdentification;
 import org.jhove2.core.format.FormatIdentification.Confidence;
 import org.jhove2.core.io.Input;
@@ -58,9 +57,15 @@ import com.sleepycat.persist.model.Persistent;
 public class LinkChunk
     extends GenericChunk
 {
-    /** Instantiate a new <code>LinkChunk</code>. */
-    public LinkChunk() {
+    /** XML format. */
+    protected Format xmlFormat;
+    
+    /** Instantiate a new <code>LinkChunk</code>.
+     * @param xml XML format 
+     */
+    public LinkChunk(Format xml) {
         super();
+        this.xmlFormat = xml;
     }
     
     /** Parse a link chunk.
@@ -79,10 +84,11 @@ public class LinkChunk
         long consumed = super.parse(jhove2, source, input);
         
         /* The chunk contents are in XML; invoke the XML module. */
-        ByteStreamSource child = jhove2.getSourceFactory().getByteStreamSource(
-            jhove2, source, input.getPosition(), this.size);
-        Map<String, Object> i8r = SpringConfigInfo.getObjectsForType(I8R.class);
-        I8R xml = (I8R) i8r.get("XmlIdentifier");;
+        ByteStreamSource child =
+            jhove2.getSourceFactory().getByteStreamSource(jhove2, source,
+                                                          input.getPosition(),
+                                                          this.size, ".xml");
+        I8R xml = this.xmlFormat.getIdentifier();
         FormatIdentification id = new FormatIdentification(xml, Confidence.PositiveGeneric);
         child=(ByteStreamSource) child.addPresumptiveFormat(id);
         child=(ByteStreamSource) source.addChildSource(child);

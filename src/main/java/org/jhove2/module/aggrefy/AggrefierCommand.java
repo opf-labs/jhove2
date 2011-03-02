@@ -45,7 +45,6 @@ import org.jhove2.core.Message;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.io.Input;
-import org.jhove2.core.source.AggregateSource;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractCommand;
@@ -106,7 +105,7 @@ public class AggrefierCommand
 	public void execute(JHOVE2 jhove2, Source source, Input input)
 		throws JHOVE2Exception
 	{
-		if (source instanceof AggregateSource){
+		if (source.isAggregate()){
 			try {
 				Aggrefier aggrefier = 
 					this.getAggrefierFactory().getAggrefier();
@@ -116,20 +115,20 @@ public class AggrefierCommand
 					aggrefier=(Aggrefier) source.addModule(aggrefier);
 	                List<Recognizer> recognizers = aggrefier.getRecognizers();
 	                for (Recognizer recognizer : recognizers) {
-	                	recognizer=(Recognizer) source.addModule(recognizer);
+	                	recognizer = (Recognizer) source.addModule(recognizer);
 	                }
 	                
 	                /* Identify the aggregate. */
 					Set<ClumpSource> clumpSources = null;
 					clumpSources = aggrefier.identify(jhove2, source);
-					do {									
+					do {	
 						for (ClumpSource clumpSource : clumpSources){
 							/* Make clump child of source, and remove clump's
 							 * children as direct children of source.
 							 */
 							clumpSource = (ClumpSource) source.addChildSource(clumpSource);				
 							for (Source src:clumpSource.getChildSources()){
-								src=source.deleteChildSource(src);					
+								src = source.deleteChildSource(src);					
 							}
 							/* Characterize the ClumpSource. */
 							clumpSource = (ClumpSource) jhove2.characterize(clumpSource,null);
@@ -137,13 +136,13 @@ public class AggrefierCommand
 						/* Determine if the addition of clump sources at this level
 						 * results new possible clump sources.
 						 */
-						if (clumpSources.size()>0){
+						if (clumpSources.size() > 0){
 							/* aggregate identifier again on this source with
 							 * its new child sources.
 							 */
 							clumpSources = aggrefier.identify(jhove2, source);
 						}
-					} while (clumpSources.size()>0);
+					} while (clumpSources.size() > 0);
 				}
 				finally {
 					aggrefier = (Aggrefier) aggrefier.getModuleAccessor().endTimerInfo(aggrefier);

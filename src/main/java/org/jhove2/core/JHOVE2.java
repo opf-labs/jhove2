@@ -44,7 +44,7 @@ import org.jhove2.config.ConfigInfo;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
 import org.jhove2.core.io.Input;
-import org.jhove2.core.source.FileSystemSource;
+import org.jhove2.core.source.FileSystemProperties;
 import org.jhove2.core.source.NamedSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceCounter;
@@ -152,7 +152,6 @@ public class JHOVE2
 		throws IOException, JHOVE2Exception
 	{
 		source = source.startTimer();
-		
 		/* Update summary counts of source units, by scope. */
         try {
             this.sourceCounter.incrementSourceCounter(source);	
@@ -160,17 +159,21 @@ public class JHOVE2
 		
             /* Characterize the source unit. */
             boolean tryIt = true;
-            if (source instanceof FileSystemSource) {
-                FileSystemSource fs = (FileSystemSource) source;
-                String name = fs.getSourceName();
-                if (!fs.isExtant()) {
+            /* Check to see if this is a file system source unit, that is, a
+             * physical file or directory on the file system, and if so,
+             * that it exists and is readable.
+             */
+            FileSystemProperties properties = source.getFileSystemProperties();
+            if (properties != null) {
+                String name = ((NamedSource) source).getSourceName();
+                if (!properties.isExtant()) {
                     source = source.addMessage(new Message(Severity.ERROR,
                         Context.PROCESS,
                         "org.jhove2.core.source.FileSystemSource.FileNotFoundMessage",
                         new Object[]{name}, this.getConfigInfo()));
                     tryIt = false;
                 }
-                else if (!fs.isReadable()) {
+                else if (!properties.isReadable()) {
                     source = source.addMessage(new Message(Severity.ERROR,
                         Context.PROCESS,
                         "org.jhove2.core.source.FileSystemSource.FileNotReadableMessage",
@@ -179,16 +182,12 @@ public class JHOVE2
                 }
             }
 		    if (tryIt) {
-		    	if (source.getDeleteTempFiles()!= this.getInvocation().getDeleteTempFiles()){
-		    		source = source.setDeleteTempFiles(this.getInvocation().getDeleteTempFiles());
-		    	}
 		        for (Command command : this.getCommands()){
 		        	command = (Command) command.getModuleAccessor().resetTimerInfo(command);
 		            try {
 		                command.execute(this, source, input);
 		            }
-		            finally {
-		            	
+		            finally {          	
 		                try{
 		                	command = (Command) command.getModuleAccessor().endTimerInfo(command);
 		                }
@@ -208,8 +207,7 @@ public class JHOVE2
         		sourceName = ((NamedSource)source).getSourceName();
         	}
         	throw new JHOVE2Exception ("Exception characterizing source " + sourceName, e1);
-        }
-       
+        }    
         finally {
 			source.close();
 			source = source.endTimer(); // this will commit source
