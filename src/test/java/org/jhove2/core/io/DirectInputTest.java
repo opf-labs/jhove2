@@ -79,11 +79,15 @@ public class DirectInputTest {
     private String testFile01;
     private File testFile;
 	private JHOVE2 jhove2;
+	
+	@Resource
+	public void setJHOVE2(JHOVE2 jhove2) {
+	    this.jhove2 = jhove2;
+	}
 
     @Before
     public void setUp() throws Exception {
         bufferSize = 100;
-        jhove2 = new JHOVE2();
         PersistenceManagerUtil.createPersistenceManagerFactory(jhove2.getConfigInfo());
         PersistenceManager persistenceManager = PersistenceManagerUtil.getPersistenceManagerFactory().getInstance();
         persistenceManager.initialize();

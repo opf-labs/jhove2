@@ -25,7 +25,7 @@
 				<value>ghi.dbf</value>
 				<value>ghi.shp</value>
 				<value>ghi.shp.xml</value>
-				<value>something-else.txt</value> <!--  will not be grouped; does not match grouping expression -->
+				<value>something-else.txt</value> 
 			</list>
 		</constructor-arg>
 	</bean>
@@ -36,18 +36,20 @@
 				<value>abc</value><!-- passes relaxed,passes strict (but not all files included in format Identification source) -->
 				<value>def</value><!-- passes relaxed, passes strict -->
 				<value>ghi</value><!-- passes relaxed, fails strict (missing required file extension) -->
+				<value>something-else</value> <!--  should fail relaxed and strict -->
 			</list>
 	 	</constructor-arg>
 	</bean> 
 
 	<bean id="expectedGroupCount" class="java.lang.Integer">
-		<constructor-arg type="java.lang.String" value="3"/>
+		<constructor-arg type="java.lang.String" value="4"/>
 	</bean>
 	
 	<bean id="failStrictKeys" class="java.util.ArrayList">
 	<constructor-arg type="java.util.Collection">
 			<list>
 				<value>ghi</value><!-- passes relaxed, fails strict (missing required file extension) -->
+				<value>something-else</value> <!--  should fail relaxed and strict -->
 			</list>
 	 	</constructor-arg>
 	</bean>
@@ -55,6 +57,7 @@
 	<bean id="failRelaxedKeys" class="java.util.ArrayList">
 		<constructor-arg type="java.util.Collection">
 			<list>
+				<value>something-else</value> <!--  should fail relaxed and strict -->
 			</list>
 	 	</constructor-arg>
 	</bean>

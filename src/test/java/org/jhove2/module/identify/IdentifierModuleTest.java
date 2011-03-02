@@ -44,13 +44,14 @@ import java.util.Set;
 import javax.annotation.Resource;
 
 import org.jhove2.app.util.FeatureConfigurationUtil;
-import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.format.FormatIdentification;
 import org.jhove2.core.format.FormatIdentification.Confidence;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.FileSource;
+import org.jhove2.persist.PersistenceManager;
+import org.jhove2.persist.PersistenceManagerUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -84,8 +85,11 @@ public class IdentifierModuleTest {
 		Input      input  = null;
 		Set<FormatIdentification> ids = null;
 		String droidDirPath = null;
-		Invocation inv = JHOVE2.getInvocation();
+        PersistenceManager persistenceManager = null;
 		try {
+            PersistenceManagerUtil.createPersistenceManagerFactory(JHOVE2.getConfigInfo());
+            persistenceManager = PersistenceManagerUtil.getPersistenceManagerFactory().getInstance();
+            persistenceManager.initialize();
 			droidDirPath = 
 				FeatureConfigurationUtil.getFilePathFromClasspath(droidDirBasePath, "droid dir");
 		} catch (JHOVE2Exception e1) {

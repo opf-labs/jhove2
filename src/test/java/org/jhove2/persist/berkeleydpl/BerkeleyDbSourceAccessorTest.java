@@ -230,7 +230,11 @@ public class BerkeleyDbSourceAccessorTest {
 		try {
 			source = sourceFactory.getSource(jhove2, tempDirBasePath);
 			TimerInfo timer = source.getTimerInfo();
-			assertEquals(1,timer.getElapsedTime().getDuration());
+			/* This test is dependent on the process load of the underlying OS.
+			 * Build in a sufficient threshold.
+			 */
+			/* assertEquals(1,timer.getElapsedTime().getDuration()); */
+			assertTrue(25 >= timer.getElapsedTime().getDuration());
 			source = source.startTimer();
 			Thread.sleep(500);
 			source = source.endTimer();

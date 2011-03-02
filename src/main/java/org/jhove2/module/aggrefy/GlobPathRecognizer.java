@@ -38,6 +38,7 @@ package org.jhove2.module.aggrefy;
 import static com.sleepycat.persist.model.DeleteAction.NULLIFY;
 import static com.sleepycat.persist.model.Relationship.MANY_TO_ONE;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
@@ -54,7 +55,6 @@ import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.format.FormatIdentification;
 import org.jhove2.core.format.FormatIdentification.Confidence;
 import org.jhove2.core.source.ClumpSource;
-import org.jhove2.core.source.NamedSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractModule;
 import org.jhove2.persist.ModuleAccessor;
@@ -236,11 +236,9 @@ implements Recognizer
 		HashMap<String,  GlobPathMatchInfoGroup> groupMap = 
 			new HashMap<String, GlobPathMatchInfoGroup>();
 		for (Source childSource:source.getChildSources()){
-			//File sourceFile = childSource.getFile();
-			//if (sourceFile !=  null){
-				//String filePath = childSource.getFile().getPath();
-		    if (childSource instanceof NamedSource) {
-		        String filePath = ((NamedSource) childSource).getSourceName();
+			File sourceFile = childSource.getFile();
+			if (sourceFile !=  null){
+				String filePath = childSource.getFile().getPath();
 				// does the Source file path match the pattern that indicates a related file?
 				Matcher m = this.fileGroupingPattern.matcher(filePath);
 				if (m.matches()){
