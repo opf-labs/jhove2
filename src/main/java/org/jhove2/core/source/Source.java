@@ -76,16 +76,6 @@ public interface Source
 	 */
 	public Source addChildSource(Source child) throws JHOVE2Exception;
 	
-	/** Add an extra properties {@link org.jhove2.core.reportable.Reportable}
-	 * to be associated with the source unit.  Extra properties are those not
-	 * known at the time the source unit is instantiated and which are not
-	 * associated with a particular {@link org.jhove2.module.format.FormatModule}.
-	 * @param properties Extra properties reportable
-	 * @return Source with extra properties added
-	 * @throws JHOVE2Exception
-	 */
-	public Source addExtraProperties(Reportable properties) throws JHOVE2Exception;
-	
 	/** Add a message to be associated with the source unit.
 	 * @param message Message to be associated with the source unit
 	 * @return Source with message added
@@ -144,15 +134,6 @@ public interface Source
 	 */
 	@ReportableProperty(order=8, value="Child source units.")
 	public List<Source> getChildSources() throws JHOVE2Exception;
-	
-	/** Get extra properties.  Extra properties are those not known at the
-	 * time the source unit is instantiated but which are not associated with
-	 * a particular {@link org.jhove2.module.format.FormatModule}.
-	 * @return Extra properties
-	 * @throws JHOVE2Exception
-	 */
-	@ReportableProperty(order=2, value="Extra properties.")
-	public List<Reportable> getExtraProperties() throws JHOVE2Exception;
 
 	/**
 	 * Get temporary file deletion flag; if true, delete on close.

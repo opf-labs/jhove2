@@ -63,7 +63,6 @@ import org.jhove2.core.TimerInfo;
 import org.jhove2.core.format.FormatIdentification;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.AbstractReportable;
-import org.jhove2.core.reportable.Reportable;
 import org.jhove2.module.Module;
 import org.jhove2.persist.SourceAccessor;
 
@@ -103,16 +102,6 @@ public abstract class AbstractSource
 	/** Temporary file deletion flag; if true, delete on close. */
 	protected boolean deleteTempFileOnClose;
 	
-	/** Extra properties.  Extra properties are those not known at the time a
-	 * source unit is instantiated and are not associated with a particular
-	 * {@link org.jhove2.module.format.FormatModule}. */
-	protected List<Reportable> extraProperties;
-    
-	/** Source unit backing file. This may be an actual file system
-	 * file or a temporary file created from an {@link java.io.InputStream}.
-	 */
-	//protected File file;
-	
 	/** File system properties, if the source is a physical file or directory
 	 * in the file system.
 	 */
@@ -148,7 +137,6 @@ public abstract class AbstractSource
 	 */
 	protected AbstractSource() {       
         this.deleteTempFileOnClose   = Invocation.DEFAULT_DELETE_TEMP_FILES_ON_CLOSE;
-        this.extraProperties = new ArrayList<Reportable>();
 		this.isAggregate     = false;
         this.isTemp          = false;
 		this.messages        = new ArrayList<Message>();		
@@ -188,22 +176,6 @@ public abstract class AbstractSource
 		}
 		return this.sourceAccessor.addChildSource(this, child);
 	}
-
-	   
-    /** Add an extra properties {@link org.jhove2.core.reportable.Reportable}
-     * to be associated with the source unit.  Extra properties are those not
-     * known at the time the source unit is instantiated and which are not
-     * associated with a particular {@link org.jhove2.module.format.FormatModule}.
-     * @param properties Extra properties reportable
-     * @return Source with extra properties added
-     * @throws JHOVE2Exception
-     */
-	@Override
-    public Source addExtraProperties(Reportable properties)
-        throws JHOVE2Exception
-    {
-	    return this.getSourceAccessor().addExtraProperties(this, properties);
-    }
     
 	/** Add a message to be associated with the source unit.
 	 * @param message Message to be associated with the source unit
@@ -427,19 +399,6 @@ public abstract class AbstractSource
 		}
 		return this.sourceAccessor.getChildSources(this);
 	}
-    
-    /** Get extra properties.  Extra properties are those not known at the
-     * time the source unit is instantiated but which are not associated with
-     * a particular {@link org.jhove2.module.format.FormatModule}.
-     * @return Extra properties
-     * @throws JHOVE2Exception
-     */
-    @Override
-    public List<Reportable> getExtraProperties()
-        throws JHOVE2Exception
-    {
-        return this.extraProperties;
-    }
 
     /**
      * Get {@link java.io.File} backing the source unit.

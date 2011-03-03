@@ -42,19 +42,14 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import org.jhove2.core.Digest;
 import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
-import org.jhove2.module.digest.AbstractArrayDigester;
-import org.jhove2.module.digest.CRC32Digester;
-import org.jhove2.module.format.zip.ZipEntryProperties;
 
 /**
  * Factory for JHOVE2 file and directory source units.
@@ -208,17 +203,6 @@ public class SourceFactoryUtil
 	         */
             source.setDeleteTempFileOnClose(false);
 		}
-		
-		/* Get the entry-specific properties. */
-        long crc = entry.getCrc();
-        Digest crc32 = new Digest(AbstractArrayDigester.toHexString(crc),
-                                  CRC32Digester.ALGORITHM);
-		ZipEntryProperties properties =
-		    new ZipEntryProperties(name, entry.getCompressedSize(), crc32,
-		                           entry.getComment(),
-		                           new Date(entry.getTime()));
-		source.addExtraProperties(properties);
-
 		return source;
 	}	
 	

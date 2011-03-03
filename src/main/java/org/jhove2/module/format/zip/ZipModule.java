@@ -41,6 +41,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
@@ -50,6 +51,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import org.jhove2.annotation.ReportableProperty;
+import org.jhove2.core.Digest;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.format.Format;
@@ -57,6 +59,8 @@ import org.jhove2.core.io.Input;
 import org.jhove2.core.source.DirectorySource;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
+import org.jhove2.module.digest.AbstractArrayDigester;
+import org.jhove2.module.digest.CRC32Digester;
 import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.module.format.Validator;
 import org.jhove2.persist.FormatModuleAccessor;
@@ -109,12 +113,12 @@ public class ZipModule
     
     /** Zip64 end of central directory locator signature. */
     public static final int ZIP64_END_OF_CENTRAL_DIRECTORY_LOCATOR_SIGNATURE = 0x07064b50;
-    
-	/** Zip file entries. */
-	protected List<ZipFileEntry> entries;
-	
+    	
 	/** Validation status. */
 	protected Validity isValid;
+	
+	/** list of properites of each ZipFile entry */
+	protected List<ZipEntryProperties> zipEntryProperties;
 	
 	/**
 	 * Instantiate a new <code>ZipModule</code>.
@@ -127,8 +131,8 @@ public class ZipModule
 	public ZipModule(Format format, 
     		FormatModuleAccessor formatModuleAccessor) {
 		super(VERSION, RELEASE, RIGHTS, format, formatModuleAccessor);
-		this.entries = new ArrayList<ZipFileEntry> ();
 		this.isValid = Validity.Undetermined;
+		this.zipEntryProperties = new ArrayList<ZipEntryProperties>();
 	}
 	
 	public ZipModule(){
@@ -199,10 +203,9 @@ public class ZipModule
 	    		if (factory == null){
 	    			throw new JHOVE2Exception("JHOVE2 SourceFactory is null");
 	    		}
-	    		
 	    		/* (1) Identify all directories that are explicit entries. */ 
 	            while (en.hasMoreElements()) {
-	                ZipEntry entry = en.nextElement();
+	                ZipEntry entry = en.nextElement();	                
 	                if (entry.isDirectory()) {
 	                    Source src =
 	                    	factory.getSource(jhove2, zip, entry);
@@ -240,7 +243,16 @@ public class ZipModule
 	            en = zip.entries();
 	            while (en.hasMoreElements()) {
 	                ZipEntry entry = en.nextElement();
+	                // capture reportable features of each entry
 	                String name = entry.getName();
+	                long crc = entry.getCrc();
+	                Digest crc32 = new Digest(AbstractArrayDigester.toHexString(crc),
+	                                          CRC32Digester.ALGORITHM);
+	        		ZipEntryProperties properties =
+	        		    new ZipEntryProperties(name, entry.getCompressedSize(), crc32,
+	        		                           entry.getComment(),
+	        		                           new Date(entry.getTime()));
+	        		this.getZipEntryProperties().add(properties);
 	                if (entry.isDirectory()) {
                         /* Remove trailing slash. Although this always should
                          * be a forward slash (/), in practice a backward
@@ -380,14 +392,15 @@ public class ZipModule
     public Coverage getCoverage() {
         return COVERAGE;
     }
-    
-    /** Get Zip file entries.
-     * @return Zip file entries
+
+    /**
+     * Get reportable properties of ZipEntires
+     * @return List of ZipEntry reportable properties
      */
-    @ReportableProperty(order=1, value="Zip file entries")
-    public List<ZipFileEntry> getZipFileEntries() {
-        return this.entries;
-    }
+    @ReportableProperty(order=2, value="Zip file entries properties")
+	public List<ZipEntryProperties> getZipEntryProperties() {
+		return zipEntryProperties;
+	}
     
     /** Get validity.
      * @return Validity
@@ -451,4 +464,5 @@ public class ZipModule
             }
         }
     }
+
 }

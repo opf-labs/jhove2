@@ -42,7 +42,6 @@ import java.util.Set;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
 import org.jhove2.core.format.FormatIdentification;
-import org.jhove2.core.reportable.Reportable;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.Module;
 import org.jhove2.persist.SourceAccessor;
@@ -59,13 +58,6 @@ import com.sleepycat.persist.model.Persistent;
 public class InMemorySourceAccessor implements SourceAccessor {
 	/** Child source units. */
 	protected List<Source> children;
-	
-	/** Extra properties of the source.  Extra properties are those not known
-	 * at the time the source is instantiated and not associated with a
-	 * specific {@link org.jhove2.module.format.FormatModule}.
-	 */
-	protected List<Reportable> extraProperties;
-	
 	/** Modules which processed this Source */
 	protected List<Module> modules;
 	/** Source for which this is accessor*/
@@ -77,7 +69,6 @@ public class InMemorySourceAccessor implements SourceAccessor {
 	public InMemorySourceAccessor(){
 		super();
 		this.children        = new ArrayList<Source>();
-		this.extraProperties = new ArrayList<Reportable>();
 		this.modules         = new ArrayList<Module>();
 	}
 	
@@ -101,22 +92,6 @@ public class InMemorySourceAccessor implements SourceAccessor {
 		}
 		return childSource;
 	}
-  
-    /** Add an extra properties {@link org.jhove2.core.reportable.Reportable}
-     * to be associated with the source unit.  Extra properties are those not
-     * known at the time the source unit is instantiated but which are not
-     * associated with a particular {@link org.jhove2.module.format.FormatModule}.
-     * @param properties Extra properties reportable
-     * @return Source with extra properties added
-     * @throws JHOVE2Exception
-     */
-	@Override
-    public Source addExtraProperties(Source source, Reportable properties)
-        throws JHOVE2Exception
-    {
-        source.getExtraProperties().add(properties);
-        return  source;
-    }
     
 	/* (non-Javadoc)
 	 * @see org.jhove2.persist.SourceAccessor#addModule(org.jhove2.core.source.Source, org.jhove2.module.Module)

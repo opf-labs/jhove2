@@ -98,25 +98,6 @@ public class BerkeleyDbSourceAccessor
 		}
 		return childSource;
 	}
-	 
-    /** Add an extra properties {@link org.jhove2.core.reportable.Reportable}
-     * to be associated with the source unit.  Extra properties are those not
-     * known at the time the source unit is instantiated but which are not
-     * associated with a particular {@link org.jhove2.module.format.FormatModule}.
-     * @param properties Extra properties reportable
-     * @return Source with extra properties added
-     * @throws JHOVE2Exception
-     */
-	@Override
-    public Source addExtraProperties(Source source, Reportable properties)
-        throws JHOVE2Exception
-    {
-	    if (source != null && properties != null){
-	        source.getExtraProperties().add(properties);
-	        source = this.persistSource(source);
-	    }
-	    return source;
-    }
     
 	/* (non-Javadoc)
 	 * @see org.jhove2.persist.SourceAccessor#addModule(org.jhove2.core.source.Source, org.jhove2.module.Module)

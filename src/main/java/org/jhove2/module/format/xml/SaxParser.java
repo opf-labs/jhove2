@@ -37,6 +37,7 @@
 
 package org.jhove2.module.format.xml;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -375,7 +376,7 @@ public class SaxParser
         }
     }
     
-    //protected void parse(Source source, JHOVE2 jhove2) throws JHOVE2Exception, IOException {
+    
     protected void parse(JHOVE2 jhove2, Source source, Input input)
         throws JHOVE2Exception, IOException
     {    
@@ -386,11 +387,14 @@ public class SaxParser
         InputStream stream = source.getInputStream();
         InputSource saxInputSource = new InputSource(stream);
         /* Provide the BASE path of the source file, in case relative paths need to be resolved */
-        if (source instanceof FileSource){
-            saxInputSource.setSystemId(source.getFile().getAbsolutePath());
-        }
-        else if (source instanceof URLSource){
+        if (source instanceof URLSource){
             saxInputSource.setSystemId(((URLSource)source).getSourceName());
+        }
+        else {
+        	File sourceFile = source.getFile();
+        	if (sourceFile != null){
+        		saxInputSource.setSystemId (sourceFile.getAbsolutePath()); 
+        	}
         }
 
         /* Here's where the SAX parsing takes place */
