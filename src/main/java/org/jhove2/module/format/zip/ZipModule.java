@@ -39,6 +39,7 @@ package org.jhove2.module.format.zip;
 import java.io.EOFException;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.Date;
@@ -113,12 +114,9 @@ public class ZipModule
     
     /** Zip64 end of central directory locator signature. */
     public static final int ZIP64_END_OF_CENTRAL_DIRECTORY_LOCATOR_SIGNATURE = 0x07064b50;
-    	
+	
 	/** Validation status. */
 	protected Validity isValid;
-	
-	/** list of properites of each ZipFile entry */
-	protected List<ZipEntryProperties> zipEntryProperties;
 	
 	/**
 	 * Instantiate a new <code>ZipModule</code>.
@@ -132,7 +130,6 @@ public class ZipModule
     		FormatModuleAccessor formatModuleAccessor) {
 		super(VERSION, RELEASE, RIGHTS, format, formatModuleAccessor);
 		this.isValid = Validity.Undetermined;
-		this.zipEntryProperties = new ArrayList<ZipEntryProperties>();
 	}
 	
 	public ZipModule(){
@@ -203,13 +200,38 @@ public class ZipModule
 	    		if (factory == null){
 	    			throw new JHOVE2Exception("JHOVE2 SourceFactory is null");
 	    		}
+	    		
 	    		/* (1) Identify all directories that are explicit entries. */ 
 	            while (en.hasMoreElements()) {
-	                ZipEntry entry = en.nextElement();	                
+	                ZipEntry entry = en.nextElement();
 	                if (entry.isDirectory()) {
-	                    Source src =
-	                    	factory.getSource(jhove2, zip, entry);
+	                	 String name = entry.getName();
+	                	 /* Delete trailing slash from path name, if necessary. Although this
+	        		     * always should be a forward slash (/), in practice a backward slash
+	        		     * \) may be found.
+	        		     */
+	        		    int in = name.lastIndexOf('/');
+	        		    if (in < 0) {
+	        		        in = name.lastIndexOf('\\');
+	        		    }
+	        		    if (in == name.length() - 1) {
+	        		        name = name.substring(0, in);
+	        		    }
+//	                    Source src =
+//	                    	factory.getSource(jhove2, zip, entry);
+	        		    Source src =
+	        		    		factory.getDirectorySource(jhove2, name, false);
 	                    if (src != null) {
+	                    	/* Get the entry-specific properties. */
+		        	        long crc = entry.getCrc();
+		        	        Digest crc32 = new Digest(AbstractArrayDigester.toHexString(crc),
+		        	                                  CRC32Digester.ALGORITHM);
+		        			ZipEntryProperties properties =
+		        			    new ZipEntryProperties(name, entry.getCompressedSize(), crc32,
+		        			                           entry.getComment(),
+		        			                           new Date(entry.getTime()));
+		        			src = src.addExtraProperties(properties);
+		        			
 	                        String key = entry.getName();
 	                        /* Remove trailing slash. Although this always
 	                         * should be a forward slash (/), in practice a
@@ -243,16 +265,7 @@ public class ZipModule
 	            en = zip.entries();
 	            while (en.hasMoreElements()) {
 	                ZipEntry entry = en.nextElement();
-	                // capture reportable features of each entry
 	                String name = entry.getName();
-	                long crc = entry.getCrc();
-	                Digest crc32 = new Digest(AbstractArrayDigester.toHexString(crc),
-	                                          CRC32Digester.ALGORITHM);
-	        		ZipEntryProperties properties =
-	        		    new ZipEntryProperties(name, entry.getCompressedSize(), crc32,
-	        		                           entry.getComment(),
-	        		                           new Date(entry.getTime()));
-	        		this.getZipEntryProperties().add(properties);
 	                if (entry.isDirectory()) {
                         /* Remove trailing slash. Although this always should
                          * be a forward slash (/), in practice a backward
@@ -295,15 +308,41 @@ public class ZipModule
                         }
 	                }
 	                else {  /* Entry is a file. */
-	                    Source src =
-	                    	factory.getSource(jhove2, zip, entry);
+//	                    Source src =
+//	                    	factory.getSource(jhove2, zip, entry);
+	            		/* Recover the filename from the pathname. Although the path
+	            		 * separator always should be a forward slash (/), in practice a
+	            		 * backward slash (\) may be found.
+	            		 */
+	            		int in = name.lastIndexOf('/');
+	            		if (in < 0) {
+	            			in = name.lastIndexOf('\\');
+	            		}
+	            		if (in > -1) {
+	            			name = name.substring(in+1);
+	            		}
+	            		/* Create a temporary Java {@link java.io.File} to represent the
+	            		 * file entry.
+	            		 */
+	            		InputStream stream = zip.getInputStream(entry);
+	            		/* Get the entry-specific properties. */
+	            		long crc = entry.getCrc();
+	            		Digest crc32 = new Digest(AbstractArrayDigester.toHexString(crc),
+	            				CRC32Digester.ALGORITHM);
+	            		ZipEntryProperties properties =
+	            			new ZipEntryProperties(name, entry.getCompressedSize(), crc32,
+	            					entry.getComment(),
+	            					new Date(entry.getTime()));
+	            		Source src = 
+	            			factory.getSource(jhove2, stream, name, properties);
 	                    if (src != null) {
 	                        /* Check if the file pathname includes a directory
 	                         * component. Although the path separator always
 	                         * should be a forward slash (/), in practice a
 	                         * backward slash (\) may be found.
 	                         */
-	                        int in = name.lastIndexOf('/');
+	                    	name = entry.getName();
+	                        in = name.lastIndexOf('/');
 	                        if (in < 0) {
 	                            in = name.lastIndexOf('\\');
 	                        }
@@ -392,15 +431,14 @@ public class ZipModule
     public Coverage getCoverage() {
         return COVERAGE;
     }
-
-    /**
-     * Get reportable properties of ZipEntires
-     * @return List of ZipEntry reportable properties
-     */
-    @ReportableProperty(order=2, value="Zip file entries properties")
-	public List<ZipEntryProperties> getZipEntryProperties() {
-		return zipEntryProperties;
-	}
+    
+//    /** Get Zip file entries.
+//     * @return Zip file entries
+//     */
+//    @ReportableProperty(order=1, value="Zip file entries")
+//    public List<ZipFileEntry> getZipFileEntries() {
+//        return this.entries;
+//    }
     
     /** Get validity.
      * @return Validity
@@ -451,7 +489,7 @@ public class ZipModule
                 /* If the directory is not in the map, add it. */
                 Source src = map.get(key);
                 if (src == null) {
-                    src = factory.getDirectorySource(jhove2, key);
+                    src = factory.getDirectorySource(jhove2, key, false);
                     src = parent.addChildSource(src);
                     map.put(key, src);
                     parent = src;
@@ -464,5 +502,4 @@ public class ZipModule
             }
         }
     }
-
 }

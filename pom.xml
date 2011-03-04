@@ -277,7 +277,7 @@
 							<mainClass>org.jhove2.app.JHOVE2CommandLine</mainClass>
 						</manifest>
 						<manifestEntries>
-							<Sealed>true</Sealed>
+							<Sealed>false</Sealed>
 						</manifestEntries>
 					</archive>
  					<forceCreation>true</forceCreation>

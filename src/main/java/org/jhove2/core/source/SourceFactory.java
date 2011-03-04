@@ -37,13 +37,13 @@ package org.jhove2.core.source;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.reportable.Reportable;
 import org.jhove2.persist.SourceAccessor;
 
 /**
@@ -94,21 +94,33 @@ public interface SourceFactory {
 	public Source getSource(JHOVE2 jhove2, URL url)
 	    throws IOException, JHOVE2Exception;
 
+//	/**
+//	 * Get source unit from a Zip file entry by creating a temporary file.
+//	 * 
+//     * @param jhove2 JHOVE2 framework object
+//     * @param zip
+//     *            Zip file
+//     * @param entry
+//     *            Zip file entry
+//	 * @return Source unit
+//	 * @throws IOException
+//	 *             I/O exception instantiating source
+//	 * @throws JHOVE2Exception 
+//	 */
+//	public Source getSource(JHOVE2 jhove2, ZipFile zip, ZipEntry entry)
+//		throws IOException, JHOVE2Exception;
 	/**
-	 * Get source unit from a Zip file entry by creating a temporary file.
 	 * 
-     * @param jhove2 JHOVE2 framework object
-     * @param zip
-     *            Zip file
-     * @param entry
-     *            Zip file entry
-	 * @return Source unit
+	 * @param jhove2
+	 * @param inputStream
+	 * @param name
+	 * @param otherProperties
+	 * @return
 	 * @throws IOException
-	 *             I/O exception instantiating source
-	 * @throws JHOVE2Exception 
+	 * @throws JHOVE2Exception
 	 */
-	public Source getSource(JHOVE2 jhove2, ZipFile zip, ZipEntry entry)
-		throws IOException, JHOVE2Exception;
+	public Source getSource(JHOVE2 jhove2, InputStream inputStream, String name, Reportable otherProperties)
+    throws IOException, JHOVE2Exception;
 
     /**
      * Get FileSet source unit from a formatted object name, which can be a file, a.
@@ -163,17 +175,29 @@ public interface SourceFactory {
 	 */
 	public ClumpSource getClumpSource(JHOVE2 jhove2) throws JHOVE2Exception;
 	   
+//    /**
+//     * Utility method to create empty non-file system DirectorySource
+//     * @param jhove2 JHOVE2 framework object
+//     * @param name   Directory name 
+//     * @return Directory source unit
+//     * @throws IOException
+//     * @throws JHOVE2Exception 
+//     */
+//    public DirectorySource getDirectorySource(JHOVE2 jhove2, String name)
+//        throws IOException, JHOVE2Exception;
+    
     /**
      * Utility method to create empty non-file system DirectorySource
      * @param jhove2 JHOVE2 framework object
      * @param name   Directory name 
+     * @param isFileSystemDirectory boolean indicating if Directory is "actual" or just "virtual" 
+     *           artifact of source processing
      * @return Directory source unit
      * @throws IOException
      * @throws JHOVE2Exception 
      */
-    public DirectorySource getDirectorySource(JHOVE2 jhove2, String name)
-        throws IOException, JHOVE2Exception;
-    
+    public DirectorySource getDirectorySource(JHOVE2 jhove2, String name, boolean isFileSystemDirectory)
+	throws IOException, JHOVE2Exception;
 	/**
 	 * Utility method to create empty FileSetSource
      * @param jhove2 JHOVE2 framework object

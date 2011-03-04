@@ -41,6 +41,7 @@ import java.util.Set;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
 import org.jhove2.core.format.FormatIdentification;
+import org.jhove2.core.reportable.Reportable;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.Module;
 
@@ -75,6 +76,17 @@ public interface SourceAccessor  {
 	 * @throws JHOVE2Exception
 	 */
 	public Source addChildSource(Source parentSource, Source childSource) throws JHOVE2Exception;
+    
+    /** Add an extra properties {@link org.jhove2.core.reportable.Reportable}
+     * to be associated with the source unit.  Extra properties are those not
+     * known at the time the source unit is instantiated but which are not
+     * associated with a particular {@link org.jhove2.module.format.FormatModule}.
+     * @param source     Source to which the properties are added
+     * @param properties Extra properties reportable
+     * @return Source with extra properties added
+     * @throws JHOVE2Exception
+     */
+    public Source addExtraProperties(Source source, Reportable properties) throws JHOVE2Exception;
     
 	/**
 	 * Get child Sources of a Source
