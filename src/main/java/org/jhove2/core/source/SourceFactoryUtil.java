@@ -42,20 +42,13 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
-import org.jhove2.core.Digest;
 import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.reportable.Reportable;
-import org.jhove2.module.digest.AbstractArrayDigester;
-import org.jhove2.module.digest.CRC32Digester;
-import org.jhove2.module.format.zip.ZipEntryProperties;
 
 /**
  * Factory for JHOVE2 file and directory source units.
@@ -136,93 +129,17 @@ public class SourceFactoryUtil
 		return source;
 	}
 
-//	/**
-//	 * Get source unit from a Zip file entry by creating a temporary file.
-//	 * @param jhove2 JHOVE2 framework object
-//	 * @param zip
-//	 *            Zip file
-//	 * @param entry
-//	 *            Zip file entry
-//	 * @return Source unit
-//	 * @throws IOException
-//	 *             I/O exception instantiating source
-//	 * @throws JHOVE2Exception 
-//	 */
-//	public static synchronized Source getSource(JHOVE2 jhove2, ZipFile zip,
-//			ZipEntry entry)
-//	throws IOException, JHOVE2Exception
-//	{
-//		Source source = null;
-//		String name = entry.getName();
-//		//		if (entry.isDirectory()) {
-//		//		    /* Delete trailing slash from path name, if necessary. Although this
-//		//		     * always should be a forward slash (/), in practice a backward slash
-//		//		     * \) may be found.
-//		//		     */
-//		//		    int in = name.lastIndexOf('/');
-//		//		    if (in < 0) {
-//		//		        in = name.lastIndexOf('\\');
-//		//		    }
-//		//		    if (in == name.length() - 1) {
-//		//		        name = name.substring(0, in);
-//		//		    }
-//		//		    source = new DirectorySource(jhove2, name, false);        
-//		//		}
-//		//		else {
-//		/* Recover the filename from the pathname. Although the path
-//		 * separator always should be a forward slash (/), in practice a
-//		 * backward slash (\) may be found.
-//		 */
-//		int in = name.lastIndexOf('/');
-//		if (in < 0) {
-//			in = name.lastIndexOf('\\');
-//		}
-//		if (in > -1) {
-//			name = name.substring(in+1);
-//		}
-//		/* Create a temporary Java {@link java.io.File} to represent the
-//		 * file entry.
-//		 */
-//		InputStream stream = zip.getInputStream(entry);
-//		Invocation inv = jhove2.getInvocation();
-//		File file = AbstractSource.createTempFile(stream, name,
-//				inv.getTempDirectoryFile(),
-//				inv.getTempPrefix(),
-//				inv.getTempSuffix(),
-//				inv.getBufferSize());
-//		stream.close();
-//
-//		source = new FileSource(jhove2, file, false);
-//		source.setIsTemp(true);
-//
-//		/* This is a temporary fix.  We need to keep the temporary backing
-//		 * files for Zip components in case we need to later get an
-//		 * {@link java.io.InputStream} on the component
-//		 * (Source.getInputStream()) to pass to a third-party package that
-//		 * doesn't support {@link org.jhove2.core.io.Input}s.
-//		 * 
-//		 * Note that the temporary files will accumulate in the temporary
-//		 * directory after termination.
-//		 * 
-//		 * TODO: Find a better mechanism for dealing with this problem
-//		 * in the recursive processing model.
-//		 */
-//		source.setDeleteTempFileOnClose(false);
-//		//		}
-//
-//		/* Get the entry-specific properties. */
-//		long crc = entry.getCrc();
-//		Digest crc32 = new Digest(AbstractArrayDigester.toHexString(crc),
-//				CRC32Digester.ALGORITHM);
-//		ZipEntryProperties properties =
-//			new ZipEntryProperties(name, entry.getCompressedSize(), crc32,
-//					entry.getComment(),
-//					new Date(entry.getTime()));
-//		source.addExtraProperties(properties);
-//
-//		return source;
-//	}	
-
+	/**
+	 * Get a source unit from an InputStream.  Used for example to create a Source
+	 * unit from a Zip file entry. Cteates backing temporary file
+	 * @param jhove2 JHOVE2 framework object
+	 * @param stream InputStream containing content of source
+	 * @param name file name Source would have in its container
+	 * @param otherProperties non-file-system reportable properties associated with Source
+	 * @return Source unit
+	 * @throws IOException
+	 * @throws JHOVE2Exception
+	 */
 	public static synchronized Source getSource(JHOVE2 jhove2, 
 			InputStream stream, 
 			String name,

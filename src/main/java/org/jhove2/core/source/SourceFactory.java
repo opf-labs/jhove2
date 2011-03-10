@@ -94,28 +94,14 @@ public interface SourceFactory {
 	public Source getSource(JHOVE2 jhove2, URL url)
 	    throws IOException, JHOVE2Exception;
 
-//	/**
-//	 * Get source unit from a Zip file entry by creating a temporary file.
-//	 * 
-//     * @param jhove2 JHOVE2 framework object
-//     * @param zip
-//     *            Zip file
-//     * @param entry
-//     *            Zip file entry
-//	 * @return Source unit
-//	 * @throws IOException
-//	 *             I/O exception instantiating source
-//	 * @throws JHOVE2Exception 
-//	 */
-//	public Source getSource(JHOVE2 jhove2, ZipFile zip, ZipEntry entry)
-//		throws IOException, JHOVE2Exception;
 	/**
-	 * 
-	 * @param jhove2
-	 * @param inputStream
-	 * @param name
-	 * @param otherProperties
-	 * @return
+	 * Get a source unit from an inputstream by creating a temporary file
+	 * Used for example to create soure unit from a Zip file entry
+	 * @param jhove2 JHOVE2 framework object
+	 * @param inputStream InputStream containing contents of Source
+	 * @param name file name Stream would have within original container
+	 * @param otherProperties non-file system reportable features associated with source
+	 * @return Source unit
 	 * @throws IOException
 	 * @throws JHOVE2Exception
 	 */

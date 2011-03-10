@@ -209,4 +209,16 @@ public class StreamByteReader extends AbstractByteReader {
     public byte[] getbuffer() {
         return buffer.array();
     }
+    
+    /************   Added for JHOVE2 ****/
+    public void close(){
+    	if (this.tempFile != null){
+    		try {
+    			this.tempFile.delete();
+    		}
+    		catch (Exception e){
+    			;
+    		}
+    	}
+    }
 }

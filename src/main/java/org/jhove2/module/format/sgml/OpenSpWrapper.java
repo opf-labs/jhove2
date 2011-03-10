@@ -152,7 +152,7 @@ public class OpenSpWrapper implements SgmlParser {
 							esisFileParser.parseEsisFile(esisFilePath, jhove2, source, sgm);
 					} catch (IOException e) {
 						continue; // message already attached to module
-					} 								
+					} 
 				}
 
 				/** now parse the Message (.err) file created by OpenSP */
@@ -172,7 +172,7 @@ public class OpenSpWrapper implements SgmlParser {
 						messageParser.parseMessageFile(esisErrFilePath, jhove2, source, sgm);
 					} catch (IOException e) {
 						continue; // message already attached to module
-					} 					
+					}
 				}
 			} while (false);
 		}	
@@ -224,7 +224,7 @@ public class OpenSpWrapper implements SgmlParser {
 							doctypeParser.parseNormFile(normOutPath, jhove2, source, sgm);
 					} catch (IOException e) {
 						continue; // message already attached to module
-					} 						
+					} 
 				}
 			}while (false);
 		}
@@ -362,7 +362,7 @@ public class OpenSpWrapper implements SgmlParser {
 			}
 			if (jhove2.getInvocation().getDeleteTempFilesOnClose()){
 				try {
-					this.tempFilePaths.add(tempOutFile.getCanonicalPath());
+					this.tempFilePaths.add(tempErrFile.getCanonicalPath());
 				}
 				catch (IOException e){}
 			}
@@ -392,7 +392,7 @@ public class OpenSpWrapper implements SgmlParser {
 			}
 			if (jhove2.getInvocation().getDeleteTempFilesOnClose()){
 				try {
-					this.tempFilePaths.add(tempOutFile.getCanonicalPath());
+					this.tempFilePaths.add(tempStdErrFile.getCanonicalPath());
 				}
 				catch (IOException e){}
 			}

@@ -41,8 +41,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
@@ -106,28 +104,19 @@ implements SourceFactory
 		return source;
 	}
 
-//	/** Get source unit from a Zip file entry.
-//	 * @param zip Zip file
-//	 * 
-//	 * @param jhove2 JHOVE2 framework object
-//	 * @param entry Zip file entry
-//	 * @see org.jhove2.core.source.SourceFactory#getSource(java.lang.String, java.lang.String, int, java.util.zip.ZipFile, java.util.zip.ZipEntry)
-//	 */
-//	@Override
-//	public Source getSource(JHOVE2 jhove2, ZipFile zip, ZipEntry entry)
-//	throws IOException, JHOVE2Exception
-//	{
-//		Source source = SourceFactoryUtil.getSource(jhove2, zip, entry);
-//		source = source.getSourceAccessor().persistSource(source);
-//		return source;
-//	}
-
-	/** Get source unit from a Zip file entry.
-	 * @param zip Zip file
+	/**
+	 * Get source unit an input stream.  
 	 * 
 	 * @param jhove2 JHOVE2 framework object
-	 * @param entry Zip file entry
-	 * @see org.jhove2.core.source.SourceFactory#getSource(java.lang.String, java.lang.String, int, java.util.zip.ZipFile, java.util.zip.ZipEntry)
+	 * @param inputStream InputStream containing contents of Source
+	 * @param name file name (signature) to be used in identification
+	 * @param otherProperties non-file-system reportable properties to be associated with this source
+	 * @return Source unit
+	 * @throws FileNotFoundException
+	 *             File not found
+	 * @throws IOException
+	 *             I/O exception instantiating source
+	 * @throws JHOVE2Exception
 	 */
 	@Override
 	public Source getSource(JHOVE2 jhove2, InputStream inputStream, String name, Reportable otherProperties)
