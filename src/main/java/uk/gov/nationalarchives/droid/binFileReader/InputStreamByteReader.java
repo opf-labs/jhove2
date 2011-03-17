@@ -85,7 +85,7 @@ public class InputStreamByteReader extends StreamByteReader {
         if (byteReader.tempFile == null) {
             return byteReader;
         } else {
-            return new FileByteReader(theIDFile, readFile, byteReader.tempFile.getPath());
+            return new FileByteReader(theIDFile, readFile, byteReader.tempFile.getPath(), true);
         }
     }
     
@@ -99,7 +99,7 @@ public class InputStreamByteReader extends StreamByteReader {
         if (byteReader.tempFile == null) {
             return byteReader;
         } else {
-            return new FileByteReader(theIDFile, true, byteReader.tempFile.getPath());
+            return new FileByteReader(theIDFile, true, byteReader.tempFile.getPath(), true);
         }
     }
   /// **************************** END ADDED FOR JHOVE2 *********************************************   

@@ -69,7 +69,19 @@ import uk.gov.nationalarchives.droid.JHOVE2IAnalysisController;
  * @author linb
  */
 public class FileByteReader extends AbstractByteReader {
+	// added for jHOVE2
+	boolean isTempFile = false;
 
+	// added for jHOVE2
+    FileByteReader(IdentificationFile theIDFile, boolean readFile, String filePath, boolean isTempFile) {   	
+    	super(theIDFile);
+        this.file = new File(filePath);
+        if (readFile) {
+            this.readFile();
+        }
+        this.isTempFile = isTempFile;
+    }
+    
     /**
      * Creates a new instance of FileByteReader
      * <p/>
@@ -84,12 +96,13 @@ public class FileByteReader extends AbstractByteReader {
      * @param filePath  the backing file (containing the data)
      */
     FileByteReader(IdentificationFile theIDFile, boolean readFile, String filePath) {
-        super(theIDFile);
-        this.file = new File(filePath);
-        if (readFile) {
-            this.readFile();
-        }
-
+//        super(theIDFile);
+//        this.file = new File(filePath);
+//        if (readFile) {
+//            this.readFile();
+//        }
+    	// changed for JHOVE2
+    	this(theIDFile, readFile, filePath, false);
     }
 
     /**
@@ -380,5 +393,15 @@ public class FileByteReader extends AbstractByteReader {
             }
             randomAccessFile = null;
         }
+        // added for JHOVE2
+        if (this.file != null && this.isTempFile){
+        	try{
+        		file.delete();
+        	}
+        	catch(Exception e){
+        		
+        	}
+        }
+        // end added for JHOVE2
     }
 }

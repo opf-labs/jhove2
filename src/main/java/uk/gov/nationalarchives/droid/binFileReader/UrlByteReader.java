@@ -78,7 +78,7 @@ public class UrlByteReader extends StreamByteReader {
         if (byteReader.tempFile == null) {
             return byteReader;
         } else {
-            return new FileByteReader(theIDFile, readFile, byteReader.tempFile.getPath());
+            return new FileByteReader(theIDFile, readFile, byteReader.tempFile.getPath(),true);
         }
     }
 

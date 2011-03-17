@@ -108,11 +108,6 @@ public abstract class AbstractSource
 	 * {@link org.jhove2.module.format.FormatModule}. */
 	protected List<Reportable> extraProperties;
     
-	/** Source unit backing file. This may be an actual file system
-	 * file or a temporary file created from an {@link java.io.InputStream}.
-	 */
-	//protected File file;
-	
 	/** File system properties, if the source is a physical file or directory
 	 * in the file system.
 	 */
