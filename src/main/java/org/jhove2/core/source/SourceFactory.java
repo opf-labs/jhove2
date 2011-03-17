@@ -97,16 +97,16 @@ public interface SourceFactory {
 	/**
 	 * Get a source unit from an inputstream by creating a temporary file
 	 * Used for example to create soure unit from a Zip file entry
-	 * @param jhove2 JHOVE2 framework object
+     * @param jhove2 JHOVE2 framework object
 	 * @param inputStream InputStream containing contents of Source
 	 * @param name file name Stream would have within original container
 	 * @param otherProperties non-file system reportable features associated with source
 	 * @return Source unit
 	 * @throws IOException
-	 * @throws JHOVE2Exception
+	 * @throws JHOVE2Exception 
 	 */
 	public Source getSource(JHOVE2 jhove2, InputStream inputStream, String name, Reportable otherProperties)
-    throws IOException, JHOVE2Exception;
+		throws IOException, JHOVE2Exception;
 
     /**
      * Get FileSet source unit from a formatted object name, which can be a file, a.
@@ -183,7 +183,7 @@ public interface SourceFactory {
      * @throws JHOVE2Exception 
      */
     public DirectorySource getDirectorySource(JHOVE2 jhove2, String name, boolean isFileSystemDirectory)
-	throws IOException, JHOVE2Exception;
+        throws IOException, JHOVE2Exception;
 	/**
 	 * Utility method to create empty FileSetSource
      * @param jhove2 JHOVE2 framework object

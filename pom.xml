@@ -177,49 +177,44 @@
 					</additionalClasspathElements>
 				</configuration>
 			</plugin>
-			<!-- build a UNIX classpath from the project dependencies -->
+			<!-- build classpaths from the project dependencies -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<executions>
-					<execution>
-						<id>build-unix-classpath</id>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>build-classpath</goal>
-						</goals>
-						<configuration>
-							<prefix>$JHOVE2_HOME/lib</prefix>
-							<!-- Unix uses / as file separator and : as a path separator -->
-							<pathSeparator>:</pathSeparator>
-							<fileSeparator>\/</fileSeparator>
-							<outputFilterFile>true</outputFilterFile>
-							<outputFile>${project.basedir}/src/main/assembly/classpath_sh.properties</outputFile>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<!-- build a Windows classpath from the project dependencies -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>build-windows-classpath</id>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>build-classpath</goal>
-						</goals>
-						<configuration>
-							<prefix>%JHOVE2_HOME%\lib</prefix>
-							<!-- Windows uses \ as file separator and ; as a path separator -->
-							<pathSeparator>;</pathSeparator>
-							<fileSeparator>\\</fileSeparator>
-							<outputFilterFile>true</outputFilterFile>
-							<outputFile>${project.basedir}/src/main/assembly/classpath_cmd.properties</outputFile>
-						</configuration>
-					</execution>
-				</executions>
+				<!-- build a UNIX classpath  -->
+				<execution>
+					<id>build-unix-classpath</id>
+					<phase>prepare-package</phase>
+					<goals>
+						<goal>build-classpath</goal>
+					</goals>
+					<configuration>
+						<prefix>$JHOVE2_HOME/lib</prefix>
+						<!-- Unix uses / as file separator and : as a path separator -->
+						<pathSeparator>:</pathSeparator>
+						<fileSeparator>\/</fileSeparator>
+						<outputFilterFile>true</outputFilterFile>
+						<outputFile>${project.basedir}/src/main/assembly/classpath_sh.properties</outputFile>
+					</configuration>
+				</execution>
+				<!-- build a Windows classpath  -->
+				<execution>
+					<id>build-windows-classpath</id>
+					<phase>prepare-package</phase>
+					<goals>
+						<goal>build-classpath</goal>
+					</goals>
+					<configuration>
+						<prefix>%JHOVE2_HOME%\lib</prefix>
+						<!-- Windows uses \ as file separator and ; as a path separator -->
+						<pathSeparator>;</pathSeparator>
+						<fileSeparator>\\</fileSeparator>
+						<outputFilterFile>true</outputFilterFile>
+						<outputFile>${project.basedir}/src/main/assembly/classpath_cmd.properties</outputFile>
+					</configuration>
+				</execution>
+				</executions> 
 			</plugin>
 			<!-- Replace the classpath with the content of the properties file generated above -->
 			<plugin>

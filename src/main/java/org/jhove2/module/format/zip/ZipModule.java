@@ -114,7 +114,7 @@ public class ZipModule
     
     /** Zip64 end of central directory locator signature. */
     public static final int ZIP64_END_OF_CENTRAL_DIRECTORY_LOCATOR_SIGNATURE = 0x07064b50;
-	
+    
 	/** Validation status. */
 	protected Validity isValid;
 	
@@ -219,7 +219,7 @@ public class ZipModule
 	        		    }
 //	                    Source src =
 //	                    	factory.getSource(jhove2, zip, entry);
-	        		    Source src =
+	                    Source src =
 	        		    		factory.getDirectorySource(jhove2, name, false);
 	                    if (src != null) {
 	                    	/* Get the entry-specific properties. */
@@ -333,7 +333,7 @@ public class ZipModule
 	            			new ZipEntryProperties(name, entry.getCompressedSize(), crc32,
 	            					entry.getComment(),
 	            					new Date(entry.getTime()));
-	            		Source src = 
+	                    Source src =
 	            			factory.getSource(jhove2, stream, name, properties);
 	                    if (src != null) {
 	                        /* Check if the file pathname includes a directory
