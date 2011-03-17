@@ -318,7 +318,7 @@ public class OpenSpWrapperWindowsExeTest {
 	/**
 	 * @param wtestSgmlModule the wtestSgmlModule to set
 	 */
-	@Resource
+	@Resource(name="wtestSgmlModule")
 	public void setTestSgmlModule(SgmlModule testSgmlModule) {
 		this.wtestSgmlModule = testSgmlModule;
 	}

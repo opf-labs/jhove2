@@ -43,6 +43,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.util.Properties;
 
 import javax.annotation.Resource;
 
@@ -85,12 +86,20 @@ public class OpenSpWrapperTest {
 	protected String catalogPath;
 	protected Source inputSource;
 	protected OpenSpWrapper sp;
+	
+	protected SgmlModule wtestSgmlModule;
+	private SgmlModule wtestSgmlModule02;
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
-
+		Properties prop   = System.getProperties();
+		String os = prop.getProperty("os.name");
+		if (os.toLowerCase().startsWith("win")){
+			testSgmlModule = wtestSgmlModule;
+			testSgmlModule02 = wtestSgmlModule02;
+		}
 		sp = (OpenSpWrapper) testSgmlModule.sgmlParser;
 		try {
 			sgmlDirPath = 
@@ -343,7 +352,7 @@ public class OpenSpWrapperTest {
 	/**
 	 * @param testSgmlModule the testSgmlModule to set
 	 */
-	@Resource
+	@Resource(name="testSgmlModule")
 	public void setTestSgmlModule(SgmlModule testSgmlModule) {
 		this.testSgmlModule = testSgmlModule;
 	}
@@ -414,6 +423,16 @@ public class OpenSpWrapperTest {
 	@Resource(name="testSgmlModule02")
 	public void setTestSgmlModule02(SgmlModule testSgmlModule02) {
 		this.testSgmlModule02 = testSgmlModule02;
+	}
+
+	@Resource(name="wtestSgmlModule")
+	public void setWtestSgmlModule(SgmlModule wtestSgmlModule) {
+		this.wtestSgmlModule = wtestSgmlModule;
+	}
+
+	@Resource(name="wtestSgmlModule02")
+	public void setWtestSgmlModule02(SgmlModule wtestSgmlModule02) {
+		this.wtestSgmlModule02 = wtestSgmlModule02;
 	}
 
 }

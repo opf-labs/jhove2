@@ -60,10 +60,10 @@
 	<bean id="wtestOpenSpWrapper" class="org.jhove2.module.format.sgml.OpenSpWrapper"
 	      scope="prototype">
         <property name="processHandler" ref="wtestExternalProcessHandler"/>
-        <!--  property name="onsgmlsPath" value="C:\PROGRA~1\OpenSp\onsgmls.exe"/ -->
-        <!--  property name="sgmlnormPath" value="C:\PROGRA~1\OpenSp\osgmlnorm.exe"/ -->
-        <property name="onsgmlsPath" value="C:\cygwin\bin\onsgmls.exe"/>
-        <property name="sgmlnormPath" value="C:\cygwin\bin\osgmlnorm.exe"/>
+        <property name="onsgmlsPath" value="C:\PROGRA~1\OpenSp\onsgmls.exe"/> 
+        <property name="sgmlnormPath" value="C:\PROGRA~1\OpenSp\osgmlnorm.exe"/> 
+<!--        <property name="onsgmlsPath" value="C:\cygwin\bin\onsgmls.exe"/>-->
+<!--        <property name="sgmlnormPath" value="C:\cygwin\bin\osgmlnorm.exe"/>-->
         <property name="onsgmlsOptions" ref="wTestOnsgmlsOptions"/>
         <property name="sgmlnormOptions" ref="wTestSgmlNormOptions"/>
         <property name="spaceEscapeChar" value='"'/>
