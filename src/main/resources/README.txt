@@ -1,5 +1,8 @@
 JHOVE2 -- Next-generation architecture for format-aware characterization
 
+Please refer to the JHOVE2 User’s Guide for procedures on installing, 
+configuring, and running JHOVE2.
+
 JHOVE2 is a collaborative project of the California Digital Library, Portico,
 and Stanford University.  The goals of the project are: 
 
