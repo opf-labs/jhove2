@@ -394,7 +394,7 @@ public class SaxParser
         	File sourceFile = source.getFile();
         	if (sourceFile != null){
         		saxInputSource.setSystemId (sourceFile.getAbsolutePath()); 
-        	}
+        }
         }
 
         /* Here's where the SAX parsing takes place */
