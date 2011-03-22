@@ -111,12 +111,36 @@ public class OpenSpWrapperWindowsExeTest {
 		}
 		catalogPath = sgmlDirPath.concat(catalogFile);
 		File cFile = new File (catalogPath);
+		if (!cFile.exists()){
+			fail("Path to catalog file " + catalogPath + " does not exist");
+		}
 		catalogPath = cFile.getAbsolutePath();
 		if (sp.filepathFilter != null){
 			catalogPath = sp.filepathFilter.filter(catalogPath);
 		}
 		sp.getOnsgmlsOptions().setCatalogPath(catalogPath);
 		sp.getSgmlnormOptions().setCatalogPath(catalogPath);
+		String commandPath = sp.getOnsgmlsPath();
+		File commandPathFile = null;
+		try {
+			commandPathFile = new File(commandPath);
+			if (!(commandPathFile.exists())){
+				fail("Configured path to ongsmls utility " + commandPath + " does not exist");
+			}
+		}
+		catch (NullPointerException e){
+			fail("no path to onsgmls utility configured");
+		}
+		commandPath = sp.getSgmlnormPath();
+		try {
+			commandPathFile = new File(commandPath);
+			if (!(commandPathFile.exists())){
+				fail("Configured path to sgmlNorm utility " + commandPath + " does not exist");
+			}
+		}
+		catch (NullPointerException e){
+			fail("no path to onsgmls utility configured");
+		}
 	}
 
 	/**
