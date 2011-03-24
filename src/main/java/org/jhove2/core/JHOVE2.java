@@ -169,14 +169,14 @@ public class JHOVE2
                 if (!properties.isExtant()) {
                     source = source.addMessage(new Message(Severity.ERROR,
                         Context.PROCESS,
-                        "org.jhove2.core.source.FileSystemSource.FileNotFoundMessage",
+                        "org.jhove2.core.JHOVE2.FileNotFoundMessage",
                         new Object[]{name}, this.getConfigInfo()));
                     tryIt = false;
                 }
                 else if (!properties.isReadable()) {
                     source = source.addMessage(new Message(Severity.ERROR,
                         Context.PROCESS,
-                        "org.jhove2.core.source.FileSystemSource.FileNotReadableMessage",
+                        "org.jhove2.core.JHOVE2.FileNotReadableMessage",
                         new Object[]{name}, this.getConfigInfo()));
                     tryIt = false;
                 }

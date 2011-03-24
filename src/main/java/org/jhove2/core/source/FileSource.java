@@ -159,10 +159,20 @@ public class FileSource
             } catch (IOException e) {
                 /* Let path stay initialized to just the file name. */
             }
+            boolean exists       = file.exists();
+            boolean isReadable   = false;
+            boolean isHidden     = false;
+            boolean isSpecial    = false;
+            Date    lastModified = null;
+            if (exists) {
+                isReadable   = file.canRead();
+                isHidden     = file.isHidden();
+                isSpecial    = !file.isFile();
+                lastModified = new Date(file.lastModified());
+            }
             this.fileSystemProperties =
-                new FileSystemProperties(path, file.exists(), file.canRead(),
-                                         file.isHidden(), !file.isFile(),
-                                         new Date(file.lastModified()));
+                new FileSystemProperties(path, exists, isReadable, isHidden,
+                                         isSpecial, lastModified);
         }
 	}
 
