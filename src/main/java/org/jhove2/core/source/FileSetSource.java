@@ -62,5 +62,6 @@ public class FileSetSource
 	 */
 	protected FileSetSource(JHOVE2 jhove2) {
 	    super(jhove2);
+	    this.isAggregate = true;
 	}
 }
