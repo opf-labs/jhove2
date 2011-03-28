@@ -106,17 +106,34 @@ public class NumericCharacterReferenceInformation extends AbstractReportable {
      * 
      * @param code
      *            the string representation of a character's unicode code point
+     * @param jhove2
+     *            the JHOVE2 framework
+     * @throws JHOVE2Exception
      */
-    public void tally(String code) {
-        Integer codePoint = Integer.decode(code.replace("x", "0x"));
-        NumericCharacterReference reference = numericCharacterReferenceMap
-                .get(codePoint);
-        if (reference != null) {
-            reference.count++;
-        }
-        else {
-            numericCharacterReferenceMap.put(codePoint,
-                    new NumericCharacterReference(codePoint));
+    public void tally(String code, JHOVE2 jhove2) throws JHOVE2Exception {
+        try {
+            Integer codePoint;
+            if (code.substring(0,1).toLowerCase().equals("x")) {
+                // Hexadecimal
+                codePoint = Integer.decode(code.toLowerCase().replace("x", "0x"));
+            } else {
+                // Decimal
+                codePoint = new Integer(code);
+            }
+            NumericCharacterReference reference = numericCharacterReferenceMap
+                    .get(codePoint);
+            if (reference != null) {
+                reference.count++;
+            }
+            else {
+                numericCharacterReferenceMap.put(codePoint,
+                        new NumericCharacterReference(codePoint));
+            }
+        }  catch (NumberFormatException e) {
+            this.invalidCharacterForEncodingMessage = new Message(
+                    Severity.ERROR, Context.OBJECT,
+                    "org.jhove2.module.format.xml.XmlModule.invalidCharacterForEncodingMessage",
+                    jhove2.getConfigInfo());
         }
     }
 
@@ -127,12 +144,9 @@ public class NumericCharacterReferenceInformation extends AbstractReportable {
      * constructs, which are not considered XML entities. The characters()
      * method of the ContentHandler interface, translates these codes into
      * Unicode characters before placing the data in the buffer.
-     * @param jhove2 TODO
      * @param jhove2
      *            the JHOVE2 framework
-     * @param source
-     *            the source object
-     * 
+     *
      * @throws IOException
      * @throws JHOVE2Exception
      */
@@ -152,7 +166,7 @@ public class NumericCharacterReferenceInformation extends AbstractReportable {
                  * Found one, record the occurrence of the NCR code (pattern
                  * capture group 1)
                  */
-                tally(ncrMatcher.group(1));
+                tally(ncrMatcher.group(1), jhove2);
             }
         }
         catch (CharacterCodingException e) {
