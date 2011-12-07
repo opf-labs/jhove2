@@ -16,13 +16,13 @@
 	    <constructor-arg ref="BaseModuleAccessor"/>
 		<property name="arrayDigesters">
 	    	<list value-type="org.jhove2.module.digest.ArrayDigester">
-	    		<!-- <ref bean="CRC32Digester"/> -->
+	    		<!-- <ref bean="AdlerDigester"/> -->
 	    		<ref bean="CRC32Digester"/>
 	    	</list>
 	    </property>
 		<property name="bufferDigesters">
 			<list value-type="org.jhove2.module.digest.BufferDigester">
-				<!-- <ref bean="MD5Digester"/> -->
+				<!-- <ref bean="MD2Digester"/> -->
 				<ref bean="MD5Digester"/>
 				<ref bean="SHA1Digester"/>
 				<!-- <ref bean="SHA256Digester"/> -->

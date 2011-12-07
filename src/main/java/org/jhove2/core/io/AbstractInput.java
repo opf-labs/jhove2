@@ -810,7 +810,7 @@ public abstract class AbstractInput
 		int pos = this.buffer.position();
 		int lim = this.buffer.limit();
 		long del = position - this.inputablePosition;
-		if (-del > pos || del > lim - pos) {
+		if (-del > pos || del > lim - pos - 1) {
 			this.channel.position(position);
 			getNextBuffer();
 		} else {
