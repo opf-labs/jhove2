@@ -110,8 +110,8 @@
 		<!-- for jargs GNU Command Line Parser -->
 		<repository>
 			<id>JBOSS</id>
-			<name>JBoss Repository</name>
-			<url>http://repository.jboss.org/maven2/</url>
+			<name>boss-maven2-release-repository</name>
+            <url>https://oss.sonatype.org/content/repositories/JBoss</url>
 		</repository>
 		<!-- for app assembler -->
 		<repository>
