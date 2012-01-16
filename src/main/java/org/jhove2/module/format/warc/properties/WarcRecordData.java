@@ -1,3 +1,39 @@
+/**
+ * JHOVE2 - Next-generation architecture for format-aware characterization
+ *
+ * Copyright (c) 2009 by The Regents of the University of California,
+ * Ithaka Harbors, Inc., and The Board of Trustees of the Leland Stanford
+ * Junior University.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * o Redistributions of source code must retain the above copyright notice,
+ *   this list of conditions and the following disclaimer.
+ *
+ * o Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * o Neither the name of the University of California/California Digital
+ *   Library, Ithaka Harbors/Portico, or Stanford University, nor the names of
+ *   its contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
+
 package org.jhove2.module.format.warc.properties;
 
 import java.util.ArrayList;
@@ -54,10 +90,10 @@ public class WarcRecordData {
     public String serverName;
     public String protocolUserAgent;
 
-	public WarcRecordData() {
-	}
+    public WarcRecordData() {
+    }
 
-	public WarcRecordData(WarcRecord record) {
+    public WarcRecordData(WarcRecord record) {
         this.warcType = record.warcTypeStr;
         this.warcFilename = record.warcFilename;
         this.warcRecordId = record.warcRecordIdStr;
@@ -79,205 +115,205 @@ public class WarcRecordData {
         this.warcSegmentOriginId = record.warcSegmentOriginIdStr;
         this.warcSegmentTotalLength = record.warcSegmentTotalLengthStr;
 
-    	if (record.warcBlockDigest != null) {
-			if ( record.warcBlockDigest.digestValue != null
-					&& record.warcBlockDigest.digestValue.length() > 0) {
-	    		blockDigest = record.warcBlockDigest.digestValue;
-			}
-	    	if (record.warcBlockDigest.algorithm != null
-	    			&& record.warcBlockDigest.algorithm.length() > 0) {
-	    		blockDigestAlgorithm = record.warcBlockDigest.algorithm;
-	    	}
-	    	if (record.warcBlockDigest.encoding != null
-	    			&& record.warcBlockDigest.encoding.length() > 0) {
-	    		blockDigestEncoding = record.warcBlockDigest.encoding;
-	    	}
-    	}
+        if (record.warcBlockDigest != null) {
+            if ( record.warcBlockDigest.digestValue != null
+                    && record.warcBlockDigest.digestValue.length() > 0) {
+                blockDigest = record.warcBlockDigest.digestValue;
+            }
+            if (record.warcBlockDigest.algorithm != null
+                    && record.warcBlockDigest.algorithm.length() > 0) {
+                blockDigestAlgorithm = record.warcBlockDigest.algorithm;
+            }
+            if (record.warcBlockDigest.encoding != null
+                    && record.warcBlockDigest.encoding.length() > 0) {
+                blockDigestEncoding = record.warcBlockDigest.encoding;
+            }
+        }
 
-    	if (record.warcPayloadDigest != null) {
-			if (record.warcPayloadDigest.digestValue != null
-					&& record.warcPayloadDigest.digestValue.length() > 0) {
-				payloadDigest = record.warcPayloadDigest.digestValue;
-			}
-	    	if (record.warcPayloadDigest.algorithm != null
-	    			&& record.warcPayloadDigest.algorithm.length() > 0) {
-	    		payloadDigestAlgorithm = record.warcPayloadDigest.algorithm;
-	    	}
-	    	if (record.warcPayloadDigest.encoding != null
-	    			&& record.warcPayloadDigest.encoding.length() > 0) {
-	    		payloadDigestEncoding = record.warcPayloadDigest.encoding;
-	    	}
-    	}
+        if (record.warcPayloadDigest != null) {
+            if (record.warcPayloadDigest.digestValue != null
+                    && record.warcPayloadDigest.digestValue.length() > 0) {
+                payloadDigest = record.warcPayloadDigest.digestValue;
+            }
+            if (record.warcPayloadDigest.algorithm != null
+                    && record.warcPayloadDigest.algorithm.length() > 0) {
+                payloadDigestAlgorithm = record.warcPayloadDigest.algorithm;
+            }
+            if (record.warcPayloadDigest.encoding != null
+                    && record.warcPayloadDigest.encoding.length() > 0) {
+                payloadDigestEncoding = record.warcPayloadDigest.encoding;
+            }
+        }
 
-    	if (warcRecordId != null) {
-    		int idx = warcRecordId.indexOf(':');
-    		if (idx >= 0) {
-    			if (warcRecordId.startsWith("<")) {
-        	    	recordIdScheme = warcRecordId.substring(1, idx);
-    			}
-    			else {
-        	    	recordIdScheme = warcRecordId.substring(0, idx);
-    			}
-    		}
-    	}
+        if (warcRecordId != null) {
+            int idx = warcRecordId.indexOf(':');
+            if (idx >= 0) {
+                if (warcRecordId.startsWith("<")) {
+                    recordIdScheme = warcRecordId.substring(1, idx);
+                }
+                else {
+                    recordIdScheme = warcRecordId.substring(0, idx);
+                }
+            }
+        }
 
-    	// TODO What does this imply, add functionality to JWAT.
+        // TODO What does this imply, add functionality to JWAT.
         bIsNonCompliant = false;
 
-    	bHasPayload = record.hasPayload();
-    	Payload payload = record.getPayload();
-    	if (payload != null) {
-			// TODO Verify meaning of JHove2 WARC draft
-    		HttpResponse httpResponse = payload.getHttpResponse();
-    		if (httpResponse != null) {
-    			payloadLength = Long.toString(httpResponse.getPayloadLength());
-    		}
-    		else {
-    			payloadLength = Long.toString(payload.getTotalLength());;
-    		}
-    	}
-	}
-
-	public WarcRecordData populateWarcinfo(WarcRecord record) {
-		return this;
-	}
-
-	public WarcRecordData populateResponse(WarcRecord record) {
-    	if (record.warcInetAddress != null) {
-    		if (record.warcInetAddress.getAddress().length == 4) {
-    	    	ipVersion = "4";
-    		}
-    		else {
-        		ipVersion = "6";
-    		}
-    	}
-
-    	Payload payload = record.getPayload();
-
-    	if (payload != null) {
-    		HttpResponse httpResponse = payload.getHttpResponse();
-    		if (httpResponse != null) {
-    			resultCode = httpResponse.resultCode;
-    			protocolVersion = httpResponse.protocolVersion;
-    			protocolContentType = httpResponse.contentType;
-    			// TODO Not supported in HttpResponse yet.
-    			//serverName = httpResponse.getHeader("servername");
-    		}
-    	}
-    	return this;
-	}
-
-	public WarcRecordData populateResource(WarcRecord record) {
-    	if (record.warcInetAddress != null) {
-    		if (record.warcInetAddress.getAddress().length == 4) {
-    	    	ipVersion = "4";
-    		}
-    		else {
-        		ipVersion = "6";
-    		}
-    	}
-		return this;
-	}
-
-	public WarcRecordData populateRequest(WarcRecord record) {
-    	if (record.warcInetAddress != null) {
-    		if (record.warcInetAddress.getAddress().length == 4) {
-    	    	ipVersion = "4";
-    		}
-    		else {
-        		ipVersion = "6";
-    		}
-    	}
-
-    	Payload payload = record.getPayload();
-
-    	if (payload != null) {
-    		HttpResponse httpResponse = payload.getHttpResponse();
-    		if (httpResponse != null) {
-    			// TODO Not supported in HttpResponse yet.
-    			protocolVersion = httpResponse.protocolVersion;
-    			// TODO Not supported in HttpResponse yet.
-    			//serverName = httpResponse.getHeader("user-agent");
-    		}
-    	}
-    	return this;
-	}
-
-	public WarcRecordData populateMetadata(WarcRecord record) {
-    	if (record.warcInetAddress != null) {
-    		if (record.warcInetAddress.getAddress().length == 4) {
-    	    	ipVersion = "4";
-    		}
-    		else {
-        		ipVersion = "6";
-    		}
-    	}
-		return this;
-	}
-
-	public WarcRecordData populateRevisit(WarcRecord record) {
-    	if (record.warcInetAddress != null) {
-    		if (record.warcInetAddress.getAddress().length == 4) {
-    	    	ipVersion = "4";
-    		}
-    		else {
-        		ipVersion = "6";
-    		}
-    	}
-		return this;
-	}
-
-	public WarcRecordData populateConversion(WarcRecord record) {
-		return this;
-	}
-
-	public WarcRecordData populateContinuation(WarcRecord record) {
-		return this;
-	}
-
-	public AbstractReportable getWarcRecordBaseProperties() {
-        return new WarcRecordBaseProperties(this);
-	}
-
-	public AbstractReportable getWarcTypeProperties(WarcRecord record) {
-		AbstractReportable warcTypeProperties = null;
-		if (record != null && record.warcTypeIdx != null) {
-	        switch (record.warcTypeIdx) {
-	        case WarcConstants.RT_IDX_WARCINFO:
-	        	populateWarcinfo(record);
-		        warcTypeProperties = new WarcWarcinfoProperties(this);
-		        break;
-	        case WarcConstants.RT_IDX_RESPONSE:
-	        	populateResponse(record);
-	        	warcTypeProperties = new WarcResponseProperties(this);
-		        break;
-	        case WarcConstants.RT_IDX_RESOURCE:
-	        	populateResource(record);
-	        	warcTypeProperties = new WarcResourceProperties(this);
-		        break;
-	        case WarcConstants.RT_IDX_REQUEST:
-	        	populateRequest(record);
-	        	warcTypeProperties = new WarcRequestProperties(this);
-		        break;
-	        case WarcConstants.RT_IDX_METADATA:
-	        	populateMetadata(record);
-	        	warcTypeProperties = new WarcMetadataProperties(this);
-		        break;
-	        case WarcConstants.RT_IDX_REVISIT:
-	        	populateRevisit(record);
-	        	warcTypeProperties = new WarcRevisitProperties(this);
-		        break;
-	        case WarcConstants.RT_IDX_CONVERSION:
-	        	populateConversion(record);
-	        	warcTypeProperties = new WarcConversionProperties(this);
-		        break;
-	        case WarcConstants.RT_IDX_CONTINUATION:
-	        	populateContinuation(record);
-	        	warcTypeProperties = new WarcContinuationProperties(this);
-		        break;
-	        }
+        bHasPayload = record.hasPayload();
+        Payload payload = record.getPayload();
+        if (payload != null) {
+            // TODO Verify meaning of JHove2 WARC draft
+            HttpResponse httpResponse = payload.getHttpResponse();
+            if (httpResponse != null) {
+                payloadLength = Long.toString(httpResponse.getPayloadLength());
+            }
+            else {
+                payloadLength = Long.toString(payload.getTotalLength());;
+            }
         }
-		return warcTypeProperties;
-	}
+    }
+
+    public WarcRecordData populateWarcinfo(WarcRecord record) {
+        return this;
+    }
+
+    public WarcRecordData populateResponse(WarcRecord record) {
+        if (record.warcInetAddress != null) {
+            if (record.warcInetAddress.getAddress().length == 4) {
+                ipVersion = "4";
+            }
+            else {
+                ipVersion = "6";
+            }
+        }
+
+        Payload payload = record.getPayload();
+
+        if (payload != null) {
+            HttpResponse httpResponse = payload.getHttpResponse();
+            if (httpResponse != null) {
+                resultCode = httpResponse.resultCode;
+                protocolVersion = httpResponse.protocolVersion;
+                protocolContentType = httpResponse.contentType;
+                // TODO Not supported in HttpResponse yet.
+                //serverName = httpResponse.getHeader("servername");
+            }
+        }
+        return this;
+    }
+
+    public WarcRecordData populateResource(WarcRecord record) {
+        if (record.warcInetAddress != null) {
+            if (record.warcInetAddress.getAddress().length == 4) {
+                ipVersion = "4";
+            }
+            else {
+                ipVersion = "6";
+            }
+        }
+        return this;
+    }
+
+    public WarcRecordData populateRequest(WarcRecord record) {
+        if (record.warcInetAddress != null) {
+            if (record.warcInetAddress.getAddress().length == 4) {
+                ipVersion = "4";
+            }
+            else {
+                ipVersion = "6";
+            }
+        }
+
+        Payload payload = record.getPayload();
+
+        if (payload != null) {
+            HttpResponse httpResponse = payload.getHttpResponse();
+            if (httpResponse != null) {
+                // TODO Not supported in HttpResponse yet.
+                protocolVersion = httpResponse.protocolVersion;
+                // TODO Not supported in HttpResponse yet.
+                //serverName = httpResponse.getHeader("user-agent");
+            }
+        }
+        return this;
+    }
+
+    public WarcRecordData populateMetadata(WarcRecord record) {
+        if (record.warcInetAddress != null) {
+            if (record.warcInetAddress.getAddress().length == 4) {
+                ipVersion = "4";
+            }
+            else {
+                ipVersion = "6";
+            }
+        }
+        return this;
+    }
+
+    public WarcRecordData populateRevisit(WarcRecord record) {
+        if (record.warcInetAddress != null) {
+            if (record.warcInetAddress.getAddress().length == 4) {
+                ipVersion = "4";
+            }
+            else {
+                ipVersion = "6";
+            }
+        }
+        return this;
+    }
+
+    public WarcRecordData populateConversion(WarcRecord record) {
+        return this;
+    }
+
+    public WarcRecordData populateContinuation(WarcRecord record) {
+        return this;
+    }
+
+    public AbstractReportable getWarcRecordBaseProperties() {
+        return new WarcRecordBaseProperties(this);
+    }
+
+    public AbstractReportable getWarcTypeProperties(WarcRecord record) {
+        AbstractReportable warcTypeProperties = null;
+        if (record != null && record.warcTypeIdx != null) {
+            switch (record.warcTypeIdx) {
+            case WarcConstants.RT_IDX_WARCINFO:
+                populateWarcinfo(record);
+                warcTypeProperties = new WarcWarcinfoProperties(this);
+                break;
+            case WarcConstants.RT_IDX_RESPONSE:
+                populateResponse(record);
+                warcTypeProperties = new WarcResponseProperties(this);
+                break;
+            case WarcConstants.RT_IDX_RESOURCE:
+                populateResource(record);
+                warcTypeProperties = new WarcResourceProperties(this);
+                break;
+            case WarcConstants.RT_IDX_REQUEST:
+                populateRequest(record);
+                warcTypeProperties = new WarcRequestProperties(this);
+                break;
+            case WarcConstants.RT_IDX_METADATA:
+                populateMetadata(record);
+                warcTypeProperties = new WarcMetadataProperties(this);
+                break;
+            case WarcConstants.RT_IDX_REVISIT:
+                populateRevisit(record);
+                warcTypeProperties = new WarcRevisitProperties(this);
+                break;
+            case WarcConstants.RT_IDX_CONVERSION:
+                populateConversion(record);
+                warcTypeProperties = new WarcConversionProperties(this);
+                break;
+            case WarcConstants.RT_IDX_CONTINUATION:
+                populateContinuation(record);
+                warcTypeProperties = new WarcContinuationProperties(this);
+                break;
+            }
+        }
+        return warcTypeProperties;
+    }
 
 }

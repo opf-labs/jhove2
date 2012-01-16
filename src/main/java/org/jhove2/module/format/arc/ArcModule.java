@@ -90,7 +90,7 @@ import com.sleepycat.persist.model.Persistent;
 @Persistent
 public class ArcModule extends BaseFormatModule implements Validator {
 
-	/** Module version identifier. */
+    /** Module version identifier. */
     public static final String VERSION = "0.8.0";
 
     /** Module release date. */
@@ -101,7 +101,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
         "Copyright 2010 by Bibliotheque nationale de France. " +
         "Available under the terms of the BSD license.";
 
-	/** Module validation coverage. */
+    /** Module validation coverage. */
     public static final Coverage COVERAGE = Coverage.Selective;
 
     private static final String CHARACTERIZATION_ERROR = "characterizationError";
@@ -112,7 +112,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
      * available via configuration to the JHOVE2
      * {@link org.jhove2.core.I8R} for that Format
      */
-    private static transient Map<String, FormatIdentification> jhove2Ids = null; 
+    private static transient Map<String, FormatIdentification> jhove2Ids = null;
 
     /** Validation status. */
     private volatile Validity isValid = Validity.Undetermined;
@@ -142,15 +142,15 @@ public class ArcModule extends BaseFormatModule implements Validator {
      * @param format ARC format.
      * @param formatModuleAccessor FormatModuleAccessor to manage access to Format Profiles
      */
-    public ArcModule(Format format, 
-    		FormatModuleAccessor formatModuleAccessor) {
+    public ArcModule(Format format,
+            FormatModuleAccessor formatModuleAccessor) {
         super(VERSION, RELEASE, RIGHTS, format, formatModuleAccessor);
-		this.isValid = Validity.Undetermined;
+        this.isValid = Validity.Undetermined;
     }
 
     /**
      * Instantiate a new <code>ArcModule</code> instance.
-     * @throws JHOVE2Exception 
+     * @throws JHOVE2Exception
      */
     public ArcModule() {
       this(null, null);
@@ -166,35 +166,35 @@ public class ArcModule extends BaseFormatModule implements Validator {
      * @param  source   ARC source unit
      * @param  param    ARC source input
      * @return <code>0</code> always.
-     * @throws JHOVE2Exception 
-     * @throws IOException 
+     * @throws JHOVE2Exception
+     * @throws IOException
      */
     @Override
-    public long parse(JHOVE2 jhove2,Source source, Input input) 
+    public long parse(JHOVE2 jhove2,Source source, Input input)
                                            throws JHOVE2Exception, IOException {
-		/*
-		 * Cache Content-Types to J2 FormatIdentifications.
-		 */
-    	if (jhove2Ids == null) {
-    		Map<String,String> ids = 
-    			jhove2.getConfigInfo().getFormatAliasIdsToJ2Ids(I8R.Namespace.MIME);
-    		TreeMap<String, FormatIdentification> idsTemp = 
-    			new TreeMap<String, FormatIdentification>();
-    		for (Entry<String, String> e : ids.entrySet()){
-    			idsTemp.put(e.getKey().toLowerCase(),
-    						new FormatIdentification(new I8R(e.getValue()), 
-					    			                 Confidence.Tentative));
-    		}
-    		jhove2Ids = Collections.unmodifiableSortedMap(idsTemp);
-    	}
-    	/*
-    	 * Module init.
-    	 */
-	    long consumed = 0L;
+        /*
+         * Cache Content-Types to J2 FormatIdentifications.
+         */
+        if (jhove2Ids == null) {
+            Map<String,String> ids =
+                jhove2.getConfigInfo().getFormatAliasIdsToJ2Ids(I8R.Namespace.MIME);
+            TreeMap<String, FormatIdentification> idsTemp =
+                new TreeMap<String, FormatIdentification>();
+            for (Entry<String, String> e : ids.entrySet()){
+                idsTemp.put(e.getKey().toLowerCase(),
+                            new FormatIdentification(new I8R(e.getValue()),
+                                                     Confidence.Tentative));
+            }
+            jhove2Ids = Collections.unmodifiableSortedMap(idsTemp);
+        }
+        /*
+         * Module init.
+         */
+        long consumed = 0L;
         isValid = Validity.Undetermined;
-	    input.setByteOrder(ByteOrder.LITTLE_ENDIAN);
+        input.setByteOrder(ByteOrder.LITTLE_ENDIAN);
 
-	    // Reset state.
+        // Reset state.
         arcFileName = null;
         arcFileSize = -1L;
         //this.arcRecordNumber.set(0);
@@ -203,78 +203,78 @@ public class ArcModule extends BaseFormatModule implements Validator {
 
         // Assume the source is valid.
         isValid = Validity.True;
-	    /*
-	     * Module context.
-	     */
-		GzipModule gzipMod = null;
-		ArcModule arcMod = null;
-		Module mod;
-		Source parentSrc = source.getSourceAccessor().retrieveSource(source.getParentSourceId());
-		if (parentSrc != null) {
-			List<Module> parentMods = parentSrc.getModules();
-			for (int i=0; i<parentMods.size(); ++i) {
-				mod = parentMods.get(i); 
-				if (mod instanceof GzipModule) {
-					gzipMod = (GzipModule)mod;
-					gzipMod = GzipModule.gzipMap.get(gzipMod.instanceId);
-				}
-				if (mod instanceof ArcModule) {
-					arcMod = (ArcModule)mod;
-				}
-			}
-		}
+        /*
+         * Module context.
+         */
+        GzipModule gzipMod = null;
+        ArcModule arcMod = null;
+        Module mod;
+        Source parentSrc = source.getSourceAccessor().retrieveSource(source.getParentSourceId());
+        if (parentSrc != null) {
+            List<Module> parentMods = parentSrc.getModules();
+            for (int i=0; i<parentMods.size(); ++i) {
+                mod = parentMods.get(i);
+                if (mod instanceof GzipModule) {
+                    gzipMod = (GzipModule)mod;
+                    gzipMod = GzipModule.gzipMap.get(gzipMod.instanceId);
+                }
+                if (mod instanceof ArcModule) {
+                    arcMod = (ArcModule)mod;
+                }
+            }
+        }
 
-    	Invocation cfg = jhove2.getInvocation();
+        Invocation cfg = jhove2.getInvocation();
 
-    	ArcReader reader = null;
-    	if (gzipMod != null) {
-    		// This should probably be changed according to success reading VersionBlock.
-    		gzipMod.presumptiveFormat = new FormatIdentification(format.getIdentifier(), Confidence.Tentative);
-    		/*
-	    	 * GZip compressed.
-	    	 */
-    		reader = (ArcReader)gzipMod.reader;
-			if (reader == null) {
-			    reader = ArcReaderFactory.getReaderUncompressed();
-			    reader.setBlockDigestEnabled(false);
-			    reader.setPayloadDigestEnabled(false);
-			    gzipMod.reader = reader;
-			}
-			if (arcMod == null) {
-				/*
-				 * First record. (Unless the parent modules are not correct!)
-				 */
-				mod = parentSrc.addModule(this);
-			    parseRecordsCompressed(jhove2, source, reader, true);
-			}
-			else {
-				arcMod.parseRecordsCompressed(jhove2, source, reader, false);
-				// May be useless as the caller may do this each time anyway.
-				arcMod = (ArcModule)arcMod.getModuleAccessor().persistModule(arcMod);
-				// Remove WarcModule from source instance since we added one to the parent source.
-				List<Module> sourceMods = source.getModules();
-				Iterator<Module> iter = sourceMods.iterator();
-				while (iter.hasNext()) {
-					mod = iter.next();
-					if (mod instanceof ArcModule) {
-						iter.remove();
-					}
-				}
-				// Persist for some reason.
-				source = source.getSourceAccessor().persistSource(source);
-			}
-		}
-	    else {
-	    	/*
-	    	 * Not GZip compressed.
-	    	 */
-		    reader = ArcReaderFactory.getReaderUncompressed(source.getInputStream(), 8192);
-		    reader.setBlockDigestEnabled(false);
-		    reader.setPayloadDigestEnabled(false);
-		    parseRecordsUncompressed(jhove2, source, reader, true);
-	        reader.close();
-	    }
-	    /*
+        ArcReader reader = null;
+        if (gzipMod != null) {
+            // This should probably be changed according to success reading VersionBlock.
+            gzipMod.presumptiveFormat = new FormatIdentification(format.getIdentifier(), Confidence.Tentative);
+            /*
+             * GZip compressed.
+             */
+            reader = (ArcReader)gzipMod.reader;
+            if (reader == null) {
+                reader = ArcReaderFactory.getReaderUncompressed();
+                reader.setBlockDigestEnabled(false);
+                reader.setPayloadDigestEnabled(false);
+                gzipMod.reader = reader;
+            }
+            if (arcMod == null) {
+                /*
+                 * First record. (Unless the parent modules are not correct!)
+                 */
+                mod = parentSrc.addModule(this);
+                parseRecordsCompressed(jhove2, source, reader, true);
+            }
+            else {
+                arcMod.parseRecordsCompressed(jhove2, source, reader, false);
+                // May be useless as the caller may do this each time anyway.
+                arcMod = (ArcModule)arcMod.getModuleAccessor().persistModule(arcMod);
+                // Remove WarcModule from source instance since we added one to the parent source.
+                List<Module> sourceMods = source.getModules();
+                Iterator<Module> iter = sourceMods.iterator();
+                while (iter.hasNext()) {
+                    mod = iter.next();
+                    if (mod instanceof ArcModule) {
+                        iter.remove();
+                    }
+                }
+                // Persist for some reason.
+                source = source.getSourceAccessor().persistSource(source);
+            }
+        }
+        else {
+            /*
+             * Not GZip compressed.
+             */
+            reader = ArcReaderFactory.getReaderUncompressed(source.getInputStream(), 8192);
+            reader.setBlockDigestEnabled(false);
+            reader.setPayloadDigestEnabled(false);
+            parseRecordsUncompressed(jhove2, source, reader, true);
+            reader.close();
+        }
+        /*
         ExecutorService threadPool = null;
         if (source instanceof ClumpSource) {
             if (source.hasChildSources() &&
@@ -285,161 +285,161 @@ public class ArcModule extends BaseFormatModule implements Validator {
             }
         }
         else {
-	        InputStream in = null;
-	        try {
-	        	boolean isCompressedArc = 
-	        		(source instanceof GzipMemberSource) ? true : false;
-	        	//initialize arc record parser
-	        	in = source.getInputStream();
-	        	ArcParser arc = new ArcParser(in);
-	        	//get the version block
-	        	VersionBlock versionBlock = arc.getVersionBlock();
-	          	processArcRecord(jhove2,source,versionBlock,isCompressedArc,null);
-	        	Version version = versionBlock.version;
-	        	this.arcFileName = versionBlock.path;
-	        	String [] fieldDesc = versionBlock.desc.fieldDesc;
-	        	if (isCompressedArc) {
-	        		// Compressed ARC file => ARC records are in subsequent GZip
-	        		// members.
-	          		((GzipMemberSource)source).getParentModule().setWovenFormatParser(new GzipRecordParser(version, fieldDesc));
-	        	}
-	        	else {
-	        	    if (this.nThreads > 1) {
-	                    threadPool = Executors.newFixedThreadPool(this.nThreads);
-	                }
-	        		this.arcFileSize = input.getSize();
-	        		// Regular ARC file => Read the whole file content
-		        	ArcRecord arcRecord;
-		        	while ((arcRecord = arc.getNextArcRecord(version,fieldDesc)) != null) {
-		        		processArcRecord(jhove2, source,arcRecord,isCompressedArc,threadPool);
-		        	}
-	        	}
-	        }
-	        catch(Exception ex){
-	        	ex.printStackTrace();
-	        	handleException(ex,jhove2,source);
-	        	//return -1L;
-	        }
-	        finally {
-	        	if(in != null){
-	        		try { in.close(); } catch (Exception e) { /* Ignore... *//* }
-	        	}
-	        	// Shutdown thread pool (if any).
-	            if (threadPool != null) {
-	                threadPool.shutdown();
-	                // Wait for completion of all characterization tasks.
-	                boolean shutdownComplete = false;
-	                do {
-	                    try {
-	                        threadPool.awaitTermination(2L, TimeUnit.HOURS);
-	                        shutdownComplete = true;
-	                    }
-	                    catch (InterruptedException e) { /* Ignore... *//* }
-	                }
-	                while (! shutdownComplete);
-	            }
-	        }
+            InputStream in = null;
+            try {
+                boolean isCompressedArc =
+                    (source instanceof GzipMemberSource) ? true : false;
+                //initialize arc record parser
+                in = source.getInputStream();
+                ArcParser arc = new ArcParser(in);
+                //get the version block
+                VersionBlock versionBlock = arc.getVersionBlock();
+                  processArcRecord(jhove2,source,versionBlock,isCompressedArc,null);
+                Version version = versionBlock.version;
+                this.arcFileName = versionBlock.path;
+                String [] fieldDesc = versionBlock.desc.fieldDesc;
+                if (isCompressedArc) {
+                    // Compressed ARC file => ARC records are in subsequent GZip
+                    // members.
+                      ((GzipMemberSource)source).getParentModule().setWovenFormatParser(new GzipRecordParser(version, fieldDesc));
+                }
+                else {
+                    if (this.nThreads > 1) {
+                        threadPool = Executors.newFixedThreadPool(this.nThreads);
+                    }
+                    this.arcFileSize = input.getSize();
+                    // Regular ARC file => Read the whole file content
+                    ArcRecord arcRecord;
+                    while ((arcRecord = arc.getNextArcRecord(version,fieldDesc)) != null) {
+                        processArcRecord(jhove2, source,arcRecord,isCompressedArc,threadPool);
+                    }
+                }
+            }
+            catch(Exception ex){
+                ex.printStackTrace();
+                handleException(ex,jhove2,source);
+                //return -1L;
+            }
+            finally {
+                if(in != null){
+                    try { in.close(); } catch (Exception e) { /* Ignore... *//* }
+                }
+                // Shutdown thread pool (if any).
+                if (threadPool != null) {
+                    threadPool.shutdown();
+                    // Wait for completion of all characterization tasks.
+                    boolean shutdownComplete = false;
+                    do {
+                        try {
+                            threadPool.awaitTermination(2L, TimeUnit.HOURS);
+                            shutdownComplete = true;
+                        }
+                        catch (InterruptedException e) { /* Ignore... *//* }
+                    }
+                    while (! shutdownComplete);
+                }
+            }
         }
         */
-	    /*
-	     * Consumed.
-	     */
+        /*
+         * Consumed.
+         */
         // TODO Should probably be implemented
         //consumed = reader.getOffset();
         return consumed;
     }
 
-	protected void parseRecordsUncompressed(JHOVE2 jhove2, Source source, ArcReader reader, boolean bReadVersion)
-			throws EOFException, IOException, JHOVE2Exception {
-		ArcVersionBlock versionBlock;
-	    ArcRecord record;
+    protected void parseRecordsUncompressed(JHOVE2 jhove2, Source source, ArcReader reader, boolean bReadVersion)
+            throws EOFException, IOException, JHOVE2Exception {
+        ArcVersionBlock versionBlock;
+        ArcRecord record;
 
         // Ensure a ARC reader could be instantiated.
         if (reader != null) {
-	        source.setIsAggregate(true);
-	        if (bReadVersion) {
-		        versionBlock = reader.getVersionBlock();
-		        if (versionBlock != null) {
-			        processVersionBlock(jhove2, source, versionBlock);
-		        }
-	        }
-	        /*
-	         * Loop through available records.
-	         */
-	        while ((record = reader.getNextRecord()) != null) {
-	        	processRecord(jhove2, source, record);
-	        }
+            source.setIsAggregate(true);
+            if (bReadVersion) {
+                versionBlock = reader.getVersionBlock();
+                if (versionBlock != null) {
+                    processVersionBlock(jhove2, source, versionBlock);
+                }
+            }
+            /*
+             * Loop through available records.
+             */
+            while ((record = reader.getNextRecord()) != null) {
+                processRecord(jhove2, source, record);
+            }
 
-	        // TODO real validity.
-	        this.isValid = Validity.True;
+            // TODO real validity.
+            this.isValid = Validity.True;
         }
         else {
-        	// No WARC reader. Oh the horror!
+            // No WARC reader. Oh the horror!
         }
-	}
+    }
 
-	protected void parseRecordsCompressed(JHOVE2 jhove2, Source source, ArcReader reader, boolean bReadVersion)
-			throws EOFException, IOException, JHOVE2Exception {
-		ArcVersionBlock versionBlock;
-	    ArcRecord record;
+    protected void parseRecordsCompressed(JHOVE2 jhove2, Source source, ArcReader reader, boolean bReadVersion)
+            throws EOFException, IOException, JHOVE2Exception {
+        ArcVersionBlock versionBlock;
+        ArcRecord record;
 
         // Ensure a ARC reader could be instantiated.
         if (reader != null) {
-	        source.setIsAggregate(true);
-	    	InputStream in = source.getInputStream();
-	        if (bReadVersion) {
-		        versionBlock = reader.getVersionBlock(in);
-		        if (versionBlock != null) {
-			        processVersionBlock(jhove2, source, versionBlock);
-		        }
-	        }
-	        /*
-	         * Loop through available records.
-	         */
-	        while ((record = reader.getNextRecordFrom(in, 0)) != null) {
-	        	processRecord(jhove2, source, record);
-	        }
+            source.setIsAggregate(true);
+            InputStream in = source.getInputStream();
+            if (bReadVersion) {
+                versionBlock = reader.getVersionBlock(in);
+                if (versionBlock != null) {
+                    processVersionBlock(jhove2, source, versionBlock);
+                }
+            }
+            /*
+             * Loop through available records.
+             */
+            while ((record = reader.getNextRecordFrom(in, 0)) != null) {
+                processRecord(jhove2, source, record);
+            }
 
-	        // TODO real validity.
-	        this.isValid = Validity.True;
+            // TODO real validity.
+            this.isValid = Validity.True;
         }
         else {
-        	// No WARC reader. Oh the horror!
+            // No WARC reader. Oh the horror!
         }
-	}
+    }
 
-	protected void processVersionBlock(JHOVE2 jhove2, Source source, ArcVersionBlock versionBlock)
-							throws EOFException, IOException, JHOVE2Exception {
+    protected void processVersionBlock(JHOVE2 jhove2, Source source, ArcVersionBlock versionBlock)
+                            throws EOFException, IOException, JHOVE2Exception {
         SourceFactory factory = jhove2.getSourceFactory();
-		if (factory == null) {
-			throw new JHOVE2Exception("JHOVE2 SourceFactory is null");
-		}
+        if (factory == null) {
+            throw new JHOVE2Exception("JHOVE2 SourceFactory is null");
+        }
 
         ArcRecordData recordData;
 
-		/*
+        /*
          * Arc Record Source.
          */
         Source versionBlockSrc = new ArcRecordSource();
         versionBlockSrc.setSourceAccessor(factory.createSourceAccessor(versionBlockSrc));
         versionBlockSrc = source.addChildSource(versionBlockSrc);
-    	/*
-    	 * Properties.
-    	 */
+        /*
+         * Properties.
+         */
         recordData = new ArcRecordData(versionBlock);
         versionBlockSrc.addExtraProperties(recordData.getArcRecordBaseProperties());
         versionBlockSrc.addExtraProperties(recordData.getArcVersionBlockProperties());
-	}
+    }
 
-	protected void processRecord(JHOVE2 jhove2, Source source, ArcRecord record)
-							throws EOFException, IOException, JHOVE2Exception {
+    protected void processRecord(JHOVE2 jhove2, Source source, ArcRecord record)
+                            throws EOFException, IOException, JHOVE2Exception {
         SourceFactory factory = jhove2.getSourceFactory();
-		if (factory == null) {
-			throw new JHOVE2Exception("JHOVE2 SourceFactory is null");
-		}
+        if (factory == null) {
+            throw new JHOVE2Exception("JHOVE2 SourceFactory is null");
+        }
 
-	    Payload payload;
-	    HttpResponse httpResponse;
+        Payload payload;
+        HttpResponse httpResponse;
         InputStream payload_stream;
         ArcRecordData recordData;
         String contentType;
@@ -451,7 +451,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
          */
         Source recordSrc = new ArcRecordSource();
         recordSrc.setSourceAccessor(factory.createSourceAccessor(recordSrc));
-    	recordSrc = source.addChildSource(recordSrc);
+        recordSrc = source.addChildSource(recordSrc);
         ++arcRecordNumber;
         /*
          * Prepare payload.
@@ -460,75 +460,75 @@ public class ArcModule extends BaseFormatModule implements Validator {
         httpResponse = null;
         payload_stream = null;
         if (payload != null) {
-        	httpResponse = payload.getHttpResponse();
-        	if (httpResponse == null) {
-        		payload_stream = payload.getInputStream();
-        	}
-        	else {
-        		contentType = httpResponse.getProtocolContentType();
-        		payload_stream = httpResponse.getPayloadInputStream();
-        	}
+            httpResponse = payload.getHttpResponse();
+            if (httpResponse == null) {
+                payload_stream = payload.getInputStream();
+            }
+            else {
+                contentType = httpResponse.getProtocolContentType();
+                payload_stream = httpResponse.getPayloadInputStream();
+            }
         }
         /*
          * Presumptive format.
          */
         if (contentType != null) {
-        	int idx = contentType.indexOf(';');
-        	if (idx >= 0) {
-	        		contentType = contentType.substring(0, idx);
-        	}
+            int idx = contentType.indexOf(';');
+            if (idx >= 0) {
+                    contentType = contentType.substring(0, idx);
+            }
         }
         formatId = null;
         if (contentType != null) {
-        	formatId = jhove2Ids.get(contentType.toLowerCase());
+            formatId = jhove2Ids.get(contentType.toLowerCase());
         }
         /*
          * Characterize payload.
          */
         if (payload_stream != null) {
-            Source payloadSrc = factory.getSource(jhove2, payload_stream, name, null);		// properties
+            Source payloadSrc = factory.getSource(jhove2, payload_stream, name, null);        // properties
             if (payloadSrc != null) {
-            	payloadSrc = recordSrc.addChildSource(payloadSrc);
-    			if(formatId != null){
-    				payloadSrc = payloadSrc.addPresumptiveFormat(formatId);
-    			}
-            	/* Make sure to close the Input after
-            	 * characterization is completed.
-            	 */
-            	Input src_input = payloadSrc.getInput(jhove2);
-            	try {
-            		payloadSrc = jhove2.characterize(payloadSrc, src_input);
-            	}
-            	finally {
-            		if (src_input != null) {
-            			src_input.close();
-            		}
-            	}
+                payloadSrc = recordSrc.addChildSource(payloadSrc);
+                if(formatId != null){
+                    payloadSrc = payloadSrc.addPresumptiveFormat(formatId);
+                }
+                /* Make sure to close the Input after
+                 * characterization is completed.
+                 */
+                Input src_input = payloadSrc.getInput(jhove2);
+                try {
+                    payloadSrc = jhove2.characterize(payloadSrc, src_input);
+                }
+                finally {
+                    if (src_input != null) {
+                        src_input.close();
+                    }
+                }
             }
         }
         /*
          * Close record to finish validation.
          */
         if (payload != null) {
-        	payload.close();
+            payload.close();
         }
         record.close();
-    	/*
-    	 * Properties.
-    	 */
+        /*
+         * Properties.
+         */
         recordData = new ArcRecordData(record);
-    	recordSrc.addExtraProperties(recordData.getArcRecordBaseProperties());
-    	recordSrc.addExtraProperties(recordData.getArcRecordProperties());
+        recordSrc.addExtraProperties(recordData.getArcRecordBaseProperties());
+        recordSrc.addExtraProperties(recordData.getArcRecordProperties());
         // TODO Check for errors and attach.
-	}
+    }
 
-	/**
+    /**
      * Characterizes and checks the validity of the ARC record.
      * @param jhove2 the JHove2 characterization context.
      * @param source ARC file source unit.
-     * @param source ARC record source unit. 
+     * @param source ARC record source unit.
      * @param arcRecordBase the ARC record to characterize and validate.
-     * @param isCompressedArc specifies whether the processed ARC file 
+     * @param isCompressedArc specifies whether the processed ARC file
      * is a compressed ARC file
      * @throws JHOVE2Exception
      * @throws IOException
@@ -536,19 +536,19 @@ public class ArcModule extends BaseFormatModule implements Validator {
     private void execute(JHOVE2 jhove2, Source source,Source child,
                          ArcRecordBase arcRecordBase,
                          boolean isCompressedArc) throws JHOVE2Exception, IOException{
-    	this.characterizeRecord(jhove2, source,child, arcRecordBase);
-    	checkArcRecordValidity(child, arcRecordBase, jhove2, isCompressedArc);
-    	if(arcRecordBase instanceof ArcRecord){
-    		//arcRecordNumber.incrementAndGet();
-    		//updates protocols
-    		//updateMap(arcRecordBase.getProtocol(), protocols);
-    	}
+        this.characterizeRecord(jhove2, source,child, arcRecordBase);
+        checkArcRecordValidity(child, arcRecordBase, jhove2, isCompressedArc);
+        if(arcRecordBase instanceof ArcRecord){
+            //arcRecordNumber.incrementAndGet();
+            //updates protocols
+            //updateMap(arcRecordBase.getProtocol(), protocols);
+        }
     }
-    
+
     //------------------------------------------------------------------------
     // Validator interface support
     //------------------------------------------------------------------------
-	
+
     /**
      * Validates the ARC file.
      * @param  jhove2   the JHove2 characterization context.
@@ -583,55 +583,55 @@ public class ArcModule extends BaseFormatModule implements Validator {
     // Reportable properties
     //------------------------------------------------------------------------
 
-	/**
-	 * Returns ARC record number
-	 * @return the number of arc record
-	 */
+    /**
+     * Returns ARC record number
+     * @return the number of arc record
+     */
     @ReportableProperty(order=1, value="The number of ARC records")
-	public int getArcRecordNumber() {
-		//return this.arcRecordNumber.get();
-    	return arcRecordNumber;
+    public int getArcRecordNumber() {
+        //return this.arcRecordNumber.get();
+        return arcRecordNumber;
     }
 
-	/**
-	 * arcFile getter
-	 * @return the arcFile
-	 */
+    /**
+     * arcFile getter
+     * @return the arcFile
+     */
     @ReportableProperty(order=2, value="ARC file name")
-	public String getArcFileName() {
-		return arcFileName;
-	}
+    public String getArcFileName() {
+        return arcFileName;
+    }
 
     /**
-	 * arcFileSize getter
-	 * @return the arcFileSize
-	 */
+     * arcFileSize getter
+     * @return the arcFileSize
+     */
     @ReportableProperty(order=3, value="ARC file size, in bytes")
-	public long getArcFileSize() {
-		return arcFileSize;
-	}
+    public long getArcFileSize() {
+        return arcFileSize;
+    }
 
     /**
-	 * protocols getter
-	 * @return the protocols
-	 */
+     * protocols getter
+     * @return the protocols
+     */
     /*
     @ReportableProperty(order=4, value="URL record protocols")
-	public Map<String,AtomicInteger> getProtocols() {
-		return protocols;
-	}
-	*/
+    public Map<String,AtomicInteger> getProtocols() {
+        return protocols;
+    }
+    */
 
- 	/**
-	 * errors getter
-	 * @return the errors
-	 */
+     /**
+     * errors getter
+     * @return the errors
+     */
     /*
     @ReportableProperty(order=5, value="The number of errors by error type")
-	public Map<String,AtomicInteger> getErrors() {
-		return errors;
-	}
-	*/
+    public Map<String,AtomicInteger> getErrors() {
+        return errors;
+    }
+    */
 
     //------------------------------------------------------------------------
     // Specific implementation
@@ -647,41 +647,41 @@ public class ArcModule extends BaseFormatModule implements Validator {
      * @throws IOException
      */
     private Source characterizeRecord(JHOVE2 jhove2, Source parent,Source child,
-    		                         ArcRecordBase arcRecordBase) 
+                                     ArcRecordBase arcRecordBase)
                                      throws JHOVE2Exception, IOException{
-    	// TODO convert
-    	/*
+        // TODO convert
+        /*
         if (this.recurse) {
-        	Input in = child.getInput(jhove2);
-        	if(in != null){
-        		try{
-        			//get the presumptive format using network doc content type.
-        			// jhove2Ids.get(mimeType)
-        			FormatIdentification format = 
-        				getFormatIdentification(arcRecordBase.getFormat(),jhove2);
-        			if(format != null){
-        				child.addPresumptiveFormat(format);
-        			}
-        			// Characterize the ARC record.
-        			jhove2.characterize(child, in);
-        		}catch(Exception e){
-        			//add characterization error to the source
-        			child.addMessage(
-        	        		this.newValidityError(jhove2,Message.Severity.ERROR,
-        	        				              CHARACTERIZATION_ERROR,
-        				                          e.toString()));
-        			this.updateMap(CHARACTERIZATION_ERROR, this.errors);
-					//read network doc remaining bytes
-					//arcRecordBase.readRemainingBytes();	
-				}
-				finally{
-        			try {
-        				in.close();
-        			}catch(Exception e){
-        				/ * Ignore... * / 
-        			}
-        		}
-        	}
+            Input in = child.getInput(jhove2);
+            if(in != null){
+                try{
+                    //get the presumptive format using network doc content type.
+                    // jhove2Ids.get(mimeType)
+                    FormatIdentification format =
+                        getFormatIdentification(arcRecordBase.getFormat(),jhove2);
+                    if(format != null){
+                        child.addPresumptiveFormat(format);
+                    }
+                    // Characterize the ARC record.
+                    jhove2.characterize(child, in);
+                }catch(Exception e){
+                    //add characterization error to the source
+                    child.addMessage(
+                            this.newValidityError(jhove2,Message.Severity.ERROR,
+                                                  CHARACTERIZATION_ERROR,
+                                                  e.toString()));
+                    this.updateMap(CHARACTERIZATION_ERROR, this.errors);
+                    //read network doc remaining bytes
+                    //arcRecordBase.readRemainingBytes();
+                }
+                finally{
+                    try {
+                        in.close();
+                    }catch(Exception e){
+                        / * Ignore... * /
+                    }
+                }
+            }
         }
         */
         return child;
@@ -693,30 +693,30 @@ public class ArcModule extends BaseFormatModule implements Validator {
      * @param arcRecord the ARC record to characterize.
      * @param jhove2 the JHove2 characterization context.
      * @throws JHOVE2Exception
-     * @throws IOException 
+     * @throws IOException
      */
     private void checkArcRecordValidity(Source src, ArcRecordBase arcRecord,
-    		                            JHOVE2 jhove2,boolean validateContent) 
+                                        JHOVE2 jhove2,boolean validateContent)
                                             throws JHOVE2Exception, IOException{
-    	// TODO convert
-    	/*
-    	if((this.recurse) && (validateContent)){
-    		arcRecord.validateNetworkDocContent();
-    	}
-    	if (!arcRecord.isValid()) {
+        // TODO convert
+        /*
+        if((this.recurse) && (validateContent)){
+            arcRecord.validateNetworkDocContent();
+        }
+        if (!arcRecord.isValid()) {
            this.isValid = Validity.False;
            // Report errors on source object.
            this.reportValidationErrors(src,jhove2,
-        		                      arcRecord.getValidationErrors());
+                                      arcRecord.getValidationErrors());
         }
-    	if (arcRecord.hasWarnings()) {
+        if (arcRecord.hasWarnings()) {
             // Report warnings on source object.
             this.reportValidationWarnings(src,jhove2,
-         		                      arcRecord.getWarnings());
+                                       arcRecord.getWarnings());
          }
          */
     }
-  
+
     /**
      * Handles generic exceptions
      * @param e the exception
@@ -725,12 +725,12 @@ public class ArcModule extends BaseFormatModule implements Validator {
      * @throws JHOVE2Exception
      */
     private void handleException(Exception e, JHOVE2 jhove2,Source source) throws JHOVE2Exception{
-    	this.isValid = Validity.False;
-    	// TODO convert
-    	/*
-    	source.addMessage(this.newValidityError(jhove2,Message.Severity.ERROR,
-    				                            ArcErrorType.INVALID.toString(),
-    				                            ArcRecordBase.ARC_FILE,e.toString()));
+        this.isValid = Validity.False;
+        // TODO convert
+        /*
+        source.addMessage(this.newValidityError(jhove2,Message.Severity.ERROR,
+                                                ArcErrorType.INVALID.toString(),
+                                                ArcRecordBase.ARC_FILE,e.toString()));
         */
     }
 
@@ -741,26 +741,26 @@ public class ArcModule extends BaseFormatModule implements Validator {
     public void setRecurse(boolean recurse) {
         this.recurse = recurse;
     }
- 
+
     /** Reports validation errors. */
     private void reportValidationErrors(Source src,JHOVE2 jhove2,
-    		                            Collection<ArcValidationError> errors) 
+                                        Collection<ArcValidationError> errors)
                                                         throws JHOVE2Exception {
-    	for(ArcValidationError e : errors){
-    		src.addMessage(newValidityError(jhove2,Message.Severity.ERROR,
-    				                        e.error.toString(),e.field,e.value));
-    		//updateMap(e.error.toString() + '-' + e.field, this.errors);   		
-    	}
+        for(ArcValidationError e : errors){
+            src.addMessage(newValidityError(jhove2,Message.Severity.ERROR,
+                                            e.error.toString(),e.field,e.value));
+            //updateMap(e.error.toString() + '-' + e.field, this.errors);
+        }
     }
 
     /** Reports warnings. */
     private void reportValidationWarnings(Source src,JHOVE2 jhove2,
-    		                            Collection<String> warnings) 
+                                        Collection<String> warnings)
                                                         throws JHOVE2Exception {
-    	for(String warning : warnings){
-    		src.addMessage(newValidityError(jhove2,Message.Severity.WARNING,
-    				                        "warning",warning));	
-    	}
+        for(String warning : warnings){
+            src.addMessage(newValidityError(jhove2,Message.Severity.WARNING,
+                                            "warning",warning));
+        }
     }
 
     /**
@@ -769,55 +769,55 @@ public class ArcModule extends BaseFormatModule implements Validator {
      * @param map the map to update.
      */
     private void updateMap(String key, ConcurrentMap<String,AtomicInteger> map){
-    	if ((key != null) && (key.length() != 0)) {
-    	    if (! map.containsKey(key)) {
-    	        map.putIfAbsent(key, new AtomicInteger());
-    	    }
+        if ((key != null) && (key.length() != 0)) {
+            if (! map.containsKey(key)) {
+                map.putIfAbsent(key, new AtomicInteger());
+            }
             map.get(key).incrementAndGet();
-    	}
+        }
     }
 
     /**
      * Instantiates a new localized message.
      * @param jhove2 the JHove2 characterization context.
      * @param id the configuration property relative name.
-     * @param params the values to add in the message 
+     * @param params the values to add in the message
      * @return the new localized message
      * @throws JHOVE2Exception
      */
-    private Message newValidityError(JHOVE2 jhove2,Severity severity,String id, 
-    		                         Object... params)throws JHOVE2Exception {
+    private Message newValidityError(JHOVE2 jhove2,Severity severity,String id,
+                                     Object... params)throws JHOVE2Exception {
     return new Message(severity,
                        Message.Context.OBJECT,
                        this.getClass().getName() + '.' + id,params,
                        jhove2.getConfigInfo());
     }
 
-	/**
-	 * ARC record counter getter.
-	 * @return the ARC record counter
-	 */
-	//public AtomicInteger getArcRecordCounter() {
-	public int getArcRecordCounter() {
-		//return this.arcRecordNumber;
-		return 0;
+    /**
+     * ARC record counter getter.
+     * @return the ARC record counter
+     */
+    //public AtomicInteger getArcRecordCounter() {
+    public int getArcRecordCounter() {
+        //return this.arcRecordNumber;
+        return 0;
     }
 
-	/*
-	public void setParallelCharacterization(int level) {
-	        if (level < 0) {
-	            level = 0;
-	        }
-	        this.nThreads = level;
-	}
-	*/
-	/**
-	 * nThreads getter
-	 * @return nThreads
-	 */
-	/*
-	public int getParallelCharacterization(){
-		return this.nThreads;
-	}
-	*/
+    /*
+    public void setParallelCharacterization(int level) {
+            if (level < 0) {
+                level = 0;
+            }
+            this.nThreads = level;
+    }
+    */
+    /**
+     * nThreads getter
+     * @return nThreads
+     */
+    /*
+    public int getParallelCharacterization(){
+        return this.nThreads;
+    }
+    */
 }

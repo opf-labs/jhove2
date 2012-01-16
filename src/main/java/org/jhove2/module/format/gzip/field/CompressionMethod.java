@@ -61,8 +61,8 @@ public class CompressionMethod extends I18nReportableEnum
 
     /** Zero argument constructor. */
     protected CompressionMethod() {
-    	super();
-    } 
+        super();
+    }
 
     /** {@inheritDoc} */
     protected CompressionMethod(int value, String label, boolean valid) {

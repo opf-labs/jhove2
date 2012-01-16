@@ -74,7 +74,7 @@ public class CompressionType extends I18nReportableEnum
 
     /** Zero argument constructor. */
     protected CompressionType() {
-    	super();
+        super();
     }
 
     /** {@inheritDoc} */

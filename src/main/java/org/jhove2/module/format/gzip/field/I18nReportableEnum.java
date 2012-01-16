@@ -61,7 +61,7 @@ import com.sleepycat.persist.model.Persistent;
  * upon descriptions injection to get a {#link Map} of valid
  * values.  Any value not present in the map should be considered
  * invalid.</p>
- */ 
+ */
 @Persistent
 abstract public class I18nReportableEnum extends AbstractReportable
                                     implements Comparable<I18nReportableEnum>
@@ -75,7 +75,7 @@ abstract public class I18nReportableEnum extends AbstractReportable
 
     /** Zero argument constructor. */
     protected I18nReportableEnum() {
-    	super();
+        super();
     }
 
     /**
@@ -93,7 +93,7 @@ abstract public class I18nReportableEnum extends AbstractReportable
 
     /**
      * Returns the property raw value.
-     * 
+     *
      * @return the property raw value, as an integer.
      */
     @ReportableProperty(order = 1, value = "Value", type = PropertyType.Raw)
@@ -103,7 +103,7 @@ abstract public class I18nReportableEnum extends AbstractReportable
 
     /**
      * Returns the property description.
-     * 
+     *
      * @return the property description as a internationalizable string
      *         loaded from a resource bundle.
      */

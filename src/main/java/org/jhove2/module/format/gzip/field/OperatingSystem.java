@@ -60,7 +60,7 @@ public final class OperatingSystem extends I18nReportableEnum
 
     /** Zero argument constructor. */
     protected OperatingSystem() {
-    	super();
+        super();
     }
 
     /** {@inheritDoc} */
