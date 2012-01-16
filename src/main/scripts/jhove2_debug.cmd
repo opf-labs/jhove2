@@ -12,6 +12,6 @@ setlocal enableextensions
 
 call env
 
-%JAVA% -cp "%CP%" org.jhove2.app.JHOVE2CommandLine %*
+REM %JAVA% -cp "%CP%" org.jhove2.app.JHOVE2CommandLine %*
 
-REM %JAVA% -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=1044 -Xms256m -Xmx512m -XX:PermSize=64M -XX:MaxPermSize=1000M -cp "%CP%" org.jhove2.app.JHOVE2CommandLine %*
+%JAVA% -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=1044 -Xms256m -Xmx512m -XX:PermSize=64M -XX:MaxPermSize=1000M -cp "%CP%" org.jhove2.app.JHOVE2CommandLine %*

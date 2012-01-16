@@ -6337,6 +6337,38 @@
         		</SubSequence>
         	</ByteSequence>
         </InternalSignature>
+        <!-- ARC -->
+        <InternalSignature ID="123456" Specificity="Specific">
+            <ByteSequence Reference="BOFoffset">
+                <SubSequence Position="1" SubSeqMinOffset="0" SubSeqMaxOffset="0" MinFragLength="0">
+                    <Sequence>66696C65646573633A</Sequence>
+                    <DefaultShift>10</DefaultShift>
+                    <Shift Byte="3A">1</Shift>
+                    <Shift Byte="63">2</Shift>
+                    <Shift Byte="73">3</Shift>
+                    <Shift Byte="65">4</Shift>
+                    <Shift Byte="64">5</Shift>
+                    <Shift Byte="65">6</Shift>
+                    <Shift Byte="6C">7</Shift>
+                    <Shift Byte="69">8</Shift>
+                    <Shift Byte="66">9</Shift>
+                </SubSequence>
+            </ByteSequence>
+        </InternalSignature>
+        <!-- WARC -->
+        <InternalSignature ID="12345" Specificity="Specific">
+            <ByteSequence Reference="BOFoffset">
+                <SubSequence Position="1" SubSeqMinOffset="0" SubSeqMaxOffset="0" MinFragLength="0">
+                    <Sequence>574152432F</Sequence>
+                    <DefaultShift>6</DefaultShift>
+                    <Shift Byte="2F">1</Shift>
+                    <Shift Byte="43">2</Shift>
+                    <Shift Byte="52">3</Shift>
+                    <Shift Byte="41">4</Shift>
+                    <Shift Byte="57">5</Shift>
+                </SubSequence>
+            </ByteSequence>
+        </InternalSignature>
      </InternalSignatureCollection>
     <FileFormatCollection>
         <FileFormat ID="8" Name="Microsoft Word for  Macintosh Document" Version="3.0" PUID="x-fmt/1">
@@ -7043,9 +7075,6 @@
         </FileFormat>
         <FileFormat ID="309" Name="ESRI Arc/Info Binary Grid" PUID="x-fmt/218">
             <Extension>adf</Extension>
-        </FileFormat>
-        <FileFormat ID="310" Name="Alexa Archive File" PUID="x-fmt/219">
-            <Extension>arc</Extension>
         </FileFormat>
         <FileFormat ID="311" Name="Applixware Spreadsheet" PUID="x-fmt/220">
             <Extension>as</Extension>
@@ -8453,7 +8482,34 @@
         
         <!-- JHOVE2-specific extension added for ICC color profile, 2010-08-31 -->
         <FileFormat ID="10002" Name="ICC Color Profile" Version="4.2.0.0" PUID="x-fmt/10002">
-        	<Extension>icc</Extension>Extension>
+        	<Extension>icc</Extension>
+        </FileFormat>
+
+	<!-- ARC -->
+        <FileFormat ID="310" Name="Alexa Archive File" PUID="x-fmt/219">
+            <InternalSignatureID>123456</InternalSignatureID>
+            <Extension>arc</Extension>
+            <HasPriorityOverFileFormatID>638</HasPriorityOverFileFormatID>
+            <HasPriorityOverFileFormatID>639</HasPriorityOverFileFormatID>
+            <HasPriorityOverFileFormatID>640</HasPriorityOverFileFormatID>
+            <HasPriorityOverFileFormatID>641</HasPriorityOverFileFormatID>
+            <HasPriorityOverFileFormatID>642</HasPriorityOverFileFormatID>
+            <HasPriorityOverFileFormatID>643</HasPriorityOverFileFormatID>
+            <HasPriorityOverFileFormatID>644</HasPriorityOverFileFormatID>
+            <HasPriorityOverFileFormatID>645</HasPriorityOverFileFormatID>
+        </FileFormat>
+	<!-- WARC -->
+        <FileFormat ID="12345" Name="WARC file" Version="1.0" PUID="x-fmt/289">
+            <InternalSignatureID>12345</InternalSignatureID>
+       	    <Extension>warc</Extension>
+            <HasPriorityOverFileFormatID>638</HasPriorityOverFileFormatID>
+            <HasPriorityOverFileFormatID>639</HasPriorityOverFileFormatID>
+            <HasPriorityOverFileFormatID>640</HasPriorityOverFileFormatID>
+            <HasPriorityOverFileFormatID>641</HasPriorityOverFileFormatID>
+            <HasPriorityOverFileFormatID>642</HasPriorityOverFileFormatID>
+            <HasPriorityOverFileFormatID>643</HasPriorityOverFileFormatID>
+            <HasPriorityOverFileFormatID>644</HasPriorityOverFileFormatID>
+            <HasPriorityOverFileFormatID>645</HasPriorityOverFileFormatID>
         </FileFormat>
     </FileFormatCollection>
 </FFSignatureFile>

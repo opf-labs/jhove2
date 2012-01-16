@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+  <!-- WARC module bean -->
+  <bean id="WarcModule" class="org.jhove2.module.format.warc.WarcModule" scope="prototype">
+    <constructor-arg ref="WarcArchiveFileFormat"/>
+    <constructor-arg ref="FormatModuleAccessor"/>
+    <property name="developers">
+      <list value-type="org.jhove2.core.Agent">
+	<ref bean="BnFAgent"/>
+      </list>
+    </property>
+    <property name="recurse" value="true"/>
+    <!--property name="parallelCharacterization" value="0"/-->
+  </bean>
+
+  <!-- WARC format bean -->
+  <bean id="WarcArchiveFileFormat" class="org.jhove2.core.format.Format" scope="singleton">
+    <constructor-arg type="java.lang.String" value="Warc Archive File"/>
+    <constructor-arg ref="WarcArchiveFileIdentifier"/>
+    <constructor-arg type="org.jhove2.core.format.Format$Type" value="Format"/>
+    <constructor-arg type="org.jhove2.core.format.Format$Ambiguity" value="Unambiguous"/>
+    <property name="aliasIdentifiers">
+      <set value-type="org.jhove2.core.I8R">
+	<ref bean="WarcArchiveFileIdentifier"/>
+	<!-- ARC PUID x-fmt/219 alias identifier bean -->
+	<bean class="org.jhove2.core.I8R">
+	  <constructor-arg type="java.lang.String" value="x-fmt/289"/>
+	  <constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
+	</bean>
+	<!-- WARC MIME alias identifier bean -->
+	<bean class="org.jhove2.core.I8R">
+	  <constructor-arg type="java.lang.String" value="application/warc"/>
+	  <constructor-arg type="org.jhove2.core.I8R$Namespace" value="MIME"/>
+	</bean>
+	<!-- WARC ISO 28500 -->
+	<bean id="WarcISO28500" class="org.jhove2.core.I8R" scope="singleton">
+	  <constructor-arg type="java.lang.String" value="ISO 28500:2009(E)" />
+	  <constructor-arg type="org.jhove2.core.I8R$Namespace" value="ISO" />
+	</bean>
+      </set>
+    </property>
+    <property name="aliasNames">
+      <set>
+	<value>WARC</value>
+      </set>
+    </property>
+    <property name="specifications">
+      <list value-type="org.jhove2.core.Document">
+	<ref bean="Warc10Specification"/>
+      </list>
+    </property>
+  </bean>
+
+  <!-- WARC identifier bean -->
+  <bean id="WarcArchiveFileIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+    <constructor-arg value="http://jhove2.org/terms/format/warc" type="java.lang.String"/>
+  </bean>
+
+  <!-- WARC file format version 1.0 specification bean -->
+  <bean id="Warc10Specification" class="org.jhove2.core.Document" scope="singleton">
+    <constructor-arg type="java.lang.String"
+                     value="WARC file format specification version 1.0"/>
+    <constructor-arg type="org.jhove2.core.Document$Type"
+                     value="Specification"/>
+    <constructor-arg type="org.jhove2.core.Document$Intention"
+                     value="Authoritative"/>
+
+    <property name="author" value="Technical Committee ISO/TC 46"/>
+    <property name="date" value="September 15, 1996"/>
+    <property name="identifiers">
+      <list value-type="org.jhove2.core.I8R">
+	<ref bean="ISO28500WARCSpecificationURI"/>
+      </list>
+    </property>
+    <property name="publisher" value="ISO"/>
+    <!--property name="title" value="ISO 28500: Information and documentation - WARC file format"/-->
+  </bean>
+
+  <!-- ISO 28500 WARC specification URI bean -->
+  <bean id="ISO28500WARCSpecificationURI" class="org.jhove2.core.I8R" scope="singleton">
+    <constructor-arg type="java.lang.String" value="http://www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=44717"/>
+    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="URI"/>
+  </bean>
+
+</beans>

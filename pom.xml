@@ -97,6 +97,22 @@
 			<artifactId>je</artifactId>
 			<version>4.0.103</version>
 		</dependency>
+		<!-- arc, gzip, warc -->
+		<dependency>
+			<groupId>org.jwat</groupId>
+			<artifactId>jwat-gzip</artifactId>
+			<version>0.8.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jwat</groupId>
+			<artifactId>jwat-arc</artifactId>
+			<version>0.8.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jwat</groupId>
+			<artifactId>jwat-warc</artifactId>
+			<version>0.8.0-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 	<licenses>
 		<license>
@@ -107,11 +123,22 @@
 		</license>
 	</licenses>
 	<repositories>
+		<!--repository>
+			<id>Antiaction</id>
+			<name>Antiaction Repository</name>
+			<url>http://repository.antiaction.com/</url>
+		</repository-->
+		<!-- JWAT -->
+		<repository>
+			<id>Sonatype-snapshots</id>
+			<name>Sonatype Snapshot Repository</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</repository>
 		<!-- for jargs GNU Command Line Parser -->
 		<repository>
 			<id>JBOSS</id>
 			<name>JBoss Repository</name>
-			<url>http://repository.jboss.org/maven2/</url>
+			<url>https://repository.jboss.org/nexus/content/groups/public/</url>
 		</repository>
 		<!-- for app assembler -->
 		<repository>
@@ -153,6 +180,11 @@
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>appassembler-maven-plugin</artifactId>
 					<version>1.1-SNAPSHOT</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-site-plugin</artifactId>
+					<version>3.0</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -292,12 +324,23 @@
 			-->
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
-				<version>2.2-beta-5</version>
-				<configuration>
-					<descriptors>
-						<descriptor>src/main/assembly/jhove2_release.xml</descriptor>
-					</descriptors>
-				</configuration>
+				<version>2.2.2</version>
+				<executions>
+					<execution>
+						<id>distro-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<descriptors>
+								<descriptor>src/main/assembly/jhove2_release.xml</descriptor>
+							</descriptors>
+							<appendAssemblyId>false</appendAssemblyId>
+							<tarLongFileMode>gnu</tarLongFileMode>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <!-- ARC module bean -->
+    <bean id="ArcModule" class="org.jhove2.module.format.arc.ArcModule" scope="prototype">
+        <constructor-arg ref="AlexaArchiveFileFormat"/>
+	<constructor-arg ref="FormatModuleAccessor"/>
+	<property name="developers">
+	    <list value-type="org.jhove2.core.Agent">
+	      <ref bean="BnFAgent"/>
+	    </list>
+	</property>
+	<property name="recurse" value="true"/>
+	<!--property name="parallelCharacterization" value="0"/-->
+    </bean>
+
+    <!-- ARC format bean -->
+    <bean id="AlexaArchiveFileFormat" class="org.jhove2.core.format.Format" scope="singleton">
+        <constructor-arg type="java.lang.String" value="Alexa Archive File"/>
+	<constructor-arg ref="AlexaArchiveFileIdentifier"/>
+	<constructor-arg type="org.jhove2.core.format.Format$Type" value="Format"/>
+	<constructor-arg type="org.jhove2.core.format.Format$Ambiguity" value="Unambiguous"/>
+
+	<property name="aliasIdentifiers">
+  	    <set value-type="org.jhove2.core.I8R">
+	    <ref bean="AlexaArchiveFileIdentifier"/>
+	    <!-- ARC PUID x-fmt/219 alias identifier bean -->
+	    <bean class="org.jhove2.core.I8R">
+	      <constructor-arg type="java.lang.String" value="x-fmt/219"/>
+	      <constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
+	    </bean>
+	    <!-- ARC MIME alias identifier bean -->
+	    <bean class="org.jhove2.core.I8R">
+	      <constructor-arg type="java.lang.String" value="application/x-ia-arc"/>
+	      <constructor-arg type="org.jhove2.core.I8R$Namespace" value="MIME"/>
+	    </bean>
+	  </set>
+	</property>
+	<property name="aliasNames">
+	  <set>
+	    <value>ARC</value>
+	  </set>
+	</property>
+	<property name="specifications">
+	  <list value-type="org.jhove2.core.Document">
+	    <ref bean="Arc10Specification"/>
+	  </list>
+	</property>
+    </bean>
+
+  <!-- Arc identifier bean -->
+  <bean id="AlexaArchiveFileIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+    <constructor-arg value="http://jhove2.org/terms/format/arc"
+                     type="java.lang.String"/>
+  </bean>
+
+  <!-- ARC file format version 1.0 specification bean -->
+  <bean id="Arc10Specification" class="org.jhove2.core.Document" scope="singleton">
+    <constructor-arg type="java.lang.String"
+                     value="ARC file format specification version 1.0"/>
+    <constructor-arg type="org.jhove2.core.Document$Type"
+                     value="Specification"/>
+    <constructor-arg type="org.jhove2.core.Document$Intention"
+                     value="Authoritative"/>
+
+    <property name="author" value="Mike Burner and Brewster Kahle"/>
+    <property name="date" value="September 15, 1996"/>
+  </bean>
+
+</beans>
