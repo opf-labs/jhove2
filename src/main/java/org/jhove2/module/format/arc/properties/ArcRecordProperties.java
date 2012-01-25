@@ -41,36 +41,65 @@ import org.jhove2.core.reportable.AbstractReportable;
 
 import com.sleepycat.persist.model.Persistent;
 
+/**
+ * Reportable properties class for an ARC record.
+ *
+ * @author nicl
+ */
 @Persistent
 public class ArcRecordProperties extends AbstractReportable {
 
+    /** ARC record data container. */
     protected ArcRecordData record;
 
+    /**
+     * Constructor required by the persistence layer.
+     */
     public ArcRecordProperties() {
     }
 
+    /**
+     * Construct ARC record property instance with the supplied data.
+     * @param record ARC record property data
+     */
     public ArcRecordProperties(ArcRecordData record) {
         this.record = record;
     }
 
+    /**
+     * Report http response result code from ARC record payload.
+     * @return http response result code
+     */
     @ReportableProperty(order = 1, value = "ProtocolResultCode header value.")
     public String getProtocolResultCode() {
         return record.protocolResultCode;
     }
 
+    /**
+     * Report http response protocol version from ARC record payload.
+     * @return http response protocol version
+     */
     @ReportableProperty(order = 2, value = "ProtocolVersion header value.")
     public String getProtocolVersion() {
         return record.protocolVersion;
     }
 
+    /**
+     * Report http response content-type from ARC record payload.
+     * @return http response content-type
+     */
     @ReportableProperty(order = 3, value = "ProtocolContentType header value.")
     public String getProtocolContentType() {
         return record.protocolContentType;
     }
 
+    /**
+     * Report http response server header from ARC record payload.
+     * @return http response server header
+     */
     @ReportableProperty(order = 4, value = "ServerName header value.")
     public String getServerName() {
-        return record.serverName;
+        return record.protocolServer;
     }
 
 }

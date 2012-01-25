@@ -41,33 +41,62 @@ import org.jhove2.core.reportable.AbstractReportable;
 
 import com.sleepycat.persist.model.Persistent;
 
+/**
+ * Reportable properties class for a WARC continuation record.
+ *
+ * @author nicl
+ */
 @Persistent
 public class WarcContinuationProperties extends AbstractReportable {
 
+    /** WARC record data container. */
     protected WarcRecordData record;
 
+    /**
+     * Constructor required by the persistence layer.
+     */
     public WarcContinuationProperties() {
     }
 
+    /**
+     * Construct WARC continuation property instance with the supplied data.
+     * @param record WARC continuation property data
+     */
     public WarcContinuationProperties(WarcRecordData record) {
         this.record = record;
     }
 
+    /**
+     * Report Target-Uri from WARC record.
+     * @return Target-Uri from WARC record
+     */
     @ReportableProperty(order = 1, value = "Warc-Target-URI header value.")
     public String getWarcTargetUri() {
         return record.warcTargetUri;
     }
 
+    /**
+     * Report segment-origin-id from WARC record.
+     * @return segment-origin-id from WARC record
+     */
     @ReportableProperty(order = 2, value = "Warc-Segment-Origin-ID header value.")
     public String getWarcSegmentOriginId() {
         return record.warcSegmentOriginId;
     }
 
+    /**
+     * Report segment-total-length from WARC record.
+     * @return segment-total-length from WARC record
+     */
     @ReportableProperty(order = 3, value = "Warc-Segment-Total-Length header value.")
     public String getWarcSegmentTotalLength() {
         return record.warcSegmentTotalLength;
     }
 
+    /**
+     * Report warcinfo-id from WARC record.
+     * @return warcinfo-id from WARC record
+     */
     @ReportableProperty(order = 4, value = "Warc-Warcinfo-ID header value.")
     public String getWarcWarcinfoId() {
         return record.warcWarcinfoId;

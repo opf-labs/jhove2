@@ -41,30 +41,55 @@ import org.jhove2.core.reportable.AbstractReportable;
 
 import com.sleepycat.persist.model.Persistent;
 
+/**
+ * Reportable properties class for an ARC version block.
+ *
+ * @author nicl
+ */
 @Persistent
 public class ArcVersionBlockProperties extends AbstractReportable {
 
+    /** Version block data container. */
     protected ArcRecordData record;
 
+    /**
+     * Constructor required by the persistence layer.
+     */
     public ArcVersionBlockProperties() {
     }
 
+    /**
+     * Construct ARC version block property instance with the supplied data.
+     * @param record ARC version block property data
+     */
     public ArcVersionBlockProperties(ArcRecordData record) {
         this.record = record;
     }
 
+    /**
+     * Report the major version number from version block.
+     * @return version number from version block
+     */
     @ReportableProperty(order = 1, value = "Arc-VersionNumber header value.")
-    public String getProtocolResultCode() {
+    public String getVersionNumber() {
         return record.versionNumber;
     }
 
+    /**
+     * Report reversed value from version block.
+     * @return reserved value from version block
+     */
     @ReportableProperty(order = 2, value = "Arc-Reserved header value.")
-    public String getProtocolVersion() {
+    public String getReserved() {
         return record.reserved;
     }
 
+    /**
+     * Report origin code from version block.
+     * @return origin code from version block
+     */
     @ReportableProperty(order = 3, value = "Arc-OriginCode header value.")
-    public String getProtocolContentType() {
+    public String getOriginCode() {
         return record.originCode;
     }
 

@@ -97,6 +97,12 @@
 			<artifactId>je</artifactId>
 			<version>4.0.103</version>
 		</dependency>
+		<!-- file identifier module support -->
+		<dependency>
+			<groupId>net.java.dev.jna</groupId>
+			<artifactId>jna</artifactId>
+			<version>3.2.7</version>
+		</dependency>
 		<!-- arc, gzip, warc -->
 		<dependency>
 			<groupId>org.jwat</groupId>
@@ -249,6 +255,7 @@
 				</executions> 
 			</plugin>
 			<!-- Replace the classpath with the content of the properties file generated above -->
+<!-- This does not work with snapshot dependencies... so... changed the env's instead
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
@@ -261,7 +268,9 @@
 						</goals>
 						<configuration>
 							<tasks>
+-->
 								<!-- We copy the .sh file with injection -->
+<!--
 								<copy todir="${project.basedir}/src/main/scripts" overwrite="true">
 									<fileset dir="src/main/assembly">
 										<filename name="env.sh" />
@@ -272,17 +281,21 @@
 										<filter token="jarName" value="${project.build.finalName}" />
 									</filterset>
 								</copy>
+-->
 								<!-- We copy the .cmd file with injection -->
+<!--
 								<copy todir="${project.basedir}/src/main/scripts">
 									<fileset dir="src/main/assembly">
 										<filename name="env.cmd" />
 									</fileset>
 									<filterset>
+-->
 										<!--  filtering currently not filtering file separator string '\' properly for windows platform -->
 										<!--
 											<filtersfile
 											file="${project.basedir}/src/main/assembly/classpath_cmd.properties"/>
 										-->
+<!--
 										<filter token="jarName" value="${project.build.finalName}" />
 									</filterset>
 								</copy>
@@ -291,6 +304,7 @@
 					</execution>
 				</executions>
 			</plugin>
+-->
 			<!-- generate the JHOVE2 Command Line jar executable -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

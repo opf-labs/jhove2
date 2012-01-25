@@ -41,18 +41,35 @@ import org.jhove2.core.reportable.AbstractReportable;
 
 import com.sleepycat.persist.model.Persistent;
 
+/**
+ * Reportable properties class for a WARC warcinfo record.
+ *
+ * @author nicl
+ */
 @Persistent
 public class WarcWarcinfoProperties extends AbstractReportable {
 
+    /** WARC record data container. */
     protected WarcRecordData record;
 
+    /**
+     * Constructor required by the persistence layer.
+     */
     public WarcWarcinfoProperties() {
     }
 
+    /**
+     * Construct WARC warcinfo property instance with the supplied data.
+     * @param record WARC warcinfo property data
+     */
     public WarcWarcinfoProperties(WarcRecordData record) {
         this.record = record;
     }
 
+    /**
+     * Report filename from WARC record.
+     * @return filename from WARC record.
+     */
     @ReportableProperty(order = 1, value = "WarcFilename header value.")
     public String getWarcFilename() {
         return record.warcFilename;

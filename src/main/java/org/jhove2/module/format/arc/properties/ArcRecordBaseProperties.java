@@ -41,116 +41,219 @@ import org.jhove2.core.reportable.AbstractReportable;
 
 import com.sleepycat.persist.model.Persistent;
 
+/**
+ * Reportable properties class for a common ARC record base.
+ *
+ * @author nicl
+ */
 @Persistent
 public class ArcRecordBaseProperties extends AbstractReportable {
 
+    /** ARC record base data container. */
     protected ArcRecordData record;
 
+    /**
+     * Constructor required by the persistence layer.
+     */
     public ArcRecordBaseProperties() {
     }
 
+    /**
+     * Construct ARC record base property instance with the supplied data.
+     * @param record ARC record base property data
+     */
     public ArcRecordBaseProperties(ArcRecordData record) {
         this.record = record;
     }
 
-    @ReportableProperty(order = 1, value = "Arc-IP-Address header value.")
+    /**
+     * Report url from ARC record.
+     * @return ARC record url
+     */
+    @ReportableProperty(order = 1, value = "Arc-Url header value.")
+    public String getUrl() {
+        return record.url;
+    }
+
+    /**
+     * Report ip-address from ARC record.
+     * @return ARC record ip-address
+     */
+    @ReportableProperty(order = 2, value = "Arc-IP-Address header value.")
     public String getIpAddress() {
         return record.ipAddress;
     }
 
-    @ReportableProperty(order = 2, value = "Ip-Address version.")
+    /**
+     * Report ip-address format as found in the ARC record,
+     * either nothing, 4 or 6.
+     * @return nothing, 4 or 6 depending on the ip-address format
+     */
+    @ReportableProperty(order = 3, value = "Ip-Address version.")
     public String getIpAddressVersion() {
         return record.ipVersion;
     }
 
-    @ReportableProperty(order = 3, value = "Arc-Date header value.")
+    /**
+     * Report date from ARC record.
+     * @return ARC record date
+     */
+    @ReportableProperty(order = 4, value = "Arc-Date header value.")
     public String getArchiveDate() {
         return record.archiveDate;
     }
 
-    @ReportableProperty(order = 4, value = "Raw Arc-Date header value.")
+    /**
+     * Report raw date from ARC record.
+     * @return Raw ARC record date
+     */
+    @ReportableProperty(order = 5, value = "Raw Arc-Date header value.")
     public String getRawArchiveDate() {
         return record.rawArchiveDate;
     }
 
-    @ReportableProperty(order = 5, value = "Arc-Content-Type header value.")
+    /**
+     * Report content-type from ARC record.
+     * @return ARC record content-type
+     */
+    @ReportableProperty(order = 6, value = "Arc-Content-Type header value.")
     public String getContentType() {
         return record.contentType;
     }
 
-    @ReportableProperty(order = 6, value = "Arc-Length header value.")
+    /**
+     * Report length from ARC record
+     * @return ARC record length
+     */
+    @ReportableProperty(order = 7, value = "Arc-Length header value.")
     public String getLength() {
         return record.length;
     }
 
-    @ReportableProperty(order = 7, value = "ProtocolResultCode header value.")
+    /**
+     * Report protocol result code from ARC record.
+     * @return ARC record protocol result code
+     */
+    @ReportableProperty(order = 8, value = "ProtocolResultCode header value.")
     public String getProtocolResultCode() {
         return record.resultCode;
     }
 
-    @ReportableProperty(order = 8, value = "Arc-Checksum header value.")
+    /**
+     * Report checksum from ARC record.
+     * @return ARC record checksum
+     */
+    @ReportableProperty(order = 9, value = "Arc-Checksum header value.")
     public String getChecksum() {
         return record.checksum;
     }
 
-    @ReportableProperty(order = 9, value = "Arc-Location header value.")
+    /**
+     * Report location from ARC record.
+     * @return ARC record location
+     */
+    @ReportableProperty(order = 10, value = "Arc-Location header value.")
     public String getLocation() {
         return record.location;
     }
 
-    @ReportableProperty(order = 10, value = "Arc-Offset header value.")
+    /**
+     * Report offset from ARC record.
+     * @return ARC record offset
+     */
+    @ReportableProperty(order = 11, value = "Arc-Offset header value.")
     public String getOffset() {
         return record.offset;
     }
 
-    @ReportableProperty(order = 11, value = "Arc-Filename header value.")
+    /**
+     * Report filename from ARC record.
+     * @return ARC record filename
+     */
+    @ReportableProperty(order = 12, value = "Arc-Filename header value.")
     public String getFilename() {
         return record.filename;
     }
 
-    @ReportableProperty(order = 12, value = "hasPayload value.")
+    /**
+     * Report if the ARC record has a payload.
+     * @return boolean indicating whether this record has a payload
+     */
+    @ReportableProperty(order = 13, value = "hasPayload value.")
     public Boolean getHasPayload() {
         return record.bHasPayload;
     }
 
-    @ReportableProperty(order = 13, value = "ObjectSize value.")
+    /**
+     * Report ARC record payload object size.
+     * @return payload object size
+     */
+    @ReportableProperty(order = 14, value = "ObjectSize value.")
     public String getObjectSize() {
         return record.payloadLength;
     }
 
-    @ReportableProperty(order = 14, value = "isNonCompliant value.")
+    /**
+     * Report whether this record is compliant or not.
+     * @return boolean indicating whether this record is compliant or not
+     */
+    @ReportableProperty(order = 15, value = "isNonCompliant value.")
     public Boolean getIsNonCompliant() {
         return record.bIsNonCompliant;
     }
 
-    @ReportableProperty(order = 15, value = "Computed Block-Digest header value.")
+    /**
+     * Report computed block digest.
+     * @return computed block digest
+     */
+    @ReportableProperty(order = 16, value = "Computed Block-Digest header value.")
     public String getComputedBlockDigest() {
-        return record.blockDigest;
+        return record.computedBlockDigest;
     }
 
-    @ReportableProperty(order = 16, value = "Computed Block-Digest-Algorithm value.")
+    /**
+     * Report computed block digest algorithm.
+     * @return computed block digest algorithm
+     */
+    @ReportableProperty(order = 17, value = "Computed Block-Digest-Algorithm value.")
     public String getComputedBlockDigestAlgorithm() {
-        return record.blockDigestAlgorithm;
+        return record.computedBlockDigestAlgorithm;
     }
 
-    @ReportableProperty(order = 17, value = "Computed Block-Digest-Encoding value.")
+    /**
+     * Report computed block digest encoding algorithm.
+     * @return computed block digest encoding algorithm
+     */
+    @ReportableProperty(order = 18, value = "Computed Block-Digest-Encoding value.")
     public String getComputedBlockDigestEncoding() {
-        return record.blockDigestEncoding;
+        return record.computedBlockDigestEncoding;
     }
 
-    @ReportableProperty(order = 18, value = "Computed Payload-Digest header value.")
+    /**
+     * Report computed payload digest.
+     * @return computed payload digest
+     */
+    @ReportableProperty(order = 19, value = "Computed Payload-Digest header value.")
     public String getComputedPayloadDigest() {
-        return record.payloadDigest;
+        return record.computedPayloadDigest;
     }
 
-    @ReportableProperty(order = 19, value = "Computed Payload-Digest-Algorithm value.")
+    /**
+     * Report computed payload digest algorithm.
+     * @return computed payload digest algorithm
+     */
+    @ReportableProperty(order = 20, value = "Computed Payload-Digest-Algorithm value.")
     public String getComputedPayloadDigestAlgorithm() {
-        return record.payloadDigestAlgorithm;
+        return record.computedPayloadDigestAlgorithm;
     }
 
-    @ReportableProperty(order = 20, value = "Computed Payload-Digest-Encoding value.")
+    /**
+     * Report computed payload digest encoding algorithm.
+     * @return computed payload digest encoding algorithm
+     */
+    @ReportableProperty(order = 21, value = "Computed Payload-Digest-Encoding value.")
     public String getComputedPayloadDigestEncoding() {
-        return record.payloadDigestEncoding;
+        return record.computedPayloadDigestEncoding;
     }
 
 }

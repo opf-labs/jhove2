@@ -122,9 +122,9 @@
 		<property name="URI" value="http://www.stanford.edu/"/>
 	</bean>
 
-	<!-- BnF (Bibliothèque nationale de France) agent bean -->
+	<!-- BnF (Bibliothéque nationale de France) agent bean -->
 	<bean id="BnFAgent" class="org.jhove2.core.Agent" scope="singleton">
-		<constructor-arg value="Bibliothèque nationale de France"
+		<constructor-arg value="BibliothÃ¨que nationale de France"
 		                 type="java.lang.String"/>
 		<constructor-arg value="Corporate"
 		                 type="org.jhove2.core.Agent$Type"/>

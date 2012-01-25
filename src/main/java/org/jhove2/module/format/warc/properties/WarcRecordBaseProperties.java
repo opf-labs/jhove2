@@ -41,106 +41,264 @@ import org.jhove2.core.reportable.AbstractReportable;
 
 import com.sleepycat.persist.model.Persistent;
 
+/**
+ * Reportable properties class for a WARC base record.
+ *
+ * @author nicl
+ */
 @Persistent
 public class WarcRecordBaseProperties extends AbstractReportable {
 
+    /** WARC record data container. */
     protected WarcRecordData record;
 
+    /**
+     * Constructor required by the persistence layer.
+     */
     public WarcRecordBaseProperties() {
     }
 
+    /**
+     * Construct WARC record base property instance with the supplied data.
+     * @param record WARC record base property data
+     */
     public WarcRecordBaseProperties(WarcRecordData record) {
         this.record = record;
     }
 
+    /**
+     * Report date from WARC record.
+     * @return date from WARC record
+     */
     @ReportableProperty(order = 1, value = "Warc-Date header value.")
     public String getWarcDate() {
         return record.warcDate;
     }
 
+    /**
+     * Report record-id from WARC record.
+     * @return record-id from WARC record
+     */
     @ReportableProperty(order = 2, value = "Warc-Record-ID header value.")
     public String getWarcRecordId() {
         return record.warcRecordId;
     }
 
+    /**
+     * Report record-id scheme used.
+     * @return record-id scheme used
+     */
     @ReportableProperty(order = 3, value = "Record-ID-Scheme value.")
     public String getRecordIdScheme() {
         return record.recordIdScheme;
     }
 
+    /**
+     * Report content-type from WARC record.
+     * @return content-type from WARC record
+     */
     @ReportableProperty(order = 4, value = "Content-Type header value.")
     public String getContentType() {
         return record.contentType;
     }
 
+    /**
+     * Report content-length from WARC record.
+     * @return content-length from WARC record
+     */
     @ReportableProperty(order = 5, value = "Content-Length header value.")
     public String getContentLength() {
         return record.contentLength;
     }
 
+    /**
+     * Report warc-type from WARC record.
+     * @return warc-type from WARC record
+     */
     @ReportableProperty(order = 6, value = "Warc-Type header value.")
     public String getWarcType() {
         return record.warcType;
     }
 
+    /**
+     * Report block digest from WARC record.
+     * @return block digest from WARC record
+     */
     @ReportableProperty(order = 7, value = "Warc-Block-Digest header value.")
     public String getWarcBlockDigest() {
-        return record.blockDigest;
+        return record.warcBlockDigest;
     }
 
+    /**
+     * Report block digest algorithm from WARC record.
+     * @return block digest algorithm from WARC record
+     */
     @ReportableProperty(order = 8, value = "Block-Digest-Algorithm value.")
     public String getBlockDigestAlgorithm() {
-        return record.blockDigestAlgorithm;
+        return record.warcBlockDigestAlgorithm;
     }
 
+    /**
+     * Report block digest encoding, if identified.
+     * @return block digest encoding, if identified
+     */
     @ReportableProperty(order = 9, value = "Block-Digest-Encoding value.")
     public String getBlockDigestEncoding() {
-        return record.blockDigestEncoding;
+        return record.warcBlockDigestEncoding;
     }
 
-    @ReportableProperty(order = 10, value = "Warc-Payload-Digest header value.")
+    /**
+     * Report if block digest is valid, if checked.
+     * @return if block digest is valid, if checked
+     */
+    @ReportableProperty(order = 10, value = "isValidBlockDigest boolean value.")
+    public Boolean getIsValidBlockDigest() {
+        return record.isValidBlockDigest;
+    }
+
+    /**
+     * Report payload digest from WARC record.
+     * @return payload digest from WARC record
+     */
+    @ReportableProperty(order = 11, value = "Warc-Payload-Digest header value.")
     public String getWarcPayloadDigest() {
-        return record.payloadDigest;
+        return record.warcPayloadDigest;
     }
 
-    @ReportableProperty(order = 11, value = "Payload-Digest-Algorithm value.")
+    /**
+     * Report payload digest algorithm from WARC record.
+     * @return payload digest algorithm from WARC record
+     */
+    @ReportableProperty(order = 12, value = "Payload-Digest-Algorithm value.")
     public String getPayloadDigestAlgorithm() {
-        return record.payloadDigestAlgorithm;
+        return record.warcPayloadDigestAlgorithm;
     }
 
-    @ReportableProperty(order = 12, value = "Payload-Digest-Encoding value.")
+    /**
+     * Report payload digest encoding, if identified.
+     * @return payload digest encoding, if identified
+     */
+    @ReportableProperty(order = 13, value = "Payload-Digest-Encoding value.")
     public String getPayloadDigestEncoding() {
-        return record.payloadDigestEncoding;
+        return record.warcPayloadDigestEncoding;
     }
 
-    @ReportableProperty(order = 13, value = "Warc-Truncated header value.")
+    /**
+     * Report if payload digest is valid, if checked.
+     * @return if payload digest is valid, if checked
+     */
+    @ReportableProperty(order = 14, value = "isValidPayloadDigest boolean value.")
+    public Boolean getIsValidPayloadDigest() {
+        return record.isValidPayloadDigest;
+    }
+
+    /**
+     * Report truncation reason from WARC record.
+     * @return truncation reason from WARC record
+     */
+    @ReportableProperty(order = 15, value = "Warc-Truncated header value.")
     public String getWarcTruncated() {
         return record.warcTruncated;
     }
 
-    @ReportableProperty(order = 14, value = "hasPayload value.")
+    /**
+     * Report if the WARC record has a payload.
+     * @return boolean indicating whether this record has a payload
+     */
+    @ReportableProperty(order = 16, value = "hasPayload value.")
     public Boolean getHasPayload() {
         return record.bHasPayload;
     }
 
-    @ReportableProperty(order = 15, value = "PayloadLength value.")
+    /**
+     * Report payload length, which depends on a leading http response being
+     * identified or not.
+     * @return payload length, adjusted according to the actual payload content
+     */
+    @ReportableProperty(order = 17, value = "PayloadLength value.")
     public String getPayloadLength() {
         return record.payloadLength;
     }
 
-    @ReportableProperty(order = 16, value = "Warc-Identified-Payload-Type header value.")
+    /**
+     * Report identified-payload-type from WARC record.
+     * @return identified-payload-type from WARC record
+     */
+    @ReportableProperty(order = 18, value = "Warc-Identified-Payload-Type header value.")
     public String getProtocolVersion() {
         return record.warcIdentifiedPayloadType;
     }
 
-    @ReportableProperty(order = 17, value = "Warc-Segment-Number header value.")
+    /**
+     * Report segment-number from WARC record.
+     * @return segment-number from WARC record
+     */
+    @ReportableProperty(order = 19, value = "Warc-Segment-Number header value.")
     public String getWarcSegmentNumber() {
         return record.warcSegmentNumber;
     }
 
-    @ReportableProperty(order = 18, value = "isNonCompliant value.")
+    /**
+     * Report whether this record is compliant or not.
+     * @return boolean indicating whether this record is compliant or not
+     */
+    @ReportableProperty(order = 20, value = "isNonCompliant value.")
     public Boolean getIsNonCompliant() {
         return record.bIsNonCompliant;
+    }
+
+    /**
+     * Report computed block digest.
+     * @return computed block digest
+     */
+    @ReportableProperty(order = 21, value = "Computed Block-Digest header value.")
+    public String getComputedBlockDigest() {
+        return record.computedBlockDigest;
+    }
+
+    /**
+     * Report computed block digest algorithm.
+     * @return computed block digest algorithm
+     */
+    @ReportableProperty(order = 22, value = "Computed Block-Digest-Algorithm value.")
+    public String getComputedBlockDigestAlgorithm() {
+        return record.computedBlockDigestAlgorithm;
+    }
+
+    /**
+     * Report computed block digest encoding algorithm.
+     * @return computed block digest encoding algorithm
+     */
+    @ReportableProperty(order = 23, value = "Computed Block-Digest-Encoding value.")
+    public String getComputedBlockDigestEncoding() {
+        return record.computedBlockDigestEncoding;
+    }
+
+    /**
+     * Report computed payload digest.
+     * @return computed payload digest
+     */
+    @ReportableProperty(order = 24, value = "Computed Payload-Digest header value.")
+    public String getComputedPayloadDigest() {
+        return record.computedPayloadDigest;
+    }
+
+    /**
+     * Report computed payload digest algorithm.
+     * @return computed payload digest algorithm
+     */
+    @ReportableProperty(order = 25, value = "Computed Payload-Digest-Algorithm value.")
+    public String getComputedPayloadDigestAlgorithm() {
+        return record.computedPayloadDigestAlgorithm;
+    }
+
+    /**
+     * Report computed payload digest encoding algorithm.
+     * @return computed payload digest encoding algorithm
+     */
+    @ReportableProperty(order = 26, value = "Computed Payload-Digest-Encoding value.")
+    public String getComputedPayloadDigestEncoding() {
+        return record.computedPayloadDigestEncoding;
     }
 
 }

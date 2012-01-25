@@ -6337,7 +6337,7 @@
         		</SubSequence>
         	</ByteSequence>
         </InternalSignature>
-        <!-- ARC -->
+        <!-- ARC, matches "filedesc:" in beginning of file. -->
         <InternalSignature ID="123456" Specificity="Specific">
             <ByteSequence Reference="BOFoffset">
                 <SubSequence Position="1" SubSeqMinOffset="0" SubSeqMaxOffset="0" MinFragLength="0">
@@ -6355,7 +6355,7 @@
                 </SubSequence>
             </ByteSequence>
         </InternalSignature>
-        <!-- WARC -->
+        <!-- WARC, matches "WARC/" in beginning of file. -->
         <InternalSignature ID="12345" Specificity="Specific">
             <ByteSequence Reference="BOFoffset">
                 <SubSequence Position="1" SubSeqMinOffset="0" SubSeqMaxOffset="0" MinFragLength="0">
@@ -8489,6 +8489,7 @@
         <FileFormat ID="310" Name="Alexa Archive File" PUID="x-fmt/219">
             <InternalSignatureID>123456</InternalSignatureID>
             <Extension>arc</Extension>
+            <!-- If left out file is recognized as SGML -->
             <HasPriorityOverFileFormatID>638</HasPriorityOverFileFormatID>
             <HasPriorityOverFileFormatID>639</HasPriorityOverFileFormatID>
             <HasPriorityOverFileFormatID>640</HasPriorityOverFileFormatID>
@@ -8502,6 +8503,7 @@
         <FileFormat ID="12345" Name="WARC file" Version="1.0" PUID="x-fmt/289">
             <InternalSignatureID>12345</InternalSignatureID>
        	    <Extension>warc</Extension>
+            <!-- If left out file is recognized as SGML -->
             <HasPriorityOverFileFormatID>638</HasPriorityOverFileFormatID>
             <HasPriorityOverFileFormatID>639</HasPriorityOverFileFormatID>
             <HasPriorityOverFileFormatID>640</HasPriorityOverFileFormatID>

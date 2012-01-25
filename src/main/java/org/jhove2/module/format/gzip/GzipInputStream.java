@@ -70,8 +70,8 @@ import org.jhove2.module.format.gzip.field.OperatingSystem;
  * with no additional information before, between, or after them.
  * <blockquote>
  */
-public class GzipInputStream extends InflaterInputStream
-{
+public class GzipInputStream extends InflaterInputStream {
+
     /** GZip header magic number. */
     public final static int GZIP_MAGIC = 0x8b1f;
     /** The Deflate compression method. */
@@ -95,7 +95,7 @@ public class GzipInputStream extends InflaterInputStream
     private int entryCount = 0;
     /** The position in the underlying (compressed) input stream. */
     private long pos = 0L;
-    /** The current entry. */
+    /** The current GZip entry, changed for each call to getNextEntry(). */
     private GzipEntryProperties entry = null;
     /** The input stream to read the current entry data. */
     private final InputStream entryInputStream;
@@ -128,9 +128,9 @@ public class GzipInputStream extends InflaterInputStream
         super(new PushbackInputStream(in, size), new Inflater(true), size);
 
         this.entryInputStream = new FilterInputStream(this) {
-        	public void close() throws IOException {
-        		closeEntry();
-        	}
+            public void close() throws IOException {
+                closeEntry();
+            }
         };
     }
 
@@ -144,8 +144,8 @@ public class GzipInputStream extends InflaterInputStream
      * @throws IOException  if an I/O error has occurred.
      */
     public GzipEntryProperties getNextEntry() throws IOException {
-    	this.closeEntry();
-    	this.entry = this.readHeader();
+        this.closeEntry();
+        this.entry = this.readHeader();
         this.entryEof = (this.entry == null);
         return this.entry;
     }
@@ -162,7 +162,7 @@ public class GzipInputStream extends InflaterInputStream
         if (! this.entryEof) {
             // Skip remaining entry data.
             byte[] tmpbuf = new byte[256];
-	    while (this.read(tmpbuf) != -1) { /* Keep on reading... */ }
+        while (this.read(tmpbuf) != -1) { /* Keep on reading... */ }
         }
         this.entryEof = true;
     }
@@ -179,12 +179,12 @@ public class GzipInputStream extends InflaterInputStream
     }
 
     /**
-     * Returns 0 after EOF has reached for the current entry data,
+     * Returns 0 after EOF is reached for the current entry data,
      * otherwise always return 1.
      * <p>
      * Programs should not count on this method to return the actual
      * number of bytes that could be read without blocking.</p>
-     * @return 1 before EOF and 0 after EOF has reached for current
+     * @return 1 before EOF and 0 after EOF is reached for current
      *         entry.
      *
      * @throws IOException  if an I/O error has occurred.
@@ -226,6 +226,7 @@ public class GzipInputStream extends InflaterInputStream
             }
         }
         else {
+            // TODO unknown BnF, refactor for 1.0
             // this.pos += n;
             crc.update(buf, off, n);
         }
@@ -283,60 +284,60 @@ public class GzipInputStream extends InflaterInputStream
         // Reset CRC to compute header CRC (CRC16).
         this.crc.reset();
 
-        // Entry index and start offset
+        // Increment entry index and start offset.
         this.entryCount++;
         long startOffset = this.getOffset();
-        // Check magic number
+        // Check magic number.
         int header = readUShort(cis);
         if (header != GZIP_MAGIC) {
-            throw new ZipException("Not in GZIP format: invalid magic number");
+            throw new ZipException("Not in GZIP format: invalid magic number (0x" + Integer.toHexString(header) + ")");
         }
-        // Read compression method
+        // Read compression method.
         int cm = this.readUByte(cis);
         if (cm != DEFLATE) {
             throw new ZipException("Invalid compression method: " + cm);
         }
         CompressionMethod method = CompressionMethod.fromValue(cm);
-        // Read flags
+        // Read flags.
         int flg = this.readUByte(cis);
-        // Read MTIME field
+        // Read MTIME field.
         long time = this.readUInt(cis);
         Date date = (time != 0L)? new Date(time * 1000L): null;
-        // Read XFL field
+        // Read XFL field.
         CompressionType xflags = null;
         int xfl = this.readUByte(cis);
         if (xfl != 0) {
             xflags = CompressionType.fromValue(xfl);
         }
-        // Read OS field
+        // Read OS field.
         OperatingSystem os = OperatingSystem.fromValue(this.readUByte(cis));
-        // Check ASCII text flag
+        // Check ASCII text flag.
         boolean asciiFlag = ((flg & FTEXT) == FTEXT);
-        // Read optional extra fields
+        // Read optional extra fields.
         byte[] extraFields = null;
         if ((flg & FEXTRA) == FEXTRA) {
             int xlen = this.readUShort(cis);
             extraFields = this.readBytes(cis, xlen);
         }
-        // Read optional file name
+        // Read optional file name.
         String fileName = null;
         if ((flg & FNAME) == FNAME) {
             fileName = this.readString(cis);
         }
-        // Read optional file comment
+        // Read optional file comment.
         String comment = null;
         if ((flg & FCOMMENT) == FCOMMENT) {
             comment = this.readString(cis);
         }
-        // Check that no reserved flags is set
+        // Check that no reserved flags is set.
         int reservedFlags = (flg & FRESERVED);
-        // Check optional header CRC
+        // Check optional header CRC.
         int readCrc16 = -1;
         int computedCrc16 = ((int)(this.crc.getValue())) & 0x0000ffff;
         if ((flg & FHCRC) == FHCRC) {
             readCrc16 = this.readUShort(cis);
         }
-        // Create GZip entry object with header fields
+        // Create GZip entry object with header fields.
         GzipEntryProperties e = new GzipEntryProperties(this.entryCount, startOffset, method,
                                     xflags, date, fileName, os, comment,
                                     asciiFlag, extraFields, reservedFlags,
@@ -357,18 +358,18 @@ public class GzipInputStream extends InflaterInputStream
      * @throws IOException  if an I/O error has occurred.
      */
     private boolean readTrailer() throws IOException {
-    	int n = this.inf.getRemaining();
-    	if (n > 0) {
-    		((PushbackInputStream)this.in).unread(this.buf, this.len - n, n);
-    	}
+        int n = this.inf.getRemaining();
+        if (n > 0) {
+            ((PushbackInputStream)this.in).unread(this.buf, this.len - n, n);
+        }
         long csize = this.inf.getBytesRead();
         long size  = this.inf.getBytesWritten();
         this.pos += csize;
- 
-        // Check member data CRC
+
+        // Check member data CRC.
         long readCrc32 = readUInt(in);
         long computedCrc32 = this.crc.getValue();
-        // Check expanded size
+        // Check expanded size.
         long readISize = readUInt(in);
         // rfc1952; ISIZE is the input size modulo 2^32.
         long computedISize = inf.getBytesWritten() & 0xffffffffL;
@@ -413,8 +414,9 @@ public class GzipInputStream extends InflaterInputStream
         return new String(bos.toByteArray(), "ISO-8859-1");
     }
 
-    /*
+    /**
      * Reads unsigned byte.
+     * @return unassigned byte or -1 if EOF
      */
     private int readUByte(InputStream in) throws IOException {
         int b = in.read();
@@ -436,13 +438,13 @@ public class GzipInputStream extends InflaterInputStream
      * @return an byte array filled with the read data.
      *
      * @throws IOException  if an I/O error has occurred or the stream
-     *         ended before the <code>n</code> bytes could be read.
+     *         ended before <code>n</code> bytes could be read.
      */
     private byte[] readBytes(InputStream in, int n) throws IOException {
         byte[] tmpbuf = new byte[n];
         int l = in.read(tmpbuf, 0, n);
         if (l != n) {
-            throw new EOFException();
+            throw new EOFException("Could only read " + l + " bytes. Needed " + n);
         }
         this.pos += n;
         return tmpbuf;

@@ -41,18 +41,24 @@ import org.jhove2.core.source.AbstractSource;
 
 import com.sleepycat.persist.model.Persistent;
 
+/**
+ * Trivial <code>Source</code> implementation to differentiate data from
+ * an ARC record.
+ *
+ * @author nicl
+ */
 @Persistent
 public class ArcRecordSource extends AbstractSource {
 
     /**
-     * Instantiate a new <code>ClumpSource</code>.
+     * Instantiate a new <code>ArcRecordSource</code>.
      */
     protected ArcRecordSource() {
         super();
     }
 
     /**
-     * Instantiate a new <code>ClumpSource</code>.
+     * Instantiate a new <code>ArcRecordSource</code>.
      * @param jhove2 JHOVE2 framework object
      */
     protected ArcRecordSource(JHOVE2 jhove2) {

@@ -42,15 +42,28 @@ import org.jhove2.core.reportable.AbstractReportable;
 import org.jwat.arc.ArcRecord;
 import org.jwat.arc.ArcRecordBase;
 import org.jwat.arc.ArcVersionBlock;
+import org.jwat.common.HeaderLine;
 import org.jwat.common.HttpResponse;
 import org.jwat.common.Payload;
 import org.jwat.warc.WarcDateParser;
 
 import com.sleepycat.persist.model.Persistent;
 
+/**
+ * This class is a wrapper for the information available in an ARC record.
+ * Since the ARC reader is not persistent its data must be moved to a simpler
+ * data class which can be persisted instead.
+ *
+ * @author nicl
+ */
 @Persistent
 public class ArcRecordData {
 
+    public Long startOffset;
+    public Long consumed;
+
+    public String url;
+    public String protocol;
     public String ipAddress;
     public String ipVersion;
     public String archiveDate;
@@ -66,12 +79,12 @@ public class ArcRecordData {
     public String payloadLength;
     public boolean bIsNonCompliant;
 
-    public String blockDigest;
-    public String blockDigestAlgorithm;
-    public String blockDigestEncoding;
-    public String payloadDigest;
-    public String payloadDigestAlgorithm;
-    public String payloadDigestEncoding;
+    public String computedBlockDigest;
+    public String computedBlockDigestAlgorithm;
+    public String computedBlockDigestEncoding;
+    public String computedPayloadDigest;
+    public String computedPayloadDigestAlgorithm;
+    public String computedPayloadDigestEncoding;
 
     public String versionNumber;
     public String reserved;
@@ -80,14 +93,22 @@ public class ArcRecordData {
     public String protocolResultCode;
     public String protocolVersion;
     public String protocolContentType;
-    public String serverName;
+    public String protocolServer;
 
     /** WARC <code>DateFormat</code> as specified by the WARC ISO standard. */
     public transient DateFormat warcDateFormat = WarcDateParser.getWarcDateFormat();
 
+    /**
+     * Constructor required by the persistence layer.
+     */
     public ArcRecordData() {
     }
 
+    /**
+     * Constructs an object using the data in the <code>VersionBlock</code>
+     * object.
+     * @param versionBlock parsed ARC version block
+     */
     public ArcRecordData(ArcVersionBlock versionBlock) {
         if (versionBlock.versionNumber != null) {
             // TODO JWAT should keep the raw value too.
@@ -101,22 +122,40 @@ public class ArcRecordData {
         populateArcRecordBase(versionBlock);
     }
 
+    /**
+     * Constructs an object used the data in the <code>ArcRecord</code>
+     * object.
+     * @param record parsed ARC record
+     */
     public ArcRecordData(ArcRecord record) {
         Payload payload = record.getPayload();
         if (payload != null) {
             HttpResponse httpResponse = payload.getHttpResponse();
+            HeaderLine headerLine;
             if (httpResponse != null) {
                 resultCode = httpResponse.resultCode;
                 protocolVersion = httpResponse.protocolVersion;
                 protocolContentType = httpResponse.contentType;
-                // TODO Not supported in HttpResponse yet.
-                //serverName = httpResponse.getHeader("servername");
+                headerLine = httpResponse.getHeader("server");
+                if (headerLine != null && headerLine.value != null) {
+                    protocolServer = headerLine.value;
+                }
             }
         }
         populateArcRecordBase(record);
     }
 
+    /**
+     * Populate this object with the common data available in the
+     * <code>ArcRecordBase</code> which is extended by both the version block
+     * and arc record classes.
+     * @param record record containing common data
+     */
     public void populateArcRecordBase(ArcRecordBase record) {
+        startOffset = record.getOffset();
+        consumed = record.getConsumed();
+        url = record.recUrl;
+        protocol = record.protocol;
         ipAddress = record.recIpAddress;
         if (record.inetAddress != null) {
             if (record.inetAddress.getAddress().length == 4) {
@@ -132,21 +171,23 @@ public class ArcRecordData {
         rawArchiveDate = record.recArchiveDate;
         contentType = record.recContentType;
         if (record.recLength != null) {
-            // TODO JWAT should probably same the raw value too.
+            // TODO JWAT should probably save the raw value too.
             length = record.recLength.toString();
         }
         if (record.recResultCode != null) {
-            // TODO JWAT should probably same the raw value too.
+            // TODO JWAT should probably save the raw value too.
             resultCode = record.recResultCode.toString();
         }
         checksum = record.recChecksum;
         location = record.recLocation;
         if (record.recOffset != null) {
-            // TODO JWAT should probably same the raw value too.
+            // TODO JWAT should probably save the raw value too.
             offset = record.recOffset.toString();
         }
         filename = record.recFilename;
-
+        /*
+         * Payload.
+         */
         bHasPayload = record.hasPayload();
         Payload payload = record.getPayload();
         if (payload != null) {
@@ -159,53 +200,66 @@ public class ArcRecordData {
                 payloadLength = Long.toString(payload.getTotalLength());;
             }
         }
-
-        // TODO What does this imply, add functionality to JWAT.
-        bIsNonCompliant = false;
-
         /*
-        if (record.warcBlockDigest != null) {
-            if ( record.warcBlockDigest.digestValue != null
-                    && record.warcBlockDigest.digestValue.length() > 0) {
-                blockDigest = record.warcBlockDigest.digestValue;
+         * Compliance.
+         */
+        bIsNonCompliant = !record.isCompliant();
+        /*
+         * Computed-Block-Digest.
+         */
+        if (record.computedBlockDigest != null) {
+            if ( record.computedBlockDigest.digestString != null
+                    && record.computedBlockDigest.digestString.length() > 0) {
+                computedBlockDigest = record.computedBlockDigest.digestString;
             }
-            if (record.warcBlockDigest.algorithm != null
-                    && record.warcBlockDigest.algorithm.length() > 0) {
-                blockDigestAlgorithm = record.warcBlockDigest.algorithm;
+            if (record.computedBlockDigest.algorithm != null
+                    && record.computedBlockDigest.algorithm.length() > 0) {
+                computedBlockDigestAlgorithm = record.computedBlockDigest.algorithm;
             }
-            if (record.warcBlockDigest.encoding != null
-                    && record.warcBlockDigest.encoding.length() > 0) {
-                blockDigestEncoding = record.warcBlockDigest.encoding;
+            if (record.computedBlockDigest.encoding != null
+                    && record.computedBlockDigest.encoding.length() > 0) {
+                computedBlockDigestEncoding = record.computedBlockDigest.encoding;
             }
         }
-        */
-
         /*
-        if (record.warcPayloadDigest != null) {
-            if (record.warcPayloadDigest.digestValue != null
-                    && record.warcPayloadDigest.digestValue.length() > 0) {
-                payloadDigest = record.warcPayloadDigest.digestValue;
+         * Computed-Payload-Digest.
+         */
+        if (record.computedPayloadDigest != null) {
+            if (record.computedPayloadDigest.digestString != null
+                    && record.computedPayloadDigest.digestString.length() > 0) {
+                computedPayloadDigest = record.computedPayloadDigest.digestString;
             }
-            if (record.warcPayloadDigest.algorithm != null
-                    && record.warcPayloadDigest.algorithm.length() > 0) {
-                payloadDigestAlgorithm = record.warcPayloadDigest.algorithm;
+            if (record.computedPayloadDigest.algorithm != null
+                    && record.computedPayloadDigest.algorithm.length() > 0) {
+                computedPayloadDigestAlgorithm = record.computedPayloadDigest.algorithm;
             }
-            if (record.warcPayloadDigest.encoding != null
-                    && record.warcPayloadDigest.encoding.length() > 0) {
-                payloadDigestEncoding = record.warcPayloadDigest.encoding;
+            if (record.computedPayloadDigest.encoding != null
+                    && record.computedPayloadDigest.encoding.length() > 0) {
+                computedPayloadDigestEncoding = record.computedPayloadDigest.encoding;
             }
         }
-        */
     }
 
+    /**
+     * Returns a persistent reportable arc record base property instance.
+     * @return a persistent reportable arc record base property instance
+     */
     public AbstractReportable getArcRecordBaseProperties() {
         return new ArcRecordBaseProperties(this);
     }
 
+    /**
+     * Returns a persistent reportable arc version block property instance.
+     * @return
+     */
     public AbstractReportable getArcVersionBlockProperties() {
         return new ArcVersionBlockProperties(this);
     }
 
+    /**
+     * Returns a persistent reportable arc record property instance.
+     * @return
+     */
     public AbstractReportable getArcRecordProperties() {
         return new ArcRecordProperties(this);
     }

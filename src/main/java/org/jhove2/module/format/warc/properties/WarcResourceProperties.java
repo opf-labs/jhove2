@@ -43,38 +43,72 @@ import org.jhove2.core.reportable.AbstractReportable;
 
 import com.sleepycat.persist.model.Persistent;
 
+/**
+ * Reportable properties class for a WARC resource record.
+ *
+ * @author nicl
+ */
 @Persistent
 public class WarcResourceProperties extends AbstractReportable {
 
+    /** WARC record data container. */
     protected WarcRecordData record;
 
+    /**
+     * Constructor required by the persistence layer.
+     */
     public WarcResourceProperties() {
     }
 
+    /**
+     * Construct WARC resource property instance with the supplied data.
+     * @param record WARC resource property data
+     */
     public WarcResourceProperties(WarcRecordData record) {
         this.record = record;
     }
 
+    /**
+     * Report Target-Uri from WARC record.
+     * @return Target-Uri from WARC record
+     */
     @ReportableProperty(order = 1, value = "Warc-Target-URI header value.")
     public String getWarcTargetUri() {
         return record.warcTargetUri;
     }
 
+    /**
+     * Report list of concurrent-to from WARC record.
+     * @return list of concurrent-to from WARC record
+     */
     @ReportableProperty(order = 2, value = "Warc-Concurrent-To header value.")
     public List<String> getWarcConcurrentTo() {
         return record.warcConcurrentToList;
     }
 
+    /**
+     * Report ip-address from WARC record.
+     * @return ip-address from WARC record
+     */
     @ReportableProperty(order = 3, value = "Warc-IP-Address header value.")
     public String getWarcIpAddress() {
         return record.warcIpAddress;
     }
 
+    /**
+     * Report ip-address format as found in the WARC record,
+     * either nothing, 4 or 6.
+     * @return nothing, 4 or 6 depending on the ip-address format
+     */
     @ReportableProperty(order = 4, value = "Ip-Address version.")
     public String getIpAddressVersion() {
         return record.ipVersion;
     }
 
+    /**
+     * Report warcinfo-id from WARC record.
+     * @return warcinfo-id from WARC record
+     */
     @ReportableProperty(order = 5, value = "Warc-Warcinfo-ID header value.")
     public String getWarcWarcinfoId() {
         return record.warcWarcinfoId;

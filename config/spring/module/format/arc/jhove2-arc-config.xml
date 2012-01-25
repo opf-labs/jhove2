@@ -12,7 +12,13 @@
 	      <ref bean="BnFAgent"/>
 	    </list>
 	</property>
-	<property name="recurse" value="true"/>
+	<property name="recurse" value="false"/>
+	<property name="computeBlockDigest" value="true"/>
+	<property name="blockDigestAlgorithm" value="sha1"/>
+	<property name="blockDigestEncoding" value="base32"/>
+	<property name="computePayloadDigest" value="true"/>
+	<property name="payloadDigestAlgorithm" value="sha1"/>
+	<property name="payloadDigestEncoding" value="base32"/>
 	<!--property name="parallelCharacterization" value="0"/-->
     </bean>
 

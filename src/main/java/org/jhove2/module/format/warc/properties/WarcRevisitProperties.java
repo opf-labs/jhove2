@@ -41,43 +41,81 @@ import org.jhove2.core.reportable.AbstractReportable;
 
 import com.sleepycat.persist.model.Persistent;
 
+/**
+ * Reportable properties class for a WARC revisit record.
+ *
+ * @author nicl
+ */
 @Persistent
 public class WarcRevisitProperties extends AbstractReportable {
 
+    /** WARC record data container. */
     protected WarcRecordData record;
 
+    /**
+     * Constructor required by the persistence layer.
+     */
     public WarcRevisitProperties() {
     }
 
+    /**
+     * Construct WARC revisit property instance with the supplied data.
+     * @param record WARC revisit property data
+     */
     public WarcRevisitProperties(WarcRecordData record) {
         this.record = record;
     }
 
+    /**
+     * Report Target-Uri from WARC record.
+     * @return Target-Uri from WARC record
+     */
     @ReportableProperty(order = 1, value = "Warc-Target-URI header value.")
     public String getWarcTargetUri() {
         return record.warcTargetUri;
     }
 
+    /**
+     * Report revisit profile from WARC record.
+     * @return revisit profile from WARC record
+     */
     @ReportableProperty(order = 2, value = "Warc-Profile header value.")
     public String getWarcProfile() {
         return record.warcProfile;
     }
 
+    /**
+     * Report refers-to from WARC record.
+     * @return refers-to from WARC record
+     */
     @ReportableProperty(order = 3, value = "Warc-Refers-To header value.")
     public String getWarcRefersTo() {
         return record.warcRefersTo;
     }
 
+    /**
+     * Report ip-address from WARC record.
+     * @return ip-address from WARC record
+     */
     @ReportableProperty(order = 4, value = "Warc-IP-Address header value.")
     public String getWarcIpAddress() {
         return record.warcIpAddress;
     }
 
+    /**
+     * Report ip-address format as found in the WARC record,
+     * either nothing, 4 or 6.
+     * @return nothing, 4 or 6 depending on the ip-address format
+     */
     @ReportableProperty(order = 5, value = "Ip-Address version.")
     public String getIpAddressVersion() {
         return record.ipVersion;
     }
 
+    /**
+     * Report warcinfo-id from WARC record.
+     * @return warcinfo-id from WARC record
+     */
     @ReportableProperty(order = 6, value = "Warc-Warcinfo-ID header value.")
     public String getWarcWarcinfoId() {
         return record.warcWarcinfoId;

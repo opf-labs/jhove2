@@ -41,28 +41,53 @@ import org.jhove2.core.reportable.AbstractReportable;
 
 import com.sleepycat.persist.model.Persistent;
 
+/**
+ * Reportable properties class for a WARC conversion record.
+ *
+ * @author nicl
+ */
 @Persistent
 public class WarcConversionProperties extends AbstractReportable {
 
+    /** WARC record data container. */
     protected WarcRecordData record;
 
+    /**
+     * Constructor required by the persistence layer.
+     */
     public WarcConversionProperties() {
     }
 
+    /**
+     * Construct WARC conversion property instance with the supplied data.
+     * @param record WARC conversion property data
+     */
     public WarcConversionProperties(WarcRecordData record) {
         this.record = record;
     }
 
+    /**
+     * Report Target-Uri from WARC record.
+     * @return Target-Uri from WARC record
+     */
     @ReportableProperty(order = 1, value = "Warc-Target-URI header value.")
     public String getWarcTargetUri() {
         return record.warcTargetUri;
     }
 
+    /**
+     * Report refers-to from WARC record.
+     * @return refers-to from WARC record
+     */
     @ReportableProperty(order = 2, value = "Warc-Refers-To header value.")
     public String getWarcRefersTo() {
         return record.warcRefersTo;
     }
 
+    /**
+     * Report warcinfo-id from WARC record.
+     * @return warcinfo-id from WARC record
+     */
     @ReportableProperty(order = 3, value = "Warc-Warcinfo-ID header value.")
     public String getWarcWarcinfoId() {
         return record.warcWarcinfoId;

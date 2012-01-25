@@ -41,18 +41,24 @@ import org.jhove2.core.source.AbstractSource;
 
 import com.sleepycat.persist.model.Persistent;
 
+/**
+ * Trivial <code>Source</code> implementation to differentiate data from
+ * a WARC record.
+ *
+ * @author nicl
+ */
 @Persistent
 public class WarcRecordSource extends AbstractSource {
 
     /**
-     * Instantiate a new <code>ClumpSource</code>.
+     * Instantiate a new <code>WarcRecordSource</code>.
      */
     protected WarcRecordSource() {
         super();
     }
 
     /**
-     * Instantiate a new <code>ClumpSource</code>.
+     * Instantiate a new <code>WarcRecordSource</code>.
      * @param jhove2 JHOVE2 framework object
      */
     protected WarcRecordSource(JHOVE2 jhove2) {

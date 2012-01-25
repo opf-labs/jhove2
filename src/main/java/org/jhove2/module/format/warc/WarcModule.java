@@ -40,8 +40,8 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteOrder;
+import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -49,9 +49,10 @@ import java.util.TreeMap;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.I8R;
-import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.Message;
+import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
 import org.jhove2.core.format.FormatIdentification;
 import org.jhove2.core.format.FormatIdentification.Confidence;
@@ -69,11 +70,13 @@ import org.jwat.common.Payload;
 import org.jwat.warc.WarcReader;
 import org.jwat.warc.WarcReaderFactory;
 import org.jwat.warc.WarcRecord;
+import org.jwat.warc.WarcValidationError;
 
 import com.sleepycat.persist.model.Persistent;
 
 /**
- * JHOVE2 WARC module.
+ * JHOVE2 WARC module. This class is mostly a JHOVE2 wrapper that uses
+ * the JWAT package for the actual WARC validation.
  *
  * @author nicl
  */
@@ -84,15 +87,28 @@ public class WarcModule extends BaseFormatModule implements Validator {
     public static final String VERSION = "0.8.0";
 
     /** Module release date. */
-    public static final String RELEASE = "2011-12-24";
+    public static final String RELEASE = "2011-01-20";
 
     /** Module rights statement. */
+    /*
     public static final String RIGHTS =
-            "Copyright 2010 by Bibliotheque nationale de France. "
+            "Copyright 2011 by The Royal Library in Denmark. "
             + "Available under the terms of the BSD license.";
+    */
 
     /** Module validation coverage. */
     public static final Coverage COVERAGE = Coverage.Selective;
+
+    /** Whether to recursively characterize WARC record objects. */
+    private boolean recurse = true;
+
+    private boolean bComputeBlockDigest = false;
+    private String blockDigestAlgorithm;
+    private String blockDigestEncoding;
+
+    private boolean bComputePayloadDigest = false;
+    private String payloadDigestAlgorithm;
+    private String payloadDigestEncoding;
 
     /**
      * Stores a mapping of all Format aliases in the
@@ -117,11 +133,9 @@ public class WarcModule extends BaseFormatModule implements Validator {
     /** File version. */
     private String fileVersion;
 
-    /** Whether to recursively characterize ARC record objects. */
-    private boolean recurse = true;
-
     /**
      * Instantiate a new <code>WarcModule</code> instance.
+     * This constructor is used by the Spring framework.
      * @param format WARC format
      * @param formatModuleAccessor FormatModuleAccessor to manage access to Format Profiles
      */
@@ -133,7 +147,7 @@ public class WarcModule extends BaseFormatModule implements Validator {
 
     /**
      * Instantiate a new <code>WarcModule</code> instance.
-     * @throws JHOVE2Exception
+     * This constructor is used by the persistence layer.
      */
     public WarcModule() {
         this(null, null);
@@ -144,7 +158,7 @@ public class WarcModule extends BaseFormatModule implements Validator {
      * @param jhove2 the JHove2 characterization context
      * @param source WARC source unit
      * @param input WARC source input
-     * @return 0
+     * @return number of consumed bytes parsed
      * @throws EOFException If End-of-File is reached reading the source unit
      * @throws IOException If an I/O exception is raised reading the source unit
      * @throws JHOVE2Exception
@@ -153,7 +167,7 @@ public class WarcModule extends BaseFormatModule implements Validator {
      */
     @Override
     public long parse(JHOVE2 jhove2, Source source, Input input)
-                            throws EOFException, IOException, JHOVE2Exception {
+                            throws IOException, EOFException, JHOVE2Exception {
         /*
          * Cache Content-Types to J2 FormatIdentifications.
          */
@@ -196,7 +210,7 @@ public class WarcModule extends BaseFormatModule implements Validator {
             }
         }
 
-        Invocation cfg = jhove2.getInvocation();
+        //Invocation cfg = jhove2.getInvocation();
 
         WarcReader reader = null;
         if (gzipMod != null) {
@@ -206,8 +220,17 @@ public class WarcModule extends BaseFormatModule implements Validator {
             reader = (WarcReader)gzipMod.reader;
             if (reader == null) {
                 reader = WarcReaderFactory.getReaderUncompressed();
-                reader.setBlockDigestEnabled(true);
-                reader.setPayloadDigestEnabled(true);
+                reader.setBlockDigestEnabled(bComputeBlockDigest);
+                reader.setPayloadDigestEnabled(bComputePayloadDigest);
+                try {
+                    reader.setBlockDigestAlgorithm(blockDigestAlgorithm);
+                    reader.setPayloadDigestAlgorithm(payloadDigestAlgorithm);
+                } catch (NoSuchAlgorithmException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                reader.setBlockDigestEncoding(blockDigestEncoding);
+                reader.setPayloadDigestEncoding(payloadDigestEncoding);
                 gzipMod.reader = reader;
             }
             if (warcMod == null) {
@@ -219,9 +242,18 @@ public class WarcModule extends BaseFormatModule implements Validator {
             }
             else {
                 warcMod.parseRecordsCompressed(jhove2, source, reader);
-                // May be useless as the caller may do this each time anyway.
+                // Validity
+                if (warcMod.isValid != Validity.False) {
+                    if (reader.isCompliant()) {
+                        warcMod.isValid = Validity.True;
+                    }
+                    else {
+                        warcMod.isValid = Validity.False;
+                    }
+                }
                 warcMod = (WarcModule)warcMod.getModuleAccessor().persistModule(warcMod);
                 // Remove WarcModule from source instance since we added one to the parent source.
+                /*
                 List<Module> sourceMods = source.getModules();
                 Iterator<Module> iter = sourceMods.iterator();
                 while (iter.hasNext()) {
@@ -230,28 +262,60 @@ public class WarcModule extends BaseFormatModule implements Validator {
                         iter.remove();
                     }
                 }
-                // Persist for some reason.
+                */
+                this.setParentSourceId(null);
                 source = source.getSourceAccessor().persistSource(source);
             }
+            consumed = reader.getConsumed();
         }
         else {
             /*
              * Not GZip compressed.
              */
             reader = WarcReaderFactory.getReaderUncompressed(source.getInputStream(), 8192);
-            reader.setBlockDigestEnabled(true);
-            reader.setPayloadDigestEnabled(true);
+            reader.setBlockDigestEnabled(bComputeBlockDigest);
+            reader.setPayloadDigestEnabled(bComputePayloadDigest);
+            try {
+                reader.setBlockDigestAlgorithm(blockDigestAlgorithm);
+                reader.setPayloadDigestAlgorithm(payloadDigestAlgorithm);
+            } catch (NoSuchAlgorithmException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            reader.setBlockDigestEncoding(blockDigestEncoding);
+            reader.setPayloadDigestEncoding(payloadDigestEncoding);
             parseRecordsUncompressed(jhove2, source, reader);
             reader.close();
+            consumed = reader.getConsumed();
+            /*
+             * Validity.
+             */
+            if (isValid != Validity.False) {
+                if (reader.isCompliant()) {
+                    isValid = Validity.True;
+                }
+                else {
+                    isValid = Validity.False;
+                }
+            }
         }
         /*
          * Consumed.
          */
-        // TODO Should probably be implemented
-        //consumed = reader.getOffset();
         return consumed;
     }
 
+    /**
+     * Parse WARC records that are not encased in GZip entries. Parsing should
+     * should be straight forward with all records accessible through the same
+     * source.
+     * @param jhove2 the JHove2 characterization context
+     * @param source WARC source unit
+     * @param reader WARC reader used to parse records
+     * @throws EOFException if EOF occurs prematurely
+     * @throws IOException if an error occurs while processing
+     * @throws JHOVE2Exception if a serious problem needs to be reported
+     */
     protected void parseRecordsUncompressed(JHOVE2 jhove2, Source source, WarcReader reader)
             throws EOFException, IOException, JHOVE2Exception {
         WarcRecord record;
@@ -264,15 +328,23 @@ public class WarcModule extends BaseFormatModule implements Validator {
             while ((record = reader.getNextRecord()) != null) {
                 processRecord(jhove2, source, record);
             }
-
-            // TODO real validity.
-            this.isValid = Validity.True;
         }
         else {
             // No WARC reader. Oh the horror!
         }
     }
 
+    /**
+     * Parse WARC record(s) where the source has been identified as a source of
+     * a GZip module instance. Since each record will presumably be parse from
+     * a different source alternative methods in the WARC reader will be used.
+     * @param jhove2 the JHove2 characterization context
+     * @param source WARC source unit
+     * @param reader WARC reader used to parse records
+     * @throws EOFException if EOF occurs prematurely
+     * @throws IOException if an error occurs while processing
+     * @throws JHOVE2Exception if a serious problem needs to be reported
+     */
     protected void parseRecordsCompressed(JHOVE2 jhove2, Source source, WarcReader reader)
                             throws EOFException, IOException, JHOVE2Exception {
         WarcRecord record;
@@ -283,18 +355,30 @@ public class WarcModule extends BaseFormatModule implements Validator {
              * Loop through available records.
              */
             InputStream in = source.getInputStream();
-            while ((record = reader.getNextRecordFrom(in)) != null) {
+            while ((record = reader.getNextRecordFrom(in, 8192)) != null) {
                 processRecord(jhove2, source, record);
             }
-
-            // TODO real validity.
-            this.isValid = Validity.True;
         }
         else {
             // No WARC reader. Oh the horror!
         }
     }
 
+    /**
+     * Process a WARC record. Adds a <code>WarcRecordSource</code> child
+     * to the supplied input source. Relevant reportable properties are added
+     * to the <code>WarcRecordSource</code>. If there is a payload present in
+     * the record, steps are taken to characterize it. The content-type of the
+     * payload is established from the record itself or a leading
+     * http response. The content-type is added as a presumptive format on the
+     * embedded source.
+     * @param jhove2 the JHove2 characterization context
+     * @param source WARC source unit
+     * @param record WARC record from WARC reader
+     * @throws EOFException if EOF occurs prematurely
+     * @throws IOException if an error occurs while processing
+     * @throws JHOVE2Exception if a serious problem needs to be reported
+     */
     protected void processRecord(JHOVE2 jhove2, Source source, WarcRecord record)
                             throws EOFException, IOException, JHOVE2Exception {
         SourceFactory factory = jhove2.getSourceFactory();
@@ -349,11 +433,12 @@ public class WarcModule extends BaseFormatModule implements Validator {
         /*
          * Characterize payload.
          */
-        if (payload_stream != null) {
+        if (recurse && payload_stream != null) {
             // Not all properties are ready yet, they are added as extras.
             Source payloadSrc = factory.getSource(jhove2, payload_stream, name, null);
             if (payloadSrc != null) {
                 payloadSrc = recordSrc.addChildSource(payloadSrc);
+                // Add presumptive format based on content-type.
                 if(formatId != null){
                     payloadSrc = payloadSrc.addPresumptiveFormat(formatId);
                 }
@@ -372,6 +457,9 @@ public class WarcModule extends BaseFormatModule implements Validator {
                 payloadSrc.close();
             }
         }
+        if (payload_stream != null) {
+            payload_stream.close();
+        }
         /*
          * Close record to finish validation.
          */
@@ -386,7 +474,62 @@ public class WarcModule extends BaseFormatModule implements Validator {
         recordSrc.addExtraProperties(recordData.getWarcRecordBaseProperties());
         recordSrc.addExtraProperties(recordData.getWarcTypeProperties(record));
         recordSrc.close();
-        // TODO Check for errors and attach.
+        /*
+         * Report errors.
+         */
+        checkRecordValidity(recordSrc, record, jhove2);
+    }
+
+    /**
+     * Checks WARC record validity and reports validation errors.
+     * @param src WARC source unit
+     * @param record the WARC record to characterize.
+     * @param jhove2 the JHove2 characterization context.
+     * @throws JHOVE2Exception
+     * @throws IOException
+     */
+    private void checkRecordValidity(Source src, WarcRecord record,
+                        JHOVE2 jhove2) throws JHOVE2Exception, IOException {
+        /*
+        if((this.recurse) && (validateContent)){
+            arcRecord.validateNetworkDocContent();
+        }
+        if (!record.isValid()) {
+        }
+        */
+        if (record.hasErrors()) {
+            // Report errors on source object.
+           for (WarcValidationError e : record.getValidationErrors()) {
+               src.addMessage(newValidityError(jhove2,Message.Severity.ERROR,
+                                               e.error.toString(),e.field,e.value));
+               //updateMap(e.error.toString() + '-' + e.field, this.errors);
+           }
+        }
+        /*
+        if (record.hasWarnings()) {
+            // Report warnings on source object.
+            for (String warning : record.getWarnings()) {
+                src.addMessage(newValidityError(jhove2,Message.Severity.WARNING,
+                                                "warning",warning));
+            }
+         }
+         */
+    }
+
+    /**
+     * Instantiates a new localized message.
+     * @param jhove2 the JHove2 characterization context.
+     * @param id the configuration property relative name.
+     * @param params the values to add in the message
+     * @return the new localized message
+     * @throws JHOVE2Exception
+     */
+    private Message newValidityError(JHOVE2 jhove2,Severity severity,String id,
+                                     Object... params)throws JHOVE2Exception {
+    return new Message(severity,
+                       Message.Context.OBJECT,
+                       this.getClass().getName() + '.' + id,params,
+                       jhove2.getConfigInfo());
     }
 
     //------------------------------------------------------------------------
@@ -455,10 +598,6 @@ public class WarcModule extends BaseFormatModule implements Validator {
         return warcFileSize;
     }
 
-    //------------------------------------------------------------------------
-    // Specific implementation
-    //------------------------------------------------------------------------
-
     /**
      * Returns the file version if it is the same for all records.
      * @return the file version
@@ -476,12 +615,40 @@ public class WarcModule extends BaseFormatModule implements Validator {
 //        return this.entries;
 //    }
 
+    //------------------------------------------------------------------------
+    // Specific implementation
+    //------------------------------------------------------------------------
+
     /**
-     * Sets whether to recursively characterize ARC record objects.
-     * @param  recurse  whether to recursively characterize ARC record objects.
+     * Sets whether to recursively characterize WARC record objects.
+     * @param  recurse  whether to recursively characterize WARC record objects.
      */
     public void setRecurse(boolean recurse) {
         this.recurse = recurse;
+    }
+
+    public void setComputeBlockDigest(boolean bComputeBlockDigest) {
+        this.bComputeBlockDigest = bComputeBlockDigest;
+    }
+
+    public void setBlockDigestAlgorithm(String blockDigestAlgorithm) {
+        this.blockDigestAlgorithm = blockDigestAlgorithm;
+    }
+
+    public void setBlockDigestEncoding(String blockDigestEncoding) {
+        this.blockDigestEncoding = blockDigestEncoding;
+    }
+
+    public void setComputePayloadDigest(boolean bComputePayloadDigest) {
+        this.bComputePayloadDigest = bComputePayloadDigest;
+    }
+
+    public void setPayloadDigestAlgorithm(String payloadDigestAlgorithm) {
+        this.payloadDigestAlgorithm = payloadDigestAlgorithm;
+    }
+
+    public void setPayloadDigestEncoding(String payloadDigestEncoding) {
+        this.payloadDigestEncoding = payloadDigestEncoding;
     }
 
 }

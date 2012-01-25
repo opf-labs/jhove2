@@ -77,31 +77,30 @@ import com.sleepycat.persist.model.Persistent;
  * @author lbihanic, selghissassi
  */
 @Persistent
-public class GzipModule
-	extends BaseFormatModule
-	implements Validator
-{
+public class GzipModule extends BaseFormatModule implements Validator {
 
     /** Module version identifier. */
-    public final static String VERSION = "2.0.0";
+    public final static String VERSION = "0.8.0";
 
     /** Module release date. */
-    public final static String RELEASE = "2010-12-01";
+    public final static String RELEASE = "2011-01-20";
 
     /** Module rights statement. */
+    /*
     public final static String RIGHTS =
-        "Copyright 2010 by Bibliotheque nationale de France. " +
+        "Copyright 2010 by The Royal Library in Denmark. " +
         "Available under the terms of the BSD license.";
+    */
 
     /** Module validation coverage. */
     public static final Coverage COVERAGE = Coverage.Selective;
-    
-	/** Validation status. */
-	protected Validity isValid;
-	
+
+    /** Validation status. */
+    protected Validity isValid;
+
     /** Number of members compressed with the deflate compression method. */
     //private final AtomicLong deflateMemberCount = new AtomicLong(0L);
-	private Long deflateMemberCount = new Long(0L);
+    private Long deflateMemberCount = new Long(0L);
     /** Number of non-valid members. */
     //private final AtomicLong invalidMembers = new AtomicLong(0L);
     private Long invalidMembers = new Long(0L);
@@ -130,32 +129,33 @@ public class GzipModule
     public transient FormatIdentification presumptiveFormat;
 
     /**
-	 * Instantiate a new <code>ZipModule</code>.
-	 * 
-	 * @param format
-	 *            Gzip format
-     * @param formatModuleAccessor 
-     *       FormatModuleAccessor to manage access to Format Profiles
-	 */
-	public GzipModule(Format format, 
-    		FormatModuleAccessor formatModuleAccessor) {
-		super(VERSION, RELEASE, RIGHTS, format, formatModuleAccessor);
-		this.isValid = Validity.Undetermined;
-	}
-	
-    /** Zero argument constructor. */
-	public GzipModule() {
-		this(null, null);
-	}
+     * Instantiate a new <code>ZipModule</code>.
+     * This constructor is used by the Spring framework.
+     * @param format Gzip format
+     * @param formatModuleAccessor FormatModuleAccessor to manage access to Format Profiles
+     */
+    public GzipModule(Format format,
+            FormatModuleAccessor formatModuleAccessor) {
+        super(VERSION, RELEASE, RIGHTS, format, formatModuleAccessor);
+        this.isValid = Validity.Undetermined;
+    }
+
+    /**
+     * Instantiate a new <code>ArcModule</code> instance.
+     * This constructor is used by the persistence layer.
+     */
+    public GzipModule() {
+        this(null, null);
+    }
 
     //------------------------------------------------------------------------
     // BaseFormatModule contract support
     //------------------------------------------------------------------------
 
-	@Override
-	public long parse(final JHOVE2 jhove2, Source source, Input input)
-		throws EOFException, IOException, JHOVE2Exception
-	{		
+    @Override
+    public long parse(final JHOVE2 jhove2, Source source, Input input)
+        throws EOFException, IOException, JHOVE2Exception
+    {
         long consumed = 0L;
 
         Invocation cfg = jhove2.getInvocation();
@@ -186,9 +186,9 @@ public class GzipModule
                     new BufferedInputStream(source.getInputStream(), 8192));
 
         instanceId = index.get();
-        getModuleAccessor().persistModule(this);		// Oh My God...!
+        getModuleAccessor().persistModule(this);        // Oh My God...!
         synchronized (gzipMap) {
-        	gzipMap.put(instanceId, this);
+            gzipMap.put(instanceId, this);
         }
 
         try {
@@ -199,23 +199,23 @@ public class GzipModule
             int memberCount = 0;
             while ((e = gz.getNextEntry()) != null) {
                 // Wrap found member in a JHove2 Source object.
-            	/*
+                /*
                 final GzipMemberSource src = (GzipMemberSource)
                         (SourceFactory.getSource(cfg.getTempPrefix(),
                             cfg.getTempSuffix(), cfg.getBufferSize(), e,
                             (doRecurse)? gz.getEntryInputStream(): null));
                 */
-            	InputStream stream = gz.getEntryInputStream();
-            	String name = e.getName();
+                InputStream stream = gz.getEntryInputStream();
+                String name = e.getName();
                 final Source src =
-        			factory.getSource(jhove2, stream, name, e);
+                    factory.getSource(jhove2, stream, name, e);
                 if (src != null) {
                     memberCount++;
                     // Attach member to parent source.
                     source.addChildSource(src);
 
                     if (presumptiveFormat != null) {
-                    	src.addPresumptiveFormat(presumptiveFormat);
+                        src.addPresumptiveFormat(presumptiveFormat);
                     }
 
                     if (doRecurse) {
@@ -228,21 +228,21 @@ public class GzipModule
                             this.characterizeMember(jhove2, src);
                         }
                         else {
-                        	/*
+                            /*
                             // All members but the first: characterize content.
                             if (threadPool != null) {
                                 // Submit to thread pool for asynchronous
                                 // parallel execution.
                                 final long offset = gz.getOffset();
                                 threadPool.execute(new Runnable() {
-                                	public void run() {
-                                		try {
-                                			characterizeMember(jhove2, src);
-                                		}
-                                		catch (Exception e) {
-                                			handleError(e, jhove2, offset);
-                                		}
-                                	}
+                                    public void run() {
+                                        try {
+                                            characterizeMember(jhove2, src);
+                                        }
+                                        catch (Exception e) {
+                                            handleError(e, jhove2, offset);
+                                        }
+                                    }
                                 });
                                 // Let executor threads a chance to run...
                                 // Thread.yield();
@@ -307,82 +307,82 @@ public class GzipModule
                 }
                 while (! shutdownComplete);
             }
-			*/
+            */
         }
         /*
          * Cleanup.
          */
         if (reader != null) {
-        	if (reader instanceof ArcReader) {
-        		((ArcReader)reader).close();
-        	}
-        	else if (reader instanceof WarcReader) {
-        		((WarcReader)reader).close();
-        	}
+            if (reader instanceof ArcReader) {
+                ((ArcReader)reader).close();
+            }
+            else if (reader instanceof WarcReader) {
+                ((WarcReader)reader).close();
+            }
         }
         synchronized (gzipMap) {
-        	gzipMap.remove(instanceId);
+            gzipMap.remove(instanceId);
         }
-	    /*
-	     * Consumed.
-	     */
+        /*
+         * Consumed.
+         */
         return consumed;
-	}
+    }
 
-	private void characterizeMember(JHOVE2 jhove2, Source source)
-			throws JHOVE2Exception, IOException 
-	{
-		Input input = source.getInput(jhove2);
-		try {
-			if (this.wovenFormatParser != null) {
-				// Start timer.
-				TimerInfo timer = source.getTimerInfo();
-				timer.setStartTime();
-				try {
-					// Update statistics.
-					jhove2.getSourceCounter().incrementSourceCounter(source);
-					// Configure temporary files deletion.
-					source.setDeleteTempFileOnClose(jhove2.getInvocation()
-							.getDeleteTempFilesOnClose());
-					// Woven format => Delegate content handling.
-					this.wovenFormatParser.parse(jhove2, source, input);
-				}
-				finally {
-					// Delete temp. files and compute processing duration.
-					source.close();
-					timer.setEndTime();
-				}
-			}
-			else {
-				// Directly characterize content.
-				jhove2.characterize(source, input);
-			}
-		}
-		finally {
-			// Make sure all file descriptors are properly closed.
-			if (input != null) {
-				input.close();
-			}
-		}
-	}
+    private void characterizeMember(JHOVE2 jhove2, Source source)
+            throws JHOVE2Exception, IOException
+    {
+        Input input = source.getInput(jhove2);
+        try {
+            if (this.wovenFormatParser != null) {
+                // Start timer.
+                TimerInfo timer = source.getTimerInfo();
+                timer.setStartTime();
+                try {
+                    // Update statistics.
+                    jhove2.getSourceCounter().incrementSourceCounter(source);
+                    // Configure temporary files deletion.
+                    source.setDeleteTempFileOnClose(jhove2.getInvocation()
+                            .getDeleteTempFilesOnClose());
+                    // Woven format => Delegate content handling.
+                    this.wovenFormatParser.parse(jhove2, source, input);
+                }
+                finally {
+                    // Delete temp. files and compute processing duration.
+                    source.close();
+                    timer.setEndTime();
+                }
+            }
+            else {
+                // Directly characterize content.
+                jhove2.characterize(source, input);
+            }
+        }
+        finally {
+            // Make sure all file descriptors are properly closed.
+            if (input != null) {
+                input.close();
+            }
+        }
+    }
 
-	private void handleError(Exception e, JHOVE2 jhove2, long offset)
-	{
-		try {
-			this.isValid = Validity.False;
-			this.validationMessages.add(this.newValidityError(jhove2,
-					"invalidGzipFile", Long.valueOf(offset), e));
-		}
-		catch (JHOVE2Exception ex) {
-			throw new RuntimeException(ex);
-		}
-	}
+    private void handleError(Exception e, JHOVE2 jhove2, long offset)
+    {
+        try {
+            this.isValid = Validity.False;
+            this.validationMessages.add(this.newValidityError(jhove2,
+                    "invalidGzipFile", Long.valueOf(offset), e));
+        }
+        catch (JHOVE2Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
 
     //------------------------------------------------------------------------
     // Validator interface support
     //------------------------------------------------------------------------
 
-	/** Validate the Gzip file.
+    /** Validate the Gzip file.
      * @param jhove2 JHOVE2 framework object
      * @param source Gzip file source unit
      * @param input  Gzip file source input
@@ -394,7 +394,7 @@ public class GzipModule
     {
         return this.isValid();
     }
-    
+
     /** Get validation coverage.
      * @return Validation coverage
      * @see org.jhove2.module.format.Validator#getCoverage()
@@ -403,7 +403,7 @@ public class GzipModule
     public Coverage getCoverage() {
         return COVERAGE;
     }
-    
+
     /** Get validity.
      * @return Validity
      * @see org.jhove2.module.format.Validator#isValid()
@@ -413,7 +413,7 @@ public class GzipModule
     {
         return this.isValid;
     }
-    
+
     //------------------------------------------------------------------------
     // Reportable properties
     //------------------------------------------------------------------------
