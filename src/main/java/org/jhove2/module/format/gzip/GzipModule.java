@@ -96,14 +96,14 @@ public class GzipModule extends BaseFormatModule implements Validator {
     public static final Coverage COVERAGE = Coverage.Selective;
 
     /** Validation status. */
-    protected Validity isValid;
+    private Validity isValid;
 
     /** Number of members compressed with the deflate compression method. */
-    //private final AtomicLong deflateMemberCount = new AtomicLong(0L);
-    private Long deflateMemberCount = new Long(0L);
+    private long deflateMemberCount = 0;
+
     /** Number of non-valid members. */
-    //private final AtomicLong invalidMembers = new AtomicLong(0L);
-    private Long invalidMembers = new Long(0L);
+    private long invalidMembers = 0;
+
     /** Validation error messages. */
     //private final Collection<Message> validationMessages =
     //                                    new ConcurrentLinkedQueue<Message>();
@@ -118,9 +118,9 @@ public class GzipModule extends BaseFormatModule implements Validator {
     /** Thread pool size for parallel characterization of GZip member. */
     //private int nThreads = 0;
 
-    public static transient Map<Integer, GzipModule> gzipMap = new TreeMap<Integer, GzipModule>();
+    public static final transient Map<Integer, GzipModule> gzipMap = new TreeMap<Integer, GzipModule>();
 
-    public static transient AutoIncrement index = new AutoIncrement();
+    public static final transient AutoIncrement index = new AutoIncrement();
 
     public Integer instanceId;
 
@@ -137,7 +137,7 @@ public class GzipModule extends BaseFormatModule implements Validator {
     public GzipModule(Format format,
             FormatModuleAccessor formatModuleAccessor) {
         super(VERSION, RELEASE, RIGHTS, format, formatModuleAccessor);
-        this.isValid = Validity.Undetermined;
+        isValid = Validity.Undetermined;
     }
 
     /**
@@ -171,12 +171,12 @@ public class GzipModule extends BaseFormatModule implements Validator {
         // Reset state.
         //this.deflateMemberCount.set(0L);
         //this.invalidMembers.set(0L);
-        this.deflateMemberCount = 0L;
-        this.invalidMembers = 0L;
-        this.validationMessages.clear();
-        this.isValid = Validity.Undetermined;
-        this.wovenFormatParser = null;
-        final boolean doRecurse = this.recurse;
+        deflateMemberCount = 0L;
+        invalidMembers = 0L;
+        validationMessages.clear();
+        isValid = Validity.Undetermined;
+        wovenFormatParser = null;
+        final boolean doRecurse = recurse;
 
         // In GZip format, least-significant bytes come first.
         input.setByteOrder(ByteOrder.LITTLE_ENDIAN);
@@ -186,7 +186,14 @@ public class GzipModule extends BaseFormatModule implements Validator {
                     new BufferedInputStream(source.getInputStream(), 8192));
 
         instanceId = index.get();
-        getModuleAccessor().persistModule(this);        // Oh My God...!
+        // This is done because it is not persisted immediately.
+        // I need it in recursive calls and not when the gzip module exits.
+        // Each time jhove2 looks up an existing module it actually
+        // instantiates a new class and loads the persisted values. 
+        // So a version with the correct instanceId exists on the call stack
+        // but every time someone requests it a new one is created and
+        // populated with persisted data.
+        getModuleAccessor().persistModule(this);
         synchronized (gzipMap) {
             gzipMap.put(instanceId, this);
         }
@@ -225,7 +232,7 @@ public class GzipModule extends BaseFormatModule implements Validator {
                             // Set parent module.
                             //src.setParentModule(this);
                             // Characterize member content.
-                            this.characterizeMember(jhove2, src);
+                            characterizeMember(jhove2, src);
                         }
                         else {
                             /*
@@ -250,7 +257,7 @@ public class GzipModule extends BaseFormatModule implements Validator {
                             else {
                             */
                                 // Sync. characterization in current thread.
-                                this.characterizeMember(jhove2, src);
+                                characterizeMember(jhove2, src);
                             /*
                             }
                             */
@@ -260,26 +267,26 @@ public class GzipModule extends BaseFormatModule implements Validator {
                     if (e.getCompressionMethod().getValue() ==
                                                     GzipInputStream.DEFLATE) {
                         //this.deflateMemberCount.incrementAndGet();
-                        ++this.deflateMemberCount;
+                        ++deflateMemberCount;
                     }
                     // Check member validity.
                     if (! e.isValid()) {
                         //this.invalidMembers.incrementAndGet();
-                        ++this.invalidMembers;
-                        this.isValid = Validity.False;
+                        ++invalidMembers;
+                        isValid = Validity.False;
                         // Report errors on child source object.
-                        this.reportValidationErrors(e, src, jhove2);
+                        reportValidationErrors(e, src, jhove2);
                     }
                 }
             }
-            if (this.isValid == Validity.Undetermined) {
+            if (isValid == Validity.Undetermined) {
                 // No invalid members found and EOF reached without
                 // any exception being thrown => Source is valid.
-                this.isValid = Validity.True;
+                isValid = Validity.True;
             }
         }
         catch (IOException e) {
-            this.handleError(e, jhove2, gz.getOffset());
+            handleError(e, jhove2, gz.getOffset());
             if (! ((e instanceof EOFException) && (gz.getOffset() != 0L))) {
                 // Not an EOF error occurring before the very first entry.
                 throw e;
@@ -334,7 +341,7 @@ public class GzipModule extends BaseFormatModule implements Validator {
     {
         Input input = source.getInput(jhove2);
         try {
-            if (this.wovenFormatParser != null) {
+            if (wovenFormatParser != null) {
                 // Start timer.
                 TimerInfo timer = source.getTimerInfo();
                 timer.setStartTime();
@@ -345,7 +352,7 @@ public class GzipModule extends BaseFormatModule implements Validator {
                     source.setDeleteTempFileOnClose(jhove2.getInvocation()
                             .getDeleteTempFilesOnClose());
                     // Woven format => Delegate content handling.
-                    this.wovenFormatParser.parse(jhove2, source, input);
+                    wovenFormatParser.parse(jhove2, source, input);
                 }
                 finally {
                     // Delete temp. files and compute processing duration.
@@ -369,8 +376,8 @@ public class GzipModule extends BaseFormatModule implements Validator {
     private void handleError(Exception e, JHOVE2 jhove2, long offset)
     {
         try {
-            this.isValid = Validity.False;
-            this.validationMessages.add(this.newValidityError(jhove2,
+            isValid = Validity.False;
+            validationMessages.add(newValidityError(jhove2,
                     "invalidGzipFile", Long.valueOf(offset), e));
         }
         catch (JHOVE2Exception ex) {
@@ -392,7 +399,7 @@ public class GzipModule extends BaseFormatModule implements Validator {
     public Validity validate(JHOVE2 jhove2, Source source, Input input)
         throws JHOVE2Exception
     {
-        return this.isValid();
+        return isValid();
     }
 
     /** Get validation coverage.
@@ -411,7 +418,7 @@ public class GzipModule extends BaseFormatModule implements Validator {
     @Override
     public Validity isValid()
     {
-        return this.isValid;
+        return isValid;
     }
 
     //------------------------------------------------------------------------
@@ -426,7 +433,7 @@ public class GzipModule extends BaseFormatModule implements Validator {
                         value = "Number of members compressed with the deflate compression method")
     public long getNumDeflateMembers() {
         //return this.deflateMemberCount.get();
-        return this.deflateMemberCount;
+        return deflateMemberCount;
     }
 
     /**
@@ -436,7 +443,7 @@ public class GzipModule extends BaseFormatModule implements Validator {
     @ReportableProperty(order = 2, value = "Number of non-valid members")
     public long getNumInvalidMembers() {
         //return this.invalidMembers.get();
-        return this.invalidMembers;
+        return invalidMembers;
     }
 
     /**
@@ -447,8 +454,8 @@ public class GzipModule extends BaseFormatModule implements Validator {
     public Collection<Message> getValidationMessages() {
         // Return null if the list is empty to prevent the displayer
         // from rendering this property.
-        return (this.validationMessages.isEmpty())? null:
-                    Collections.unmodifiableCollection(this.validationMessages);
+        return (validationMessages.isEmpty())? null:
+                    Collections.unmodifiableCollection(validationMessages);
     }
 
     //------------------------------------------------------------------------
@@ -472,7 +479,7 @@ public class GzipModule extends BaseFormatModule implements Validator {
      *         to <code>true</code>.
      */
     public boolean getRecurse() {
-        return this.recurse;
+        return recurse;
     }
 
     /*

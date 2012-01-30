@@ -9,7 +9,8 @@
     <constructor-arg ref="FormatModuleAccessor"/>
     <property name="developers">
       <list value-type="org.jhove2.core.Agent">
-	<ref bean="BnFAgent"/>
+        <ref bean="NetarkivetAgent"/>
+        <ref bean="BnFAgent"/>
       </list>
     </property>
     <property name="recurse" value="false"/>

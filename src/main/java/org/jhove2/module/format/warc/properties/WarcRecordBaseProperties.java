@@ -60,7 +60,7 @@ public class WarcRecordBaseProperties extends AbstractReportable {
 
     /**
      * Construct WARC record base property instance with the supplied data.
-     * @param record WARC record base property data
+     * @param record WARC record data
      */
     public WarcRecordBaseProperties(WarcRecordData record) {
         this.record = record;

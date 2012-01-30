@@ -11,6 +11,7 @@
 		<constructor-arg ref="FormatModuleAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
+				<ref bean="NetarkivetAgent"/>
 				<ref bean="BnFAgent"/>
 			</list>
 		</property>

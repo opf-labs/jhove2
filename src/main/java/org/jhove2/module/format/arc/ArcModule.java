@@ -63,7 +63,6 @@ import org.jhove2.core.source.SourceFactory;
 import org.jhove2.module.Module;
 import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.module.format.Validator;
-import org.jhove2.module.format.Validator.Coverage;
 import org.jhove2.module.format.arc.properties.ArcRecordData;
 import org.jhove2.module.format.gzip.GzipModule;
 import org.jhove2.persist.FormatModuleAccessor;
@@ -125,7 +124,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
     private static transient Map<String, FormatIdentification> jhove2Ids = null;
 
     /** Validation status. */
-    private volatile Validity isValid;
+    private Validity isValid;
 
     /** Used protocols. */
     private Map<String, Integer> protocols =
@@ -136,7 +135,6 @@ public class ArcModule extends BaseFormatModule implements Validator {
     //                            new ConcurrentHashMap<String,AtomicInteger>();
 
     /** The number or ARC records. */
-    //private AtomicInteger arcRecordNumber = new AtomicInteger(0);
     private int arcRecordNumber;
 
     /** The name of the ARC file. */
@@ -148,7 +146,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
     /**
      * Instantiate a new <code>ArcModule</code> instance.
      * This constructor is used by the Spring framework.
-     * @param format ARC format.
+     * @param format Jhove2 Format used by this module to handle ARC
      * @param formatModuleAccessor FormatModuleAccessor to manage access to Format Profiles
      */
     public ArcModule(Format format,
@@ -176,7 +174,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
      * @param  param    ARC source input
      * @return number of consumed bytes parsed
      * @throws IOException If an I/O exception is raised reading the source unit
-     * @throws JHOVE2Exception
+     * @throws JHOVE2Exception if a serious error hinders correct module execution
      * @see org.jhove2.module.format.FormatModule#parse(org.jhove2.core.JHOVE2,
      *      org.jhove2.core.source.Source, org.jhove2.core.io.Input)
      */
@@ -184,7 +182,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
     public long parse(JHOVE2 jhove2,Source source, Input input)
                         throws IOException, EOFException, JHOVE2Exception {
         /*
-         * Cache Content-Types to J2 FormatIdentifications.
+         * Cache Content-Types to JHove2 FormatIdentifications.
          */
         if (jhove2Ids == null) {
             Map<String,String> ids =
@@ -199,19 +197,20 @@ public class ArcModule extends BaseFormatModule implements Validator {
             jhove2Ids = Collections.unmodifiableSortedMap(idsTemp);
         }
         /*
+         * SourceFactory for later use.
+         */
+        //Invocation cfg = jhove2.getInvocation();
+        SourceFactory sourceFactory = jhove2.getSourceFactory();
+        if (sourceFactory == null) {
+            throw new JHOVE2Exception("INTERNAL ERROR - JHOVE2 SourceFactory is null");
+        }
+        /*
          * Module init.
          */
         long consumed = 0L;
         isValid = Validity.Undetermined;
+        // No effect unless read methods on the input object are called.
         input.setByteOrder(ByteOrder.LITTLE_ENDIAN);
-
-        // Reset state.
-        arcFileName = null;
-        arcFileSize = -1L;
-        //this.arcRecordNumber.set(0);
-        //this.errors.clear();
-        //this.protocols.clear();
-
         /*
          * Module context.
          */
@@ -225,15 +224,19 @@ public class ArcModule extends BaseFormatModule implements Validator {
                 mod = parentMods.get(i);
                 if (mod instanceof GzipModule) {
                     gzipMod = (GzipModule)mod;
+                    // Lookup the the GZipModule which is on the call stack.
+                    // Required since the JHove2 lookup returns a new instance
+                    // populated with persisted values and not the instance on
+                    // the call stack.
                     gzipMod = GzipModule.gzipMap.get(gzipMod.instanceId);
                 }
                 if (mod instanceof ArcModule) {
+                	// The same goes for the WarcModule except we do not need
+                	// any transient fields here.
                     arcMod = (ArcModule)mod;
                 }
             }
         }
-
-        //Invocation cfg = jhove2.getInvocation();
 
         ArcReader reader = null;
         if (gzipMod != null) {
@@ -245,17 +248,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
             reader = (ArcReader)gzipMod.reader;
             if (reader == null) {
                 reader = ArcReaderFactory.getReaderUncompressed();
-                reader.setBlockDigestEnabled(bComputeBlockDigest);
-                reader.setPayloadDigestEnabled(bComputePayloadDigest);
-                try {
-                    reader.setBlockDigestAlgorithm(blockDigestAlgorithm);
-                    reader.setPayloadDigestAlgorithm(payloadDigestAlgorithm);
-                } catch (NoSuchAlgorithmException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                reader.setBlockDigestEncoding(blockDigestEncoding);
-                reader.setPayloadDigestEncoding(payloadDigestEncoding);
+                setDigestOptions(reader);
                 gzipMod.reader = reader;
             }
             if (arcMod == null) {
@@ -263,53 +256,30 @@ public class ArcModule extends BaseFormatModule implements Validator {
                  * First record. (Unless the parent modules are not correct!)
                  */
                 mod = parentSrc.addModule(this);
-                parseRecordsCompressed(jhove2, source, reader, true);
-            }
-            else {
-                arcMod.parseRecordsCompressed(jhove2, source, reader, false);
+                parseRecordsCompressed(jhove2, sourceFactory, source, reader, true);
+            } else {
+                arcMod.parseRecordsCompressed(jhove2, sourceFactory, source, reader, false);
                 // Validity
                 if (arcMod.isValid != Validity.False) {
                     if (reader.isCompliant()) {
                         arcMod.isValid = Validity.True;
-                    }
-                    else {
+                    } else {
                         arcMod.isValid = Validity.False;
                     }
                 }
                 arcMod = (ArcModule)arcMod.getModuleAccessor().persistModule(arcMod);
-                // Remove WarcModule from source instance since we added one to the parent source.
-                /*
-                List<Module> sourceMods = source.getModules();
-                Iterator<Module> iter = sourceMods.iterator();
-                while (iter.hasNext()) {
-                    mod = iter.next();
-                    if (mod instanceof ArcModule) {
-                        iter.remove();
-                    }
-                }
-                */
+                // Remove ArcModule from source instance since we added one to the parent source.
                 this.setParentSourceId(null);
                 source = source.getSourceAccessor().persistSource(source);
             }
             consumed = reader.getConsumed();
-        }
-        else {
+        } else {
             /*
              * Not GZip compressed.
              */
             reader = ArcReaderFactory.getReaderUncompressed(source.getInputStream(), 8192);
-            reader.setBlockDigestEnabled(bComputeBlockDigest);
-            reader.setPayloadDigestEnabled(bComputePayloadDigest);
-            try {
-                reader.setBlockDigestAlgorithm(blockDigestAlgorithm);
-                reader.setPayloadDigestAlgorithm(payloadDigestAlgorithm);
-            } catch (NoSuchAlgorithmException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            reader.setBlockDigestEncoding(blockDigestEncoding);
-            reader.setPayloadDigestEncoding(payloadDigestEncoding);
-            parseRecordsUncompressed(jhove2, source, reader, true);
+            setDigestOptions(reader);
+            parseRecordsUncompressed(jhove2, sourceFactory, source, reader, true);
             reader.close();
             consumed = reader.getConsumed();
             /*
@@ -318,8 +288,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
             if (isValid != Validity.False) {
                 if (reader.isCompliant()) {
                     isValid = Validity.True;
-                }
-                else {
+                } else {
                     isValid = Validity.False;
                 }
             }
@@ -331,41 +300,63 @@ public class ArcModule extends BaseFormatModule implements Validator {
     }
 
     /**
+     * Set digest options for ARC reader.
+     * @param reader ARC reader instance
+     */
+    protected void setDigestOptions(ArcReader reader) throws JHOVE2Exception {
+        reader.setBlockDigestEnabled(bComputeBlockDigest);
+        reader.setPayloadDigestEnabled(bComputePayloadDigest);
+        try {
+            reader.setBlockDigestAlgorithm(blockDigestAlgorithm);
+        } catch (NoSuchAlgorithmException e) {
+        	throw new JHOVE2Exception("Invalid block digest algorithm: " + blockDigestAlgorithm);
+        }
+        try {
+            reader.setPayloadDigestAlgorithm(payloadDigestAlgorithm);
+        } catch (NoSuchAlgorithmException e) {
+        	throw new JHOVE2Exception("Invalid payload digest algorithm: " + payloadDigestAlgorithm);
+        }
+        reader.setBlockDigestEncoding(blockDigestEncoding);
+        reader.setPayloadDigestEncoding(payloadDigestEncoding);
+    }
+
+    /**
      * Parse ARC records that are not encased in GZip entries. Parsing should
      * should be straight forward with all records accessible through the same
      * source. The version block is only read if the reader was initialized
      * during this module call.
      * @param jhove2 the JHove2 characterization context
-     * @param source ARC source unit
+     * @param sourceFactory JHove2 source factory
+     * @param parentSource ARC source unit
      * @param reader ARC reader used to parse records
-     * @param bReadVersion read version block or go straight to parsing records
+     * @param bReadVersion read version block first or go straight to parsing records
      * @throws EOFException if EOF occurs prematurely
-     * @throws IOException if an error occurs while processing
+     * @throws IOException if an IO error occurs while processing
      * @throws JHOVE2Exception if a serious problem needs to be reported
      */
-    protected void parseRecordsUncompressed(JHOVE2 jhove2, Source source, ArcReader reader, boolean bReadVersion)
-            throws EOFException, IOException, JHOVE2Exception {
+    protected void parseRecordsUncompressed(JHOVE2 jhove2, SourceFactory sourceFactory,
+    		Source parentSource, ArcReader reader, boolean bReadVersion)
+    				throws EOFException, IOException, JHOVE2Exception {
         ArcVersionBlock versionBlock;
         ArcRecord record;
 
         // Ensure a ARC reader could be instantiated.
         if (reader != null) {
-            source.setIsAggregate(true);
+            parentSource.setIsAggregate(true);
             if (bReadVersion) {
                 versionBlock = reader.getVersionBlock();
                 if (versionBlock != null) {
-                    processVersionBlock(jhove2, source, versionBlock);
+                    processVersionBlock(jhove2, sourceFactory, parentSource, versionBlock);
                 }
             }
             /*
              * Loop through available records.
              */
             while ((record = reader.getNextRecord()) != null) {
-                processRecord(jhove2, source, record);
+                processRecord(jhove2, sourceFactory, parentSource, record);
             }
-        }
-        else {
-            // No WARC reader. Oh the horror!
+        } else {
+            throw new JHOVE2Exception("ArcReader is null");
         }
     }
 
@@ -376,37 +367,38 @@ public class ArcModule extends BaseFormatModule implements Validator {
      * The version block is only read if the reader was initialized
      * during this module call.
      * @param jhove2 the JHove2 characterization context
-     * @param source ARC source unit
+     * @param sourceFactory JHove2 source factory
+     * @param parentSource ARC source unit
      * @param reader ARC reader used to parse records
-     * @param bReadVersion read version block or go straight to parsing records
+     * @param bReadVersion read version block first or go straight to parsing records
      * @throws EOFException if EOF occurs prematurely
-     * @throws IOException if an error occurs while processing
+     * @throws IOException if an IO error occurs while processing
      * @throws JHOVE2Exception if a serious problem needs to be reported
      */
-    protected void parseRecordsCompressed(JHOVE2 jhove2, Source source, ArcReader reader, boolean bReadVersion)
-            throws EOFException, IOException, JHOVE2Exception {
+    protected void parseRecordsCompressed(JHOVE2 jhove2, SourceFactory sourceFactory,
+    		Source parentSource, ArcReader reader, boolean bReadVersion)
+    				throws EOFException, IOException, JHOVE2Exception {
         ArcVersionBlock versionBlock;
         ArcRecord record;
 
         // Ensure a ARC reader could be instantiated.
         if (reader != null) {
-            source.setIsAggregate(true);
-            InputStream in = source.getInputStream();
+            parentSource.setIsAggregate(true);
+            InputStream in = parentSource.getInputStream();
             if (bReadVersion) {
                 versionBlock = reader.getVersionBlock(in);
                 if (versionBlock != null) {
-                    processVersionBlock(jhove2, source, versionBlock);
+                    processVersionBlock(jhove2, sourceFactory, parentSource, versionBlock);
                 }
             }
             /*
              * Loop through available records.
              */
             while ((record = reader.getNextRecordFrom(in, 8192, 0)) != null) {
-                processRecord(jhove2, source, record);
+                processRecord(jhove2, sourceFactory, parentSource, record);
             }
-        }
-        else {
-            // No WARC reader. Oh the horror!
+        } else {
+            throw new JHOVE2Exception("ArcReader is null");
         }
     }
 
@@ -415,27 +407,24 @@ public class ArcModule extends BaseFormatModule implements Validator {
      * to the supplied input source. Relevant reportable properties are added
      * to the <code>ArcRecordSource</code>.
      * @param jhove2 the JHove2 characterization context
-     * @param source ARC source unit
+     * @param sourceFactory JHove2 source factory
+     * @param parentSource ARC source unit
      * @param versionBlock ARC version block
      * @throws EOFException if EOF occurs prematurely
-     * @throws IOException if an error occurs while processing
+     * @throws IOException if an IO error occurs while processing
      * @throws JHOVE2Exception if a serious problem needs to be reported
      */
-    protected void processVersionBlock(JHOVE2 jhove2, Source source, ArcVersionBlock versionBlock)
-                            throws EOFException, IOException, JHOVE2Exception {
-        SourceFactory factory = jhove2.getSourceFactory();
-        if (factory == null) {
-            throw new JHOVE2Exception("JHOVE2 SourceFactory is null");
-        }
-
+    protected void processVersionBlock(JHOVE2 jhove2, SourceFactory sourceFactory,
+    		Source parentSource, ArcVersionBlock versionBlock)
+    				throws EOFException, IOException, JHOVE2Exception {
         ArcRecordData recordData;
 
         /*
          * Arc Record Source.
          */
         Source versionBlockSrc = new ArcRecordSource();
-        versionBlockSrc.setSourceAccessor(factory.createSourceAccessor(versionBlockSrc));
-        versionBlockSrc = source.addChildSource(versionBlockSrc);
+        versionBlockSrc.setSourceAccessor(sourceFactory.createSourceAccessor(versionBlockSrc));
+        versionBlockSrc = parentSource.addChildSource(versionBlockSrc);
         ++arcRecordNumber;
         /*
          * Properties.
@@ -443,7 +432,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
         recordData = new ArcRecordData(versionBlock);
         versionBlockSrc.addExtraProperties(recordData.getArcRecordBaseProperties());
         versionBlockSrc.addExtraProperties(recordData.getArcVersionBlockProperties());
-        // Update protocol map.
+        // Update protocol statistics.
         if (recordData.protocol != null) {
             int number = 1;
             if (protocols.containsKey(recordData.protocol)) {
@@ -466,19 +455,16 @@ public class ArcModule extends BaseFormatModule implements Validator {
      * http response. The content-type is added as a presumptive format on the
      * embedded source.
      * @param jhove2 the JHove2 characterization context
-     * @param source ARC source unit
+     * @param sourceFactory JHove2 source factory
+     * @param parentSource ARC source unit
      * @param record ARC record from ARC reader
      * @throws EOFException if EOF occurs prematurely
-     * @throws IOException if an error occurs while processing
+     * @throws IOException if an IO error occurs while processing
      * @throws JHOVE2Exception if a serious problem needs to be reported
      */
-    protected void processRecord(JHOVE2 jhove2, Source source, ArcRecord record)
-                            throws EOFException, IOException, JHOVE2Exception {
-        SourceFactory factory = jhove2.getSourceFactory();
-        if (factory == null) {
-            throw new JHOVE2Exception("JHOVE2 SourceFactory is null");
-        }
-
+    protected void processRecord(JHOVE2 jhove2, SourceFactory sourceFactory,
+    		Source parentSource, ArcRecord record)
+    				throws EOFException, IOException, JHOVE2Exception {
         Payload payload;
         HttpResponse httpResponse;
         InputStream payload_stream;
@@ -491,8 +477,8 @@ public class ArcModule extends BaseFormatModule implements Validator {
          * Arc Record Source.
          */
         Source recordSrc = new ArcRecordSource();
-        recordSrc.setSourceAccessor(factory.createSourceAccessor(recordSrc));
-        recordSrc = source.addChildSource(recordSrc);
+        recordSrc.setSourceAccessor(sourceFactory.createSourceAccessor(recordSrc));
+        recordSrc = parentSource.addChildSource(recordSrc);
         ++arcRecordNumber;
         /*
          * Prepare payload.
@@ -504,14 +490,13 @@ public class ArcModule extends BaseFormatModule implements Validator {
             httpResponse = payload.getHttpResponse();
             if (httpResponse == null) {
                 payload_stream = payload.getInputStream();
-            }
-            else {
+            } else {
                 contentType = httpResponse.getProtocolContentType();
                 payload_stream = httpResponse.getPayloadInputStream();
             }
         }
         /*
-         * Presumptive format.
+         * Decide on Jhove2 format from contentType information.
          */
         if (contentType != null) {
             int idx = contentType.indexOf(';');
@@ -527,26 +512,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
          * Characterize payload.
          */
         if (recurse && payload_stream != null) {
-            Source payloadSrc = factory.getSource(jhove2, payload_stream, name, null);        // properties
-            if (payloadSrc != null) {
-                payloadSrc = recordSrc.addChildSource(payloadSrc);
-                // Add presumptive format based on content-type.
-                if(formatId != null){
-                    payloadSrc = payloadSrc.addPresumptiveFormat(formatId);
-                }
-                /* Make sure to close the Input after
-                 * characterization is completed.
-                 */
-                Input src_input = payloadSrc.getInput(jhove2);
-                try {
-                    payloadSrc = jhove2.characterize(payloadSrc, src_input);
-                }
-                finally {
-                    if (src_input != null) {
-                        src_input.close();
-                    }
-                }
-            }
+        	characterizePayload(jhove2, sourceFactory, recordSrc, payload_stream, formatId);
         }
         if (payload_stream != null) {
             payload_stream.close();
@@ -564,7 +530,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
         recordData = new ArcRecordData(record);
         recordSrc.addExtraProperties(recordData.getArcRecordBaseProperties());
         recordSrc.addExtraProperties(recordData.getArcRecordProperties());
-        // Update protocol map.
+        // Update protocol statistics.
         if (recordData.protocol != null) {
             int number = 1;
             if (protocols.containsKey(recordData.protocol)) {
@@ -579,12 +545,48 @@ public class ArcModule extends BaseFormatModule implements Validator {
     }
 
     /**
+     * Process a ARC record payload, recursively if configured to do so.
+     * @param jhove2 the JHove2 characterization context
+     * @param sourceFactory JHove2 source factory
+     * @param recordSrc ARC record source unit
+     * @param payload_stream payload inputstream
+     * @param formatId JHove2 format identification based on contentType
+     * @throws EOFException if EOF occurs prematurely
+     * @throws IOException if an IO error occurs while processing
+     * @throws JHOVE2Exception if a serious problem needs to be reported
+     */
+    protected void characterizePayload(JHOVE2 jhove2, SourceFactory sourceFactory,
+    		Source recordSrc, InputStream payload_stream, FormatIdentification formatId)
+    				throws EOFException, IOException, JHOVE2Exception {
+        // Not all properties are ready yet, they are added as extras.
+        Source payloadSrc = sourceFactory.getSource(jhove2, payload_stream, name, null);
+        if (payloadSrc != null) {
+            payloadSrc = recordSrc.addChildSource(payloadSrc);
+            // Add presumptive format based on content-type.
+            if(formatId != null){
+                payloadSrc = payloadSrc.addPresumptiveFormat(formatId);
+            }
+            /* Make sure to close the Input after
+             * characterization is completed.
+             */
+            Input src_input = payloadSrc.getInput(jhove2);
+            try {
+                payloadSrc = jhove2.characterize(payloadSrc, src_input);
+            } finally {
+                if (src_input != null) {
+                    src_input.close();
+                }
+            }
+        }
+    }
+
+    /**
      * Checks ARC record validity and reports validation errors.
      * @param src ARC source unit
      * @param record the ARC record to characterize.
      * @param jhove2 the JHove2 characterization context.
-     * @throws JHOVE2Exception
-     * @throws IOException
+     * @throws IOException if an IO error occurs while processing
+     * @throws JHOVE2Exception if a serious problem needs to be reported
      */
     private void checkRecordValidity(Source src, ArcRecordBase record,
                         JHOVE2 jhove2) throws JHOVE2Exception, IOException {
@@ -618,7 +620,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
      * @param id the configuration property relative name.
      * @param params the values to add in the message
      * @return the new localized message
-     * @throws JHOVE2Exception
+     * @throws JHOVE2Exception if a serious problem needs to be reported
      */
     private Message newValidityError(JHOVE2 jhove2,Severity severity,String id,
                                      Object... params)throws JHOVE2Exception {
@@ -667,7 +669,8 @@ public class ArcModule extends BaseFormatModule implements Validator {
     //------------------------------------------------------------------------
 
     /**
-     * Validates the ARC file.
+     * Validates the ARC file, which in this case amounts to returning the
+     * result since validation has already been done.
      * @param  jhove2   the JHove2 characterization context.
      * @param  source   ARC file source unit.
      * @param  input    ARC file source input.
@@ -759,26 +762,54 @@ public class ArcModule extends BaseFormatModule implements Validator {
         this.recurse = recurse;
     }
 
+    /**
+     * Enable or disable block digest computation.
+     * @param bComputeBlockDigest block digest computation toggle
+     */
     public void setComputeBlockDigest(boolean bComputeBlockDigest) {
         this.bComputeBlockDigest = bComputeBlockDigest;
     }
 
+    /**
+     * Set the block digest algorithm to be used in case no digest is present
+     * in the WARC header.
+     * @param blockDigestAlgorithm block digest algorithm
+     */
     public void setBlockDigestAlgorithm(String blockDigestAlgorithm) {
         this.blockDigestAlgorithm = blockDigestAlgorithm;
     }
 
+    /**
+     * Set the block digest encoding scheme to be used in case no digest
+     * is present in the WARC header.
+     * @param blockDigestEncoding block digest encoding scheme
+     */
     public void setBlockDigestEncoding(String blockDigestEncoding) {
         this.blockDigestEncoding = blockDigestEncoding;
     }
 
+    /**
+     * Enable or disable payload digest computation.
+     * @param bComputePayloadDigest payload digest computation toggle
+     */
     public void setComputePayloadDigest(boolean bComputePayloadDigest) {
         this.bComputePayloadDigest = bComputePayloadDigest;
     }
 
+    /**
+     * Set the payload digest algorithm to be used in case no digest is present
+     * in the WARC header.
+     * @param payloadDigestAlgorithm payload digest algorithm
+     */
     public void setPayloadDigestAlgorithm(String payloadDigestAlgorithm) {
         this.payloadDigestAlgorithm = payloadDigestAlgorithm;
     }
 
+    /**
+     * Set the payload digest encoding scheme to be used in case no digest
+     * is present in the WARC header.
+     * @param payloadDigestEncoding payload digest encoding scheme
+     */
     public void setPayloadDigestEncoding(String payloadDigestEncoding) {
         this.payloadDigestEncoding = payloadDigestEncoding;
     }

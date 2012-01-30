@@ -60,7 +60,7 @@ public class WarcRevisitProperties extends AbstractReportable {
 
     /**
      * Construct WARC revisit property instance with the supplied data.
-     * @param record WARC revisit property data
+     * @param record WARC record data
      */
     public WarcRevisitProperties(WarcRecordData record) {
         this.record = record;

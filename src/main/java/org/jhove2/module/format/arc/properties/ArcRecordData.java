@@ -59,44 +59,44 @@ import com.sleepycat.persist.model.Persistent;
 @Persistent
 public class ArcRecordData {
 
-    public Long startOffset;
-    public Long consumed;
+    protected Long startOffset;
+    protected Long consumed;
 
-    public String url;
+    protected String url;
     public String protocol;
-    public String ipAddress;
-    public String ipVersion;
-    public String archiveDate;
-    public String rawArchiveDate;
-    public String contentType;
-    public String length;
-    public String resultCode;
-    public String checksum;
-    public String location;
-    public String offset;
-    public String filename;
-    public Boolean bHasPayload;
-    public String payloadLength;
-    public boolean bIsNonCompliant;
+    protected String ipAddress;
+    protected String ipVersion;
+    protected String archiveDate;
+    protected String rawArchiveDate;
+    protected String contentType;
+    protected String length;
+    protected String resultCode;
+    protected String checksum;
+    protected String location;
+    protected String offset;
+    protected String filename;
+    protected Boolean bHasPayload;
+    protected String payloadLength;
+    protected boolean bIsNonCompliant;
 
-    public String computedBlockDigest;
-    public String computedBlockDigestAlgorithm;
-    public String computedBlockDigestEncoding;
-    public String computedPayloadDigest;
-    public String computedPayloadDigestAlgorithm;
-    public String computedPayloadDigestEncoding;
+    protected String computedBlockDigest;
+    protected String computedBlockDigestAlgorithm;
+    protected String computedBlockDigestEncoding;
+    protected String computedPayloadDigest;
+    protected String computedPayloadDigestAlgorithm;
+    protected String computedPayloadDigestEncoding;
 
-    public String versionNumber;
-    public String reserved;
-    public String originCode;
+    protected String versionNumber;
+    protected String reserved;
+    protected String originCode;
 
-    public String protocolResultCode;
-    public String protocolVersion;
-    public String protocolContentType;
-    public String protocolServer;
+    protected String protocolResultCode;
+    protected String protocolVersion;
+    protected String protocolContentType;
+    protected String protocolServer;
 
     /** WARC <code>DateFormat</code> as specified by the WARC ISO standard. */
-    public transient DateFormat warcDateFormat = WarcDateParser.getWarcDateFormat();
+    protected transient DateFormat warcDateFormat = WarcDateParser.getWarcDateFormat();
 
     /**
      * Constructor required by the persistence layer.
@@ -151,7 +151,7 @@ public class ArcRecordData {
      * and arc record classes.
      * @param record record containing common data
      */
-    public void populateArcRecordBase(ArcRecordBase record) {
+    protected void populateArcRecordBase(ArcRecordBase record) {
         startOffset = record.getOffset();
         consumed = record.getConsumed();
         url = record.recUrl;
@@ -161,7 +161,7 @@ public class ArcRecordData {
             if (record.inetAddress.getAddress().length == 4) {
                 ipVersion = "4";
             }
-            else {
+            else if (record.inetAddress.getAddress().length == 16) {
                 ipVersion = "6";
             }
         }
@@ -192,6 +192,7 @@ public class ArcRecordData {
         Payload payload = record.getPayload();
         if (payload != null) {
             // TODO Verify meaning of ObjectSize in JHove2 ARC specs
+        	// payloadLength is reported back as ObjectSize in the Jhove2 specs
             HttpResponse httpResponse = payload.getHttpResponse();
             if (httpResponse != null) {
                 payloadLength = Long.toString(httpResponse.getPayloadLength());
@@ -250,7 +251,7 @@ public class ArcRecordData {
 
     /**
      * Returns a persistent reportable arc version block property instance.
-     * @return
+     * @return a persistent reportable arc version block property instance
      */
     public AbstractReportable getArcVersionBlockProperties() {
         return new ArcVersionBlockProperties(this);
@@ -258,7 +259,7 @@ public class ArcRecordData {
 
     /**
      * Returns a persistent reportable arc record property instance.
-     * @return
+     * @return a persistent reportable arc record property instance
      */
     public AbstractReportable getArcRecordProperties() {
         return new ArcRecordProperties(this);

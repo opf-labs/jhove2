@@ -60,7 +60,7 @@ public class WarcContinuationProperties extends AbstractReportable {
 
     /**
      * Construct WARC continuation property instance with the supplied data.
-     * @param record WARC continuation property data
+     * @param record WARC record data
      */
     public WarcContinuationProperties(WarcRecordData record) {
         this.record = record;

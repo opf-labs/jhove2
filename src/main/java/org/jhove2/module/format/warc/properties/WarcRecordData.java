@@ -53,62 +53,66 @@ import com.sleepycat.persist.model.Persistent;
  * Since the WARC reader is not persistent its data must be moved to a simpler
  * data class which can be persisted instead.
  *
+ * Note: Some populate methods currently do not include any functionality.
+ * However they are included for backwards compatibility in case the ISO
+ * standard changes and extra properties are required.
+ *
  * @author nicl
  */
 @Persistent
 public class WarcRecordData {
 
-    public Long startOffset;
-    public Long consumed;
+    protected Long startOffset;
+    protected Long consumed;
 
-    public String warcType;
-    public String warcFilename;
-    public String warcRecordId;
-    public String warcDate;
-    public String contentLength;
-    public String contentType;
-    public String warcTruncated;
-    public String warcIpAddress;
-    public List<String> warcConcurrentToList;
-    public String warcRefersTo;
-    public String warcTargetUri;
-    public String warcWarcinfoId;
-    public String warcIdentifiedPayloadType;
-    public String warcProfile;
-    public String warcSegmentNumber;
-    public String warcSegmentOriginId;
-    public String warcSegmentTotalLength;
+    protected String warcType;
+    protected String warcFilename;
+    protected String warcRecordId;
+    protected String warcDate;
+    protected String contentLength;
+    protected String contentType;
+    protected String warcTruncated;
+    protected String warcIpAddress;
+    protected List<String> warcConcurrentToList;
+    protected String warcRefersTo;
+    protected String warcTargetUri;
+    protected String warcWarcinfoId;
+    protected String warcIdentifiedPayloadType;
+    protected String warcProfile;
+    protected String warcSegmentNumber;
+    protected String warcSegmentOriginId;
+    protected String warcSegmentTotalLength;
 
-    public String warcBlockDigest;
-    public String warcBlockDigestAlgorithm;
-    public String warcBlockDigestEncoding;
-    public String warcPayloadDigest;
-    public String warcPayloadDigestAlgorithm;
-    public String warcPayloadDigestEncoding;
+    protected String warcBlockDigest;
+    protected String warcBlockDigestAlgorithm;
+    protected String warcBlockDigestEncoding;
+    protected String warcPayloadDigest;
+    protected String warcPayloadDigestAlgorithm;
+    protected String warcPayloadDigestEncoding;
 
-    public String computedBlockDigest;
-    public String computedBlockDigestAlgorithm;
-    public String computedBlockDigestEncoding;
-    public String computedPayloadDigest;
-    public String computedPayloadDigestAlgorithm;
-    public String computedPayloadDigestEncoding;
+    protected String computedBlockDigest;
+    protected String computedBlockDigestAlgorithm;
+    protected String computedBlockDigestEncoding;
+    protected String computedPayloadDigest;
+    protected String computedPayloadDigestAlgorithm;
+    protected String computedPayloadDigestEncoding;
 
-    public String recordIdScheme;
+    protected String recordIdScheme;
 
-    public Boolean bIsNonCompliant;
-    public Boolean isValidBlockDigest;
-    public Boolean isValidPayloadDigest;
+    protected Boolean bIsNonCompliant;
+    protected Boolean isValidBlockDigest;
+    protected Boolean isValidPayloadDigest;
 
-    public Boolean bHasPayload;
-    public String payloadLength;
+    protected Boolean bHasPayload;
+    protected String payloadLength;
 
-    public String ipVersion;
+    protected String ipVersion;
 
-    public String resultCode;
-    public String protocolVersion;
-    public String protocolContentType;
-    public String protocolServer;
-    public String protocolUserAgent;
+    protected String resultCode;
+    protected String protocolVersion;
+    protected String protocolContentType;
+    protected String protocolServer;
+    protected String protocolUserAgent;
 
     /**
      * Constructor required by the persistence layer.
@@ -237,98 +241,20 @@ public class WarcRecordData {
          */
         bHasPayload = record.hasPayload();
         Payload payload = record.getPayload();
+        HeaderLine headerLine;
         if (payload != null) {
             // TODO Verify meaning of JHove2 WARC draft
             HttpResponse httpResponse = payload.getHttpResponse();
             if (httpResponse != null) {
                 payloadLength = Long.toString(httpResponse.getPayloadLength());
-            }
-            else {
-                payloadLength = Long.toString(payload.getTotalLength());;
-            }
-        }
-    }
-
-    /**
-     * Populate object with WarcInfo record type specific data which is to be
-     * reported back as properties.
-     * @return this object with populated data for WarcInfo properties
-     */
-    public WarcRecordData populateWarcinfo(WarcRecord record) {
-        return this;
-    }
-
-    /**
-     * Populate object with Response record type specific data which is to be
-     * reported back as properties.
-     * @return this object with populated data for Response properties
-     */
-    public WarcRecordData populateResponse(WarcRecord record) {
-        if (record.warcInetAddress != null) {
-            if (record.warcInetAddress.getAddress().length == 4) {
-                ipVersion = "4";
-            }
-            else {
-                ipVersion = "6";
-            }
-        }
-
-        Payload payload = record.getPayload();
-
-        if (payload != null) {
-            HttpResponse httpResponse = payload.getHttpResponse();
-            HeaderLine headerLine;
-            if (httpResponse != null) {
-                resultCode = httpResponse.resultCode;
+                // TODO Fix this when request and response are separate objects.
                 protocolVersion = httpResponse.protocolVersion;
+                resultCode = httpResponse.resultCode;
                 protocolContentType = httpResponse.contentType;
                 headerLine = httpResponse.getHeader("server");
                 if (headerLine != null && headerLine.value != null) {
                     protocolServer = headerLine.value;
                 }
-            }
-        }
-        return this;
-    }
-
-    /**
-     * Populate object with Resource record type specific data which is to be
-     * reported back as properties.
-     * @return this object with populated data for Resource properties
-     */
-    public WarcRecordData populateResource(WarcRecord record) {
-        if (record.warcInetAddress != null) {
-            if (record.warcInetAddress.getAddress().length == 4) {
-                ipVersion = "4";
-            }
-            else {
-                ipVersion = "6";
-            }
-        }
-        return this;
-    }
-
-    /**
-     * Populate object with Request record type specific data which is to be
-     * reported back as properties.
-     * @return this object with populated data for Request properties
-     */
-    public WarcRecordData populateRequest(WarcRecord record) {
-        if (record.warcInetAddress != null) {
-            if (record.warcInetAddress.getAddress().length == 4) {
-                ipVersion = "4";
-            }
-            else {
-                ipVersion = "6";
-            }
-        }
-
-        Payload payload = record.getPayload();
-
-        if (payload != null) {
-            HttpResponse httpResponse = payload.getHttpResponse();
-            HeaderLine headerLine;
-            if (httpResponse != null) {
             	// TODO HttpRequest not supported yet in JWAT
                 protocolVersion = httpResponse.protocolVersion;
                 headerLine = httpResponse.getHeader("user-agent");
@@ -336,16 +262,13 @@ public class WarcRecordData {
                     protocolUserAgent = headerLine.value;
                 }
             }
+            else {
+                payloadLength = Long.toString(payload.getTotalLength());;
+            }
         }
-        return this;
-    }
-
-    /**
-     * Populate object with Metadata record type specific data which is to be
-     * reported back as properties.
-     * @return this object with populated data for Metadata properties
-     */
-    public WarcRecordData populateMetadata(WarcRecord record) {
+        /*
+         * IpVersion, common for several record properties.
+         */
         if (record.warcInetAddress != null) {
             if (record.warcInetAddress.getAddress().length == 4) {
                 ipVersion = "4";
@@ -354,42 +277,6 @@ public class WarcRecordData {
                 ipVersion = "6";
             }
         }
-        return this;
-    }
-
-    /**
-     * Populate object with Revisit record type specific data which is to be
-     * reported back as properties.
-     * @return this object with populated data for Revisit properties
-     */
-    public WarcRecordData populateRevisit(WarcRecord record) {
-        if (record.warcInetAddress != null) {
-            if (record.warcInetAddress.getAddress().length == 4) {
-                ipVersion = "4";
-            }
-            else {
-                ipVersion = "6";
-            }
-        }
-        return this;
-    }
-
-    /**
-     * Populate object with Conversion record type specific data which is to be
-     * reported back as properties.
-     * @return this object with populated data for Conversion properties
-     */
-    public WarcRecordData populateConversion(WarcRecord record) {
-        return this;
-    }
-
-    /**
-     * Populate object with Continuation record type specific data which is to be
-     * reported back as properties.
-     * @return this object with populated data for Continuation properties
-     */
-    public WarcRecordData populateContinuation(WarcRecord record) {
-        return this;
     }
 
     /**
@@ -409,35 +296,27 @@ public class WarcRecordData {
         if (record != null && record.warcTypeIdx != null) {
             switch (record.warcTypeIdx) {
             case WarcConstants.RT_IDX_WARCINFO:
-                populateWarcinfo(record);
                 warcTypeProperties = new WarcWarcinfoProperties(this);
                 break;
             case WarcConstants.RT_IDX_RESPONSE:
-                populateResponse(record);
                 warcTypeProperties = new WarcResponseProperties(this);
                 break;
             case WarcConstants.RT_IDX_RESOURCE:
-                populateResource(record);
                 warcTypeProperties = new WarcResourceProperties(this);
                 break;
             case WarcConstants.RT_IDX_REQUEST:
-                populateRequest(record);
                 warcTypeProperties = new WarcRequestProperties(this);
                 break;
             case WarcConstants.RT_IDX_METADATA:
-                populateMetadata(record);
                 warcTypeProperties = new WarcMetadataProperties(this);
                 break;
             case WarcConstants.RT_IDX_REVISIT:
-                populateRevisit(record);
                 warcTypeProperties = new WarcRevisitProperties(this);
                 break;
             case WarcConstants.RT_IDX_CONVERSION:
-                populateConversion(record);
                 warcTypeProperties = new WarcConversionProperties(this);
                 break;
             case WarcConstants.RT_IDX_CONTINUATION:
-                populateContinuation(record);
                 warcTypeProperties = new WarcContinuationProperties(this);
                 break;
             }

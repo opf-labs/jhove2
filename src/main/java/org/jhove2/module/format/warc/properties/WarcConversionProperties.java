@@ -60,7 +60,7 @@ public class WarcConversionProperties extends AbstractReportable {
 
     /**
      * Construct WARC conversion property instance with the supplied data.
-     * @param record WARC conversion property data
+     * @param record WARC record data
      */
     public WarcConversionProperties(WarcRecordData record) {
         this.record = record;

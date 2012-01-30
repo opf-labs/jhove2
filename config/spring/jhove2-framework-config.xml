@@ -124,11 +124,16 @@
 
 	<!-- BnF (Bibliothéque nationale de France) agent bean -->
 	<bean id="BnFAgent" class="org.jhove2.core.Agent" scope="singleton">
-		<constructor-arg value="BibliothÃ¨que nationale de France"
-		                 type="java.lang.String"/>
-		<constructor-arg value="Corporate"
-		                 type="org.jhove2.core.Agent$Type"/>
+		<constructor-arg type="java.lang.String" value="Bibliothéque nationale de France"/>
+		<constructor-arg type="org.jhove2.core.Agent$Type" value="Corporate"/>
 		<property name="URI" value="http://www.bnf.fr/"/>
+	</bean>
+
+	<!-- Netarkivet agent bean -->
+	<bean id="NetarkivetAgent" class="org.jhove2.core.Agent" scope="singleton">
+		<constructor-arg type="java.lang.String" value="Netarkivet"/>
+		<constructor-arg type="org.jhove2.core.Agent$Type" value="Corporate"/>
+		<property name="URI" value="http://netarkivet.dk/"/>
 	</bean>
 
 	<bean id="DisplayVisibility" class="org.jhove2.config.spring.PropertiesFactoryBean">
