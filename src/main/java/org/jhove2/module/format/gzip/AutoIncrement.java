@@ -36,16 +36,30 @@
 
 package org.jhove2.module.format.gzip;
 
+/**
+ * This class implements a simple database style auto-increment/sequence functionality.
+ * Use as final static field in places where you need unique id's.
+ *
+ * @author nicl
+ */
 public class AutoIncrement {
 
-    public int index;
+	/** Last unique id. */
+    public int id;
 
+    /**
+     * Constructs an auto-increment instance.
+     */
     public AutoIncrement() {
-        index = 0;
+        id = 0;
     }
 
+    /**
+     * Returns the next unique id.
+     * @return the next unique id.
+     */
     public synchronized int get() {
-        return ++index;
+        return ++id;
     }
 
 }

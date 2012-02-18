@@ -434,11 +434,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
         versionBlockSrc.addExtraProperties(recordData.getArcVersionBlockProperties());
         // Update protocol statistics.
         if (recordData.protocol != null) {
-            int number = 1;
-            if (protocols.containsKey(recordData.protocol)) {
-                number += protocols.get(recordData.protocol);
-            }
-            protocols.put(recordData.protocol, number);
+        	updateProtocols(recordData);
         }
         /*
          * Report errors.
@@ -532,16 +528,20 @@ public class ArcModule extends BaseFormatModule implements Validator {
         recordSrc.addExtraProperties(recordData.getArcRecordProperties());
         // Update protocol statistics.
         if (recordData.protocol != null) {
-            int number = 1;
-            if (protocols.containsKey(recordData.protocol)) {
-                number += protocols.get(recordData.protocol);
-            }
-            protocols.put(recordData.protocol, number);
+        	updateProtocols(recordData);
         }
         /*
          * Report errors.
          */
         checkRecordValidity(recordSrc, record, jhove2);
+    }
+
+    protected void updateProtocols(ArcRecordData recordData) {
+        int number = 1;
+        if (protocols.containsKey(recordData.protocol)) {
+            number += protocols.get(recordData.protocol);
+        }
+        protocols.put(recordData.protocol, number);
     }
 
     /**
@@ -617,17 +617,17 @@ public class ArcModule extends BaseFormatModule implements Validator {
     /**
      * Instantiates a new localized message.
      * @param jhove2 the JHove2 characterization context.
+     * @param severity message severity
      * @param id the configuration property relative name.
      * @param params the values to add in the message
      * @return the new localized message
      * @throws JHOVE2Exception if a serious problem needs to be reported
      */
-    private Message newValidityError(JHOVE2 jhove2,Severity severity,String id,
-                                     Object... params)throws JHOVE2Exception {
-    return new Message(severity,
-                       Message.Context.OBJECT,
-                       this.getClass().getName() + '.' + id,params,
-                       jhove2.getConfigInfo());
+    private Message newValidityError(JHOVE2 jhove2, Severity severity, String id,
+                                     Object... params) throws JHOVE2Exception {
+    	return new Message(severity, Message.Context.OBJECT,
+    					   this.getClass().getName() + '.' + id, params,
+    					   jhove2.getConfigInfo());
     }
 
     /**
@@ -671,9 +671,9 @@ public class ArcModule extends BaseFormatModule implements Validator {
     /**
      * Validates the ARC file, which in this case amounts to returning the
      * result since validation has already been done.
-     * @param  jhove2   the JHove2 characterization context.
-     * @param  source   ARC file source unit.
-     * @param  input    ARC file source input.
+     * @param  jhove2 the JHove2 characterization context.
+     * @param  source ARC file source unit.
+     * @param  input ARC file source input.
      */
     @Override
     public Validity validate(JHOVE2 jhove2, Source source, Input input)

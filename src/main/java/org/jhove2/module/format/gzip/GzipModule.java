@@ -65,6 +65,7 @@ import org.jhove2.persist.FormatModuleAccessor;
 import org.jwat.arc.ArcReader;
 import org.jwat.warc.WarcReader;
 
+import com.sleepycat.persist.model.NotPersistent;
 import com.sleepycat.persist.model.Persistent;
 
 /**
@@ -118,14 +119,33 @@ public class GzipModule extends BaseFormatModule implements Validator {
     /** Thread pool size for parallel characterization of GZip member. */
     //private int nThreads = 0;
 
+    /**
+     * GZip instance id to GZipModule lookup <code>Map</code>.
+     * Used by ARC/WARC modules to access the ACTUAL parent GZipModule instead
+     * of only getting access to a new instance populated with persisted data.
+     */
+    @NotPersistent
     public static final transient Map<Integer, GzipModule> gzipMap = new TreeMap<Integer, GzipModule>();
 
-    public static final transient AutoIncrement index = new AutoIncrement();
+    /** Used to generate a unique id for each file parsed. */
+    @NotPersistent
+    public static final transient AutoIncrement autoIncId = new AutoIncrement();
 
+    /** Id used by this instance of the module. */
     public Integer instanceId;
 
+    /**
+     * ARC/WARC reader set by a child ARC/WARC module in order to use the same
+     * reader for all the entries in the same GZip file.
+     */
+    @NotPersistent
     public transient Object reader;
 
+    /**
+     * Presumptive format used to identify subsequent ARC/WARC records which are
+     * not identified by the identifier module.
+     */
+    @NotPersistent
     public transient FormatIdentification presumptiveFormat;
 
     /**
@@ -185,7 +205,7 @@ public class GzipModule extends BaseFormatModule implements Validator {
         GzipInputStream gz = new GzipInputStream(
                     new BufferedInputStream(source.getInputStream(), 8192));
 
-        instanceId = index.get();
+        instanceId = autoIncId.get();
         // This is done because it is not persisted immediately.
         // I need it in recursive calls and not when the gzip module exits.
         // Each time jhove2 looks up an existing module it actually
@@ -337,8 +357,7 @@ public class GzipModule extends BaseFormatModule implements Validator {
     }
 
     private void characterizeMember(JHOVE2 jhove2, Source source)
-            throws JHOVE2Exception, IOException
-    {
+            throws JHOVE2Exception, IOException {
         Input input = source.getInput(jhove2);
         try {
             if (wovenFormatParser != null) {
@@ -373,8 +392,7 @@ public class GzipModule extends BaseFormatModule implements Validator {
         }
     }
 
-    private void handleError(Exception e, JHOVE2 jhove2, long offset)
-    {
+    private void handleError(Exception e, JHOVE2 jhove2, long offset) {
         try {
             isValid = Validity.False;
             validationMessages.add(newValidityError(jhove2,
@@ -397,8 +415,7 @@ public class GzipModule extends BaseFormatModule implements Validator {
      */
     @Override
     public Validity validate(JHOVE2 jhove2, Source source, Input input)
-        throws JHOVE2Exception
-    {
+    												throws JHOVE2Exception {
         return isValid();
     }
 
@@ -416,8 +433,7 @@ public class GzipModule extends BaseFormatModule implements Validator {
      * @see org.jhove2.module.format.Validator#isValid()
      */
     @Override
-    public Validity isValid()
-    {
+    public Validity isValid() {
         return isValid;
     }
 

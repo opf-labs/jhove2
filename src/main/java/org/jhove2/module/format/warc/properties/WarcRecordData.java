@@ -249,7 +249,7 @@ public class WarcRecordData {
                 payloadLength = Long.toString(httpResponse.getPayloadLength());
                 // TODO Fix this when request and response are separate objects.
                 protocolVersion = httpResponse.protocolVersion;
-                resultCode = httpResponse.resultCode;
+                resultCode = httpResponse.resultCodeStr;
                 protocolContentType = httpResponse.contentType;
                 headerLine = httpResponse.getHeader("server");
                 if (headerLine != null && headerLine.value != null) {

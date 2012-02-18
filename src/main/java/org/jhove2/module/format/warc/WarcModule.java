@@ -535,17 +535,17 @@ public class WarcModule extends BaseFormatModule implements Validator {
     /**
      * Instantiates a new localized message.
      * @param jhove2 the JHove2 characterization context.
-     * @param id the configuration property relative name.
+     * @param severity message severity
+     * @param id the configuration property relative name
      * @param params the values to add in the message
      * @return the new localized message
      * @throws JHOVE2Exception if a serious problem needs to be reported
      */
-    private Message newValidityError(JHOVE2 jhove2,Severity severity,String id,
-                                     Object... params)throws JHOVE2Exception {
-    return new Message(severity,
-                       Message.Context.OBJECT,
-                       this.getClass().getName() + '.' + id,params,
-                       jhove2.getConfigInfo());
+    private Message newValidityError(JHOVE2 jhove2, Severity severity, String id,
+                                     Object... params) throws JHOVE2Exception {
+    	return new Message(severity, Message.Context.OBJECT,
+    					   this.getClass().getName() + '.' + id, params,
+    					   jhove2.getConfigInfo());
     }
 
     //------------------------------------------------------------------------

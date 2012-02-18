@@ -133,7 +133,7 @@ public class ArcRecordData {
             HttpResponse httpResponse = payload.getHttpResponse();
             HeaderLine headerLine;
             if (httpResponse != null) {
-                resultCode = httpResponse.resultCode;
+                resultCode = httpResponse.resultCodeStr;
                 protocolVersion = httpResponse.protocolVersion;
                 protocolContentType = httpResponse.contentType;
                 headerLine = httpResponse.getHeader("server");
@@ -191,7 +191,6 @@ public class ArcRecordData {
         bHasPayload = record.hasPayload();
         Payload payload = record.getPayload();
         if (payload != null) {
-            // TODO Verify meaning of ObjectSize in JHove2 ARC specs
         	// payloadLength is reported back as ObjectSize in the Jhove2 specs
             HttpResponse httpResponse = payload.getHttpResponse();
             if (httpResponse != null) {
