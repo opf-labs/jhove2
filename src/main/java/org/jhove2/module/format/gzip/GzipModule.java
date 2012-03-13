@@ -209,7 +209,7 @@ public class GzipModule extends BaseFormatModule implements Validator {
         // This is done because it is not persisted immediately.
         // It is needed in recursive calls and not when the gzip module exits.
         // Each time jhove2 looks up an existing module it actually
-        // instantiates a new class and loads the persisted values. 
+        // instantiates a new class and loads the persisted values.
         // So a version with the correct instanceId exists on the call stack
         // but every time someone requests it a new one is created and
         // populated with persisted data. Epic fail!
@@ -415,7 +415,7 @@ public class GzipModule extends BaseFormatModule implements Validator {
      */
     @Override
     public Validity validate(JHOVE2 jhove2, Source source, Input input)
-    												throws JHOVE2Exception {
+                                                    throws JHOVE2Exception {
         return isValid();
     }
 

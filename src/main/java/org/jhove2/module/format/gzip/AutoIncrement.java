@@ -44,7 +44,7 @@ package org.jhove2.module.format.gzip;
  */
 public class AutoIncrement {
 
-	/** Last unique id. */
+    /** Last unique id. */
     public int id;
 
     /**

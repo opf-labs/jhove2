@@ -255,7 +255,7 @@ public class WarcRecordData {
                 if (headerLine != null && headerLine.value != null) {
                     protocolServer = headerLine.value;
                 }
-            	// TODO HttpRequest not supported yet in JWAT
+                // TODO HttpRequest not supported yet in JWAT
                 protocolVersion = httpResponse.protocolVersion;
                 headerLine = httpResponse.getHeader("user-agent");
                 if (headerLine != null && headerLine.value != null) {

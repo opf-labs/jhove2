@@ -357,7 +357,7 @@ public class GzipEntryProperties extends AbstractReportable {
 
     @ReportableProperty(order = 12, value = "GZip entry (computed) compression ration.")
     public String getCompressionRatio() {
-    	return Float.toString((float)size / (float)csize);
+        return Float.toString((float)size / (float)csize);
     }
 
     /**

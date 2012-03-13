@@ -218,8 +218,8 @@ public class WarcModule extends BaseFormatModule implements Validator {
                     gzipMod = GzipModule.gzipMap.get(gzipMod.instanceId);
                 }
                 if (mod instanceof WarcModule) {
-                	// The same goes for the WarcModule except we do not need
-                	// any transient fields here.
+                    // The same goes for the WarcModule except we do not need
+                    // any transient fields here.
                     warcMod = (WarcModule)mod;
                 }
             }
@@ -246,7 +246,7 @@ public class WarcModule extends BaseFormatModule implements Validator {
                 // TODO offset
                 parseRecordsCompressed(jhove2, sourceFactory, source, reader, -1L);
             } else {
-            	// TODO offset
+                // TODO offset
                 warcMod.parseRecordsCompressed(jhove2, sourceFactory, source, reader, -1L);
                 // Validity
                 if (warcMod.isValid != Validity.False) {
@@ -299,12 +299,12 @@ public class WarcModule extends BaseFormatModule implements Validator {
         try {
             reader.setBlockDigestAlgorithm(blockDigestAlgorithm);
         } catch (NoSuchAlgorithmException e) {
-        	throw new JHOVE2Exception("Invalid block digest algorithm: " + blockDigestAlgorithm);
+            throw new JHOVE2Exception("Invalid block digest algorithm: " + blockDigestAlgorithm);
         }
         try {
             reader.setPayloadDigestAlgorithm(payloadDigestAlgorithm);
         } catch (NoSuchAlgorithmException e) {
-        	throw new JHOVE2Exception("Invalid payload digest algorithm: " + payloadDigestAlgorithm);
+            throw new JHOVE2Exception("Invalid payload digest algorithm: " + payloadDigestAlgorithm);
         }
         reader.setBlockDigestEncoding(blockDigestEncoding);
         reader.setPayloadDigestEncoding(payloadDigestEncoding);
@@ -323,8 +323,8 @@ public class WarcModule extends BaseFormatModule implements Validator {
      * @throws JHOVE2Exception if a serious problem needs to be reported
      */
     protected void parseRecordsUncompressed(JHOVE2 jhove2, SourceFactory sourceFactory,
-    		Source parentSource, WarcReader reader)
-    				throws EOFException, IOException, JHOVE2Exception {
+            Source parentSource, WarcReader reader)
+                    throws EOFException, IOException, JHOVE2Exception {
         WarcRecord record;
         // Ensure a WARC reader could be instantiated.
         if (reader != null) {
@@ -353,8 +353,8 @@ public class WarcModule extends BaseFormatModule implements Validator {
      * @throws JHOVE2Exception if a serious problem needs to be reported
      */
     protected void parseRecordsCompressed(JHOVE2 jhove2, SourceFactory sourceFactory,
-    		Source parentSource, WarcReader reader, Long offset)
-    				throws EOFException, IOException, JHOVE2Exception {
+            Source parentSource, WarcReader reader, Long offset)
+                    throws EOFException, IOException, JHOVE2Exception {
         WarcRecord record;
         // Ensure a WARC reader could be instantiated.
         if (reader != null) {
@@ -388,7 +388,7 @@ public class WarcModule extends BaseFormatModule implements Validator {
      * @throws JHOVE2Exception if a serious problem needs to be reported
      */
     protected void processRecord(JHOVE2 jhove2, SourceFactory sourceFactory,
-    		Source parentSource, WarcRecord record) throws EOFException, IOException, JHOVE2Exception {
+            Source parentSource, WarcRecord record) throws EOFException, IOException, JHOVE2Exception {
         Payload payload;
         HttpResponse httpResponse;
         InputStream payload_stream;
@@ -436,7 +436,7 @@ public class WarcModule extends BaseFormatModule implements Validator {
          * Characterize payload.
          */
         if (recurse && payload_stream != null) {
-        	characterizePayload(jhove2, sourceFactory, recordSrc, payload_stream, formatId);
+            characterizePayload(jhove2, sourceFactory, recordSrc, payload_stream, formatId);
         }
         if (payload_stream != null) {
             payload_stream.close();
@@ -473,8 +473,8 @@ public class WarcModule extends BaseFormatModule implements Validator {
      * @throws JHOVE2Exception if a serious problem needs to be reported
      */
     protected void characterizePayload(JHOVE2 jhove2, SourceFactory sourceFactory,
-    		Source recordSrc, InputStream payload_stream, FormatIdentification formatId)
-    				throws EOFException, IOException, JHOVE2Exception {
+            Source recordSrc, InputStream payload_stream, FormatIdentification formatId)
+                    throws EOFException, IOException, JHOVE2Exception {
         // Not all properties are ready yet, they are added as extras.
         Source payloadSrc = sourceFactory.getSource(jhove2, payload_stream, name, null);
         if (payloadSrc != null) {
@@ -519,7 +519,7 @@ public class WarcModule extends BaseFormatModule implements Validator {
             // Report errors on source object.
            for (Diagnosis d : record.diagnostics.getErrors()) {
                src.addMessage(newValidityError(jhove2, Message.Severity.ERROR,
-            		   d.type.toString().toLowerCase(), d.getMessageArgs()));
+                       d.type.toString().toLowerCase(), d.getMessageArgs()));
                //updateMap(e.error.toString() + '-' + e.field, this.errors);
            }
         }
@@ -527,7 +527,7 @@ public class WarcModule extends BaseFormatModule implements Validator {
             // Report warnings on source object.
             for (Diagnosis d : record.diagnostics.getWarnings()) {
                 src.addMessage(newValidityError(jhove2, Message.Severity.WARNING,
-                		d.type.toString().toLowerCase(), d.getMessageArgs()));
+                        d.type.toString().toLowerCase(), d.getMessageArgs()));
             }
          }
     }
@@ -543,9 +543,9 @@ public class WarcModule extends BaseFormatModule implements Validator {
      */
     private Message newValidityError(JHOVE2 jhove2, Severity severity, String id,
                                      Object[] messageArgs) throws JHOVE2Exception {
-    	return new Message(severity, Message.Context.OBJECT,
-    					   this.getClass().getName() + '.' + id, messageArgs,
-    					   jhove2.getConfigInfo());
+        return new Message(severity, Message.Context.OBJECT,
+                           this.getClass().getName() + '.' + id, messageArgs,
+                           jhove2.getConfigInfo());
     }
 
     //------------------------------------------------------------------------
