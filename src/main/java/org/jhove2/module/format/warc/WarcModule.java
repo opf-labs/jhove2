@@ -243,10 +243,10 @@ public class WarcModule extends BaseFormatModule implements Validator {
                  * First record. (Unless the parent modules are not correct!)
                  */
                 mod = parentSrc.addModule(this);
-                // TODO offset
+                // TODO offset, when gzipmodule is refactored
                 parseRecordsCompressed(jhove2, sourceFactory, source, reader, -1L);
             } else {
-                // TODO offset
+                // TODO offset, when gzipmodule is refactored
                 warcMod.parseRecordsCompressed(jhove2, sourceFactory, source, reader, -1L);
                 // Validity
                 if (warcMod.isValid != Validity.False) {
@@ -348,6 +348,7 @@ public class WarcModule extends BaseFormatModule implements Validator {
      * @param sourceFactory JHove2 source factory
      * @param parentSource WARC source unit
      * @param reader WARC reader used to parse records
+     * @param offset record offset relative to input stream
      * @throws EOFException if EOF occurs prematurely
      * @throws IOException if an IO error occurs while processing
      * @throws JHOVE2Exception if a serious problem needs to be reported

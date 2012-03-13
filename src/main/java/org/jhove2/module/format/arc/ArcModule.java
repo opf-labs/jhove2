@@ -256,10 +256,10 @@ public class ArcModule extends BaseFormatModule implements Validator {
                  * First record. (Unless the parent modules are not correct!)
                  */
                 mod = parentSrc.addModule(this);
-                // TODO offset
+                // TODO offset, when gzipmodule is refactored
                 parseRecordsCompressed(jhove2, sourceFactory, source, reader, -1L, true);
             } else {
-                // TODO offset
+                // TODO offset, when gzipmodule is refactored
                 arcMod.parseRecordsCompressed(jhove2, sourceFactory, source, reader, -1L, false);
                 // Validity
                 if (arcMod.isValid != Validity.False) {
@@ -372,6 +372,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
      * @param sourceFactory JHove2 source factory
      * @param parentSource ARC source unit
      * @param reader ARC reader used to parse records
+     * @param offset record offset relative to input stream
      * @param bReadVersion read version block first or go straight to parsing records
      * @throws EOFException if EOF occurs prematurely
      * @throws IOException if an IO error occurs while processing
