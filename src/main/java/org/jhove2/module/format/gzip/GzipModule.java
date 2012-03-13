@@ -75,7 +75,7 @@ import com.sleepycat.persist.model.Persistent;
  * file format specification version 4.3) and supports multiple member
  * GZIP files.</p>
  *
- * @author lbihanic, selghissassi
+ * @author lbihanic, selghissassi, nicl
  */
 @Persistent
 public class GzipModule extends BaseFormatModule implements Validator {
@@ -207,12 +207,12 @@ public class GzipModule extends BaseFormatModule implements Validator {
 
         instanceId = autoIncId.get();
         // This is done because it is not persisted immediately.
-        // I need it in recursive calls and not when the gzip module exits.
+        // It is needed in recursive calls and not when the gzip module exits.
         // Each time jhove2 looks up an existing module it actually
         // instantiates a new class and loads the persisted values. 
         // So a version with the correct instanceId exists on the call stack
         // but every time someone requests it a new one is created and
-        // populated with persisted data.
+        // populated with persisted data. Epic fail!
         getModuleAccessor().persistModule(this);
         synchronized (gzipMap) {
             gzipMap.put(instanceId, this);

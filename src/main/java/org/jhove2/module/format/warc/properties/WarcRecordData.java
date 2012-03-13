@@ -126,7 +126,7 @@ public class WarcRecordData {
      * @param record parsed WARC record
      */
     public WarcRecordData(WarcRecord record) {
-        startOffset = record.getOffset();
+        startOffset = record.getStartOffset();
         consumed = record.getConsumed();
         this.warcType = record.warcTypeStr;
         this.warcFilename = record.warcFilename;

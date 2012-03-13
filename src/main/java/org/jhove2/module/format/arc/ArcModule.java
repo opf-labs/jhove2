@@ -70,8 +70,8 @@ import org.jwat.arc.ArcReader;
 import org.jwat.arc.ArcReaderFactory;
 import org.jwat.arc.ArcRecord;
 import org.jwat.arc.ArcRecordBase;
-import org.jwat.arc.ArcValidationError;
 import org.jwat.arc.ArcVersionBlock;
+import org.jwat.common.Diagnosis;
 import org.jwat.common.HttpResponse;
 import org.jwat.common.Payload;
 
@@ -81,7 +81,7 @@ import com.sleepycat.persist.model.Persistent;
  * JHOVE2 ARC module. This class is mostly a JHOVE2 wrapper that uses
  * the JWAT package for the actual ARC validation.
  *
- * @author lbihanic, selghissassi
+ * @author lbihanic, selghissassi, nicl
  */
 @Persistent
 public class ArcModule extends BaseFormatModule implements Validator {
@@ -256,9 +256,11 @@ public class ArcModule extends BaseFormatModule implements Validator {
                  * First record. (Unless the parent modules are not correct!)
                  */
                 mod = parentSrc.addModule(this);
-                parseRecordsCompressed(jhove2, sourceFactory, source, reader, true);
+                // TODO offset
+                parseRecordsCompressed(jhove2, sourceFactory, source, reader, -1L, true);
             } else {
-                arcMod.parseRecordsCompressed(jhove2, sourceFactory, source, reader, false);
+            	// TODO offset
+                arcMod.parseRecordsCompressed(jhove2, sourceFactory, source, reader, -1L, false);
                 // Validity
                 if (arcMod.isValid != Validity.False) {
                     if (reader.isCompliant()) {
@@ -376,7 +378,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
      * @throws JHOVE2Exception if a serious problem needs to be reported
      */
     protected void parseRecordsCompressed(JHOVE2 jhove2, SourceFactory sourceFactory,
-    		Source parentSource, ArcReader reader, boolean bReadVersion)
+    		Source parentSource, ArcReader reader, Long offset, boolean bReadVersion)
     				throws EOFException, IOException, JHOVE2Exception {
         ArcVersionBlock versionBlock;
         ArcRecord record;
@@ -386,7 +388,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
             parentSource.setIsAggregate(true);
             InputStream in = parentSource.getInputStream();
             if (bReadVersion) {
-                versionBlock = reader.getVersionBlock(in);
+                versionBlock = reader.getVersionBlockFrom(in, offset);
                 if (versionBlock != null) {
                     processVersionBlock(jhove2, sourceFactory, parentSource, versionBlock);
                 }
@@ -394,7 +396,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
             /*
              * Loop through available records.
              */
-            while ((record = reader.getNextRecordFrom(in, 8192, 0)) != null) {
+            while ((record = reader.getNextRecordFrom(in, offset, 8192)) != null) {
                 processRecord(jhove2, sourceFactory, parentSource, record);
             }
         } else {
@@ -597,19 +599,19 @@ public class ArcModule extends BaseFormatModule implements Validator {
         if (!record.isValid()) {
         }
         */
-        if (record.hasErrors()) {
+        if (record.diagnostics.hasErrors()) {
             // Report errors on source object.
-           for (ArcValidationError e : record.getValidationErrors()) {
+           for (Diagnosis d : record.diagnostics.getErrors()) {
                src.addMessage(newValidityError(jhove2,Message.Severity.ERROR,
-                                               e.error.toString(),e.field,e.value));
+            		   d.type.toString().toLowerCase(), d.getMessageArgs()));
                //updateMap(e.error.toString() + '-' + e.field, this.errors);
            }
         }
-        if (record.hasWarnings()) {
+        if (record.diagnostics.hasWarnings()) {
             // Report warnings on source object.
-            for (String warning : record.getWarnings()) {
+            for (Diagnosis d : record.diagnostics.getWarnings()) {
                 src.addMessage(newValidityError(jhove2,Message.Severity.WARNING,
-                                                "warning",warning));
+                		d.type.toString().toLowerCase(), d.getMessageArgs()));
             }
          }
     }
@@ -624,9 +626,9 @@ public class ArcModule extends BaseFormatModule implements Validator {
      * @throws JHOVE2Exception if a serious problem needs to be reported
      */
     private Message newValidityError(JHOVE2 jhove2, Severity severity, String id,
-                                     Object... params) throws JHOVE2Exception {
+                                     Object[] messageArgs) throws JHOVE2Exception {
     	return new Message(severity, Message.Context.OBJECT,
-    					   this.getClass().getName() + '.' + id, params,
+    					   this.getClass().getName() + '.' + id, messageArgs,
     					   jhove2.getConfigInfo());
     }
 

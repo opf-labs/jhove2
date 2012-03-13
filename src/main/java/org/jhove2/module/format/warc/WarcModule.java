@@ -65,12 +65,12 @@ import org.jhove2.module.format.Validator;
 import org.jhove2.module.format.gzip.GzipModule;
 import org.jhove2.module.format.warc.properties.WarcRecordData;
 import org.jhove2.persist.FormatModuleAccessor;
+import org.jwat.common.Diagnosis;
 import org.jwat.common.HttpResponse;
 import org.jwat.common.Payload;
 import org.jwat.warc.WarcReader;
 import org.jwat.warc.WarcReaderFactory;
 import org.jwat.warc.WarcRecord;
-import org.jwat.warc.WarcValidationError;
 
 import com.sleepycat.persist.model.Persistent;
 
@@ -243,9 +243,11 @@ public class WarcModule extends BaseFormatModule implements Validator {
                  * First record. (Unless the parent modules are not correct!)
                  */
                 mod = parentSrc.addModule(this);
-                parseRecordsCompressed(jhove2, sourceFactory, source, reader);
+                // TODO offset
+                parseRecordsCompressed(jhove2, sourceFactory, source, reader, -1L);
             } else {
-                warcMod.parseRecordsCompressed(jhove2, sourceFactory, source, reader);
+            	// TODO offset
+                warcMod.parseRecordsCompressed(jhove2, sourceFactory, source, reader, -1L);
                 // Validity
                 if (warcMod.isValid != Validity.False) {
                     if (reader.isCompliant()) {
@@ -351,7 +353,7 @@ public class WarcModule extends BaseFormatModule implements Validator {
      * @throws JHOVE2Exception if a serious problem needs to be reported
      */
     protected void parseRecordsCompressed(JHOVE2 jhove2, SourceFactory sourceFactory,
-    		Source parentSource, WarcReader reader)
+    		Source parentSource, WarcReader reader, Long offset)
     				throws EOFException, IOException, JHOVE2Exception {
         WarcRecord record;
         // Ensure a WARC reader could be instantiated.
@@ -361,7 +363,7 @@ public class WarcModule extends BaseFormatModule implements Validator {
              * Loop through available records.
              */
             InputStream in = parentSource.getInputStream();
-            while ((record = reader.getNextRecordFrom(in, 8192)) != null) {
+            while ((record = reader.getNextRecordFrom(in, offset, 8192)) != null) {
                 processRecord(jhove2, sourceFactory, parentSource, record);
             }
         } else {
@@ -513,23 +515,21 @@ public class WarcModule extends BaseFormatModule implements Validator {
         if (!record.isValid()) {
         }
         */
-        if (record.hasErrors()) {
+        if (record.diagnostics.hasErrors()) {
             // Report errors on source object.
-           for (WarcValidationError e : record.getValidationErrors()) {
-               src.addMessage(newValidityError(jhove2,Message.Severity.ERROR,
-                                               e.error.toString(),e.field,e.value));
+           for (Diagnosis d : record.diagnostics.getErrors()) {
+               src.addMessage(newValidityError(jhove2, Message.Severity.ERROR,
+            		   d.type.toString().toLowerCase(), d.getMessageArgs()));
                //updateMap(e.error.toString() + '-' + e.field, this.errors);
            }
         }
-        /*
-        if (record.hasWarnings()) {
+        if (record.diagnostics.hasWarnings()) {
             // Report warnings on source object.
-            for (String warning : record.getWarnings()) {
-                src.addMessage(newValidityError(jhove2,Message.Severity.WARNING,
-                                                "warning",warning));
+            for (Diagnosis d : record.diagnostics.getWarnings()) {
+                src.addMessage(newValidityError(jhove2, Message.Severity.WARNING,
+                		d.type.toString().toLowerCase(), d.getMessageArgs()));
             }
          }
-         */
     }
 
     /**
@@ -542,9 +542,9 @@ public class WarcModule extends BaseFormatModule implements Validator {
      * @throws JHOVE2Exception if a serious problem needs to be reported
      */
     private Message newValidityError(JHOVE2 jhove2, Severity severity, String id,
-                                     Object... params) throws JHOVE2Exception {
+                                     Object[] messageArgs) throws JHOVE2Exception {
     	return new Message(severity, Message.Context.OBJECT,
-    					   this.getClass().getName() + '.' + id, params,
+    					   this.getClass().getName() + '.' + id, messageArgs,
     					   jhove2.getConfigInfo());
     }
 
