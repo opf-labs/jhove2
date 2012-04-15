@@ -397,7 +397,7 @@ public class WarcModule extends BaseFormatModule implements Validator {
         String contentType;
         FormatIdentification formatId;
 
-        contentType = record.contentTypeStr;
+        contentType = record.header.contentTypeStr;
         /*
          * Warc Record Source.
          */

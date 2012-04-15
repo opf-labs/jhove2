@@ -44,6 +44,7 @@ import org.jwat.common.HeaderLine;
 import org.jwat.common.HttpResponse;
 import org.jwat.common.Payload;
 import org.jwat.warc.WarcConstants;
+import org.jwat.warc.WarcHeader;
 import org.jwat.warc.WarcRecord;
 
 import com.sleepycat.persist.model.Persistent;
@@ -126,60 +127,61 @@ public class WarcRecordData {
      * @param record parsed WARC record
      */
     public WarcRecordData(WarcRecord record) {
+    	WarcHeader header = record.header;
         startOffset = record.getStartOffset();
         consumed = record.getConsumed();
-        this.warcType = record.warcTypeStr;
-        this.warcFilename = record.warcFilename;
-        this.warcRecordId = record.warcRecordIdStr;
-        this.warcDate = record.warcDateStr;
-        this.contentLength = record.contentLengthStr;
-        this.contentType = record.contentTypeStr;
-        this.warcTruncated = record.warcTruncatedStr;
-        this.warcIpAddress = record.warcIpAddress;
+        this.warcType = header.warcTypeStr;
+        this.warcFilename = header.warcFilename;
+        this.warcRecordId = header.warcRecordIdStr;
+        this.warcDate = header.warcDateStr;
+        this.contentLength = header.contentLengthStr;
+        this.contentType = header.contentTypeStr;
+        this.warcTruncated = header.warcTruncatedStr;
+        this.warcIpAddress = header.warcIpAddress;
         // TODO Clone List in WarcRecord's getter at some point.
-        if (record.warcConcurrentToStrList != null) {
-            this.warcConcurrentToList = new ArrayList<String>(record.warcConcurrentToStrList);
+        if (header.warcConcurrentToStrList != null) {
+            this.warcConcurrentToList = new ArrayList<String>(header.warcConcurrentToStrList);
         }
-        this.warcRefersTo = record.warcRefersToStr;
-        this.warcTargetUri = record.warcTargetUriStr;
-        this.warcWarcinfoId = record.warcWarcinfoIdStr;
-        this.warcIdentifiedPayloadType = record.warcIdentifiedPayloadTypeStr;
-        this.warcProfile = record.warcProfileStr;
-        this.warcSegmentNumber = record.warcSegmentNumberStr;
-        this.warcSegmentOriginId = record.warcSegmentOriginIdStr;
-        this.warcSegmentTotalLength = record.warcSegmentTotalLengthStr;
+        this.warcRefersTo = header.warcRefersToStr;
+        this.warcTargetUri = header.warcTargetUriStr;
+        this.warcWarcinfoId = header.warcWarcinfoIdStr;
+        this.warcIdentifiedPayloadType = header.warcIdentifiedPayloadTypeStr;
+        this.warcProfile = header.warcProfileStr;
+        this.warcSegmentNumber = header.warcSegmentNumberStr;
+        this.warcSegmentOriginId = header.warcSegmentOriginIdStr;
+        this.warcSegmentTotalLength = header.warcSegmentTotalLengthStr;
         /*
          * Warc-Block-Digest.
          */
-        if (record.warcBlockDigest != null) {
-            if ( record.warcBlockDigest.digestString != null
-                    && record.warcBlockDigest.digestString.length() > 0) {
-                warcBlockDigest = record.warcBlockDigest.digestString;
+        if (header.warcBlockDigest != null) {
+            if ( header.warcBlockDigest.digestString != null
+                    && header.warcBlockDigest.digestString.length() > 0) {
+                warcBlockDigest = header.warcBlockDigest.digestString;
             }
-            if (record.warcBlockDigest.algorithm != null
-                    && record.warcBlockDigest.algorithm.length() > 0) {
-                warcBlockDigestAlgorithm = record.warcBlockDigest.algorithm;
+            if (header.warcBlockDigest.algorithm != null
+                    && header.warcBlockDigest.algorithm.length() > 0) {
+                warcBlockDigestAlgorithm = header.warcBlockDigest.algorithm;
             }
-            if (record.warcBlockDigest.encoding != null
-                    && record.warcBlockDigest.encoding.length() > 0) {
-                warcBlockDigestEncoding = record.warcBlockDigest.encoding;
+            if (header.warcBlockDigest.encoding != null
+                    && header.warcBlockDigest.encoding.length() > 0) {
+                warcBlockDigestEncoding = header.warcBlockDigest.encoding;
             }
         }
         /*
          * Warc-Payload-Digest.
          */
-        if (record.warcPayloadDigest != null) {
-            if (record.warcPayloadDigest.digestString != null
-                    && record.warcPayloadDigest.digestString.length() > 0) {
-                warcPayloadDigest = record.warcPayloadDigest.digestString;
+        if (header.warcPayloadDigest != null) {
+            if (header.warcPayloadDigest.digestString != null
+                    && header.warcPayloadDigest.digestString.length() > 0) {
+                warcPayloadDigest = header.warcPayloadDigest.digestString;
             }
-            if (record.warcPayloadDigest.algorithm != null
-                    && record.warcPayloadDigest.algorithm.length() > 0) {
-                warcPayloadDigestAlgorithm = record.warcPayloadDigest.algorithm;
+            if (header.warcPayloadDigest.algorithm != null
+                    && header.warcPayloadDigest.algorithm.length() > 0) {
+                warcPayloadDigestAlgorithm = header.warcPayloadDigest.algorithm;
             }
-            if (record.warcPayloadDigest.encoding != null
-                    && record.warcPayloadDigest.encoding.length() > 0) {
-                warcPayloadDigestEncoding = record.warcPayloadDigest.encoding;
+            if (header.warcPayloadDigest.encoding != null
+                    && header.warcPayloadDigest.encoding.length() > 0) {
+                warcPayloadDigestEncoding = header.warcPayloadDigest.encoding;
             }
         }
         /*
@@ -269,8 +271,8 @@ public class WarcRecordData {
         /*
          * IpVersion, common for several record properties.
          */
-        if (record.warcInetAddress != null) {
-            if (record.warcInetAddress.getAddress().length == 4) {
+        if (header.warcInetAddress != null) {
+            if (header.warcInetAddress.getAddress().length == 4) {
                 ipVersion = "4";
             }
             else {
@@ -293,8 +295,8 @@ public class WarcRecordData {
      */
     public AbstractReportable getWarcTypeProperties(WarcRecord record) {
         AbstractReportable warcTypeProperties = null;
-        if (record != null && record.warcTypeIdx != null) {
-            switch (record.warcTypeIdx) {
+        if (record != null && record.header.warcTypeIdx != null) {
+            switch (record.header.warcTypeIdx) {
             case WarcConstants.RT_IDX_WARCINFO:
                 warcTypeProperties = new WarcWarcinfoProperties(this);
                 break;
