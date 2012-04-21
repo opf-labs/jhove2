@@ -34,7 +34,7 @@
 	<ref bean="WarcArchiveFileIdentifier"/>
 	<!-- ARC PUID x-fmt/219 alias identifier bean -->
 	<bean class="org.jhove2.core.I8R">
-	  <constructor-arg type="java.lang.String" value="x-fmt/289"/>
+	  <constructor-arg type="java.lang.String" value="fmt/289"/>
 	  <constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
 	</bean>
 	<!-- WARC MIME alias identifier bean -->

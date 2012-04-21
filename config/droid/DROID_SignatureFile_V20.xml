@@ -8500,7 +8500,7 @@
             <HasPriorityOverFileFormatID>645</HasPriorityOverFileFormatID>
         </FileFormat>
 	<!-- WARC -->
-        <FileFormat ID="12345" Name="WARC file" Version="1.0" PUID="x-fmt/289">
+        <FileFormat ID="12345" Name="WARC file" Version="1.0" PUID="fmt/289">
             <InternalSignatureID>12345</InternalSignatureID>
        	    <Extension>warc</Extension>
             <!-- If left out file is recognized as SGML -->
