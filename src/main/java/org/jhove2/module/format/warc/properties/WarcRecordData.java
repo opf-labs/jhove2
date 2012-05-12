@@ -36,13 +36,14 @@
 
 package org.jhove2.module.format.warc.properties;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.jhove2.core.reportable.AbstractReportable;
 import org.jwat.common.HeaderLine;
 import org.jwat.common.HttpResponse;
 import org.jwat.common.Payload;
+import org.jwat.warc.WarcConcurrentTo;
 import org.jwat.warc.WarcConstants;
 import org.jwat.warc.WarcHeader;
 import org.jwat.warc.WarcRecord;
@@ -139,8 +140,15 @@ public class WarcRecordData {
         this.warcTruncated = header.warcTruncatedStr;
         this.warcIpAddress = header.warcIpAddress;
         // TODO Clone List in WarcRecord's getter at some point.
-        if (header.warcConcurrentToStrList != null) {
-            this.warcConcurrentToList = new ArrayList<String>(header.warcConcurrentToStrList);
+        if (header.warcConcurrentToList != null && header.warcConcurrentToList.size() > 0) {
+            this.warcConcurrentToList = new LinkedList<String>();
+            WarcConcurrentTo warcConcurrentTo;
+            for (int i=0; i<header.warcConcurrentToList.size(); ++i) {
+            	warcConcurrentTo = header.warcConcurrentToList.get(i);
+            	if (warcConcurrentTo.warcConcurrentToStr != null) {
+            		this.warcConcurrentToList.add(warcConcurrentTo.warcConcurrentToStr);
+            	}
+            }
         }
         this.warcRefersTo = header.warcRefersToStr;
         this.warcTargetUri = header.warcTargetUriStr;
