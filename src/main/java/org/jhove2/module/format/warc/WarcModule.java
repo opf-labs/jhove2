@@ -40,7 +40,6 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteOrder;
-import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -66,8 +65,9 @@ import org.jhove2.module.format.gzip.GzipModule;
 import org.jhove2.module.format.warc.properties.WarcRecordData;
 import org.jhove2.persist.FormatModuleAccessor;
 import org.jwat.common.Diagnosis;
-import org.jwat.common.HttpResponse;
+import org.jwat.common.HttpHeader;
 import org.jwat.common.Payload;
+import org.jwat.common.PayloadWithHeaderAbstract;
 import org.jwat.warc.WarcReader;
 import org.jwat.warc.WarcReaderFactory;
 import org.jwat.warc.WarcRecord;
@@ -130,8 +130,14 @@ public class WarcModule extends BaseFormatModule implements Validator {
     /** WARC file size, whole file. */
     private long warcFileSize;
 
+    /** The amount of bytes consumed by the ArcReader- */
+    private long warcReaderConsumedBytes;
+
     /** File version, null unless all records have the same version. */
     private String warcFileVersion;
+
+    /** Versions encountered and their usage count. */
+    private Map<String, Integer> versions = new TreeMap<String, Integer>();
 
     /**
      * Instantiate a new <code>WarcModule</code> instance.
@@ -225,6 +231,16 @@ public class WarcModule extends BaseFormatModule implements Validator {
             }
         }
         /*
+         * Reportable: Filename, file size, etc.
+         */
+        if (!source.isTemp()) {
+            warcFileName = source.getFile().getName();
+            warcFileSize = source.getFile().length();
+        } else if (parentSrc != null && !parentSrc.isTemp()) {
+            warcFileName = parentSrc.getFile().getName();
+            warcFileSize = parentSrc.getFile().length();
+        }
+        /*
          * Read some WARC records.
          */
         WarcReader reader = null;
@@ -256,6 +272,14 @@ public class WarcModule extends BaseFormatModule implements Validator {
                         warcMod.isValid = Validity.False;
                     }
                 }
+                // Reportable.
+                warcMod.warcReaderConsumedBytes = reader.getConsumed();
+                if (warcMod.versions.size() == 1) {
+                	Entry<String, Integer> entry = warcMod.versions.entrySet().iterator().next();
+                    if (entry.getValue() == warcMod.warcRecordNumber) {
+                    	warcMod.warcFileVersion = entry.getKey();
+                    }
+                }
                 warcMod = (WarcModule)warcMod.getModuleAccessor().persistModule(warcMod);
                 // Remove WarcModule from source instance since we added one to the parent source.
                 this.setParentSourceId(null);
@@ -272,6 +296,14 @@ public class WarcModule extends BaseFormatModule implements Validator {
             parseRecordsUncompressed(jhove2, sourceFactory, source, reader);
             reader.close();
             consumed = reader.getConsumed();
+            // Reportable.
+            warcReaderConsumedBytes = reader.getConsumed();
+            if (versions.size() == 1) {
+            	Entry<String, Integer> entry = versions.entrySet().iterator().next();
+                if (entry.getValue() == warcRecordNumber) {
+                	warcFileVersion = entry.getKey();
+                }
+            }
             /*
              * Validity.
              */
@@ -296,14 +328,10 @@ public class WarcModule extends BaseFormatModule implements Validator {
     protected void setDigestOptions(WarcReader reader) throws JHOVE2Exception {
         reader.setBlockDigestEnabled(bComputeBlockDigest);
         reader.setPayloadDigestEnabled(bComputePayloadDigest);
-        try {
-            reader.setBlockDigestAlgorithm(blockDigestAlgorithm);
-        } catch (NoSuchAlgorithmException e) {
+        if (!reader.setBlockDigestAlgorithm(blockDigestAlgorithm)) {
             throw new JHOVE2Exception("Invalid block digest algorithm: " + blockDigestAlgorithm);
         }
-        try {
-            reader.setPayloadDigestAlgorithm(payloadDigestAlgorithm);
-        } catch (NoSuchAlgorithmException e) {
+        if (!reader.setPayloadDigestAlgorithm(payloadDigestAlgorithm)) {
             throw new JHOVE2Exception("Invalid payload digest algorithm: " + payloadDigestAlgorithm);
         }
         reader.setBlockDigestEncoding(blockDigestEncoding);
@@ -360,10 +388,10 @@ public class WarcModule extends BaseFormatModule implements Validator {
         // Ensure a WARC reader could be instantiated.
         if (reader != null) {
             parentSource.setIsAggregate(true);
+            InputStream in = parentSource.getInputStream();
             /*
              * Loop through available records.
              */
-            InputStream in = parentSource.getInputStream();
             while ((record = reader.getNextRecordFrom(in, offset, 8192)) != null) {
                 processRecord(jhove2, sourceFactory, parentSource, record);
             }
@@ -391,7 +419,8 @@ public class WarcModule extends BaseFormatModule implements Validator {
     protected void processRecord(JHOVE2 jhove2, SourceFactory sourceFactory,
             Source parentSource, WarcRecord record) throws EOFException, IOException, JHOVE2Exception {
         Payload payload;
-        HttpResponse httpResponse;
+        PayloadWithHeaderAbstract payloadHeaderWrapped;
+        HttpHeader httpHeader;
         InputStream payload_stream;
         WarcRecordData recordData;
         String contentType;
@@ -406,18 +435,32 @@ public class WarcModule extends BaseFormatModule implements Validator {
         recordSrc = parentSource.addChildSource(recordSrc);
         ++warcRecordNumber;
         /*
+         * Version.
+         */
+        if (record.header.bValidVersionFormat) {
+            Integer count = versions.get(record.header.versionStr);
+            if (count == null) {
+            	count = 0;
+            }
+            ++count;
+            versions.put(record.header.versionStr, count);
+        }
+        /*
          * Prepare payload.
          */
         payload = record.getPayload();
-        httpResponse = null;
+        httpHeader = null;
         payload_stream = null;
         if (payload != null) {
-            httpResponse = payload.getHttpResponse();
-            if (httpResponse == null) {
+        	payloadHeaderWrapped = payload.getPayloadHeaderWrapped();
+            if (payloadHeaderWrapped instanceof HttpHeader) {
+                httpHeader = (HttpHeader)payloadHeaderWrapped;
+            }
+            if (httpHeader == null) {
                 payload_stream = payload.getInputStream();
             } else {
-                contentType = httpResponse.getProtocolContentType();
-                payload_stream = httpResponse.getPayloadInputStream();
+                contentType = httpHeader.getProtocolContentType();
+                payload_stream = httpHeader.getPayloadInputStream();
             }
         }
         /*
@@ -590,19 +633,10 @@ public class WarcModule extends BaseFormatModule implements Validator {
     //------------------------------------------------------------------------
 
     /**
-     * Returns number of WARC records.
-     * @return number of WARC records
-     */
-    @ReportableProperty(order=1, value="The number of WARC records")
-    public int getWarcRecordNumber() {
-        return warcRecordNumber;
-    }
-
-    /**
      * Returns the WARC filename.
      * @return the WARC filename
      */
-    @ReportableProperty(order=2, value="WARC filename")
+    @ReportableProperty(order=1, value="WARC filename")
     public String getWarcFileName() {
         return warcFileName;
     }
@@ -611,9 +645,27 @@ public class WarcModule extends BaseFormatModule implements Validator {
      * Returns the size of the WARC file.
      * @return the size of the WARC file
      */
-    @ReportableProperty(order=3, value="WARC file size, in bytes")
+    @ReportableProperty(order=2, value="WARC file size, in bytes")
     public long getWarcFileSize() {
         return warcFileSize;
+    }
+
+    /**
+     * Returns number of WARC records.
+     * @return number of WARC records
+     */
+    @ReportableProperty(order=3, value="The number of WARC records")
+    public int getWarcRecordNumber() {
+        return warcRecordNumber;
+    }
+
+    /**
+     * warcReaderConsumedBytes getter
+     * @return the warcReaderConsumedBytes
+     */
+    @ReportableProperty(order=4, value="WARC reader consumed bytes, in bytes")
+    public long getWarcReaderConsumedBytes() {
+         return warcReaderConsumedBytes;
     }
 
     /**

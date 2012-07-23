@@ -99,8 +99,17 @@ public class GzipModule extends BaseFormatModule implements Validator {
     /** Validation status. */
     private Validity isValid;
 
+    /** The name of the ARC file. */
+    private String gzipFileName;
+
+    /** The size of the ARC file, in bytes. */
+    private long gzipFileSize;
+
     /** Number of members compressed with the deflate compression method. */
     private long deflateMemberCount = 0;
+
+    /** The amount of bytes consumed by the GZipReader- */
+    private long gzipReaderConsumedBytes;
 
     /** Number of non-valid members. */
     private long invalidMembers = 0;
@@ -442,10 +451,28 @@ public class GzipModule extends BaseFormatModule implements Validator {
     //------------------------------------------------------------------------
 
     /**
-     * Returns the number of GZip entries marked as invalid.
-     * @return the number of invalid GZip entries found.
+     * gzipFileName getter
+     * @return the gzipFileName
      */
-    @ReportableProperty(order = 1,
+    @ReportableProperty(order=1, value="GZip file name")
+    public String getGZaipFileName() {
+        return gzipFileName;
+    }
+
+    /**
+     * gzipFileSize getter
+     * @return the gzipFileSize
+     */
+    @ReportableProperty(order=2, value="GZip file size, in bytes")
+    public long getGZipFileSize() {
+        return gzipFileSize;
+    }
+
+    /**
+     * Returns the number of GZip entries found.
+     * @return the number of GZip entries found.
+     */
+    @ReportableProperty(order = 3,
                         value = "Number of members compressed with the deflate compression method")
     public long getNumDeflateMembers() {
         //return this.deflateMemberCount.get();
@@ -453,10 +480,19 @@ public class GzipModule extends BaseFormatModule implements Validator {
     }
 
     /**
-     * Returns the number of GZip entries marked as invalid.
+     * arcReaderConsumedBytes getter
+     * @return the arcReaderConsumedBytes
+     */
+    @ReportableProperty(order=4, value="ARC reader consumed bytes, in bytes")
+    public long getArcReaderConsumedBytes() {
+         return gzipReaderConsumedBytes;
+    }
+
+    /**
+     * Returns the number of invalid GZip entries found.
      * @return the number of invalid GZip entries found.
      */
-    @ReportableProperty(order = 2, value = "Number of non-valid members")
+    @ReportableProperty(order = 5, value = "Number of non-valid members")
     public long getNumInvalidMembers() {
         //return this.invalidMembers.get();
         return invalidMembers;
@@ -466,7 +502,7 @@ public class GzipModule extends BaseFormatModule implements Validator {
      * Returns the number of GZip entries marked as invalid.
      * @return the number of invalid GZip entries found.
      */
-    @ReportableProperty(order = 8, value = "Validation error messages")
+    @ReportableProperty(order = 6, value = "Validation error messages")
     public Collection<Message> getValidationMessages() {
         // Return null if the list is empty to prevent the displayer
         // from rendering this property.

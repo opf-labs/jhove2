@@ -39,13 +39,14 @@ package org.jhove2.module.format.arc.properties;
 import java.text.DateFormat;
 
 import org.jhove2.core.reportable.AbstractReportable;
-import org.jwat.arc.ArcRecord;
+import org.jwat.arc.ArcDateParser;
+import org.jwat.arc.ArcHeader;
 import org.jwat.arc.ArcRecordBase;
-import org.jwat.arc.ArcVersionBlock;
+import org.jwat.arc.ArcVersionHeader;
 import org.jwat.common.HeaderLine;
-import org.jwat.common.HttpResponse;
+import org.jwat.common.HttpHeader;
 import org.jwat.common.Payload;
-import org.jwat.warc.WarcDateParser;
+import org.jwat.common.PayloadWithHeaderAbstract;
 
 import com.sleepycat.persist.model.Persistent;
 
@@ -61,6 +62,8 @@ public class ArcRecordData {
 
     protected Long startOffset;
     protected Long consumed;
+
+    protected Integer blockDescVersion;
 
     protected String url;
     public String protocol;
@@ -95,8 +98,8 @@ public class ArcRecordData {
     protected String protocolContentType;
     protected String protocolServer;
 
-    /** WARC <code>DateFormat</code> as specified by the WARC ISO standard. */
-    protected transient DateFormat warcDateFormat = WarcDateParser.getWarcDateFormat();
+    /** ARC <code>DateFormat</code> as specified by the ARC specification. */
+    protected transient DateFormat arcDateFormat = ArcDateParser.getDateFormat();
 
     /**
      * Constructor required by the persistence layer.
@@ -105,42 +108,46 @@ public class ArcRecordData {
     }
 
     /**
-     * Constructs an object using the data in the <code>VersionBlock</code>
-     * object.
-     * @param versionBlock parsed ARC version block
-     */
-    public ArcRecordData(ArcVersionBlock versionBlock) {
-        if (versionBlock.versionNumber != null) {
-            // TODO JWAT should keep the raw value too.
-            versionNumber = versionBlock.versionNumber.toString();
-        }
-        if (versionBlock.reserved != null) {
-            // TODO JWAT should keep the raw value too.
-            reserved = versionBlock.reserved.toString();
-        }
-        originCode = versionBlock.originCode;
-        populateArcRecordBase(versionBlock);
-    }
-
-    /**
-     * Constructs an object used the data in the <code>ArcRecord</code>
+     * Constructs an object using the data in the <code>ArcRecordBase</code>
      * object.
      * @param record parsed ARC record
      */
-    public ArcRecordData(ArcRecord record) {
-        Payload payload = record.getPayload();
-        if (payload != null) {
-            HttpResponse httpResponse = payload.getHttpResponse();
-            HeaderLine headerLine;
-            if (httpResponse != null) {
-                resultCode = httpResponse.resultCodeStr;
-                protocolVersion = httpResponse.protocolVersion;
-                protocolContentType = httpResponse.contentType;
-                headerLine = httpResponse.getHeader("server");
-                if (headerLine != null && headerLine.value != null) {
-                    protocolServer = headerLine.value;
+    public ArcRecordData(ArcRecordBase record) {
+        HeaderLine headerLine;
+        switch (record.recordType) {
+        case ArcRecordBase.RT_VERSION_BLOCK:
+        	ArcVersionHeader versionHeader = record.versionHeader;
+            if (versionHeader.versionNumber != null) {
+                // TODO JWAT should keep the raw value too.
+                versionNumber = versionHeader.versionNumber.toString();
+            }
+            if (versionHeader.reserved != null) {
+                // TODO JWAT should keep the raw value too.
+                reserved = versionHeader.reserved.toString();
+            }
+            originCode = versionHeader.originCode;
+        	break;
+        case ArcRecordBase.RT_ARC_RECORD:
+            Payload payload = record.getPayload();
+            if (payload != null) {
+                PayloadWithHeaderAbstract payloadHeaderWrapped = payload.getPayloadHeaderWrapped();
+                HttpHeader httpHeader = null;
+                if (payloadHeaderWrapped instanceof HttpHeader) {
+                    httpHeader = (HttpHeader)payloadHeaderWrapped;
+                }
+                if (httpHeader != null) {
+                	if (httpHeader.headerType == HttpHeader.HT_RESPONSE) {
+                        protocolResultCode = httpHeader.statusCodeStr;
+                        protocolVersion = httpHeader.httpVersion;
+                        protocolContentType = httpHeader.contentType;
+                        headerLine = httpHeader.getHeader("server");
+                        if (headerLine != null && headerLine.value != null) {
+                            protocolServer = headerLine.value;
+                        }
+                	}
                 }
             }
+        	break;
         }
         populateArcRecordBase(record);
     }
@@ -152,39 +159,41 @@ public class ArcRecordData {
      * @param record record containing common data
      */
     protected void populateArcRecordBase(ArcRecordBase record) {
+    	ArcHeader header = record.header;
         startOffset = record.getOffset();
         consumed = record.getConsumed();
-        url = record.recUrl;
-        protocol = record.protocol;
-        ipAddress = record.recIpAddress;
-        if (record.inetAddress != null) {
-            if (record.inetAddress.getAddress().length == 4) {
+        blockDescVersion = header.recordFieldVersion;
+        url = header.urlStr;
+        protocol = header.urlScheme;
+        ipAddress = header.ipAddressStr;
+        if (header.inetAddress != null) {
+            if (header.inetAddress.getAddress().length == 4) {
                 ipVersion = "4";
             }
-            else if (record.inetAddress.getAddress().length == 16) {
+            else if (header.inetAddress.getAddress().length == 16) {
                 ipVersion = "6";
             }
         }
-        if (record.archiveDate != null) {
-            archiveDate = warcDateFormat.format(record.archiveDate);
+        if (header.archiveDate != null) {
+            archiveDate = arcDateFormat.format(header.archiveDate);
         }
-        rawArchiveDate = record.recArchiveDate;
-        contentType = record.recContentType;
-        if (record.recLength != null) {
+        rawArchiveDate = header.archiveDateStr;
+        contentType = header.contentTypeStr;
+        if (header.archiveDateStr != null) {
             // TODO JWAT should probably save the raw value too.
-            length = record.recLength.toString();
+            length = header.archiveLength.toString();
         }
-        if (record.recResultCode != null) {
+        if (header.resultCode != null) {
             // TODO JWAT should probably save the raw value too.
-            resultCode = record.recResultCode.toString();
+            resultCode = header.resultCode.toString();
         }
-        checksum = record.recChecksum;
-        location = record.recLocation;
-        if (record.recOffset != null) {
+        checksum = header.checksumStr;
+        location = header.locationStr;
+        if (header.offset != null) {
             // TODO JWAT should probably save the raw value too.
-            offset = record.recOffset.toString();
+            offset = header.offset.toString();
         }
-        filename = record.recFilename;
+        filename = header.filenameStr;
         /*
          * Payload.
          */
@@ -192,9 +201,13 @@ public class ArcRecordData {
         Payload payload = record.getPayload();
         if (payload != null) {
         	// payloadLength is reported back as ObjectSize in the Jhove2 specs
-            HttpResponse httpResponse = payload.getHttpResponse();
-            if (httpResponse != null) {
-                payloadLength = Long.toString(httpResponse.getPayloadLength());
+            PayloadWithHeaderAbstract payloadHeaderWrapped = payload.getPayloadHeaderWrapped();
+            HttpHeader httpHeader = null;
+            if (payloadHeaderWrapped instanceof HttpHeader) {
+                httpHeader = (HttpHeader)payloadHeaderWrapped;
+            }
+            if (httpHeader != null) {
+                payloadLength = Long.toString(httpHeader.getPayloadLength());
             }
             else {
                 payloadLength = Long.toString(payload.getTotalLength());;

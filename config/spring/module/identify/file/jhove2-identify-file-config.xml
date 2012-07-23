@@ -33,7 +33,7 @@
          property is not set, the system-provided (on UNIX and Linux
          systems) definitions will be used.
      -->
-    <property name="magicFileDir" value="classpath:file/Magdir"/>
+    <!--property name="magicFileDir" value="classpath:file/Magdir"/-->
     <!--property name="magicFileDir" value="/home/nicl/workspace/file-5.11/magic/Magdir/warc"/-->
   </bean>
 

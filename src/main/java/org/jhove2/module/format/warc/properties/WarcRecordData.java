@@ -41,8 +41,9 @@ import java.util.List;
 
 import org.jhove2.core.reportable.AbstractReportable;
 import org.jwat.common.HeaderLine;
-import org.jwat.common.HttpResponse;
+import org.jwat.common.HttpHeader;
 import org.jwat.common.Payload;
+import org.jwat.common.PayloadWithHeaderAbstract;
 import org.jwat.warc.WarcConcurrentTo;
 import org.jwat.warc.WarcConstants;
 import org.jwat.warc.WarcHeader;
@@ -66,6 +67,8 @@ public class WarcRecordData {
 
     protected Long startOffset;
     protected Long consumed;
+
+    protected String warcVersionStr;
 
     protected String warcType;
     protected String warcFilename;
@@ -131,6 +134,9 @@ public class WarcRecordData {
     	WarcHeader header = record.header;
         startOffset = record.getStartOffset();
         consumed = record.getConsumed();
+        if (header.bValidVersionFormat) {
+            this.warcVersionStr = header.versionStr;
+        }
         this.warcType = header.warcTypeStr;
         this.warcFilename = header.warcFilename;
         this.warcRecordId = header.warcRecordIdStr;
@@ -253,23 +259,29 @@ public class WarcRecordData {
         Payload payload = record.getPayload();
         HeaderLine headerLine;
         if (payload != null) {
-            // TODO Verify meaning of JHove2 WARC draft
-            HttpResponse httpResponse = payload.getHttpResponse();
-            if (httpResponse != null) {
-                payloadLength = Long.toString(httpResponse.getPayloadLength());
-                // TODO Fix this when request and response are separate objects.
-                protocolVersion = httpResponse.protocolVersion;
-                resultCode = httpResponse.resultCodeStr;
-                protocolContentType = httpResponse.contentType;
-                headerLine = httpResponse.getHeader("server");
-                if (headerLine != null && headerLine.value != null) {
-                    protocolServer = headerLine.value;
-                }
-                // TODO HttpRequest not supported yet in JWAT
-                protocolVersion = httpResponse.protocolVersion;
-                headerLine = httpResponse.getHeader("user-agent");
-                if (headerLine != null && headerLine.value != null) {
-                    protocolUserAgent = headerLine.value;
+            PayloadWithHeaderAbstract payloadHeaderWrapped = payload.getPayloadHeaderWrapped();
+            HttpHeader httpHeader = null;
+            if (payloadHeaderWrapped instanceof HttpHeader) {
+                httpHeader = (HttpHeader)payloadHeaderWrapped;
+            }
+            if (httpHeader != null) {
+                payloadLength = Long.toString(httpHeader.getPayloadLength());
+                protocolVersion = httpHeader.httpVersion;
+                switch (httpHeader.headerType) {
+                case HttpHeader.HT_RESPONSE:
+                    resultCode = httpHeader.statusCodeStr;
+                    protocolContentType = httpHeader.contentType;
+                    headerLine = httpHeader.getHeader("server");
+                    if (headerLine != null && headerLine.value != null) {
+                        protocolServer = headerLine.value;
+                    }
+                	break;
+                case HttpHeader.HT_REQUEST:
+                    headerLine = httpHeader.getHeader("user-agent");
+                    if (headerLine != null && headerLine.value != null) {
+                        protocolUserAgent = headerLine.value;
+                    }
+                	break;
                 }
             }
             else {
