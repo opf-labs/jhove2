@@ -185,10 +185,7 @@ public class GzipModule extends BaseFormatModule implements Validator {
     public long parse(final JHOVE2 jhove2, Source source, Input input)
         throws EOFException, IOException, JHOVE2Exception
     {
-        long consumed = 0L;
-
-        Invocation cfg = jhove2.getInvocation();
-
+        //Invocation cfg = jhove2.getInvocation();
         /*
         // Check for parallel characterization mode.
         ExecutorService threadPool = null;
@@ -196,8 +193,10 @@ public class GzipModule extends BaseFormatModule implements Validator {
             threadPool = Executors.newFixedThreadPool(this.nThreads);
         }
         */
-
-        // Reset state.
+        /*
+         * Module init.
+         */
+        long consumed = 0L;
         //this.deflateMemberCount.set(0L);
         //this.invalidMembers.set(0L);
         deflateMemberCount = 0L;
@@ -230,7 +229,16 @@ public class GzipModule extends BaseFormatModule implements Validator {
         try {
             source.setIsAggregate(true);
             SourceFactory factory = jhove2.getSourceFactory();
-
+            /*
+             * Reportable: Filename, file size, etc.
+             */
+            if (!source.isTemp()) {
+                gzipFileName = source.getFile().getName();
+                gzipFileSize = source.getFile().length();
+            } 
+            /*
+             * Read some GZip entries.
+             */
             GzipEntryProperties e = null;
             int memberCount = 0;
             while ((e = gz.getNextEntry()) != null) {
@@ -455,7 +463,7 @@ public class GzipModule extends BaseFormatModule implements Validator {
      * @return the gzipFileName
      */
     @ReportableProperty(order=1, value="GZip file name")
-    public String getGZaipFileName() {
+    public String getGZipFileName() {
         return gzipFileName;
     }
 
@@ -480,11 +488,11 @@ public class GzipModule extends BaseFormatModule implements Validator {
     }
 
     /**
-     * arcReaderConsumedBytes getter
-     * @return the arcReaderConsumedBytes
+     * gzipReaderConsumedBytes getter
+     * @return the gzipReaderConsumedBytes
      */
-    @ReportableProperty(order=4, value="ARC reader consumed bytes, in bytes")
-    public long getArcReaderConsumedBytes() {
+    @ReportableProperty(order=4, value="GZip reader consumed bytes, in bytes")
+    public long getGZipReaderConsumedBytes() {
          return gzipReaderConsumedBytes;
     }
 
