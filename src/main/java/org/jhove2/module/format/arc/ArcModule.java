@@ -541,7 +541,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
         /*
          * Report errors.
          */
-        checkRecordValidity(recordSrc, record, jhove2);
+        reportValidationErrors(recordSrc, record, jhove2);
     }
 
     protected void updateProtocols(ArcRecordData recordData) {
@@ -596,19 +596,12 @@ public class ArcModule extends BaseFormatModule implements Validator {
      * @throws IOException if an IO error occurs while processing
      * @throws JHOVE2Exception if a serious problem needs to be reported
      */
-    private void checkRecordValidity(Source src, ArcRecordBase record,
+    private void reportValidationErrors(Source src, ArcRecordBase record,
                         JHOVE2 jhove2) throws JHOVE2Exception, IOException {
-        /*
-        if((this.recurse) && (validateContent)){
-            arcRecord.validateNetworkDocContent();
-        }
-        if (!record.isValid()) {
-        }
-        */
         if (record.diagnostics.hasErrors()) {
             // Report errors on source object.
            for (Diagnosis d : record.diagnostics.getErrors()) {
-               src.addMessage(newValidityError(jhove2,Message.Severity.ERROR,
+               src.addMessage(newValidityError(jhove2, Message.Severity.ERROR,
                        d.type.toString().toLowerCase(), d.getMessageArgs()));
                //updateMap(e.error.toString() + '-' + e.field, this.errors);
            }
@@ -616,7 +609,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
         if (record.diagnostics.hasWarnings()) {
             // Report warnings on source object.
             for (Diagnosis d : record.diagnostics.getWarnings()) {
-                src.addMessage(newValidityError(jhove2,Message.Severity.WARNING,
+                src.addMessage(newValidityError(jhove2, Message.Severity.WARNING,
                         d.type.toString().toLowerCase(), d.getMessageArgs()));
             }
          }

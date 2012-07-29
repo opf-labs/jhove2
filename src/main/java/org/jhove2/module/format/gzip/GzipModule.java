@@ -48,21 +48,24 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.jhove2.annotation.ReportableProperty;
-import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.Message;
-import org.jhove2.core.TimerInfo;
+import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
 import org.jhove2.core.format.FormatIdentification;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
 import org.jhove2.module.format.BaseFormatModule;
-import org.jhove2.module.format.Parser;
 import org.jhove2.module.format.Validator;
+import org.jhove2.module.format.gzip.properties.GzipEntryData;
 import org.jhove2.persist.FormatModuleAccessor;
 import org.jwat.arc.ArcReader;
+import org.jwat.common.Diagnosis;
+import org.jwat.gzip.GzipConstants;
+import org.jwat.gzip.GzipEntry;
+import org.jwat.gzip.GzipReader;
 import org.jwat.warc.WarcReader;
 
 import com.sleepycat.persist.model.NotPersistent;
@@ -121,7 +124,8 @@ public class GzipModule extends BaseFormatModule implements Validator {
                                         new LinkedList<Message>();
 
     /** A parser object to decode woven compressed formats. */
-    private Parser wovenFormatParser = null;
+    //private Parser wovenFormatParser = null;
+
     /** Whether to recursively characterize GZip members. */
     private boolean recurse = true;
 
@@ -203,15 +207,10 @@ public class GzipModule extends BaseFormatModule implements Validator {
         invalidMembers = 0L;
         validationMessages.clear();
         isValid = Validity.Undetermined;
-        wovenFormatParser = null;
-        final boolean doRecurse = recurse;
+        //wovenFormatParser = null;
 
         // In GZip format, least-significant bytes come first.
         input.setByteOrder(ByteOrder.LITTLE_ENDIAN);
-        // Characterize each GZip member from the source, validating
-        // the corresponding GZip headers and trailers.
-        GzipInputStream gz = new GzipInputStream(
-                    new BufferedInputStream(source.getInputStream(), 8192));
 
         instanceId = autoIncId.get();
         // This is done because it is not persisted immediately.
@@ -226,6 +225,10 @@ public class GzipModule extends BaseFormatModule implements Validator {
             gzipMap.put(instanceId, this);
         }
 
+        // Characterize each GZip member from the source, validating
+        // the corresponding GZip headers and trailers.
+        GzipReader gzipReader = null;
+        GzipEntry gzipEntry = null;
         try {
             source.setIsAggregate(true);
             SourceFactory factory = jhove2.getSourceFactory();
@@ -239,9 +242,10 @@ public class GzipModule extends BaseFormatModule implements Validator {
             /*
              * Read some GZip entries.
              */
-            GzipEntryProperties e = null;
+            gzipReader = new GzipReader(
+                    new BufferedInputStream(source.getInputStream(), 8192));
             int memberCount = 0;
-            while ((e = gz.getNextEntry()) != null) {
+            while ((gzipEntry = gzipReader.getNextEntry()) != null) {
                 // Wrap found member in a JHove2 Source object.
                 /*
                 final GzipMemberSource src = (GzipMemberSource)
@@ -249,10 +253,9 @@ public class GzipModule extends BaseFormatModule implements Validator {
                             cfg.getTempSuffix(), cfg.getBufferSize(), e,
                             (doRecurse)? gz.getEntryInputStream(): null));
                 */
-                InputStream stream = gz.getEntryInputStream();
-                String name = e.getName();
-                final Source src =
-                    factory.getSource(jhove2, stream, name, e);
+                InputStream stream = gzipEntry.getInputStream();
+                String name = gzipEntry.fname;
+                Source src = factory.getSource(jhove2, stream, name, null);
                 if (src != null) {
                     memberCount++;
                     // Attach member to parent source.
@@ -262,7 +265,7 @@ public class GzipModule extends BaseFormatModule implements Validator {
                         src.addPresumptiveFormat(presumptiveFormat);
                     }
 
-                    if (doRecurse) {
+                    if (recurse) {
                         // Characterize member data.
                         if (memberCount == 1) {
                             // First member: Check for woven format.
@@ -300,22 +303,30 @@ public class GzipModule extends BaseFormatModule implements Validator {
                             */
                         }
                     }
-                    // Check member compression method (always deflate).
-                    if (e.getCompressionMethod().getValue() ==
-                                                    GzipInputStream.DEFLATE) {
-                        //this.deflateMemberCount.incrementAndGet();
-                        ++deflateMemberCount;
-                    }
-                    // Check member validity.
-                    if (! e.isValid()) {
-                        //this.invalidMembers.incrementAndGet();
-                        ++invalidMembers;
-                        isValid = Validity.False;
-                        // Report errors on child source object.
-                        reportValidationErrors(e, src, jhove2);
-                    }
+                    src.close();
+                }
+                gzipEntry.close();
+                /*
+                 * Properties.
+                 */
+                GzipEntryData gzipEntryData = new GzipEntryData(gzipEntry);
+                src.addExtraProperties(gzipEntryData.getGzipEntryProperties());
+                // Check member compression method (always deflate).
+                if (gzipEntry.cm == GzipConstants.CM_DEFLATE) {
+                    //this.deflateMemberCount.incrementAndGet();
+                    ++deflateMemberCount;
+                }
+                // Check member validity.
+                if (! gzipEntry.isValid()) {
+                    //this.invalidMembers.incrementAndGet();
+                    ++invalidMembers;
+                    isValid = Validity.False;
+                    // Report errors on child source object.
+                    reportValidationErrors(gzipEntry, src, jhove2);
                 }
             }
+            consumed = gzipReader.getConsumed();
+            gzipReaderConsumedBytes = gzipReader.getConsumed();
             if (isValid == Validity.Undetermined) {
                 // No invalid members found and EOF reached without
                 // any exception being thrown => Source is valid.
@@ -323,8 +334,8 @@ public class GzipModule extends BaseFormatModule implements Validator {
             }
         }
         catch (IOException e) {
-            handleError(e, jhove2, gz.getOffset());
-            if (! ((e instanceof EOFException) && (gz.getOffset() != 0L))) {
+            handleError(e, jhove2, gzipEntry.getStartOffset());
+            if (! ((e instanceof EOFException) && (gzipEntry.getStartOffset() != 0L))) {
                 // Not an EOF error occurring before the very first entry.
                 throw e;
             }
@@ -332,7 +343,7 @@ public class GzipModule extends BaseFormatModule implements Validator {
         finally {
             // Close GZip input stream.
             try {
-                gz.close();
+                gzipReader.close();
             }
             catch (Exception e) { /* Ignore... */ }
 
@@ -377,6 +388,7 @@ public class GzipModule extends BaseFormatModule implements Validator {
             throws JHOVE2Exception, IOException {
         Input input = source.getInput(jhove2);
         try {
+        	/*
             if (wovenFormatParser != null) {
                 // Start timer.
                 TimerInfo timer = source.getTimerInfo();
@@ -397,9 +409,12 @@ public class GzipModule extends BaseFormatModule implements Validator {
                 }
             }
             else {
+                */
                 // Directly characterize content.
                 jhove2.characterize(source, input);
+                /*
             }
+            */
         }
         finally {
             // Make sure all file descriptors are properly closed.
@@ -412,12 +427,56 @@ public class GzipModule extends BaseFormatModule implements Validator {
     private void handleError(Exception e, JHOVE2 jhove2, long offset) {
         try {
             isValid = Validity.False;
-            validationMessages.add(newValidityError(jhove2,
-                    "invalidGzipFile", Long.valueOf(offset), e));
+            validationMessages.add(
+            		newValidityError(jhove2, Message.Severity.ERROR,
+                    "invalidGzipFile", new Object[] {Long.valueOf(offset), e}));
         }
         catch (JHOVE2Exception ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+    /**
+     * Checks GZip record validity and reports validation errors.
+     * @param src GZip source unit
+     * @param record the GZip record to characterize.
+     * @param jhove2 the JHove2 characterization context.
+     * @throws IOException if an IO error occurs while processing
+     * @throws JHOVE2Exception if a serious problem needs to be reported
+     */
+    private void reportValidationErrors(GzipEntry entry, Source src,
+                                        JHOVE2 jhove2) throws JHOVE2Exception {
+        if (entry.diagnostics.hasErrors()) {
+            // Report errors on source object.
+           for (Diagnosis d : entry.diagnostics.getErrors()) {
+               src.addMessage(newValidityError(jhove2, Message.Severity.ERROR,
+                       d.type.toString().toLowerCase(), d.getMessageArgs()));
+               //updateMap(e.error.toString() + '-' + e.field, this.errors);
+           }
+        }
+        if (entry.diagnostics.hasWarnings()) {
+            // Report warnings on source object.
+            for (Diagnosis d : entry.diagnostics.getWarnings()) {
+                src.addMessage(newValidityError(jhove2, Message.Severity.WARNING,
+                        d.type.toString().toLowerCase(), d.getMessageArgs()));
+            }
+         }
+    }
+
+    /**
+     * Instantiates a new localized message.
+     * @param jhove2 the JHove2 characterization context.
+     * @param severity message severity
+     * @param id the configuration property relative name.
+     * @param params the values to add in the message
+     * @return the new localized message
+     * @throws JHOVE2Exception if a serious problem needs to be reported
+     */
+    private Message newValidityError(JHOVE2 jhove2, Severity severity, String id,
+                                     Object[] messageArgs) throws JHOVE2Exception {
+        return new Message(severity, Message.Context.OBJECT,
+                           this.getClass().getName() + '.' + id, messageArgs,
+                           jhove2.getConfigInfo());
     }
 
     //------------------------------------------------------------------------
@@ -550,55 +609,5 @@ public class GzipModule extends BaseFormatModule implements Validator {
         this.nThreads = level;
     }
     */
-
-    /**
-     * Sets the parser this module shall use when processing woven
-     * format GZip member. Woven formats are formats such as compressed
-     * ARC (web archive) where the file are made of concatenated
-     * independently-gzipped records.
-     * @param  parser   the parser to hand GZip members to rather than
-     *                  attempting direct characterization.
-     */
-    public void setWovenFormatParser(Parser parser) {
-        this.wovenFormatParser = parser;
-    }
-
-    /** Check member validation errors. */
-    private void reportValidationErrors(GzipEntryProperties entry, Source src,
-                                        JHOVE2 jhove2) throws JHOVE2Exception {
-        if (! entry.isExtraFlagsValid()) {
-            src.addMessage(this.newValidityError(jhove2, "invalidExtraFlags"));
-        }
-        if (! entry.isOperatingSystemValid()) {
-            src.addMessage(this.newValidityError(jhove2,
-                                                 "invalidOperatingSystem"));
-        }
-        if (! entry.isReservedFlagsValid()) {
-            src.addMessage(this.newValidityError(jhove2, "reservedFlagsSet"));
-        }
-        if (! entry.isISizeValid()) {
-            src.addMessage(this.newValidityError(jhove2, "invalidISize",
-                                         Long.valueOf(entry.getISize()),
-                                         Long.valueOf(entry.getComputedISize())));
-        }
-        if (! entry.isHeaderCrcValid()) {
-            src.addMessage(this.newValidityError(jhove2, "invalidCrc16",
-                                     entry.getCrc16(), entry.getComputedCrc16()));
-        }
-        if (! entry.isDataCrcValid()) {
-            src.addMessage(this.newValidityError(jhove2, "invalidCrc32",
-                                     entry.getCrc32(), entry.getComputedCrc32()));
-        }
-    }
-
-    /** Returns a new JHove2 Message object for object parse errors. */
-    private Message newValidityError(JHOVE2 jhove2, String id, Object... params)
-                                                        throws JHOVE2Exception {
-        return new Message(Message.Severity.ERROR,
-                           Message.Context.OBJECT,
-                           this.getClass().getName() + '.' + id,
-                           params,
-                           jhove2.getConfigInfo());
-    }
 
 }

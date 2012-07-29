@@ -502,7 +502,7 @@ public class WarcModule extends BaseFormatModule implements Validator {
         /*
          * Report errors.
          */
-        checkRecordValidity(recordSrc, record, jhove2);
+        reportValidationErrors(recordSrc, record, jhove2);
     }
 
     /**
@@ -550,15 +550,8 @@ public class WarcModule extends BaseFormatModule implements Validator {
      * @throws IOException if an IO error occurs while processing
      * @throws JHOVE2Exception if a serious problem needs to be reported
      */
-    private void checkRecordValidity(Source src, WarcRecord record,
+    private void reportValidationErrors(Source src, WarcRecord record,
                         JHOVE2 jhove2) throws JHOVE2Exception, IOException {
-        /*
-        if((this.recurse) && (validateContent)){
-            arcRecord.validateNetworkDocContent();
-        }
-        if (!record.isValid()) {
-        }
-        */
         if (record.diagnostics.hasErrors()) {
             // Report errors on source object.
            for (Diagnosis d : record.diagnostics.getErrors()) {

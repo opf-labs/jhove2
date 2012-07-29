@@ -34,7 +34,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jhove2.module.format.gzip;
+package org.jhove2.module.format.gzip.properties;
 
 
 import java.util.Date;
@@ -54,75 +54,21 @@ import com.sleepycat.persist.model.Persistent;
 @Persistent
 public class GzipEntryProperties extends AbstractReportable {
 
-    /* Error flags */
-    public final static int INVALID_EXTRA_FLAGS = 1;
-    public final static int INVALID_OPERATING_SYSTEM = 2;
-    public final static int INVALID_RESERVED_FLAGS = 4;
-    public final static int INVALID_ISIZE = 8;
-    public final static int INVALID_CRC16 = 16;
-    public final static int INVALID_CRC32 = 32;
+    /** WARC record data container. */
+    protected GzipEntryData entry;
 
-    protected int index;
-    protected long offset;
-    protected CompressionMethod method;
-    protected CompressionType extraFlags;
-    protected String fileName;
-    protected OperatingSystem os;
-    protected String comment;
-    protected boolean asciiFlag;
-    protected long readCrc16;
-    protected long computedCrc16;
-
-    /* Non immutable fields: use defensive copy in getter method. */
-    protected Date date;
-    protected byte[] extraFields;
-
-    protected int errors = 0;
-    protected long size  = -1L;
-    protected long csize = -1L;
-    protected long readISize = -1L;
-    protected long computedISize = -1;
-    protected long readCrc32 = -1L;
-    protected long computedCrc32 = -1L;
-
-
-    /** Zero argument constructor. */
-    public GzipEntryProperties()
-    {
-        super();
+    /**
+     * Constructor required by the persistence layer.
+     */
+    public GzipEntryProperties() {
     }
 
-    /** Creates a new GzipEntry object. */
-    GzipEntryProperties(int index, long offset,
-                     CompressionMethod method, CompressionType extraFlags,
-                     Date date, String fileName, OperatingSystem os,
-                     String comment, boolean asciiFlag, byte[] extraFields,
-                     int reservedFlags, long readCrc16, long computedCrc16) {
-        this.index          = index;
-        this.offset         = offset;
-        this.method         = method;
-        this.extraFlags     = extraFlags;
-        this.date           = date;
-        this.fileName       = fileName;
-        this.os             = os;
-        this.comment        = comment;
-        this.asciiFlag      = asciiFlag;
-        this.extraFields    = extraFields;
-        this.readCrc16      = readCrc16;
-        this.computedCrc16  = computedCrc16;
-
-        if ((readCrc16 > 0L) && (readCrc16 != computedCrc16)) {
-            this.addErrors(INVALID_CRC16);
-        }
-        if ((extraFlags != null) && (! extraFlags.isValid())) {
-            this.addErrors(INVALID_EXTRA_FLAGS);
-        }
-        if ((os != null) && (! os.isValid())) {
-            this.addErrors(INVALID_OPERATING_SYSTEM);
-        }
-        if (reservedFlags != 0) {
-            this.addErrors(INVALID_RESERVED_FLAGS);
-        }
+    /**
+     * Construct GZip entry base property instance with the supplied data.
+     * @param entry GZip entry data
+     */
+    public GzipEntryProperties(GzipEntryData entry) {
+        this.entry = entry;
     }
 
     /**
@@ -130,7 +76,7 @@ public class GzipEntryProperties extends AbstractReportable {
      * @return the index (0-based) of the entry.
      */
     public int getIndex() {
-        return index;
+        return entry.index;
     }
 
     /**
@@ -141,7 +87,7 @@ public class GzipEntryProperties extends AbstractReportable {
      */
     @ReportableProperty(order = 1, value = "Offset value.")
     public long getOffset() {
-        return offset;
+        return entry.offset;
     }
 
     /**
@@ -151,7 +97,7 @@ public class GzipEntryProperties extends AbstractReportable {
      */
     @ReportableProperty(order = 2, value = "GZip entry name.")
     public String getName() {
-        return fileName;
+        return entry.fileName;
     }
 
     /**
@@ -160,7 +106,7 @@ public class GzipEntryProperties extends AbstractReportable {
      */
     @ReportableProperty(order = 3, value = "GZip entry comment.")
     public String getComment() {
-        return comment;
+        return entry.comment;
     }
 
 
@@ -172,7 +118,7 @@ public class GzipEntryProperties extends AbstractReportable {
      */
     @ReportableProperty(order = 4, value = "GZip entry date.")
     public Date getDate() {
-        return (date != null)? new Date(date.getTime()): null;
+        return (entry.date != null)? new Date(entry.date.getTime()): null;
     }
 
     /**
@@ -183,7 +129,7 @@ public class GzipEntryProperties extends AbstractReportable {
      *         <code>-1</code> if none is present in the GZip header.
      */
     public long getTime() {
-        return (date != null)? date.getTime(): -1L;
+        return (entry.date != null)? entry.date.getTime(): -1L;
     }
 
     /**
@@ -192,7 +138,7 @@ public class GzipEntryProperties extends AbstractReportable {
      */
     @ReportableProperty(order = 5, value = "GZip entry compression method.")
     public CompressionMethod getCompressionMethod() {
-        return method;
+        return entry.method;
     }
 
     /**
@@ -203,7 +149,7 @@ public class GzipEntryProperties extends AbstractReportable {
      * @see    #isExtraFlagsValid
      */
     public CompressionType getCompressionFlags() {
-        return extraFlags;
+        return entry.extraFlags;
     }
 
     /**
@@ -215,7 +161,7 @@ public class GzipEntryProperties extends AbstractReportable {
      */
     @ReportableProperty(order = 6, value = "GZip entry operating system.")
     public OperatingSystem getOperatingSystem() {
-        return os;
+        return entry.os;
     }
 
     /**
@@ -224,7 +170,7 @@ public class GzipEntryProperties extends AbstractReportable {
      * @return the ASCII text flag from the member header.
      */
     public boolean isAscii() {
-        return asciiFlag;
+        return entry.asciiFlag;
     }
 
     /**
@@ -233,9 +179,9 @@ public class GzipEntryProperties extends AbstractReportable {
      *         <code>null</code> if none are present.
      */
     public byte[] getExtra() {
-        int l = extraFields.length;
+        int l = entry.extraFields.length;
         byte[] copy = new byte[l];
-        System.arraycopy(extraFields, 0, copy, 0, l);
+        System.arraycopy(entry.extraFields, 0, copy, 0, l);
         return copy;
     }
 
@@ -247,13 +193,15 @@ public class GzipEntryProperties extends AbstractReportable {
      * @see    #getComputedHeaderCrc
      * @see    #isHeaderCrcValid
      */
-    public long getHeaderCrc() {
-        return readCrc16;
-    }
-
     @ReportableProperty(order = 7, value = "GZip entry header crc16.")
     public String getCrc16() {
-        return "0x" + Long.toHexString(readCrc16 & 0xffff);
+    	String crc16;
+    	if (entry.readCrc16 != null) {
+            crc16 = "0x" + Integer.toHexString(entry.readCrc16 & 0xffff);
+    	} else {
+    		crc16 = null;
+    	}
+        return crc16;
     }
 
     /**
@@ -263,12 +211,8 @@ public class GzipEntryProperties extends AbstractReportable {
      * @see    #getHeaderCrc
      * @see    #isHeaderCrcValid
      */
-    public long getComputedHeaderCrc() {
-        return computedCrc16;
-    }
-
     public long getComputedCrc16() {
-        return computedCrc16;
+        return entry.computedCrc16;
     }
 
     /**
@@ -280,13 +224,9 @@ public class GzipEntryProperties extends AbstractReportable {
      * @see    #getComputedDataCrc
      * @see    #isDataCrcValid
      */
-    public long getDataCrc() {
-        return readCrc32;
-    }
-
     @ReportableProperty(order = 8, value = "GZip entry crc32.")
     public String getCrc32() {
-        return "0x" + Long.toHexString(readCrc32);
+        return "0x" + Integer.toHexString(entry.readCrc32);
     }
 
     /**
@@ -298,12 +238,8 @@ public class GzipEntryProperties extends AbstractReportable {
      * @see    #getDataCrc
      * @see    #isDataCrcValid
      */
-    public long getComputedDataCrc() {
-        return computedCrc32;
-    }
-
     public long getComputedCrc32() {
-        return computedCrc32;
+        return entry.computedCrc32;
     }
 
     /**
@@ -314,7 +250,7 @@ public class GzipEntryProperties extends AbstractReportable {
      */
     @ReportableProperty(order = 9, value = "GZip entry (computed) uncompressed size, in bytes.")
     public long getSize() {
-        return size;
+        return entry.size;
     }
 
     /**
@@ -325,7 +261,7 @@ public class GzipEntryProperties extends AbstractReportable {
      */
     @ReportableProperty(order = 10, value = "GZip entry (computed) compressed size, in bytes.")
     public long getCompressedSize() {
-        return csize;
+        return entry.csize;
     }
 
     /**
@@ -339,7 +275,7 @@ public class GzipEntryProperties extends AbstractReportable {
      */
     @ReportableProperty(order = 11, value = "GZip entry extracted size (ISIZE) value.")
     public long getISize() {
-        return readISize;
+        return entry.readISize;
     }
 
     /**
@@ -352,12 +288,12 @@ public class GzipEntryProperties extends AbstractReportable {
      * @see    #isISizeValid
      */
     public long getComputedISize() {
-        return computedISize;
+        return entry.computedISize;
     }
 
     @ReportableProperty(order = 12, value = "GZip entry (computed) compression ration.")
     public String getCompressionRatio() {
-        return Float.toString((float)size / (float)csize);
+        return Float.toString((float)entry.size / (float)entry.csize);
     }
 
     /**
@@ -376,9 +312,11 @@ public class GzipEntryProperties extends AbstractReportable {
      * @return <code>true</code> if the entry is compliant with RFC 1952
      *         rules; <code>false</code> otherwise.
      */
+    /*
     public boolean isCompliant() {
-        return isReservedFlagsValid();
+        return entry.isReservedFlagsValid();
     }
+    */
 
     /**
      * Returns whether this entry is valid, i.e. is compliant and no
@@ -388,107 +326,7 @@ public class GzipEntryProperties extends AbstractReportable {
      *         <code>false</code> otherwise.
      */
     public boolean isValid() {
-        return (errors == 0);
-    }
-
-    /**
-     * Returns whether the header extra flags are valid, i.e. only the
-     * the compression type flags are set at most.
-     * @return <code>true</code> if the header extra flags are valid;
-     *         <code>false</code> otherwise.
-     *
-     * @see    #getCompressionFlags
-     */
-    public boolean isExtraFlagsValid() {
-        return (! isErrorSet(INVALID_EXTRA_FLAGS));
-    }
-
-    /**
-     * Returns whether the operating system value is valid.
-     * @return <code>true</code> if the operating system value is valid;
-     *         <code>false</code> otherwise.
-     *
-     * @see    #getOperatingSystem
-     */
-    public boolean isOperatingSystemValid() {
-        return (! isErrorSet(INVALID_OPERATING_SYSTEM));
-    }
-
-    /**
-     * Returns whether the header reserved flags are valid
-     * (i.e. not set).
-     * @return <code>true</code> if the header reserved flags are valid;
-     *         <code>false</code> otherwise.
-     */
-    public boolean isReservedFlagsValid() {
-        return (! isErrorSet(INVALID_RESERVED_FLAGS));
-    }
-
-    /**
-     * Returns whether the read data ISIZE and the computed one
-     * are equals.
-     * @return <code>true</code> if the read ISIZE and the computed one
-     *         are equals; <code>false</code> otherwise.
-     *
-     * @see    #getISize
-     */
-    public boolean isISizeValid() {
-        return (! isErrorSet(INVALID_ISIZE));
-    }
-
-    /**
-     * Returns whether the read header CRC (a.k.a. CRC16) and the
-     * computed one are equals.
-     * @return <code>true</code> if the read CRC16) and the computed one
-     *         are equals; <code>false</code> otherwise.
-     *
-     * @see    #getHeaderCrc
-     * @see    #getComputedHeaderCrc
-     */
-    public boolean isHeaderCrcValid() {
-        return (! isErrorSet(INVALID_CRC16));
-    }
-
-    /**
-     * Returns whether the read data CRC (a.k.a. CRC32) and the computed
-     * one are equals.
-     * @return <code>true</code> if the read CRC32) and the computed one
-     *         are equals; <code>false</code> otherwise.
-     *
-     * @see    #getDataCrc
-     * @see    #getComputedDataCrc
-     */
-    public boolean isDataCrcValid() {
-        return (! isErrorSet(INVALID_CRC32));
-    }
-
-    /* package */ void setSizes(long csize, long size) {
-        this.csize = csize;
-        this.size  = size;
-    }
-
-    /* package */ void setISize(long readISize, long computedISize) {
-        this.readISize = readISize;
-        this.computedISize = computedISize;
-        if (readISize != computedISize) {
-            this.addErrors(INVALID_ISIZE);
-        }
-    }
-
-    /* package */ void setDataCrc(long readCrc32, long computedCrc32) {
-        this.readCrc32 = readCrc32;
-        this.computedCrc32 = computedCrc32;
-        if (readCrc32 != computedCrc32) {
-            this.addErrors(INVALID_CRC32);
-        }
-    }
-
-    private void addErrors(int errors) {
-        this.errors |= errors;
-    }
-
-    private boolean isErrorSet(int error) {
-        return ((this.errors & error) != 0);
+        return (entry.errors == 0);
     }
 
 }
