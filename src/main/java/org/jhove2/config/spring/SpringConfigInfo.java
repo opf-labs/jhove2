@@ -295,7 +295,7 @@ public class SpringConfigInfo
 			/* Get the JHOVE format identifier for the format */
 			I8R formatID = format.getIdentifier();
 			/* For each aliasIdentifier of the format */
-			for (I8R alias :  format.getAliasIdentifiers()) {
+			for (I8R alias : format.getAliasIdentifiers()) {
 				if (alias.getNamespace().equals(namespace)) {
 					/* Add an entry into the format identifier to module map */
 					map.put(alias.getValue(), formatID.getValue());

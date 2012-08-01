@@ -32,21 +32,9 @@
     <property name="aliasIdentifiers">
       <set value-type="org.jhove2.core.I8R">
 	<ref bean="WarcArchiveFileIdentifier"/>
-	<!-- ARC PUID x-fmt/219 alias identifier bean -->
-	<bean class="org.jhove2.core.I8R">
-	  <constructor-arg type="java.lang.String" value="fmt/289"/>
-	  <constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
-	</bean>
-	<!-- WARC MIME alias identifier bean -->
-	<bean class="org.jhove2.core.I8R">
-	  <constructor-arg type="java.lang.String" value="application/warc"/>
-	  <constructor-arg type="org.jhove2.core.I8R$Namespace" value="MIME"/>
-	</bean>
-	<!-- WARC ISO 28500 -->
-	<bean id="WarcISO28500" class="org.jhove2.core.I8R" scope="singleton">
-	  <constructor-arg type="java.lang.String" value="ISO 28500:2009(E)" />
-	  <constructor-arg type="org.jhove2.core.I8R$Namespace" value="ISO" />
-	</bean>
+	<ref bean="WarcXFmt219Identifier"/>
+	<ref bean="WarcMimeIdentifier"/>
+	<ref bean="WarcISO28500"/>
       </set>
     </property>
     <property name="aliasNames">
@@ -63,7 +51,25 @@
 
   <!-- WARC identifier bean -->
   <bean id="WarcArchiveFileIdentifier" class="org.jhove2.core.I8R" scope="singleton">
-    <constructor-arg value="http://jhove2.org/terms/format/warc" type="java.lang.String"/>
+    <constructor-arg type="java.lang.String" value="http://jhove2.org/terms/format/warc"/>
+  </bean>
+
+  <!-- ARC PUID x-fmt/219 alias identifier bean -->
+  <bean id="WarcXFmt219Identifier" class="org.jhove2.core.I8R" scope="singleton">
+    <constructor-arg type="java.lang.String" value="fmt/289"/>
+    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
+  </bean>
+
+  <!-- WARC MIME alias identifier bean -->
+  <bean id="WarcMimeIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+    <constructor-arg type="java.lang.String" value="application/warc"/>
+    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="MIME"/>
+  </bean>
+
+  <!-- WARC ISO 28500 -->
+  <bean id="WarcISO28500" class="org.jhove2.core.I8R" scope="singleton">
+    <constructor-arg type="java.lang.String" value="ISO 28500:2009(E)" />
+    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="ISO" />
   </bean>
 
   <!-- WARC file format version 1.0 specification bean -->

@@ -8,7 +8,7 @@
            http://www.springframework.org/schema/context/spring-context-2.5.xsd
 		   http://www.springframework.org/schema/util 
 		   http://www.springframework.org/schema/util/spring-util-2.0.xsd">
-	
+
  	<!-- JSON displayer bean -->
 	<bean id="JSON" class="org.jhove2.module.display.JSONDisplayer" scope="prototype">
 	    <constructor-arg ref="BaseModuleAccessor"/>
@@ -24,7 +24,7 @@
 		<property name="showIdentifiers" value="false"/>
 		<property name="showRawProperties" value="true"/>
 	</bean>
-	      	
+
  	<!-- Text displayer bean -->
 	<bean id="Text" class="org.jhove2.module.display.TextDisplayer" scope="prototype">
 	    <constructor-arg ref="BaseModuleAccessor"/>
@@ -40,7 +40,7 @@
 		<property name="showIdentifiers" value="false"/>
 		<property name="showRawProperties" value="true"/>
 	</bean>
-	      	
+
  	<!-- XML displayer bean -->
 	<bean id="XML" class="org.jhove2.module.display.XMLDisplayer" scope="prototype">
 	    <constructor-arg ref="BaseModuleAccessor"/>
@@ -56,7 +56,32 @@
 		<property name="showDescriptiveProperties" value="true"/>
 		<property name="showRawProperties" value="true"/>
 	</bean>
-	
+
+ 	<!-- Generic XSLT displayer bean configuration -->
+ 	<!-- One non-abstract bean shall be created for each stylesheet,
+ 	     defining the stylesheet property value.
+ 	 -->
+	<bean id="AbstractXSLT" class="org.jhove2.module.display.XSLDisplayer"
+	      abstract="true">
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+                                <ref bean="NetarkivetAgent"/>
+				<ref bean="BnFAgent"/>
+			</list>
+		</property>
+		<property name="configInfo" ref="ConfigInfo"/>
+		<property name="shouldIndent" value="true"/>
+		<property name="showDescriptiveProperties" value="true"/>
+		<property name="showRawProperties" value="true"/>
+		<!-- property name="stylesheet" value="classpath:xxx.xsl"/ -->
+	</bean>
+
+        <!-- XSL displayer bean -->
+        <bean id="XSL" class="org.jhove2.module.display.XSLDisplayer" scope="prototype" parent="AbstractXSLT">
+            <constructor-arg ref="BaseModuleAccessor"/>
+            <property name="stylesheet" value="classpath:containerMD.xsl"/>
+        </bean>
+
 	<!-- Displayer ConfigInfo bean -->
 	<bean id="ConfigInfo" class="org.jhove2.config.spring.SpringConfigInfo" scope="singleton" />
-</beans>		   
+</beans>

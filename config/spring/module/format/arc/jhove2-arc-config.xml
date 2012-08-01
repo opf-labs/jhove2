@@ -31,18 +31,10 @@
 	<constructor-arg type="org.jhove2.core.format.Format$Ambiguity" value="Unambiguous"/>
 
 	<property name="aliasIdentifiers">
-  	    <set value-type="org.jhove2.core.I8R">
+	  <set value-type="org.jhove2.core.I8R">
 	    <ref bean="AlexaArchiveFileIdentifier"/>
-	    <!-- ARC PUID x-fmt/219 alias identifier bean -->
-	    <bean class="org.jhove2.core.I8R">
-	      <constructor-arg type="java.lang.String" value="x-fmt/219"/>
-	      <constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
-	    </bean>
-	    <!-- ARC MIME alias identifier bean -->
-	    <bean class="org.jhove2.core.I8R">
-	      <constructor-arg type="java.lang.String" value="application/x-ia-arc"/>
-	      <constructor-arg type="org.jhove2.core.I8R$Namespace" value="MIME"/>
-	    </bean>
+	    <ref bean="ArcXFmt219Identifier"/>
+	    <ref bean="ArcMimeIdentifier"/>
 	  </set>
 	</property>
 	<property name="aliasNames">
@@ -59,8 +51,19 @@
 
   <!-- Arc identifier bean -->
   <bean id="AlexaArchiveFileIdentifier" class="org.jhove2.core.I8R" scope="singleton">
-    <constructor-arg value="http://jhove2.org/terms/format/arc"
-                     type="java.lang.String"/>
+    <constructor-arg type="java.lang.String" value="http://jhove2.org/terms/format/arc"/>
+  </bean>
+
+  <!-- ARC PUID x-fmt/219 alias identifier bean -->
+  <bean id="ArcXFmt219Identifier" class="org.jhove2.core.I8R" scope="singleton">
+    <constructor-arg type="java.lang.String" value="x-fmt/219"/>
+    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
+  </bean>
+
+  <!-- ARC MIME alias identifier bean -->
+  <bean id="ArcMimeIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+    <constructor-arg type="java.lang.String" value="application/x-ia-arc"/>
+    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="MIME"/>
   </bean>
 
   <!-- ARC file format version 1.0 specification bean -->

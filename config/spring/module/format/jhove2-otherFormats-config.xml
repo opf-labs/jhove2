@@ -357,34 +357,6 @@
                      value="PUID"/>
   </bean>
 
-  <bean id="AlexaArchiveFileFormat" class="org.jhove2.core.format.Format"
-        scope="singleton">
-		<constructor-arg type="java.lang.String" value="Alexa Archive File"/>
-		<constructor-arg ref="AlexaArchiveFileIdentifier"/>
-    <constructor-arg type="org.jhove2.core.format.Format$Type"
-                     value="Format"/>
-    <constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
-                     value="Unambiguous"/>
-		<property name="aliasIdentifiers">
-			<set value-type="org.jhove2.core.I8R">
-				<ref bean="AlexaArchiveFileIdentifier"/>
-				<ref bean="AlexaArchiveFilePUID1"/>
-			</set>
-		</property>
-	</bean>
-	<!-- AlexaArchiveFile JHOVE2 identifier bean -->
-	<bean id="AlexaArchiveFileIdentifier" class="org.jhove2.core.I8R" scope="singleton">
-    <constructor-arg type="java.lang.String"
-                     value="http://jhove2.org/terms/format/arc"/>
-	</bean>
-	<!-- AlexaArchiveFile PUID identifier bean -->
-	<bean id="AlexaArchiveFilePUID1" class="org.jhove2.core.I8R" scope="singleton">
-    <constructor-arg type="java.lang.String"
-                     value="x-fmt/219"/>
-    <constructor-arg type="org.jhove2.core.I8R$Namespace"
-                     value="PUID"/>
-  </bean>
-
   <bean id="AMIDrawDrawingFormat" class="org.jhove2.core.format.Format"
         scope="singleton">
 		<constructor-arg type="java.lang.String" value="AMI Draw Drawing"/>
@@ -3741,34 +3713,6 @@
 	<bean id="GraphicsInterchangeFormatPUID2" class="org.jhove2.core.I8R" scope="singleton">
     <constructor-arg type="java.lang.String"
                      value="fmt/4"/>
-    <constructor-arg type="org.jhove2.core.I8R$Namespace"
-                     value="PUID"/>
-  </bean>
-
-  <bean id="GZIPFormatFormat" class="org.jhove2.core.format.Format"
-        scope="singleton">
-		<constructor-arg type="java.lang.String" value="GZIP Format"/>
-		<constructor-arg ref="GZIPFormatIdentifier"/>
-    <constructor-arg type="org.jhove2.core.format.Format$Type"
-                     value="Format"/>
-    <constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
-                     value="Unambiguous"/>
-		<property name="aliasIdentifiers">
-			<set value-type="org.jhove2.core.I8R">
-				<ref bean="GZIPFormatIdentifier"/>
-				<ref bean="GZIPFormatPUID1"/>
-			</set>
-		</property>
-	</bean>
-	<!-- GZIPFormat JHOVE2 identifier bean -->
-	<bean id="GZIPFormatIdentifier" class="org.jhove2.core.I8R" scope="singleton">
-    <constructor-arg type="java.lang.String"
-                     value="http://jhove2.org/terms/format/gzip"/>
-	</bean>
-	<!-- GZIPFormat PUID identifier bean -->
-	<bean id="GZIPFormatPUID1" class="org.jhove2.core.I8R" scope="singleton">
-    <constructor-arg type="java.lang.String"
-                     value="x-fmt/266"/>
     <constructor-arg type="org.jhove2.core.I8R$Namespace"
                      value="PUID"/>
   </bean>
