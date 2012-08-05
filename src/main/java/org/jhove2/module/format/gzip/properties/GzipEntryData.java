@@ -13,6 +13,7 @@ import com.sleepycat.persist.model.Persistent;
 @Persistent
 public class GzipEntryData {
 
+	protected boolean isNonCompliant;
     protected int index;
     protected long offset;
     protected CompressionMethod method;
@@ -43,6 +44,7 @@ public class GzipEntryData {
     }
 
     public GzipEntryData(GzipEntry entry) {
+    	this.isNonCompliant = !entry.isCompliant();
     	this.offset = entry.getStartOffset();
     	this.method = CompressionMethod.fromValue(entry.cm);
     	this.extraFlags = CompressionType.fromValue(entry.xfl);

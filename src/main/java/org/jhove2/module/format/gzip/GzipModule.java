@@ -317,7 +317,7 @@ public class GzipModule extends BaseFormatModule implements Validator {
                     ++deflateMemberCount;
                 }
                 // Check member validity.
-                if (! gzipEntry.isValid()) {
+                if (! gzipEntry.isCompliant()) {
                     //this.invalidMembers.incrementAndGet();
                     ++invalidMembers;
                     isValid = Validity.False;

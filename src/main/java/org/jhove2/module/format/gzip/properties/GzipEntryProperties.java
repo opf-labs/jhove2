@@ -80,12 +80,21 @@ public class GzipEntryProperties extends AbstractReportable {
     }
 
     /**
+     * Returns whether the entry is compliant or not.
+     * @return whether the entry is compliant or not
+     */
+    @ReportableProperty(order = 1, value = "Is non compliancy.")
+    public boolean getIsNonCompliant() {
+        return entry.isNonCompliant;
+    }
+
+    /**
      * Returns the offset of the beginning of this entry in the GZip
      * file.
      * @return the offset of this entry, as a number of bytes from the
      *         start of the GZip file.
      */
-    @ReportableProperty(order = 1, value = "Offset value.")
+    @ReportableProperty(order = 2, value = "Offset value.")
     public long getOffset() {
         return entry.offset;
     }
@@ -95,7 +104,7 @@ public class GzipEntryProperties extends AbstractReportable {
      * @return the name of the compressed file or <code>null</code> if
      *         the compressed data did not come from a file.
      */
-    @ReportableProperty(order = 2, value = "GZip entry name.")
+    @ReportableProperty(order = 3, value = "GZip entry name.")
     public String getName() {
         return entry.fileName;
     }
@@ -104,7 +113,7 @@ public class GzipEntryProperties extends AbstractReportable {
      * Returns the GZip member comment.
      * @return the GZip member comment or <code>null</code> if absent.
      */
-    @ReportableProperty(order = 3, value = "GZip entry comment.")
+    @ReportableProperty(order = 4, value = "GZip entry comment.")
     public String getComment() {
         return entry.comment;
     }
@@ -116,7 +125,7 @@ public class GzipEntryProperties extends AbstractReportable {
      * @return last modification date of the compressed file or
      *         <code>null</code> if none is present in the GZip header.
      */
-    @ReportableProperty(order = 4, value = "GZip entry date.")
+    @ReportableProperty(order = 5, value = "GZip entry date.")
     public Date getDate() {
         return (entry.date != null)? new Date(entry.date.getTime()): null;
     }
@@ -136,7 +145,7 @@ public class GzipEntryProperties extends AbstractReportable {
      * Returns the compression method used for this entry.
      * @return the compression method.
      */
-    @ReportableProperty(order = 5, value = "GZip entry compression method.")
+    @ReportableProperty(order = 6, value = "GZip entry compression method.")
     public CompressionMethod getCompressionMethod() {
         return entry.method;
     }
@@ -159,7 +168,7 @@ public class GzipEntryProperties extends AbstractReportable {
      *
      * @see    #isOperatingSystemValid
      */
-    @ReportableProperty(order = 6, value = "GZip entry operating system.")
+    @ReportableProperty(order = 7, value = "GZip entry operating system.")
     public OperatingSystem getOperatingSystem() {
         return entry.os;
     }
@@ -193,7 +202,7 @@ public class GzipEntryProperties extends AbstractReportable {
      * @see    #getComputedHeaderCrc
      * @see    #isHeaderCrcValid
      */
-    @ReportableProperty(order = 7, value = "GZip entry header crc16.")
+    @ReportableProperty(order = 8, value = "GZip entry header crc16.")
     public String getCrc16() {
     	String crc16;
     	if (entry.readCrc16 != null) {
@@ -224,7 +233,7 @@ public class GzipEntryProperties extends AbstractReportable {
      * @see    #getComputedDataCrc
      * @see    #isDataCrcValid
      */
-    @ReportableProperty(order = 8, value = "GZip entry crc32.")
+    @ReportableProperty(order = 9, value = "GZip entry crc32.")
     public String getCrc32() {
         return "0x" + Integer.toHexString(entry.readCrc32);
     }
@@ -243,12 +252,26 @@ public class GzipEntryProperties extends AbstractReportable {
     }
 
     /**
+     * Returns the ISIZE of the GZip member trailer, i.e. the announced
+     * compressed size of the member data modulo 32.
+     * @return the ISIZE value of the member trailer or
+     *         <code>-1</code> if the member trailer has not yet
+     *         been read.
+     *
+     * @see    #isISizeValid
+     */
+    @ReportableProperty(order = 10, value = "GZip entry extracted size (ISIZE) value.")
+    public long getISize() {
+        return entry.readISize;
+    }
+
+    /**
      * Returns the (computed) uncompressed size of the member data.
      * @return the uncompressed size of the member data or
      *         <code>-1</code> if the member trailer has not yet
      *         been read.
      */
-    @ReportableProperty(order = 9, value = "GZip entry (computed) uncompressed size, in bytes.")
+    @ReportableProperty(order = 11, value = "GZip entry (computed) uncompressed size, in bytes.")
     public long getSize() {
         return entry.size;
     }
@@ -259,23 +282,9 @@ public class GzipEntryProperties extends AbstractReportable {
      *         <code>-1</code> if the member trailer has not yet
      *         been read.
      */
-    @ReportableProperty(order = 10, value = "GZip entry (computed) compressed size, in bytes.")
+    @ReportableProperty(order = 12, value = "GZip entry (computed) compressed size, in bytes.")
     public long getCompressedSize() {
         return entry.csize;
-    }
-
-    /**
-     * Returns the ISIZE of the GZip member trailer, i.e. the announced
-     * compressed size of the member data modulo 32.
-     * @return the ISIZE value of the member trailer or
-     *         <code>-1</code> if the member trailer has not yet
-     *         been read.
-     *
-     * @see    #isISizeValid
-     */
-    @ReportableProperty(order = 11, value = "GZip entry extracted size (ISIZE) value.")
-    public long getISize() {
-        return entry.readISize;
     }
 
     /**
@@ -291,9 +300,17 @@ public class GzipEntryProperties extends AbstractReportable {
         return entry.computedISize;
     }
 
-    @ReportableProperty(order = 12, value = "GZip entry (computed) compression ration.")
-    public String getCompressionRatio() {
-        return Float.toString((float)entry.size / (float)entry.csize);
+    @ReportableProperty(order = 13, value = "GZip entry (computed) compression ratio.")
+    public double getCompressionRatio() {
+        double ratio = -1.0;
+        long size  = entry.size;
+        long csize = entry.csize;
+        if ((size > 0L) && (csize > 0L)) {
+            // Compute compression ratio with 2 decimals only.
+            long l = ((size - csize) * 10000L) / size;
+            ratio = l / 100.00;
+        }
+        return ratio;
     }
 
     /**
