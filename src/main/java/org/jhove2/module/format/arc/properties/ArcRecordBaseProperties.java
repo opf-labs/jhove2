@@ -67,10 +67,19 @@ public class ArcRecordBaseProperties extends AbstractReportable {
     }
 
     /**
+     * Report record offset in ARC file.
+     * @return record offset in ARC file
+     */
+    @ReportableProperty(order = 1, value = "Record offset in ARC file.")
+    public long getStartOffset() {
+        return record.startOffset;
+    }
+
+    /**
      * Report url from ARC record.
      * @return ARC record url
      */
-    @ReportableProperty(order = 1, value = "Arc Block description version header value.")
+    @ReportableProperty(order = 2, value = "Arc Block description version header value.")
     public Integer getArcBlockDescVersion() {
         return record.blockDescVersion;
     }
@@ -79,7 +88,7 @@ public class ArcRecordBaseProperties extends AbstractReportable {
      * Report url from ARC record.
      * @return ARC record url
      */
-    @ReportableProperty(order = 2, value = "Arc-Url header value.")
+    @ReportableProperty(order = 3, value = "Arc-Url header value.")
     public String getUrl() {
         return record.url;
     }
@@ -88,7 +97,7 @@ public class ArcRecordBaseProperties extends AbstractReportable {
      * Report ip-address from ARC record.
      * @return ARC record ip-address
      */
-    @ReportableProperty(order = 3, value = "Arc-IP-Address header value.")
+    @ReportableProperty(order = 4, value = "Arc-IP-Address header value.")
     public String getIpAddress() {
         return record.ipAddress;
     }
@@ -98,7 +107,7 @@ public class ArcRecordBaseProperties extends AbstractReportable {
      * either nothing, 4 or 6.
      * @return nothing, 4 or 6 depending on the ip-address format
      */
-    @ReportableProperty(order = 4, value = "Ip-Address version.")
+    @ReportableProperty(order = 5, value = "Ip-Address version.")
     public String getIpAddressVersion() {
         return record.ipVersion;
     }
@@ -107,7 +116,7 @@ public class ArcRecordBaseProperties extends AbstractReportable {
      * Report date from ARC record.
      * @return ARC record date
      */
-    @ReportableProperty(order = 5, value = "Arc-Date header value.")
+    @ReportableProperty(order = 6, value = "Arc-Date header value.")
     public String getArchiveDate() {
         return record.archiveDate;
     }
@@ -116,7 +125,7 @@ public class ArcRecordBaseProperties extends AbstractReportable {
      * Report raw date from ARC record.
      * @return Raw ARC record date
      */
-    @ReportableProperty(order = 6, value = "Raw Arc-Date header value.")
+    @ReportableProperty(order = 7, value = "Raw Arc-Date header value.")
     public String getRawArchiveDate() {
         return record.rawArchiveDate;
     }
@@ -125,7 +134,7 @@ public class ArcRecordBaseProperties extends AbstractReportable {
      * Report content-type from ARC record.
      * @return ARC record content-type
      */
-    @ReportableProperty(order = 7, value = "Arc-Content-Type header value.")
+    @ReportableProperty(order = 8, value = "Arc-Content-Type header value.")
     public String getContentType() {
         return record.contentType;
     }
@@ -134,7 +143,7 @@ public class ArcRecordBaseProperties extends AbstractReportable {
      * Report length from ARC record
      * @return ARC record length
      */
-    @ReportableProperty(order = 8, value = "Arc-Length header value.")
+    @ReportableProperty(order = 9, value = "Archive-Length header value.")
     public String getLength() {
         return record.length;
     }
@@ -143,8 +152,8 @@ public class ArcRecordBaseProperties extends AbstractReportable {
      * Report protocol result code from ARC record.
      * @return ARC record protocol result code
      */
-    @ReportableProperty(order = 9, value = "ProtocolResultCode header value.")
-    public String getProtocolResultCode() {
+    @ReportableProperty(order = 10, value = "Result-Code header value.")
+    public String getResultCode() {
         return record.resultCode;
     }
 
@@ -152,7 +161,7 @@ public class ArcRecordBaseProperties extends AbstractReportable {
      * Report checksum from ARC record.
      * @return ARC record checksum
      */
-    @ReportableProperty(order = 10, value = "Arc-Checksum header value.")
+    @ReportableProperty(order = 11, value = "Arc-Checksum header value.")
     public String getChecksum() {
         return record.checksum;
     }
@@ -161,7 +170,7 @@ public class ArcRecordBaseProperties extends AbstractReportable {
      * Report location from ARC record.
      * @return ARC record location
      */
-    @ReportableProperty(order = 11, value = "Arc-Location header value.")
+    @ReportableProperty(order = 12, value = "Arc-Location header value.")
     public String getLocation() {
         return record.location;
     }
@@ -170,7 +179,7 @@ public class ArcRecordBaseProperties extends AbstractReportable {
      * Report offset from ARC record.
      * @return ARC record offset
      */
-    @ReportableProperty(order = 12, value = "Arc-Offset header value.")
+    @ReportableProperty(order = 13, value = "Arc-Offset header value.")
     public String getOffset() {
         return record.offset;
     }
@@ -179,7 +188,7 @@ public class ArcRecordBaseProperties extends AbstractReportable {
      * Report filename from ARC record.
      * @return ARC record filename
      */
-    @ReportableProperty(order = 13, value = "Arc-Filename header value.")
+    @ReportableProperty(order = 14, value = "Arc-Filename header value.")
     public String getFilename() {
         return record.filename;
     }
@@ -188,7 +197,7 @@ public class ArcRecordBaseProperties extends AbstractReportable {
      * Report if the ARC record has a payload.
      * @return boolean indicating whether this record has a payload
      */
-    @ReportableProperty(order = 14, value = "hasPayload value.")
+    @ReportableProperty(order = 15, value = "hasPayload value.")
     public Boolean getHasPayload() {
         return record.bHasPayload;
     }
@@ -197,7 +206,7 @@ public class ArcRecordBaseProperties extends AbstractReportable {
      * Report ARC record payload object size.
      * @return payload object size
      */
-    @ReportableProperty(order = 15, value = "ObjectSize value.")
+    @ReportableProperty(order = 16, value = "ObjectSize value.")
     public String getObjectSize() {
         return record.payloadLength;
     }
@@ -206,7 +215,7 @@ public class ArcRecordBaseProperties extends AbstractReportable {
      * Report whether this record is compliant or not.
      * @return boolean indicating whether this record is compliant or not
      */
-    @ReportableProperty(order = 16, value = "isNonCompliant value.")
+    @ReportableProperty(order = 17, value = "isNonCompliant value.")
     public Boolean getIsNonCompliant() {
         return record.bIsNonCompliant;
     }
@@ -215,7 +224,7 @@ public class ArcRecordBaseProperties extends AbstractReportable {
      * Report computed block digest.
      * @return computed block digest
      */
-    @ReportableProperty(order = 17, value = "Computed Block-Digest header value.")
+    @ReportableProperty(order = 18, value = "Computed Block-Digest header value.")
     public String getComputedBlockDigest() {
         return record.computedBlockDigest;
     }
@@ -224,7 +233,7 @@ public class ArcRecordBaseProperties extends AbstractReportable {
      * Report computed block digest algorithm.
      * @return computed block digest algorithm
      */
-    @ReportableProperty(order = 18, value = "Computed Block-Digest-Algorithm value.")
+    @ReportableProperty(order = 19, value = "Computed Block-Digest-Algorithm value.")
     public String getComputedBlockDigestAlgorithm() {
         return record.computedBlockDigestAlgorithm;
     }
@@ -233,7 +242,7 @@ public class ArcRecordBaseProperties extends AbstractReportable {
      * Report computed block digest encoding algorithm.
      * @return computed block digest encoding algorithm
      */
-    @ReportableProperty(order = 19, value = "Computed Block-Digest-Encoding value.")
+    @ReportableProperty(order = 20, value = "Computed Block-Digest-Encoding value.")
     public String getComputedBlockDigestEncoding() {
         return record.computedBlockDigestEncoding;
     }
@@ -242,7 +251,7 @@ public class ArcRecordBaseProperties extends AbstractReportable {
      * Report computed payload digest.
      * @return computed payload digest
      */
-    @ReportableProperty(order = 20, value = "Computed Payload-Digest header value.")
+    @ReportableProperty(order = 21, value = "Computed Payload-Digest header value.")
     public String getComputedPayloadDigest() {
         return record.computedPayloadDigest;
     }
@@ -251,7 +260,7 @@ public class ArcRecordBaseProperties extends AbstractReportable {
      * Report computed payload digest algorithm.
      * @return computed payload digest algorithm
      */
-    @ReportableProperty(order = 21, value = "Computed Payload-Digest-Algorithm value.")
+    @ReportableProperty(order = 22, value = "Computed Payload-Digest-Algorithm value.")
     public String getComputedPayloadDigestAlgorithm() {
         return record.computedPayloadDigestAlgorithm;
     }
@@ -260,7 +269,7 @@ public class ArcRecordBaseProperties extends AbstractReportable {
      * Report computed payload digest encoding algorithm.
      * @return computed payload digest encoding algorithm
      */
-    @ReportableProperty(order = 22, value = "Computed Payload-Digest-Encoding value.")
+    @ReportableProperty(order = 23, value = "Computed Payload-Digest-Encoding value.")
     public String getComputedPayloadDigestEncoding() {
         return record.computedPayloadDigestEncoding;
     }

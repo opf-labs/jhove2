@@ -67,10 +67,19 @@ public class WarcRecordBaseProperties extends AbstractReportable {
     }
 
     /**
+     * Report record offset in WARC file.
+     * @return record offset in WARC file
+     */
+    @ReportableProperty(order = 1, value = "Record offset in WARC file.")
+    public Long getStartOffset() {
+        return record.startOffset;
+    }
+
+    /**
      * Report date from WARC record.
      * @return date from WARC record
      */
-    @ReportableProperty(order = 1, value = "Warc-Date header value.")
+    @ReportableProperty(order = 2, value = "Warc-Date header value.")
     public String getWarcVersion() {
         return record.warcVersionStr;
     }
@@ -79,7 +88,7 @@ public class WarcRecordBaseProperties extends AbstractReportable {
      * Report date from WARC record.
      * @return date from WARC record
      */
-    @ReportableProperty(order = 2, value = "Warc-Date header value.")
+    @ReportableProperty(order = 3, value = "Warc-Date header value.")
     public String getWarcDate() {
         return record.warcDate;
     }
@@ -88,7 +97,7 @@ public class WarcRecordBaseProperties extends AbstractReportable {
      * Report record-id from WARC record.
      * @return record-id from WARC record
      */
-    @ReportableProperty(order = 3, value = "Warc-Record-ID header value.")
+    @ReportableProperty(order = 4, value = "Warc-Record-ID header value.")
     public String getWarcRecordId() {
         return record.warcRecordId;
     }
@@ -97,7 +106,7 @@ public class WarcRecordBaseProperties extends AbstractReportable {
      * Report record-id scheme used.
      * @return record-id scheme used
      */
-    @ReportableProperty(order = 4, value = "Record-ID-Scheme value.")
+    @ReportableProperty(order = 5, value = "Record-ID-Scheme value.")
     public String getRecordIdScheme() {
         return record.recordIdScheme;
     }
@@ -106,7 +115,7 @@ public class WarcRecordBaseProperties extends AbstractReportable {
      * Report content-type from WARC record.
      * @return content-type from WARC record
      */
-    @ReportableProperty(order = 5, value = "Content-Type header value.")
+    @ReportableProperty(order = 6, value = "Content-Type header value.")
     public String getContentType() {
         return record.contentType;
     }
@@ -115,7 +124,7 @@ public class WarcRecordBaseProperties extends AbstractReportable {
      * Report content-length from WARC record.
      * @return content-length from WARC record
      */
-    @ReportableProperty(order = 6, value = "Content-Length header value.")
+    @ReportableProperty(order = 7, value = "Content-Length header value.")
     public String getContentLength() {
         return record.contentLength;
     }
@@ -124,7 +133,7 @@ public class WarcRecordBaseProperties extends AbstractReportable {
      * Report warc-type from WARC record.
      * @return warc-type from WARC record
      */
-    @ReportableProperty(order = 7, value = "Warc-Type header value.")
+    @ReportableProperty(order = 8, value = "Warc-Type header value.")
     public String getWarcType() {
         return record.warcType;
     }
@@ -133,7 +142,7 @@ public class WarcRecordBaseProperties extends AbstractReportable {
      * Report block digest from WARC record.
      * @return block digest from WARC record
      */
-    @ReportableProperty(order = 8, value = "Warc-Block-Digest header value.")
+    @ReportableProperty(order = 9, value = "Warc-Block-Digest header value.")
     public String getWarcBlockDigest() {
         return record.warcBlockDigest;
     }
@@ -142,7 +151,7 @@ public class WarcRecordBaseProperties extends AbstractReportable {
      * Report block digest algorithm from WARC record.
      * @return block digest algorithm from WARC record
      */
-    @ReportableProperty(order = 9, value = "Block-Digest-Algorithm value.")
+    @ReportableProperty(order = 10, value = "Block-Digest-Algorithm value.")
     public String getBlockDigestAlgorithm() {
         return record.warcBlockDigestAlgorithm;
     }
@@ -151,7 +160,7 @@ public class WarcRecordBaseProperties extends AbstractReportable {
      * Report block digest encoding, if identified.
      * @return block digest encoding, if identified
      */
-    @ReportableProperty(order = 10, value = "Block-Digest-Encoding value.")
+    @ReportableProperty(order = 11, value = "Block-Digest-Encoding value.")
     public String getBlockDigestEncoding() {
         return record.warcBlockDigestEncoding;
     }
@@ -160,7 +169,7 @@ public class WarcRecordBaseProperties extends AbstractReportable {
      * Report if block digest is valid, if checked.
      * @return if block digest is valid, if checked
      */
-    @ReportableProperty(order = 11, value = "isValidBlockDigest boolean value.")
+    @ReportableProperty(order = 12, value = "isValidBlockDigest boolean value.")
     public Boolean getIsValidBlockDigest() {
         return record.isValidBlockDigest;
     }
@@ -169,7 +178,7 @@ public class WarcRecordBaseProperties extends AbstractReportable {
      * Report payload digest from WARC record.
      * @return payload digest from WARC record
      */
-    @ReportableProperty(order = 12, value = "Warc-Payload-Digest header value.")
+    @ReportableProperty(order = 13, value = "Warc-Payload-Digest header value.")
     public String getWarcPayloadDigest() {
         return record.warcPayloadDigest;
     }
@@ -178,7 +187,7 @@ public class WarcRecordBaseProperties extends AbstractReportable {
      * Report payload digest algorithm from WARC record.
      * @return payload digest algorithm from WARC record
      */
-    @ReportableProperty(order = 13, value = "Payload-Digest-Algorithm value.")
+    @ReportableProperty(order = 14, value = "Payload-Digest-Algorithm value.")
     public String getPayloadDigestAlgorithm() {
         return record.warcPayloadDigestAlgorithm;
     }
@@ -187,7 +196,7 @@ public class WarcRecordBaseProperties extends AbstractReportable {
      * Report payload digest encoding, if identified.
      * @return payload digest encoding, if identified
      */
-    @ReportableProperty(order = 14, value = "Payload-Digest-Encoding value.")
+    @ReportableProperty(order = 15, value = "Payload-Digest-Encoding value.")
     public String getPayloadDigestEncoding() {
         return record.warcPayloadDigestEncoding;
     }
@@ -196,7 +205,7 @@ public class WarcRecordBaseProperties extends AbstractReportable {
      * Report if payload digest is valid, if checked.
      * @return if payload digest is valid, if checked
      */
-    @ReportableProperty(order = 15, value = "isValidPayloadDigest boolean value.")
+    @ReportableProperty(order = 16, value = "isValidPayloadDigest boolean value.")
     public Boolean getIsValidPayloadDigest() {
         return record.isValidPayloadDigest;
     }
@@ -205,7 +214,7 @@ public class WarcRecordBaseProperties extends AbstractReportable {
      * Report truncation reason from WARC record.
      * @return truncation reason from WARC record
      */
-    @ReportableProperty(order = 16, value = "Warc-Truncated header value.")
+    @ReportableProperty(order = 17, value = "Warc-Truncated header value.")
     public String getWarcTruncated() {
         return record.warcTruncated;
     }
@@ -214,7 +223,7 @@ public class WarcRecordBaseProperties extends AbstractReportable {
      * Report if the WARC record has a payload.
      * @return boolean indicating whether this record has a payload
      */
-    @ReportableProperty(order = 17, value = "hasPayload value.")
+    @ReportableProperty(order = 18, value = "hasPayload value.")
     public Boolean getHasPayload() {
         return record.bHasPayload;
     }
@@ -224,7 +233,7 @@ public class WarcRecordBaseProperties extends AbstractReportable {
      * identified or not.
      * @return payload length, adjusted according to the actual payload content
      */
-    @ReportableProperty(order = 18, value = "PayloadLength value.")
+    @ReportableProperty(order = 19, value = "PayloadLength value.")
     public String getPayloadLength() {
         return record.payloadLength;
     }
@@ -233,7 +242,7 @@ public class WarcRecordBaseProperties extends AbstractReportable {
      * Report identified-payload-type from WARC record.
      * @return identified-payload-type from WARC record
      */
-    @ReportableProperty(order = 19, value = "Warc-Identified-Payload-Type header value.")
+    @ReportableProperty(order = 20, value = "Warc-Identified-Payload-Type header value.")
     public String getProtocolVersion() {
         return record.warcIdentifiedPayloadType;
     }
@@ -242,7 +251,7 @@ public class WarcRecordBaseProperties extends AbstractReportable {
      * Report segment-number from WARC record.
      * @return segment-number from WARC record
      */
-    @ReportableProperty(order = 20, value = "Warc-Segment-Number header value.")
+    @ReportableProperty(order = 21, value = "Warc-Segment-Number header value.")
     public String getWarcSegmentNumber() {
         return record.warcSegmentNumber;
     }
@@ -251,7 +260,7 @@ public class WarcRecordBaseProperties extends AbstractReportable {
      * Report whether this record is compliant or not.
      * @return boolean indicating whether this record is compliant or not
      */
-    @ReportableProperty(order = 21, value = "isNonCompliant value.")
+    @ReportableProperty(order = 22, value = "isNonCompliant value.")
     public Boolean getIsNonCompliant() {
         return record.bIsNonCompliant;
     }
@@ -260,7 +269,7 @@ public class WarcRecordBaseProperties extends AbstractReportable {
      * Report computed block digest.
      * @return computed block digest
      */
-    @ReportableProperty(order = 22, value = "Computed Block-Digest header value.")
+    @ReportableProperty(order = 23, value = "Computed Block-Digest header value.")
     public String getComputedBlockDigest() {
         return record.computedBlockDigest;
     }
@@ -269,7 +278,7 @@ public class WarcRecordBaseProperties extends AbstractReportable {
      * Report computed block digest algorithm.
      * @return computed block digest algorithm
      */
-    @ReportableProperty(order = 23, value = "Computed Block-Digest-Algorithm value.")
+    @ReportableProperty(order = 24, value = "Computed Block-Digest-Algorithm value.")
     public String getComputedBlockDigestAlgorithm() {
         return record.computedBlockDigestAlgorithm;
     }
@@ -278,7 +287,7 @@ public class WarcRecordBaseProperties extends AbstractReportable {
      * Report computed block digest encoding algorithm.
      * @return computed block digest encoding algorithm
      */
-    @ReportableProperty(order = 24, value = "Computed Block-Digest-Encoding value.")
+    @ReportableProperty(order = 25, value = "Computed Block-Digest-Encoding value.")
     public String getComputedBlockDigestEncoding() {
         return record.computedBlockDigestEncoding;
     }
@@ -287,7 +296,7 @@ public class WarcRecordBaseProperties extends AbstractReportable {
      * Report computed payload digest.
      * @return computed payload digest
      */
-    @ReportableProperty(order = 25, value = "Computed Payload-Digest header value.")
+    @ReportableProperty(order = 26, value = "Computed Payload-Digest header value.")
     public String getComputedPayloadDigest() {
         return record.computedPayloadDigest;
     }
@@ -296,7 +305,7 @@ public class WarcRecordBaseProperties extends AbstractReportable {
      * Report computed payload digest algorithm.
      * @return computed payload digest algorithm
      */
-    @ReportableProperty(order = 26, value = "Computed Payload-Digest-Algorithm value.")
+    @ReportableProperty(order = 27, value = "Computed Payload-Digest-Algorithm value.")
     public String getComputedPayloadDigestAlgorithm() {
         return record.computedPayloadDigestAlgorithm;
     }
@@ -305,7 +314,7 @@ public class WarcRecordBaseProperties extends AbstractReportable {
      * Report computed payload digest encoding algorithm.
      * @return computed payload digest encoding algorithm
      */
-    @ReportableProperty(order = 27, value = "Computed Payload-Digest-Encoding value.")
+    @ReportableProperty(order = 28, value = "Computed Payload-Digest-Encoding value.")
     public String getComputedPayloadDigestEncoding() {
         return record.computedPayloadDigestEncoding;
     }

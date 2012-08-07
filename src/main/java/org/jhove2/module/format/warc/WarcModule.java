@@ -41,6 +41,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteOrder;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -128,7 +129,10 @@ public class WarcModule extends BaseFormatModule implements Validator {
     private String warcFileName;
 
     /** WARC file size, whole file. */
-    private long warcFileSize;
+    private Long warcFileSize;
+
+    /** Last modified date of the ARC file. */
+    private Date warcFileLastModified;
 
     /** The amount of bytes consumed by the ArcReader- */
     private long warcReaderConsumedBytes;
@@ -236,9 +240,11 @@ public class WarcModule extends BaseFormatModule implements Validator {
         if (!source.isTemp()) {
             warcFileName = source.getFile().getName();
             warcFileSize = source.getFile().length();
+            warcFileLastModified = new Date(source.getFile().lastModified());
         } else if (parentSrc != null && !parentSrc.isTemp()) {
             warcFileName = parentSrc.getFile().getName();
             warcFileSize = parentSrc.getFile().length();
+            warcFileLastModified = new Date(parentSrc.getFile().lastModified());
         }
         /*
          * Read some WARC records.
@@ -644,10 +650,19 @@ public class WarcModule extends BaseFormatModule implements Validator {
     }
 
     /**
+     * Returns WARC file last modified date.
+     * @return WARC file last modified date
+     */
+    @ReportableProperty(order=3, value="WARC file last modified date")
+    public Date getLastModified() {
+        return warcFileLastModified;
+    }
+
+    /**
      * Returns number of WARC records.
      * @return number of WARC records
      */
-    @ReportableProperty(order=3, value="The number of WARC records")
+    @ReportableProperty(order=4, value="The number of WARC records")
     public int getWarcRecordNumber() {
         return warcRecordNumber;
     }
@@ -656,7 +671,7 @@ public class WarcModule extends BaseFormatModule implements Validator {
      * warcReaderConsumedBytes getter
      * @return the warcReaderConsumedBytes
      */
-    @ReportableProperty(order=4, value="WARC reader consumed bytes, in bytes")
+    @ReportableProperty(order=5, value="WARC reader consumed bytes, in bytes")
     public long getWarcReaderConsumedBytes() {
          return warcReaderConsumedBytes;
     }
@@ -665,7 +680,7 @@ public class WarcModule extends BaseFormatModule implements Validator {
      * Returns the file version if it is the same for all records.
      * @return the file version
      */
-    @ReportableProperty(order=5, value="File version")
+    @ReportableProperty(order=6, value="File version")
     public String getFileVersion() {
         return warcFileVersion;
     }

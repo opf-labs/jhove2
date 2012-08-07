@@ -43,6 +43,7 @@ import java.io.InputStream;
 import java.nio.ByteOrder;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.TreeMap;
@@ -106,7 +107,10 @@ public class GzipModule extends BaseFormatModule implements Validator {
     private String gzipFileName;
 
     /** The size of the ARC file, in bytes. */
-    private long gzipFileSize;
+    private Long gzipFileSize;
+
+    /** Last modified date of the GZip file. */
+    private Date gzipFileLastModified;
 
     /** Number of members compressed with the deflate compression method. */
     private long deflateMemberCount = 0;
@@ -238,7 +242,8 @@ public class GzipModule extends BaseFormatModule implements Validator {
             if (!source.isTemp()) {
                 gzipFileName = source.getFile().getName();
                 gzipFileSize = source.getFile().length();
-            } 
+                gzipFileLastModified = new Date(source.getFile().lastModified());
+            }
             /*
              * Read some GZip entries.
              */
@@ -531,15 +536,24 @@ public class GzipModule extends BaseFormatModule implements Validator {
      * @return the gzipFileSize
      */
     @ReportableProperty(order=2, value="GZip file size, in bytes")
-    public long getGZipFileSize() {
+    public Long getGZipFileSize() {
         return gzipFileSize;
+    }
+
+    /**
+     * Returns GZip file last modified date.
+     * @return GZip file last modified date
+     */
+    @ReportableProperty(order=3, value="GZip file last modified date")
+    public Date getLastModified() {
+        return gzipFileLastModified;
     }
 
     /**
      * Returns the number of GZip entries found.
      * @return the number of GZip entries found.
      */
-    @ReportableProperty(order = 3,
+    @ReportableProperty(order = 4,
                         value = "Number of members compressed with the deflate compression method")
     public long getNumDeflateMembers() {
         //return this.deflateMemberCount.get();
@@ -550,7 +564,7 @@ public class GzipModule extends BaseFormatModule implements Validator {
      * gzipReaderConsumedBytes getter
      * @return the gzipReaderConsumedBytes
      */
-    @ReportableProperty(order=4, value="GZip reader consumed bytes, in bytes")
+    @ReportableProperty(order=5, value="GZip reader consumed bytes, in bytes")
     public long getGZipReaderConsumedBytes() {
          return gzipReaderConsumedBytes;
     }
@@ -559,7 +573,7 @@ public class GzipModule extends BaseFormatModule implements Validator {
      * Returns the number of invalid GZip entries found.
      * @return the number of invalid GZip entries found.
      */
-    @ReportableProperty(order = 5, value = "Number of non-valid members")
+    @ReportableProperty(order = 6, value = "Number of non-valid members")
     public long getNumInvalidMembers() {
         //return this.invalidMembers.get();
         return invalidMembers;
@@ -569,7 +583,7 @@ public class GzipModule extends BaseFormatModule implements Validator {
      * Returns the number of GZip entries marked as invalid.
      * @return the number of invalid GZip entries found.
      */
-    @ReportableProperty(order = 6, value = "Validation error messages")
+    @ReportableProperty(order = 7, value = "Validation error messages")
     public Collection<Message> getValidationMessages() {
         // Return null if the list is empty to prevent the displayer
         // from rendering this property.

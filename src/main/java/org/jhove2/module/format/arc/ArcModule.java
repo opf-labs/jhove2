@@ -41,6 +41,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteOrder;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,7 +63,6 @@ import org.jhove2.core.source.SourceFactory;
 import org.jhove2.module.Module;
 import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.module.format.Validator;
-import org.jhove2.module.format.Validator.Coverage;
 import org.jhove2.module.format.arc.properties.ArcRecordData;
 import org.jhove2.module.format.gzip.GzipModule;
 import org.jhove2.persist.FormatModuleAccessor;
@@ -137,7 +137,10 @@ public class ArcModule extends BaseFormatModule implements Validator {
     private String arcFileName;
 
     /** The size of the ARC file, in bytes. */
-    private long arcFileSize;
+    private Long arcFileSize;
+
+    /** Last modified date of the ARC file. */
+    private Date arcFileLastModified;
 
     /** The number or ARC records. */
     private int arcRecordNumber;
@@ -254,9 +257,11 @@ public class ArcModule extends BaseFormatModule implements Validator {
         if (!source.isTemp()) {
             arcFileName = source.getFile().getName();
             arcFileSize = source.getFile().length();
+            arcFileLastModified = new Date(source.getFile().lastModified());
         } else if (parentSrc != null && !parentSrc.isTemp()) {
             arcFileName = parentSrc.getFile().getName();
             arcFileSize = parentSrc.getFile().length();
+            arcFileLastModified = new Date(parentSrc.getFile().lastModified());
         }
         /*
          * Read some ARC records.
@@ -508,7 +513,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
         /*
          * Characterize payload.
          */
-        if (recurse && payload_stream != null) {
+        if (recurse && payload_stream != null && !record.hasEmptyPayload()) {
             characterizePayload(jhove2, sourceFactory, recordSrc, payload_stream, formatId);
         }
         if (payload_stream != null) {
@@ -723,10 +728,19 @@ public class ArcModule extends BaseFormatModule implements Validator {
     }
 
     /**
+     * Returns ARC file last modified date.
+     * @return ARC file last modified date
+     */
+    @ReportableProperty(order=3, value="ARC file last modified date")
+    public Date getLastModified() {
+        return arcFileLastModified;
+    }
+
+    /**
      * Returns ARC record number
      * @return the number of arc record
      */
-    @ReportableProperty(order=3, value="The number of ARC records")
+    @ReportableProperty(order=4, value="The number of ARC records")
     public int getArcRecordNumber() {
         return arcRecordNumber;
     }
@@ -735,7 +749,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
      * arcReaderConsumedBytes getter
      * @return the arcReaderConsumedBytes
      */
-    @ReportableProperty(order=4, value="ARC reader consumed bytes, in bytes")
+    @ReportableProperty(order=5, value="ARC reader consumed bytes, in bytes")
     public long getArcReaderConsumedBytes() {
          return arcReaderConsumedBytes;
     }
@@ -744,7 +758,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
      * Returns the file version if it is the same for all records.
      * @return the file version
      */
-    @ReportableProperty(order=5, value="File version")
+    @ReportableProperty(order=6, value="File version")
     public String getFileVersion() {
         return arcFileVersion;
     }
@@ -753,7 +767,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
      * Returns the block description version if it is the same for all records.
      * @return the block description version
      */
-    @ReportableProperty(order=6, value="Block description version")
+    @ReportableProperty(order=7, value="Block description version")
     public Integer getArcBlockDescVersion() {
         return arcBlockDescVersion;
     }
@@ -762,7 +776,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
      * protocols getter
      * @return the protocols
      */
-    @ReportableProperty(order=7, value="URL record protocols")
+    @ReportableProperty(order=8, value="URL record protocols")
     public Map<String, Integer> getProtocols() {
         return protocols;
     }
@@ -772,7 +786,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
      * @return the errors
      */
     /*
-    @ReportableProperty(order=6, value="The number of errors by error type")
+    @ReportableProperty(order=9, value="The number of errors by error type")
     public Map<String,AtomicInteger> getErrors() {
         return errors;
     }

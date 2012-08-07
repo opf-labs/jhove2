@@ -60,8 +60,8 @@ import com.sleepycat.persist.model.Persistent;
 @Persistent
 public class ArcRecordData {
 
-    protected Long startOffset;
-    protected Long consumed;
+    protected long startOffset;
+    protected long consumed;
 
     protected Integer blockDescVersion;
 
@@ -118,12 +118,10 @@ public class ArcRecordData {
         case ArcRecordBase.RT_VERSION_BLOCK:
         	ArcVersionHeader versionHeader = record.versionHeader;
             if (versionHeader.versionNumber != null) {
-                // TODO JWAT should keep the raw value too.
-                versionNumber = versionHeader.versionNumber.toString();
+                versionNumber = versionHeader.versionNumberStr;
             }
             if (versionHeader.reserved != null) {
-                // TODO JWAT should keep the raw value too.
-                reserved = versionHeader.reserved.toString();
+                reserved = versionHeader.reservedStr;
             }
             originCode = versionHeader.originCode;
         	break;
@@ -160,9 +158,10 @@ public class ArcRecordData {
      */
     protected void populateArcRecordBase(ArcRecordBase record) {
     	ArcHeader header = record.header;
-        startOffset = record.getOffset();
+        startOffset = record.getStartOffset();
         consumed = record.getConsumed();
         blockDescVersion = header.recordFieldVersion;
+        // Record
         url = header.urlStr;
         protocol = header.urlScheme;
         ipAddress = header.ipAddressStr;
@@ -174,30 +173,21 @@ public class ArcRecordData {
                 ipVersion = "6";
             }
         }
+        rawArchiveDate = header.archiveDateStr;
         if (header.archiveDate != null) {
             archiveDate = arcDateFormat.format(header.archiveDate);
         }
-        rawArchiveDate = header.archiveDateStr;
         contentType = header.contentTypeStr;
-        if (header.archiveDateStr != null) {
-            // TODO JWAT should probably save the raw value too.
-            length = header.archiveLength.toString();
-        }
-        if (header.resultCode != null) {
-            // TODO JWAT should probably save the raw value too.
-            resultCode = header.resultCode.toString();
-        }
+        resultCode = header.resultCodeStr;
         checksum = header.checksumStr;
         location = header.locationStr;
-        if (header.offset != null) {
-            // TODO JWAT should probably save the raw value too.
-            offset = header.offset.toString();
-        }
+        offset = header.offsetStr;
         filename = header.filenameStr;
+        length = header.archiveLength.toString();
         /*
          * Payload.
          */
-        bHasPayload = record.hasPayload();
+        bHasPayload = record.hasPayload() && !record.hasEmptyPayload();
         Payload payload = record.getPayload();
         if (payload != null) {
         	// payloadLength is reported back as ObjectSize in the Jhove2 specs
