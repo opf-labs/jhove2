@@ -183,7 +183,7 @@ public class ArcRecordData {
         location = header.locationStr;
         offset = header.offsetStr;
         filename = header.filenameStr;
-        length = header.archiveLength.toString();
+        length = header.archiveLengthStr;
         /*
          * Payload.
          */

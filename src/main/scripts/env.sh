@@ -14,14 +14,14 @@
 
 # If JAVA_HOME is not set, use the java in the execution path
 if [ ${JAVA_HOME} ] ; then
-  JAVA=$JAVA_HOME/bin/java
+  JAVA="$JAVA_HOME/bin/java"
 else
   JAVA=java
 fi
 
 # JHOVE2_HOME must point to home directory of JHOVE2 install.
 
-PRG=$0
+PRG="$0"
 
 # need this for relative symlinks
 while [ -h "$PRG" ] ; do
@@ -34,17 +34,24 @@ while [ -h "$PRG" ] ; do
     fi
 done
 
-JHOVE2_HOME=`dirname $PRG`
+JHOVE2_HOME=`dirname "$PRG"`
 
 # make it fully qualified
-JHOVE2_HOME=`cd $JHOVE2_HOME && pwd`
+JHOVE2_HOME=`cd "$JHOVE2_HOME" && pwd`
 
-# CP must contain a colon-separated list of JARs used by JHOVE2.
 #CP=$JHOVE2_HOME/lib/jhove2-2.0.0.jar:$JHOVE2_HOME/lib/aopalliance-1.0.jar:$JHOVE2_HOME/lib/je-4.0.103.jar:$JHOVE2_HOME/lib/jts-1.10.jar:$JHOVE2_HOME/lib/commons-beanutils-1.7.0.jar:$JHOVE2_HOME/lib/commons-logging-1.1.1.jar:$JHOVE2_HOME/lib/commons-logging-api-1.1.jar:$JHOVE2_HOME/lib/commons-pool-1.5.3.jar:$JHOVE2_HOME/lib/vecmath-1.3.2.jar:$JHOVE2_HOME/lib/jdom-1.0.jar:$JHOVE2_HOME/lib/junit-4.4.jar:$JHOVE2_HOME/lib/log4j-1.2.14.jar:$JHOVE2_HOME/lib/jsr-275-1.0-beta-2.jar:$JHOVE2_HOME/lib/jargs-1.0.jar:$JHOVE2_HOME/lib/gt-api-2.6.5.jar:$JHOVE2_HOME/lib/gt-main-2.6.5.jar:$JHOVE2_HOME/lib/gt-metadata-2.6.5.jar:$JHOVE2_HOME/lib/gt-referencing-2.6.5.jar:$JHOVE2_HOME/lib/gt-shapefile-2.6.5.jar:$JHOVE2_HOME/lib/jwat-arc-0.8.0-SNAPSHOT.jar:$JHOVE2_HOME/lib/jwat-common-0.8.0-SNAPSHOT.jar:$JHOVE2_HOME/lib/jwat-gzip-0.8.0-SNAPSHOT.jar:$JHOVE2_HOME/lib/jwat-warc-0.8.0-SNAPSHOT.jar:$JHOVE2_HOME/lib/mvel2-2.0.18.jar:$JHOVE2_HOME/lib/geoapi-2.3-M1.jar:$JHOVE2_HOME/lib/geoapi-pending-2.3-M1.jar:$JHOVE2_HOME/lib/spring-beans-2.5.6.jar:$JHOVE2_HOME/lib/spring-context-2.5.6.jar:$JHOVE2_HOME/lib/spring-core-2.5.6.jar:$JHOVE2_HOME/lib/spring-test-2.5.6.jar:$JHOVE2_HOME/lib/soap-2.3.1.jar:$JHOVE2_HOME/lib/xercesImpl-2.9.1.jar:$JHOVE2_HOME/lib/xml-apis-1.3.04.jar:$JHOVE2_HOME/lib/xml-resolver-1.2.jar:$JHOVE2_HOME/config:$JHOVE2_HOME/config/droid
 
+# CP must contain a colon-separated list of JARs used by JHOVE2.
 CP=$JHOVE2_HOME/config:$JHOVE2_HOME/config/droid
-for i in `ls ./lib/*.jar`
+#CP=$JHOVE2_HOME/file-config:$JHOVE2_HOME/config/droid
+for i in `ls ${JHOVE2_HOME}/lib/*.jar`
 do
   CP=${CP}:${i}
 done
-echo $CP
+#echo $CP
+
+# Use File 5.11
+#LD_LIBRARY_PATH="/opt/BNF/file/5.11/lib:${LD_LIBRARY_PATH}"
+#export LD_LIBRARY_PATH
+#MAGIC=/opt/BNF/file/5.11/share/misc/magic.mgc
+#export MAGIC

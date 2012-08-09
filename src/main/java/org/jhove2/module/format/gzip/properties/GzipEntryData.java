@@ -47,6 +47,7 @@ public class GzipEntryData {
     	this.isNonCompliant = !entry.isCompliant();
     	this.offset = entry.getStartOffset();
     	this.method = CompressionMethod.fromValue(entry.cm);
+    	this.date = entry.date;
     	this.extraFlags = CompressionType.fromValue(entry.xfl);
     	this.fileName = entry.fname;
     	this.os = OperatingSystem.fromValue(entry.os);

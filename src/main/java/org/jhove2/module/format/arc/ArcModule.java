@@ -142,6 +142,9 @@ public class ArcModule extends BaseFormatModule implements Validator {
     /** Last modified date of the ARC file. */
     private Date arcFileLastModified;
 
+    /** The number of records. */
+    private int recordNumber;
+
     /** The number or ARC records. */
     private int arcRecordNumber;
 
@@ -300,7 +303,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
                 arcMod.arcReaderConsumedBytes = reader.getConsumed();
                 if (arcMod.blockDescVersions.size() == 1) {
                 	Entry<Integer, Integer> entry = arcMod.blockDescVersions.entrySet().iterator().next();
-                    if (entry.getValue() == arcMod.arcRecordNumber) {
+                    if (entry.getValue() == arcMod.recordNumber) {
                     	arcMod.arcBlockDescVersion = entry.getKey();
                     }
                 }
@@ -323,7 +326,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
             arcReaderConsumedBytes = reader.getConsumed();
             if (blockDescVersions.size() == 1) {
             	Entry<Integer, Integer> entry = blockDescVersions.entrySet().iterator().next();
-                if (entry.getValue() == arcRecordNumber) {
+                if (entry.getValue() == recordNumber) {
                 	arcBlockDescVersion = entry.getKey();
                 }
             }
@@ -462,16 +465,19 @@ public class ArcModule extends BaseFormatModule implements Validator {
         Source recordSrc = new ArcRecordSource();
         recordSrc.setSourceAccessor(sourceFactory.createSourceAccessor(recordSrc));
         recordSrc = parentSource.addChildSource(recordSrc);
-        ++arcRecordNumber;
+        ++recordNumber;
         /*
          * Version.
          */
-        if (arcRecordNumber == 1) {
+        if (recordNumber == 1) {
         	if (record.recordType == ArcRecordBase.RT_VERSION_BLOCK) {
         		if (record.versionHeader.bValidVersionFormat) {
         			arcFileVersion = record.versionHeader.versionStr;
         		}
         	}
+        }
+        if (record.recordType == ArcRecordBase.RT_ARC_RECORD) {
+        	++arcRecordNumber;
         }
         Integer count = blockDescVersions.get(record.header.recordFieldVersion);
         if (count == null) {
