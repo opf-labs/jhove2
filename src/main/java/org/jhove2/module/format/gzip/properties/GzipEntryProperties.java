@@ -126,7 +126,7 @@ public class GzipEntryProperties extends AbstractReportable {
      *         <code>null</code> if none is present in the GZip header.
      */
     @ReportableProperty(order = 5, value = "GZip entry date.")
-    public Date getDate() {
+    public Date getLastModified() {
         return (entry.date != null)? new Date(entry.date.getTime()): null;
     }
 
