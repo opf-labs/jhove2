@@ -70,7 +70,7 @@
 		</dependency>
 		<!-- for jargs GNU Command Line Parser -->
 		<dependency>
-			<groupId>net.sf</groupId>
+ 			<groupId>net.sf</groupId>
 			<artifactId>jargs</artifactId>
 			<version>1.0</version>
 		</dependency>
@@ -110,8 +110,8 @@
 		<!-- for jargs GNU Command Line Parser -->
 		<repository>
 			<id>JBOSS</id>
-			<name>boss-maven2-release-repository</name>
-            <url>https://oss.sonatype.org/content/repositories/JBoss</url>
+			<name>JBoss Repository</name>
+			<url>https://repository.jboss.org/nexus/content/groups/public/</url>
 		</repository>
 		<!-- for app assembler -->
 		<repository>

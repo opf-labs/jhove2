@@ -61,7 +61,7 @@
 	      scope="prototype">
         <property name="processHandler" ref="wtestExternalProcessHandler"/>
         <property name="onsgmlsPath" value="C:\PROGRA~1\OpenSp\onsgmls.exe"/> 
-        <property name="sgmlnormPath" value="C:\PROGRA~1\OpenSp\osgmlnorm.exe"/> 
+        <property name="sgmlnormPath" value="C:\PROGRA~1\OpenSp\osgmlnorm.exe"/>     
 <!--        <property name="onsgmlsPath" value="C:\cygwin\bin\onsgmls.exe"/>-->
 <!--        <property name="sgmlnormPath" value="C:\cygwin\bin\osgmlnorm.exe"/>-->
         <property name="onsgmlsOptions" ref="wTestOnsgmlsOptions"/>

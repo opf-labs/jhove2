@@ -8453,7 +8453,7 @@
         
         <!-- JHOVE2-specific extension added for ICC color profile, 2010-08-31 -->
         <FileFormat ID="10002" Name="ICC Color Profile" Version="4.2.0.0" PUID="x-fmt/10002">
-        	<Extension>icc</Extension>Extension>
+        	<Extension>icc</Extension>
         </FileFormat>
     </FileFormatCollection>
 </FFSignatureFile>

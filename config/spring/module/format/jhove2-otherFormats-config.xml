@@ -7971,7 +7971,7 @@
     
   <bean id="PortableDocumentFormat" class="org.jhove2.core.format.Format"
         scope="singleton">
-		<constructor-arg type="java.lang.String" value="PostScript"/>
+		<constructor-arg type="java.lang.String" value="PDF"/>
 		<constructor-arg ref="PortableDocumentFormatIdentifier"/>
     <constructor-arg type="org.jhove2.core.format.Format$Type"
                      value="Format"/>

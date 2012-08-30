@@ -68,10 +68,10 @@ public class BaseFormatModule
 	implements FormatModule
 {
 	/** Directory module version identifier. */
-	public static final String VERSION = "2.0.0";
+	public static final String VERSION = "2.1.0";
 
 	/** Directory module release date. */
-	public static final String RELEASE = "2010-09-10";
+	public static final String RELEASE = "2012-10-31";
 
 	/** Directory module rights statement. */
 	public static final String RIGHTS = "Copyright 2010 by The Regents of the University of California, "
@@ -159,7 +159,6 @@ public class BaseFormatModule
 	public void invoke(JHOVE2 jhove2, Source source, Input input)
 	   throws JHOVE2Exception
 	{
-        source.addModule(this);
 		try {
 			this.parse(jhove2, source, input);
 			this.getModuleAccessor().persistModule(this);
