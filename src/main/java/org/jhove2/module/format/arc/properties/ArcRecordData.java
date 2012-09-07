@@ -60,42 +60,75 @@ import com.sleepycat.persist.model.Persistent;
 @Persistent
 public class ArcRecordData {
 
+	/** Start offset of record in input stream. */
     protected long startOffset;
+    /** Number of bytes consumed validating record. */
     protected long consumed;
 
+    /** Version 1 or 2 record format. */
     protected Integer blockDescVersion;
 
+    /** URL read from header. */
     protected String url;
+    /** Protocol read from URL. */
     public String protocol;
+    /** IP-Address read from header. */
     protected String ipAddress;
+    /** IP-Address version identified. (4 or 6) */
     protected String ipVersion;
+    /** Archive-date from header, if valid. */
     protected String archiveDate;
+    /** Archive-date read from header. */
     protected String rawArchiveDate;
+    /** Content-type read from header. */
     protected String contentType;
+    /** Archive-length read from header. */
     protected String length;
+    /** Result-code read from header, if present. */
     protected String resultCode;
+    /** Checksum read from header, if present. */
     protected String checksum;
+    /** Location read from header, if present. */
     protected String location;
+    /** Offset read from header, if present. */
     protected String offset;
+    /** Filename read from header, if present. */
     protected String filename;
+
+    /* Does the record have a payload. */
     protected Boolean bHasPayload;
+    /** Payload length, without payload header (version block/HTTP header). */
     protected String payloadLength;
+    /** Boolean indicating whether this record is compliant or not. */
     protected boolean bIsNonCompliant;
 
+    /** Computed block digest. */
     protected String computedBlockDigest;
+    /** Computed block digest algorithm. */
     protected String computedBlockDigestAlgorithm;
+    /** Computed block digest encoding. */
     protected String computedBlockDigestEncoding;
+    /** Computed payload digest, if applicable. */
     protected String computedPayloadDigest;
+    /** Computed payload digest algorithm, if applicable. */
     protected String computedPayloadDigestAlgorithm;
+    /** Computed payload digest encoding, if applicable. */
     protected String computedPayloadDigestEncoding;
 
+    /** Version number field read from version block.*/
     protected String versionNumber;
+    /** Reserved field read from version block. */
     protected String reserved;
+    /** Origin-code field read from version block. */
     protected String originCode;
 
+    /** Result-code read from HTTP header, if present. */
     protected String protocolResultCode;
+    /** Protocol version read from HTTP header, if present. */
     protected String protocolVersion;
+    /** Content-type read from HTTP header, if present. */
     protected String protocolContentType;
+    /** Server header entry read from HTTP header, if present. */
     protected String protocolServer;
 
     /** ARC <code>DateFormat</code> as specified by the ARC specification. */
@@ -113,6 +146,9 @@ public class ArcRecordData {
      * @param record parsed ARC record
      */
     public ArcRecordData(ArcRecordBase record) {
+    	if (record == null) {
+    		throw new IllegalArgumentException("'record' should never be null");
+    	}
         HeaderLine headerLine;
         switch (record.recordType) {
         case ArcRecordBase.RT_VERSION_BLOCK:

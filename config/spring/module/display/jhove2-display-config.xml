@@ -77,9 +77,15 @@
 	</bean>
 
         <!-- XSL displayer bean -->
-        <bean id="XSL" class="org.jhove2.module.display.XSLDisplayer" scope="prototype" parent="AbstractXSLT">
+        <bean id="CMD" class="org.jhove2.module.display.XSLDisplayer" scope="prototype" parent="AbstractXSLT">
             <constructor-arg ref="BaseModuleAccessor"/>
             <property name="stylesheet" value="classpath:containerMD.xsl"/>
+        </bean>
+
+        <!-- CDX displayer bean -->
+        <bean id="CDX" class="org.jhove2.module.display.XSLDisplayer" scope="prototype" parent="AbstractXSLT">
+            <constructor-arg ref="BaseModuleAccessor"/>
+            <property name="stylesheet" value="classpath:cdx.xsl"/>
         </bean>
 
 	<!-- Displayer ConfigInfo bean -->

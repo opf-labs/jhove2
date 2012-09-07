@@ -120,7 +120,7 @@ public class LibmagicIdentifier
                                         throws IOException, JHOVE2Exception {
         // Extract MIME type and encoding using libmagic.
         String mimeType = null;
-        /*
+        /* The following code is not compatible with the current JHove2 core.
         if ((input != null) && (input.getSize() < input.getMaxBufferSize())) {
             // Memory buffer
             mimeType = libmagicWrapper.getMimeType(
@@ -136,15 +136,6 @@ public class LibmagicIdentifier
             mimeType = libmagicWrapper.getMimeType(
                     source.getFile().getAbsolutePath());
         }
-
-        // debug
-        /*
-        System.out.println("#");
-        System.out.println("#");
-        System.out.println("# mime-type: " + mimeType);
-        System.out.println("#");
-        System.out.println("#");
-        */
 
         String typeWithEncoding = null;
         if (mimeType != null) {
@@ -198,14 +189,6 @@ public class LibmagicIdentifier
 
         String compiledMagicPath = null;
         if (this.magicFileDir != null) {
-        	// debug
-        	/*
-        	System.out.println("#");
-        	System.out.println("#");
-        	System.out.println("# MagicFile: " + magicFileDir.getAbsolutePath());
-        	System.out.println("#");
-        	System.out.println("#");
-        	*/
             // Magic source directory set. => Compile magic files.
         	if (libmagicWrapper.compile(
                                 magicFileDir.getAbsolutePath()) != 0) {

@@ -188,9 +188,9 @@ public class GzipEntryProperties extends AbstractReportable {
      *         <code>null</code> if none are present.
      */
     public byte[] getExtra() {
-        int l = entry.extraFields.length;
-        byte[] copy = new byte[l];
-        System.arraycopy(entry.extraFields, 0, copy, 0, l);
+        int len = entry.extraFields.length;
+        byte[] copy = new byte[len];
+        System.arraycopy(entry.extraFields, 0, copy, 0, len);
         return copy;
     }
 

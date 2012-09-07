@@ -85,17 +85,10 @@ import com.sleepycat.persist.model.Persistent;
 public class GzipModule extends BaseFormatModule implements Validator {
 
     /** Module version identifier. */
-    public final static String VERSION = "0.8.0";
+    public final static String VERSION = "2.1.0";
 
     /** Module release date. */
-    public final static String RELEASE = "2011-01-20";
-
-    /** Module rights statement. */
-    /*
-    public final static String RIGHTS =
-        "Copyright 2010 by The Royal Library in Denmark. " +
-        "Available under the terms of the BSD license.";
-    */
+    public final static String RELEASE = "2012-10-31";
 
     /** Module validation coverage. */
     public static final Coverage COVERAGE = Coverage.Selective;
@@ -103,10 +96,10 @@ public class GzipModule extends BaseFormatModule implements Validator {
     /** Validation status. */
     private Validity isValid;
 
-    /** The name of the ARC file. */
+    /** The name of the GZip file. */
     private String gzipFileName;
 
-    /** The size of the ARC file, in bytes. */
+    /** The size of the GZip file, in bytes. */
     private Long gzipFileSize;
 
     /** Last modified date of the GZip file. */
@@ -115,7 +108,7 @@ public class GzipModule extends BaseFormatModule implements Validator {
     /** Number of members compressed with the deflate compression method. */
     private long deflateMemberCount = 0;
 
-    /** The amount of bytes consumed by the GZipReader- */
+    /** The amount of bytes consumed by the GZipReader. */
     private long gzipReaderConsumedBytes;
 
     /** Number of non-valid members. */
@@ -189,11 +182,13 @@ public class GzipModule extends BaseFormatModule implements Validator {
     // BaseFormatModule contract support
     //------------------------------------------------------------------------
 
+    /*
+     * Parse a GZip file/entry.
+     * @see org.jhove2.module.format.BaseFormatModule#parse(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source, org.jhove2.core.io.Input)
+     */
     @Override
     public long parse(final JHOVE2 jhove2, Source source, Input input)
-        throws EOFException, IOException, JHOVE2Exception
-    {
-        //Invocation cfg = jhove2.getInvocation();
+        throws EOFException, IOException, JHOVE2Exception {
         /*
         // Check for parallel characterization mode.
         ExecutorService threadPool = null;
@@ -318,12 +313,10 @@ public class GzipModule extends BaseFormatModule implements Validator {
                 src.addExtraProperties(gzipEntryData.getGzipEntryProperties());
                 // Check member compression method (always deflate).
                 if (gzipEntry.cm == GzipConstants.CM_DEFLATE) {
-                    //this.deflateMemberCount.incrementAndGet();
                     ++deflateMemberCount;
                 }
                 // Check member validity.
                 if (! gzipEntry.isCompliant()) {
-                    //this.invalidMembers.incrementAndGet();
                     ++invalidMembers;
                     isValid = Validity.False;
                     // Report errors on child source object.
@@ -442,9 +435,9 @@ public class GzipModule extends BaseFormatModule implements Validator {
     }
 
     /**
-     * Checks GZip record validity and reports validation errors.
+     * Checks GZip entry validity and reports validation errors.
      * @param src GZip source unit
-     * @param record the GZip record to characterize.
+     * @param entry the GZip entry to characterize.
      * @param jhove2 the JHove2 characterization context.
      * @throws IOException if an IO error occurs while processing
      * @throws JHOVE2Exception if a serious problem needs to be reported
@@ -456,7 +449,6 @@ public class GzipModule extends BaseFormatModule implements Validator {
            for (Diagnosis d : entry.diagnostics.getErrors()) {
                src.addMessage(newValidityError(jhove2, Message.Severity.ERROR,
                        d.type.toString().toLowerCase(), d.getMessageArgs()));
-               //updateMap(e.error.toString() + '-' + e.field, this.errors);
            }
         }
         if (entry.diagnostics.hasWarnings()) {
@@ -473,7 +465,7 @@ public class GzipModule extends BaseFormatModule implements Validator {
      * @param jhove2 the JHove2 characterization context.
      * @param severity message severity
      * @param id the configuration property relative name.
-     * @param params the values to add in the message
+     * @param messageArgs the values to add in the message
      * @return the new localized message
      * @throws JHOVE2Exception if a serious problem needs to be reported
      */
@@ -488,7 +480,8 @@ public class GzipModule extends BaseFormatModule implements Validator {
     // Validator interface support
     //------------------------------------------------------------------------
 
-    /** Validate the Gzip file.
+    /**
+     * Validate the Gzip file.
      * @param jhove2 JHOVE2 framework object
      * @param source Gzip file source unit
      * @param input  Gzip file source input
@@ -500,7 +493,8 @@ public class GzipModule extends BaseFormatModule implements Validator {
         return isValid();
     }
 
-    /** Get validation coverage.
+    /**
+     * Get validation coverage.
      * @return Validation coverage
      * @see org.jhove2.module.format.Validator#getCoverage()
      */
@@ -509,7 +503,8 @@ public class GzipModule extends BaseFormatModule implements Validator {
         return COVERAGE;
     }
 
-    /** Get validity.
+    /**
+     * Get validity.
      * @return Validity
      * @see org.jhove2.module.format.Validator#isValid()
      */
@@ -523,7 +518,7 @@ public class GzipModule extends BaseFormatModule implements Validator {
     //------------------------------------------------------------------------
 
     /**
-     * gzipFileName getter
+     * gzipFileName getter.
      * @return the gzipFileName
      */
     @ReportableProperty(order=1, value="GZip file name")
@@ -532,7 +527,7 @@ public class GzipModule extends BaseFormatModule implements Validator {
     }
 
     /**
-     * gzipFileSize getter
+     * gzipFileSize getter.
      * @return the gzipFileSize
      */
     @ReportableProperty(order=2, value="GZip file size, in bytes")
@@ -551,17 +546,16 @@ public class GzipModule extends BaseFormatModule implements Validator {
 
     /**
      * Returns the number of GZip entries found.
-     * @return the number of GZip entries found.
+     * @return the number of GZip entries found
      */
     @ReportableProperty(order = 4,
                         value = "Number of members compressed with the deflate compression method")
     public long getNumDeflateMembers() {
-        //return this.deflateMemberCount.get();
         return deflateMemberCount;
     }
 
     /**
-     * gzipReaderConsumedBytes getter
+     * gzipReaderConsumedBytes getter.
      * @return the gzipReaderConsumedBytes
      */
     @ReportableProperty(order=5, value="GZip reader consumed bytes, in bytes")
@@ -571,17 +565,16 @@ public class GzipModule extends BaseFormatModule implements Validator {
 
     /**
      * Returns the number of invalid GZip entries found.
-     * @return the number of invalid GZip entries found.
+     * @return the number of invalid GZip entries found
      */
     @ReportableProperty(order = 6, value = "Number of non-valid members")
     public long getNumInvalidMembers() {
-        //return this.invalidMembers.get();
         return invalidMembers;
     }
 
     /**
      * Returns the number of GZip entries marked as invalid.
-     * @return the number of invalid GZip entries found.
+     * @return the number of invalid GZip entries found
      */
     @ReportableProperty(order = 7, value = "Validation error messages")
     public Collection<Message> getValidationMessages() {
@@ -598,18 +591,18 @@ public class GzipModule extends BaseFormatModule implements Validator {
     /**
      * <i>Dependency injection<i/> Sets whether to recursively
      * characterize GZip members.
-     * @param  recurse   whether to recursively characterize GZip
-     *                   members.
+     * @param recurse whether to recursively characterize GZip members
      */
     public void setRecurse(boolean recurse) {
         this.recurse = recurse;
     }
 
-    /** Returns whether this module recursively characterizes the
+    /**
+     * Returns whether this module recursively characterizes the
      * found GZip members.
      * @return <code>true</code> if GZip members are recursively
      *         characterized; <code>false</code> otherwise.  Defaults
-     *         to <code>true</code>.
+     *         to <code>true</code>
      */
     public boolean getRecurse() {
         return recurse;

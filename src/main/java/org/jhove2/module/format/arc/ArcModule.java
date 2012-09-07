@@ -86,17 +86,10 @@ import com.sleepycat.persist.model.Persistent;
 public class ArcModule extends BaseFormatModule implements Validator {
 
     /** Module version identifier. */
-    public static final String VERSION = "0.8.0";
+    public static final String VERSION = "2.1.0";
 
     /** Module release date. */
-    public static final String RELEASE = "2011-01-20";
-
-    /** Module rights statement. */
-    /*
-    public static final String RIGHTS =
-        "Copyright 2011 by The Royal Library in Denmark. " +
-        "Available under the terms of the BSD license.";
-    */
+    public static final String RELEASE = "2012-10-31";
 
     /** Module validation coverage. */
     public static final Coverage COVERAGE = Coverage.Selective;
@@ -111,8 +104,6 @@ public class ArcModule extends BaseFormatModule implements Validator {
     private boolean bComputePayloadDigest = false;
     private String payloadDigestAlgorithm;
     private String payloadDigestEncoding;
-
-    //private static final String CHARACTERIZATION_ERROR = "characterizationError";
 
     /**
      * Stores a mapping of all Format aliases in the
@@ -129,10 +120,6 @@ public class ArcModule extends BaseFormatModule implements Validator {
     private Map<String, Integer> protocols =
                                 new HashMap<String, Integer>();
 
-    /** Validation errors. */
-    //private ConcurrentMap<String, AtomicInteger> errors =
-    //                            new ConcurrentHashMap<String,AtomicInteger>();
-
     /** The name of the ARC file. */
     private String arcFileName;
 
@@ -148,7 +135,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
     /** The number or ARC records. */
     private int arcRecordNumber;
 
-    /** The amount of bytes consumed by the ArcReader- */
+    /** The amount of bytes consumed by the ArcReader. */
     private long arcReaderConsumedBytes;
 
     /** File version from version block. */
@@ -184,16 +171,9 @@ public class ArcModule extends BaseFormatModule implements Validator {
     // BaseFormatModule contract support
     //------------------------------------------------------------------------
 
-    /**
-     * Parses an ARC record source unit.
-     * @param  jhove2   the JHove2 characterization context.
-     * @param  source   ARC source unit
-     * @param  param    ARC source input
-     * @return number of consumed bytes parsed
-     * @throws IOException If an I/O exception is raised reading the source unit
-     * @throws JHOVE2Exception if a serious error hinders correct module execution
-     * @see org.jhove2.module.format.FormatModule#parse(org.jhove2.core.JHOVE2,
-     *      org.jhove2.core.source.Source, org.jhove2.core.io.Input)
+    /*
+     * Parse an ARC file/record.
+     * @see org.jhove2.module.format.BaseFormatModule#parse(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source, org.jhove2.core.io.Input)
      */
     @Override
     public long parse(JHOVE2 jhove2,Source source, Input input)
@@ -216,7 +196,6 @@ public class ArcModule extends BaseFormatModule implements Validator {
         /*
          * SourceFactory for later use.
          */
-        //Invocation cfg = jhove2.getInvocation();
         SourceFactory sourceFactory = jhove2.getSourceFactory();
         if (sourceFactory == null) {
             throw new JHOVE2Exception("INTERNAL ERROR - JHOVE2 SourceFactory is null");
@@ -467,7 +446,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
         recordSrc = parentSource.addChildSource(recordSrc);
         ++recordNumber;
         /*
-         * Version.
+         * Version. (The first ARC record should be a (filedesc) version block record)
          */
         if (recordNumber == 1) {
         	if (record.recordType == ArcRecordBase.RT_VERSION_BLOCK) {
@@ -642,40 +621,6 @@ public class ArcModule extends BaseFormatModule implements Validator {
                            jhove2.getConfigInfo());
     }
 
-    /**
-     * Increments the corresponding value of the key in the specified map.
-     * @param key the key in the map.
-     * @param map the map to update.
-     */
-    /*
-    private void updateMap(String key, ConcurrentMap<String,AtomicInteger> map) {
-        if ((key != null) && (key.length() != 0)) {
-            if (! map.containsKey(key)) {
-                map.putIfAbsent(key, new AtomicInteger());
-            }
-            map.get(key).incrementAndGet();
-        }
-    }
-    */
-
-    /**
-     * Handles generic exceptions
-     * @param e the exception
-     * @param jhove2 the JHove2 characterization context.
-     * @param source ARC file source unit.
-     * @throws JHOVE2Exception
-     */
-    /*
-    private void handleException(Exception e, JHOVE2 jhove2,Source source)
-            throws JHOVE2Exception {
-        this.isValid = Validity.False;
-        // TODO convert
-        source.addMessage(this.newValidityError(jhove2,Message.Severity.ERROR,
-                                                ArcErrorType.INVALID.toString(),
-                                                ArcRecordBase.ARC_FILE,e.toString()));
-    }
-    */
-
     //------------------------------------------------------------------------
     // Validator interface support
     //------------------------------------------------------------------------
@@ -716,7 +661,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
     //------------------------------------------------------------------------
 
     /**
-     * arcFile getter
+     * arcFile getter.
      * @return the arcFile
      */
     @ReportableProperty(order=1, value="ARC file name")
@@ -725,7 +670,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
     }
 
     /**
-     * arcFileSize getter
+     * arcFileSize getter.
      * @return the arcFileSize
      */
     @ReportableProperty(order=2, value="ARC file size, in bytes")
@@ -743,7 +688,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
     }
 
     /**
-     * Returns ARC record number
+     * Returns ARC record number.
      * @return the number of arc record
      */
     @ReportableProperty(order=4, value="The number of ARC records")
@@ -752,7 +697,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
     }
 
     /**
-     * arcReaderConsumedBytes getter
+     * arcReaderConsumedBytes getter.
      * @return the arcReaderConsumedBytes
      */
     @ReportableProperty(order=5, value="ARC reader consumed bytes, in bytes")
@@ -779,7 +724,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
     }
 
     /**
-     * protocols getter
+     * protocols getter.
      * @return the protocols
      */
     @ReportableProperty(order=8, value="URL record protocols")
@@ -788,7 +733,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
     }
 
      /**
-     * errors getter
+     * errors getter.
      * @return the errors
      */
     /*
@@ -804,7 +749,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
 
     /**
      * Sets whether to recursively characterize ARC record objects.
-     * @param  recurse  whether to recursively characterize ARC record objects.
+     * @param recurse whether to recursively characterize ARC record objects
      */
     public void setRecurse(boolean recurse) {
         this.recurse = recurse;

@@ -65,58 +65,102 @@ import com.sleepycat.persist.model.Persistent;
 @Persistent
 public class WarcRecordData {
 
-    protected Long startOffset;
+	/** Start offset of record in input stream. */
+	protected Long startOffset;
+    /** Number of bytes consumed validating record. */
     protected Long consumed;
 
+    /** WARC version read from header. */
     protected String warcVersionStr;
 
+    /** WARC-Type read from header. */
     protected String warcType;
+    /** WARC-Filename read from header. */
     protected String warcFilename;
+    /** WARC-Record-Id read from header. */
     protected String warcRecordId;
+    /** WARC-Date read from header. */
     protected String warcDate;
+    /** Content-Length read from header. */
     protected String contentLength;
+    /** Content-type read from header. */
     protected String contentType;
+    /** WARC-Truncated read from header. */
     protected String warcTruncated;
+    /** WARC-IP-Address read from header. */
     protected String warcIpAddress;
+    /** List of WARC-Concurrent-To read from header. */
     protected List<String> warcConcurrentToList;
+    /** WARC-Refers-To read from header. */
     protected String warcRefersTo;
+    /** WARC-Target-URI read from header. */
     protected String warcTargetUri;
+    /** WARC-Warcinfo-ID read from header. */
     protected String warcWarcinfoId;
+    /** WARC-Identified-Payload-Type read from header. */
     protected String warcIdentifiedPayloadType;
+    /** WARC-Profile read from header. */
     protected String warcProfile;
+    /** WARC-Segment-Number read from header. */
     protected String warcSegmentNumber;
+    /** WARC-Segment-Origin-ID read from header. */
     protected String warcSegmentOriginId;
+    /** WARC-Segment-Total-Length read from header. */
     protected String warcSegmentTotalLength;
 
+    /** Block digest read from header. */
     protected String warcBlockDigest;
+    /** Block digest algorithm read from header. */
     protected String warcBlockDigestAlgorithm;
+    /** Block digest encoding auto-detected from digest and algorithm. */
     protected String warcBlockDigestEncoding;
+    /** Payload digest read from header. */
     protected String warcPayloadDigest;
+    /** Payload digest algorithm read from header. */
     protected String warcPayloadDigestAlgorithm;
+    /** Payload digest encoding auto-detected from digest and algorithm. */
     protected String warcPayloadDigestEncoding;
 
+    /** Computed block digest. */
     protected String computedBlockDigest;
+    /** Computed block digest algorithm. */
     protected String computedBlockDigestAlgorithm;
+    /** Computed block digest encoding. */
     protected String computedBlockDigestEncoding;
+    /** Computed payload digest, if applicable. */
     protected String computedPayloadDigest;
+    /** Computed payload digest algorithm, if applicable. */
     protected String computedPayloadDigestAlgorithm;
+    /** Computed payload digest encoding, if applicable. */
     protected String computedPayloadDigestEncoding;
 
+    /** WARC-Record-Id scheme used. */
     protected String recordIdScheme;
 
+    /** Boolean indicating whether this record is compliant or not. */
     protected Boolean bIsNonCompliant;
+    /** Boolean indicating whether the block digest is valid or not. */
     protected Boolean isValidBlockDigest;
+    /** Boolean indicating whether the payload digest is valid or not. */
     protected Boolean isValidPayloadDigest;
 
+    /* Does the record have a payload. */
     protected Boolean bHasPayload;
+    /** Payload length, without payload header (version block/HTTP header). */
     protected String payloadLength;
 
+    /** IP vresion of WARC-IP-Address (4 or 6). */
     protected String ipVersion;
 
+    /** Result-code read from HTTP header, if present. */
     protected String resultCode;
+    /** Protocol version read from HTTP header, if present. */
     protected String protocolVersion;
+    /** Content-type read from HTTP header, if present. */
     protected String protocolContentType;
+    /** Server header entry read from HTTP header, if present. */
     protected String protocolServer;
+    /** User-Agent header entry read from HTTP header, if present. */
     protected String protocolUserAgent;
 
     /**
@@ -131,6 +175,9 @@ public class WarcRecordData {
      * @param record parsed WARC record
      */
     public WarcRecordData(WarcRecord record) {
+    	if (record == null) {
+    		throw new IllegalArgumentException("'record' should never be null");
+    	}
     	WarcHeader header = record.header;
         startOffset = record.getStartOffset();
         consumed = record.getConsumed();
@@ -314,6 +361,9 @@ public class WarcRecordData {
      * @return a persistent reportable property instance based on the warc-type
      */
     public AbstractReportable getWarcTypeProperties(WarcRecord record) {
+    	if (record == null) {
+    		throw new IllegalArgumentException("'record' should never be null");
+    	}
         AbstractReportable warcTypeProperties = null;
         if (record != null && record.header.warcTypeIdx != null) {
             switch (record.header.warcTypeIdx) {

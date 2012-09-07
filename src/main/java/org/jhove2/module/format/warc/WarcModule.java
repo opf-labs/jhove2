@@ -85,17 +85,10 @@ import com.sleepycat.persist.model.Persistent;
 public class WarcModule extends BaseFormatModule implements Validator {
 
     /** Module version identifier. */
-    public static final String VERSION = "0.8.0";
+    public static final String VERSION = "2.1.0";
 
     /** Module release date. */
-    public static final String RELEASE = "2011-01-20";
-
-    /** Module rights statement. */
-    /*
-    public static final String RIGHTS =
-            "Copyright 2011 by The Royal Library in Denmark. "
-            + "Available under the terms of the BSD license.";
-    */
+    public static final String RELEASE = "2012-10-31";
 
     /** Module validation coverage. */
     public static final Coverage COVERAGE = Coverage.Selective;
@@ -131,10 +124,10 @@ public class WarcModule extends BaseFormatModule implements Validator {
     /** WARC file size, whole file. */
     private Long warcFileSize;
 
-    /** Last modified date of the ARC file. */
+    /** Last modified date of the WARC file. */
     private Date warcFileLastModified;
 
-    /** The amount of bytes consumed by the ArcReader- */
+    /** The amount of bytes consumed by the WarcReader. */
     private long warcReaderConsumedBytes;
 
     /** File version, null unless all records have the same version. */
@@ -163,17 +156,13 @@ public class WarcModule extends BaseFormatModule implements Validator {
         this(null, null);
     }
 
-    /**
-     * Parse a WARC source unit.
-     * @param jhove2 the JHove2 characterization context
-     * @param source WARC source unit
-     * @param input WARC source input
-     * @return number of consumed bytes parsed
-     * @throws EOFException If End-of-File is reached reading the source unit
-     * @throws IOException If an I/O exception is raised reading the source unit
-     * @throws JHOVE2Exception if a serious error hinders correct module execution
-     * @see org.jhove2.module.format.FormatModule#parse(org.jhove2.core.JHOVE2,
-     *      org.jhove2.core.source.Source, org.jhove2.core.io.Input)
+    //------------------------------------------------------------------------
+    // BaseFormatModule contract support
+    //------------------------------------------------------------------------
+
+    /*
+     * Parse a WARC file/record.
+     * @see org.jhove2.module.format.BaseFormatModule#parse(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source, org.jhove2.core.io.Input)
      */
     @Override
     public long parse(JHOVE2 jhove2, Source source, Input input)
@@ -196,7 +185,6 @@ public class WarcModule extends BaseFormatModule implements Validator {
         /*
          * SourceFactory for later use.
          */
-        //Invocation cfg = jhove2.getInvocation();
         SourceFactory sourceFactory = jhove2.getSourceFactory();
         if (sourceFactory == null) {
             throw new JHOVE2Exception("INTERNAL ERROR - JHOVE2 SourceFactory is null");
