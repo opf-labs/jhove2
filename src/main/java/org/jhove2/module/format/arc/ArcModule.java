@@ -439,10 +439,11 @@ public class ArcModule extends BaseFormatModule implements Validator {
 
         contentType = record.header.contentTypeStr;
         /*
-         * Arc Record Source.
+         * ARC Record Source.
          */
         Source recordSrc = new ArcRecordSource();
         recordSrc.setSourceAccessor(sourceFactory.createSourceAccessor(recordSrc));
+        recordSrc.setDeleteTempFileOnClose(jhove2.getInvocation().getDeleteTempFilesOnClose());
         recordSrc = parentSource.addChildSource(recordSrc);
         ++recordNumber;
         /*
@@ -498,7 +499,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
         /*
          * Characterize payload.
          */
-        if (recurse && payload_stream != null && !record.hasEmptyPayload()) {
+        if (recurse && payload_stream != null && !record.hasPseudoEmptyPayload()) {
             characterizePayload(jhove2, sourceFactory, recordSrc, payload_stream, formatId);
         }
         if (payload_stream != null) {
@@ -532,6 +533,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
          * Report errors.
          */
         reportValidationErrors(recordSrc, record, jhove2);
+        recordSrc.close();
     }
 
     protected void updateProtocols(ArcRecordData recordData) {
@@ -557,8 +559,10 @@ public class ArcModule extends BaseFormatModule implements Validator {
             Source recordSrc, InputStream payload_stream, FormatIdentification formatId)
                     throws EOFException, IOException, JHOVE2Exception {
         // Not all properties are ready yet, they are added as extras.
+    	String name = null;
         Source payloadSrc = sourceFactory.getSource(jhove2, payload_stream, name, null);
         if (payloadSrc != null) {
+        	payloadSrc.setDeleteTempFileOnClose(jhove2.getInvocation().getDeleteTempFilesOnClose());
             payloadSrc = recordSrc.addChildSource(payloadSrc);
             // Add presumptive format based on content-type.
             if(formatId != null){
@@ -574,6 +578,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
                 if (src_input != null) {
                     src_input.close();
                 }
+                payloadSrc.close();
             }
         }
     }

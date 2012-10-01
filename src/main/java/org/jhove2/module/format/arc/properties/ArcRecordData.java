@@ -223,7 +223,7 @@ public class ArcRecordData {
         /*
          * Payload.
          */
-        bHasPayload = record.hasPayload() && !record.hasEmptyPayload();
+        bHasPayload = record.hasPayload() && !record.hasPseudoEmptyPayload();
         Payload payload = record.getPayload();
         if (payload != null) {
         	// payloadLength is reported back as ObjectSize in the Jhove2 specs

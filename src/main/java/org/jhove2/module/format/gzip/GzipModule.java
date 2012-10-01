@@ -190,23 +190,13 @@ public class GzipModule extends BaseFormatModule implements Validator {
     public long parse(final JHOVE2 jhove2, Source source, Input input)
         throws EOFException, IOException, JHOVE2Exception {
         /*
-        // Check for parallel characterization mode.
-        ExecutorService threadPool = null;
-        if (this.nThreads > 1) {
-            threadPool = Executors.newFixedThreadPool(this.nThreads);
-        }
-        */
-        /*
          * Module init.
          */
         long consumed = 0L;
-        //this.deflateMemberCount.set(0L);
-        //this.invalidMembers.set(0L);
         deflateMemberCount = 0L;
         invalidMembers = 0L;
         validationMessages.clear();
         isValid = Validity.Undetermined;
-        //wovenFormatParser = null;
 
         // In GZip format, least-significant bytes come first.
         input.setByteOrder(ByteOrder.LITTLE_ENDIAN);
@@ -247,61 +237,20 @@ public class GzipModule extends BaseFormatModule implements Validator {
             int memberCount = 0;
             while ((gzipEntry = gzipReader.getNextEntry()) != null) {
                 // Wrap found member in a JHove2 Source object.
-                /*
-                final GzipMemberSource src = (GzipMemberSource)
-                        (SourceFactory.getSource(cfg.getTempPrefix(),
-                            cfg.getTempSuffix(), cfg.getBufferSize(), e,
-                            (doRecurse)? gz.getEntryInputStream(): null));
-                */
                 InputStream stream = gzipEntry.getInputStream();
                 String name = gzipEntry.fname;
                 Source src = factory.getSource(jhove2, stream, name, null);
                 if (src != null) {
+                    src.setDeleteTempFileOnClose(jhove2.getInvocation().getDeleteTempFilesOnClose());
                     memberCount++;
                     // Attach member to parent source.
                     source.addChildSource(src);
-
                     if (presumptiveFormat != null) {
                         src.addPresumptiveFormat(presumptiveFormat);
                     }
 
                     if (recurse) {
-                        // Characterize member data.
-                        if (memberCount == 1) {
-                            // First member: Check for woven format.
-                            // Set parent module.
-                            //src.setParentModule(this);
-                            // Characterize member content.
-                            characterizeMember(jhove2, src);
-                        }
-                        else {
-                            /*
-                            // All members but the first: characterize content.
-                            if (threadPool != null) {
-                                // Submit to thread pool for asynchronous
-                                // parallel execution.
-                                final long offset = gz.getOffset();
-                                threadPool.execute(new Runnable() {
-                                    public void run() {
-                                        try {
-                                            characterizeMember(jhove2, src);
-                                        }
-                                        catch (Exception e) {
-                                            handleError(e, jhove2, offset);
-                                        }
-                                    }
-                                });
-                                // Let executor threads a chance to run...
-                                // Thread.yield();
-                            }
-                            else {
-                            */
-                                // Sync. characterization in current thread.
-                                characterizeMember(jhove2, src);
-                            /*
-                            }
-                            */
-                        }
+                        characterizeMember(jhove2, src);
                     }
                     src.close();
                 }
@@ -344,23 +293,6 @@ public class GzipModule extends BaseFormatModule implements Validator {
                 gzipReader.close();
             }
             catch (Exception e) { /* Ignore... */ }
-
-            /*
-            // Shutdown thread pool (if any).
-            if (threadPool != null) {
-                threadPool.shutdown();
-                // Wait for completion of all characterization tasks.
-                boolean shutdownComplete = false;
-                do {
-                    try {
-                        threadPool.awaitTermination(2L, TimeUnit.HOURS);
-                        shutdownComplete = true;
-                    }
-                    catch (InterruptedException e) { /* Ignore... */ /*}
-                }
-                while (! shutdownComplete);
-            }
-            */
         }
         /*
          * Cleanup.
@@ -386,33 +318,7 @@ public class GzipModule extends BaseFormatModule implements Validator {
             throws JHOVE2Exception, IOException {
         Input input = source.getInput(jhove2);
         try {
-        	/*
-            if (wovenFormatParser != null) {
-                // Start timer.
-                TimerInfo timer = source.getTimerInfo();
-                timer.setStartTime();
-                try {
-                    // Update statistics.
-                    jhove2.getSourceCounter().incrementSourceCounter(source);
-                    // Configure temporary files deletion.
-                    source.setDeleteTempFileOnClose(jhove2.getInvocation()
-                            .getDeleteTempFilesOnClose());
-                    // Woven format => Delegate content handling.
-                    wovenFormatParser.parse(jhove2, source, input);
-                }
-                finally {
-                    // Delete temp. files and compute processing duration.
-                    source.close();
-                    timer.setEndTime();
-                }
-            }
-            else {
-                */
-                // Directly characterize content.
-                jhove2.characterize(source, input);
-                /*
-            }
-            */
+        	jhove2.characterize(source, input);
         }
         finally {
             // Make sure all file descriptors are properly closed.
@@ -607,14 +513,5 @@ public class GzipModule extends BaseFormatModule implements Validator {
     public boolean getRecurse() {
         return recurse;
     }
-
-    /*
-    public void setParallelCharacterization(int level) {
-        if (level < 0) {
-            level = 0;
-        }
-        this.nThreads = level;
-    }
-    */
 
 }

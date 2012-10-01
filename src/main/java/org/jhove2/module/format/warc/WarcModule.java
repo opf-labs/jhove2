@@ -422,10 +422,11 @@ public class WarcModule extends BaseFormatModule implements Validator {
 
         contentType = record.header.contentTypeStr;
         /*
-         * Warc Record Source.
+         * WARC Record Source.
          */
         Source recordSrc = new WarcRecordSource();
         recordSrc.setSourceAccessor(sourceFactory.createSourceAccessor(recordSrc));
+        recordSrc.setDeleteTempFileOnClose(jhove2.getInvocation().getDeleteTempFilesOnClose());
         recordSrc = parentSource.addChildSource(recordSrc);
         ++warcRecordNumber;
         /*
@@ -514,8 +515,10 @@ public class WarcModule extends BaseFormatModule implements Validator {
             Source recordSrc, InputStream payload_stream, FormatIdentification formatId)
                     throws EOFException, IOException, JHOVE2Exception {
         // Not all properties are ready yet, they are added as extras.
+    	String name = null;
         Source payloadSrc = sourceFactory.getSource(jhove2, payload_stream, name, null);
         if (payloadSrc != null) {
+        	payloadSrc.setDeleteTempFileOnClose(jhove2.getInvocation().getDeleteTempFilesOnClose());
             payloadSrc = recordSrc.addChildSource(payloadSrc);
             // Add presumptive format based on content-type.
             if(formatId != null){
