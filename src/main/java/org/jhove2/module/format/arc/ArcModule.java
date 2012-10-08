@@ -58,6 +58,7 @@ import org.jhove2.core.format.Format;
 import org.jhove2.core.format.FormatIdentification;
 import org.jhove2.core.format.FormatIdentification.Confidence;
 import org.jhove2.core.io.Input;
+import org.jhove2.core.reportable.Reportable;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
 import org.jhove2.module.Module;
@@ -65,6 +66,7 @@ import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.module.format.Validator;
 import org.jhove2.module.format.arc.properties.ArcRecordData;
 import org.jhove2.module.format.gzip.GzipModule;
+import org.jhove2.module.format.gzip.GzipModule.GZipOffsetProperty;
 import org.jhove2.persist.FormatModuleAccessor;
 import org.jwat.arc.ArcReader;
 import org.jwat.arc.ArcReaderFactory;
@@ -250,7 +252,24 @@ public class ArcModule extends BaseFormatModule implements Validator {
          */
         ArcReader reader = null;
         if (gzipMod != null) {
-            // This should probably be changed according to success reading VersionBlock.
+        	// Obtain GZip startOffset from dummy property.
+        	long offset = -1;
+        	List<Reportable> gzipProps = source.getExtraProperties();
+        	Reportable prop;
+        	int i = 0;
+        	while (i<gzipProps.size()) {
+        		prop = gzipProps.get(i);
+        		if (prop instanceof GZipOffsetProperty) {
+        			offset = ((GZipOffsetProperty)prop).offset;
+        			gzipProps.remove(i);
+        			// ...
+        			source.getSourceAccessor().persistSource(source);
+        		}
+        		else {
+        			++i;
+        		}
+        	}
+        	// This should probably be changed according to success reading VersionBlock.
             gzipMod.presumptiveFormat = new FormatIdentification(format.getIdentifier(), Confidence.Tentative);
             /*
              * GZip compressed.
@@ -266,11 +285,9 @@ public class ArcModule extends BaseFormatModule implements Validator {
                  * First record. (Unless the parent modules are not correct!)
                  */
                 mod = parentSrc.addModule(this);
-                // TODO offset, when gzipmodule is refactored
-                parseRecordsCompressed(jhove2, sourceFactory, source, reader, -1L, true);
+                parseRecordsCompressed(jhove2, sourceFactory, source, reader, offset, true);
             } else {
-                // TODO offset, when gzipmodule is refactored
-                arcMod.parseRecordsCompressed(jhove2, sourceFactory, source, reader, -1L, false);
+                arcMod.parseRecordsCompressed(jhove2, sourceFactory, source, reader, offset, false);
                 // Validity
                 if (arcMod.isValid != Validity.False) {
                     if (reader.isCompliant()) {

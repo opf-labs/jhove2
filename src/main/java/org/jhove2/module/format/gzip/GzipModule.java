@@ -56,6 +56,7 @@ import org.jhove2.core.Message.Severity;
 import org.jhove2.core.format.Format;
 import org.jhove2.core.format.FormatIdentification;
 import org.jhove2.core.io.Input;
+import org.jhove2.core.reportable.AbstractReportable;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
 import org.jhove2.module.format.BaseFormatModule;
@@ -150,6 +151,16 @@ public class GzipModule extends BaseFormatModule implements Validator {
      */
     @NotPersistent
     public transient Object reader;
+
+    @Persistent
+    public static class GZipOffsetProperty extends AbstractReportable {
+        public long offset;
+        public GZipOffsetProperty() {
+		}
+        public GZipOffsetProperty(long offset) {
+        	this.offset = offset;
+		}
+    }
 
     /**
      * Presumptive format used to identify subsequent ARC/WARC records which are
@@ -250,6 +261,8 @@ public class GzipModule extends BaseFormatModule implements Validator {
                     }
 
                     if (recurse) {
+                    	// expose offset to ARC/WARC modules.
+                    	src.addExtraProperties(new GZipOffsetProperty(gzipEntry.getStartOffset()));
                         characterizeMember(jhove2, src);
                     }
                     src.close();

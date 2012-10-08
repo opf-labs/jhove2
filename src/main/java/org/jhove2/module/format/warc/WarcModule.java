@@ -57,12 +57,14 @@ import org.jhove2.core.format.Format;
 import org.jhove2.core.format.FormatIdentification;
 import org.jhove2.core.format.FormatIdentification.Confidence;
 import org.jhove2.core.io.Input;
+import org.jhove2.core.reportable.Reportable;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
 import org.jhove2.module.Module;
 import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.module.format.Validator;
 import org.jhove2.module.format.gzip.GzipModule;
+import org.jhove2.module.format.gzip.GzipModule.GZipOffsetProperty;
 import org.jhove2.module.format.warc.properties.WarcRecordData;
 import org.jhove2.persist.FormatModuleAccessor;
 import org.jwat.common.Diagnosis;
@@ -239,6 +241,25 @@ public class WarcModule extends BaseFormatModule implements Validator {
          */
         WarcReader reader = null;
         if (gzipMod != null) {
+        	// Obtain GZip startOffset from dummy property.
+        	long offset = -1;
+        	List<Reportable> gzipProps = source.getExtraProperties();
+        	Reportable prop;
+        	int i = 0;
+        	while (i<gzipProps.size()) {
+        		prop = gzipProps.get(i);
+        		if (prop instanceof GZipOffsetProperty) {
+        			offset = ((GZipOffsetProperty)prop).offset;
+        			gzipProps.remove(i);
+        			// ...
+        			source.getSourceAccessor().persistSource(source);
+        		}
+        		else {
+        			++i;
+        		}
+        	}
+        	// Better safe than sorry.
+            gzipMod.presumptiveFormat = new FormatIdentification(format.getIdentifier(), Confidence.Tentative);
             /*
              * GZip compressed.
              */
@@ -253,11 +274,9 @@ public class WarcModule extends BaseFormatModule implements Validator {
                  * First record. (Unless the parent modules are not correct!)
                  */
                 mod = parentSrc.addModule(this);
-                // TODO offset, when gzipmodule is refactored
-                parseRecordsCompressed(jhove2, sourceFactory, source, reader, -1L);
+                parseRecordsCompressed(jhove2, sourceFactory, source, reader, offset);
             } else {
-                // TODO offset, when gzipmodule is refactored
-                warcMod.parseRecordsCompressed(jhove2, sourceFactory, source, reader, -1L);
+                warcMod.parseRecordsCompressed(jhove2, sourceFactory, source, reader, offset);
                 // Validity
                 if (warcMod.isValid != Validity.False) {
                     if (reader.isCompliant()) {

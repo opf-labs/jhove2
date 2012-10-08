@@ -59,15 +59,24 @@
 	        value="examples/wave/"/>
 	</bean>
 	
-	<bean id="warcDirBasePath" class="java.lang.String" >
-		<constructor-arg type="java.lang.String" 
-	        value="examples/warc/"/>
-	</bean>
-
-	
 	<bean id="xmlDirBasePath" class="java.lang.String" >
 		<constructor-arg type="java.lang.String" 
 	        value="examples/xml/"/>
+	</bean>
+	
+	<bean id="arcDirBasePath" class="java.lang.String" >
+		<constructor-arg type="java.lang.String" 
+	        value="examples/arc/"/>
+	</bean>
+	
+	<bean id="gzipDirBasePath" class="java.lang.String" >
+		<constructor-arg type="java.lang.String" 
+	        value="examples/gzip/"/>
+	</bean>
+	
+	<bean id="warcDirBasePath" class="java.lang.String" >
+		<constructor-arg type="java.lang.String" 
+	        value="examples/warc/"/>
 	</bean>
 	
 </beans>
