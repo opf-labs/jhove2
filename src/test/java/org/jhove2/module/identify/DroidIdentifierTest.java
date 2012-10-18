@@ -44,6 +44,7 @@ import java.util.Set;
 
 import javax.annotation.Resource;
 
+import org.jhove2.ConfigTestBase;
 import org.jhove2.app.util.FeatureConfigurationUtil;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
@@ -61,9 +62,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath*:**/test-config.xml", 
-		"classpath*:**/DROIDId-test-config.xml", "classpath*:**/filepaths-config.xml"})
-public class DroidIdentifierTest {
+@ContextConfiguration(locations={
+		"classpath*:**/test-config.xml", 
+		"classpath*:**/persist-test-config.xml",
+		"classpath*:**/DROIDId-test-config.xml", 
+		"classpath*:**/filepaths-config.xml"})
+public class DroidIdentifierTest extends ConfigTestBase {
 
 	private DROIDIdentifier testDroidIdentifier;
 	private String zipPuid = "x-fmt/263";

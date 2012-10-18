@@ -44,10 +44,6 @@ import javax.annotation.Resource;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.module.Command;
-import org.jhove2.persist.PersistenceManager;
-import org.jhove2.persist.PersistenceManagerUtil;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -58,42 +54,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath*:**/test-config.xml", "classpath*:**/filepaths-config.xml"})
-public class BerkeleyDbFrameworkAccessorTest {
-
-	
-	static String persistenceMgrClassName = "org.jhove2.config.spring.SpringBerkeleyDbPersistenceManagerFactory";
-	static PersistenceManager persistenceManager = null;
+@ContextConfiguration(locations={ 
+		"classpath*:**/persist/berkeleydpl/bdb-test-config.xml",
+		"classpath*:**/filepaths-config.xml"
+})
+public class BerkeleyDbFrameworkAccessorTest extends BerkeleyDbTestBase{
 	
 	JHOVE2 bdbJHOVE2;
 	JHOVE2 localJHOVE2;
 	List<Command> bdbCommands;
 	
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-		PersistenceManagerUtil.createPersistenceManagerFactory(persistenceMgrClassName);
-		persistenceManager = PersistenceManagerUtil.getPersistenceManagerFactory().getInstance();
-		persistenceManager.initialize();
-	}
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-		if (persistenceManager != null){
-			try{
-				persistenceManager.close();
-			}
-			catch (JHOVE2Exception je){
-				System.err.println(je.getMessage());
-				je.printStackTrace(System.err);
-			}
-		}
-	}
-
 	/**
 	 * Test method for {@link org.jhove2.persist.berkeleydpl.BerkeleyDbBaseModuleAccessor#persistModule(org.jhove2.module.Module)}.
 	 */
@@ -147,7 +117,8 @@ public class BerkeleyDbFrameworkAccessorTest {
 			assertEquals(0, newCommands.size());
 			for (Command command:commands){
 				assertEquals(longVal, command.getJhove2ModuleId().longValue());
-				command = (Command) command.getModuleAccessor().retrieveModule(command.getModuleId());
+				BerkeleyDbCommandAccessor ma = (BerkeleyDbCommandAccessor)command.getModuleAccessor();
+				command = (Command) ma.retrieveModule(command.getModuleId());
 				assertNull(command.getJhove2ModuleId());
 				
 			}

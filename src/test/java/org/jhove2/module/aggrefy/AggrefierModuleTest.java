@@ -47,7 +47,9 @@ import java.util.Set;
 
 import javax.annotation.Resource;
 
+import org.jhove2.ConfigTestBase;
 import org.jhove2.app.util.FeatureConfigurationUtil;
+import org.jhove2.config.spring.SpringConfigInfo;
 import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
@@ -57,8 +59,9 @@ import org.jhove2.core.source.DirectorySource;
 import org.jhove2.core.source.FileSetSource;
 import org.jhove2.core.source.FileSource;
 import org.jhove2.core.source.Source;
-import org.jhove2.persist.PersistenceManager;
 import org.jhove2.persist.PersistenceManagerUtil;
+import org.jhove2.persist.berkeleydpl.BerkeleyDbTestBase;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -69,9 +72,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath*:**/aggrefier-config.xml",
-		"classpath*:**/test-config.xml", "classpath*:**/filepaths-config.xml"})
-public class AggrefierModuleTest {
+@ContextConfiguration(locations={
+		"classpath*:**/aggrefier-config.xml",
+		"classpath*:**/persist-test-config.xml",
+		"classpath*:**/test-config.xml", 
+		"classpath*:**/filepaths-config.xml"})
+public class AggrefierModuleTest extends ConfigTestBase {
 
 	private AggrefierModule TestAggrefier;
 	private GlobPathRecognizer strictShapeFileRecognizer;
@@ -84,23 +90,35 @@ public class AggrefierModuleTest {
 	private List<String> quickenFileList;
 	private HashMap<String, String> quickenStrictKeyCountMap;
 	private String emptyDirBasePath;
+	private String persistenceFactoryClassName;
 
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+		ArrayList<String>locs = new ArrayList<String>();
+		locs.add("classpath*:**/aggrefier-config.xml");
+		locs.add("classpath*:**/persist-test-config.xml");
+		locs.add("classpath*:**/test-config.xml");
+		ConfigTestBase.setCONTEXT_PATHS(locs);
+		ConfigTestBase.setUpBeforeClass();
+
+	}
 	/**
 	 * Test method for {@link org.jhove2.module.aggrefy.AggrefierModule#identify(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)}.
 	 */
 	@Test
 	public void testIdentify() {
 		FileSetSource fsSource = null;
-		PersistenceManager persistenceManager = null;
 		try {
-            PersistenceManagerUtil.createPersistenceManagerFactory(JHOVE2.getConfigInfo());
-            persistenceManager = PersistenceManagerUtil.getPersistenceManagerFactory().getInstance();
-            persistenceManager.initialize();
+			PersistenceManagerUtil.createPersistenceManagerFactory(persistenceFactoryClassName);
+			PersistenceManagerUtil.getPersistenceManagerFactory().getInstance().initialize();
 			fsSource = JHOVE2.getSourceFactory().getFileSetSource(JHOVE2);
 		} catch (JHOVE2Exception e2) {
 			e2.printStackTrace();
 			fail();
-		}
+		}		
 		String shapeDirPath = null;
 		String quickenDirPath = null;
 		String emptyDirPath = null;
@@ -277,6 +295,13 @@ public class AggrefierModuleTest {
 	@Resource
 	public void setEmptyDirBasePath(String emptyDirPath) {
 		this.emptyDirBasePath = emptyDirPath;
+	}
+	/**
+	 * @param persistenceFactoryClassName the persistenceFactoryClassName to set
+	 */
+	@Resource (name="PersistenceManagerFactoryClassName")
+	public void setPersistenceFactoryClassName(String persistenceFactoryClassName) {
+		this.persistenceFactoryClassName = persistenceFactoryClassName;
 	}
 
 }

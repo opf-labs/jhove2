@@ -29,6 +29,7 @@ public class IntelTiffFileTest extends TiffModuleTestBase{
      */
     @Before
     public void setUp() throws Exception {
+    	super.setUp();
         parse(intelTestFile);
     }
 

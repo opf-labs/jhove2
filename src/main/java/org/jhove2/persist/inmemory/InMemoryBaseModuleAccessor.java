@@ -35,20 +35,23 @@
  */
 package org.jhove2.persist.inmemory;
 
+import java.util.List;
+
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.source.Source;
 import org.jhove2.module.Module;
 import org.jhove2.persist.ModuleAccessor;
 
-import com.sleepycat.persist.model.Persistent;
 
 /**
  * @author smorrissey
  *
  */
-@Persistent
 public class InMemoryBaseModuleAccessor implements ModuleAccessor {
-
+	/** the Module for which this the the Accessor*/
 	protected Module module;
+	/** the Source on which this Module has been invoked */
+	protected Source parentSource;
 	
 	public InMemoryBaseModuleAccessor(){
 		super();
@@ -59,14 +62,7 @@ public class InMemoryBaseModuleAccessor implements ModuleAccessor {
 	@Override
 	public Module persistModule(Module module) throws JHOVE2Exception {
 		this.module = module;
-		return this.module;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.jhove2.persist.ModuleAccessor#retrieveModule(java.lang.Object)
-	 */
-	@Override
-	public Module retrieveModule(Object key) throws JHOVE2Exception {
+		this.setParentSource(module.getParentSource(), module);
 		return this.module;
 	}
 	@Override
@@ -94,4 +90,51 @@ public class InMemoryBaseModuleAccessor implements ModuleAccessor {
 		return this.module;
 	}
 
+	@Override
+	public Source getParentSource(Module module) throws JHOVE2Exception{		
+		return this.parentSource;
+	}
+
+	/**
+	 * @param parentSource the parentSource to set
+	 * @throws JHOVE2Exception 
+	 */
+	protected void setParentSource(Source parentSource, Module module) throws JHOVE2Exception {
+		this.parentSource = parentSource;
+		if (parentSource != null){
+			List<Module> pModules = parentSource.getModules();
+			if (pModules!= null && (!(pModules.contains(module)))){
+				parentSource.addModule(module);
+			}
+		}
+	}
+	@Override
+	public void verifyNewParentSourceId(Module module, Long oldId,
+			Long newId) throws JHOVE2Exception {
+		if (module != null & module==this.module){
+			if (newId != null){
+				if (this.parentSource==null){
+					throw new JHOVE2Exception("non-null new parentID and null parent Source");
+				}
+				else {
+					Long psid = this.parentSource.getSourceId();
+					if (!(newId.equals(psid))){
+						throw new JHOVE2Exception("parent Source id not equal to child's new parentSourceId");
+					}
+				}
+			}
+			else {
+				// newId is null; parentSource should also have null id
+				if (this.parentSource != null && this.parentSource.getSourceId() != null){
+					throw new JHOVE2Exception("null new parentID and non-null parent sourceID");
+				}
+			}
+		}
+	}
+	@Override
+	public void verifyNewParentModuleId(Module module,
+			Long oldId, Long newId) throws JHOVE2Exception{
+		// Module accessors for modules that have parent module will override this
+		return;
+	}
 }

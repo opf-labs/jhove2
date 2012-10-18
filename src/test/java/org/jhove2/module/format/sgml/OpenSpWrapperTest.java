@@ -43,11 +43,15 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Properties;
 
 import javax.annotation.Resource;
 
+import org.jhove2.ConfigTestBase;
 import org.jhove2.app.util.FeatureConfigurationUtil;
+import org.jhove2.config.ConfigInfo;
+import org.jhove2.config.spring.SpringConfigInfo;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.source.Source;
@@ -70,10 +74,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath*:**/test-config.xml", 
-"classpath*:**/filepaths-config.xml"})
+@ContextConfiguration(locations={
+		"classpath*:**/test-config.xml", 
+		"classpath*:**/persist-test-config.xml",
+		"classpath*:**/filepaths-config.xml"})
 
-public class OpenSpWrapperTest {
+public class OpenSpWrapperTest extends ConfigTestBase {
 	protected JHOVE2 JHOVE2;
 	protected SgmlModule testSgmlModule;
 	protected SgmlModule testSgmlModule02;
@@ -94,6 +100,11 @@ public class OpenSpWrapperTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
+		ArrayList<String>locs = new ArrayList<String>();
+		locs.add("classpath*:**/persist-test-config.xml");
+		locs.add("classpath*:**/test-config.xml");
+		locs.add("classpath*:**/filepaths-config.xml");
+		ConfigInfo newConfigInfo = new SpringConfigInfo(locs);
 		Properties prop   = System.getProperties();
 		String os = prop.getProperty("os.name");
 		if (os.toLowerCase().startsWith("win")){
@@ -360,7 +371,7 @@ public class OpenSpWrapperTest {
 	/**
 	 * @param jHOVE2 the jHOVE2 to set
 	 */
-	@Resource
+	@Resource (name="JHOVE2")
 	public void setJHOVE2(JHOVE2 jHOVE2) {
 		JHOVE2 = jHOVE2;
 	}

@@ -46,6 +46,7 @@ import java.net.URL;
 
 import javax.annotation.Resource;
 
+import org.jhove2.ConfigTestBase;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.junit.Test;
@@ -58,8 +59,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath*:**/test-config.xml"})
-public class URLSourceTest {
+@ContextConfiguration(locations={
+		"classpath*:**/persist-test-config.xml",
+		"classpath*:**/test-config.xml"})
+public class URLSourceTest extends ConfigTestBase {
 
 	private String ptcUrlString = "http://portico.org/index.html";
 	private String cdlUrlString = "http://www.cdlib.org/";
@@ -145,7 +148,7 @@ public class URLSourceTest {
 	public JHOVE2 getJHOVE2() {
 		return JHOVE2;
 	}
-	@Resource
+	@Resource (name="JHOVE2")
 	public void setJHOVE2(JHOVE2 jHOVE2) {
 		JHOVE2 = jHOVE2;
 	}

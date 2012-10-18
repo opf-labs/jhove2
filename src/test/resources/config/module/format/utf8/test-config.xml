@@ -28,6 +28,18 @@
 		<constructor-arg ref="UTF8Identifier"/>
 		<constructor-arg type="org.jhove2.core.format.Format$Type" value="Family"/>
 		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity" value="Unambiguous"/>
+		<property name="aliasIdentifiers">
+			<set value-type="org.jhove2.core.I8R">
+				<ref bean="UTF8Charset"/>
+				<ref bean="UTF8MIMEType"/>
+				<ref bean="UTF8RFC3629"/>
+				<ref bean="UTF8UTI"/>
+				<ref bean="PUIDxfmt13"/>
+				<ref bean="PUIDxfmt16"/>
+				<ref bean="PUIDxfmt110"/>
+				<ref bean="PUIDxfmt111"/>
+			</set>
+		</property>
 		<property name="aliasNames">
 			<set>
 				<value>UCS Transformation Format, 8 bit</value>
@@ -41,6 +53,48 @@
 	<bean id="UTF8Identifier" class="org.jhove2.core.I8R" scope="singleton">
 		<constructor-arg type="java.lang.String" value="http://jhove2.org/terms/format/utf-8"/>
 	</bean>
+	
+	<!-- UTF-8 charset bean -->  
+	<bean id="UTF8Charset" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="UTF-8"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="Charset"/>
+	</bean>
+	<!-- UTF-8 MIME type bean -->
+	<bean id="UTF8MIMEType" class="org.jhove2.core.I8R" scope="singleton">
+	    <constructor-arg type="java.lang.String" value="text/plain; charset=&quot;UTF-8&quot;"/>
+	    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="MIME"/>
+	</bean>
+	<!--  UTF-8 RFC 3629 bean -->
+	<bean id="UTF8RFC3629" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="RFC 3629"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="RFC"/>
+	</bean>
+	<!-- UTF-8 UTI bean -->
+	<bean id="UTF8UTI" class="org.jhove2.core.I8R" scope="singleton">
+	    <constructor-arg type="java.lang.String" value="public.utf8-plain-text"/>
+	    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="UTI"/>
+	</bean>	
+	<!-- PUID x-fmt/13 aliasIdentifier bean -->
+	<bean id="PUIDxfmt13" class="org.jhove2.core.I8R" scope="singleton">
+	    <constructor-arg type="java.lang.String" value="x-fmt/13"/>
+	    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
+	</bean>
+	<!-- PUID x-fmt/16 aliasIdentifier bean -->
+	<bean id="PUIDxfmt16" class="org.jhove2.core.I8R" scope="singleton">
+	    <constructor-arg type="java.lang.String" value="x-fmt/16"/>
+	    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
+	</bean>
+	<!-- PUID x-fmt/110 aliasIdentifier bean -->
+	<bean id="PUIDxfmt110" class="org.jhove2.core.I8R" scope="singleton">
+	    <constructor-arg type="java.lang.String" value="x-fmt/110"/>
+	    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
+	</bean>
+	<!-- PUID x-fmt/111 aliasIdentifier bean -->
+	<bean id="PUIDxfmt111" class="org.jhove2.core.I8R" scope="singleton">
+	    <constructor-arg type="java.lang.String" value="x-fmt/111"/>
+	    <constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
+	</bean>
+	
 		
 	<!-- C0 Control properties bean -->		
 	   <bean id="C0Control" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">

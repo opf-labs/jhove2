@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.jhove2.ConfigTestBase;
 import org.jhove2.module.format.Validator.Validity;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,9 +16,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath*:**/mock-module-ruleset-2-config.xml",
-        "classpath*:**/mock-module-object-config.xml","classpath*:**/inmemory/test-config.xml"})
-public class AssessmentResultSetTest2 {
+@ContextConfiguration(locations = {
+		"classpath*:**/persist-test-config.xml",
+		"classpath*:**/mock-module-ruleset-2-config.xml",
+        "classpath*:**/mock-module-object-config.xml"})
+public class AssessmentResultSetTest2 extends ConfigTestBase {
     private static String name = "MockRuleSet2";
     private static String description  = "RuleSet2 for testing Mock Module";
     private static String objectFilter  = "org.jhove2.module.assess.MockModule";

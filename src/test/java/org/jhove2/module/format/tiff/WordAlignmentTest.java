@@ -5,7 +5,6 @@ package org.jhove2.module.format.tiff;
 
 import static org.junit.Assert.assertTrue;
 
-import java.nio.ByteOrder;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +27,7 @@ public class WordAlignmentTest extends TiffModuleTestBase{
      */
     @Before
     public void setUp() throws Exception {
+    	super.setUp();
         parse(wordAlignmentErrorFile);
     }
 

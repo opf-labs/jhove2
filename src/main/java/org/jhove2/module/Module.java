@@ -40,9 +40,11 @@ import java.util.List;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.Agent;
+import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.TimerInfo;
 import org.jhove2.core.WrappedProduct;
 import org.jhove2.core.reportable.Reportable;
+import org.jhove2.core.source.Source;
 import org.jhove2.persist.ModuleAccessor;
 
 /**
@@ -180,6 +182,11 @@ public interface Module
      */
     public void setWrappedProduct(WrappedProduct product);
 	/**
+    /**
+     * Semantics of moduleId field (e.g., as unique key) the responsibility of ModuleAccessor
+     * Some memory models will not require unique keys (e.g. InMemoryBaseModuleAccessor, which
+     * attaches no meaning to sourceId field); others (e.g. BerkeleyDbBaseModuleAccessor) do
+
 	 * @return the moduleId
 	 */
 	public Long getModuleId();
@@ -188,14 +195,27 @@ public interface Module
 	 */
 	public Long getParentSourceId();
 	/**
-	 * @param moduleId the moduleId to set
-	 */
-	public void setModuleId(Long moduleId);
-	/**
+     * Set moduleParentSourceId field. Convenience method for ModuleAccessors that use "foreign key"
+     * semantics for moduleId and moduleParentSourceId fields.
+     * It is the responsibility of SourceAccessor to maintain any "foreign key" semantics that
+     * its persistence model makes use of to relate a Module's parent Source to moduleParentSourceId field
+     * 
+     * The preferred method for setting a child Module's (module)'s parent to parentSource is
+     * parentSource.addModule(module); to remove a child (setting child's parent to null) is
+     * parentSource.deleteModule(module).
+     * 
+     * Changing a Module's parent Source should be accomplished via a sequence of method invocations:  first
+     * oldParentSource..deleteModule(module); then newParentSource.addModule(module).
+     * 
 	 * @param moduleParentSourceId the moduleParentSourceId to set
+	 * @throws JHOVE2Exception
 	 */
-	public void setParentSourceId(Long parentSourceId);
-	
+	public void setParentSourceId(Long parentSourceId) throws JHOVE2Exception;
+	/**
+	 * Get parent Source
+	 * @return Source to which this module is attached
+	 */
+	public Source getParentSource() throws JHOVE2Exception;	
 	/**
 	 * @return the moduleAccessor
 	 */

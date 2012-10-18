@@ -38,13 +38,8 @@ package org.jhove2.persist.berkeleydpl;
 import static org.junit.Assert.*;
 
 import org.jhove2.app.JHOVE2CommandLine;
-import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.module.display.Displayer;
 import org.jhove2.module.display.TextDisplayer;
-import org.jhove2.persist.PersistenceManager;
-import org.jhove2.persist.PersistenceManagerUtil;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 
@@ -53,40 +48,10 @@ import org.junit.Test;
  *
  */
 
-public class BerkeleyDbApplicationModuleAccessorTest {
-	
-	static String persistenceMgrClassName = "org.jhove2.config.spring.SpringBerkeleyDbPersistenceManagerFactory";
-	static PersistenceManager persistenceManager = null;
-	
+public class BerkeleyDbApplicationModuleAccessorTest extends BerkeleyDbTestBase{
+
 	JHOVE2CommandLine bdbapp;
 	Displayer bdbisplayer;
-	
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-		PersistenceManagerUtil.createPersistenceManagerFactory(persistenceMgrClassName);
-		persistenceManager = PersistenceManagerUtil.getPersistenceManagerFactory().getInstance();
-		persistenceManager.initialize();
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-		if (persistenceManager != null){
-			try{
-				persistenceManager.close();
-			}
-			catch (JHOVE2Exception je){
-				System.err.println(je.getMessage());
-				je.printStackTrace(System.err);
-			}
-		}
-	}
-
 
 	/**
 	 * Test method for {@link org.jhove2.persist.berkeleydpl.BerkeleyDbBaseModuleAccessor#persistModule(org.jhove2.module.Module)}.
@@ -100,7 +65,7 @@ public class BerkeleyDbApplicationModuleAccessorTest {
 			long id1 = bdbapp.getModuleId().longValue();			
 			bdbapp = (JHOVE2CommandLine) bdbapp.getModuleAccessor().persistModule(bdbapp);
 			assertEquals(id1, bdbapp.getModuleId().longValue());
-			bdbisplayer = new TextDisplayer(new BerkeleyDbBaseModuleAccessor());
+			bdbisplayer = new TextDisplayer(new BerkeleyDbDisplayerAccessor());
 			assertNull(bdbisplayer.getModuleId());
 			assertNull(bdbisplayer.getParentAppId());
 			BerkeleyDbApplicationModuleAccessor accessor = (BerkeleyDbApplicationModuleAccessor) bdbapp.getModuleAccessor();
@@ -118,7 +83,8 @@ public class BerkeleyDbApplicationModuleAccessorTest {
 			assertNull(nullDisplayer);
 			assertEquals(id2, bdbisplayer.getModuleId().longValue());
 			assertEquals(bdbapp.getModuleId(), bdbisplayer.getParentAppId());
-			bdbisplayer = (Displayer) bdbisplayer.getModuleAccessor().retrieveModule(bdbisplayer.getModuleId());
+			BerkeleyDbDisplayerAccessor ma = (BerkeleyDbDisplayerAccessor)bdbisplayer.getModuleAccessor();
+			bdbisplayer = (Displayer) ma.retrieveModule(bdbisplayer.getModuleId());
 			assertEquals(id2, bdbisplayer.getModuleId().longValue());
 			assertNull(bdbisplayer.getParentAppId());
 		}

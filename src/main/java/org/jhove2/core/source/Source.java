@@ -68,7 +68,10 @@ public interface Source
 {
 	/**
 	 * Add a child source unit.
-	 * 
+	 * Must ensure that child source's getParentSource() will return this source
+	 * After method s1.addChildSource(c1)completes, it should be the case that, for Sources s1, s2, and c1,
+	 * if s1.getChildren().contains(c1)==true, && s2.getChildren().contains(c1)==true, then
+	 * s1==s2
 	 * @param child
 	 *            Child source unit
 	 * @return Child Source
@@ -128,18 +131,28 @@ public interface Source
 
 	/**
 	 * Delete child source unit.
-	 * 
+	 * Must ensure that, after completion of method, parentSource.getChildren().contains(childSource)==false
+	 * and childSource.getParentSource()==null
 	 * @param child
 	 *            Child source unit
 	 * @return Child source deleted from parent
 	 * @throws JHOVE2Exception 
 	 */
 	public Source deleteChildSource(Source child) throws JHOVE2Exception;
+	
+	/**
+	 * Remove module from Source
+	 * @param Module to remove from Source
+	 * @return  Module which has been removed
+	 * @throws JHOVE2Exception
+	 */
+	public Module deleteModule(Module module) throws JHOVE2Exception;
 
 	/**
 	 * Get child source units.
-	 * 
-	 * @return Child source units
+	 * For any childSource c1, it should be the case that there should be at most one
+	 * parent source p1 for which p1.getChildSources().contains(c1)==true;
+	 * @return (possibly empty) List of Child source units
 	 * @throws JHOVE2Exception 
 	 */
 	@ReportableProperty(order=8, value="Child source units.")
@@ -248,9 +261,17 @@ public interface Source
 	public int getNumModules() throws JHOVE2Exception;
 
     /**
-     * @return the moduleParentSourceId
+     * @return the moduleParentSourceId, or null if this Source has no Parent
      */
     public Long getParentSourceId();
+	
+    /**
+     * Retrieve parent Source of this source
+     * There should exist at most one parent Source for any child source
+     * @return Source that is parent of this Source, or null if there is no parent
+     * @throws JHOVE2Exception
+     */
+	public Source getParentSource() throws JHOVE2Exception;
     
 	/**
 	 * Get list of presumptive formats for the source unit.
@@ -260,6 +281,9 @@ public interface Source
 	public Set<FormatIdentification> getPresumptiveFormats();
 	   
     /**
+     * Semantics of sourceID field (e.g., as unique key) the responsibility of SourceAccessor
+     * Some memory models will not require unique keys (e.g. InMemorySourceAccessor, which
+     * attaches no meaning to sourceId field); others (e.g. BerkeleyDbSourceAccsesor) do
      * @return the sourceId
      */
     public Long getSourceId();
@@ -317,17 +341,31 @@ public interface Source
      * @param flag Temporary file flag; true if the backing file is temporary
      */
     public Source setIsTemp(boolean flag) throws JHOVE2Exception;
-
+    
     /**
-     * @param moduleParentSourceId the moduleParentSourceId to set
+     * Set parentSourceId field. Convenience method for SourceAccessors that use "foreign key"
+     * semantics for sourceId and parentSourceId fields.
+     * It is the responsibility of SourceAccessor to maintain any "foreign key" semantics that
+     * its persistence model makes use of to relate a Source's parent Source to parentSourceId field
+     * 
+     * The preferred method for setting a child source (childSource)'s parent to parentSource is
+     * parentSource.addChildSource(childSource); to remove a child (setting child's parent to null) is
+     * parentSource.deleteChildSource(childSource).
+     * 
+     * Changing a Source's parent should be accomplished via a sequence of method invocations:  first
+     * oldParentSource.deleteChildSource(childSource); then newParentSource.addChildSource(childSource).
+     * 
+     * @param parentSourceId value to be set
+     * @return Source child Source whose parent has been reset
+     * @throws JHOVE2Exception
      */
-    public void setParentSourceId(Long parentSourceId);
-
+    public Source setParentSourceId(Long parentSourceId) throws JHOVE2Exception;
+    
 	/**
-	 * Set SourceAccessor that manages Source persistence
-	 * @param accessor SourceAccessor for this Source
-	 */
-	public void setSourceAccessor(SourceAccessor accessor);
+	* Set SourceAccessor that manages Source persistence
+	* @param accessor SourceAccessor for this Source
+	*/    
+	public void setSourceAccessor(SourceAccessor accessor);	
 	
 	/**
 	 * Set Map of per-source parameters

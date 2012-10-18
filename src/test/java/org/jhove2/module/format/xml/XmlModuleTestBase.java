@@ -40,14 +40,17 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.annotation.Resource;
 
+import org.jhove2.ConfigTestBase;
 import org.jhove2.app.util.FeatureConfigurationUtil;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.FileSource;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -60,14 +63,27 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * 
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath*:**/xml-test-config.xml",
-        "classpath*:**/test-config.xml", "classpath*:**/filepaths-config.xml" })
-public class XmlModuleTestBase {
+@ContextConfiguration(locations = {
+		"classpath*:**/xml-test-config.xml",
+		"classpath*:**/persist-test-config.xml",
+        "classpath*:**/test-config.xml", 
+        "classpath*:**/filepaths-config.xml"})
+public class XmlModuleTestBase extends ConfigTestBase {
 
     protected XmlModule testXmlModule;
     private JHOVE2 JHOVE2;
     private String xmlDirBasePath;
     protected boolean initialized;
+    
+    @BeforeClass 
+	public static void setUpBeforeClass() throws Exception {
+    	ArrayList<String> paths = new ArrayList<String>();
+    	paths.add("classpath*:**/xml-test-config.xml");
+    	paths.add("classpath*:**/persist-test-config.xml");
+    	paths.add("classpath*:**/test-config.xml");
+    	ConfigTestBase.setCONTEXT_PATHS(paths);
+    	ConfigTestBase.setUpBeforeClass();
+    }
 
     public XmlModule getTestXmlModule() {
         return testXmlModule;
@@ -82,7 +98,7 @@ public class XmlModuleTestBase {
         return JHOVE2;
     }
 
-    @Resource
+    @Resource (name="JHOVE2")
     public void setJHOVE2(JHOVE2 jHOVE2) {
         JHOVE2 = jHOVE2;
     }

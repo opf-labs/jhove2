@@ -62,6 +62,7 @@ public class WAVEFormatTest
     public void setUp()
         throws Exception
     {
+    	super.setUp();
         this.parse(waveTestFile);
         List<Chunk> chunks = this.testWaveModule.getChunks();
         RIFFChunk riff = (RIFFChunk) chunks.get(0);

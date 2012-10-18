@@ -39,14 +39,13 @@ import org.jhove2.core.source.AbstractSourceFactory;
 import org.jhove2.core.source.Source;
 import org.jhove2.persist.SourceAccessor;
 
-import com.sleepycat.persist.model.Persistent;
 
 /**
  * SourceFactory for Sources to be managed in memory
  * @author smorrissey
  *
  */
-@Persistent
+
 public class InMemorySourceFactory extends AbstractSourceFactory {
 
 	/**

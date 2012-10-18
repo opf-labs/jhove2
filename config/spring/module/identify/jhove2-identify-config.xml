@@ -15,7 +15,7 @@
 	</bean>
 	<!-- DROID identifier bean -->
 	<bean id="DROIDIdentifier" class="org.jhove2.module.identify.DROIDIdentifier" scope="prototype">
-		<constructor-arg ref="BaseModuleAccessor"/>
+		<constructor-arg ref="SourceIdentifierAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>

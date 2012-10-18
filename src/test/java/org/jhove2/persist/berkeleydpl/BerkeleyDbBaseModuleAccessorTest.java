@@ -37,15 +37,9 @@ package org.jhove2.persist.berkeleydpl;
 
 import static org.junit.Assert.*;
 
-import javax.annotation.Resource;
-
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.module.display.JSONDisplayer;
 import org.jhove2.module.identify.DROIDIdentifier;
-import org.jhove2.persist.PersistenceManager;
-import org.jhove2.persist.PersistenceManagerUtil;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -56,43 +50,21 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath*:**/test-config.xml", "classpath*:**/filepaths-config.xml"})
-public class BerkeleyDbBaseModuleAccessorTest {
+@ContextConfiguration(locations={ 
+		"classpath*:**/persist/berkeleydpl/bdb-test-config.xml",
+		"classpath*:**/filepaths-config.xml"
+})
+public class BerkeleyDbBaseModuleAccessorTest extends BerkeleyDbTestBase{
 
-	String persistenceMgrClassName;
+
 	JSONDisplayer dbdJSON;
-	PersistenceManager persistenceManager = null;
 	DROIDIdentifier bdbDROIDIdentifier;
-
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@Before
-	public void setUp() throws Exception {
-		PersistenceManagerUtil.createPersistenceManagerFactory(persistenceMgrClassName);
-		persistenceManager = PersistenceManagerUtil.getPersistenceManagerFactory().getInstance();
-		persistenceManager.initialize();
-	}
-
-	@After
-	public void tearDown() throws Exception {
-		if (persistenceManager != null){
-			try{
-				persistenceManager.close();
-			}
-			catch (JHOVE2Exception je){
-				System.err.println(je.getMessage());
-				je.printStackTrace(System.err);
-			}
-		}
-	}
 	/**
 	 * Test method for {@link org.jhove2.persist.berkeleydpl.BerkeleyDbBaseModuleAccessor#persistModule(org.jhove2.module.Module)}.
 	 */
 	@Test
 	public void testPersistModule() {
-		dbdJSON = new JSONDisplayer(new BerkeleyDbBaseModuleAccessor());
+		dbdJSON = new JSONDisplayer(new BerkeleyDbDisplayerAccessor());
 		assertNull(dbdJSON.getModuleId());
 		try {
 			dbdJSON = (JSONDisplayer) dbdJSON.getModuleAccessor().persistModule(dbdJSON);
@@ -101,28 +73,10 @@ public class BerkeleyDbBaseModuleAccessorTest {
 			e.printStackTrace();
 		}		
 		try {
-			bdbDROIDIdentifier = new DROIDIdentifier(new BerkeleyDbBaseModuleAccessor());
+			bdbDROIDIdentifier = new DROIDIdentifier(new BerkeleyDbSourceIdentifierAccessor());
 			assertNull(bdbDROIDIdentifier.getModuleId());
 			bdbDROIDIdentifier= (DROIDIdentifier) bdbDROIDIdentifier.getModuleAccessor().persistModule(bdbDROIDIdentifier);
 			assertNotNull(bdbDROIDIdentifier.getModuleId());
-		} catch (JHOVE2Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Test method for {@link org.jhove2.persist.berkeleydpl.BerkeleyDbBaseModuleAccessor#retrieveModule(java.lang.Object)}.
-	 */
-	@Test
-	public void testRetrieveModule() {
-		dbdJSON = new JSONDisplayer(new BerkeleyDbBaseModuleAccessor());
-		assertNull(dbdJSON.getModuleId());
-		try {
-			dbdJSON	= (JSONDisplayer) dbdJSON.getModuleAccessor().persistModule(dbdJSON);
-			assertNotNull(dbdJSON.getModuleId());
-			long longVal =  dbdJSON.getModuleId().longValue();
-			JSONDisplayer displayer = (JSONDisplayer) dbdJSON.getModuleAccessor().retrieveModule(dbdJSON.getModuleId());
-			assertEquals(longVal, displayer.getModuleId().longValue());
 		} catch (JHOVE2Exception e) {
 			e.printStackTrace();
 		}
@@ -135,21 +89,5 @@ public class BerkeleyDbBaseModuleAccessorTest {
 	public void testGetBerkeleyDbPersistenceManager() {
 		assertTrue(persistenceManager instanceof BerkeleyDbPersistenceManager);
 	}
-
-	/**
-	 * @return the persistenceMgrClass
-	 */
-	public String getPersistenceMgrClassName() {
-		return persistenceMgrClassName;
-	}
-
-	/**
-	 * @param persistenceMgrClass the persistenceMgrClass to set
-	 */
-	@Resource
-	public void setPersistenceMgrClassName(String persistenceMgrClass) {
-		this.persistenceMgrClassName = persistenceMgrClass;
-	}
-
 
 }

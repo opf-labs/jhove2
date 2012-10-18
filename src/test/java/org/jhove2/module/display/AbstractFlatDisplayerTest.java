@@ -39,6 +39,7 @@ import static org.junit.Assert.fail;
 
 import javax.annotation.Resource;
 
+import org.jhove2.ConfigTestBase;
 import org.jhove2.app.util.FeatureConfigurationUtil;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
@@ -59,17 +60,22 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath*:**/abstractdisplayer-config.xml",
-		"classpath*:**/test-config.xml", "classpath*:**/filepaths-config.xml"})
-public class AbstractFlatDisplayerTest {
+@ContextConfiguration(locations={
+		"classpath*:**/abstractdisplayer-config.xml",
+		"classpath*:**/persist-test-config.xml",
+		"classpath*:**/test-config.xml", 
+		"classpath*:**/filepaths-config.xml"})
+
+public class AbstractFlatDisplayerTest extends ConfigTestBase {
 
 	private JHOVE2 JHOVE2;
 	private String utf8DirBasePath;
 	private String testFile01;
+	private String persistenceFactoryClassName;
 
 	@Before
 	public void setUp() throws Exception {
-		PersistenceManagerUtil.createPersistenceManagerFactory(JHOVE2.getConfigInfo());
+		PersistenceManagerUtil.createPersistenceManagerFactory(persistenceFactoryClassName);
 		PersistenceManagerUtil.getPersistenceManagerFactory().getInstance().initialize();
 	}
 	/**
@@ -87,6 +93,7 @@ public class AbstractFlatDisplayerTest {
 		try {
 			String filePath = utf8DirPath.concat(testFile01);
 			Source source = JHOVE2.getSourceFactory().getSource(JHOVE2, filePath);
+			source.addModule(JHOVE2);
             Input  input  = source.getInput(JHOVE2);
 			source = JHOVE2.characterize(source,input);
 			Displayer displayer = new XMLDisplayer();
@@ -118,5 +125,12 @@ public class AbstractFlatDisplayerTest {
 	@Resource
 	public void setUtf8DirBasePath(String testDir) {
 		this.utf8DirBasePath = testDir;
+	}
+	/**
+	 * @param persistenceFactoryClassName the persistenceFactoryClassName to set
+	 */
+	@Resource (name="PersistenceManagerFactoryClassName")
+	public void setPersistenceFactoryClassName(String persistenceFactoryClassName) {
+		this.persistenceFactoryClassName = persistenceFactoryClassName;
 	}
 }

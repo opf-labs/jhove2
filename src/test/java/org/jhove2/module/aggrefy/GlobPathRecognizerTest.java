@@ -50,6 +50,7 @@ import java.util.TreeSet;
 
 import javax.annotation.Resource;
 
+import org.jhove2.ConfigTestBase;
 import org.jhove2.app.util.FeatureConfigurationUtil;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
@@ -71,9 +72,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath*:**/globpathrecognizer-config.xml",
-		"classpath*:**/test-config.xml", "classpath*:**/filepaths-config.xml"})
-public class GlobPathRecognizerTest{
+@ContextConfiguration(locations={
+		"classpath*:**/persist-test-config.xml",
+		"classpath*:**/globpathrecognizer-config.xml",
+		"classpath*:**/test-config.xml", 
+		"classpath*:**/filepaths-config.xml"})
+public class GlobPathRecognizerTest extends ConfigTestBase{
 
 	private GlobPathRecognizer strictShapeFileRecognizer;
 	private GlobPathRecognizer relaxedShapeFileRecognizer;
@@ -86,18 +90,16 @@ public class GlobPathRecognizerTest{
 	private HashMap<String, String> strictKeyCountMap;
 	private HashMap<String, String> relaxedKeyCountMap;
 	private JHOVE2 JHOVE2;
-
+	private String persistenceFactoryClassName;
 	/**
 	 * Test method for {@link org.jhove2.module.aggrefy.GlobPathRecognizer#groupSources(org.jhove2.core.source.Source)}.
 	 */
 	@Test
 	public void testGroupSources() {
-	    PersistenceManager persistenceManager = null;
 		String samplesDirPath = null;
 		try {
-	        PersistenceManagerUtil.createPersistenceManagerFactory(JHOVE2.getConfigInfo());
-	        persistenceManager = PersistenceManagerUtil.getPersistenceManagerFactory().getInstance();
-	        persistenceManager.initialize();
+			PersistenceManagerUtil.resetPersistenceMangerFactory(persistenceFactoryClassName);
+			PersistenceManagerUtil.getPersistenceManagerFactory().getInstance().initialize();
 			samplesDirPath = 
 				FeatureConfigurationUtil.getFilePathFromClasspath(shapeDirBasePath, "samples dir");
 		} catch (JHOVE2Exception e1) {
@@ -242,7 +244,8 @@ public class GlobPathRecognizerTest{
 	    PersistenceManager persistenceManager = null;
 		String samplesDirPath = null;
 		try {
-	        PersistenceManagerUtil.createPersistenceManagerFactory(JHOVE2.getConfigInfo());
+			PersistenceManagerUtil.resetPersistenceMangerFactory(null);
+			PersistenceManagerUtil.resetPersistenceMangerFactory(persistenceFactoryClassName);
 	        persistenceManager = PersistenceManagerUtil.getPersistenceManagerFactory().getInstance();
 	        persistenceManager.initialize();
 			samplesDirPath = 
@@ -371,8 +374,15 @@ public class GlobPathRecognizerTest{
 	public JHOVE2 getJHOVE2() {
 		return JHOVE2;
 	}
-	@Resource
+	@Resource (name="JHOVE2")
 	public void setJHOVE2(JHOVE2 jHOVE2) {
 		JHOVE2 = jHOVE2;
+	}
+	/**
+	 * @param persistenceFactoryClassName the persistenceFactoryClassName to set
+	 */
+	@Resource (name="PersistenceManagerFactoryClassName")
+	public void setPersistenceFactoryClassName(String persistenceFactoryClassName) {
+		this.persistenceFactoryClassName = persistenceFactoryClassName;
 	}
 }

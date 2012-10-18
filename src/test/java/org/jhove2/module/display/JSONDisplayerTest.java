@@ -39,11 +39,12 @@ import static org.junit.Assert.fail;
 
 import javax.annotation.Resource;
 
+import org.jhove2.ConfigTestBase;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.Source;
-import org.jhove2.persist.PersistenceManager;
 import org.jhove2.persist.PersistenceManagerUtil;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -56,27 +57,34 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath*:**/abstractdisplayer-config.xml",
-		"classpath*:**/test-config.xml", "classpath*:**/filepaths-config.xml"})
-public class JSONDisplayerTest {
+@ContextConfiguration(locations={
+		"classpath*:**/abstractdisplayer-config.xml",
+		"classpath*:**/persist-test-config.xml",
+		"classpath*:**/test-config.xml", 
+		"classpath*:**/filepaths-config.xml"})
+public class JSONDisplayerTest extends ConfigTestBase {
 
 	private JHOVE2 JHOVE2;
 	private String utf8DirBasePath;
 	private String testFile01;
+	private String persistenceFactoryClassName;
+	
+	@Before
+	public void setUp() throws Exception {
+		PersistenceManagerUtil.createPersistenceManagerFactory(persistenceFactoryClassName);
+		PersistenceManagerUtil.getPersistenceManagerFactory().getInstance().initialize();
+	}
 
 	/**
 	 * Test method for {@link org.jhove2.module.display.AbstractDisplayer#getIndent(int)}.
 	 */
 	@Test
 	public void testDisplay() {
-	    PersistenceManager persistenceManager = null;
 		try {
-	        PersistenceManagerUtil.createPersistenceManagerFactory(JHOVE2.getConfigInfo());
-	        persistenceManager = PersistenceManagerUtil.getPersistenceManagerFactory().getInstance();
-	        persistenceManager.initialize();
 			String filePath = utf8DirBasePath.concat(testFile01);
 			Source source = JHOVE2.getSourceFactory().getSource(JHOVE2, filePath);
 			Input  input  = source.getInput(JHOVE2);
+			source.addModule(JHOVE2);
 			source = JHOVE2.characterize(source, input);
 			Displayer displayer = new JSONDisplayer();
 			displayer.setShowIdentifiers(true);
@@ -108,5 +116,12 @@ public class JSONDisplayerTest {
 	@Resource
 	public void setUtf8DirBasePath(String testDir) {
 		this.utf8DirBasePath = testDir;
+	}
+	/**
+	 * @param persistenceFactoryClassName the persistenceFactoryClassName to set
+	 */
+	@Resource (name="PersistenceManagerFactoryClassName")
+	public void setPersistenceFactoryClassName(String persistenceFactoryClassName) {
+		this.persistenceFactoryClassName = persistenceFactoryClassName;
 	}
 }

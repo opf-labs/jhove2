@@ -73,6 +73,13 @@ public interface Command
 
 	/**
 	 * @param jhove2ModuleId the jhove2ModuleId to set
+	 * @throws JHOVE2Exception 
 	 */
-	public void setJhove2ModuleId(Long jhove2ModuleId);
+	public void setJhove2ModuleId(Long jhove2ModuleId) throws JHOVE2Exception;
+	/**
+	 * Get parent JHOVE2 module
+	 * @return JHOVE2 parent framework module
+	 * @throws JHOVE2Exception
+	 */
+	public JHOVE2 getParentFramework() throws JHOVE2Exception;
 }

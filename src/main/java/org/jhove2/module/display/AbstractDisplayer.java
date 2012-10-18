@@ -56,11 +56,13 @@ import org.jhove2.annotation.ReportableProperty.PropertyType;
 import org.jhove2.config.ConfigInfo;
 import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.app.Application;
 import org.jhove2.core.reportable.Reportable;
 import org.jhove2.core.reportable.info.ReportableInfo;
 import org.jhove2.core.reportable.info.ReportablePropertyInfo;
 import org.jhove2.core.reportable.info.ReportableSourceInfo;
 import org.jhove2.module.AbstractModule;
+import org.jhove2.persist.DisplayerAccessor;
 import org.jhove2.persist.ModuleAccessor;
 
 import com.sleepycat.persist.model.Persistent;
@@ -644,7 +646,21 @@ public abstract class AbstractDisplayer
 		return parentAppId;
 	}
 	@Override
-	public void setParentAppId(Long parentAppId) {
+	public void setParentAppId(Long parentAppId) throws JHOVE2Exception {
+		Long oldId = this.parentAppId;
 		this.parentAppId = parentAppId;
+		this.getModuleAccessor().verifyNewParentModuleId(this, oldId, parentAppId);
+	}
+	@Override
+	public Application getParentApplication() throws JHOVE2Exception {
+		DisplayerAccessor da = null;
+		try {
+			ModuleAccessor ma = this.getModuleAccessor();
+			da = (DisplayerAccessor) ma;
+		}
+		catch (Exception e){
+			throw new JHOVE2Exception ("Failed to cast ModuleAccessor to DisplayerAccessor", e);
+		}
+		return da.getParentApplication(this);
 	}
 }

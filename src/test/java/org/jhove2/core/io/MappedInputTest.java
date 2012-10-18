@@ -47,6 +47,7 @@ import java.nio.ByteOrder;
 
 import javax.annotation.Resource;
 
+import org.jhove2.ConfigTestBase;
 import org.jhove2.app.util.FeatureConfigurationUtil;
 import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
@@ -54,7 +55,6 @@ import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.io.Input.Type;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
-import org.jhove2.persist.inmemory.InMemorySourceFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -67,9 +67,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath*:**/abstractdisplayer-config.xml",
+@ContextConfiguration(locations={
+		"classpath*:**/persist-test-config.xml",
+		"classpath*:**/core/test-config.xml",
+		"classpath*:**/module/**/test-config.xml",
+		"classpath*:**/abstractdisplayer-config.xml",
 		"classpath*:**/filepaths-config.xml"})
-public class MappedInputTest {
+public class MappedInputTest  extends ConfigTestBase{
 
     int bufferSize;
     static MappedInput abstractInput = null;
@@ -78,7 +82,13 @@ public class MappedInputTest {
 	private File testFile;
     PrintWriter out;
     ByteOrder nativeOrder = ByteOrder.nativeOrder(); 
-
+    private JHOVE2 jhove2;
+	
+	@Resource
+	public void setJHOVE2(JHOVE2 jhove2) {
+	    this.jhove2 = jhove2;
+	}
+	
     @Before
     public void setUp() throws Exception {
         bufferSize = 100;
@@ -102,11 +112,9 @@ public class MappedInputTest {
     public void testGetInput() {
 
         try {
-            JHOVE2 jhove2 = new JHOVE2();
             Invocation inv = jhove2.getInvocation();
             inv.setBufferType(Type.Mapped);
-        	SourceFactory factory = new InMemorySourceFactory();
-            jhove2.setSourceFactory(factory);
+            SourceFactory factory = jhove2.getSourceFactory();
             Source source = factory.getSource(jhove2, testFile);
             /* Buffers are always created big-endian, not native-endian, so this test
              * isn't operative.

@@ -97,6 +97,14 @@ public class PersistenceManagerUtil {
 		return;
 	}
 	
+	public static void resetPersistenceMangerFactory(String factoryClassName) 
+	throws JHOVE2Exception {
+		persistenceFactory = null;
+		if (factoryClassName != null){
+			createPersistenceManagerFactory(factoryClassName);
+		}
+	}
+	
 	public static PersistenceManagerFactory getPersistenceManagerFactory()
 	throws JHOVE2Exception {
 		return persistenceFactory;

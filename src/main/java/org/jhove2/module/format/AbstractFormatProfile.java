@@ -194,7 +194,9 @@ public abstract class AbstractFormatProfile
 	}
 
 	@Override
-	public void setFormatModuleId(Long formatModuleId) {
+	public void setFormatModuleId(Long formatModuleId) throws JHOVE2Exception {
+		Long oldId = this.formatModuleId;
 		this.formatModuleId = formatModuleId;
+		this.getModuleAccessor().verifyNewParentModuleId(this, oldId, formatModuleId);
 	}
 }

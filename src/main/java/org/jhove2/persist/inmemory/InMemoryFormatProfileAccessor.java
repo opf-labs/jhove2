@@ -36,17 +36,18 @@
 package org.jhove2.persist.inmemory;
 
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.module.Module;
 import org.jhove2.module.format.FormatModule;
 import org.jhove2.module.format.FormatProfile;
 import org.jhove2.persist.FormatProfileAccessor;
 
-import com.sleepycat.persist.model.Persistent;
 
 /**
  * @author smorrissey
  *
  */
-@Persistent
+
+
 public class InMemoryFormatProfileAccessor extends InMemoryBaseModuleAccessor
 		implements FormatProfileAccessor {
 	
@@ -75,5 +76,29 @@ public class InMemoryFormatProfileAccessor extends InMemoryBaseModuleAccessor
 		this.formatModule = formatModule;
 		return (FormatProfile) this.module;
 	}
-
+	@Override
+	public void verifyNewParentModuleId(Module module,
+			Long oldId, Long newId) throws JHOVE2Exception{
+		// Module accessors for modules that have parent module will override this
+		if (module != null & module==this.module){
+			if (newId != null){
+				if (this.formatModule==null){
+					throw new JHOVE2Exception("non-null new formatModule moduleId and null parentformatModule");
+				}
+				else {
+					Long psid = this.formatModule.getModuleId();
+					if (psid==null || !(newId.equals(psid))){
+						throw new JHOVE2Exception("parentformatModuler id not equal to child's new formatModule");
+					}
+				}
+			}
+			else {
+				// newId is null; parentAggrefier should also have null id
+				if (this.formatModule != null && this.formatModule.getModuleId() != null){
+					throw new JHOVE2Exception("null new formatModule and non-null formatModule");
+				}
+			}
+		}
+		return;
+	}
 }

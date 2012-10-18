@@ -63,6 +63,7 @@ public class ICCHeaderTest
     public void setUp()
         throws Exception
     {
+    	super.setUp();
         this.parse(iccTestFile);
         this.header = this.testIccModule.getHeader();
     }

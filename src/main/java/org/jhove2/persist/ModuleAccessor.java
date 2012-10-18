@@ -36,6 +36,7 @@
 package org.jhove2.persist;
 
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.source.Source;
 import org.jhove2.module.Module;
 
 
@@ -53,13 +54,6 @@ public interface ModuleAccessor {
 	 * @throws JHOVE2Exception
 	 */
 	public Module persistModule(Module module) throws JHOVE2Exception;
-	/**
-	 * Retrieves persisted Module object dereferenced via a key
-	 * @param key Object by which persisted Module is dereferenced and retrieved
-	 * @return Module object corresponding to key
-	 * @throws JHOVE2Exception
-	 */
-	public Module retrieveModule(Object key) throws JHOVE2Exception;
 	/**
 	 * Starts Module's TimerInfo
 	 * @param module
@@ -81,5 +75,30 @@ public interface ModuleAccessor {
 	 * @throws JHOVE2Exception
 	 */
 	public Module resetTimerInfo(Module module) throws JHOVE2Exception;
-	
+	/**
+	 * Get Source to which that Module is attached
+	 * @param module Module whose parent Source is being requested
+	 * @return Source to which that Module is attached
+	 * @throws JHOVE2Exception
+	 */
+	public Source getParentSource(Module module) throws JHOVE2Exception;
+	/**
+	 * Utility method to ensure sourceParentId and sourceId ofparent Source are kept in sync 
+	 * by ModuleAccessor 
+	 * @param module
+	 * @param oldId
+	 * @param newId
+	 */
+	public void verifyNewParentSourceId(Module module,
+			Long oldId, Long newId) throws JHOVE2Exception;
+	/**
+	 * Utility method to ensure moduleId of parent Module (if one exists) is kept in sync
+	 * with parent module key in child by Module Accessor
+	 * @param module
+	 * @param oldId
+	 * @param newId
+	 * @throws JHOVE2Exception
+	 */
+	public void verifyNewParentModuleId(Module module,
+			Long oldId, Long newId) throws JHOVE2Exception;
 }

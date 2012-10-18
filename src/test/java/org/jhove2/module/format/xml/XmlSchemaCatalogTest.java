@@ -45,6 +45,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -53,6 +54,7 @@ import org.junit.Test;
  * @author rnanders
  * 
  */
+
 public class XmlSchemaCatalogTest  extends XmlModuleTestBase {
 
     

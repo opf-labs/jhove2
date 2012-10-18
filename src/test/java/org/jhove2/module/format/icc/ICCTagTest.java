@@ -65,6 +65,7 @@ public class ICCTagTest
    public void setUp()
        throws Exception
    {
+	   super.setUp();
        this.parse(iccTestFile);
        this.table = this.testIccModule.getTagTable();
        List<ICCTag> tags = this.table.getTags();

@@ -97,7 +97,7 @@ public abstract class AbstractSource
 	/** manages persistence of source */
 	protected SourceAccessor sourceAccessor;
 	
-	/** Identifiers of generic modules registered with the Source. */
+	/** Identifiers (I8R) of generic modules registered with the Source. */
 	protected static Set<String> moduleIDs = new HashSet<String>();
 
 	/** Temporary file deletion flag; if true, delete on close. */
@@ -169,7 +169,7 @@ public abstract class AbstractSource
 
 	/**
 	 * Add a child source unit.
-	 * 
+	 * Will update child source's parentSourceId to sourceId of parent Source
 	 * @param child
 	 *            Child source unit
 	 * @return child Source
@@ -383,7 +383,7 @@ public abstract class AbstractSource
 
 	/**
 	 * Delete child source unit.
-	 * 
+	 * Will set parentSourceId in child Source to null
 	 * @param child
 	 *            Child source unit
 	 * @throws JHOVE2Exception 
@@ -397,6 +397,13 @@ public abstract class AbstractSource
 		return this.sourceAccessor.deleteChildSource(this, child);
 	}
 
+	@Override
+	public Module deleteModule(Module module) throws JHOVE2Exception {
+		if (this.getSourceAccessor() == null){
+			throw new JHOVE2Exception("SourceAccessor is null");
+		}
+		return this.sourceAccessor.deleteModule(this, module);
+	}
 	/**
 	 * Get delete temporary files flag; if true, delete files.
 	 * 
@@ -617,6 +624,12 @@ public abstract class AbstractSource
     public Long getParentSourceId() {
         return parentSourceId;
     }
+    
+    @Override
+    public Source getParentSource() throws JHOVE2Exception {
+    	return this.getSourceAccessor().getParentSource(this);   	
+    }
+
          
 	/**
 	 * Get elapsed time processing the source unit.
@@ -688,15 +701,18 @@ public abstract class AbstractSource
         this.isTemp = flag;
         return this.getSourceAccessor().persistSource(this);
     }
-
-    @Override
-    public void setParentSourceId(Long parentSourceId) {
-        this.parentSourceId = parentSourceId;
-    }
-
+    
     @Override
     public void setSourceAccessor(SourceAccessor sourceAccessor) {
         this.sourceAccessor = sourceAccessor;
+    }
+    
+    @Override
+    public Source setParentSourceId(Long parentSourceId) throws JHOVE2Exception{
+    	Long oldId = this.parentSourceId;
+        this.parentSourceId = parentSourceId;
+        this.getSourceAccessor().verifyNewParentSourceId(this, oldId, parentSourceId);
+        return this;
     }
 
     @Override

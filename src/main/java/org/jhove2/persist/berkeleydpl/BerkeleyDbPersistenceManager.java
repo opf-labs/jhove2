@@ -43,14 +43,13 @@ import org.jhove2.core.app.AbstractApplication;
 import org.jhove2.core.source.AbstractSource;
 import org.jhove2.module.AbstractCommand;
 import org.jhove2.module.AbstractModule;
+import org.jhove2.module.aggrefy.AbstractRecognizer;
 import org.jhove2.module.aggrefy.AggrefierModule;
-import org.jhove2.module.aggrefy.GlobPathRecognizer;
 import org.jhove2.module.display.AbstractDisplayer;
 import org.jhove2.module.format.AbstractFormatProfile;
 import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.module.identify.AbstractFileSourceIdentifier;
 import org.jhove2.module.identify.DROIDIdentifier;
-//import org.jhove2.module.identify.SourceIdentifier;
 import org.jhove2.module.identify.IdentifierModule;
 import org.jhove2.persist.PersistenceManager;
 import org.jhove2.persist.berkeleydpl.proxies.*;
@@ -88,7 +87,7 @@ public class BerkeleyDbPersistenceManager implements PersistenceManager {
 	protected SecondaryIndex<Long, Long, AbstractDisplayer> displayerByParentApp;
 	protected SecondaryIndex<Long, Long, AbstractFormatProfile> formatProfileByParentFormatModule;
 	protected SecondaryIndex<Long, Long, AbstractCommand> commandByParentFramework;
-	protected SecondaryIndex<Long, Long, GlobPathRecognizer> recognizerByParentAggrefier;
+	protected SecondaryIndex<Long, Long, AbstractRecognizer> recognizerByParentAggrefier;
 	protected SecondaryIndex<Long, Long, AbstractFileSourceIdentifier> fileSourceIdentifierByParentIdentifier;
 		
 	/**
@@ -128,7 +127,7 @@ public class BerkeleyDbPersistenceManager implements PersistenceManager {
 			model.registerClass(AbstractFormatProfile.class);
 			model.registerClass(JHOVE2.class);
 			model.registerClass(AggrefierModule.class);
-			model.registerClass(GlobPathRecognizer.class);
+			model.registerClass(AbstractRecognizer.class);
 			model.registerClass(AbstractCommand.class);
 			model.registerClass(IdentifierModule.class);
 			model.registerClass(DROIDIdentifier.class);
@@ -167,7 +166,7 @@ public class BerkeleyDbPersistenceManager implements PersistenceManager {
 			commandByParentFramework =
 				this.getStore().getSubclassIndex(moduleByModuleId, AbstractCommand.class, Long.class,"jhove2ModuleId");
 			recognizerByParentAggrefier =
-				this.getStore().getSubclassIndex(moduleByModuleId, GlobPathRecognizer.class, Long.class, "parentAggrefierId");
+				this.getStore().getSubclassIndex(moduleByModuleId, AbstractRecognizer.class, Long.class, "parentAggrefierId");
 			fileSourceIdentifierByParentIdentifier =
 				this.getStore().getSubclassIndex(moduleByModuleId, AbstractFileSourceIdentifier.class, Long.class, "parentIdentifierId");
 		}
@@ -344,7 +343,7 @@ public class BerkeleyDbPersistenceManager implements PersistenceManager {
 	/**
 	 * @return the recognizerByParentAggrefier
 	 */
-	public SecondaryIndex<Long, Long, GlobPathRecognizer> getRecognizerByParentAggrefier() {
+	public SecondaryIndex<Long, Long, AbstractRecognizer> getRecognizerByParentAggrefier() {
 		return recognizerByParentAggrefier;
 	}
 
@@ -416,7 +415,7 @@ public class BerkeleyDbPersistenceManager implements PersistenceManager {
 	 * @param recognizerByParentAggrefier the recognizerByParentAggrefier to set
 	 */
 	public void setRecognizerByParentAggrefier(
-			SecondaryIndex<Long, Long, GlobPathRecognizer> recognizerByParentAggrefier) {
+			SecondaryIndex<Long, Long, AbstractRecognizer> recognizerByParentAggrefier) {
 		this.recognizerByParentAggrefier = recognizerByParentAggrefier;
 	}
 

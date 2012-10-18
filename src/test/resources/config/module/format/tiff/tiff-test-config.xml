@@ -90,8 +90,22 @@
 		<property name="propertyFileBaseName" value="tiffTags"/>
 	</bean>
    
-	<!-- Tiff Types properties bean -->
-	<bean id="TiffTypes" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
-		<property name="propertyFileBaseName" value="tiffTypes"/>
+<!-- 	Tiff Types properties bean NB no such file seems to exist-->
+<!-- 	<bean id="TiffTypes" class="org.jhove2.config.spring.ModulePropertiesFactoryBean"> -->
+<!-- 		<property name="propertyFileBaseName" value="tiffTypes"/> -->
+<!-- 	</bean> -->
+	
+		<!-- compression description properties bean -->
+	<bean id="Compression" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="compression" />
+	</bean>
+	
+	<bean name="TiffTagToFormatMap" class="java.util.concurrent.ConcurrentHashMap" scope="singleton">
+	<constructor-arg>
+		    <map>
+		        <entry key="34675" value-ref="ICCFormat"/>
+		        <entry key="700"   value-ref="XmlFormat"/>
+		    </map>
+	</constructor-arg>
 	</bean>
 </beans>

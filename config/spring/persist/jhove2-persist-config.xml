@@ -12,16 +12,20 @@
 	     scope="singleton"/>
 	     
 	<!--  Beans for in-memory persistence -->
-    <!--
-	<bean id="SourceFactory"             class="org.jhove2.persist.inmemory.InMemorySourceFactory" scope="prototype"/>
-	<bean id="ApplicationModuleAccessor" class="org.jhove2.persist.inmemory.InMemoryApplicationModuleAccessor"/>
-	<bean id="FrameworkAccessor"         class="org.jhove2.persist.inmemory.InMemoryFrameworkAccessor" scope="prototype"/>
-	<bean id="FormatModuleAccessor"      class="org.jhove2.persist.inmemory.InMemoryFormatModuleAccessor" scope="prototype"/>
-	<bean id="FormatProfileAccessor"     class="org.jhove2.persist.inmemory.InMemoryFormatProfileAccessor" scope="prototype"/>
-	<bean id="AggrefierAccessor"         class="org.jhove2.persist.inmemory.InMemoryAggrefierAccessor" scope="prototype"/>
-	<bean id="IdentifierAccessor"        class="org.jhove2.persist.inmemory.InMemoryIdentifierAccessor" scope="prototype"/>
-	<bean id="BaseModuleAccessor"        class="org.jhove2.persist.inmemory.InMemoryBaseModuleAccessor" scope="prototype"/>
-    -->
+    
+<!-- 	<bean id="SourceFactory"             class="org.jhove2.persist.inmemory.InMemorySourceFactory" scope="prototype"/> -->
+<!-- 	<bean id="ApplicationModuleAccessor" class="org.jhove2.persist.inmemory.InMemoryApplicationModuleAccessor"/> -->
+<!-- 	<bean id="FrameworkAccessor"         class="org.jhove2.persist.inmemory.InMemoryFrameworkAccessor" scope="prototype"/> -->
+<!-- 	<bean id="FormatModuleAccessor"      class="org.jhove2.persist.inmemory.InMemoryFormatModuleAccessor" scope="prototype"/> -->
+<!-- 	<bean id="FormatProfileAccessor"     class="org.jhove2.persist.inmemory.InMemoryFormatProfileAccessor" scope="prototype"/> -->
+<!-- 	<bean id="AggrefierAccessor"         class="org.jhove2.persist.inmemory.InMemoryAggrefierAccessor" scope="prototype"/> -->
+<!-- 	<bean id="IdentifierAccessor"        class="org.jhove2.persist.inmemory.InMemoryIdentifierAccessor" scope="prototype"/> -->
+<!-- 	<bean id="BaseModuleAccessor"        class="org.jhove2.persist.inmemory.InMemoryBaseModuleAccessor" scope="prototype"/> -->
+<!-- 	<bean id="CommandAccessor"			 class="org.jhove2.persist.inmemory.InMemoryCommandAccessor" scope="prototype"/> -->
+<!-- 	<bean id="DisplayerAccessor"	     class="org.jhove2.persist.inmemory.InMemoryDisplayerAccessor" scope="prototype"/> -->
+<!-- 	<bean id="RecognizerAccessor"	     class="org.jhove2.persist.inmemory.InMemoryRecognizerAccessor" scope="prototype"/> -->
+<!-- 	<bean id="SourceIdentifierAccessor"	 class="org.jhove2.persist.inmemory.InMemorySourceIdentifierAccessor" scope="prototype"/> -->
+
     
 	<!--  Beans for BerkeleyDB persistence -->
 	
@@ -33,6 +37,10 @@
 	<bean id="AggrefierAccessor"         class="org.jhove2.persist.berkeleydpl.BerkeleyDbAggrefierAccessor" scope="prototype"/>
 	<bean id="IdentifierAccessor"        class="org.jhove2.persist.berkeleydpl.BerkeleyDbIdentifierAccessor" scope="prototype"/>
 	<bean id="BaseModuleAccessor"        class="org.jhove2.persist.berkeleydpl.BerkeleyDbBaseModuleAccessor" scope="prototype"/>
+	<bean id="CommandAccessor"			 class="org.jhove2.persist.berkeleydpl.BerkeleyDbCommandAccessor" scope="prototype"/>
+	<bean id="DisplayerAccessor"		 class="org.jhove2.persist.berkeleydpl.BerkeleyDbDisplayerAccessor" scope="prototype"/>
+	<bean id="RecognizerAccessor"		 class="org.jhove2.persist.berkeleydpl.BerkeleyDbRecognizerAccessor" scope="prototype"/>
+	<bean id="SourceIdentifierAccessor"	 class="org.jhove2.persist.berkeleydpl.BerkeleyDbSourceIdentifierAccessor" scope="prototype"/>
 	
 
 	<bean id="BerkeleyDbPersistenceManager" class="org.jhove2.persist.berkeleydpl.BerkeleyDbPersistenceManager"

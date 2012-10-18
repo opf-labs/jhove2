@@ -6,6 +6,7 @@ package org.jhove2.persist.berkeleydpl;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -29,9 +30,6 @@ import org.jhove2.core.source.Source;
 import org.jhove2.module.Module;
 import org.jhove2.module.digest.DigesterModule;
 import org.jhove2.module.identify.IdentifierModule;
-import org.jhove2.persist.PersistenceManager;
-import org.jhove2.persist.PersistenceManagerUtil;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -44,12 +42,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath*:**/test-config.xml", 
-"classpath*:**/filepaths-config.xml"})
-public class BerkeleyDbSourceAccessorTest {
-
-	static String persistenceMgrClassName = "org.jhove2.config.spring.SpringBerkeleyDbPersistenceManagerFactory";
-	static PersistenceManager persistenceManager = null;
+@ContextConfiguration(locations={ 
+		"classpath*:**/persist/berkeleydpl/bdb-test-config.xml",
+		"classpath*:**/filepaths-config.xml"})
+public class BerkeleyDbSourceAccessorTest extends BerkeleyDbTestBase{
 
 	BerkeleyDbSourceFactory sourceFactory;
 	Source source;
@@ -57,32 +53,18 @@ public class BerkeleyDbSourceAccessorTest {
 	protected String sgmlDirPath;
 	protected String tempDirBasePath;
 	protected static JHOVE2 jhove2;
+	protected static ConfigInfo configInfo;
 	
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		PersistenceManagerUtil.createPersistenceManagerFactory(persistenceMgrClassName);
-		persistenceManager = PersistenceManagerUtil.getPersistenceManagerFactory().getInstance();
-		persistenceManager.initialize();
+		ArrayList<String>locs = new ArrayList<String>();
+		locs.add("classpath*:**/persist/berkeleydpl/bdb-test-config.xml");
+		BerkeleyDbTestBase.setUpBeforeClass();
 		jhove2 = new JHOVE2();
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-		if (persistenceManager != null){
-			try{
-				persistenceManager.close();
-			}
-			catch (JHOVE2Exception je){
-				System.err.println(je.getMessage());
-				je.printStackTrace(System.err);
-			}
-		}
+		jhove2.setConfigInfo(new SpringConfigInfo(locs));
 	}
 
 	@Before
@@ -118,7 +100,8 @@ public class BerkeleyDbSourceAccessorTest {
 			source = source.getSourceAccessor().persistSource(source);
 			assertNotNull( source.getSourceId());
 			sourceId = source.getSourceId().longValue();
-			source = source.getSourceAccessor().retrieveSource(source.getSourceId());
+			BerkeleyDbSourceAccessor bdbSa = (BerkeleyDbSourceAccessor) source.getSourceAccessor();
+			source = bdbSa.retrieveSource(source.getSourceId());
 			assertEquals(sourceId, source.getSourceId().longValue());			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -154,8 +137,9 @@ public class BerkeleyDbSourceAccessorTest {
 				assertEquals(2, childModules.size());
 				for (Module module :childModules){
 					assertEquals(source.getSourceId(), module.getParentSourceId());
-				}		
-				source = source.getSourceAccessor().retrieveSource(source.getSourceId());
+				}	
+				BerkeleyDbSourceAccessor bdbSa = (BerkeleyDbSourceAccessor) source.getSourceAccessor();
+				source = bdbSa.retrieveSource(source.getSourceId());
 				assertEquals(sourceId, source.getSourceId().longValue());
 			}
 		} catch (JHOVE2Exception e) {
@@ -174,7 +158,8 @@ public class BerkeleyDbSourceAccessorTest {
 			source = sourceFactory.getSource(jhove2, sgmlDirPath);
 			source = source.getSourceAccessor().persistSource(source);
 			assertNotNull(source.getSourceId());
-			source = source.getSourceAccessor().retrieveSource(source.getSourceId());	
+			BerkeleyDbSourceAccessor bdbSa = (BerkeleyDbSourceAccessor) source.getSourceAccessor();
+			source = bdbSa.retrieveSource(source.getSourceId());	
 
 			int childSourceCount = source.getNumChildSources();
 
@@ -343,4 +328,5 @@ public class BerkeleyDbSourceAccessorTest {
 	public void setTempDirBasePath(String emptyDirPath) {
 		this.tempDirBasePath = emptyDirPath;
 	}
+
 }

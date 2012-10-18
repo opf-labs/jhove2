@@ -22,22 +22,69 @@
 		</property>
 		<property name="commands">
 			<list value-type="org.jhove2.core.JHOVE2Command">
-				<ref bean="IdentifierCommand"/>
-				<ref bean="DispatcherCommand"/>
-				<ref bean="AggrefierCommand"/>
+				<ref bean="testIdentifierCommand"/>
+				<ref bean="testDispatcherCommand"/>
+				<ref bean="testAggrefierCommand"/>
 			</list>
 		</property>
-		<property name="configInfo" ref="ConfigInfo"/>
-		<property name="sourceFactory" ref="SourceFactory"/>
+		<property name="configInfo" ref="TestConfigInfo"/>
+		<property name="sourceFactory" ref="testSourceFactory"/>
 	</bean>	
-		<bean id="ConfigInfo" class="org.jhove2.config.spring.SpringConfigInfo"
-		scope="singleton"/>
+	
+	<bean id="TestConfigInfo" class="org.jhove2.config.spring.SpringConfigInfo"
+	scope="singleton">
+		<constructor-arg>
+			<list value-type = "java.lang.String">				
+				<ref bean="test-persist-configInof-path"/>
+				<ref bean="test-configInfo-path"/>
+				<ref bean="test-iccInfo-path"/>
+				<ref bean="test-tiffInfo-path"/>
+				<ref bean="test-waveInfo-path"/>
+				<ref bean="test-riffInfo-path"/>
+			</list>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="test-configInfo-path" class="java.lang.String">
+		<constructor-arg type="java.lang.String" value="classpath*:**/test-config.xml"/>
+	</bean>
+	
+	<bean id="test-persist-configInof-path" class="java.lang.String">
+		<constructor-arg type="java.lang.String" value="classpath*:**/persist-test-config.xml"/>
+	</bean>
+	
+	<bean id="test-iccInfo-path" class="java.lang.String">
+		<constructor-arg type="java.lang.String" value="classpath*:**/j2test-icc-config.xml"/>
+	</bean>
+	
+	<bean id="test-tiffInfo-path" class="java.lang.String">
+		<constructor-arg type="java.lang.String" value="classpath*:**/tiff-test-config.xml"/>
+	</bean>
+	
+	<bean id="test-waveInfo-path" class="java.lang.String">
+		<constructor-arg type="java.lang.String" value="classpath*:**/j2test-wave-config.xml"/>
+	</bean>
+	
+	<bean id="test-riffInfo-path" class="java.lang.String">
+		<constructor-arg type="java.lang.String" value="classpath*:**/j2test-riff-config.xml"/>
+	</bean>
+
 	
 	
+	
+	<!--  BEAN for message properties files (used for I18N ) -->
+	<!--    NOTE  BEAN MUST HAVE id "messageSource" -->
+	<bean id="messageSource" class="org.jhove2.config.spring.ResourceBundleMessageSource">
+		<property name="basename" >
+			<!--  base name for localized message template properties files -->
+			<value>messages</value>
+		</property>
+	</bean>
+		
 		<!-- Dispatcher command bean -->
-	<bean id="DispatcherCommand" class="org.jhove2.module.format.DispatcherCommand"
+	<bean id="testDispatcherCommand" class="org.jhove2.module.format.DispatcherCommand"
 	      scope="prototype">
-	      <constructor-arg ref="BaseModuleAccessor"/>
+	      <constructor-arg ref="CommandAccessor"/>
 	    <property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
@@ -83,8 +130,11 @@
 	</bean>
 		
 
-   <bean id="DisplayVisibility" class="org.jhove2.config.spring.PropertiesFactoryBean">
-  		<property name="propertyFileBaseName" value="displayer"/>
-   </bean>
+	<bean id="DisplayVisibility" class="org.jhove2.config.spring.PropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="displayer"/>
+	</bean>
+	<bean id="DisplayUnits" class="org.jhove2.config.spring.PropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="unit"/>
+	</bean>
 
 </beans>

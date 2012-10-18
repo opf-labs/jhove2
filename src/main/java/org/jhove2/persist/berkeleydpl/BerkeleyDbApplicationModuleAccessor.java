@@ -65,7 +65,7 @@ public class BerkeleyDbApplicationModuleAccessor
 		if (module != null){
 			try{
 				if (module.getModuleId()== null){ // new module, never persisted
-					module=(Application) this.persistModule(module);
+					this.persistModule(module);
 				}
 				Module rModule = 
 					this.getBerkeleyDbPersistenceManager().getDisplayerByParentApp().get(module.getModuleId());
@@ -86,20 +86,18 @@ public class BerkeleyDbApplicationModuleAccessor
 	@Override
 	public Displayer setDisplayer(Application module, Displayer displayer)
 			throws JHOVE2Exception {
-		if (module != null){
-			
+		if (module != null){			
 			if (module.getModuleId()== null){ // new module, never persisted
-				module=(Application) this.persistModule(module);
+				this.persistModule(module);
 			}
 			// Un-link old displayer
 			Displayer oldDisplayer = this.getDisplayer(module);
 			if (oldDisplayer != null){
 				oldDisplayer.setParentAppId(null);
-				oldDisplayer = (Displayer) this.persistModule(oldDisplayer);
 			}
+			// link the new one
 			if (displayer != null){
 				displayer.setParentAppId(module.getModuleId());
-				displayer = (Displayer) this.persistModule(displayer);
 			}			
 		}
 		return displayer;

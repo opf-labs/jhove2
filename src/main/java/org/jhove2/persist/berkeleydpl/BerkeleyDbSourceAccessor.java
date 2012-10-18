@@ -90,13 +90,14 @@ public class BerkeleyDbSourceAccessor
 		if (parentSource != null && childSource != null){
 			if (parentSource.getSourceId()==null){
 				// key field in parentSource will be updated automatically
-				parentSource = this.persistSource(parentSource);
+				this.persistSource(parentSource);
 			}
-			childSource.setParentSourceId(parentSource.getSourceId());
-			// key field in parentSource will be updated automatically if it is a new Source
-			childSource  = this.persistSource(childSource);
+			//set and update secondary index
+			return childSource.setParentSourceId(parentSource.getSourceId());
 		}
-		return childSource;
+		else{
+			return childSource;
+		}
 	}
 	 
     /** Add an extra properties {@link org.jhove2.core.reportable.Reportable}
@@ -113,7 +114,7 @@ public class BerkeleyDbSourceAccessor
     {
 	    if (source != null && properties != null){
 	        source.getExtraProperties().add(properties);
-	        source = this.persistSource(source);
+	        this.persistSource(source);
 	    }
 	    return source;
     }
@@ -127,10 +128,23 @@ public class BerkeleyDbSourceAccessor
 		if (source != null && module != null){
 			if (source.getSourceId()== null){
 				// sourceId field will be updated automatically
-				source = this.persistSource(source);
+				this.persistSource(source);
 			}
 			module.setParentSourceId(source.getSourceId());
-			module=module.getModuleAccessor().persistModule(module);
+		}
+		return module;
+	}
+	
+	@Override 
+	public Module deleteModule(Source source, Module module) throws JHOVE2Exception {
+		if (source != null && module != null){
+			if (source.getSourceId()==null){
+				this.persistSource(source);
+			}
+			Long parentKey = module.getParentSourceId();
+			if (parentKey != null && parentKey.equals(source.getSourceId())){
+				module.setParentSourceId(null);
+			}
 		}
 		return module;
 	}
@@ -142,12 +156,20 @@ public class BerkeleyDbSourceAccessor
 	public Source deleteChildSource(Source parentSource, Source childSource)
 			throws JHOVE2Exception {
 		if (parentSource != null && childSource != null){
-			if (childSource.getParentSourceId().equals(parentSource.getSourceId())){
-				childSource.setParentSourceId(null);
-				childSource = this.persistSource(childSource);
+			if (parentSource.getSourceId()==null){
+				this.persistSource(parentSource);
+			}
+			Long parentKey = childSource.getParentSourceId();
+			if (parentKey != null && parentKey.equals(parentSource.getSourceId())){
+				return childSource.setParentSourceId(null);
+			}
+			else {
+				return childSource;
 			}
 		}
-		return childSource;
+		else {
+			return childSource;
+		}
 	}
 
 
@@ -273,27 +295,10 @@ public class BerkeleyDbSourceAccessor
 	}
 
 	@Override
-	public Source retrieveSource(Object key) throws JHOVE2Exception {
-		Long longKey = null;
-		Source source = null;
-		if (key != null && key instanceof Long){
-			try{
-				longKey = (Long)key;
-				source = this.getBerkeleyDbPersistenceManager().getSourceBySourceId().get(longKey);
-			}
-			catch (DatabaseException e){
-				throw new JHOVE2Exception("Could not retrieve Source for key" + key.toString(), e);
-			}
-		}
-		return source;
-	}
-
-
-	@Override
 	public Source endTimerInfo(Source source) throws JHOVE2Exception {;
 		if (source != null){
 			source.getTimerInfo().setEndTime();
-			source = this.persistSource(source);
+			this.persistSource(source);
 		}
 		return source;
 	}
@@ -302,7 +307,7 @@ public class BerkeleyDbSourceAccessor
 	public Source startTimerInfo(Source source) throws JHOVE2Exception {
 		if (source != null){
 			source.getTimerInfo().setStartTime();
-			source = this.persistSource(source);
+			this.persistSource(source);
 		}
 		return source;
 	}
@@ -312,7 +317,7 @@ public class BerkeleyDbSourceAccessor
 			throws JHOVE2Exception {
 		if (source != null && message != null){
 			source.getMessages().add(message);
-			source = this.persistSource(source);
+			this.persistSource(source);
 		}
 		return source;
 	}
@@ -322,7 +327,7 @@ public class BerkeleyDbSourceAccessor
 			throws JHOVE2Exception {
 		if (source != null && fi != null){
 			source.getPresumptiveFormats().add(fi);
-			source = this.persistSource(source);
+			this.persistSource(source);
 		}
 		return source;
 	}
@@ -332,9 +337,32 @@ public class BerkeleyDbSourceAccessor
 			Set<FormatIdentification> fis) throws JHOVE2Exception {;
 		if (source != null && fis != null){
 			source.getPresumptiveFormats().addAll(fis);
-			source = this.persistSource(source);
+			this.persistSource(source);
 		}
 		return source;
+	}
+	
+	@Override
+	public Source getParentSource(Source childSource) throws JHOVE2Exception {
+		Source parentSource = null;
+		if (childSource != null){
+			Long parentSourceKey = childSource.getParentSourceId();
+			parentSource = this.retrieveSource(parentSourceKey);
+		}
+		return parentSource;
+	}
+	
+	
+
+	
+	@Override
+	public void verifyNewParentSourceId(Source childSource, Long oldId,
+			Long newId) throws JHOVE2Exception {
+		// just persist child source - BDB index management will take care of sync'ing indices
+		// if tried to set to non-existent newID -- will throw exception
+		if (childSource != null){
+			this.persistSource(childSource);
+		}	
 	}
 
 }

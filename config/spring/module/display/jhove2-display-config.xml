@@ -11,7 +11,7 @@
 	
  	<!-- JSON displayer bean -->
 	<bean id="JSON" class="org.jhove2.module.display.JSONDisplayer" scope="prototype">
-	    <constructor-arg ref="BaseModuleAccessor"/>
+	    <constructor-arg ref="DisplayerAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
@@ -27,7 +27,7 @@
 	      	
  	<!-- Text displayer bean -->
 	<bean id="Text" class="org.jhove2.module.display.TextDisplayer" scope="prototype">
-	    <constructor-arg ref="BaseModuleAccessor"/>
+	    <constructor-arg ref="DisplayerAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
@@ -43,7 +43,7 @@
 	      	
  	<!-- XML displayer bean -->
 	<bean id="XML" class="org.jhove2.module.display.XMLDisplayer" scope="prototype">
-	    <constructor-arg ref="BaseModuleAccessor"/>
+	    <constructor-arg ref="DisplayerAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>

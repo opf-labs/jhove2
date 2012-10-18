@@ -43,10 +43,6 @@ import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.module.identify.DROIDIdentifier;
 import org.jhove2.module.identify.SourceIdentifier;
 import org.jhove2.module.identify.IdentifierModule;
-import org.jhove2.persist.PersistenceManager;
-import org.jhove2.persist.PersistenceManagerUtil;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -57,41 +53,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath*:**/test-config.xml", "classpath*:**/filepaths-config.xml"})
-public class BerkeleyDbIdentifierAccessorTest {
+@ContextConfiguration(locations={ 
+		"classpath*:**/persist/berkeleydpl/bdb-test-config.xml",
+		"classpath*:**/filepaths-config.xml"})
+public class BerkeleyDbIdentifierAccessorTest extends BerkeleyDbTestBase{
 
-	static String persistenceMgrClassName = "org.jhove2.config.spring.SpringBerkeleyDbPersistenceManagerFactory";
-	static PersistenceManager persistenceManager = null;
-	
 	DROIDIdentifier bdbDROIDIdentifier;
 	IdentifierModule bdbIdentifier;
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@BeforeClass
-	public static void setUp() throws Exception {
-		PersistenceManagerUtil.createPersistenceManagerFactory(persistenceMgrClassName);
-		persistenceManager = PersistenceManagerUtil.getPersistenceManagerFactory().getInstance();
-		persistenceManager.initialize();
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@AfterClass
-	public static void tearDown() throws Exception {
-		if (persistenceManager != null){
-			try{
-				persistenceManager.close();
-			}
-			catch (JHOVE2Exception je){
-				System.err.println(je.getMessage());
-				je.printStackTrace(System.err);
-			}
-		}
-	}
-
-
 
 	/**
 	 * Test method for {@link org.jhove2.persist.berkeleydpl.BerkeleyDbIdentifierAccessor#setFileSourceIdentifier(org.jhove2.module.identify.Identifier, org.jhove2.module.identify.SourceIdentifier)}.

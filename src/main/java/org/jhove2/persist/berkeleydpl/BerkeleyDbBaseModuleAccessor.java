@@ -36,6 +36,7 @@
 package org.jhove2.persist.berkeleydpl;
 
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.source.Source;
 import org.jhove2.module.AbstractModule;
 import org.jhove2.module.Module;
 import org.jhove2.persist.ModuleAccessor;
@@ -76,22 +77,6 @@ public class BerkeleyDbBaseModuleAccessor
 	}
 
 	@Override
-	public Module retrieveModule(Object key) throws JHOVE2Exception {
-		Long longKey = null;
-		Module module = null;
-		if (key != null && key instanceof Long){
-			try{
-				longKey = (Long)key;
-				module = getBerkeleyDbPersistenceManager().getModuleByModuleId().get(longKey);
-			}
-			catch (DatabaseException e){
-				throw new JHOVE2Exception("Could not retrieve module for key" + key.toString(), e);
-			}
-		}
-		return module;
-	}
-
-	@Override
 	public Module endTimerInfo(Module module) throws JHOVE2Exception {
 		if (module != null){
 			module.getTimerInfo().setEndTime();
@@ -117,5 +102,43 @@ public class BerkeleyDbBaseModuleAccessor
 		return module;
 	}
 
+	@Override
+	public Source getParentSource(Module module) throws JHOVE2Exception{
+		Source parentSource = null;
+		if (module != null){
+			Long key = module.getParentSourceId();
+			if (key != null){
+				try{
+					parentSource = this.getBerkeleyDbPersistenceManager().getSourceBySourceId().get(key);
+				}
+				catch (DatabaseException e){
+					throw new JHOVE2Exception("Could not retrieve Source for key" + key.toString(), e);
+				}
+			}
+		}
+		return parentSource;
+	}
 
+	
+
+	@Override
+	public void verifyNewParentSourceId(Module module, Long oldId, Long newId)
+			throws JHOVE2Exception {
+		if (module != null){
+			// just persist the module-- let bdb handle sync-ing the indexes
+			// if try to add invalid source -- bdb will throw exception
+			this.persistModule(module);
+		}
+			
+			
+	}
+
+	@Override
+	public void verifyNewParentModuleId(Module module,
+			Long oldId, Long newId) throws JHOVE2Exception{
+		// Module accessors for modules that have parent module will override this
+		// just persist the module-- let bdb handle sync-ing the indexes
+		// if try to add invalid source -- bdb will throw exception
+		this.persistModule(module);;
+	}
 }

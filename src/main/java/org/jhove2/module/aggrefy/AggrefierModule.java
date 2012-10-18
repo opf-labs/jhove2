@@ -37,7 +37,6 @@
 package org.jhove2.module.aggrefy;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -52,7 +51,6 @@ import org.jhove2.persist.AggrefierAccessor;
 
 import com.sleepycat.persist.model.Persistent;
 
-// TODO: Auto-generated Javadoc
 /**
  * JHOVE2 aggregate identifier module.
  * Identifies presumptive instances of Clump formats (e.g. ShapeFiles) in
@@ -67,9 +65,9 @@ public class AggrefierModule
 	implements Aggrefier
 {
 	/** Identification module version identifier. */
-	public static final String VERSION = "2.0.0";
+	public static final String VERSION = "2.1.0";
 	/** Identification module release date. */
-	public static final String RELEASE = "2010-09-10";
+	public static final String RELEASE = "2012-10-31";
 	/** Identification module rights statement. */
 	public static final String RIGHTS = "Copyright 2010 by The Regents of the University of California, "
 		+ "Ithaka Harbors, Inc., and The Board of Trustees of the Leland "
@@ -128,9 +126,6 @@ public class AggrefierModule
 		if (this.getModuleAccessor()==null){
 			throw new JHOVE2Exception("AggrefierAccessor is null");
 		}
-		if (this.getModuleAccessor()==null){
-			return new ArrayList<Recognizer>();
-		}
 		AggrefierAccessor aa = (AggrefierAccessor)this.getModuleAccessor();
 		return aa.getRecognizers(this);
 	}
@@ -140,12 +135,42 @@ public class AggrefierModule
 	 *
 	 * @param recognizers the new recognizers
 	 */
-	public void setRecognizers(List<Recognizer> recognizers) throws JHOVE2Exception {
+	public void setRecognizers(List<Recognizer> recognizers) throws JHOVE2Exception {		
+		if (this.getModuleAccessor()==null){
+			throw new JHOVE2Exception("AggrefierAccessor is null");
+		}		
+//		List<Recognizer> oldRecogs = this.getRecognizers();
+//		if (oldRecogs != null){
+//			for (Recognizer recog:oldRecogs){
+//				this.deleteRecognizer(recog);
+//			}
+//		}
+//		if (recognizers != null){
+//			for (Recognizer recog:recognizers){
+//				this.addRecognizer(recog);
+//			}
+//		}
+		AggrefierAccessor aa = (AggrefierAccessor) this.getModuleAccessor();
+		aa.setRecognizers(this, recognizers);
+		return;
+	}
+	@Override
+	public Recognizer addRecognizer(Recognizer recognizer)
+			throws JHOVE2Exception {
 		if (this.getModuleAccessor()==null){
 			throw new JHOVE2Exception("AggrefierAccessor is null");
 		}
 		AggrefierAccessor aa = (AggrefierAccessor)this.getModuleAccessor();
-		aa.setRecognizers(this, recognizers);
+		return aa.addRecognizer(this, recognizer);
+	}
+	@Override
+	public Recognizer deleteRecognizer(Recognizer recognizer)
+			throws JHOVE2Exception {
+		if (this.getModuleAccessor()==null){
+			throw new JHOVE2Exception("AggrefierAccessor is null");
+		}
+		AggrefierAccessor aa = (AggrefierAccessor)this.getModuleAccessor();
+		return aa.deleteRecognizer(this, recognizer);
 	}
 
 }

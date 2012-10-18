@@ -79,6 +79,13 @@ public interface SourceIdentifier
 	/**
 	 * Set parent identifier module
 	 * @param fileSourceIdentifier
+	 * @throws JHOVE2Exception 
 	 */
-	public void setParentIdentifierId(Long id);
+	public void setParentIdentifierId(Long id) throws JHOVE2Exception;
+	/**
+	 * Get parent Identifier
+	 * @return parent Identifier
+	 * @throws JHOVE2Exception
+	 */
+	public Identifier getParentIdentifier() throws JHOVE2Exception;
 }

@@ -65,7 +65,7 @@ implements IdentifierAccessor {
 		if (module != null){
 			try{
 				if (module.getModuleId()== null){
-					module = (Identifier) module.getModuleAccessor().persistModule(module);
+					module.getModuleAccessor().persistModule(module);
 				}
 				Module rModule = 
 					this.getBerkeleyDbPersistenceManager().
@@ -90,19 +90,17 @@ implements IdentifierAccessor {
 
 		if (module != null){
 			if (module.getModuleId()== null){
-				module = (Identifier) this.persistModule(module);
+				this.persistModule(module);
 			}
 			
 			//un-link old SourceIdentifier
 			SourceIdentifier oldFsi = this.getFileSourceIdentifier(module);
 			if (oldFsi != null){
 				oldFsi.setParentIdentifierId(null);
-				oldFsi = (SourceIdentifier) oldFsi.getModuleAccessor().persistModule(oldFsi);
 			}
+			//link the new one
 			if (fileSourceIdentifier != null){
 				fileSourceIdentifier.setParentIdentifierId(module.getModuleId());
-				fileSourceIdentifier = (SourceIdentifier) fileSourceIdentifier.
-					getModuleAccessor().persistModule(fileSourceIdentifier);
 			}
 		}		
 		return fileSourceIdentifier;

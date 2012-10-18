@@ -29,7 +29,7 @@
 	</bean>
 	<!-- Identifier command bean -->
 	<bean id="IdentifierCommand" class="org.jhove2.module.identify.IdentifierCommand" scope="prototype">
-		<constructor-arg ref="BaseModuleAccessor"/>
+		<constructor-arg ref="CommandAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
@@ -41,7 +41,7 @@
 	</bean>
 	<!-- Dispatcher command bean -->
 	<bean id="DispatcherCommand" class="org.jhove2.module.format.DispatcherCommand" scope="prototype">
-		<constructor-arg ref="BaseModuleAccessor"/>
+		<constructor-arg ref="CommandAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
@@ -55,7 +55,7 @@
 	</bean>
 	<!-- Aggrefier command Bean -->
 	<bean id="AggrefierCommand" class="org.jhove2.module.aggrefy.AggrefierCommand" scope="prototype" >
-		<constructor-arg ref="BaseModuleAccessor"/>
+		<constructor-arg ref="CommandAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
@@ -67,7 +67,7 @@
 	</bean>
 	<!--  Digester command bean -->
 	<bean id="DigesterCommand" class="org.jhove2.module.digest.DigesterCommand" scope="prototype">
-		<constructor-arg ref="BaseModuleAccessor"/>
+		<constructor-arg ref="CommandAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
@@ -79,7 +79,7 @@
 	</bean>
 	<!-- Assessor command bean -->
 	<bean id="AssessorCommand" class="org.jhove2.module.assess.AssessorCommand" scope="prototype">
-		<constructor-arg ref="BaseModuleAccessor"/>
+		<constructor-arg ref="CommandAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>

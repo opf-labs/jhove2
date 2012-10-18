@@ -43,13 +43,12 @@ import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.module.Command;
 import org.jhove2.persist.FrameworkAccessor;
 
-import com.sleepycat.persist.model.Persistent;
 
 /**
  * @author smorrissey
  *
  */
-@Persistent
+
 public class InMemoryFrameworkAccessor extends InMemoryBaseModuleAccessor
 	implements FrameworkAccessor {
 
@@ -74,13 +73,62 @@ public class InMemoryFrameworkAccessor extends InMemoryBaseModuleAccessor
 	@Override
 	public List<Command> setCommands(JHOVE2 jhove2, List<Command> commands)
 			throws JHOVE2Exception {
-		if (commands != null){
-			for (Command command:commands){
-				command.setJhove2ModuleId(jhove2.getModuleId());
+		if (jhove2 != null && jhove2.getModuleAccessor()!=null){
+			jhove2.getModuleAccessor().persistModule(jhove2);
+		}
+		if (jhove2 == this.module){
+			for (Command oldCommand : this.commands){
+				this.deleteCommand(jhove2, oldCommand);
+			}
+			if (commands != null){
+				for (Command command:commands){
+					this.addCommand(jhove2, command);
+				}
+			}			
+		}
+		return this.commands;
+	}
+
+	@Override
+	public Command addCommand(JHOVE2 jhove2, Command command)
+			throws JHOVE2Exception {
+		if (jhove2 != null && jhove2.getModuleAccessor()!=null){
+			jhove2.getModuleAccessor().persistModule(jhove2);
+		}
+		if (command != null && command.getModuleAccessor()!=null){
+			command.getModuleAccessor().persistModule(command);
+		}
+		if (command != null && jhove2 == this.module){
+			if (!(this.commands.contains(command))){
+				this.commands.add(command);
+			}
+			// make sure command's parent framework id points to jhove2 moduleId
+			if (!(command.getParentFramework()==jhove2)){
+				InMemoryCommandAccessor ca = (InMemoryCommandAccessor)command.getModuleAccessor();
+				ca.setParentFramework(command, jhove2);
 			}
 		}
-		this.commands = commands;
-		return this.commands;
+		return command;
+	}
+
+	@Override
+	public Command deleteCommand(JHOVE2 jhove2, Command command)
+			throws JHOVE2Exception {
+		if (jhove2 != null && jhove2.getModuleAccessor()!=null){
+			jhove2.getModuleAccessor().persistModule(jhove2);
+		}
+		if (command != null && command.getModuleAccessor()!=null){
+			command.getModuleAccessor().persistModule(command);
+		}
+		if (command != null && jhove2==this.module){
+			this.commands.remove(command);
+			// make sure command no longer points to jhove2 as parent framework
+			if (command.getParentFramework()==jhove2){
+				InMemoryCommandAccessor ca = (InMemoryCommandAccessor)command.getModuleAccessor();
+				ca.setParentFramework(command, null);				
+			}
+		}
+		return command;
 	}
 
 

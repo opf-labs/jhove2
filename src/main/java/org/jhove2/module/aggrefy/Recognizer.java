@@ -68,14 +68,28 @@ public interface Recognizer
 	 */
 	public Set<ClumpSource> recognize(JHOVE2 jhove2, Source source)
 			throws IOException, JHOVE2Exception;
+	/**
+	 * Get Aggrefier for which this is a Recognizer
+	 * @return Aggrefier for which this is a Recognizer, or null
+	 * @throws JHOVE2Exception
+	 */
+	public Aggrefier getParentAggrefier() throws JHOVE2Exception;
 	
 	/**
+	 * Get moduleId for Aggrefier for which this is a Recognizer
 	 * @return the parentAggrefierId
 	 */
 	public Long getParentAggrefierId();
 
 	/**
+	 * Convenience method for RecognizerAccessors that use "foreign key" semantics 
+	 * for Aggrefier moduleId and (child) Recognizer moduleId
+	 * 
+	 * It is the responsibility of RecognizerAccessor to maintain any "foreign key" semantics that
+     * its persistence model makes use of to relate a Recognizer's parent Aggrefier to parentAggrefierId field
+     * 
 	 * @param parentAggrefierId the parentAggrefierId to set
+	 * @throws JHOVE2Exception
 	 */
-	public void setParentAggrefierId(Long parentAggrefierId);
+	public void setParentAggrefierId(Long parentAggrefierId) throws JHOVE2Exception;
 }

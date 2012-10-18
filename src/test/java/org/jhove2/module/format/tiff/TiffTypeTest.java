@@ -4,13 +4,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Set;
 
-import javax.annotation.Resource;
-
-import org.jhove2.core.JHOVE2;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
 
 /**
  * Class to test the loading of the Tifftags Set
@@ -19,12 +14,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @author mstrong
  *
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath*:**/test-config.xml",
-        "classpath*:**/tiff-test-config.xml","classpath*:**/filepaths-config.xml"})
-        public class TiffTypeTest {
 
-    private JHOVE2 JHOVE2;
+public class TiffTypeTest {
+
     private Set<TiffType> TiffTypeSet = null;
     private boolean print = false;
 
@@ -45,15 +37,5 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
         assertTrue("Type 10 does not equal " + tiffType.SRATIONAL.num(), tiffType.equals(TiffType.SRATIONAL));
 
     }
-
-
-
-public JHOVE2 getJHOVE2() {
-    return JHOVE2;
-}
-@Resource (name="JHOVE2")
-public void setJHOVE2(JHOVE2 jHOVE2) {
-    JHOVE2 = jHOVE2;
-}
 
 }

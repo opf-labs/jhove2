@@ -10,9 +10,9 @@
 		
 	<bean id="BerkeleyDbPersistenceManager" class="org.jhove2.persist.berkeleydpl.BerkeleyDbPersistenceManager"
 	     scope="singleton">
-	     <property name="envHome" value="C:\tmp\test"/>
-	     <property name="entityStoreName" value="JHOVE2_TEST_Entity_Store"/>
-	     <property name="storeConfig" ref="StoreConfig"/>
+	     <property name="envHome" value="C:\"/>
+ 	     <property name="entityStoreName" value="JHOVE2_Entity_Store"/>  
+ 	     <property name="storeConfig" ref="StoreConfig"/>
 	     <property name="envConfig" ref="EnvironmentConfig"/>
 	</bean>
 	
@@ -44,6 +44,10 @@
 	<bean id="bdbFrameworkAccessor"         class="org.jhove2.persist.berkeleydpl.BerkeleyDbFrameworkAccessor" scope="prototype"/>
 	<bean id="bdbApplicationModuleAccessor" class="org.jhove2.persist.berkeleydpl.BerkeleyDbApplicationModuleAccessor"/>
 	<bean id="bdbSourceFactory"             class="org.jhove2.persist.berkeleydpl.BerkeleyDbSourceFactory" scope="prototype"/>
+	<bean id="bdbCommandAccessor"			 class="org.jhove2.persist.berkeleydpl.BerkeleyDbCommandAccessor" scope="prototype"/>
+	<bean id="bdbDisplayerAccessor"			 class="org.jhove2.persist.berkeleydpl.BerkeleyDbDisplayerAccessor" scope="prototype"/>
+	<bean id="bdbRecognizerAccessor" class="org.jhove2.persist.berkeleydpl.BerkeleyDbRecognizerAccessor" scope="prototype"/>
+	<bean id="bdbSourceIdentifierAccessor" class="org.jhove2.persist.berkeleydpl.BerkeleyDbSourceIdentifierAccessor" scope="prototype"/>
 	
 	    <!-- JHOVE2CommandLine application bean -->
     <bean id="bdbapp" class="org.jhove2.app.JHOVE2CommandLine" scope="singleton">
@@ -53,16 +57,16 @@
      	<!-- Text displayer bean -->
 	<bean id="bdbisplayer" class="org.jhove2.module.display.TextDisplayer"
 	      scope="prototype">
-	    <constructor-arg ref="bdbBaseModuleAccessor"/>
+	    <constructor-arg ref="bdbDisplayerAccessor"/>
 	    <property name="showIdentifiers" value="false"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
-				<ref bean="CDLAgent"/>
-				<ref bean="PorticoAgent"/>
-				<ref bean="StanfordAgent"/>
+				<ref bean="bdbCDLAgent"/>
+				<ref bean="bdbPorticoAgent"/>
+				<ref bean="bdbStanfordAgent"/>
 			</list>
 		</property>
-		<property name="configInfo" ref="ConfigInfo"/>
+		<property name="configInfo" ref="bdbConfigInfo"/>
 	</bean>
 	
 			<!-- JHOVE2 framework bean -->
@@ -70,63 +74,71 @@
 		<constructor-arg ref="bdbFrameworkAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
-				<ref bean="CDLAgent"/>
-				<ref bean="PorticoAgent"/>
-				<ref bean="StanfordAgent"/>
+				<ref bean="bdbCDLAgent"/>
+				<ref bean="bdbPorticoAgent"/>
+				<ref bean="bdbStanfordAgent"/>
 			</list>
 		</property>
 		<property name="commands">
-			<list value-type="org.jhove2.core.JHOVE2Command">
+			<list value-type="org.jhove2.module.Command">
 				<ref bean="bdbIdentifierCommand"/>
 				<ref bean="bdbDispatcherCommand"/>
 				<ref bean="bdbAggrefierCommand"/>
 			</list>
 		</property>
-		<property name="configInfo" ref="ConfigInfo"/>
+		<property name="configInfo" ref="bdbConfigInfo"/>
 		<property name="sourceFactory" ref="bdbSourceFactory"/>
 	</bean>	
 	
 	<!-- Identifier command bean -->
 	<bean id="bdbIdentifierCommand" class="org.jhove2.module.identify.IdentifierCommand" scope="prototype">
-		<constructor-arg ref="bdbBaseModuleAccessor"/>
+		<constructor-arg ref="bdbCommandAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
-				<ref bean="CDLAgent"/>
-				<ref bean="PorticoAgent"/>
-				<ref bean="StanfordAgent"/>
+				<ref bean="bdbCDLAgent"/>
+				<ref bean="bdbPorticoAgent"/>
+				<ref bean="bdbStanfordAgent"/>
 			</list>
 		</property>
-		<property name="identifierFactory" ref="IdentifierFactory"/>
+		<property name="identifierFactory" ref="bdbIdentifierFactory"/>
 	</bean>
+			<!-- Identifier module factory bean -->
+	<bean id="bdbIdentifierFactory" class="org.jhove2.config.spring.SpringIdentifierFactory" scope="singleton"/>
 	<!-- Dispatcher command bean -->
 	<bean id="bdbDispatcherCommand" class="org.jhove2.module.format.DispatcherCommand" scope="prototype">
-	<constructor-arg ref="bdbBaseModuleAccessor"/>
+	<constructor-arg ref="bdbCommandAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
-				<ref bean="CDLAgent"/>
-				<ref bean="PorticoAgent"/>
-				<ref bean="StanfordAgent"/>
+				<ref bean="bdbCDLAgent"/>
+				<ref bean="bdbPorticoAgent"/>
+				<ref bean="bdbStanfordAgent"/>
 			</list>
 		</property>
-		<property name="formatFactory" ref="FormatFactory"/>
-		<property name="formatModuleFactory" ref="FormatModuleFactory"/>
+		<property name="formatFactory" ref="bdbFormatFactory"/>
+		<property name="formatModuleFactory" ref="bdbFormatModuleFactory"/>
 	</bean>
+		<!--  Format module factory bean -->
+	<bean id="bdbFormatModuleFactory" class="org.jhove2.config.spring.SpringFormatModuleFactory" scope="singleton"/>
+		<!-- Format factory bean -->
+	<bean id="bdbFormatFactory" class="org.jhove2.config.spring.SpringFormatFactory" scope="singleton"/>
 	<!-- Aggrefier command Bean -->
 	<bean id="bdbAggrefierCommand" class="org.jhove2.module.aggrefy.AggrefierCommand" scope="prototype" >
-	<constructor-arg ref="bdbBaseModuleAccessor"/>
+	<constructor-arg ref="bdbCommandAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
-				<ref bean="CDLAgent"/>
-				<ref bean="PorticoAgent"/>
-				<ref bean="StanfordAgent"/>
+				<ref bean="bdbCDLAgent"/>
+				<ref bean="bdbPorticoAgent"/>
+				<ref bean="bdbStanfordAgent"/>
 			</list>
 		</property>
-		<property name="aggrefierFactory" ref="AggrefierFactory"/>
-	</bean>		
+		<property name="aggrefierFactory" ref="bdbAggrefierFactory"/>
+	</bean>	
+		<!-- Aggrefier module factory bean -->
+	<bean id="bdbAggrefierFactory" class="org.jhove2.config.spring.SpringAggrefierFactory" scope="singleton"/>	
 			<!-- UTF-8 module bean -->
 	<bean id="bdbUTF8Module" class="org.jhove2.module.format.utf8.UTF8Module"
 	      scope="prototype">
-	    <constructor-arg ref="UTF8Format"/>
+	    <constructor-arg ref="bdbUTF8Format"/>
 	    <constructor-arg ref="bdbFormatModuleAccessor"/>
 	    <property name="profiles">
 			<list value-type="org.jhove2.module.format.FormatProfile">
@@ -135,7 +147,7 @@
 		</property>
 	     <property name="developers">
 			<list value-type="org.jhove2.core.Agent">
-				<ref bean="CDLAgent"/>
+				<ref bean="bdbCDLAgent"/>
 			</list>
 		</property>
 	</bean>
@@ -147,7 +159,7 @@
 	    <constructor-arg ref="bdbFormatProfileAccessor"/>
 	    <property name="developers">
 			<list value-type="org.jhove2.core.Agent">
-				<ref bean="CDLAgent"/>
+				<ref bean="bdbCDLAgent"/>
 			</list>
 		</property>
 	</bean>	
@@ -178,43 +190,54 @@
  	<!-- JSON displayer bean -->
 	<bean id="dbdJSON" class="org.jhove2.module.display.JSONDisplayer"
 	      scope="prototype">
-	    <constructor-arg ref="bdbBaseModuleAccessor"/>
+	    <constructor-arg ref="bdbDisplayerAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
-				<ref bean="CDLAgent"/>
-				<ref bean="PorticoAgent"/>
-				<ref bean="StanfordAgent"/>
+				<ref bean="bdbCDLAgent"/>
+				<ref bean="bdbPorticoAgent"/>
+				<ref bean="bdbStanfordAgent"/>
 			</list>
 		</property>
-		<property name="configInfo" ref="ConfigInfo"/>
+		<property name="configInfo" ref="bdbConfigInfo"/>
 	</bean>
 	
 
 	<!-- DROID identifier bean -->
 	<bean id="bdbDROIDIdentifier" class="org.jhove2.module.identify.DROIDIdentifier"
 	      scope="prototype">
-	    <constructor-arg ref="bdbBaseModuleAccessor"/>
+	    <constructor-arg ref="bdbSourceIdentifierAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
-				<ref bean="CDLAgent"/>
-				<ref bean="PorticoAgent"/>
-				<ref bean="StanfordAgent"/>
+				<ref bean="bdbCDLAgent"/>
+				<ref bean="bdbPorticoAgent"/>
+				<ref bean="bdbStanfordAgent"/>
 			</list>
 		</property>
 		<property name="configFileName" value="DROID_config.xml"/>
 		<property name="sigFileName" value="DROID_SignatureFile_V20.xml"/>
-		<property name="wrappedProduct" ref="DROIDWrappedProduct"/>
+		<property name="wrappedProduct" ref="bdbDROIDWrappedProduct"/>
 	</bean>	
-	
+ <!-- DROID Wrapped Product bean -->
+   <bean id="bdbDROIDWrappedProduct" class="org.jhove2.core.WrappedProduct" scope="singleton" >
+      	<property name="name" value="DROID"/>
+      	<property name="version" value="4.0.0"/>
+      	<property name="releaseDate" value="2009-07-23"/>
+      	<property name="rightsStatement" value="BSD license"/>    
+   		<property name="authority" value="The National Archives, Digital Preservation Department  http://www.nationalarchives.gov.uk/"/>
+   		<property name="environments" value="Unix Windows Macintosh"/>
+   		<property name="languages" value="JAVA"/>  		
+   		<property name="note" value="The DROID Signature and Configuration files in the JHOVE2 distribution have been edited to, among other things, detect additional signatures for formats"/>
+	    <property name="openSource" value="true"/>
+	</bean>	
 				<!-- Identifier module bean -->
 	<bean id="bdbIdentifier" class="org.jhove2.module.identify.IdentifierModule"
 	      scope="prototype">
 	    <constructor-arg ref="bdbIdentifierAccessor"/>
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
-				<ref bean="CDLAgent"/>
-				<ref bean="PorticoAgent"/>
-				<ref bean="StanfordAgent"/>
+				<ref bean="bdbCDLAgent"/>
+				<ref bean="bdbPorticoAgent"/>
+				<ref bean="bdbStanfordAgent"/>
 			</list>
 		</property>
 		<property name="sourceIdentifier" ref="bdbDROIDIdentifier"/>
@@ -226,9 +249,9 @@
 <!--	    <constructor-arg ref="bdbAggrefierAccessor"/>-->
 <!--		<property name="developers">-->
 <!--			<list value-type="org.jhove2.core.Agent">-->
-<!--				<ref bean="CDLAgent"/>-->
-<!--				<ref bean="PorticoAgent"/>-->
-<!--				<ref bean="StanfordAgent"/>-->
+<!--				<ref bean="bdbCDLAgent"/>-->
+<!--				<ref bean="bdbPorticoAgent"/>-->
+<!--				<ref bean="bdbStanfordAgent"/>-->
 <!--			</list>-->
 <!--		</property>-->
 <!--		<property name="recognizers">-->
@@ -241,12 +264,12 @@
 	<!-- Shapefile recognizer bean -->
 	<bean id="bdbShapeFileRecognizer" class="org.jhove2.module.aggrefy.GlobPathRecognizer"
 	 scope="prototype">
-	 	<constructor-arg ref="bdbBaseModuleAccessor"/>
+	 	<constructor-arg ref="bdbRecognizerAccessor"/>
 	 	<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
-				<ref bean="CDLAgent"/>
-				<ref bean="PorticoAgent"/>
-				<ref bean="StanfordAgent"/>
+				<ref bean="bdbCDLAgent"/>
+				<ref bean="bdbPorticoAgent"/>
+				<ref bean="bdbStanfordAgent"/>
 			</list>
 		</property>
 	 	<property name="formatIdentifier" ref="bdbShapefileIdentifier"/>
@@ -265,5 +288,58 @@
 	<bean id="bdbShapefileIdentifier" class="org.jhove2.core.I8R" scope="singleton">
 		<constructor-arg type="java.lang.String" value="http://jhove2.org/terms/format/shapefile"/>
 	</bean>	
-
+		<!-- UTF-8 format bean -->
+	<bean id="bdbUTF8Format" class="org.jhove2.core.format.Format" scope="singleton">
+		<constructor-arg type="java.lang.String" value="UTF-8"/>
+		<constructor-arg ref="bdbUTF8Identifier"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Type" value="Family"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity" value="Unambiguous"/>
+		<property name="aliasNames">
+			<set>
+				<value>UCS Transformation Format, 8 bit</value>
+				<value>Unicode Transformation Format, 8 bit</value>
+			</set>
+		</property>
+	</bean>
+	
+	
+		<!-- UTF-8 identifier bean -->  
+	<bean id="bdbUTF8Identifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="http://jhove2.org/terms/format/utf-8"/>
+	</bean>
+	
+	<!-- CDL agent bean -->
+	<bean id="bdbCDLAgent" class="org.jhove2.core.Agent" scope="singleton">
+		<constructor-arg type="java.lang.String" value="California Digital Library"/>
+		<constructor-arg type="org.jhove2.core.Agent$Type" value="Corporate"/>
+		<property name="URI" value="http://www.cdlib.org/"/>
+	</bean>
+	
+		<!-- Portico agent bean -->
+	<bean id="bdbPorticoAgent" class="org.jhove2.core.Agent" scope="singleton">
+		<constructor-arg type="java.lang.String" value="Portico"/>
+		<constructor-arg type="org.jhove2.core.Agent$Type" value="Corporate"/>
+		<property name="URI" value="http://www.portico.org/"/>
+	</bean>
+	<!-- Stanford agent bean -->
+	<bean id="bdbStanfordAgent" class="org.jhove2.core.Agent" scope="singleton">
+		<constructor-arg type="java.lang.String" value="Stanford University"/>
+		<constructor-arg type="org.jhove2.core.Agent$Type" value="Corporate"/>
+		<property name="URI" value="http://www.stanford.edu/"/>
+	</bean>
+	<bean id="bdbConfigInfo" class="org.jhove2.config.spring.SpringConfigInfo"
+	scope="singleton">
+		<constructor-arg>
+			<list value-type = "java.lang.String">
+				<ref bean="bdbtest-bdbInfo-path"/>
+<!-- 				<ref bean="bdbtest-persist-configInof-path"/> -->
+			</list>
+		</constructor-arg>
+	</bean>
+	<bean id="bdbtest-bdbInfo-path" class="java.lang.String">
+		<constructor-arg type="java.lang.String" value="classpath*:**/bdb-test-config.xml"/>
+	</bean>
+<!-- 	<bean id="bdbtest-persist-configInof-path" class="java.lang.String"> -->
+<!-- 		<constructor-arg type="java.lang.String" value="classpath*:**/persist-test-config.xml"/> -->
+<!-- 	</bean> -->
 </beans>

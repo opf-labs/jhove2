@@ -63,4 +63,20 @@ public interface FrameworkAccessor extends ModuleAccessor {
 	 * @throws JHOVE2Exception
 	 */
 	public List<Command> setCommands(JHOVE2 jhove2, List<Command> commands) throws JHOVE2Exception;
+	/**
+	 * Add Command to list of Commands to be executed by framework
+	 * @param jhove2 JHOVE2 framework
+	 * @param command Command to be added
+	 * @return Command that was added
+	 * @throws JHOVE2Exception
+	 */
+	public Command addCommand(JHOVE2 jhove2, Command command)throws JHOVE2Exception;
+	/**
+	 * From Command from list of Commands to be executed by framework
+	 * @param jhove2 JHOVE2 framework
+	 * @param command Command to be removed from list of Commands to be executed by framework
+	 * @return Command to be removed from list of Commands to be executed by framework
+	 * @throws JHOVE2Exception
+	 */
+	public Command deleteCommand(JHOVE2 jhove2, Command command)throws JHOVE2Exception;
 }

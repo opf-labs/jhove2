@@ -62,14 +62,11 @@ public interface SourceAccessor  {
 	public Source persistSource(Source source) throws JHOVE2Exception;
 
 	/**
-	 * Retrieves persisted Source object dereferenced via a key
-	 * @param key Object by which persisted Source is dereferenced and retrieved
-	 * @return Source object corresponding to key
-	 * @throws JHOVE2Exception
-	 */
-	public Source retrieveSource(Object key) throws JHOVE2Exception ;
-	/**
 	 * Add child Source to Source
+	 * Must ensure that childSource.getParentSource() will return parentSource
+	 * After method completes, it should be the case that, for Source s1, s2, and c1,
+	 * if s1.getChildren().contains(c1)==true, && s2.getChildren().contains(c1)==true, then
+	 * s1==s2
 	 * @param parentSource Source to which child Source is to be attached
 	 * @param childSource Source to be added to parent
 	 * @return Child source
@@ -105,6 +102,8 @@ public interface SourceAccessor  {
 	public int getNumChildSources(Source parentSource) throws JHOVE2Exception;
 	/**
 	 * Remove Source from list of a Source's children
+	 * Must ensure that, after completion of method, parentSource.getChildren().contains(childSource)==false
+	 * and childSource.getParentSource()==null
 	 * @param parentSource Source from which child Source is to be deleted
 	 * @param childSource Source to be deleted from Parent;s list of children
 	 * @return Child source deleted from parent's list of children
@@ -113,12 +112,27 @@ public interface SourceAccessor  {
 	public Source deleteChildSource(Source parentSource, Source childSource) throws JHOVE2Exception;
 	/**
 	 * Add module to a Source
+	 * Must ensure that module.getParentSource() will return source
+	 * After method completes, it should be the case that, for Source s1, s2, and module m1,
+	 * if s1.getModules().contains(m1)==true, && s2.getModules().contains(m1)==true, then
+	 * s1==s2
 	 * @param source Source to which module is to be added
 	 * @param module Module to be added
 	 * @return Module added to Source
 	 * @throws JHOVE2Exception
 	 */
 	public Module addModule(Source source, Module module) throws JHOVE2Exception;
+	
+	/**
+	 * Remove a Module from a Source
+	 * Must ensure that, after completion of method, source.getModules().contains(module)==false
+	 * and module.getParentSource()==null
+	 * @param source Source from which Module is to be removed
+	 * @param module Module to be removed
+	 * @return Module that was removed
+	 * @throws JHOVE2Exception
+	 */
+	public Module deleteModule(Source source, Module module) throws JHOVE2Exception;
 
 	/**
 	 * Get list of Modules that have processed a Source
@@ -165,4 +179,20 @@ public interface SourceAccessor  {
 	 * @throws JHOVE2Exception
 	 */
 	public Source endTimerInfo (Source source) throws JHOVE2Exception;
+	/**
+	 * Get parent Source for a Source
+	 * @param childSource Source whose parent is being requested
+	 * @return parent Source, or null if there is no Parent
+	 * @throws JHOVE2Exception
+	 */
+	public Source getParentSource(Source childSource) throws JHOVE2Exception;
+	/**
+	 * Utility method to ensure parentId and parent Source are kept in sync by SourceAccessor
+	 * @param childSource being assigned new parent
+	 * @param oldId sourceId of old parent
+	 * @param newId sourceId of new parent
+	 * @throws JHOVE2Exception
+	 */
+	public void verifyNewParentSourceId(Source childSource, Long oldId, Long newId)throws JHOVE2Exception;
+
 }

@@ -47,6 +47,7 @@ import java.util.Properties;
 
 import javax.annotation.Resource;
 
+import org.jhove2.ConfigTestBase;
 import org.jhove2.app.util.FeatureConfigurationUtil;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
@@ -70,10 +71,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath*:**/test-config.xml", 
-"classpath*:**/filepaths-config.xml"})
+@ContextConfiguration(locations={
+		"classpath*:**/test-config.xml", 
+		"classpath*:**/persist-test-config.xml",
+		"classpath*:**/filepaths-config.xml",})
 
-public class OpenSpWrapperWindowsExeTest {
+public class OpenSpWrapperWindowsExeTest extends ConfigTestBase{
 	protected JHOVE2 JHOVE2;
 	protected SgmlModule wtestSgmlModule;
 	protected String catalogFile;

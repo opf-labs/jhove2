@@ -24,10 +24,24 @@
 		<property name="shouldSkipIdentifyIfPreIdentified" value="true"/>
 	</bean>
 	
+	<bean id="IdentifierModule" class="org.jhove2.module.identify.IdentifierModule"
+	      scope="prototype">
+	    <constructor-arg ref="IdentifierAccessor"/>
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="CDLAgent"/>
+				<ref bean="PorticoAgent"/>
+				<ref bean="StanfordAgent"/>
+			</list>
+		</property>
+		<property name="sourceIdentifier"  ref="testDroidIdentifier"/>
+		<property name="shouldSkipIdentifyIfPreIdentified" value="true"/>
+	</bean>
+	
 		<!-- Identifier command bean -->
-	<bean id="IdentifierCommand" class="org.jhove2.module.identify.IdentifierCommand"
+	<bean id="testIdentifierCommand" class="org.jhove2.module.identify.IdentifierCommand"
 	 	scope="prototype">
-	 	<constructor-arg ref="BaseModuleAccessor"/>
+	 	<constructor-arg ref="CommandAccessor"/>
 	 	 <property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
@@ -46,7 +60,7 @@
 	<!-- DROID identifier bean -->
 	<bean id="testDroidIdentifier" class="org.jhove2.module.identify.DROIDIdentifier"
 	      scope="prototype">
-	    <constructor-arg ref="BaseModuleAccessor"/>	
+	    <constructor-arg ref="SourceIdentifierAccessor"/>	
 		<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
@@ -74,9 +88,9 @@
 	</bean>
 	   
  	<!-- Aggrefier command Bean -->
-	<bean id="AggrefierCommand" class="org.jhove2.module.aggrefy.AggrefierCommand"
+	<bean id="testAggrefierCommand" class="org.jhove2.module.aggrefy.AggrefierCommand"
 		scope="prototype" >
-		<constructor-arg ref="BaseModuleAccessor"/>
+		<constructor-arg ref="CommandAccessor"/>
 		 <property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
@@ -115,7 +129,7 @@
 	     Must have all 3 required files; does NOT accept files with unrecognized extensions -->
 	<bean id="testStrictShapeFileRecognizer" class="org.jhove2.module.aggrefy.GlobPathRecognizer"
 	 scope="prototype">
-	 	<constructor-arg ref="BaseModuleAccessor"/>
+	 	<constructor-arg ref="RecognizerAccessor"/>
 	 	<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
@@ -139,7 +153,7 @@
 		    Only need 2 out of 3 required files; accepts u files with unrecognized extensions -->
 	<bean id="relaxedShapeFileRecognizer" class="org.jhove2.module.aggrefy.GlobPathRecognizer"
 	 scope="prototype">
-	    <constructor-arg ref="BaseModuleAccessor"/>
+	    <constructor-arg ref="RecognizerAccessor"/>
 	 	<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
@@ -164,7 +178,7 @@
 	     Must have all 3 required files; does NOT accept files with unrecognized extensions -->
 	<bean id="quickenFileRecognizer" class="org.jhove2.module.aggrefy.GlobPathRecognizer"
 	 scope="prototype">
-	    <constructor-arg ref="BaseModuleAccessor"/>
+	    <constructor-arg ref="RecognizerAccessor"/>
 	 	<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>
@@ -181,5 +195,67 @@
 	  	<property name="includeUnmatchedFromGroup" value="false"/>
 	</bean>
 		
-
+	<!-- Zip format bean -->
+	<bean id="ZipFormat" class="org.jhove2.core.format.Format" scope="singleton">
+		<constructor-arg type="java.lang.String" value="Zip"/>
+		<constructor-arg ref="ZipIdentifier"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Type" value="Family"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity" value="Unambiguous"/>
+		<property name="aliasIdentifiers">
+			<set value-type="org.jhove2.core.I8R">
+				<ref bean="PUIDxfmt263"/>
+			</set>
+		</property>
+	</bean>
+	<!-- Zip identifier bean -->
+	<bean id="ZipIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="http://jhove2.org/terms/format/zip"/>
+	</bean>
+	<!-- PUID x-fmt/263 aliasIdentifier bean -->
+	<bean id="PUIDxfmt263" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="x-fmt/263"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
+	</bean>
+	
+	  <bean id="MicrosoftWordforMacintoshDocumentFormat" class="org.jhove2.core.format.Format"
+        scope="singleton">
+		<constructor-arg type="java.lang.String" value="Microsoft Word for Macintosh Document"/>
+		<constructor-arg ref="MicrosoftWordforMacintoshDocumentIdentifier"/>
+    <constructor-arg type="org.jhove2.core.format.Format$Type"
+                     value="Format"/>
+    <constructor-arg type="org.jhove2.core.format.Format$Ambiguity"
+                     value="Unambiguous"/>
+		<property name="aliasIdentifiers">
+			<set value-type="org.jhove2.core.I8R">
+				<ref bean="MicrosoftWordforMacintoshDocumentIdentifier"/>
+<!-- 				<ref bean="MicrosoftWordforMacintoshDocumentPUID1"/> -->
+<!-- 				<ref bean="MicrosoftWordforMacintoshDocumentPUID2"/> -->
+<!-- 				<ref bean="MicrosoftWordforMacintoshDocumentPUID3"/> -->
+<!-- 				<ref bean="MicrosoftWordforMacintoshDocumentPUID4"/> -->
+<!-- 				<ref bean="MicrosoftWordforMacintoshDocumentPUID5"/> -->
+<!-- 				<ref bean="MicrosoftWordforMacintoshDocumentPUID6"/> -->
+<!-- 				<ref bean="MicrosoftWordforMacintoshDocumentPUID7"/> -->
+<!-- 				<ref bean="MicrosoftWordforMacintoshDocumentPUID8"/> -->
+<!-- 				<ref bean="MicrosoftWordforMacintoshDocumentPUID9"/> -->
+<!-- 				<ref bean="MicrosoftWordforMacintoshDocumentPUID10"/> -->
+<!-- 				<ref bean="MicrosoftWordforMacintoshDocumentPUID11"/> -->
+<!-- 				<ref bean="MicrosoftWordforMacintoshDocumentPUID12"/> -->
+				<ref bean="MicrosoftWordforMacintoshDocumentPUID13"/>
+			</set>
+		</property>
+	</bean>
+	
+		<!-- MicrosoftWordforMacintoshDocument JHOVE2 identifier bean -->
+	<bean id="MicrosoftWordforMacintoshDocumentIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+    <constructor-arg type="java.lang.String"
+                     value="http://jhove2.org/terms/format/word"/>
+	</bean>
+	
+		<!-- MicrosoftWordforMacintoshDocument PUID identifier bean -->
+	<bean id="MicrosoftWordforMacintoshDocumentPUID13" class="org.jhove2.core.I8R" scope="singleton">
+    <constructor-arg type="java.lang.String"
+                     value="fmt/40"/>
+    <constructor-arg type="org.jhove2.core.I8R$Namespace"
+                     value="PUID"/>
+  </bean>
 </beans>

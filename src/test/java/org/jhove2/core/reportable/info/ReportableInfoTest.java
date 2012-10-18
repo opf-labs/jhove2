@@ -47,7 +47,6 @@ public class ReportableInfoTest {
 	 */
 	@Test
 	public void testGetIdentifier() {
-//		source = new FileSetSource();
 		SourceFactory factory = new InMemorySourceFactory();
 		try {
 		    JHOVE2 jhove2 = new JHOVE2();

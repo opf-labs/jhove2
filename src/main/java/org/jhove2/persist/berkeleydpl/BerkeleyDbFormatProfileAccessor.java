@@ -67,7 +67,7 @@ BerkeleyDbBaseModuleAccessor implements FormatProfileAccessor {
 		FormatModule fm = null;
 		if (formatProfile != null){
 			if (formatProfile.getModuleId()== null){ // new module, never persisted
-				formatProfile=(FormatProfile) this.persistModule(formatProfile);
+				this.persistModule(formatProfile);
 			}
 			Module fmModule = 
 				this.retrieveModule(formatProfile.getFormatModuleId());
@@ -85,19 +85,15 @@ BerkeleyDbBaseModuleAccessor implements FormatProfileAccessor {
 	public FormatProfile setFormatModule(FormatProfile formatProfile, FormatModule formatModule)
 	throws JHOVE2Exception {
 		if (formatProfile != null){
-			if (formatProfile.getModuleId()== null){ // new module, never persisted
-				formatProfile=(FormatProfile) this.persistModule(formatProfile);
-			}
 			if (formatModule != null){
 				if (formatModule.getModuleId()== null){ // new module, never persisted
-					formatModule=(FormatModule) this.persistModule(formatModule);
+					this.persistModule(formatModule);
 				}
 				formatProfile.setFormatModuleId(formatModule.getModuleId());
 			}
 			else {
 				formatProfile.setFormatModuleId(null);
 			}
-			formatProfile = (FormatProfile) this.persistModule(formatProfile);
 		}
 		return formatProfile;
 	}

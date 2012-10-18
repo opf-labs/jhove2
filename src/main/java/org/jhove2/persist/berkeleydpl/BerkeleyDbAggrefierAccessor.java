@@ -40,8 +40,8 @@ import java.util.List;
 
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.module.AbstractModule;
+import org.jhove2.module.aggrefy.AbstractRecognizer;
 import org.jhove2.module.aggrefy.Aggrefier;
-import org.jhove2.module.aggrefy.GlobPathRecognizer;
 import org.jhove2.module.aggrefy.Recognizer;
 import org.jhove2.persist.AggrefierAccessor;
 
@@ -71,14 +71,13 @@ implements AggrefierAccessor {
 	@Override
 	public List<Recognizer> getRecognizers(Aggrefier module)
 	throws JHOVE2Exception {
-		List<Recognizer> recognizers = null;
+		List<Recognizer> recognizers =  new ArrayList<Recognizer>();
 		if (module != null){
-			recognizers = new ArrayList<Recognizer>();
-			EntityIndex<Long, GlobPathRecognizer> subIndex = null;
-			EntityCursor<GlobPathRecognizer> cursor = null;
+			EntityIndex<Long, AbstractRecognizer> subIndex = null;
+			EntityCursor<AbstractRecognizer> cursor = null;
 			try{
 				if (module.getModuleId()== null){ // new module, never persisted
-					module=(Aggrefier) this.persistModule(module);
+					this.persistModule(module);
 				}
 				subIndex = 
 					this.getBerkeleyDbPersistenceManager().
@@ -106,15 +105,41 @@ implements AggrefierAccessor {
 		return recognizers;
 	}
 
+	@Override
+	public Recognizer addRecognizer(Aggrefier module, Recognizer recognizer)
+			throws JHOVE2Exception {
+		if (module != null && recognizer != null){
+			if (module.getModuleId()==null){
+				this.persistModule(module);
+			}
+			recognizer.setParentAggrefierId(module.getModuleId());
+		}
+		return recognizer;
+	}
+
+	@Override
+	public Recognizer deleteRecognizer(Aggrefier module, Recognizer recognizer)
+			throws JHOVE2Exception {
+		if (module != null && recognizer != null){
+			if (module.getModuleId()==null){
+				this.persistModule(module);
+			}
+			Long parentKey = recognizer.getParentAggrefierId();
+			if (parentKey !=null && parentKey.equals(module.getModuleId())){
+				recognizer.setParentAggrefierId(null);
+			}
+		}
+		return recognizer;
+	}
+
 	/* (non-Javadoc)
 	 * @see org.jhove2.persist.AggrefierAccessor#setRecognizers(org.jhove2.module.aggrefy.Aggrefier, java.util.List)
 	 */
 	@Override
-	public List<Recognizer> setRecognizers(Aggrefier module,
-			List<Recognizer> recognizers) throws JHOVE2Exception {
-		List<Recognizer> childRecognizers = null;
+	public List<Recognizer> setRecognizers(Aggrefier module, List<Recognizer>recognizers) 
+	throws JHOVE2Exception{
+		List<Recognizer> childRecognizers = new ArrayList<Recognizer>();
 		if (module != null){
-			childRecognizers = new ArrayList<Recognizer>();
 			if (module.getModuleId()== null){ // new module, never persisted
 				module=(Aggrefier) this.persistModule(module);
 			}
@@ -122,19 +147,16 @@ implements AggrefierAccessor {
 			List<Recognizer> oldRecognizers = this.getRecognizers(module);
 			if (oldRecognizers != null){
 				for (Recognizer recognizer:oldRecognizers){
-					recognizer.setParentAggrefierId(null);
-					recognizer = (Recognizer) recognizer.getModuleAccessor().persistModule(recognizer);
+					this.deleteRecognizer(module, recognizer);
 				}
 			}
 			if (recognizers != null){
 				for (Recognizer recog:recognizers){
-					recog.setParentAggrefierId(module.getModuleId());
-					recog = (Recognizer) recog.getModuleAccessor().persistModule(recog);
+					this.addRecognizer(module, recog);
 					childRecognizers.add(recog);
 				}
 			}
 		}
-
 		return childRecognizers;
 	}
 

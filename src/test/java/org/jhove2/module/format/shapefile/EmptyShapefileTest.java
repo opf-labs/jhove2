@@ -4,32 +4,45 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.annotation.Resource;
 
-import org.jhove2.config.spring.SpringConfigInfo;
+import org.jhove2.ConfigTestBase;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.FileSource;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath*:**/test-config.xml", 
-"classpath*:**/filepaths-config.xml"})
-public class EmptyShapefileTest {
+@ContextConfiguration(locations={
+		"classpath*:**/test-config.xml", 
+		"classpath*:**/persist-test-config.xml",
+		"classpath*:**/filepaths-config.xml"})
+public class EmptyShapefileTest extends ConfigTestBase {
 	
 	ClumpSource clump;
 	ShapefileModule ShapefileModule;
 	ShapefileFeatures features;
 	JHOVE2 JHOVE2;
+	
+	@BeforeClass 
+	public static void setUpBeforeClass() throws Exception {
+		ArrayList<String> locs = new ArrayList<String>();
+		locs.add("classpath*:**/persist-test-config.xml");
+		locs.add("classpath*:**/*test*-config.xml");
+		locs.add("classpath*:**/filepaths-config.xml");
+		ConfigTestBase.setCONTEXT_PATHS(locs);
+		ConfigTestBase.setUpBeforeClass();
+	}
 
 	@Before
 	public void setUp() throws Exception {
-		JHOVE2.setConfigInfo(new SpringConfigInfo());
 		try {
 			String wbDirName = "src/test/resources/examples/shapefiles/multipleEmpty";
 			File wbDir = new File(wbDirName);
@@ -82,7 +95,7 @@ public class EmptyShapefileTest {
 		this.ShapefileModule = shapefileModule;
 	}	
 	
-    @Resource
+    @Resource (name="JHOVE2")
     public void setJHOVE2(JHOVE2 jHOVE2) {
         JHOVE2 = jHOVE2;
     }

@@ -30,7 +30,7 @@
 	<!-- Shapefile recognizer bean -->
 	<bean id="ShapeFileRecognizer" class="org.jhove2.module.aggrefy.GlobPathRecognizer"
 	 scope="prototype">
-	 	<constructor-arg ref="BaseModuleAccessor"/>
+	 	<constructor-arg ref="RecognizerAccessor"/>
 	 	<property name="developers">
 			<list value-type="org.jhove2.core.Agent">
 				<ref bean="CDLAgent"/>

@@ -70,14 +70,13 @@ public class BerkeleyDbFrameworkAccessor extends BerkeleyDbBaseModuleAccessor
 	 */
 	@Override
 	public List<Command> getCommands(JHOVE2 jhove2) throws JHOVE2Exception {
-		List<Command> commands = null;
+		List<Command> commands = new ArrayList<Command>();
 		if (jhove2 != null){
-			commands = new ArrayList<Command>();
 			EntityIndex<Long, AbstractCommand> subIndex = null;
 			EntityCursor<AbstractCommand> cursor = null;
 			try{
 				if (jhove2.getModuleId()== null){
-					jhove2 = (JHOVE2) this.persistModule(jhove2);
+					this.persistModule(jhove2);
 				}
 				subIndex = 
 					this.getBerkeleyDbPersistenceManager().
@@ -110,25 +109,22 @@ public class BerkeleyDbFrameworkAccessor extends BerkeleyDbBaseModuleAccessor
 	@Override
 	public List<Command> setCommands(JHOVE2 jhove2, List<Command> commands)
 			throws JHOVE2Exception {
-		List<Command> childCommands =  null;
-		if (jhove2 != null){
-			childCommands = new ArrayList<Command>();
+		List<Command> childCommands = new ArrayList<Command>();;
+		if (jhove2 != null){			
 			try{
 				if (jhove2.getModuleId()==null){
-					jhove2 = (JHOVE2) this.persistModule(jhove2);
+					this.persistModule(jhove2);
 				}
 				//Un-link any old commands
 				List<Command> oldCommands = this.getCommands(jhove2);
 				if (oldCommands != null){
 					for (Command command:oldCommands){
-						command.setJhove2ModuleId(null);
-						command=(Command) this.persistModule(command);
+						this.deleteCommand(jhove2, command);
 					}
 				}
 				if (commands != null){
 					for (Command command:commands){
-						command.setJhove2ModuleId(jhove2.getModuleId());
-						command = (Command) this.persistModule(command);
+						this.addCommand(jhove2, command);
 						childCommands.add(command);
 					}
 				}
@@ -138,6 +134,30 @@ public class BerkeleyDbFrameworkAccessor extends BerkeleyDbBaseModuleAccessor
 			}
 		}
 		return childCommands;
+	}
+
+	@Override
+	public Command addCommand(JHOVE2 jhove2, Command command)
+			throws JHOVE2Exception {
+		if (jhove2 != null && command != null){
+			if (jhove2.getModuleId()==null){
+				this.persistModule(jhove2);
+			}
+			command.setJhove2ModuleId(jhove2.getModuleId());		
+		}
+		return command;
+	}
+
+	@Override
+	public Command deleteCommand(JHOVE2 jhove2, Command command)
+			throws JHOVE2Exception {
+		if (jhove2 != null && command != null){
+			if (jhove2.getModuleId()==null){
+				this.persistModule(jhove2);
+			}
+			command.setJhove2ModuleId(null);	
+		}
+		return command;
 	}
 
 }

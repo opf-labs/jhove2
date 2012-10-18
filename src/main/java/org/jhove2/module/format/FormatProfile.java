@@ -82,11 +82,10 @@ public interface FormatProfile
 	 */
 	public Long getFormatModuleId();
 	
-
-
 	/**
 	 * @param formatModuleId the formatModuleId to set
+	 * @throws JHOVE2Exception 
 	 */
-	public void setFormatModuleId(Long formatModuleId);
+	public void setFormatModuleId(Long formatModuleId) throws JHOVE2Exception;
 
 }

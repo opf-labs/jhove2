@@ -48,9 +48,36 @@ import org.jhove2.module.format.FormatProfile;
  */
 public interface FormatModuleAccessor extends ModuleAccessor {
 
-	
+	/**
+	 * Set list of Profiles for this accessor's format module
+	 * @param module this accessor's format module
+	 * @param profiles list of Profiles  to be added
+	 * @return list of Profiles to be added
+	 * @throws JHOVE2Exception
+	 */
 	public List<FormatProfile> setProfiles (FormatModule module, List<FormatProfile> profiles) throws JHOVE2Exception;	
-	
+	/**
+	 * Get list of Profiles for this accessor's format module
+	 * @param module this accessor's format module
+	 * @return list of Profiles
+	 * @throws JHOVE2Exception
+	 */
 	public List<FormatProfile> getProfiles (FormatModule module) throws JHOVE2Exception;
+	/**
+	 * Add format profile to this accessor's module
+	 * @param module  this accessor's Module
+	 * @param profile FormatProfile to be added
+	 * @return FormatProfile to be added
+	 * @throws JHOVE2Exception
+	 */
+	public FormatProfile addProfile(FormatModule module, FormatProfile profile) throws JHOVE2Exception;
+	/**
+	 * Remove FormatProfile from this accessor's module
+	 * @param module this accessor's Module
+	 * @param profile FormatProfile to be deleted
+	 * @return FormatProfile to be deleted
+	 * @throws JHOVE2Exception
+	 */
+	public FormatProfile deleteProfile(FormatModule module, FormatProfile profile) throws JHOVE2Exception;
 
 }

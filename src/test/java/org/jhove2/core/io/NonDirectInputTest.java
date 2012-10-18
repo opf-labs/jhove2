@@ -45,6 +45,7 @@ import java.nio.ByteOrder;
 
 import javax.annotation.Resource;
 
+import org.jhove2.ConfigTestBase;
 import org.jhove2.app.util.FeatureConfigurationUtil;
 import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
@@ -68,7 +69,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath*:**/abstractdisplayer-config.xml",
 		"classpath*:**/filepaths-config.xml"})
-public class NonDirectInputTest {
+public class NonDirectInputTest extends ConfigTestBase {
 
 	int bufferSize;
 	static Input abstractInput = null;
@@ -77,11 +78,15 @@ public class NonDirectInputTest {
 	private File testFile;
 	PrintWriter out;
 	private JHOVE2 jhove2;
+		
+	@Resource
+	public void setJHOVE2(JHOVE2 jhove2) {
+	    this.jhove2 = jhove2;
+	}
 
 	@Before
 	public void setUp() throws Exception {
 	    bufferSize = 100;
-        jhove2 = new JHOVE2();
         Invocation inv = jhove2.getInvocation();
         inv.setBufferSize(bufferSize);
         inv.setBufferType(Type.NonDirect);
@@ -105,8 +110,7 @@ public class NonDirectInputTest {
 	public void testGetInput() throws JHOVE2Exception {
 
 		try {
-			SourceFactory factory = new InMemorySourceFactory();
-            jhove2.setSourceFactory(factory);
+            SourceFactory factory = jhove2.getSourceFactory();
 			Source source = factory.getSource(jhove2, testFile);
 			/*
 			 * abstractInput = source.getInput(bufferSize, Scope.NonDirect,

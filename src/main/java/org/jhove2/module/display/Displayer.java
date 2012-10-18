@@ -45,6 +45,7 @@ import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.config.ConfigInfo;
 import org.jhove2.core.I8R;
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.app.Application;
 import org.jhove2.core.reportable.Reportable;
 import org.jhove2.module.Module;
 
@@ -352,7 +353,13 @@ public interface Displayer
 	public Long getParentAppId();
 	/**
 	 * @param parentAppId the parentAppId to set
+	 * @throws JHOVE2Exception 
 	 */
-	public void setParentAppId(Long parentAppId);
-	
+	public void setParentAppId(Long parentAppId) throws JHOVE2Exception;
+	/**
+	 * Get Application for which this is the Displayer
+	 * @return Application for which this is the Displayer
+	 * @throws JHOVE2Exception
+	 */
+	public Application getParentApplication() throws JHOVE2Exception;
 }

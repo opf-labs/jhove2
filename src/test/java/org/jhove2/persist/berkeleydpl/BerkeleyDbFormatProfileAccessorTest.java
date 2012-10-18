@@ -43,10 +43,6 @@ import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.module.format.FormatModule;
 import org.jhove2.module.format.utf8.UTF8Module;
 import org.jhove2.module.format.utf8.ascii.ASCIIProfile;
-import org.jhove2.persist.PersistenceManager;
-import org.jhove2.persist.PersistenceManagerUtil;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -57,41 +53,14 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath*:**/test-config.xml", "classpath*:**/filepaths-config.xml"})
-public class BerkeleyDbFormatProfileAccessorTest {
+@ContextConfiguration(locations={ 
+		"classpath*:**/persist/berkeleydpl/bdb-test-config.xml",
+		"classpath*:**/filepaths-config.xml"})
+public class BerkeleyDbFormatProfileAccessorTest extends BerkeleyDbTestBase{
 
-	
-	static String persistenceMgrClassName = "org.jhove2.config.spring.SpringBerkeleyDbPersistenceManagerFactory";
-	static PersistenceManager persistenceManager = null;
-	
 	UTF8Module bdbUTF8Module;
 	ASCIIProfile bdbASCIIProfile;
-	
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-		PersistenceManagerUtil.createPersistenceManagerFactory(persistenceMgrClassName);
-		persistenceManager = PersistenceManagerUtil.getPersistenceManagerFactory().getInstance();
-		persistenceManager.initialize();
-	}
 
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-		if (persistenceManager != null){
-			try{
-				persistenceManager.close();
-			}
-			catch (JHOVE2Exception je){
-				System.err.println(je.getMessage());
-				je.printStackTrace(System.err);
-			}
-		}
-	}
 
 	/**
 	 * Test method for {@link org.jhove2.persist.berkeleydpl.BerkeleyDbFormatProfileAccessor#setFormatModule(org.jhove2.module.format.FormatProfile, org.jhove2.module.format.FormatModule)}.
@@ -129,7 +98,7 @@ public class BerkeleyDbFormatProfileAccessorTest {
 	/**
 	 * @param bdbUTF8Module the bdbUTF8Module to set
 	 */
-	@Resource
+	@Resource (name="bdbUTF8Module")
 	public void setBdbUTF8Module(UTF8Module bdbUTF8Module) {
 		this.bdbUTF8Module = bdbUTF8Module;
 	}
@@ -137,7 +106,7 @@ public class BerkeleyDbFormatProfileAccessorTest {
 	/**
 	 * @param bdbASCIIProfile the bdbASCIIProfile to set
 	 */
-	@Resource
+	@Resource(name="bdbASCIIProfile")
 	public void setBdbASCIIProfile(ASCIIProfile bdbASCIIProfile) {
 		this.bdbASCIIProfile = bdbASCIIProfile;
 	}

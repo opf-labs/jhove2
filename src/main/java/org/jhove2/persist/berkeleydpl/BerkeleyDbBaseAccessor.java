@@ -36,8 +36,11 @@
 package org.jhove2.persist.berkeleydpl;
 
 import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.core.source.Source;
+import org.jhove2.module.Module;
 import org.jhove2.persist.PersistenceManagerUtil;
 
+import com.sleepycat.je.DatabaseException;
 import com.sleepycat.persist.model.NotPersistent;
 import com.sleepycat.persist.model.Persistent;
 
@@ -64,5 +67,41 @@ public class BerkeleyDbBaseAccessor implements BerkeleyDbAccessor {
 		}
 		return berkeleyDbPersistenceManager;
 	}
-
+	
+	protected boolean isSameId(Long id01, Long id02){
+    	boolean isSame = false;
+    	if (id01==null && id02==null){
+    		isSame = true;
+    	} 
+    	else {
+    		isSame = (id01!=null && id02 !=null && id01.equals(id02));
+    	}
+    	return isSame;
+    }
+	
+	protected Source retrieveSource(Long key) throws JHOVE2Exception {
+		Source source = null;
+		if (key != null){
+			try{
+				source = this.getBerkeleyDbPersistenceManager().getSourceBySourceId().get(key);
+			}
+			catch (DatabaseException e){
+				throw new JHOVE2Exception("Could not retrieve Source for key" + key.toString(), e);
+			}
+		}
+		return source;
+	}
+	
+	protected Module retrieveModule(Long key) throws JHOVE2Exception {
+		Module module = null;
+		if (key != null){
+			try{
+				module = getBerkeleyDbPersistenceManager().getModuleByModuleId().get(key);
+			}
+			catch (DatabaseException e){
+				throw new JHOVE2Exception("Could not retrieve module for key" + key.toString(), e);
+			}
+		}
+		return module;
+	}
 }

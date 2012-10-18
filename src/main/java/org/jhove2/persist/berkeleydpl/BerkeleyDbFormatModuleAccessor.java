@@ -68,14 +68,13 @@ public class BerkeleyDbFormatModuleAccessor extends
 	@Override
 	public List<FormatProfile> getProfiles(FormatModule module)
 			throws JHOVE2Exception {
-		List<FormatProfile> profiles = null;
+		List<FormatProfile> profiles = new ArrayList<FormatProfile>();
 		if (module != null){
-			profiles = new ArrayList<FormatProfile>();
 			EntityIndex<Long, AbstractFormatProfile> subIndex = null;
 			EntityCursor<AbstractFormatProfile> cursor = null;
 			try{
 				if (module.getModuleId()== null){ // new module, never persisted
-					module=(FormatModule) this.persistModule(module);
+					this.persistModule(module);
 				}
 				subIndex = 
 					this.getBerkeleyDbPersistenceManager().
@@ -108,25 +107,23 @@ public class BerkeleyDbFormatModuleAccessor extends
 	@Override
 	public List<FormatProfile> setProfiles(FormatModule module,
 			List<FormatProfile> profiles) throws JHOVE2Exception {
-		List<FormatProfile> childProfiles = null;
+		List<FormatProfile> childProfiles = new ArrayList<FormatProfile>();
 		if (module != null){
-			childProfiles = new ArrayList<FormatProfile>();
 			try{
 				if (module.getModuleId()== null){ // new module, never persisted
-					module=(FormatModule) this.persistModule(module);
+					this.persistModule(module);
 				}
 				// un-link old profiles
 				List<FormatProfile> oldProfiles = this.getProfiles(module);
 				if (oldProfiles != null){
 					for (FormatProfile profile:oldProfiles){
-						profile.setFormatModuleId(null);
-						profile = (FormatProfile) profile.getModuleAccessor().persistModule(profile);
+						this.deleteProfile(module, profile);
 					}
 				}
+				//now link new ones
 				if (profiles != null){
 					for (FormatProfile profile:profiles){
-						profile.setFormatModuleId(module.getModuleId());
-						profile = (FormatProfile) profile.getModuleAccessor().persistModule(profile);
+						this.addProfile(module, profile);
 						childProfiles.add(profile);
 					}
 				}
@@ -136,6 +133,31 @@ public class BerkeleyDbFormatModuleAccessor extends
 			}
 		}
 		return childProfiles;
+	}
+	@Override
+	public FormatProfile addProfile(FormatModule module, FormatProfile profile)
+			throws JHOVE2Exception {		
+		if (module != null && profile != null){
+			if (module.getModuleId()==null){
+				this.persistModule(module);
+			}
+			profile.setFormatModuleId(module.getModuleId());
+		}		
+		return profile;
+	}
+	@Override
+	public FormatProfile deleteProfile(FormatModule module,
+			FormatProfile profile) throws JHOVE2Exception {
+		if (module != null && profile != null){
+			if (module.getModuleId()==null){
+				this.persistModule(module);
+			}
+			Long parentKey = profile.getFormatModuleId();
+			if (parentKey !=null && parentKey.equals(module.getModuleId())){
+				profile.setFormatModuleId(null);
+			}
+		}		
+		return profile;
 	}
 
 

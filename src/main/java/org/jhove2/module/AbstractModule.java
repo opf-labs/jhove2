@@ -43,10 +43,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jhove2.core.Agent;
+import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.TimerInfo;
 import org.jhove2.core.WrappedProduct;
 import org.jhove2.core.reportable.AbstractReportable;
 import org.jhove2.core.source.AbstractSource;
+import org.jhove2.core.source.Source;
 import org.jhove2.persist.ModuleAccessor;
 
 import com.sleepycat.persist.model.Entity;
@@ -299,12 +301,14 @@ public abstract class AbstractModule
 		return moduleParentSourceId;
 	}
 	@Override
-	public void setModuleId(Long moduleId) {
-		this.moduleId = moduleId;
+	public Source getParentSource()throws JHOVE2Exception{		
+		return this.getModuleAccessor().getParentSource(this);
 	}
 	@Override
-	public void setParentSourceId(Long parentSourceId) {
+	public void setParentSourceId(Long parentSourceId) throws JHOVE2Exception {
+		Long oldId = this.moduleParentSourceId;
 		this.moduleParentSourceId = parentSourceId;
+		this.getModuleAccessor().verifyNewParentSourceId(this, oldId, parentSourceId);
 	}
 	@Override
 	public ModuleAccessor getModuleAccessor() {

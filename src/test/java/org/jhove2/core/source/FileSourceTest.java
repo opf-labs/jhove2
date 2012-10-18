@@ -44,6 +44,7 @@ import java.io.InputStream;
 
 import javax.annotation.Resource;
 
+import org.jhove2.ConfigTestBase;
 import org.jhove2.app.util.FeatureConfigurationUtil;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
@@ -58,9 +59,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath*:**/abstractdisplayer-config.xml",
-		"classpath*:**/test-config.xml", "classpath*:**/filepaths-config.xml"})
-public class FileSourceTest {
+@ContextConfiguration(locations={
+		"classpath*:**/abstractdisplayer-config.xml",
+		"classpath*:**/persist-test-config.xml",
+		"classpath*:**/core/test-config.xml", 
+		"classpath*:**/module/**/test-config.xml", 
+		"classpath*:**/filepaths-config.xml"})
+public class FileSourceTest extends ConfigTestBase {
     private JHOVE2 jhove2;
 	private String utf8DirBasePath;
 	private String testFile01;
@@ -112,7 +117,7 @@ public class FileSourceTest {
     public JHOVE2 getJHOVE2() {
         return this.jhove2;
     }
-    @Resource
+    @Resource (name="JHOVE2")
     public void setJHOVE2(JHOVE2 jhove2) {
         this.jhove2 = jhove2;
     }

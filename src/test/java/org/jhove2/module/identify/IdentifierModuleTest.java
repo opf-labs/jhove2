@@ -43,6 +43,7 @@ import java.util.Set;
 
 import javax.annotation.Resource;
 
+import org.jhove2.ConfigTestBase;
 import org.jhove2.app.util.FeatureConfigurationUtil;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
@@ -64,9 +65,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath*:**/identifier-config.xml",
-		"classpath*:**/test-config.xml", "classpath*:**/filepaths-config.xml"})
-public class IdentifierModuleTest {
+@ContextConfiguration(locations={
+		"classpath*:**/identifier-config.xml",
+		"classpath*:**/test-config.xml", 
+		"classpath*:**/persist-test-config.xml",
+		"classpath*:**/filepaths-config.xml"})
+public class IdentifierModuleTest extends ConfigTestBase {
 	
 	private JHOVE2 JHOVE2;
 	private IdentifierModule identifier;
@@ -76,6 +80,7 @@ public class IdentifierModuleTest {
 	private List<String> testFileList;
 	private String zipPuid = "x-fmt/263";
 	private String zipJhoveId = "http://jhove2.org/terms/format/zip";
+	private String persistenceFactoryClassName;
 	/**
 	 * Test method for {@link org.jhove2.module.identify.IdentifierModule#identify(org.jhove2.core.JHOVE2, org.jhove2.core.source.Source)}.
 	 */
@@ -87,9 +92,11 @@ public class IdentifierModuleTest {
 		String droidDirPath = null;
         PersistenceManager persistenceManager = null;
 		try {
-            PersistenceManagerUtil.createPersistenceManagerFactory(JHOVE2.getConfigInfo());
-            persistenceManager = PersistenceManagerUtil.getPersistenceManagerFactory().getInstance();
-            persistenceManager.initialize();
+//            PersistenceManagerUtil.createPersistenceManagerFactory(JHOVE2.getConfigInfo());
+//            persistenceManager = PersistenceManagerUtil.getPersistenceManagerFactory().getInstance();
+//            persistenceManager.initialize();
+			PersistenceManagerUtil.createPersistenceManagerFactory(persistenceFactoryClassName);
+			PersistenceManagerUtil.getPersistenceManagerFactory().getInstance().initialize();
 			droidDirPath = 
 				FeatureConfigurationUtil.getFilePathFromClasspath(droidDirBasePath, "droid dir");
 		} catch (JHOVE2Exception e1) {
@@ -113,6 +120,7 @@ public class IdentifierModuleTest {
 			}
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			fail("Couldn't identify: zip " + e.getMessage());
 		} 
 		for (String testFile:testFileList){
@@ -195,5 +203,8 @@ public class IdentifierModuleTest {
 	public void setTestFileList(List<String> testFileList) {
 		this.testFileList = testFileList;
 	}
-
+	@Resource (name="PersistenceManagerFactoryClassName")
+	public void setPersistenceFactoryClassName(String persistenceFactoryClassName) {
+		this.persistenceFactoryClassName = persistenceFactoryClassName;
+	}
 }

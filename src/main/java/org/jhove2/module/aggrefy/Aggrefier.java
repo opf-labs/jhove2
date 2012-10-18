@@ -74,7 +74,7 @@ public interface Aggrefier
 	/** Get aggregate Recognizers.
 	 * @return Aggregate recognizers
 	 * @throws JHOVE2Exception 
-	 */
+	 */	
 	public List<Recognizer> getRecognizers() throws JHOVE2Exception;
 	/**
 	 * Set aggregate Recognizers
@@ -82,6 +82,21 @@ public interface Aggrefier
 	 * @throws JHOVE2Exception 
 	 */
 	public void setRecognizers(List<Recognizer> recognizers) throws JHOVE2Exception;
+	/**
+	 * Add Recognizer to Aggrefier
+	 * @param recognizer Recognizer to be added 
+	 * @return Recognizer that was added
+	 * @throws JHOVE2Exception
+	 */
+	public Recognizer addRecognizer(Recognizer recognizer) throws JHOVE2Exception;
+	/**
+	 * Remove Recognizer from Aggrefier
+	 * @param recognizer Recognizer to be deleted 
+	 * @return deleted Recognizer
+	 * @throws JHOVE2Exception
+	 */
+	public Recognizer deleteRecognizer(Recognizer recognizer)throws JHOVE2Exception;
+	
 
 
 }

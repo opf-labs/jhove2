@@ -40,18 +40,18 @@ import org.jhove2.module.identify.SourceIdentifier;
 import org.jhove2.module.identify.Identifier;
 import org.jhove2.persist.IdentifierAccessor;
 
-import com.sleepycat.persist.model.Persistent;
 
 /**
  * @author smorrissey
  *
  */
-@Persistent
+
+
 public class InMemoryIdentifierAccessor extends InMemoryBaseModuleAccessor
 		implements IdentifierAccessor {
 	
 	/** File-level identifier module. */
-	protected SourceIdentifier fileSourceIdentifier;
+	protected SourceIdentifier parentSourceIdentifier;
 	
 	public InMemoryIdentifierAccessor(){
 		super();
@@ -63,7 +63,7 @@ public class InMemoryIdentifierAccessor extends InMemoryBaseModuleAccessor
 	@Override
 	public SourceIdentifier getFileSourceIdentifier(Identifier module)
 			throws JHOVE2Exception {
-		return this.fileSourceIdentifier;
+		return this.parentSourceIdentifier;
 	}
 
 	/* (non-Javadoc)
@@ -71,9 +71,33 @@ public class InMemoryIdentifierAccessor extends InMemoryBaseModuleAccessor
 	 */
 	@Override
 	public SourceIdentifier setFileSourceIdentifier(Identifier module,
-			SourceIdentifier fileSourceIdentifier) throws JHOVE2Exception {
-		this.fileSourceIdentifier = fileSourceIdentifier;
-		return this.fileSourceIdentifier;
+			SourceIdentifier fileSourceIdentifier) throws JHOVE2Exception {	
+		if (module!=null && module.getModuleAccessor()!=null){
+			module.getModuleAccessor().persistModule(module);
+		}
+		if (module==this.module){
+			if (fileSourceIdentifier == null){
+				if (this.parentSourceIdentifier != null){
+					// remove this Identifier as parent of old SourceIdentifier
+					this.parentSourceIdentifier.setParentIdentifierId(null);
+				}
+				this.parentSourceIdentifier=fileSourceIdentifier;
+			}
+			else {
+				if (fileSourceIdentifier.getModuleAccessor()!=null){
+					fileSourceIdentifier.getModuleAccessor().persistModule(fileSourceIdentifier);
+				}
+				if (this.parentSourceIdentifier != null && 
+						this.parentSourceIdentifier != fileSourceIdentifier){
+					// remove this Identifier as parent of old SourceIdentifier
+					this.parentSourceIdentifier.setParentIdentifierId(null);
+				}
+				this.parentSourceIdentifier=fileSourceIdentifier;
+				this.parentSourceIdentifier.setParentIdentifierId(module.getModuleId());
+			}			
+		}	
+		
+		return this.parentSourceIdentifier;
 	}
 
 }

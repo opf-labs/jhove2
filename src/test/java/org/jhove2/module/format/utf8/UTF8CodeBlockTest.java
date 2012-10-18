@@ -14,11 +14,14 @@ import org.jhove2.module.format.utf8.unicode.CodeBlock;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * @author mstrong
  *
  */
+@RunWith(SpringJUnit4ClassRunner.class)
 public class UTF8CodeBlockTest extends UTF8ModuleTestBase {
 
     private String codeBlockTestFile;
@@ -27,6 +30,7 @@ public class UTF8CodeBlockTest extends UTF8ModuleTestBase {
      */
     @Before
     public void setUp() throws Exception {
+    	super.setUp();
         parse(codeBlockTestFile);
     }
 

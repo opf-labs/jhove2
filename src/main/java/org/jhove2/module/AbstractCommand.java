@@ -39,6 +39,9 @@ package org.jhove2.module;
 import static com.sleepycat.persist.model.DeleteAction.NULLIFY;
 import static com.sleepycat.persist.model.Relationship.MANY_TO_ONE;
 
+import org.jhove2.core.JHOVE2;
+import org.jhove2.core.JHOVE2Exception;
+import org.jhove2.persist.CommandAccessor;
 import org.jhove2.persist.ModuleAccessor;
 
 import com.sleepycat.persist.model.Persistent;
@@ -95,9 +98,22 @@ public abstract class AbstractCommand
 	}
 
 	@Override
-	public void setJhove2ModuleId(Long jhove2ModuleId) {
+	public void setJhove2ModuleId(Long jhove2ModuleId) throws JHOVE2Exception {
+		Long oldId = this.jhove2ModuleId;
 		this.jhove2ModuleId = jhove2ModuleId;
+		this.getModuleAccessor().verifyNewParentModuleId(this, oldId, jhove2ModuleId);
 	}
 	
+	@Override
+	public JHOVE2 getParentFramework() throws JHOVE2Exception{
+		CommandAccessor ca;
+		try {
+			ca = (CommandAccessor)this.getModuleAccessor();
+		}
+		catch (Exception e){
+			throw new JHOVE2Exception ("Failed to cast ModuleAccessor to CommandAccessor", e);
+		}	
+		return ca.getParentFramework(this);
+	}
 	
 }

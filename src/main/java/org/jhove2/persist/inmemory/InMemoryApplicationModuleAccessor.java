@@ -40,13 +40,11 @@ import org.jhove2.core.app.Application;
 import org.jhove2.module.display.Displayer;
 import org.jhove2.persist.ApplicationModuleAccessor;
 
-import com.sleepycat.persist.model.Persistent;
 
 /**
  * @author smorrissey
  *
  */
-@Persistent
 public class InMemoryApplicationModuleAccessor extends InMemoryBaseModuleAccessor
 	implements ApplicationModuleAccessor {
 
@@ -70,8 +68,30 @@ public class InMemoryApplicationModuleAccessor extends InMemoryBaseModuleAccesso
 	@Override
 	public Displayer setDisplayer(Application module, Displayer displayer)
 			throws JHOVE2Exception {
-		this.displayer = displayer;
-		return displayer;
+		if (module !=null && module.getModuleAccessor()!=null){
+			module.getModuleAccessor().persistModule(module);
+		}
+		if (module==this.module){
+			if (displayer == null){
+				if (this.displayer != null){
+					// remove this application as parent of old Displayer
+					this.displayer.setParentAppId(null);					
+				}
+				this.displayer=displayer;
+			}
+			else {
+				if (displayer.getModuleAccessor()!=null){
+					displayer.getModuleAccessor().persistModule(displayer);
+				}
+				if (this.displayer != null && this.displayer != displayer){
+					// remove this application as parent of old Displayer
+					this.displayer.setParentAppId(null);
+				}
+				this.displayer=displayer;
+				this.displayer.setParentAppId(module.getModuleId());
+			}			
+		}		
+		return this.displayer;
 	}
 
 

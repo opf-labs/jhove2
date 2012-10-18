@@ -45,6 +45,7 @@ import java.nio.ByteOrder;
 
 import javax.annotation.Resource;
 
+import org.jhove2.ConfigTestBase;
 import org.jhove2.app.util.FeatureConfigurationUtil;
 import org.jhove2.core.Invocation;
 import org.jhove2.core.JHOVE2;
@@ -52,9 +53,7 @@ import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.io.Input.Type;
 import org.jhove2.core.source.Source;
 import org.jhove2.core.source.SourceFactory;
-import org.jhove2.persist.PersistenceManager;
 import org.jhove2.persist.PersistenceManagerUtil;
-import org.jhove2.persist.inmemory.InMemorySourceFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -68,9 +67,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath*:**/abstractdisplayer-config.xml",
-        "classpath*:**/test-config.xml", "classpath*:**/filepaths-config.xml"})
-public class DirectInputTest {
+@ContextConfiguration(locations={
+		"classpath*:**/persist-test-config.xml",
+		"classpath*:**/abstractdisplayer-config.xml",
+		"classpath*:**/core/test-config.xml", 
+		"classpath*:**/module/**/test-config.xml", 
+		"classpath*:**/filepaths-config.xml"})
+public class DirectInputTest extends ConfigTestBase {
 
     int bufferSize;
     static Input abstractInput = null;
@@ -79,18 +82,25 @@ public class DirectInputTest {
     private String testFile01;
     private File testFile;
 	private JHOVE2 jhove2;
+	private String persistenceFactoryClassName;
 	
 	@Resource
 	public void setJHOVE2(JHOVE2 jhove2) {
 	    this.jhove2 = jhove2;
 	}
+	/**
+	 * @param persistenceFactoryClassName the persistenceFactoryClassName to set
+	 */
+	@Resource (name="PersistenceManagerFactoryClassName")
+	public void setPersistenceFactoryClassName(String persistenceFactoryClassName) {
+		this.persistenceFactoryClassName = persistenceFactoryClassName;
+	}
 
     @Before
     public void setUp() throws Exception {
         bufferSize = 100;
-        PersistenceManagerUtil.createPersistenceManagerFactory(jhove2.getConfigInfo());
-        PersistenceManager persistenceManager = PersistenceManagerUtil.getPersistenceManagerFactory().getInstance();
-        persistenceManager.initialize();
+        PersistenceManagerUtil.createPersistenceManagerFactory(persistenceFactoryClassName);
+		PersistenceManagerUtil.getPersistenceManagerFactory().getInstance().initialize();
 
         Invocation inv = jhove2.getInvocation();
         inv.setBufferSize(bufferSize);
@@ -115,8 +125,7 @@ public class DirectInputTest {
     public void testGetInput() throws JHOVE2Exception {
 
         try {
-			SourceFactory factory = new InMemorySourceFactory();
-			jhove2.setSourceFactory(factory);
+        	SourceFactory factory = jhove2.getSourceFactory();
 			Source source = factory.getSource(jhove2, testFile);
 			abstractInput = source.getInput(jhove2, ByteOrder.LITTLE_ENDIAN);// ,
             // ByteOrder.LITTLE_ENDIAN);

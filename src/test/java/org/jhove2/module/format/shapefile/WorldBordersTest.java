@@ -7,6 +7,7 @@ import java.io.File;
 
 import javax.annotation.Resource;
 
+import org.jhove2.ConfigTestBase;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.FileSource;
@@ -18,9 +19,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath*:**/test-config.xml", 
-"classpath*:**/filepaths-config.xml"})
-public class WorldBordersTest {
+@ContextConfiguration(locations={
+		"classpath*:**/test-config.xml", 
+		"classpath*:**/persist-test-config.xml",
+		"classpath*:**/filepaths-config.xml"})
+public class WorldBordersTest extends ConfigTestBase {
 	
 	ClumpSource clump;
 	ShapefileModule ShapefileModule;
@@ -77,7 +80,7 @@ public class WorldBordersTest {
 	/**
 	 * @param factory the factory to set
 	 */
-	@Resource(name="SourceFactory")
+	@Resource(name="testSourceFactory")
 	public void setFactory(SourceFactory factory) {
 		this.factory = factory;
 	}

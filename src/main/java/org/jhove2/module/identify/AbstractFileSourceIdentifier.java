@@ -39,8 +39,10 @@ import static com.sleepycat.persist.model.DeleteAction.NULLIFY;
 import static com.sleepycat.persist.model.Relationship.ONE_TO_ONE;
 
 
+import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.module.AbstractModule;
 import org.jhove2.persist.ModuleAccessor;
+import org.jhove2.persist.SourceIdentifierAccessor;
 
 import com.sleepycat.persist.model.Persistent;
 import com.sleepycat.persist.model.SecondaryKey;
@@ -100,8 +102,23 @@ public abstract class AbstractFileSourceIdentifier extends AbstractModule
 	 * @see org.jhove2.module.identify.SourceIdentifier#setParentIdentifierId(java.lang.Long)
 	 */
 	@Override
-	public void setParentIdentifierId(Long id) {
+	public void setParentIdentifierId(Long id) throws JHOVE2Exception {
+		Long oldId = this.parentIdentifierId;
 		this.parentIdentifierId = id;
+		this.getModuleAccessor().verifyNewParentModuleId(this, oldId, id);
+	}
+	
+	@Override
+	public Identifier getParentIdentifier() throws JHOVE2Exception {
+		SourceIdentifierAccessor sa = null;
+		try {
+			ModuleAccessor ma = this.getModuleAccessor();
+			sa = (SourceIdentifierAccessor)ma;
+		}
+		catch (Exception e){
+			throw new JHOVE2Exception ("Failed to cast ModuleAccessor to SourceIdentifierAccessor", e);
+		}
+		return sa.getParentIdentifier(this);
 	}
 
 }

@@ -35,9 +35,6 @@
  */
 package org.jhove2.module.aggrefy;
 
-import static com.sleepycat.persist.model.DeleteAction.NULLIFY;
-import static com.sleepycat.persist.model.Relationship.MANY_TO_ONE;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
@@ -56,11 +53,10 @@ import org.jhove2.core.format.FormatIdentification;
 import org.jhove2.core.format.FormatIdentification.Confidence;
 import org.jhove2.core.source.ClumpSource;
 import org.jhove2.core.source.Source;
-import org.jhove2.module.AbstractModule;
 import org.jhove2.persist.ModuleAccessor;
 
 import com.sleepycat.persist.model.Persistent;
-import com.sleepycat.persist.model.SecondaryKey;
+
 
 /**
  * Aggregate identifier that uses filepath globbing to detect instances of Clump Formats
@@ -70,14 +66,14 @@ import com.sleepycat.persist.model.SecondaryKey;
  */
 @Persistent
 public class GlobPathRecognizer
-extends AbstractModule
-implements Recognizer
+extends AbstractRecognizer
+
 {
 	/** Identification module version identifier. */
-	public static final String VERSION = "2.0.0";
+	public static final String VERSION = "2.1.0";
 
 	/** Identification module release date. */
-	public static final String RELEASE = "2010-09-10";
+	public static final String RELEASE = "2012-10-31";
 
 	/** Identification module rights statement. */
 	public static final String RIGHTS = "Copyright 2010 by The Regents of the University of California, "
@@ -85,13 +81,8 @@ implements Recognizer
 		+ "Stanford Junior University. "
 		+ "Available under the terms of the BSD license.";
 
-	/** Aggrgate identifier confidence. */
-	public static final Confidence GLOB_PATH_CONFIDENCE = Confidence.Tentative;
-	
-	/** foreign key linking GlobPathRecognizer to parent Aggrefier module */
-	@SecondaryKey(relate=MANY_TO_ONE, relatedEntity=AbstractModule.class,
-			onRelatedEntityDelete=NULLIFY)
-	protected Long parentAggrefierId;
+	/** Aggregate identifier confidence. */
+	public static final Confidence GLOB_PATH_CONFIDENCE = Confidence.Tentative;	
 
 	/** Format which this recognizer can detect*/
 	protected I8R format;
@@ -559,13 +550,4 @@ implements Recognizer
 		this.fileGroupingCaptureGroupIndex = fileGroupingCaptureGroupIndex;
 	}
 
-	@Override
-	public Long getParentAggrefierId() {
-		return parentAggrefierId;
-	}
-
-	@Override
-	public void setParentAggrefierId(Long parentAggrefierId) {
-		this.parentAggrefierId = parentAggrefierId;
-	}
 }

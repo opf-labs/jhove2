@@ -31,6 +31,7 @@ public class EmbeddedFormatTest extends TiffModuleTestBase{
      */
     @Before
     public void setUp() throws Exception {       
+    	super.setUp();
         parse(blueSquareTif);
     }
 

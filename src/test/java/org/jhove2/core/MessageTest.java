@@ -42,6 +42,7 @@ import java.util.Locale;
 
 import javax.annotation.Resource;
 
+import org.jhove2.ConfigTestBase;
 import org.jhove2.config.ConfigInfo;
 import org.jhove2.core.Message.Context;
 import org.jhove2.core.Message.Severity;
@@ -55,8 +56,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath*:**/message-test-config.xml", "classpath*:**/test-config.xml"})
-public class MessageTest {
+@ContextConfiguration(locations={
+		"classpath*:**/message-test-config.xml", 
+		"classpath*:**/persist-test-config.xml",
+		"classpath*:**/test-config.xml"})
+public class MessageTest extends ConfigTestBase{
 
 	private String ASCIIProfilenonBasicLatinMessage;
 	private String ASCIIProfilenonBasicLatinMessageparm;
@@ -92,7 +96,7 @@ public class MessageTest {
 	 */
 	@Test
 	public void testMessageSeverityContextStringObjectArray() {
-//		Locale.setDefault(new Locale("en", "US"));
+
 		Locale locale = new Locale("en", "US");
 		Message message = null;
 		Object[] messageParms = null;

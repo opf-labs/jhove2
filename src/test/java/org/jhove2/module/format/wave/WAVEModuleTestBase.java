@@ -40,16 +40,20 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.annotation.Resource;
 
+import org.jhove2.ConfigTestBase;
 import org.jhove2.app.util.FeatureConfigurationUtil;
+import org.jhove2.config.ConfigInfo;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.source.FileSource;
-import org.jhove2.persist.PersistenceManager;
 import org.jhove2.persist.PersistenceManagerUtil;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -62,16 +66,32 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @author slabrams
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath*:**/j2test-wave-config.xml",
-        "classpath*:**/j2test-riff-config.xml",
-        "classpath*:**/test-config.xml", "classpath*:**/filepaths-config.xml" })
+@ContextConfiguration(locations = {	
+		"classpath*:**/persist-test-config.xml",
+		"classpath*:**/test-config.xml", 
+		"classpath*:**/j2test-wave-config.xml",
+        "classpath*:**/j2test-riff-config.xml",               
+        "classpath*:**/filepaths-config.xml"})
         
-public class WAVEModuleTestBase {
+public class WAVEModuleTestBase extends ConfigTestBase {
 
     protected WAVEModule testWaveModule;
     private JHOVE2 JHOVE2;
     private String waveDirBasePath;
     protected boolean initialized;
+    protected String persistenceFactoryClassName;
+	protected static ConfigInfo configInfo;
+	
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+		ArrayList<String>locs = new ArrayList<String>();
+		locs.add("classpath*:**/persist-test-config.xml");
+		locs.add("classpath*:**/test-config.xml");
+		locs.add("classpath*:**/j2test-wave-config.xml");
+		locs.add("classpath*:**/j2test-riff-config.xml");
+		ConfigTestBase.setCONTEXT_PATHS(locs);
+    	ConfigTestBase.setUpBeforeClass();
+	}
 
     public WAVEModule getTestWaveModule() {
         return this.testWaveModule;
@@ -86,7 +106,7 @@ public class WAVEModuleTestBase {
         return this.JHOVE2;
     }
 
-    @Resource
+    @Resource (name="JHOVE2")
     public void setJHOVE2(JHOVE2 jhove2) {
         this.JHOVE2 = jhove2;
     }
@@ -99,14 +119,23 @@ public class WAVEModuleTestBase {
     public void setWaveDirBasePath(String waveDirBasePath) {
         this.waveDirBasePath = waveDirBasePath;
     }
-
+    
+    @Resource (name="PersistenceManagerFactoryClassName")
+	public void setPersistenceFactoryClassName(String persistenceFactoryClassName) {
+		this.persistenceFactoryClassName = persistenceFactoryClassName;
+	}
+    
+    @Before
+    public void setUp()
+        throws Exception
+    {
+    	PersistenceManagerUtil.createPersistenceManagerFactory(persistenceFactoryClassName);
+		PersistenceManagerUtil.getPersistenceManagerFactory().getInstance().initialize();
+    }
+    
     protected void parse(String relativePath) {
-        PersistenceManager persistenceManager = null;
         String waveExampleDirPath = null;
         try {
-            PersistenceManagerUtil.createPersistenceManagerFactory(JHOVE2.getConfigInfo());
-            persistenceManager = PersistenceManagerUtil.getPersistenceManagerFactory().getInstance();
-            persistenceManager.initialize();
             waveExampleDirPath =
                 FeatureConfigurationUtil.getFilePathFromClasspath(this.waveDirBasePath,
                                                                   "WAVE examples base directory");

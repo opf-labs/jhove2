@@ -39,6 +39,7 @@ import java.util.List;
 
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.module.aggrefy.Aggrefier;
+import org.jhove2.module.aggrefy.AggrefierModule;
 import org.jhove2.module.aggrefy.Recognizer;
 
 /**
@@ -47,7 +48,7 @@ import org.jhove2.module.aggrefy.Recognizer;
  *
  */
 public interface AggrefierAccessor extends ModuleAccessor {
-	
+
 	/**
 	 * Set Recognizers
 	 * @param module Aggrefier Module
@@ -63,5 +64,21 @@ public interface AggrefierAccessor extends ModuleAccessor {
 	 * @throws JHOVE2Exception
 	 */
 	public List<Recognizer> getRecognizers(Aggrefier module)throws JHOVE2Exception;
+	/**
+	 * Add Recognizer to aggrefier
+	 * @param module aggrefier
+	 * @param recognizer
+	 * @return recognizer
+	 * @throws JHOVE2Exception
+	 */
+	public Recognizer addRecognizer (Aggrefier module,Recognizer recognizer)throws JHOVE2Exception;
+	/**
+	 * Remove Recognizer from aggrefier
+	 * @param module aggrefier
+	 * @param recognizer
+	 * @return recognizer
+	 * @throws JHOVE2Exception
+	 */
+	public Recognizer deleteRecognizer (Aggrefier module,Recognizer recognizer)throws JHOVE2Exception;
 	
 }

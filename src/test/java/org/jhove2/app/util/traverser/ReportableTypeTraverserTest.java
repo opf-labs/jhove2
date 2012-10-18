@@ -56,8 +56,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath*:**/test-config.xml", 
-"classpath*:**/filepaths-config.xml"})
+@ContextConfiguration(locations={
+		"classpath*:**/persist-test-config.xml", 
+		"classpath*:**/test-config.xml", 
+		"classpath*:**/filepaths-config.xml"})
 public class ReportableTypeTraverserTest {
 	
 	public static final String CLASS_JHOVE2 = "org.jhove2.core.JHOVE2";

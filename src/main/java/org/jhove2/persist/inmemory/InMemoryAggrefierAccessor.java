@@ -43,13 +43,12 @@ import org.jhove2.module.aggrefy.Aggrefier;
 import org.jhove2.module.aggrefy.Recognizer;
 import org.jhove2.persist.AggrefierAccessor;
 
-import com.sleepycat.persist.model.Persistent;
 
 /**
  * @author smorrissey
  *
  */
-@Persistent
+
 public class InMemoryAggrefierAccessor extends InMemoryBaseModuleAccessor
 	implements AggrefierAccessor {
 	
@@ -58,7 +57,7 @@ public class InMemoryAggrefierAccessor extends InMemoryBaseModuleAccessor
 	 * of an aggregate format.  Each identifier recognizes exactly one format.
      */
 	protected List<Recognizer> recognizers;
-
+	
 	public InMemoryAggrefierAccessor(){
 		super();
 		this.recognizers = new ArrayList<Recognizer>();
@@ -73,15 +72,68 @@ public class InMemoryAggrefierAccessor extends InMemoryBaseModuleAccessor
 		return this.recognizers;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.jhove2.persist.AggrefierAccessor#setRecognizers(org.jhove2.module.aggrefy.Aggrefier, java.util.List)
-	 */
+	@Override
+	public Recognizer addRecognizer(Aggrefier module, Recognizer recognizer)
+			throws JHOVE2Exception {
+		if (module !=null && module.getModuleAccessor()!=null){
+			this.persistModule(module);
+		}
+		if (recognizer != null && module == this.module){
+			if (recognizer.getModuleAccessor()!=null){
+				recognizer.getModuleAccessor().persistModule(recognizer);
+			}
+			if (!this.recognizers.contains(recognizer)){
+				recognizers.add(recognizer);
+			}
+			// make sure recognizer points to its parent Aggrefier
+			if (!(recognizer.getParentAggrefier()==module)){
+				InMemoryRecognizerAccessor ra = (InMemoryRecognizerAccessor) 
+										recognizer.getModuleAccessor();
+				ra.setParentAggrefier(recognizer, module);
+			}
+		}
+		return recognizer;
+	}
+
+	@Override
+	public Recognizer deleteRecognizer(Aggrefier module, Recognizer recognizer)
+			throws JHOVE2Exception {
+		if (module !=null && module.getModuleAccessor()!=null){
+			this.persistModule(module);
+		}
+		if (recognizer != null && module == this.module){
+			if (recognizer.getModuleAccessor()!=null){
+				recognizer.getModuleAccessor().persistModule(recognizer);
+			}
+			this.recognizers.remove(recognizer);
+			// make sure recognizer no longer points to aggrefier
+			if (recognizer.getParentAggrefier() == module){
+				InMemoryRecognizerAccessor ra = (InMemoryRecognizerAccessor) recognizer.getModuleAccessor();
+				ra.setParentAggrefier(recognizer, null);
+			}
+		}
+		return recognizer;
+	}
+
 	@Override
 	public List<Recognizer> setRecognizers(Aggrefier module,
 			List<Recognizer> recognizers) throws JHOVE2Exception {
-		this.recognizers = recognizers;
+		if (this.module==null){
+			this.persistModule(module);
+		}
+		if (module==this.module){
+			for (Recognizer recognizer:this.recognizers){
+				this.deleteRecognizer(module, recognizer);
+			}
+			if (recognizers != null){
+				for (Recognizer recognizer:recognizers){
+					this.addRecognizer(module, recognizer);
+				}
+			}
+		}
 		return this.recognizers;
 	}
+
 
 
 }

@@ -8,16 +8,34 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import javax.annotation.Resource;
+
+import org.jhove2.ConfigTestBase;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.source.URLSource;
-import org.jhove2.persist.inmemory.InMemorySourceFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-public class InputFactoryTest {
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations={
+		"classpath*:**/persist-test-config.xml",
+		"classpath*:**/core/test-config.xml",
+		"classpath*:**/module/**/test-config.xml"})
+		
+public class InputFactoryTest extends ConfigTestBase {
 
+	private JHOVE2 jhove2;
+	
+	@Resource
+	public void setJHOVE2(JHOVE2 jhove2) {
+	    this.jhove2 = jhove2;
+	}
+	
 	@Before
 	public void setUp() throws Exception {
 	}
@@ -35,9 +53,9 @@ public class InputFactoryTest {
 			e1.printStackTrace();
 		}
 		try {
-			JHOVE2 jhove2 = new JHOVE2();
-			InMemorySourceFactory sourceFactory = new InMemorySourceFactory();
-			jhove2.setSourceFactory(sourceFactory);
+//			JHOVE2 jhove2 = new JHOVE2();
+//			InMemorySourceFactory sourceFactory = new InMemorySourceFactory();
+//			jhove2.setSourceFactory(sourceFactory);
 			URLSource yahooURL = (URLSource)jhove2.getSourceFactory().getSource
 											  (jhove2, yahoo);
 			Input input = yahooURL.getInput(jhove2);

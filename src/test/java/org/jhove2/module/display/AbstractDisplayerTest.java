@@ -39,6 +39,7 @@ import static org.junit.Assert.fail;
 
 import javax.annotation.Resource;
 
+import org.jhove2.ConfigTestBase;
 import org.jhove2.app.util.FeatureConfigurationUtil;
 import org.jhove2.config.spring.SpringConfigInfo;
 import org.jhove2.core.JHOVE2;
@@ -46,9 +47,9 @@ import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.core.io.Input;
 import org.jhove2.core.reportable.Reportable;
 import org.jhove2.core.source.Source;
-import org.jhove2.persist.PersistenceManager;
 import org.jhove2.persist.PersistenceManagerUtil;
 import org.jhove2.persist.inmemory.InMemoryBaseModuleAccessor;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -61,13 +62,23 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath*:**/abstractdisplayer-config.xml",
-		"classpath*:**/test-config.xml", "classpath*:**/filepaths-config.xml"})
-public class AbstractDisplayerTest {
+@ContextConfiguration(locations={
+		"classpath*:**/abstractdisplayer-config.xml",
+		"classpath*:**/persist-test-config.xml",
+		"classpath*:**/test-config.xml", 
+		"classpath*:**/filepaths-config.xml"})
+public class AbstractDisplayerTest extends ConfigTestBase {
 
 	private JHOVE2 JHOVE2;
 	private String utf8DirBasePath;
 	private String testFile01;
+	private String persistenceFactoryClassName;
+
+	@Before
+	public void setUp() throws Exception {
+		PersistenceManagerUtil.createPersistenceManagerFactory(persistenceFactoryClassName);
+		PersistenceManagerUtil.getPersistenceManagerFactory().getInstance().initialize();
+	}
 
 	/**
 	 * Test method for {@link org.jhove2.module.display.AbstractDisplayer#display(Reportable)}.
@@ -81,14 +92,10 @@ public class AbstractDisplayerTest {
 		} catch (JHOVE2Exception e1) {
 			fail("Could not create base directory");
 		}
-		PersistenceManager persistenceManager = null;
 		try {
-            PersistenceManagerUtil.createPersistenceManagerFactory(JHOVE2.getConfigInfo());
-			persistenceManager = PersistenceManagerUtil.getPersistenceManagerFactory().getInstance();
-			persistenceManager.initialize();
 			String filePath = utf8DirPath.concat(testFile01);
-			Source source = JHOVE2.getSourceFactory().getSource(JHOVE2, filePath);
-			
+			Source source = JHOVE2.getSourceFactory().getSource(JHOVE2, filePath);	
+			source.addModule(JHOVE2);
 			Input  input  = source.getInput(JHOVE2);
 			source = JHOVE2.characterize(source, input);
 			Displayer displayer = SpringConfigInfo.getReportable(Displayer.class,
@@ -122,5 +129,12 @@ public class AbstractDisplayerTest {
 	@Resource
 	public void setUtf8DirBasePath(String testDir) {
 		this.utf8DirBasePath = testDir;
+	}
+	/**
+	 * @param persistenceFactoryClassName the persistenceFactoryClassName to set
+	 */
+	@Resource (name="PersistenceManagerFactoryClassName")
+	public void setPersistenceFactoryClassName(String persistenceFactoryClassName) {
+		this.persistenceFactoryClassName = persistenceFactoryClassName;
 	}
 }

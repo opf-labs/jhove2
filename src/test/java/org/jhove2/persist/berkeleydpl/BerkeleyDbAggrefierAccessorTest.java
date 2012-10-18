@@ -40,53 +40,21 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.module.aggrefy.AggrefierModule;
 import org.jhove2.module.aggrefy.GlobPathRecognizer;
 import org.jhove2.module.aggrefy.Recognizer;
-import org.jhove2.persist.PersistenceManager;
-import org.jhove2.persist.PersistenceManagerUtil;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 /**
  * @author smorrissey
  *
  */
 
-public class BerkeleyDbAggrefierAccessorTest {
-	
-	static String persistenceMgrClassName = "org.jhove2.config.spring.SpringBerkeleyDbPersistenceManagerFactory";
-	static PersistenceManager persistenceManager = null;
+public class BerkeleyDbAggrefierAccessorTest extends BerkeleyDbTestBase {
 	
 	GlobPathRecognizer bdbShapeFileRecognizer;
 	AggrefierModule bdbAggrefierModule;
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-		PersistenceManagerUtil.createPersistenceManagerFactory(persistenceMgrClassName);
-		persistenceManager = PersistenceManagerUtil.getPersistenceManagerFactory().getInstance();
-		persistenceManager.initialize();
-	}
 
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-		if (persistenceManager != null){
-			try{
-				persistenceManager.close();
-			}
-			catch (JHOVE2Exception je){
-				System.err.println(je.getMessage());
-				je.printStackTrace(System.err);
-			}
-		}
-	}
 
 	/**
 	 * Test method for {@link org.jhove2.persist.berkeleydpl.BerkeleyDbAggrefierAccessor#getRecognizers(org.jhove2.module.aggrefy.Aggrefier)}.
@@ -102,7 +70,7 @@ public class BerkeleyDbAggrefierAccessorTest {
 			long modId1 = bdbAggrefierModule.getModuleId().longValue();
 			assertEquals(0,recs.size());
 			List<Recognizer> newRecs = new ArrayList<Recognizer>();
-			bdbShapeFileRecognizer = new GlobPathRecognizer(new BerkeleyDbBaseModuleAccessor());
+			bdbShapeFileRecognizer = new GlobPathRecognizer(new BerkeleyDbRecognizerAccessor());
 			assertNull(bdbShapeFileRecognizer.getModuleId());
 			assertNull(bdbShapeFileRecognizer.getParentAggrefierId());
 			newRecs.add(bdbShapeFileRecognizer);
@@ -119,8 +87,6 @@ public class BerkeleyDbAggrefierAccessorTest {
 			fail (e.getMessage());
 		}
 	}
-
-
 	
 	@Test
 	public void testPersistModule() {
@@ -131,10 +97,11 @@ public class BerkeleyDbAggrefierAccessorTest {
 				persistModule(bdbAggrefierModule);
 			assertNotNull(bdbAggrefierModule.getModuleId());
 			long modId3 = bdbAggrefierModule.getModuleId().longValue();
-			bdbAggrefierModule   = (AggrefierModule)bdbAggrefierModule.getModuleAccessor().
-			retrieveModule(bdbAggrefierModule.getModuleId());
-		    assertEquals(modId3,bdbAggrefierModule.getModuleId().longValue());
-		    
+			BerkeleyDbAggrefierAccessor ama = 
+				(BerkeleyDbAggrefierAccessor)bdbAggrefierModule.getModuleAccessor();
+			bdbAggrefierModule   = 
+				(AggrefierModule)ama.retrieveModule(bdbAggrefierModule.getModuleId());
+		    assertEquals(modId3,bdbAggrefierModule.getModuleId().longValue());		    
 		    bdbAggrefierModule   = (AggrefierModule)bdbAggrefierModule.getModuleAccessor().
 			persistModule(bdbAggrefierModule);
 		    assertEquals(modId3,bdbAggrefierModule.getModuleId().longValue());

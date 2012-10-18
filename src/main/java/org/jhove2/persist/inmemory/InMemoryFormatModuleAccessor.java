@@ -43,13 +43,11 @@ import org.jhove2.module.format.FormatModule;
 import org.jhove2.module.format.FormatProfile;
 import org.jhove2.persist.FormatModuleAccessor;
 
-import com.sleepycat.persist.model.Persistent;
 
 /**
  * @author smorrissey
  *
  */
-@Persistent
 public class InMemoryFormatModuleAccessor extends InMemoryBaseModuleAccessor
 	implements FormatModuleAccessor {
 
@@ -76,13 +74,60 @@ public class InMemoryFormatModuleAccessor extends InMemoryBaseModuleAccessor
 	@Override
 	public List<FormatProfile> setProfiles(FormatModule module,
 			List<FormatProfile> profiles) throws JHOVE2Exception {
-		if (this.profiles != null){
-			for(FormatProfile profile:profiles){
-				profile.setFormatModule(module);
+		if (module!=null && module.getModuleAccessor()!=null){
+			module.getModuleAccessor().persistModule(module);
+		}
+		if (module==this.module){
+			for (FormatProfile profile : this.profiles){
+				this.deleteProfile(module, profile);
+			}
+			if (profiles != null){
+				for (FormatProfile profile:profiles){
+					this.addProfile(module, profile);
+				}
 			}
 		}
-		this.profiles = profiles;
 		return this.profiles;
+	}
+	@Override
+	public FormatProfile addProfile(FormatModule module, FormatProfile profile)
+			throws JHOVE2Exception {
+		if (module != null && module.getModuleAccessor()!=null){
+			module.getModuleAccessor().persistModule(module);
+		}
+		if (profile != null && profile.getModuleAccessor()!=null){
+			profile.getModuleAccessor().persistModule(profile);
+		}
+		if (profile != null && module == this.module){
+			if (!this.profiles.contains(profile)){
+				this.profiles.add(profile);
+			}
+			// make sure profile points to its parent FormatModule
+			if (!(profile.getFormatModule()==module)){
+				InMemoryFormatProfileAccessor ra = (InMemoryFormatProfileAccessor) profile.getModuleAccessor();
+				ra.setFormatModule(profile, module);
+			}
+		}
+		return profile;
+	}
+	@Override
+	public FormatProfile deleteProfile(FormatModule module,
+			FormatProfile profile) throws JHOVE2Exception {
+		if (module != null && module.getModuleAccessor()!=null){
+			module.getModuleAccessor().persistModule(module);
+		}
+		if (profile != null && profile.getModuleAccessor()!=null){
+			profile.getModuleAccessor().persistModule(profile);
+		}
+		if (profile != null && module == this.module){
+			this.profiles.remove(profile);
+			// make sure profile no longer points to module
+			if (profile.getFormatModule() == module){
+				InMemoryFormatProfileAccessor ra = (InMemoryFormatProfileAccessor) profile.getModuleAccessor();
+				ra.setFormatModule(profile, null);
+			}
+		}
+		return profile;
 	}
 
 

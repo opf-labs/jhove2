@@ -68,6 +68,10 @@ public class LinkChunk
         this.xmlFormat = xml;
     }
     
+    private LinkChunk(){
+    	super();
+    }
+    
     /** Parse a link chunk.
      * @param jhove2 JHOVE2 framework
      * @param source WAVE source

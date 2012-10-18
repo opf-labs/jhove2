@@ -41,9 +41,11 @@ import static org.junit.Assert.fail;
 
 import javax.annotation.Resource;
 
+import org.jhove2.ConfigTestBase;
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.JHOVE2Exception;
 import org.jhove2.module.aggrefy.AggrefierModule;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -54,17 +56,29 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath*:**/test-config.xml"})
-public class AbstractSourceTest {
+@ContextConfiguration(locations={
+"classpath*:**/abstractdisplayer-config.xml",
+"classpath*:**/persist-test-config.xml",
+"classpath*:**/core/test-config.xml", 
+"classpath*:**/module/**/test-config.xml", 
+"classpath*:**/filepaths-config.xml"})
+public class AbstractSourceTest extends ConfigTestBase{
 	
 	private AggrefierModule Aggrefier;
 	private JHOVE2 JHOVE2;
+	@Before
+    public void setUp()
+        throws Exception
+    {
+		AbstractSource.getModuleIDs().clear();
+    }
 
 	/**
 	 * Test method for {@link org.jhove2.core.source.AbstractSource#equals(java.lang.Object)}.
 	 */
 	@Test
 	public void testEqualsObject() {
+		
 		try {
 			FileSetSource fsSource1 = JHOVE2.getSourceFactory().getFileSetSource(JHOVE2);
 			assertEquals(fsSource1, fsSource1);
@@ -152,13 +166,13 @@ public class AbstractSourceTest {
 			assertEquals(0, clump1.compareTo(clump2));
 
 			JHOVE2=(JHOVE2) fsSource1.addModule(JHOVE2);
-			assertEquals(0,fsSource1.compareTo(fsSource2));
-			assertEquals(0,clump1.compareTo(clump2));
+			assertEquals(1,fsSource1.compareTo(fsSource2));
+			assertEquals(1,clump1.compareTo(clump2));
 			JHOVE2=(JHOVE2) fsSource2.addModule(JHOVE2);
-			assertEquals(0,fsSource2.compareTo(fsSource1));
-			assertEquals(0, clump1.compareTo(clump2));
+			assertEquals(-1,fsSource2.compareTo(fsSource1));
+			assertEquals(1, clump1.compareTo(clump2));
 			Aggrefier=(AggrefierModule) fsSource2.addModule(Aggrefier);
-			assertEquals(-1, fsSource1.compareTo(fsSource2));
+			assertEquals(1, fsSource1.compareTo(fsSource2));
 			assertEquals(1,clump1.compareTo(clump2));
 		} catch (JHOVE2Exception e) {
 			fail(e.getMessage());
@@ -177,7 +191,7 @@ public class AbstractSourceTest {
 	public JHOVE2 getJHOVE2() {
 		return JHOVE2;
 	}
-	@Resource
+	@Resource (name="JHOVE2")
 	public void setJHOVE2(JHOVE2 jHOVE2) {
 		JHOVE2 = jHOVE2;
 	}
