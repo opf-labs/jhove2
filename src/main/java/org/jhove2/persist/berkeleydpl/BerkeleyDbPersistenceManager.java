@@ -100,6 +100,13 @@ public class BerkeleyDbPersistenceManager implements PersistenceManager {
 
 	@Override
 	public void initialize() throws JHOVE2Exception {
+		if (envHome==null || envHome.length()==0){
+			envHome= this.getTempDirPath();
+		}
+		if (envHome==null){
+			throw new JHOVE2Exception
+				("null value for envHome; cannot createBerkeleyDB env home path");
+		}
 		File envHomeFile = new File(envHome);
 		boolean exists = envHomeFile.exists();
 		if (!exists){
@@ -196,6 +203,11 @@ public class BerkeleyDbPersistenceManager implements PersistenceManager {
 		return;
 	}
 
+	public String getTempDirPath(){
+		String tempDirPath = null;
+		tempDirPath = System.getProperty("java.io.tmpdir");
+		return tempDirPath;
+	}
 	
 	/**
 	 * @return the envConfig

@@ -10,7 +10,7 @@
 		
 	<bean id="BerkeleyDbPersistenceManager" class="org.jhove2.persist.berkeleydpl.BerkeleyDbPersistenceManager"
 	     scope="singleton">
-	     <property name="envHome" value="C:\"/>
+<!-- 	     <property name="envHome" value="C:\"/> -->
  	     <property name="entityStoreName" value="JHOVE2_Entity_Store"/>  
  	     <property name="storeConfig" ref="StoreConfig"/>
 	     <property name="envConfig" ref="EnvironmentConfig"/>
