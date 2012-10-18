@@ -74,9 +74,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations={
 		"classpath*:**/test-config.xml", 
 		"classpath*:**/persist-test-config.xml",
-		"classpath*:**/filepaths-config.xml",})
+		"classpath*:**/filepaths-config.xml"})
 
-		public class OpenSpWrapperWindowsExeTest extends ConfigTestBase{
+public class OpenSpWrapperWindowsExeTest extends ConfigTestBase{
 	protected JHOVE2 JHOVE2;
 	protected SgmlModule wtestSgmlModule;
 	protected String catalogFile;
