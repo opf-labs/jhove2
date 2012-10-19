@@ -98,7 +98,7 @@ public class SpringTiff2FormatMapFactoryTest extends ConfigTestBase {
 	@Test
 	public void testGetFormat() {
 		Map<String, String> puidToJhoveId = null;
-		SpringConfigInfo configInfo = new SpringConfigInfo();
+		SpringConfigInfo configInfo = new SpringConfigInfo(ConfigTestBase.getCONTEXT_PATHS());
 		try {
 			puidToJhoveId = configInfo.getFormatAliasIdsToJ2Ids(I8R.Namespace.PUID);
 			if (!puidToJhoveId.containsKey(XmlPuid)){

@@ -36,8 +36,10 @@ package org.jhove2.config.spring;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.ArrayList;
 import java.util.Properties;
 
+import org.jhove2.ConfigTestBase;
 import org.jhove2.core.JHOVE2Exception;
 import org.junit.After;
 import org.junit.Before;
@@ -48,8 +50,11 @@ import org.junit.Test;
  * @author mstrong
  * 
  */
-public class InitializerTest {
+public class InitializerTest extends ConfigTestBase{
 
+	protected final String[] configPaths = {
+		"classpath*:**/persist-test-config.xml",
+		"classpath*:**/test-config.xml"};
 	/**
 	 * @throws java.lang.Exception
 	 */
@@ -94,7 +99,9 @@ public class InitializerTest {
 	 */
 	@Test
 	public void testGetProperties() throws JHOVE2Exception {
-		SpringConfigInfo springConfigInfo = new SpringConfigInfo();
+
+		SpringConfigInfo springConfigInfo = new SpringConfigInfo
+			(ConfigTestBase.getCONTEXT_PATHS());
 		Properties props1 = springConfigInfo.getProperties("C0Control");
 		assertTrue("Error loading C0Control", props1 != null);
 

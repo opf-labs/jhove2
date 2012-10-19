@@ -285,7 +285,7 @@ public class BerkeleyDbSourceAccessor
 //      The returned source object has its key field updated
 		if (source != null){
 			try{
-				this.getBerkeleyDbPersistenceManager().getSourceBySourceId().put((AbstractSource) source); 
+				this.getBerkeleyDbPersistenceManager().getSourceBySourceId().put((AbstractSource) source);
 			}
 			catch(DatabaseException e){
 				throw new JHOVE2Exception("Could not persist Source" , e);

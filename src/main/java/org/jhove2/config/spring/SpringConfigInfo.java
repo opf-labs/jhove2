@@ -72,8 +72,7 @@ public class SpringConfigInfo
 	
 	/** Spring configuration classpath. */
 	protected static String[] CLASSPATH;
-	
-	
+
 	/** Spring application context. */
 	@NotPersistent
 	protected static ApplicationContext context;
@@ -319,22 +318,49 @@ public class SpringConfigInfo
 	/**
 	 * @return the cLASSPATH
 	 */
-	protected static synchronized String[] getCLASSPATH() {
+	public static synchronized String[] getCLASSPATH() {
 		return SpringConfigInfo.CLASSPATH;
 	}
 
 	/**
 	 * @param cLASSPATH the cLASSPATH to set
 	 */
-	protected static synchronized void setCLASSPATH(String[] cLASSPATH) {
+	public static synchronized void setCLASSPATH(String[] cLASSPATH) {
+		String[]oldPath = SpringConfigInfo.CLASSPATH;
 		SpringConfigInfo.CLASSPATH = cLASSPATH;
-		SpringConfigInfo.setContext(null);
+		boolean isChanged = false;
+		if (oldPath == null){
+				if (cLASSPATH!=null){
+					isChanged = true;
+				}
+		}
+		else {
+			if (cLASSPATH==null){
+				isChanged=true;
+			}
+			else{
+				if (oldPath.length!=cLASSPATH.length){
+					isChanged=true;
+				}
+				else {
+					for (int i=0; i<oldPath.length;i++){
+						if (!oldPath[i].equals(cLASSPATH[i])){
+							isChanged=true;
+							break;
+						}
+					}
+				}
+			}
+		}
+		if (isChanged) {               
+			SpringConfigInfo.setContext(null);
+		}
 	}
 
 	/**
 	 * @param context the context to set
 	 */
-	protected static synchronized void setContext(ApplicationContext context) {
+	public static synchronized void setContext(ApplicationContext context) {
 		SpringConfigInfo.context = context;
 	}
 	/**

@@ -81,7 +81,8 @@ public class ConfigTestBase {
 			for (String path:DEFAULT_PATHS){
 				paths.add(path);
 			}
-		}
+			CONTEXT_PATHS = paths;
+		}		
 		SpringConfigInfo.resetContext(paths);
 	} 
 	

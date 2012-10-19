@@ -339,7 +339,14 @@
 	<bean id="bdbtest-bdbInfo-path" class="java.lang.String">
 		<constructor-arg type="java.lang.String" value="classpath*:**/bdb-test-config.xml"/>
 	</bean>
-<!-- 	<bean id="bdbtest-persist-configInof-path" class="java.lang.String"> -->
-<!-- 		<constructor-arg type="java.lang.String" value="classpath*:**/persist-test-config.xml"/> -->
-<!-- 	</bean> -->
+
+<!--  BEAN for message properties files (used for I18N ) -->
+	<!--    NOTE  BEAN MUST HAVE id "messageSource" -->
+	<bean id="messageSource" class="org.jhove2.config.spring.ResourceBundleMessageSource">
+		<property name="basename" >
+			<!--  base name for localized message template properties files -->
+			<value>messages</value>
+		</property>
+	</bean>
+	
 </beans>

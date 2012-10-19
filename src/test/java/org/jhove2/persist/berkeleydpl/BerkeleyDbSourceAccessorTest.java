@@ -238,7 +238,7 @@ public class BerkeleyDbSourceAccessorTest extends BerkeleyDbTestBase{
 	public void testAddMessage() {
 		Message message01 = null;
 		Message message02 = null;
-		ConfigInfo configInfo = new SpringConfigInfo();
+		ConfigInfo configInfo = jhove2.getConfigInfo();
 
 		try {
 			source = sourceFactory.getSource(jhove2, tempDirBasePath);
