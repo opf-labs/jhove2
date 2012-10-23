@@ -65,4 +65,9 @@
 	        value="examples/xml/"/>
 	</bean>
 	
+	<bean id="messageDirBasePath" class="java.lang.String" >
+		<constructor-arg type="java.lang.String" 
+	        value="examples/messages/"/>
+	</bean>
+	
 </beans>

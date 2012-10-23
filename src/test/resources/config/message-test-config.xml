@@ -56,4 +56,9 @@
 	        value=" : "/>
 	</bean>	
 	
+	<!-- message code test file -->
+    <bean id="MessageCodeTestFile" class="java.lang.String">
+    	<constructor-arg type="java.lang.String" value="TiffIFD.java"/>
+	</bean>
+	
 </beans>
