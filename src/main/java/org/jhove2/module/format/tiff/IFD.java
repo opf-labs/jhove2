@@ -228,7 +228,7 @@ extends AbstractReportable {
     public void parse(JHOVE2 jhove2, Source source, Input input, Tiff2FormatMapFactory tiff2FormatMapper)
         throws EOFException, IOException, JHOVE2Exception
     {
-        this.isValid = Validity.Undetermined;
+        this.isValid = Validity.True;
         long offsetInIFD = this.offset;
         this.nextIFD = 0L;
 
@@ -264,9 +264,18 @@ extends AbstractReportable {
                 IFDEntry ifdEntry = new IFDEntry();
                 ifdEntry.parse(jhove2, source, input, tiff2FormatMapper);
                 Validity validity = ifdEntry.isValid();
-                if (validity != Validity.True) {
-                    this.isValid = validity;
-                }
+                switch (validity){
+                case Undetermined:
+                	if (this.isValid==Validity.True){
+                		this.isValid = validity;
+                	}
+                	break;
+                case False: //False is stronger than Undetermined
+                	this.isValid = validity;
+                	break;
+                case True:  // if IFD already flagged as False or Undetermined, will not undo just because one tag is good
+                	break;
+                }               
                 int version = ifdEntry.getVersion();
                 if (version > this.version) {
                     this.version = version;

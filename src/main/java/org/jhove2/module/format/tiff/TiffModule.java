@@ -53,6 +53,7 @@ import org.jhove2.core.source.MeasurableSource;
 import org.jhove2.core.source.Source;
 import org.jhove2.module.format.BaseFormatModule;
 import org.jhove2.module.format.Validator;
+import org.jhove2.module.format.Validator.Validity;
 import org.jhove2.persist.FormatModuleAccessor;
 
 import com.sleepycat.persist.model.Persistent;
@@ -157,7 +158,7 @@ public class TiffModule
     throws EOFException, IOException, JHOVE2Exception
     {
         long consumed = 0L;
-        this.validity = Validity.Undetermined;
+        this.validity = Validity.True;
         
         /* initialize the tiff tags */
         TiffTag.getTiffTags(jhove2);
@@ -220,10 +221,19 @@ public class TiffModule
                     ((TiffIFD) ifd).postParse();
                     ifd.validate(jhove2, source);
                     Validity validity = ifd.isValid();
-                    if (validity != Validity.True) {
-                        this.validity = validity;
-                        }
-                    }
+                    switch (validity){
+                    case Undetermined:
+                    	if (this.validity==Validity.True){ 
+                    		this.validity = validity;
+                    	}
+                    	break;
+                    case False: //False is stronger than Undetermined
+                    	this.validity = validity;
+                    	break;
+                    case True:  // if module already flagged as False or Undetermined, will not undo just because one IFD is good
+                    	break;
+                    }    
+                   }
                 }
             }
         catch (EOFException e) {
