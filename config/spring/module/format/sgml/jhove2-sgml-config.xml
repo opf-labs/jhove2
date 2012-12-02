@@ -12,9 +12,9 @@
 		<property name="wrappedProduct" ref="OpenSgml"/>
 		<!--  Comment out unused sgmlParser property, depending on which OS/exe configuration you employ -->
 		<!-- if using OpenJade unix exe on Unix or via Cygwin on Windows -->
-		<property name="sgmlParser" ref="OpenSpWrapper"/>
+		<!-- <property name="sgmlParser" ref="OpenSpWrapper"/> -->
 		<!-- if using OpenJade Windows dll and executable -->
-		<!-- <property name="sgmlParser" ref="OpenSpWrapperForWindowsExe"/> -->
+		<property name="sgmlParser" ref="OpenSpWrapperForWindowsExe"/>
 		<property name="shouldFindDoctype" value="true"/>
 	</bean>
 	<!-- OpenSpWrapper bean wraps invocations to OpenSP executables (UNIX or Cygwin on Windows -->
@@ -40,8 +40,8 @@
         <property name="onsgmlsPath" value="C:\PROGRA~1\OpenSp\onsgmls.exe"/>
         <property name="sgmlnormPath" value="C:\PROGRA~1\OpenSp\osgmlnorm.exe"/>
         -->
-		<property name="onsgmlsPath" value="C:\cygwin\bin\onsgmls.exe"/>
-		<property name="sgmlnormPath" value="C:\cygwin\bin\osgmlnorm.exe"/>
+		<property name="onsgmlsPath" value="C:\OpenSP-1.5.2-win32\onsgmls.exe"/>
+		<property name="sgmlnormPath" value="C:\OpenSP-1.5.2-win32\osgmlnorm.exe"/>
 		<property name="onsgmlsOptions" ref="WindowsOnsgmlsOptions"/>
 		<property name="sgmlnormOptions" ref="WindowsSgmlNormOptions"/>
 		<property name="spaceEscapeChar" value='"'/>

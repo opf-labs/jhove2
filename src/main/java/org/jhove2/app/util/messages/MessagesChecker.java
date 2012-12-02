@@ -70,14 +70,24 @@ public class MessagesChecker {
 		 if (!propsFile.exists()){
 			 throw new IOException ("File " + propertiesFilePath + " does not exist");
 		 }
-		 Properties props = new Properties();
-		 FileInputStream in = new FileInputStream(propertiesFilePath);
-		 props.load(in);
-		 if (in != null){
-			 in.close();
+		 if (!propsFile.isDirectory()){
+			 throw new IOException ("File " + propertiesFilePath + " is not a directory");
+		 }		 
+		 PropertyFileFilter pFilter = new PropertyFileFilter();
+		 String[]propFiles = propsFile.list(pFilter);
+		 if (propFiles != null){	
+			 for (String propFile:propFiles){
+				 String propFilePath = propertiesFilePath.concat(SEPCHAR).concat(propFile);
+				 FileInputStream in = new FileInputStream(propFilePath);
+				 Properties props = new Properties();
+				 props.load(in);
+				 if (in != null){
+					 in.close();
+				 }
+				Set<String> propNames = props.stringPropertyNames();
+				messageKeys.addAll(propNames);
+			 }
 		 }
-		Set<String> propNames = props.stringPropertyNames();
-		messageKeys.addAll(propNames);
 		return messageKeys;
 	 }
 	 

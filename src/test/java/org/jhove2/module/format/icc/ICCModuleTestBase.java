@@ -41,6 +41,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.annotation.Resource;
 
@@ -52,6 +53,7 @@ import org.jhove2.core.io.Input;
 import org.jhove2.core.source.FileSource;
 import org.jhove2.persist.PersistenceManagerUtil;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -109,6 +111,17 @@ public class ICCModuleTestBase extends ConfigTestBase {
 	public void setPersistenceFactoryClassName(String persistenceFactoryClassName) {
 		this.persistenceFactoryClassName = persistenceFactoryClassName;
 	}
+
+    @BeforeClass 
+	public static void setUpBeforeClass() throws Exception {
+    	ArrayList<String> paths = new ArrayList<String>();   	
+    	paths.add("classpath*:**/j2test-icc-config.xml");
+    	paths.add("classpath*:**/persist-test-config.xml");
+    	paths.add("classpath*:**/test-config.xml");
+    	paths.add("classpath*:**/filepaths-config.xml");
+    	ConfigTestBase.setCONTEXT_PATHS(paths);
+    	ConfigTestBase.setUpBeforeClass();
+    } 
     
     @Before
     public void setUp()

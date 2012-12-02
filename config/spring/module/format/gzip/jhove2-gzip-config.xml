@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+	<!-- GZip module bean -->
+	<bean id="GZipModule" class="org.jhove2.module.format.gzip.GzipModule" scope="prototype">
+		<constructor-arg ref="GZipFormat"/>
+		<constructor-arg ref="FormatModuleAccessor"/>
+		<property name="developers">
+			<list value-type="org.jhove2.core.Agent">
+				<ref bean="NetarkivetAgent"/>
+				<ref bean="BnFAgent"/>
+			</list>
+		</property>
+		<property name="recurse" value="true"/>
+		<!--property name="parallelCharacterization" value="4"/-->
+	</bean>
+
+	<!-- Gzip format bean -->
+	<!--
+	<bean id="GzipFormat" class="org.jhove2.core.format.Format" scope="singleton">
+		<constructor-arg type="java.lang.String" value="Gzip"/>
+		<constructor-arg ref="GzipIdentifier"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Type" value="Family"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity" value="Unambiguous"/>
+		<property name="aliasIdentifiers">
+			<set value-type="org.jhove2.core.I8R">
+				<ref bean="PUIDxfmt263"/>
+			</set>
+		</property>
+	</bean>
+	-->
+
+	<!-- GZip format bean -->
+	<bean id="GZipFormat" class="org.jhove2.core.format.Format" scope="singleton">
+		<constructor-arg type="java.lang.String" value="GZip"/>
+		<constructor-arg ref="GZipIdentifier"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Type" value="Format"/>
+		<constructor-arg type="org.jhove2.core.format.Format$Ambiguity" value="Unambiguous"/>
+		<property name="aliasIdentifiers">
+			<set value-type="org.jhove2.core.I8R">
+				<!-- ref bean="GZipIdentifier"/ -->
+				<ref bean="GZipXFmt266Identifier"/>
+				<ref bean="GZipMimeIdentifier"/>
+				<ref bean="GZipRFC1952Identifier"/>
+				<ref bean="GZipAppleUTIIdentifier"/>
+			</set>
+		</property>
+		<property name="aliasNames">
+			<set>
+				<value>GZIP</value>
+			</set>
+		</property>
+		<property name="specifications">
+			<list value-type="org.jhove2.core.Document">
+				<ref bean="GZip43Specification"/>
+			</list>
+		</property>
+	</bean>
+
+	<!-- Alias Identifiers -->
+
+	<!-- GZip identifier bean -->
+	<bean id="GZipIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="http://jhove2.org/terms/format/gzip"/>
+	</bean>
+
+        <!-- GZip PUID x-fmt/266 alias identifier bean -->
+        <bean id="GZipXFmt266Identifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="x-fmt/266"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
+        </bean>
+
+        <!-- GZip MIME alias identifier bean -->
+        <bean id="GZipMimeIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="application/x-gzip"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="MIME"/>
+        </bean>
+
+        <!-- GZip RFC 1952 alias identifier bean -->
+        <bean id="GZipRFC1952Identifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="RFC 1952"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="RFC"/>
+        </bean>
+
+        <!-- GZip Apple UTI alias identifier bean -->
+        <bean id="GZipAppleUTIIdentifier" class="org.jhove2.core.I8R" scope="singleton">
+		<constructor-arg type="java.lang.String" value="org.gnu.gnu-zip-archive"/>
+		<constructor-arg type="org.jhove2.core.I8R$Namespace" value="UTI"/>
+	</bean>
+
+	<!-- Specifications -->
+
+	<!-- GZIP file format version 4.3 specification bean -->
+	<bean id="GZip43Specification" class="org.jhove2.core.Document" scope="singleton">
+		<constructor-arg type="java.lang.String" value="GZIP file format specification version 4.3"/>
+		<constructor-arg type="org.jhove2.core.Document$Type" value="Specification"/>
+		<constructor-arg type="org.jhove2.core.Document$Intention" value="Authoritative"/>
+		<property name="author" value="P. Deutsch"/>
+		<property name="date" value="May 1996"/>
+		<property name="edition" value="RFC 1952"/>
+		<property name="identifiers">
+		<list value-type="org.jhove2.core.I8R">
+				<bean class="org.jhove2.core.I8R">
+					<constructor-arg type="java.lang.String" value="http://tools.ietf.org/html/rfc1952"/>
+					<constructor-arg type="org.jhove2.core.I8R$Namespace" value="URI"/>
+				</bean>
+			</list>
+		</property>
+		<property name="publisher" value="IETF"/>
+	</bean>
+
+	<!-- Zip local file header general purpose bit flags properties bean -->
+<!--
+	<bean id="BitFlags" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="bit-flags"/>
+	</bean>
+-->
+	<!-- Zip local file header version compatibilities properties bean -->
+<!--
+	<bean id="Compatibilities" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="compatibilities"/>
+	</bean>
+-->
+	<!-- Zip local file header version compression methods properties bean -->
+<!--
+	<bean id="CompressionMethods" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="compression-methods"/>
+	</bean>
+-->
+	<!-- Zip local file header versions properties bean -->
+<!--
+	<bean id="Versions" class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+		<property name="propertyFileBaseName" value="versions"/>
+	</bean>
+-->
+
+	<!-- GZip module resources -->
+
+  <!-- GZip header compression methods description resources -->
+  <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+    <property name="targetClass"
+              value="org.jhove2.module.format.gzip.field.CompressionMethod"/>
+    <property name="targetMethod" value="initValues"/>
+    <property name="arguments">
+      <list>
+        <bean class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+          <property name="propertyFileBaseName"
+                    value="gzip/compression-methods"/>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <!-- GZip header extra flags description resources -->
+  <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+    <property name="targetClass"
+              value="org.jhove2.module.format.gzip.field.CompressionType"/>
+    <property name="targetMethod" value="initValues"/>
+    <property name="arguments">
+      <list>
+        <bean class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+          <property name="propertyFileBaseName"
+                    value="gzip/compression-types"/>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <!-- GZip header operating systems description resources -->
+  <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+    <property name="targetClass"
+              value="org.jhove2.module.format.gzip.field.OperatingSystem"/>
+    <property name="targetMethod" value="initValues"/>
+    <property name="arguments">
+      <list>
+        <bean class="org.jhove2.config.spring.ModulePropertiesFactoryBean">
+          <property name="propertyFileBaseName"
+                    value="gzip/operating-systems"/>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+</beans>

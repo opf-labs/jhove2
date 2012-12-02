@@ -57,11 +57,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={
-"classpath*:**/abstractdisplayer-config.xml",
+//"classpath*:**/abstractdisplayer-config.xml",
 "classpath*:**/persist-test-config.xml",
 "classpath*:**/core/test-config.xml", 
-"classpath*:**/module/**/test-config.xml", 
-"classpath*:**/filepaths-config.xml"})
+"classpath*:**/module/**/test-config.xml"}) 
+//"classpath*:**/filepaths-config.xml"})
 public class AbstractSourceTest extends ConfigTestBase{
 	
 	private AggrefierModule Aggrefier;

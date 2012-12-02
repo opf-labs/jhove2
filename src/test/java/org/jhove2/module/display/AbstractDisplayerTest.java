@@ -37,6 +37,8 @@ package org.jhove2.module.display;
 
 import static org.junit.Assert.fail;
 
+import java.util.ArrayList;
+
 import javax.annotation.Resource;
 
 import org.jhove2.ConfigTestBase;
@@ -50,6 +52,7 @@ import org.jhove2.core.source.Source;
 import org.jhove2.persist.PersistenceManagerUtil;
 import org.jhove2.persist.inmemory.InMemoryBaseModuleAccessor;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -79,7 +82,16 @@ public class AbstractDisplayerTest extends ConfigTestBase {
 		PersistenceManagerUtil.createPersistenceManagerFactory(persistenceFactoryClassName);
 		PersistenceManagerUtil.getPersistenceManagerFactory().getInstance().initialize();
 	}
-
+	@BeforeClass 
+	public static void setUpBeforeClass() throws Exception {
+    	ArrayList<String> paths = new ArrayList<String>();   	
+    	paths.add("classpath*:**/abstractdisplayer-config.xml");
+    	paths.add("classpath*:**/persist-test-config.xml");
+    	paths.add("classpath*:**/test-config.xml");
+    	paths.add("classpath*:**/filepaths-config.xml");
+    	ConfigTestBase.setCONTEXT_PATHS(paths);
+    	ConfigTestBase.setUpBeforeClass();
+    } 
 	/**
 	 * Test method for {@link org.jhove2.module.display.AbstractDisplayer#display(Reportable)}.
 	 */

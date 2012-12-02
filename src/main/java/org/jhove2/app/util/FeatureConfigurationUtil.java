@@ -425,7 +425,7 @@ public class FeatureConfigurationUtil {
 	 * @return String containing path to file
 	 * @throws JHOVE2Exception if file is not found or ClassLoader throws exception
 	 */
-	public static String getFilePathFromClasspath(String fileName, String fileDescription)throws JHOVE2Exception {
+	public static String getFilePathFromClasspath(String fileName, String fileDescription) throws JHOVE2Exception {
 	    URI fileURI = null;
 	    try {
 	        fileURI = ClassLoader.getSystemResource(fileName).toURI();
