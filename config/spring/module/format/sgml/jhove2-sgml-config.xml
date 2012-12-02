@@ -35,13 +35,11 @@
 	<!--  assumes Windows exe and dll are in c:\Program Files\OpenSp\ -->
 	<!--  Edit any paths as appropriate for your installation -->
 	<bean id="OpenSpWrapperForWindowsExe" class="org.jhove2.module.format.sgml.OpenSpWrapper" scope="prototype">
-		<property name="processHandler" ref="WindowsExternalProcessHandler"/>
-		<!-- 
+		<property name="processHandler" ref="WindowsExternalProcessHandler"/>	
         <property name="onsgmlsPath" value="C:\PROGRA~1\OpenSp\onsgmls.exe"/>
-        <property name="sgmlnormPath" value="C:\PROGRA~1\OpenSp\osgmlnorm.exe"/>
-        -->
-		<property name="onsgmlsPath" value="C:\OpenSP-1.5.2-win32\onsgmls.exe"/>
-		<property name="sgmlnormPath" value="C:\OpenSP-1.5.2-win32\osgmlnorm.exe"/>
+        <property name="sgmlnormPath" value="C:\PROGRA~1\OpenSp\osgmlnorm.exe"/>      
+<!-- 		<property name="onsgmlsPath" value="C:\OpenSP-1.5.2-win32\onsgmls.exe"/> -->
+<!-- 		<property name="sgmlnormPath" value="C:\OpenSP-1.5.2-win32\osgmlnorm.exe"/> -->
 		<property name="onsgmlsOptions" ref="WindowsOnsgmlsOptions"/>
 		<property name="sgmlnormOptions" ref="WindowsSgmlNormOptions"/>
 		<property name="spaceEscapeChar" value='"'/>

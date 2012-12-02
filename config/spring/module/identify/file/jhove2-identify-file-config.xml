@@ -16,17 +16,19 @@
        installed but libmagic is not; it can be installed using MacPorts
        (http://www.macports.org/). 
    -->
-  <bean id="LibmagicIdentifier"
-        class="org.jhove2.module.identify.file.LibmagicIdentifier"
-        scope="singleton"
-        init-method="init"
-        destroy-method="shutdown">
-    <constructor-arg ref="BaseModuleAccessor"/>
-    <property name="developers">
-      <list value-type="org.jhove2.core.Agent">
-        <ref bean="BnFAgent"/>
-      </list>
-    </property>
+   <!-- IF MAGIC IS NOT INSTALLED, YOU MUST DISABLE THIS ENTIRE BEAN -->
+<!--   <bean id="LibmagicIdentifier" -->
+<!--         class="org.jhove2.module.identify.file.LibmagicIdentifier" -->
+<!--         scope="singleton" -->
+<!--         init-method="init" -->
+<!--         destroy-method="shutdown"> -->
+<!--     <constructor-arg ref="BaseModuleAccessor"/> -->
+<!--     <property name="developers"> -->
+<!--       <list value-type="org.jhove2.core.Agent"> -->
+<!--         <ref bean="BnFAgent"/> -->
+<!--       </list> -->
+<!--     </property> -->
+    
     <!-- Point the magicFileDir property to a directory containing
          Magic definition files to force the compilation of these files
          when the LibmagicIdentifier starts (once per JVM run). If this
@@ -35,6 +37,7 @@
      -->
     <!--property name="magicFileDir" value="classpath:file/Magdir"/-->
     <!--property name="magicFileDir" value="/home/nicl/workspace/file-5.11/magic/Magdir/warc"/-->
-  </bean>
+    
+<!--   </bean> -->
 
 </beans>

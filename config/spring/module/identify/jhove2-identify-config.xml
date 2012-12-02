@@ -10,8 +10,8 @@
 				<ref bean="StanfordAgent"/>
 			</list>
 		</property>
-		<!-- property name="sourceIdentifier" ref="DROIDIdentifier"/ -->
-		<property name="sourceIdentifier" ref="LibmagicIdentifier"/>
+		<property name="sourceIdentifier" ref="DROIDIdentifier"/>
+<!-- 		<property name="sourceIdentifier" ref="LibmagicIdentifier"/> -->
 		<property name="shouldSkipIdentifyIfPreIdentified" value="true"/>
 	</bean>
 	<!-- DROID identifier bean -->
