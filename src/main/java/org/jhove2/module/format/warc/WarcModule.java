@@ -295,7 +295,8 @@ public class WarcModule extends BaseFormatModule implements Validator {
                 }
                 warcMod = (WarcModule)warcMod.getModuleAccessor().persistModule(warcMod);
                 // Remove WarcModule from source instance since we added one to the parent source.
-                this.setParentSourceId(null);
+//                this.setParentSourceId(null);
+                this.getParentSource().deleteModule(this);
                 source = source.getSourceAccessor().persistSource(source);
             }
             consumed = reader.getConsumed();

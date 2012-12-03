@@ -305,7 +305,8 @@ public class ArcModule extends BaseFormatModule implements Validator {
                 }
                 arcMod = (ArcModule)arcMod.getModuleAccessor().persistModule(arcMod);
                 // Remove ArcModule from source instance since we added one to the parent source.
-                this.setParentSourceId(null);
+//                this.setParentSourceId(null);
+                this.getParentSource().deleteModule(this);
                 source = source.getSourceAccessor().persistSource(source);
             }
             consumed = reader.getConsumed();

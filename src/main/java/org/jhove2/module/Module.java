@@ -191,21 +191,29 @@ public interface Module
 	 */
 	public Long getModuleId();
 	/**
+	 * Convenience method for ModuleAccessors that use "foreign key" semantics for moduleParentSourceId fields.
+     * It is the responsibility of ModuleAccessors to maintain any "foreign key" semantics that
+     * its persistence model makes use of to relate a Module's parent Source to moduleParentSourceId field
+     * 
+     * The preferred method for accessing a Module's parent Source is the Module.getParentSource() method.
+	 * 
 	 * @return the moduleParentSourceId
 	 */
 	public Long getParentSourceId();
 	/**
-     * Set moduleParentSourceId field. Convenience method for ModuleAccessors that use "foreign key"
+     * Set moduleParentSourceId field. 
+     * 
+     * Convenience method for ModuleAccessors that use "foreign key"
      * semantics for moduleId and moduleParentSourceId fields.
-     * It is the responsibility of SourceAccessor to maintain any "foreign key" semantics that
+     * It is the responsibility of ModuleAccessors to maintain any "foreign key" semantics that
      * its persistence model makes use of to relate a Module's parent Source to moduleParentSourceId field
      * 
-     * The preferred method for setting a child Module's (module)'s parent to parentSource is
-     * parentSource.addModule(module); to remove a child (setting child's parent to null) is
+     * The preferred method for setting a Module's (module)'s parent to parentSource is
+     * parentSource.addModule(module); to remove a module's parent Source is
      * parentSource.deleteModule(module).
      * 
      * Changing a Module's parent Source should be accomplished via a sequence of method invocations:  first
-     * oldParentSource..deleteModule(module); then newParentSource.addModule(module).
+     * oldParentSource.deleteModule(module); then newParentSource.addModule(module).
      * 
 	 * @param moduleParentSourceId the moduleParentSourceId to set
 	 * @throws JHOVE2Exception

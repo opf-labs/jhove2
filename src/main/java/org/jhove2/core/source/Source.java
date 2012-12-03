@@ -261,6 +261,14 @@ public interface Source
 	public int getNumModules() throws JHOVE2Exception;
 
     /**
+     * Convenience method for SourceAccessors that use "foreign key"
+     * semantics for sourceId fields.
+     * It is the responsibility of SourceAccessor to maintain any "foreign key" semantics that
+     * its persistence model makes use of to relate a Source's parent Source to 
+     * parentSourceId field
+     * 
+     * Preferred method for access to parent Source is Source.getParentSource()
+     * 
      * @return the moduleParentSourceId, or null if this Source has no Parent
      */
     public Long getParentSourceId();
