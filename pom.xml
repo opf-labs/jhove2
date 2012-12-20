@@ -135,11 +135,6 @@
 		</license>
 	</licenses>
 	<repositories>
-		<!--repository>
-			<id>Antiaction</id>
-			<name>Antiaction Repository</name>
-			<url>http://repository.antiaction.com/</url>
-		</repository-->
 		<!-- JWAT -->
 		<repository>
 			<id>Sonatype-snapshots</id>

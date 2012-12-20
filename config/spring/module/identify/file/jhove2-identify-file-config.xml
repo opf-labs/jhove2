@@ -17,27 +17,24 @@
        (http://www.macports.org/). 
    -->
    <!-- IF MAGIC IS NOT INSTALLED, YOU MUST DISABLE THIS ENTIRE BEAN -->
-<!--   <bean id="LibmagicIdentifier" -->
-<!--         class="org.jhove2.module.identify.file.LibmagicIdentifier" -->
-<!--         scope="singleton" -->
-<!--         init-method="init" -->
-<!--         destroy-method="shutdown"> -->
-<!--     <constructor-arg ref="BaseModuleAccessor"/> -->
-<!--     <property name="developers"> -->
-<!--       <list value-type="org.jhove2.core.Agent"> -->
-<!--         <ref bean="BnFAgent"/> -->
-<!--       </list> -->
-<!--     </property> -->
-    
-    <!-- Point the magicFileDir property to a directory containing
-         Magic definition files to force the compilation of these files
-         when the LibmagicIdentifier starts (once per JVM run). If this
-         property is not set, the system-provided (on UNIX and Linux
-         systems) definitions will be used.
-     -->
-    <!--property name="magicFileDir" value="classpath:file/Magdir"/-->
-    <!--property name="magicFileDir" value="/home/nicl/workspace/file-5.11/magic/Magdir/warc"/-->
-    
-<!--   </bean> -->
-
+   <bean id="LibmagicIdentifier"
+         class="org.jhove2.module.identify.file.LibmagicIdentifier"
+         scope="singleton"
+         init-method="init"
+         destroy-method="shutdown">
+     <constructor-arg ref="BaseModuleAccessor"/>
+     <property name="developers">
+       <list value-type="org.jhove2.core.Agent">
+         <ref bean="BnFAgent"/>
+       </list>
+     </property>
+     <!-- Point the magicFileDir property to a directory containing
+          Magic definition files to force the compilation of these files
+          when the LibmagicIdentifier starts (once per JVM run). If this
+          property is not set, the system-provided (on UNIX and Linux
+          systems) definitions will be used.
+      -->
+     <!--property name="magicFileDir" value="classpath:file/Magdir"/-->
+     <!--property name="magicFileDir" value="/home/nicl/workspace/file-5.11/magic/Magdir/warc"/-->
+   </bean>
 </beans>

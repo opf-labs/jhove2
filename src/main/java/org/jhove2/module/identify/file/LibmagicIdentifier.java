@@ -36,7 +36,6 @@
 
 package org.jhove2.module.identify.file;
 
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
@@ -58,7 +57,6 @@ import org.jhove2.persist.ModuleAccessor;
 
 import com.sleepycat.persist.model.Persistent;
 
-
 /**
  * A {@link SourceIdentifier source identifier} that wraps the
  * libmagic dynamic library of the UNIX <code>file</code> identifier
@@ -67,11 +65,10 @@ import com.sleepycat.persist.model.Persistent;
  * @author hbian
  */
 @Persistent
-public class LibmagicIdentifier
-	extends AbstractFileSourceIdentifier
-	implements SourceIdentifier
-{
-    /** Module version identifier. */
+public class LibmagicIdentifier extends AbstractFileSourceIdentifier
+	implements SourceIdentifier {
+
+	/** Module version identifier. */
     public final static String VERSION = "2.0.0";
     /** Module release date. */
     public final static String RELEASE = "2011-01-31";
@@ -97,9 +94,7 @@ public class LibmagicIdentifier
 	/**Instantiate a new <code>DROIDIdentifier</code> module that wraps DROID.
 	 * @throws JHOVE2Exception 
 	 */
-	public LibmagicIdentifier()
-		throws JHOVE2Exception
-	{
+	public LibmagicIdentifier() throws JHOVE2Exception {
 		this(null);
 	}
 	
@@ -108,16 +103,81 @@ public class LibmagicIdentifier
 	 * @throws JHOVE2Exception 
 	 */
 	public LibmagicIdentifier(ModuleAccessor moduleAccessor)
-		throws JHOVE2Exception
-	{
+			throws JHOVE2Exception {
 		super(VERSION, RELEASE, RIGHTS, Scope.Generic, moduleAccessor);
 	}
 	
+    /**
+     * Initializes this instance. This method should be called once
+     * all the configuration properties (dependency injection) set.
+     *
+     * @throws JHOVE2Exception if any error occurred.
+     */
+    public void init() throws JHOVE2Exception {
+    }
+
+    /**
+     * Initialize module if it has not been done yet.
+     * @throws JHOVE2Exception if an error occurs during initialization
+     */
+    public void checkIfInitialized() throws JHOVE2Exception {
+    	if (libmagicWrapper == null) {
+        	// Initialize libmagic wrapper.
+            libmagicWrapper = new LibmagicJnaWrapper();
+
+            String compiledMagicPath = null;
+            if (this.magicFileDir != null) {
+                // Magic source directory set. => Compile magic files.
+            	if (libmagicWrapper.compile(
+                                    magicFileDir.getAbsolutePath()) != 0) {
+                    throw new JHOVE2Exception("Magic file compile error: "
+                                              + libmagicWrapper.getError());
+                }
+                // Look for compiled magic file. Its location varies according to
+                // some compilation options of libmagic.
+                // Was it stored in the current directory?
+                String dbName = magicFileDir.getName() + MAGIC_DB_EXTENSION;
+                File magicPath = new File(dbName);
+                if (! magicPath.isFile()) {
+                    // Nope! Must be in the parent dir. of the source definitions.
+                    magicPath = new File(magicFileDir.getParentFile(), dbName);
+                }
+                compiledMagicPath = magicPath.getAbsolutePath();
+                // Keep compiled file ref. for shutdown time cleanup.
+                compiledMagic = magicPath;
+                compiledMagic.deleteOnExit();
+            }
+            // Load magic definitions. 
+            if (libmagicWrapper.load(compiledMagicPath) != 0) {
+                String fileRef = (compiledMagicPath != null)?
+                                    "Magic database \"" + compiledMagicPath + '"':
+                                    "Default magic database";
+                throw new JHOVE2Exception(fileRef + " load error: "
+                                                  + libmagicWrapper.getError());
+            }
+    	}
+    }
+
+    /**
+     * Shuts down this instance, releasing used resources.
+     */
+    public void shutdown() {
+    	if (libmagicWrapper != null) {
+            libmagicWrapper.close();
+            libmagicWrapper = null;
+    	}
+        if (compiledMagic != null) {
+            // Delete compiled magic file.
+            compiledMagic.delete();
+            compiledMagic = null;
+        }
+    }
+
     /** {@inheritDoc} */
     @Override
     public Set<FormatIdentification> identify(JHOVE2 jhove2, Source source,
-                                                             Input input)
-                                        throws IOException, JHOVE2Exception {
+    		Input input) throws IOException, JHOVE2Exception {
+    	checkIfInitialized();
         // Extract MIME type and encoding using libmagic.
         String mimeType = null;
         /* The following code is not compatible with the current JHove2 core.
@@ -178,61 +238,6 @@ public class LibmagicIdentifier
     }
 
     /**
-     * Initializes this instance. This method should be called once
-     * all the configuration properties (dependency injection) set.
-     *
-     * @throws JHOVE2Exception if any error occurred.
-     */
-    public void init() throws JHOVE2Exception {
-    	// Initialize libmagic wrapper.
-        libmagicWrapper = new LibmagicJnaWrapper();
-
-        String compiledMagicPath = null;
-        if (this.magicFileDir != null) {
-            // Magic source directory set. => Compile magic files.
-        	if (libmagicWrapper.compile(
-                                magicFileDir.getAbsolutePath()) != 0) {
-                throw new JHOVE2Exception("Magic file compile error: "
-                                          + libmagicWrapper.getError());
-            }
-            // Look for compiled magic file. Its location varies according to
-            // some compilation options of libmagic.
-            // Was it stored in the current directory?
-            String dbName = magicFileDir.getName() + MAGIC_DB_EXTENSION;
-            File magicPath = new File(dbName);
-            if (! magicPath.isFile()) {
-                // Nope! Must be in the parent dir. of the source definitions.
-                magicPath = new File(magicFileDir.getParentFile(), dbName);
-            }
-            compiledMagicPath = magicPath.getAbsolutePath();
-            // Keep compiled file ref. for shutdown time cleanup.
-            compiledMagic = magicPath;
-            compiledMagic.deleteOnExit();
-        }
-        // Load magic definitions. 
-        if (libmagicWrapper.load(compiledMagicPath) != 0) {
-            String fileRef = (compiledMagicPath != null)?
-                                "Magic database \"" + compiledMagicPath + '"':
-                                "Default magic database";
-            throw new JHOVE2Exception(fileRef + " load error: "
-                                              + libmagicWrapper.getError());
-        }
-    }
-
-    /**
-     * Shuts down this instance, releasing used resources.
-     */
-    public void shutdown() {
-        libmagicWrapper.close();
-
-        if (compiledMagic != null) {
-            // Delete compiled magic file.
-            compiledMagic.delete();
-            compiledMagic = null;
-        }
-    }
-
-    /**
      * Returns the {@link I8R identifier} of the JHove2 format
      * corresponding to the specified MIME type.
      * @param  jhove2     the JHove2 characterization context.
@@ -245,7 +250,7 @@ public class LibmagicIdentifier
      *         JHove2 configuration.
      */
     private static I8R getJhoveFormatId(JHOVE2 jhove2, String mimeType)
-                                                        throws JHOVE2Exception {
+    		throws JHOVE2Exception {
         if (mimeTypesToFormatIds == null) {
             Map<String,I8R> m = new HashMap<String,I8R>();
 

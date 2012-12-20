@@ -10,8 +10,14 @@ REM http://jhove2.org.
 
 setlocal enableextensions
 
-call env
+call %~dp0\env.cmd
 
-REM %JAVA% -Xms256m -Xmx1024m -XX:PermSize=64M -XX:MaxPermSize=256M -cp "%CP%" org.jhove2.app.JHOVE2CommandLine %*
+if "%JAVA_DEBUG_OPTS%" == "" (
+   set JAVA_DEBUG_OPTS=-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=1044
+)
 
-%JAVA% -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=1044 -Xms256m -Xmx1024m -XX:PermSize=64M -XX:MaxPermSize=256M -cp "%CP%" org.jhove2.app.JHOVE2CommandLine %*
+if "%JAVA_OPTS%" == "" (
+   set JAVA_OPTS=-Xms256m -Xmx1024m -XX:PermSize=64M -XX:MaxPermSize=256M
+)
+
+%JAVA% %JAVA_DEBUG_OPTS% %JAVA_OPTS% -cp "%CP%" org.jhove2.app.JHOVE2CommandLine %*

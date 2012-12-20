@@ -83,7 +83,7 @@ public class GzipEntryProperties extends AbstractReportable {
      * Returns whether the entry is compliant or not.
      * @return whether the entry is compliant or not
      */
-    @ReportableProperty(order = 1, value = "Is non compliancy.")
+    @ReportableProperty(order = 1, value = "Is non compliant.")
     public boolean getIsNonCompliant() {
         return entry.isNonCompliant;
     }
