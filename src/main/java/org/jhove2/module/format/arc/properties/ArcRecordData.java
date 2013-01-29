@@ -153,13 +153,15 @@ public class ArcRecordData {
         switch (record.recordType) {
         case ArcRecordBase.RT_VERSION_BLOCK:
         	ArcVersionHeader versionHeader = record.versionHeader;
-            if (versionHeader.versionNumber != null) {
-                versionNumber = versionHeader.versionNumberStr;
-            }
-            if (versionHeader.reserved != null) {
-                reserved = versionHeader.reservedStr;
-            }
-            originCode = versionHeader.originCode;
+        	if (versionHeader != null) {
+                if (versionHeader.versionNumber != null) {
+                    versionNumber = versionHeader.versionNumberStr;
+                }
+                if (versionHeader.reserved != null) {
+                    reserved = versionHeader.reservedStr;
+                }
+                originCode = versionHeader.originCode;
+        	}
         	break;
         case ArcRecordBase.RT_ARC_RECORD:
             Payload payload = record.getPayload();

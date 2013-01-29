@@ -72,7 +72,9 @@ import org.jwat.arc.ArcReader;
 import org.jwat.arc.ArcReaderFactory;
 import org.jwat.arc.ArcRecordBase;
 import org.jwat.common.Diagnosis;
+import org.jwat.common.Diagnostics;
 import org.jwat.common.HttpHeader;
+import org.jwat.common.InputStreamNoSkip;
 import org.jwat.common.Payload;
 import org.jwat.common.PayloadWithHeaderAbstract;
 
@@ -167,6 +169,23 @@ public class ArcModule extends BaseFormatModule implements Validator {
      */
     public ArcModule() {
       this(null, null);
+    }
+
+    /**
+     * Method for creating test instances.
+     * @return <code>ArcModule</code> instance
+     */
+    protected ArcModule getTestInstance() {
+        ArcModule arcModule = new ArcModule(format, (FormatModuleAccessor)moduleAccessor);
+        arcModule.isValid = Validity.Undetermined;
+        arcModule.recurse = recurse;
+        arcModule.bComputeBlockDigest = bComputeBlockDigest;
+        arcModule.blockDigestAlgorithm = blockDigestAlgorithm;
+        arcModule.blockDigestEncoding = blockDigestEncoding;
+        arcModule.bComputePayloadDigest = bComputePayloadDigest;
+        arcModule.payloadDigestAlgorithm = payloadDigestAlgorithm;
+        arcModule.payloadDigestEncoding = payloadDigestEncoding;
+        return arcModule;
     }
 
     //------------------------------------------------------------------------
@@ -307,6 +326,10 @@ public class ArcModule extends BaseFormatModule implements Validator {
                 // Remove ArcModule from source instance since we added one to the parent source.
 //                this.setParentSourceId(null);
                 this.getParentSource().deleteModule(this);
+                // Reader diagnostics.
+                reportValidationErrors(source, reader.diagnostics, jhove2);
+                reader.diagnostics.reset();
+                // Source update.
                 source = source.getSourceAccessor().persistSource(source);
             }
             consumed = reader.getConsumed();
@@ -314,11 +337,14 @@ public class ArcModule extends BaseFormatModule implements Validator {
             /*
              * Not GZip compressed.
              */
-            reader = ArcReaderFactory.getReaderUncompressed(source.getInputStream(), 8192);
+            reader = ArcReaderFactory.getReaderUncompressed(new InputStreamNoSkip(source.getInputStream()), 8192);
             setDigestOptions(reader);
             parseRecordsUncompressed(jhove2, sourceFactory, source, reader, true);
             reader.close();
             consumed = reader.getConsumed();
+            // Reader diagnostics.
+            reportValidationErrors(source, reader.diagnostics, jhove2);
+            reader.diagnostics.reset();
             // Reportable.
             arcReaderConsumedBytes = reader.getConsumed();
             if (blockDescVersions.size() == 1) {
@@ -327,6 +353,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
                 	arcBlockDescVersion = entry.getKey();
                 }
             }
+
             /*
              * Validity.
              */
@@ -469,7 +496,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
          */
         if (recordNumber == 1) {
         	if (record.recordType == ArcRecordBase.RT_VERSION_BLOCK) {
-        		if (record.versionHeader.bValidVersionFormat) {
+        		if (record.versionHeader != null && record.versionHeader.bValidVersionFormat) {
         			arcFileVersion = record.versionHeader.versionStr;
         		}
         	}
@@ -550,7 +577,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
         /*
          * Report errors.
          */
-        reportValidationErrors(recordSrc, record, jhove2);
+        reportValidationErrors(recordSrc, record.diagnostics, jhove2);
         recordSrc.close();
     }
 
@@ -602,26 +629,26 @@ public class ArcModule extends BaseFormatModule implements Validator {
     }
 
     /**
-     * Checks ARC record validity and reports validation errors.
+     * Reports validation errors/warnings on <code>Source</code>, if any.
      * @param src ARC source unit
-     * @param record the ARC record to characterize.
+     * @param diagnostics diagnostics object with possible errors/warnings.
      * @param jhove2 the JHove2 characterization context.
      * @throws IOException if an IO error occurs while processing
      * @throws JHOVE2Exception if a serious problem needs to be reported
      */
-    private void reportValidationErrors(Source src, ArcRecordBase record,
+    private void reportValidationErrors(Source src, Diagnostics<Diagnosis> diagnostics,
                         JHOVE2 jhove2) throws JHOVE2Exception, IOException {
-        if (record.diagnostics.hasErrors()) {
+        if (diagnostics.hasErrors()) {
             // Report errors on source object.
-           for (Diagnosis d : record.diagnostics.getErrors()) {
+           for (Diagnosis d : diagnostics.getErrors()) {
                src.addMessage(newValidityError(jhove2, Message.Severity.ERROR,
                        d.type.toString().toLowerCase(), d.getMessageArgs()));
                //updateMap(e.error.toString() + '-' + e.field, this.errors);
            }
         }
-        if (record.diagnostics.hasWarnings()) {
+        if (diagnostics.hasWarnings()) {
             // Report warnings on source object.
-            for (Diagnosis d : record.diagnostics.getWarnings()) {
+            for (Diagnosis d : diagnostics.getWarnings()) {
                 src.addMessage(newValidityError(jhove2, Message.Severity.WARNING,
                         d.type.toString().toLowerCase(), d.getMessageArgs()));
             }

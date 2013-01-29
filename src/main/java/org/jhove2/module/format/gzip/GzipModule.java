@@ -47,6 +47,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.zip.DataFormatException;
 
 import org.jhove2.annotation.ReportableProperty;
 import org.jhove2.core.JHOVE2;
@@ -65,6 +66,7 @@ import org.jhove2.module.format.gzip.properties.GzipEntryData;
 import org.jhove2.persist.FormatModuleAccessor;
 import org.jwat.arc.ArcReader;
 import org.jwat.common.Diagnosis;
+import org.jwat.common.Diagnostics;
 import org.jwat.gzip.GzipConstants;
 import org.jwat.gzip.GzipEntry;
 import org.jwat.gzip.GzipReader;
@@ -189,6 +191,17 @@ public class GzipModule extends BaseFormatModule implements Validator {
         this(null, null);
     }
 
+    /**
+     * Method for creating test instances.
+     * @return <code>GzipModule</code> instance
+     */
+    protected GzipModule getTestInstance() {
+        GzipModule gzipModule = new GzipModule(format, (FormatModuleAccessor)moduleAccessor);
+        gzipModule.isValid = Validity.Undetermined;
+        gzipModule.recurse = recurse;
+        return gzipModule;
+    }
+
     //------------------------------------------------------------------------
     // BaseFormatModule contract support
     //------------------------------------------------------------------------
@@ -282,9 +295,14 @@ public class GzipModule extends BaseFormatModule implements Validator {
                     ++invalidMembers;
                     isValid = Validity.False;
                     // Report errors on child source object.
-                    reportValidationErrors(gzipEntry, src, jhove2);
+                    reportValidationErrors(src, gzipEntry.diagnostics, jhove2);
                 }
             }
+            // Report reader errors on source object.
+            reportValidationErrors(source, gzipReader.diagnostics, jhove2);
+        	if (!gzipReader.isCompliant()) {
+                isValid = Validity.False;
+        	}
             consumed = gzipReader.getConsumed();
             gzipReaderConsumedBytes = gzipReader.getConsumed();
             if (isValid == Validity.Undetermined) {
@@ -295,7 +313,12 @@ public class GzipModule extends BaseFormatModule implements Validator {
         }
         catch (IOException e) {
             handleError(e, jhove2, gzipEntry.getStartOffset());
-            if (! ((e instanceof EOFException) && (gzipEntry.getStartOffset() != 0L))) {
+            if (e.getCause() != null && e.getCause() instanceof DataFormatException) {
+            	isValid = Validity.False;
+                source.addMessage(newValidityError(jhove2, Message.Severity.ERROR,
+                        "error", new Object[]{"GZip data", e.getMessage()}));
+            }
+            else if (! ((e instanceof EOFException) && (gzipEntry.getStartOffset() != 0L))) {
                 // Not an EOF error occurring before the very first entry.
                 throw e;
             }
@@ -361,18 +384,18 @@ public class GzipModule extends BaseFormatModule implements Validator {
      * @throws IOException if an IO error occurs while processing
      * @throws JHOVE2Exception if a serious problem needs to be reported
      */
-    private void reportValidationErrors(GzipEntry entry, Source src,
+    private void reportValidationErrors(Source src, Diagnostics<Diagnosis> diagnostics,
                                         JHOVE2 jhove2) throws JHOVE2Exception {
-        if (entry.diagnostics.hasErrors()) {
+        if (diagnostics.hasErrors()) {
             // Report errors on source object.
-           for (Diagnosis d : entry.diagnostics.getErrors()) {
+           for (Diagnosis d : diagnostics.getErrors()) {
                src.addMessage(newValidityError(jhove2, Message.Severity.ERROR,
                        d.type.toString().toLowerCase(), d.getMessageArgs()));
            }
         }
-        if (entry.diagnostics.hasWarnings()) {
+        if (diagnostics.hasWarnings()) {
             // Report warnings on source object.
-            for (Diagnosis d : entry.diagnostics.getWarnings()) {
+            for (Diagnosis d : diagnostics.getWarnings()) {
                 src.addMessage(newValidityError(jhove2, Message.Severity.WARNING,
                         d.type.toString().toLowerCase(), d.getMessageArgs()));
             }

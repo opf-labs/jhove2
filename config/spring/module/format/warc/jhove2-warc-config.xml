@@ -54,7 +54,7 @@
     <constructor-arg type="java.lang.String" value="http://jhove2.org/terms/format/warc"/>
   </bean>
 
-  <!-- ARC PUID x-fmt/219 alias identifier bean -->
+  <!-- WARC PUID x-fmt/289 alias identifier bean -->
   <bean id="WarcXFmt219Identifier" class="org.jhove2.core.I8R" scope="singleton">
     <constructor-arg type="java.lang.String" value="fmt/289"/>
     <constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>

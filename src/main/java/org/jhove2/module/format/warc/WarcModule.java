@@ -68,7 +68,9 @@ import org.jhove2.module.format.gzip.GzipModule.GZipOffsetProperty;
 import org.jhove2.module.format.warc.properties.WarcRecordData;
 import org.jhove2.persist.FormatModuleAccessor;
 import org.jwat.common.Diagnosis;
+import org.jwat.common.Diagnostics;
 import org.jwat.common.HttpHeader;
+import org.jwat.common.InputStreamNoSkip;
 import org.jwat.common.Payload;
 import org.jwat.common.PayloadWithHeaderAbstract;
 import org.jwat.warc.WarcReader;
@@ -156,6 +158,23 @@ public class WarcModule extends BaseFormatModule implements Validator {
      */
     public WarcModule() {
         this(null, null);
+    }
+
+    /**
+     * Method for creating test instances.
+     * @return <code>WarcModule</code> instance
+     */
+    protected WarcModule getTestInstance() {
+        WarcModule warcModule = new WarcModule(format, (FormatModuleAccessor)moduleAccessor);
+        warcModule.isValid = Validity.Undetermined;
+        warcModule.recurse = recurse;
+        warcModule.bComputeBlockDigest = bComputeBlockDigest;
+        warcModule.blockDigestAlgorithm = blockDigestAlgorithm;
+        warcModule.blockDigestEncoding = blockDigestEncoding;
+        warcModule.bComputePayloadDigest = bComputePayloadDigest;
+        warcModule.payloadDigestAlgorithm = payloadDigestAlgorithm;
+        warcModule.payloadDigestEncoding = payloadDigestEncoding;
+        return warcModule;
     }
 
     //------------------------------------------------------------------------
@@ -297,6 +316,10 @@ public class WarcModule extends BaseFormatModule implements Validator {
                 // Remove WarcModule from source instance since we added one to the parent source.
 //                this.setParentSourceId(null);
                 this.getParentSource().deleteModule(this);
+                // Reader diagnostics.
+                reportValidationErrors(source, reader.diagnostics, jhove2);
+                reader.diagnostics.reset();
+                // Source update.
                 source = source.getSourceAccessor().persistSource(source);
             }
             consumed = reader.getConsumed();
@@ -305,11 +328,14 @@ public class WarcModule extends BaseFormatModule implements Validator {
             /*
              * Not GZip compressed.
              */
-            reader = WarcReaderFactory.getReaderUncompressed(source.getInputStream(), 8192);
+            reader = WarcReaderFactory.getReaderUncompressed(new InputStreamNoSkip(source.getInputStream()), 8192);
             setDigestOptions(reader);
             parseRecordsUncompressed(jhove2, sourceFactory, source, reader);
             reader.close();
             consumed = reader.getConsumed();
+            // Reader diagnostics.
+            reportValidationErrors(source, reader.diagnostics, jhove2);
+            reader.diagnostics.reset();
             // Reportable.
             warcReaderConsumedBytes = reader.getConsumed();
             if (versions.size() == 1) {
@@ -517,7 +543,7 @@ public class WarcModule extends BaseFormatModule implements Validator {
         /*
          * Report errors.
          */
-        reportValidationErrors(recordSrc, record, jhove2);
+        reportValidationErrors(recordSrc, record.diagnostics, jhove2);
     }
 
     /**
@@ -560,26 +586,26 @@ public class WarcModule extends BaseFormatModule implements Validator {
     }
 
     /**
-     * Checks WARC record validity and reports validation errors.
+     * Reports validation errors/warnings on <code>Source</code>, if any.
      * @param src WARC source unit
-     * @param record the WARC record to characterize.
+     * @param diagnostics diagnostics object with possible errors/warnings.
      * @param jhove2 the JHove2 characterization context.
      * @throws IOException if an IO error occurs while processing
      * @throws JHOVE2Exception if a serious problem needs to be reported
      */
-    private void reportValidationErrors(Source src, WarcRecord record,
+    private void reportValidationErrors(Source src, Diagnostics<Diagnosis> diagnostics,
                         JHOVE2 jhove2) throws JHOVE2Exception, IOException {
-        if (record.diagnostics.hasErrors()) {
+        if (diagnostics.hasErrors()) {
             // Report errors on source object.
-           for (Diagnosis d : record.diagnostics.getErrors()) {
+           for (Diagnosis d : diagnostics.getErrors()) {
                src.addMessage(newValidityError(jhove2, Message.Severity.ERROR,
                        d.type.toString().toLowerCase(), d.getMessageArgs()));
                //updateMap(e.error.toString() + '-' + e.field, this.errors);
            }
         }
-        if (record.diagnostics.hasWarnings()) {
+        if (diagnostics.hasWarnings()) {
             // Report warnings on source object.
-            for (Diagnosis d : record.diagnostics.getWarnings()) {
+            for (Diagnosis d : diagnostics.getWarnings()) {
                 src.addMessage(newValidityError(jhove2, Message.Severity.WARNING,
                         d.type.toString().toLowerCase(), d.getMessageArgs()));
             }

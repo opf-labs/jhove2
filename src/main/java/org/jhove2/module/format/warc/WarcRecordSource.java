@@ -38,6 +38,7 @@ package org.jhove2.module.format.warc;
 
 import org.jhove2.core.JHOVE2;
 import org.jhove2.core.source.AbstractSource;
+import org.jhove2.core.source.Source;
 
 import com.sleepycat.persist.model.Persistent;
 
@@ -64,5 +65,27 @@ public class WarcRecordSource extends AbstractSource {
     protected WarcRecordSource(JHOVE2 jhove2) {
         super(jhove2);
     }
+
+	@Override
+	public int compareTo(Source src) {
+		if (src == null ){
+			return 1;
+		}
+		if (this == src) {
+			return 0;
+		}
+		return this.toString().compareTo(src.toString());
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
+			return true;
+		}
+		return false;
+	}
 
 }
