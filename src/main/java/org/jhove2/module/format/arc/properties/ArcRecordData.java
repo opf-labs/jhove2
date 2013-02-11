@@ -199,7 +199,9 @@ public class ArcRecordData {
         startOffset = record.getStartOffset();
         consumed = record.getConsumed();
         blockDescVersion = header.recordFieldVersion;
-        // Record
+        /*
+         * Header.
+         */
         url = header.urlStr;
         protocol = header.urlScheme;
         ipAddress = header.ipAddressStr;

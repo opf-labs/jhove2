@@ -91,7 +91,7 @@ public class GzipModule extends BaseFormatModule implements Validator {
     public final static String VERSION = "2.1.0";
 
     /** Module release date. */
-    public final static String RELEASE = "2012-10-31";
+    public final static String RELEASE = "2013-02-11";
 
     /** Module validation coverage. */
     public static final Coverage COVERAGE = Coverage.Selective;

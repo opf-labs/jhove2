@@ -168,27 +168,42 @@ public class WarcModuleTestBase extends ConfigTestBase {
     			System.out.println(" " + validity.toString());
     			*/
 
-    			Assert.assertEquals(expectedValidity, validity);
+    			if (!debug) {
+        			Assert.assertEquals(expectedValidity, validity);
+    			}
 
     			List<Message> messages = fileSource.getMessages();
-    			Assert.assertEquals(expectedReaderMessages.length, messages.size());
+    			if (!debug) {
+        			Assert.assertEquals(expectedReaderMessages.length, messages.size());
+    			}
 
     			for (int j=0; j<messages.size(); ++j) {
-    				//System.out.println(" " + messages.get(j));
-    				Assert.assertEquals(expectedReaderMessages[j], messages.get(j).toString());
+        			if (!debug) {
+        				Assert.assertEquals(expectedReaderMessages[j], messages.get(j).toString());
+        			} else {
+        				System.out.println(" " + messages.get(j));
+	    			}
     			}
 
     			List<Source> children = fileSource.getChildSources();
-    			Assert.assertEquals(expectedRecordMessages.length, children.size());
+    			if (!debug) {
+        			Assert.assertEquals(expectedRecordMessages.length, children.size());
+    			}
 
     			for (int j=0; j<children.size(); ++j) {
     				messages = children.get(j).getMessages();
-    				Assert.assertEquals(expectedRecordMessages[j].length, messages.size());
-
-    				//System.out.println(" >" + j);
+        			if (!debug) {
+        				Assert.assertEquals(expectedRecordMessages[j].length, messages.size());
+        			} else {
+        				System.out.println(" >" + j);
+	    			}
     				for (int k=0; k<messages.size(); ++k) {
-        				//System.out.println("  " + messages.get(k));
-        				Assert.assertEquals(expectedRecordMessages[j][k], messages.get(k).toString());
+    	    			if (!debug) {
+            				Assert.assertEquals(expectedRecordMessages[j][k], messages.get(k).toString());
+    	    			} else {
+            				System.out.println("  " + messages.get(k));
+    	    			}
+
         			}
     			}
             }

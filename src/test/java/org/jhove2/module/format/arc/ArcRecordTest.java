@@ -66,6 +66,13 @@ public class ArcRecordTest extends ArcModuleTestBase {
 			{Validity.False, "invalid-arcrecord-2.arc", new String[][] {
 					{},
 					{
+						"[ERROR/OBJECT] Error in ARC file, expected 'Expected payload not found in the record block'"
+					}
+			}, new String[] {
+			}},
+			{Validity.False, "invalid-arcrecord-3.arc", new String[][] {
+					{},
+					{
 						"[ERROR/OBJECT] Invalid 'Archive-length' value, value: 'invalid', expected: 'Numeric format'",
 						"[ERROR/OBJECT] Error in ARC file, expected 'Expected payload not found in the record block'"
 					},
@@ -80,7 +87,7 @@ public class ArcRecordTest extends ArcModuleTestBase {
 					}
 			}, new String[] {
 			}},
-			{Validity.False, "invalid-arcrecord-3.arc", new String[][] {
+			{Validity.False, "invalid-arcrecord-4.arc", new String[][] {
 					{},
 					{
 						"[ERROR/OBJECT] Error in http header, reason 'Unable to parse http header!'"
@@ -113,11 +120,6 @@ public class ArcRecordTest extends ArcModuleTestBase {
 			}, new String[] {
 			}},
 			{Validity.True, "valid-arcrecord-6.arc", new String[][] {
-					{},
-					{}
-			}, new String[] {
-			}},
-			{Validity.True, "valid-arcrecord-7.arc", new String[][] {
 					{},
 					{}
 			}, new String[] {

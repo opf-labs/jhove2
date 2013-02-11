@@ -20,6 +20,8 @@
     <property name="computePayloadDigest" value="true"/>
     <property name="payloadDigestAlgorithm" value="sha1"/>
     <property name="payloadDigestEncoding" value="base32"/>
+    <property name="strictTargetUriValidation" value="false"/>
+    <property name="strictUriValidation" value="false"/>
     <!--property name="parallelCharacterization" value="0"/-->
   </bean>
 
@@ -32,7 +34,7 @@
     <property name="aliasIdentifiers">
       <set value-type="org.jhove2.core.I8R">
 	<ref bean="WarcArchiveFileIdentifier"/>
-	<ref bean="WarcXFmt219Identifier"/>
+	<ref bean="WarcXFmt289Identifier"/>
 	<ref bean="WarcMimeIdentifier"/>
 	<ref bean="WarcISO28500"/>
       </set>
@@ -55,7 +57,7 @@
   </bean>
 
   <!-- WARC PUID x-fmt/289 alias identifier bean -->
-  <bean id="WarcXFmt219Identifier" class="org.jhove2.core.I8R" scope="singleton">
+  <bean id="WarcXFmt289Identifier" class="org.jhove2.core.I8R" scope="singleton">
     <constructor-arg type="java.lang.String" value="fmt/289"/>
     <constructor-arg type="org.jhove2.core.I8R$Namespace" value="PUID"/>
   </bean>

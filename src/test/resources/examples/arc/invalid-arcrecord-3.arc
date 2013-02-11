@@ -17,8 +17,8 @@ URL IP-address Archive-date Content-type Archive-length
 <dcterms:conformsTo xsi:type="dcterms:URI">http://www.archive.org/web/researcher/ArcFileFormat.php</dcterms:conformsTo>
 </arcmetadata>
 
-http://cctr.umkc.edu:80/user/jbenz/tst.htm 134.193.4.1 19970417175710 text/html 160
-GET / HTTP/1.1
+http://cctr.umkc.edu:80/user/jbenz/tst.htm 134.193.4.1 19970417175710 text/html invalid
+HTTP/1.0 200 Sending document
 MIME-version: 1.0
 Server: OSU/1.8
 Content-type: text/html

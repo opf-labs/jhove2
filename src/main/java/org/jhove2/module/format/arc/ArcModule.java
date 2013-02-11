@@ -77,6 +77,7 @@ import org.jwat.common.HttpHeader;
 import org.jwat.common.InputStreamNoSkip;
 import org.jwat.common.Payload;
 import org.jwat.common.PayloadWithHeaderAbstract;
+import org.jwat.common.UriProfile;
 
 import com.sleepycat.persist.model.Persistent;
 
@@ -93,7 +94,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
     public static final String VERSION = "2.1.0";
 
     /** Module release date. */
-    public static final String RELEASE = "2012-10-31";
+    public static final String RELEASE = "2013-02-11";
 
     /** Module validation coverage. */
     public static final Coverage COVERAGE = Coverage.Selective;
@@ -108,6 +109,8 @@ public class ArcModule extends BaseFormatModule implements Validator {
     private boolean bComputePayloadDigest = false;
     private String payloadDigestAlgorithm;
     private String payloadDigestEncoding;
+
+    private boolean bStrictUriValidation = true;
 
     /**
      * Stores a mapping of all Format aliases in the
@@ -185,6 +188,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
         arcModule.bComputePayloadDigest = bComputePayloadDigest;
         arcModule.payloadDigestAlgorithm = payloadDigestAlgorithm;
         arcModule.payloadDigestEncoding = payloadDigestEncoding;
+        arcModule.bStrictUriValidation = bStrictUriValidation;
         return arcModule;
     }
 
@@ -296,7 +300,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
             reader = (ArcReader)gzipMod.reader;
             if (reader == null) {
                 reader = ArcReaderFactory.getReaderUncompressed();
-                setDigestOptions(reader);
+                setReaderOptions(reader);
                 gzipMod.reader = reader;
             }
             if (arcMod == null) {
@@ -338,7 +342,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
              * Not GZip compressed.
              */
             reader = ArcReaderFactory.getReaderUncompressed(new InputStreamNoSkip(source.getInputStream()), 8192);
-            setDigestOptions(reader);
+            setReaderOptions(reader);
             parseRecordsUncompressed(jhove2, sourceFactory, source, reader, true);
             reader.close();
             consumed = reader.getConsumed();
@@ -375,7 +379,7 @@ public class ArcModule extends BaseFormatModule implements Validator {
      * Set digest options for ARC reader.
      * @param reader ARC reader instance
      */
-    protected void setDigestOptions(ArcReader reader) throws JHOVE2Exception {
+    protected void setReaderOptions(ArcReader reader) throws JHOVE2Exception {
         reader.setBlockDigestEnabled(bComputeBlockDigest);
         reader.setPayloadDigestEnabled(bComputePayloadDigest);
         if (!reader.setBlockDigestAlgorithm(blockDigestAlgorithm)) {
@@ -386,6 +390,11 @@ public class ArcModule extends BaseFormatModule implements Validator {
         }
         reader.setBlockDigestEncoding(blockDigestEncoding);
         reader.setPayloadDigestEncoding(payloadDigestEncoding);
+        if (bStrictUriValidation) {
+        	reader.setUriProfile(UriProfile.RFC3986);
+        } else {
+        	reader.setUriProfile(UriProfile.RFC3986_ABS_16BIT_LAX);
+        }
     }
 
     /**
@@ -855,6 +864,14 @@ public class ArcModule extends BaseFormatModule implements Validator {
      */
     public void setPayloadDigestEncoding(String payloadDigestEncoding) {
         this.payloadDigestEncoding = payloadDigestEncoding;
+    }
+
+    /**
+     * Enable or disable strict Target URI validation.
+     * @param bStrictUriValidation enable strict target URI validation switch
+     */
+    public void setStrictUriValidation(boolean bStrictUriValidation) {
+        this.bStrictUriValidation = bStrictUriValidation;
     }
 
 }

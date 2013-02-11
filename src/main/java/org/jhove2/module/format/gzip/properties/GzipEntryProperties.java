@@ -75,9 +75,11 @@ public class GzipEntryProperties extends AbstractReportable {
      * Returns the index of this entry in the GZip file.
      * @return the index (0-based) of the entry.
      */
+    /*
     public int getIndex() {
         return entry.index;
     }
+    */
 
     /**
      * Returns whether the entry is compliant or not.
@@ -187,12 +189,14 @@ public class GzipEntryProperties extends AbstractReportable {
      * @return the extra fields as an array of bytes or
      *         <code>null</code> if none are present.
      */
+    /*
     public byte[] getExtra() {
         int len = entry.extraFields.length;
         byte[] copy = new byte[len];
         System.arraycopy(entry.extraFields, 0, copy, 0, len);
         return copy;
     }
+    */
 
     /**
      * Returns the CRC16 read from the GZip member header.
@@ -342,8 +346,10 @@ public class GzipEntryProperties extends AbstractReportable {
      * @return <code>true</code> if the entry is valid;
      *         <code>false</code> otherwise.
      */
+    /*
     public boolean isValid() {
         return (entry.errors == 0);
     }
+    */
 
 }

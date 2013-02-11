@@ -73,6 +73,7 @@ import org.jwat.common.HttpHeader;
 import org.jwat.common.InputStreamNoSkip;
 import org.jwat.common.Payload;
 import org.jwat.common.PayloadWithHeaderAbstract;
+import org.jwat.common.UriProfile;
 import org.jwat.warc.WarcReader;
 import org.jwat.warc.WarcReaderFactory;
 import org.jwat.warc.WarcRecord;
@@ -92,7 +93,7 @@ public class WarcModule extends BaseFormatModule implements Validator {
     public static final String VERSION = "2.1.0";
 
     /** Module release date. */
-    public static final String RELEASE = "2012-10-31";
+    public static final String RELEASE = "2013-02-11";
 
     /** Module validation coverage. */
     public static final Coverage COVERAGE = Coverage.Selective;
@@ -107,6 +108,9 @@ public class WarcModule extends BaseFormatModule implements Validator {
     private boolean bComputePayloadDigest = false;
     private String payloadDigestAlgorithm;
     private String payloadDigestEncoding;
+
+    private boolean bStrictTargetUriValidation = false;
+    private boolean bStrictUriValidation = false;
 
     /**
      * Stores a mapping of all Format aliases in the
@@ -174,6 +178,8 @@ public class WarcModule extends BaseFormatModule implements Validator {
         warcModule.bComputePayloadDigest = bComputePayloadDigest;
         warcModule.payloadDigestAlgorithm = payloadDigestAlgorithm;
         warcModule.payloadDigestEncoding = payloadDigestEncoding;
+        warcModule.bStrictTargetUriValidation = bStrictTargetUriValidation;
+        warcModule.bStrictUriValidation = bStrictUriValidation;
         return warcModule;
     }
 
@@ -285,7 +291,7 @@ public class WarcModule extends BaseFormatModule implements Validator {
             reader = (WarcReader)gzipMod.reader;
             if (reader == null) {
                 reader = WarcReaderFactory.getReaderUncompressed();
-                setDigestOptions(reader);
+                setReaderOptions(reader);
                 gzipMod.reader = reader;
             }
             if (warcMod == null) {
@@ -329,7 +335,7 @@ public class WarcModule extends BaseFormatModule implements Validator {
              * Not GZip compressed.
              */
             reader = WarcReaderFactory.getReaderUncompressed(new InputStreamNoSkip(source.getInputStream()), 8192);
-            setDigestOptions(reader);
+            setReaderOptions(reader);
             parseRecordsUncompressed(jhove2, sourceFactory, source, reader);
             reader.close();
             consumed = reader.getConsumed();
@@ -365,7 +371,7 @@ public class WarcModule extends BaseFormatModule implements Validator {
      * Set digest options for WARC reader.
      * @param reader WARC reader instance
      */
-    protected void setDigestOptions(WarcReader reader) throws JHOVE2Exception {
+    protected void setReaderOptions(WarcReader reader) throws JHOVE2Exception {
         reader.setBlockDigestEnabled(bComputeBlockDigest);
         reader.setPayloadDigestEnabled(bComputePayloadDigest);
         if (!reader.setBlockDigestAlgorithm(blockDigestAlgorithm)) {
@@ -376,6 +382,16 @@ public class WarcModule extends BaseFormatModule implements Validator {
         }
         reader.setBlockDigestEncoding(blockDigestEncoding);
         reader.setPayloadDigestEncoding(payloadDigestEncoding);
+        if (bStrictTargetUriValidation) {
+        	reader.setWarcTargetUriProfile(UriProfile.RFC3986);
+        } else {
+        	reader.setWarcTargetUriProfile(UriProfile.RFC3986_ABS_16BIT_LAX);
+        }
+        if (bStrictUriValidation) {
+        	reader.setUriProfile(UriProfile.RFC3986);
+        } else {
+        	reader.setUriProfile(UriProfile.RFC3986_ABS_16BIT_LAX);
+        }
     }
 
     /**
@@ -784,6 +800,22 @@ public class WarcModule extends BaseFormatModule implements Validator {
      */
     public void setPayloadDigestEncoding(String payloadDigestEncoding) {
         this.payloadDigestEncoding = payloadDigestEncoding;
+    }
+
+    /**
+     * Enable or disable strict Target URI validation.
+     * @param bStrictTargetUriValidation enable strict target URI validation switch
+     */
+    public void setStrictTargetUriValidation(boolean bStrictTargetUriValidation) {
+        this.bStrictTargetUriValidation = bStrictTargetUriValidation;
+    }
+
+    /**
+     * Enable or disable strict URI validation.
+     * @param bStrictTargetUriValidation enable strict URI validation switch
+     */
+    public void setStrictUriValidation(boolean bStrictUriValidation) {
+        this.bStrictUriValidation = bStrictUriValidation;
     }
 
 }

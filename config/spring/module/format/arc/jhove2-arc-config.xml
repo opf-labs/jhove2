@@ -20,6 +20,7 @@
 	<property name="computePayloadDigest" value="true"/>
 	<property name="payloadDigestAlgorithm" value="sha1"/>
 	<property name="payloadDigestEncoding" value="base32"/>
+	<property name="strictUriValidation" value="false"/>
 	<!--property name="parallelCharacterization" value="0"/-->
     </bean>
 

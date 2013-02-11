@@ -58,13 +58,11 @@ public class GzipEntryData {
 
 	/** Boolean indicating whether header is non compliant. */
 	protected boolean isNonCompliant;
-	/** TODO Unused. */
-    protected int index;
     /** Offset of entry in input stream. */
     protected long offset;
     /** Compression methods read from header. */
     protected CompressionMethod method;
-    /** Compression type read from extra flags in heder. */
+    /** Compression type read from extra flags in header. */
     protected CompressionType extraFlags;
     /** Optional filename from header. */
     protected String fileName;
@@ -81,11 +79,14 @@ public class GzipEntryData {
 
     /** Date read from header. */
     protected Date date;
-    /** TODO unused. */
-    protected byte[] extraFields;
 
-    /** TODO Errors encountered validating entry and data. */
-    protected int errors = 0;
+	/** TODO Unused. */
+    //protected int index;
+    /** TODO Unused. */
+    //protected byte[] extraFields;
+    /** TODO Unused. Errors encountered validating entry and data. */
+    //protected int errors = 0;
+
     /** Uncompressed size of entry data. */
     protected long size  = -1L;
     /** Compressed size of entry data. */

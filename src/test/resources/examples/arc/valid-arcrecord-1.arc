@@ -17,5 +17,5 @@ URL IP-address Archive-date Content-type Archive-length
 <dcterms:conformsTo xsi:type="dcterms:URI">http://www.archive.org/web/researcher/ArcFileFormat.php</dcterms:conformsTo>
 </arcmetadata>
 
-http://cctr.umkc.edu:80/user/jbenz/tst.htm 134.193.4.1 19970417175710 no-type 0
+tnt://cctr.umkc.edu:80/user/jbenz/tst.htm 134.193.4.1 19970417175710 text/explosive 0
 

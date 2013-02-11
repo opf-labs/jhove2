@@ -100,6 +100,7 @@ public class ArcHeaderTest extends ArcModuleTestBase {
 						"[ERROR/OBJECT] Invalid 'Result-code' value, value: '99', expected: 'A number between 100 and 999'",
 						"[ERROR/OBJECT] Invalid 'Offset' value, value: '-4321', expected: 'A non negative number'",
 						"[ERROR/OBJECT] Invalid 'Archive-length' value, value: '-42', expected: 'A non negative number'",
+						"[ERROR/OBJECT] Error in ARC file, expected 'Expected payload not found in the record block'",
 						"[ERROR/OBJECT] Error in ARC file, expected 'Expected a version block as the first record.'"
 					}
 			}, new String[] {
@@ -107,6 +108,7 @@ public class ArcHeaderTest extends ArcModuleTestBase {
 			{Validity.False, "invalid-archeader-7.arc", new String[][] {
 					{
 						"[ERROR/OBJECT] Invalid 'Result-code' value, value: '1000', expected: 'A number between 100 and 999'",
+						"[ERROR/OBJECT] Error in http header, reason 'Unable to parse http header!'",
 						"[ERROR/OBJECT] Error in ARC file, expected 'Expected a version block as the first record.'",
 						"[ERROR/OBJECT] Invalid Payload length mismatch, 'Payload truncated'"
 					}
